@@ -23,6 +23,27 @@ const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl);
 
+const postCssLoader = {
+    loader: require.resolve('postcss-loader'),
+    options: {
+        // Necessary for external CSS imports to work
+        // https://github.com/facebookincubator/create-react-app/issues/2677
+        ident: 'postcss',
+        plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({
+                browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9', // React doesn't support IE8 anyway
+                ],
+                flexbox: 'no-2009',
+            }),
+        ],
+    },
+};
+
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
 // The production configuration is different and lives in a separate file.
@@ -167,33 +188,14 @@ module.exports = {
                                     importLoaders: 1,
                                 },
                             },
-                            {
-                                loader: require.resolve('postcss-loader'),
-                                options: {
-                                    // Necessary for external CSS imports to work
-                                    // https://github.com/facebookincubator/create-react-app/issues/2677
-                                    ident: 'postcss',
-                                    plugins: () => [
-                                        require('postcss-flexbugs-fixes'),
-                                        autoprefixer({
-                                            browsers: [
-                                                '>1%',
-                                                'last 4 versions',
-                                                'Firefox ESR',
-                                                'not ie < 9', // React doesn't support IE8 anyway
-                                            ],
-                                            flexbox: 'no-2009',
-                                        }),
-                                    ],
-                                },
-                            },
+                            postCssLoader,
                         ],
                     },
                     {
                         test: /\.scss$/,
                         use: ExtractTextPlugin.extract({
                             fallback: 'style-loader',
-                            use: ['css-loader', 'sass-loader']
+                            use: ['css-loader', 'sass-loader', postCssLoader]
                         })
                     },
                     // "file" loader makes sure those assets get served by WebpackDevServer.
@@ -251,7 +253,7 @@ module.exports = {
         // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
         // You can remove this if you don't use Moment.js:
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-        new ExtractTextPlugin('main.[hash:8].css'),
+        new ExtractTextPlugin('main.css'),
     ],
     // Some libraries import Node modules but don't use them in the browser.
     // Tell Webpack to provide empty mocks for them so importing them works.

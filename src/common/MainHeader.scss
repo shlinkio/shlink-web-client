@@ -1,7 +1,7 @@
 @import "../utils/base";
 
-.main-header {
-    background-color: $mainColor;
+.main-header.main-header {
+    background-color: $mainColor !important;
     color: white;
 
     .navbar-brand {
