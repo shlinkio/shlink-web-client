@@ -38,7 +38,7 @@ export default class MainHeader extends React.Component {
                 </NavbarBrand>
                 <NavbarToggler onClick={() => this.toggle()} />
                 <Collapse navbar isOpen={this.state.isOpen}>
-                    <Nav navbar>
+                    <Nav navbar className="ml-auto">
                         <NavItem>
                             <NavLink href="#">
                                 <FontAwesomeIcon icon={plusIcon} />&nbsp; Add server
@@ -49,7 +49,7 @@ export default class MainHeader extends React.Component {
                                 Servers
                             </DropdownToggle>
 
-                            <DropdownMenu right>
+                            <DropdownMenu>
                                 <DropdownItem>
                                     Server 1
                                 </DropdownItem>
