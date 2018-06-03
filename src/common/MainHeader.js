@@ -1,20 +1,11 @@
 import plusIcon from '@fortawesome/fontawesome-free-solid/faPlus';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
-import {
-  Collapse, DropdownItem, DropdownMenu,
-  DropdownToggle,
-  Nav,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown
-} from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import ServersDropdown from '../servers/ServersDropdown';
 import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
-import { Link } from 'react-router-dom';
 
 export default class MainHeader extends React.Component {
   constructor(props) {
@@ -27,7 +18,7 @@ export default class MainHeader extends React.Component {
 
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: ! this.state.isOpen
     });
   }
 
@@ -45,20 +36,7 @@ export default class MainHeader extends React.Component {
                 <FontAwesomeIcon icon={plusIcon}/>&nbsp; Add server
               </NavLink>
             </NavItem>
-            <UncontrolledDropdown nav>
-              <DropdownToggle nav caret>
-                Servers
-              </DropdownToggle>
-
-              <DropdownMenu>
-                <DropdownItem>
-                  Server 1
-                </DropdownItem>
-                <DropdownItem>
-                  Server 2
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+            <ServersDropdown />
           </Nav>
         </Collapse>
       </Navbar>
