@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
+import { Link } from 'react-router-dom';
 
 export default class MainHeader extends React.Component {
   constructor(props) {
@@ -40,7 +41,7 @@ export default class MainHeader extends React.Component {
         <Collapse navbar isOpen={this.state.isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>
-              <NavLink href="#">
+              <NavLink tag={Link} to ="/server/create">
                 <FontAwesomeIcon icon={plusIcon}/>&nbsp; Add server
               </NavLink>
             </NavItem>

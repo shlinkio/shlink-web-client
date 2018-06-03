@@ -1,6 +1,9 @@
 import React from 'react';
 import './App.scss';
+import { Route, Switch } from 'react-router-dom';
+import Home from './common/Home';
 import MainHeader from './common/MainHeader';
+import CreateServer from './servers/CreateServer';
 
 export default class App extends React.Component {
   render() {
@@ -8,8 +11,10 @@ export default class App extends React.Component {
       <div>
         <MainHeader/>
         <div className="app">
-          <h1 className="app__title">Welcome to Shlink</h1>
-          <h5 className="App__intro">Please, select a server.</h5>
+          <Switch>
+            <Route path="/server/create" component={CreateServer} />
+            <Route path="/" component={Home} />
+          </Switch>
         </div>
       </div>
     );

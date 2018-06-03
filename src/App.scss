@@ -1,12 +1,5 @@
-.app {
-  text-align: center;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
-}
+@import "./utils/base";
 
-.app__title {
-  font-size: 36px;
+.app {
+  padding-top: $headerHeight;
 }

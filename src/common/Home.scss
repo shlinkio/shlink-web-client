@@ -1,0 +1,14 @@
+@import "../utils/base";
+
+.home-container {
+  text-align: center;
+  height: calc(100vh - #{$headerHeight});
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column;
+}
+
+.home-container__title {
+  font-size: 36px;
+}
