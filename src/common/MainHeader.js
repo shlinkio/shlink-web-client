@@ -12,7 +12,7 @@ export default class MainHeader extends React.Component {
     super(props);
 
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 

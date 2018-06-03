@@ -1,7 +1,8 @@
 import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { connect } from 'react-redux';
 
-export default class ServersDropdown extends React.Component {
+class ServersDropdown extends React.Component {
   render() {
     return (
       <UncontrolledDropdown nav>
@@ -21,3 +22,5 @@ export default class ServersDropdown extends React.Component {
     );
   }
 }
+
+export default connect()(ServersDropdown);

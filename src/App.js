@@ -1,8 +1,9 @@
 import React from 'react';
-import './App.scss';
 import { Route, Switch } from 'react-router-dom';
+import './App.scss';
 import Home from './common/Home';
 import MainHeader from './common/MainHeader';
+import MenuLayout from './common/MenuLayout';
 import CreateServer from './servers/CreateServer';
 
 export default class App extends React.Component {
@@ -10,10 +11,12 @@ export default class App extends React.Component {
     return (
       <div>
         <MainHeader/>
+
         <div className="app">
           <Switch>
-            <Route path="/server/create" component={CreateServer} />
-            <Route path="/" component={Home} />
+            <Route exact path="/server/create" component={CreateServer} />
+            <Route exact path="/" component={Home} />
+            <Route component={MenuLayout} />
           </Switch>
         </div>
       </div>
