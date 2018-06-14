@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
 
-const rootReducer = combineReducers({});
+import serversReducer from './servers';
+
+const rootReducer = combineReducers({
+  servers: serversReducer
+});
 
 export default rootReducer;

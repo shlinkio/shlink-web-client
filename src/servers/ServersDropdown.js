@@ -2,7 +2,19 @@ import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { connect } from 'react-redux';
 
-class ServersDropdown extends React.Component {
+export class ServersDropdown extends React.Component {
+  renderServers = () => {
+    return this.props.servers.map(server => (
+      <DropdownItem key={server.name} onClick={() => this.selectServer(server)}>
+        {server.name}
+      </DropdownItem>
+    ));
+  };
+
+  selectServer = server => {
+    // TODO
+  };
+
   render() {
     return (
       <UncontrolledDropdown nav>
@@ -11,16 +23,15 @@ class ServersDropdown extends React.Component {
         </DropdownToggle>
 
         <DropdownMenu>
-          <DropdownItem>
-            Server 1 foo
-          </DropdownItem>
-          <DropdownItem>
-            Server 2 foo
-          </DropdownItem>
+          {this.renderServers()}
         </DropdownMenu>
       </UncontrolledDropdown>
     );
   }
 }
 
-export default connect()(ServersDropdown);
+const mapStateToProps = state => ({
+  servers: state.servers
+});
+
+export default connect(mapStateToProps)(ServersDropdown);
