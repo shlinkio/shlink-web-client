@@ -1,0 +1,21 @@
+import { LIST_SHORT_URLS } from '../../reducers/types';
+import ServersService from '../../servers/services';
+import ShlinkApiClient from '../../api/ShlinkApiClient';
+
+export default function shortUrlsListReducer(state = [], action) {
+  switch (action.type) {
+    case LIST_SHORT_URLS:
+      return action.shortUrls;
+    default:
+      return state;
+  }
+}
+
+export const listShortUrls = (serverId) => {
+  return async dispatch => {
+    const selectedServer = ServersService.findServerById(serverId);
+
+    ShlinkApiClient.setConfig(selectedServer);
+    dispatch({ type: LIST_SHORT_URLS, shortUrls: await ShlinkApiClient.listShortUrls() });
+  };
+};

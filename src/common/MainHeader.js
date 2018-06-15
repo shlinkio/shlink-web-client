@@ -25,14 +25,14 @@ export default class MainHeader extends React.Component {
   render() {
     return (
       <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
-        <NavbarBrand href="https://shlink.io" target="_blank">
+        <NavbarBrand tag={Link} to="/">
           <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo"/> Shlink
         </NavbarBrand>
         <NavbarToggler onClick={() => this.toggle()}/>
         <Collapse navbar isOpen={this.state.isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>
-              <NavLink tag={Link} to ="/server/create">
+              <NavLink tag={Link} to="/server/create">
                 <FontAwesomeIcon icon={plusIcon}/>&nbsp; Add server
               </NavLink>
             </NavItem>

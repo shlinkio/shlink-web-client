@@ -1,14 +1,13 @@
 import ServersService from '../services';
-
-const LOAD_SERVER = 'shlink/LOAD_SERVER';
+import { LOAD_SERVER } from '../../reducers/types';
 
 export default function selectedServerReducer(state = null, action) {
   switch (action.type) {
     case LOAD_SERVER:
       return action.selectedServer;
+    default:
+      return state;
   }
-
-  return state;
 }
 
 export const loadServer = serverId => {

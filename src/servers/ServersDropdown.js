@@ -1,10 +1,10 @@
+import { isEmpty } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { isEmpty } from 'ramda';
 
 import { listServers } from './reducers/server';
-import { loadServer } from './reducers/selectedServer';
 
 export class ServersDropdown extends React.Component {
   renderServers = () => {
@@ -16,15 +16,11 @@ export class ServersDropdown extends React.Component {
 
     return Object.values(servers).map(({ name, id }) => (
       <span key={id}>
-        <DropdownItem onClick={() => this.selectServer(id)}>
+        <DropdownItem tag={Link} to={`/server/${id}/list-short-urls/1`}>
           {name}
         </DropdownItem>
       </span>
     ));
-  };
-
-  selectServer = serverId => {
-    this.props.loadServer(serverId);
   };
 
   componentDidMount() {
@@ -45,4 +41,4 @@ const mapStateToProps = state => ({
   servers: state.servers
 });
 
-export default connect(mapStateToProps, { listServers, loadServer })(ServersDropdown);
+export default connect(mapStateToProps, { listServers })(ServersDropdown);

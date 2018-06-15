@@ -1,0 +1,15 @@
+@import "../utils/base";
+
+.aside-menu {
+  position: fixed !important;
+  top: $headerHeight;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  padding: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background-color: #f7f7f7;
+  border-right: 1px solid #eee;
+}

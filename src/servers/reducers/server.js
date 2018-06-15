@@ -1,7 +1,5 @@
 import ServersService from '../services';
-
-const FETCH_SERVERS = 'shlink/FETCH_SERVERS';
-const CREATE_SERVER = 'shlink/CREATE_SERVER';
+import { FETCH_SERVERS, CREATE_SERVER } from '../../reducers/types';
 
 export default function serversReducer(state = {}, action) {
   switch (action.type) {
@@ -9,9 +7,9 @@ export default function serversReducer(state = {}, action) {
       return action.servers;
     case CREATE_SERVER:
       return [ ...state, action.server ];
+    default:
+      return state;
   }
-
-  return state;
 }
 
 export const listServers = () => {
