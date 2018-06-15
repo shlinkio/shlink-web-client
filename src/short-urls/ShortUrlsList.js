@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { listShortUrls } from './reducers/shortUrlsList';
+import { isEmpty } from 'ramda';
 
 export class ShortUrlsList extends React.Component {
   componentDidMount() {
@@ -18,8 +19,8 @@ export class ShortUrlsList extends React.Component {
 
   renderShortUrls() {
     const { shortUrlsList } = this.props;
-    if (! shortUrlsList) {
-      return '<li><i>Loading...</i></li>';
+    if (isEmpty(shortUrlsList)) {
+      return <li><i>Loading...</i></li>;
     }
 
     return shortUrlsList.map(shortUrl => (

@@ -16,6 +16,7 @@ export const listShortUrls = (serverId) => {
     const selectedServer = ServersService.findServerById(serverId);
 
     ShlinkApiClient.setConfig(selectedServer);
-    dispatch({ type: LIST_SHORT_URLS, shortUrls: await ShlinkApiClient.listShortUrls() });
+    const shortUrls = await ShlinkApiClient.listShortUrls();
+    dispatch({ type: LIST_SHORT_URLS, shortUrls });
   };
 };
