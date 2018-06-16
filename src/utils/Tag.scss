@@ -1,0 +1,7 @@
+.tag {
+  color: #fff;
+}
+
+.tag:not(:last-child) {
+  margin-right: 3px;
+}

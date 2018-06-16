@@ -1,5 +1,4 @@
-const PREFIX = 'shlink';
-const buildPath = path => `${PREFIX}.${path}`;
+import Storage from '../../utils/Storage';
 
 export class ServersService {
   constructor(storage) {
@@ -7,7 +6,7 @@ export class ServersService {
   }
 
   listServers = () => {
-    return JSON.parse(this.storage.getItem(buildPath('servers')) || '{}');
+    return this.storage.get('servers');
   };
 
   findServerById = serverId => {
@@ -16,4 +15,4 @@ export class ServersService {
   }
 }
 
-export default new ServersService(localStorage);
+export default new ServersService(Storage);
