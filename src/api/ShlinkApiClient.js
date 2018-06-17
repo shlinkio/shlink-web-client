@@ -25,30 +25,21 @@ export class ShlinkApiClient {
    * @returns {Promise<Array>}
    */
   listShortUrls = (params = {}) => {
-    const { page = 1 } = params;
-    return this._performRequest(`/rest/short-codes?page=${page}`)
+    return this._performRequest('/rest/short-codes', 'GET', params)
       .then(resp => resp.data.shortUrls.data)
-      .catch(e => {
-        // If auth failed, reset token to force it to be regenerated, and perform a new request
-        if (e.response.status === 401) {
-          this._token = '';
-          return this.listShortUrls(params);
-        }
-
-        // Otherwise, let caller handle the rejection
-        return Promise.reject(e);
-      });
+      .catch(e => this._handleAuthError(e, this.listShortUrls, [params]));
   };
 
-  _performRequest = async (url, method = 'GET') => {
+  _performRequest = async (url, method = 'GET', params = {}) => {
     if (isEmpty(this._token)) {
-      this._token = await this._handleAuth();
+      this._token = await this._authenticate();
     }
 
     return await this.axios({
       method,
       url: `${this._baseUrl}${url}`,
-      headers: { 'Authorization': `Bearer ${this._token}` }
+      headers: { 'Authorization': `Bearer ${this._token}` },
+      params
     }).then(resp => {
       // Save new token
       const { authorization = '' } = resp.headers;
@@ -57,13 +48,24 @@ export class ShlinkApiClient {
     });
   };
 
-  _handleAuth = async () => {
+  _authenticate = async () => {
     const resp = await this.axios({
       method: 'POST',
       url: `${this._baseUrl}/rest/authenticate`,
       data: { apiKey: this._apiKey }
     });
     return resp.data.token;
+  };
+
+  _handleAuthError = (e, method, args) => {
+    // If auth failed, reset token to force it to be regenerated, and perform a new request
+    if (e.response.status === 401) {
+      this._token = '';
+      return method(...args);
+    }
+
+    // Otherwise, let caller handle the rejection
+    return Promise.reject(e);
   };
 }
 

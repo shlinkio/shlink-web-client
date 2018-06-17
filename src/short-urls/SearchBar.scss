@@ -6,10 +6,16 @@
 
 .search-bar__input.search-bar__input {
   padding-left: 40px;
+  padding-right: 40px;
 }
 
 .search-bar__icon {
   @include vertical-align();
   left: 15px;
   color: #707581;
+}
+
+.search-bar__close {
+  @include vertical-align();
+  right: 15px;
 }
