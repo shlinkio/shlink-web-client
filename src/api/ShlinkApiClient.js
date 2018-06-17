@@ -26,7 +26,7 @@ export class ShlinkApiClient {
    */
   listShortUrls = (params = {}) => {
     return this._performRequest('/rest/short-codes', 'GET', params)
-      .then(resp => resp.data.shortUrls.data)
+      .then(resp => resp.data.shortUrls)
       .catch(e => this._handleAuthError(e, this.listShortUrls, [params]));
   };
 

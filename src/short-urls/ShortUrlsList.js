@@ -16,10 +16,6 @@ import './ShortUrlsList.scss';
 export class ShortUrlsList extends React.Component {
   componentDidMount() {
     const { match } = this.props;
-    console.log(this.props.shortUrlsListParams, match.params, {
-      ...this.props.shortUrlsListParams,
-      page: match.params.page
-    });
     this.props.listShortUrls(match.params.serverId, {
       ...this.props.shortUrlsListParams,
       page: match.params.page
@@ -134,7 +130,6 @@ class RowMenu extends React.Component {
 }
 
 export default connect(state => ({
-  shortUrlsList: state.shortUrlsList,
   selectedServer: state.selectedServer,
   shortUrlsListParams: state.shortUrlsListParams,
 }), { listShortUrls })(ShortUrlsList);
