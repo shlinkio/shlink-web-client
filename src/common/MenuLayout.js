@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import ShortUrlsList from '../short-urls/ShortUrlsList';
+import ShortUrls from '../short-urls/ShortUrls';
 import AsideMenu from './AsideMenu';
 
 export default function MenuLayout() {
@@ -11,7 +11,7 @@ export default function MenuLayout() {
         <Switch>
           <Route exact
                  path="/server/:serverId/list-short-urls/:page"
-                 component={ShortUrlsList}
+                 component={ShortUrls}
           />
         </Switch>
       </div>

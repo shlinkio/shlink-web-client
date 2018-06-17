@@ -1,0 +1,15 @@
+@import "../utils/mixins/vertical-align";
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar__input.search-bar__input {
+  padding-left: 40px;
+}
+
+.search-bar__icon {
+  @include vertical-align();
+  left: 15px;
+  color: #707581;
+}

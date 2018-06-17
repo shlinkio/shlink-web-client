@@ -1,0 +1,10 @@
+.short-urls-list__cell {
+  vertical-align: middle !important;
+}
+
+.short-urls-list__dropdown-toggle:before {
+  display: none !important;
+}
+.short-urls-list__dropdown-toggle--hidden {
+  visibility: hidden;
+}
