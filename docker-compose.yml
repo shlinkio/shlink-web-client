@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+    shlink_web_client_node:
+        container_name: shlink_web_client_node
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes:
+            - ./:/home/shlink/www
+        ports:
+            - "3000:3000"
+            - "56745:56745"
