@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import Paginator from './Paginator';
 import SearchBar from './SearchBar';
 import './ShortUrls.scss';
 import ShortUrlsList from './ShortUrlsList';
@@ -9,7 +10,7 @@ export function ShortUrls(props) {
     <div className="short-urls-container">
       <div className="form-group"><SearchBar /></div>
       <ShortUrlsList {...props} shortUrlsList={props.shortUrlsList.data || []} />
-      {/* Pagination */}
+      <Paginator paginator={props.shortUrlsList.pagination} serverId={props.match.params.serverId} />
     </div>
   );
 }
