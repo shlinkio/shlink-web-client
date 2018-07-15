@@ -43,9 +43,13 @@ export class ShortUrlsList extends React.Component {
   }
 
   renderShortUrls() {
-    const { shortUrlsList, selectedServer } = this.props;
-    if (isEmpty(shortUrlsList)) {
+    const { shortUrlsList, selectedServer, loading } = this.props;
+    if (loading) {
       return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
+    }
+
+    if (! loading && isEmpty(shortUrlsList)) {
+      return <tr><td colSpan="6" className="text-center">No results found</td></tr>;
     }
 
     return shortUrlsList.map(shortUrl => (
@@ -69,8 +73,9 @@ class Row extends React.Component {
     const { shortUrl, selectedServer } = this.props;
 
     return (
-      <tr onMouseEnter={() => this.setState({ displayMenu: true })}
-          onMouseLeave={() => this.setState({ displayMenu: false })}
+      <tr
+        onMouseEnter={() => this.setState({ displayMenu: true })}
+        onMouseLeave={() => this.setState({ displayMenu: false })}
       >
         <td className="nowrap short-urls-list__cell">
           <Moment format="YYYY-MM-DD HH:mm" interval={0}>{shortUrl.dateCreated}</Moment>

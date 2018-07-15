@@ -16,5 +16,6 @@ export function ShortUrls(props) {
 }
 
 export default connect(state => ({
-  shortUrlsList: state.shortUrlsList
+  shortUrlsList: state.shortUrlsList.shortUrls,
+  loading: state.shortUrlsList.loading,
 }))(ShortUrls);
