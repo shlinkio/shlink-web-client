@@ -9,9 +9,10 @@ export default function MenuLayout() {
       <AsideMenu />
       <div className="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
         <Switch>
-          <Route exact
-                 path="/server/:serverId/list-short-urls/:page"
-                 component={ShortUrls}
+          <Route
+            exact
+            path="/server/:serverId/list-short-urls/:page"
+            component={ShortUrls}
           />
         </Switch>
       </div>

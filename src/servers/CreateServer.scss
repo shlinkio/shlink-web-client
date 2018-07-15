@@ -1,0 +1,11 @@
+@import "../utils/base";
+
+.create-server {
+  padding: 40px 20px;
+}
+
+.create-server__label {
+  @media (min-width: $mdMin) {
+    text-align: right;
+  }
+}
