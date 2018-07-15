@@ -5,6 +5,8 @@
 }
 
 .create-server__label {
+  font-weight: bold;
+
   @media (min-width: $mdMin) {
     text-align: right;
   }
