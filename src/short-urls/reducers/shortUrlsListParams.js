@@ -1,6 +1,6 @@
-import { UPDATE_SHORT_URLS_LIST } from '../../reducers/types';
+import { UPDATE_SHORT_URLS_LIST } from './shortUrlsList';
 
-export default function shortUrlsListReducer(state = { page: 1 }, action) {
+export default function reducer(state = { page: 1 }, action) {
   switch (action.type) {
     case UPDATE_SHORT_URLS_LIST:
       return { ...state, ...action.params };

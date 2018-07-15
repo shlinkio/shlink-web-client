@@ -1,8 +1,10 @@
-import { LIST_SHORT_URLS, UPDATE_SHORT_URLS_LIST } from '../../reducers/types';
 import ServersService from '../../servers/services';
 import ShlinkApiClient from '../../api/ShlinkApiClient';
 
-export default function shortUrlsListReducer(state = [], action) {
+export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
+export const UPDATE_SHORT_URLS_LIST = 'shlink/shortUrlsList/UPDATE_SHORT_URLS_LIST';
+
+export default function reducer(state = [], action) {
   switch (action.type) {
     case LIST_SHORT_URLS:
     case UPDATE_SHORT_URLS_LIST:
@@ -24,6 +26,8 @@ export const listShortUrls = (serverId, params = {}) => {
 
 export const updateShortUrlsList = (params = {}) => {
   return async dispatch => {
+
+
     const shortUrls = await ShlinkApiClient.listShortUrls(params);
     dispatch({ type: UPDATE_SHORT_URLS_LIST, shortUrls, params });
   };
