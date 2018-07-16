@@ -35,17 +35,21 @@ export class Paginator extends React.Component {
     return (
       <Pagination>
         <PaginationItem disabled={currentPage === 1}>
-          <PaginationLink previous
-                          tag={Link}
-                          to={`/server/${serverId}/list-short-urls/${currentPage - 1}`}
-                          onClick={() => this.updatePage(currentPage - 1)} />
+          <PaginationLink
+            previous
+            tag={Link}
+            to={`/server/${serverId}/list-short-urls/${currentPage - 1}`}
+            onClick={() => this.updatePage(currentPage - 1)}
+          />
         </PaginationItem>
         {renderPages()}
         <PaginationItem disabled={currentPage >= pagesCount}>
-          <PaginationLink next
-                          tag={Link}
-                          to={`/server/${serverId}/list-short-urls/${currentPage + 1}`}
-                          onClick={() => this.updatePage(currentPage + 1)} />
+          <PaginationLink
+            next
+            tag={Link}
+            to={`/server/${serverId}/list-short-urls/${currentPage + 1}`}
+            onClick={() => this.updatePage(currentPage + 1)}
+          />
         </PaginationItem>
       </Pagination>
     );

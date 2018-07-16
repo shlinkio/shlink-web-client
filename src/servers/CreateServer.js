@@ -1,6 +1,8 @@
+import { assoc } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createServer } from './reducers/server';
+import { v4 as uuid } from 'uuid';
 
 import './CreateServer.scss';
 
@@ -14,7 +16,9 @@ export class CreateServer extends React.Component {
   render() {
     const submit = e => {
       e.preventDefault();
-      this.props.createServer(this.state);
+      const server = assoc('id', uuid(), this.state);
+      this.props.createServer(server);
+      this.props.history.push(`/server/${server.id}/list-short-urls/1`)
     };
     const renderInputGroup = (id, placeholder, type = 'text') =>
       <div className="form-group row">
@@ -48,4 +52,4 @@ export class CreateServer extends React.Component {
   }
 }
 
-export default connect(null, { createServer })(CreateServer);
+export default connect(state => ({ selectedServer: state.selectedServer }), { createServer })(CreateServer);
