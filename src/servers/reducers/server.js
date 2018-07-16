@@ -8,7 +8,8 @@ export default function reducer(state = {}, action) {
     case FETCH_SERVERS:
       return action.servers;
     case CREATE_SERVER:
-      return [ ...state, action.server ];
+      const server = action.server;
+      return { ...state, [server.id]: server };
     default:
       return state;
   }
@@ -19,4 +20,9 @@ export const listServers = () => {
     type: FETCH_SERVERS,
     servers: ServersService.listServers(),
   };
+};
+
+export const createServer = server => {
+  ServersService.createServer(server);
+  return listServers();
 };
