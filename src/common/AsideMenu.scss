@@ -13,3 +13,39 @@
   background-color: #f7f7f7;
   border-right: 1px solid #eee;
 }
+
+.aside-menu__nav {
+  margin-top: 10px;
+}
+
+.aside-menu__item {
+  padding: 10px 20px;
+  margin: 0 -15px;
+  text-decoration: none !important;
+  cursor: pointer;
+}
+.aside-menu__item:hover {
+  background-color: $lightHoverColor;
+}
+
+.aside-menu__item--selected {
+  color: #fff;
+  background-color: $mainColor;
+}
+.aside-menu__item--selected:hover {
+  color: #fff;
+  background-color: $mainColor;
+}
+
+.aside-menu__item--divider {
+  border-bottom: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.aside-menu__item--danger {
+  color: $dangerColor;
+}
+.aside-menu__item--danger:hover {
+  color: #fff;
+  background-color: $dangerColor;
+}

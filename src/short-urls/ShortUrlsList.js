@@ -15,10 +15,10 @@ import './ShortUrlsList.scss';
 
 export class ShortUrlsList extends React.Component {
   componentDidMount() {
-    const { match } = this.props;
-    this.props.listShortUrls(match.params.serverId, {
+    const { match: { params } } = this.props;
+    this.props.listShortUrls(params.serverId, {
       ...this.props.shortUrlsListParams,
-      page: match.params.page
+      page: params.page
     });
   }
 
