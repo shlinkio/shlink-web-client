@@ -71,6 +71,7 @@ class Row extends React.Component {
 
   render() {
     const { shortUrl, selectedServer } = this.props;
+    const selectedServerUrl = selectedServer ? selectedServer.url : '';
 
     return (
       <tr
@@ -81,8 +82,8 @@ class Row extends React.Component {
           <Moment format="YYYY-MM-DD HH:mm" interval={0}>{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-list__cell">
-          <a href={`${selectedServer.url}/${shortUrl.shortCode}`} target="_blank">
-            {`${selectedServer.url}/${shortUrl.shortCode}`}
+          <a href={`${selectedServerUrl}/${shortUrl.shortCode}`} target="_blank">
+            {`${selectedServerUrl}/${shortUrl.shortCode}`}
           </a>
         </td>
         <td className="short-urls-list__cell">

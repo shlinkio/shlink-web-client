@@ -2,6 +2,7 @@ import { assoc } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createServer } from './reducers/server';
+import { resetSelectedServer } from './reducers/selectedServer';
 import { v4 as uuid } from 'uuid';
 
 import './CreateServer.scss';
@@ -12,6 +13,10 @@ export class CreateServer extends React.Component {
     url: '',
     apiKey: '',
   };
+
+  componentDidMount() {
+    this.props.resetSelectedServer();
+  }
 
   render() {
     const submit = e => {
@@ -52,4 +57,7 @@ export class CreateServer extends React.Component {
   }
 }
 
-export default connect(state => ({ selectedServer: state.selectedServer }), { createServer })(CreateServer);
+export default connect(state => ({ selectedServer: state.selectedServer }), {
+  createServer,
+  resetSelectedServer
+})(CreateServer);

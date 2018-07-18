@@ -8,7 +8,7 @@ import { listServers } from './reducers/server';
 
 export class ServersDropdown extends React.Component {
   renderServers = () => {
-    const { servers } = this.props;
+    const { servers, currentServer } = this.props;
 
     if (isEmpty(servers)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>
@@ -16,7 +16,11 @@ export class ServersDropdown extends React.Component {
 
     return Object.values(servers).map(({ name, id }) => (
       <span key={id}>
-        <DropdownItem tag={Link} to={`/server/${id}/list-short-urls/1`}>
+        <DropdownItem
+          tag={Link}
+          to={`/server/${id}/list-short-urls/1`}
+          active={currentServer && currentServer.id === id}
+        >
           {name}
         </DropdownItem>
       </span>
@@ -38,7 +42,8 @@ export class ServersDropdown extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  servers: state.servers
+  servers: state.servers,
+  currentServer: state.selectedServer,
 });
 
 export default connect(mapStateToProps, { listServers })(ServersDropdown);

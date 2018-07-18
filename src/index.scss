@@ -1,7 +1,13 @@
+@import "./utils/base";
+
 * {
   outline: none !important;
 }
 
 .nowrap {
   white-space: nowrap;
+}
+
+.dropdown-item.active {
+  background-color: $mainColor !important;
 }
