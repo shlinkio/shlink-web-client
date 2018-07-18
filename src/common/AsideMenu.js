@@ -4,6 +4,11 @@ import './AsideMenu.scss';
 
 export default function AsideMenu({ selectedServer }) {
   const serverId = selectedServer ? selectedServer.id : '';
+  const isListShortUrlsActive = (match, { pathname }) => {
+    // FIXME. Should use the 'match' params, but they are not being properly resolved. Investigate
+    const serverIdFromPathname = pathname.split('/')[2];
+    return serverIdFromPathname === serverId && pathname.indexOf('list-short-urls') !== -1;
+  };
 
   return (
     <aside className="aside-menu col-md-2 col-sm-2">
@@ -12,7 +17,7 @@ export default function AsideMenu({ selectedServer }) {
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
           to={`/server/${serverId}/list-short-urls/1`}
-          isActive={match => match && match.params.serverId === serverId}
+          isActive={isListShortUrlsActive}
         >
           List short URLs
         </NavLink>
