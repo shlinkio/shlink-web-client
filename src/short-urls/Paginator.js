@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { connect } from 'react-redux';
-import { updateShortUrlsList } from './reducers/shortUrlsList';
 
 export class Paginator extends React.Component {
   render() {
@@ -21,7 +20,6 @@ export class Paginator extends React.Component {
             <PaginationLink
               tag={Link}
               to={`/server/${serverId}/list-short-urls/${i}`}
-              onClick={() => this.updatePage(i)}
             >
               {i}
             </PaginationLink>
@@ -39,7 +37,6 @@ export class Paginator extends React.Component {
             previous
             tag={Link}
             to={`/server/${serverId}/list-short-urls/${currentPage - 1}`}
-            onClick={() => this.updatePage(currentPage - 1)}
           />
         </PaginationItem>
         {renderPages()}
@@ -48,18 +45,11 @@ export class Paginator extends React.Component {
             next
             tag={Link}
             to={`/server/${serverId}/list-short-urls/${currentPage + 1}`}
-            onClick={() => this.updatePage(currentPage + 1)}
           />
         </PaginationItem>
       </Pagination>
     );
   }
-
-  updatePage(page) {
-    this.props.updateShortUrlsList({ ...this.props.shortUrlsListParams, page })
-  }
 }
 
-export default connect(state => ({
-  shortUrlsListParams: state.shortUrlsListParams,
-}), { updateShortUrlsList })(Paginator);
+export default connect()(Paginator);
