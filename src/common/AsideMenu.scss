@@ -1,4 +1,5 @@
 @import "../utils/base";
+@import "../utils/mixins/border-radius";
 
 .aside-menu {
   position: fixed !important;
@@ -44,6 +45,8 @@
 
 .aside-menu__item--danger {
   color: $dangerColor;
+  margin: 0;
+  @include border-radius(4px);
 }
 .aside-menu__item--danger:hover {
   color: #fff;
