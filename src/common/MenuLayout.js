@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import CreateShortUrl from '../short-urls/CreateShortUrl';
 import ShortUrls from '../short-urls/ShortUrls';
 import AsideMenu from './AsideMenu';
 
@@ -14,6 +15,11 @@ export function MenuLayout(props) {
             exact
             path="/server/:serverId/list-short-urls/:page"
             component={ShortUrls}
+          />
+          <Route
+            exact
+            path="/server/:serverId/create-short-url"
+            component={CreateShortUrl}
           />
         </Switch>
       </div>

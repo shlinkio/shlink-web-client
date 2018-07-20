@@ -32,7 +32,7 @@ export default function AsideMenu({ selectedServer, history }) {
           to={`/server/${serverId}/create-short-url`}
         >
           <FontAwesomeIcon icon={createIcon} />
-          <span className="aside-menu__item-text">Create short code</span>
+          <span className="aside-menu__item-text">Create short URL</span>
         </NavLink>
 
         <DeleteServerButton
