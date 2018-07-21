@@ -1,22 +1,23 @@
-import React from 'react';
+import calendarIcon from '@fortawesome/fontawesome-free-solid/faCalendarAlt';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import DatePicker from 'react-datepicker';
-import { Collapse } from 'reactstrap';
-import ReactTags from 'react-tag-autocomplete';
 import { assoc, replace } from 'ramda';
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import ReactTags from 'react-tag-autocomplete';
+import { Collapse } from 'reactstrap';
+import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 import './CreateShortUrl.scss';
-import '../../node_modules/react-datepicker/dist/react-datepicker.css'
 
 export default class CreateShortUrl extends React.Component {
   state = {
     longUrl: '',
     tags: [],
-    customSlug: null,
-    validSince: null,
-    validUntil: null,
-    maxVisits: null,
+    customSlug: undefined,
+    validSince: undefined,
+    validUntil: undefined,
+    maxVisits: undefined,
     moreOptionsVisible: false
   };
 
@@ -38,11 +39,15 @@ export default class CreateShortUrl extends React.Component {
         onChange={e => this.setState({ [id]: e.target.value })}
         {...props}
       />;
-      const createDateInput = (id, placeholder) =>
+      const createDateInput = (id, placeholder, props = {}) =>
         <DatePicker
           selected={this.state[id]}
-          className="form-control"
+          className="form-control create-short-url__date-input"
           placeholderText={placeholder}
+          onChange={date => this.setState({ [id]: date })}
+          dateFormat="YYYY-MM-DD"
+          readOnly
+          {...props}
         />;
 
     return (
@@ -63,7 +68,6 @@ export default class CreateShortUrl extends React.Component {
             <div className="form-group">
               <ReactTags
                 tags={this.state.tags}
-                classNames={{}}
                 handleAddition={addTag}
                 handleDelete={removeTag}
                 allowNew={true}
@@ -81,11 +85,13 @@ export default class CreateShortUrl extends React.Component {
                 </div>
               </div>
               <div className="col-sm-6">
-                <div className="form-group">
-                  {createDateInput('validSince', 'Enabled since...')}
+                <div className="form-group create-short-url__date-container">
+                  {createDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+                  <FontAwesomeIcon icon={calendarIcon} className="create-short-url__date-icon" />
                 </div>
-                <div className="form-group">
-                  {createDateInput('validUntil', 'Enabled until...')}
+                <div className="form-group create-short-url__date-container">
+                  {createDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
+                  <FontAwesomeIcon icon={calendarIcon} className="create-short-url__date-icon" />
                 </div>
               </div>
             </div>
