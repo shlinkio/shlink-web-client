@@ -1,3 +1,5 @@
+@import "../utils/mixins/vertical-align";
+
 .short-urls-list__cell {
   vertical-align: middle !important;
 }
@@ -7,4 +9,13 @@
 }
 .short-urls-list__dropdown-toggle--hidden {
   visibility: hidden;
+}
+
+.short-urls-list__cell--relative {
+  position: relative;
+}
+
+.short-urls-list__copy-hint {
+  @include vertical-align();
+  right: 10px;
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
@@ -44,7 +45,6 @@ export class ShortUrlsList extends React.Component {
 
   renderShortUrls() {
     const { shortUrlsList, selectedServer, loading } = this.props;
-    console.log('Is loading?: ', loading);
     if (loading) {
       return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
     }
@@ -68,11 +68,11 @@ export class ShortUrlsList extends React.Component {
 }
 
 class Row extends React.Component {
-  state = { displayMenu: false };
+  state = { displayMenu: false, copiedToClipboard: false };
 
   render() {
     const { shortUrl, selectedServer } = this.props;
-    const selectedServerUrl = selectedServer ? selectedServer.url : '';
+    const completeShortUrl = !selectedServer ? shortUrl.shortCode : `${selectedServer.url}/${shortUrl.shortCode}`;
 
     return (
       <tr
@@ -83,17 +83,28 @@ class Row extends React.Component {
           <Moment format="YYYY-MM-DD HH:mm" interval={0}>{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-list__cell">
-          <a href={`${selectedServerUrl}/${shortUrl.shortCode}`} target="_blank">
-            {`${selectedServerUrl}/${shortUrl.shortCode}`}
-          </a>
+          <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
         </td>
-        <td className="short-urls-list__cell">
+        <td className="short-urls-list__cell short-urls-list__cell--relative">
           <a href={shortUrl.originalUrl} target="_blank">{shortUrl.originalUrl}</a>
+          <small
+            className="badge badge-warning short-urls-list__copy-hint"
+            hidden={!this.state.copiedToClipboard}
+          >
+            Copied short URL!
+          </small>
         </td>
         <td className="short-urls-list__cell">{ShortUrlsList.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-list__cell text-right">{shortUrl.visitsCount}</td>
         <td className="short-urls-list__cell">
-          <RowMenu display={this.state.displayMenu} />
+          <RowMenu
+            display={this.state.displayMenu}
+            shortUrl={completeShortUrl}
+            onCopyToClipboard={() => {
+              this.setState({ copiedToClipboard: true });
+              setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
+            }}
+          />
         </td>
       </tr>
     )
@@ -128,8 +139,13 @@ class RowMenu extends React.Component {
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem>
-            <FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard
+            <CopyToClipboard text={this.props.shortUrl} onCopy={this.props.onCopyToClipboard}>
+              <span><FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard</span>
+            </CopyToClipboard>
           </DropdownItem>
+          {/*<DropdownItem tag={CopyToClipboard} text={this.props.shortUrl} onCopy={this.props.onCopyToClipboard}>*/}
+            {/*<span><FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard</span>*/}
+          {/*</DropdownItem>*/}
         </DropdownMenu>
       </ButtonDropdown>
     );
