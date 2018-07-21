@@ -17,3 +17,8 @@
   outline: 0;
   @include box-shadow(0 0 0 0.2rem rgba(0,123,255,.25));
 }
+
+.react-datepicker__input-container,
+.react-datepicker-wrapper {
+  display: block !important;
+}

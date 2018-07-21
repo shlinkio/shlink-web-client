@@ -1,11 +1,13 @@
 import React from 'react';
-import './CreateShortUrl.scss';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import DatePicker from 'react-datepicker';
 import { Collapse } from 'reactstrap';
 import ReactTags from 'react-tag-autocomplete';
 import { assoc, replace } from 'ramda';
+import './CreateShortUrl.scss';
+import '../../node_modules/react-datepicker/dist/react-datepicker.css'
 
 export default class CreateShortUrl extends React.Component {
   state = {
@@ -36,6 +38,12 @@ export default class CreateShortUrl extends React.Component {
         onChange={e => this.setState({ [id]: e.target.value })}
         {...props}
       />;
+      const createDateInput = (id, placeholder) =>
+        <DatePicker
+          selected={this.state[id]}
+          className="form-control"
+          placeholderText={placeholder}
+        />;
 
     return (
       <div className="short-urls-container">
@@ -74,10 +82,10 @@ export default class CreateShortUrl extends React.Component {
               </div>
               <div className="col-sm-6">
                 <div className="form-group">
-                  {renderOptionalInput('validSince', 'Enabled since...', 'date')}
+                  {createDateInput('validSince', 'Enabled since...')}
                 </div>
                 <div className="form-group">
-                  {renderOptionalInput('validUntil', 'Enabled until...', 'date')}
+                  {createDateInput('validUntil', 'Enabled until...')}
                 </div>
               </div>
             </div>
