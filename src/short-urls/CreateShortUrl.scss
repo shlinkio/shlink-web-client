@@ -1,0 +1,19 @@
+@import "../../node_modules/react-tag-autocomplete/example/styles.css";
+@import "../utils/mixins/box-shadow";
+@import "../utils/mixins/border-radius";
+
+.create-short-url__btn:not(:first-child) {
+  margin-left: 5px;
+}
+
+.react-tags {
+  @include border-radius(.25rem);
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
+}
+.react-tags.is-focused {
+  color: #495057;
+  background-color: #fff;
+  border-color: #80bdff;
+  outline: 0;
+  @include box-shadow(0 0 0 0.2rem rgba(0,123,255,.25));
+}

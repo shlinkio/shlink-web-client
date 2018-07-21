@@ -44,6 +44,7 @@ export class ShortUrlsList extends React.Component {
 
   renderShortUrls() {
     const { shortUrlsList, selectedServer, loading } = this.props;
+    console.log('Is loading?: ', loading);
     if (loading) {
       return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
     }
