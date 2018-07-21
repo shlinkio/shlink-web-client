@@ -116,14 +116,13 @@ class RowMenu extends React.Component {
   toggle = () => this.setState({ isOpen: ! this.state.isOpen });
 
   render () {
-    const determineClass = () => {
-      const baseClass = 'short-urls-list__dropdown-toggle';
-      return ! this.props.display ? `${baseClass} short-urls-list__dropdown-toggle--hidden` : baseClass;
-    };
+    const { display, shortUrl, onCopyToClipboard } = this.props;
+    const baseClass = 'short-urls-list__dropdown-toggle';
+    const toggleClass = ! display ? `${baseClass} short-urls-list__dropdown-toggle--hidden` : baseClass;
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
-        <DropdownToggle color="white" size="sm" caret className={determineClass()}>
+        <DropdownToggle color="white" size="sm" caret className={toggleClass}>
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
         <DropdownMenu>
@@ -138,14 +137,11 @@ class RowMenu extends React.Component {
             <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem>
-            <CopyToClipboard text={this.props.shortUrl} onCopy={this.props.onCopyToClipboard}>
-              <span><FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard</span>
-            </CopyToClipboard>
-          </DropdownItem>
-          {/*<DropdownItem tag={CopyToClipboard} text={this.props.shortUrl} onCopy={this.props.onCopyToClipboard}>*/}
-            {/*<span><FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard</span>*/}
-          {/*</DropdownItem>*/}
+          <CopyToClipboard text={shortUrl} onCopy={onCopyToClipboard}>
+            <DropdownItem>
+              <FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard
+            </DropdownItem>
+          </CopyToClipboard>
         </DropdownMenu>
       </ButtonDropdown>
     );
