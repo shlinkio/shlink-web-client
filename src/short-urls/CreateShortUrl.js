@@ -1,4 +1,4 @@
-import calendarIcon from '@fortawesome/fontawesome-free-solid/faCalendarAlt';
+import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
