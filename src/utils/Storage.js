@@ -14,4 +14,5 @@ export class Storage {
   set = (key, value) => this.localStorage.setItem(buildPath(key), JSON.stringify(value));
 }
 
-export default new Storage(localStorage);
+const storage = typeof localStorage !== 'undefined' ? localStorage : {};
+export default new Storage(storage);
