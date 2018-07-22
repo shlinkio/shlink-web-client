@@ -4,6 +4,14 @@
   vertical-align: middle !important;
 }
 
+.short-urls-list__header--with-action {
+  cursor: pointer;
+}
+
+.short-urls-list__header-icon {
+  margin-right: 5px;
+}
+
 .short-urls-list__dropdown-toggle:before {
   display: none !important;
 }

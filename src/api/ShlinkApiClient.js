@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { isEmpty } from 'ramda';
+import qs from 'qs';
 
 export class ShlinkApiClient {
   constructor(axios) {
@@ -21,16 +22,16 @@ export class ShlinkApiClient {
 
   /**
    * Returns the list of short URLs
-   * @param params
+   * @param options
    * @returns {Promise<Array>}
    */
-  listShortUrls = (params = {}) => {
-    return this._performRequest('/rest/short-codes', 'GET', params)
+  listShortUrls = (options = {}) => {
+    return this._performRequest('/rest/short-codes', 'GET', options)
       .then(resp => resp.data.shortUrls)
-      .catch(e => this._handleAuthError(e, this.listShortUrls, [params]));
+      .catch(e => this._handleAuthError(e, this.listShortUrls, [options]));
   };
 
-  _performRequest = async (url, method = 'GET', params = {}) => {
+  _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
     if (isEmpty(this._token)) {
       this._token = await this._authenticate();
     }
@@ -39,7 +40,9 @@ export class ShlinkApiClient {
       method,
       url: `${this._baseUrl}${url}`,
       headers: { 'Authorization': `Bearer ${this._token}` },
-      params
+      params,
+      data,
+      paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets' })
     }).then(resp => {
       // Save new token
       const { authorization = '' } = resp.headers;
