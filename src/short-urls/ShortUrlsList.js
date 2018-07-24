@@ -102,7 +102,11 @@ export class ShortUrlsList extends React.Component {
   }
 
   renderShortUrls() {
-    const { shortUrlsList, selectedServer, loading } = this.props;
+    const { shortUrlsList, selectedServer, loading, error } = this.props;
+    if (error) {
+      return <tr><td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td></tr>;
+    }
+
     if (loading) {
       return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
     }

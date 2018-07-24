@@ -1,9 +1,10 @@
-import ServersService from '../../servers/services';
 import ShlinkApiClient from '../../api/ShlinkApiClient';
+import ServersService from '../../servers/services';
 
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
+export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
-export const UPDATE_SHORT_URLS_LIST = 'shlink/shortUrlsList/UPDATE_SHORT_URLS_LIST';
+export const UPDATE_SHORT_URLS_LIST = LIST_SHORT_URLS;
 
 const initialState = {
   shortUrls: [],
@@ -13,12 +14,18 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case LIST_SHORT_URLS_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: false };
     case LIST_SHORT_URLS:
-    case UPDATE_SHORT_URLS_LIST:
       return {
         loading: false,
+        error: false,
         shortUrls: action.shortUrls
+      };
+    case LIST_SHORT_URLS_ERROR:
+      return {
+        loading: false,
+        error: true,
+        shortUrls: []
       };
     default:
       return state;
@@ -26,21 +33,23 @@ export default function reducer(state = initialState, action) {
 }
 
 export const listShortUrls = (serverId, params = {}) => {
-  return async dispatch => {
-    dispatch({ type: LIST_SHORT_URLS_START });
-    const selectedServer = ServersService.findServerById(serverId);
+  // FIXME   There should be a way to not need this, however, the active server is set when any route is loaded, in an
+  // FIXME   outer component's componentDidMount, which makes it be invoked after this action
+  const selectedServer = ServersService.findServerById(serverId);
+  ShlinkApiClient.setConfig(selectedServer);
 
-    ShlinkApiClient.setConfig(selectedServer);
-    const shortUrls = await ShlinkApiClient.listShortUrls(params);
-    dispatch({ type: LIST_SHORT_URLS, shortUrls, selectedServer, params });
-  };
+  return updateShortUrlsList(params);
 };
 
 export const updateShortUrlsList = (params = {}) => {
   return async dispatch => {
     dispatch({ type: LIST_SHORT_URLS_START });
 
-    const shortUrls = await ShlinkApiClient.listShortUrls(params);
-    dispatch({ type: UPDATE_SHORT_URLS_LIST, shortUrls, params });
+    try {
+      const shortUrls = await ShlinkApiClient.listShortUrls(params);
+      dispatch({ type: LIST_SHORT_URLS, shortUrls, params });
+    } catch (e) {
+      dispatch({ type: LIST_SHORT_URLS_ERROR, params });
+    }
   };
 };

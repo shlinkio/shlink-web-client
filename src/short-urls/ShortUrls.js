@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Paginator from './Paginator';
 import SearchBar from './SearchBar';
 import ShortUrlsList from './ShortUrlsList';
+import { assoc } from 'ramda';
 
 export function ShortUrls(props) {
   const { match: { params } } = props;
@@ -18,7 +19,4 @@ export function ShortUrls(props) {
   );
 }
 
-export default connect(state => ({
-  shortUrlsList: state.shortUrlsList.shortUrls,
-  loading: state.shortUrlsList.loading,
-}))(ShortUrls);
+export default connect(state => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList))(ShortUrls);

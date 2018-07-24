@@ -16,7 +16,7 @@ export default class App extends React.Component {
           <Switch>
             <Route exact path="/server/create" component={CreateServer} />
             <Route exact path="/" component={Home} />
-            <Route component={MenuLayout} />
+            <Route path="/server/:serverId" component={MenuLayout} />
           </Switch>
         </div>
       </div>
