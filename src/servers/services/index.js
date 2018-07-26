@@ -9,7 +9,7 @@ export class ServersService {
   }
 
   listServers = () => {
-    return this.storage.get(SERVERS_STORAGE_KEY);
+    return this.storage.get(SERVERS_STORAGE_KEY) || [];
   };
 
   findServerById = serverId => {
