@@ -1,0 +1,13 @@
+@import "../../utils/mixins/horizontal-align";
+
+.preview-modal__img {
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.preview-modal__loader {
+  @include horizontal-align();
+  z-index: 1;
+  top: 1rem;
+}
