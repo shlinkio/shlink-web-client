@@ -13,6 +13,7 @@ import copyIcon from '@fortawesome/fontawesome-free-regular/faCopy';
 import menuIcon from '@fortawesome/fontawesome-free-solid/faEllipsisV';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import Tag from '../utils/Tag';
+import QrCodeModal from './helpers/QrCodeModal';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
 
@@ -174,13 +175,14 @@ class Row extends React.Component {
 }
 
 class RowMenu extends React.Component {
-  state = { isOpen: false };
+  state = { isOpen: false, isQrModalOpen: false };
   toggle = () => this.setState({ isOpen: ! this.state.isOpen });
 
   render () {
     const { display, shortUrl, onCopyToClipboard } = this.props;
     const baseClass = 'short-urls-list__dropdown-toggle';
     const toggleClass = ! display ? `${baseClass} short-urls-list__dropdown-toggle--hidden` : baseClass;
+    const toggleQrCode = () => this.setState({ isQrModalOpen: !this.state.isQrModalOpen });
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
@@ -195,9 +197,14 @@ class RowMenu extends React.Component {
           <DropdownItem>
             <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem onClick={toggleQrCode}>
             <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
           </DropdownItem>
+          <QrCodeModal
+            url={shortUrl}
+            isOpen={this.state.isQrModalOpen}
+            toggle={toggleQrCode}
+          />
           <DropdownItem divider />
           <CopyToClipboard text={shortUrl} onCopy={onCopyToClipboard}>
             <DropdownItem>

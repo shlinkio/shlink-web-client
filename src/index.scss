@@ -8,6 +8,9 @@
   white-space: nowrap;
 }
 
+.dropdown-item {
+  cursor: pointer;
+}
 .dropdown-item.active {
   background-color: $mainColor !important;
 }
