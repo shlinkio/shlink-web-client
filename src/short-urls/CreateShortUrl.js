@@ -39,16 +39,16 @@ export default class CreateShortUrl extends React.Component {
         onChange={e => this.setState({ [id]: e.target.value })}
         {...props}
       />;
-      const createDateInput = (id, placeholder, props = {}) =>
-        <DatePicker
-          selected={this.state[id]}
-          className="form-control create-short-url__date-input"
-          placeholderText={placeholder}
-          onChange={date => this.setState({ [id]: date })}
-          dateFormat="YYYY-MM-DD"
-          readOnly
-          {...props}
-        />;
+    const createDateInput = (id, placeholder, props = {}) =>
+      <DatePicker
+        selected={this.state[id]}
+        className="form-control create-short-url__date-input"
+        placeholderText={placeholder}
+        onChange={date => this.setState({ [id]: date })}
+        dateFormat="YYYY-MM-DD"
+        readOnly
+        {...props}
+      />;
 
     return (
       <div className="short-urls-container">
