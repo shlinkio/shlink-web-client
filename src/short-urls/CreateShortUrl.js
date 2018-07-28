@@ -2,16 +2,16 @@ import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { assoc, replace, pick } from 'ramda';
+import { assoc, dissoc, isNil, pick, pipe, pluck, replace } from 'ramda';
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import { connect } from 'react-redux';
 import ReactTags from 'react-tag-autocomplete';
 import { Collapse } from 'reactstrap';
 import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 import './CreateShortUrl.scss';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrl } from './reducers/shortUrlCreationResult';
-import { connect } from 'react-redux';
 
 export class CreateShortUrl extends React.Component {
   state = {
@@ -52,8 +52,15 @@ export class CreateShortUrl extends React.Component {
         readOnly
         {...props}
       />;
+    const formatDate = date => isNil(date) ? date : date.format();
     const save = e => {
       e.preventDefault();
+      this.props.createShortUrl(pipe(
+        dissoc('moreOptionsVisible'), // Remove moreOptionsVisible property
+        assoc('tags', pluck('name', this.state.tags)), // Map tags array to use only their names
+        assoc('validSince', formatDate(this.state.validSince)),
+        assoc('validUntil', formatDate(this.state.validUntil))
+      )(this.state));
     };
 
     return (
@@ -116,7 +123,7 @@ export class CreateShortUrl extends React.Component {
             <button className="btn btn-outline-primary create-short-url__btn float-right">Create</button>
           </div>
 
-          <CreateShortUrlResult creationResult={this.props.shortUrlCreationResult} />
+          <CreateShortUrlResult {...this.props.shortUrlCreationResult} />
         </form>
       </div>
     );
