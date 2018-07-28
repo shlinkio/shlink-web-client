@@ -1,10 +1,10 @@
 import React from 'react';
 import Moment from 'react-moment';
 import { ShortUrlsList } from '../ShortUrlsList';
-import { RowMenu } from './ShortUrlsRowMenu';
+import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss'
 
-export class Row extends React.Component {
+export class ShortUrlsRow extends React.Component {
   state = {displayMenu: false, copiedToClipboard: false};
 
   render() {
@@ -17,7 +17,7 @@ export class Row extends React.Component {
         onMouseLeave={() => this.setState({displayMenu: false})}
       >
         <td className="nowrap short-urls-row__cell">
-          <Moment format="YYYY-MM-DD HH:mm" interval={0}>{shortUrl.dateCreated}</Moment>
+          <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-row__cell">
           <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
@@ -34,7 +34,7 @@ export class Row extends React.Component {
         <td className="short-urls-row__cell">{ShortUrlsList.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-row__cell text-right">{shortUrl.visitsCount}</td>
         <td className="short-urls-row__cell">
-          <RowMenu
+          <ShortUrlsRowMenu
             display={this.state.displayMenu}
             shortUrl={completeShortUrl}
             onCopyToClipboard={() => {

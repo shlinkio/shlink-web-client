@@ -5,7 +5,7 @@ import { isEmpty } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import Tag from '../utils/Tag';
-import { Row } from './helpers/ShortUrlsRow';
+import { ShortUrlsRow } from './helpers/ShortUrlsRow';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
 
@@ -109,7 +109,7 @@ export class ShortUrlsList extends React.Component {
     }
 
     return shortUrlsList.map(shortUrl => (
-      <Row shortUrl={shortUrl} selectedServer={selectedServer} key={shortUrl.shortCode} />
+      <ShortUrlsRow shortUrl={shortUrl} selectedServer={selectedServer} key={shortUrl.shortCode} />
     ));
   }
 

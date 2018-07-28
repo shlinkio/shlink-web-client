@@ -11,7 +11,7 @@ import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
 import './ShortUrlsRowMenu.scss';
 
-export class RowMenu extends React.Component {
+export class ShortUrlsRowMenu extends React.Component {
   state = { isOpen: false, isQrModalOpen: false, isPreviewOpen: false };
   toggle = () => this.setState({ isOpen: !this.state.isOpen });
 
