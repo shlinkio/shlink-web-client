@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { updateShortUrlsList } from './reducers/shortUrlsList';
 import './SearchBar.scss';
+import { pick } from 'ramda';
 
 export class SearchBar extends React.Component {
   state = {
@@ -52,6 +53,4 @@ export class SearchBar extends React.Component {
   }
 }
 
-export default connect(state => (
-  { shortUrlsListParams: state.shortUrlsListParams }
-), { updateShortUrlsList })(SearchBar);
+export default connect(pick(['shortUrlsListParams']), { updateShortUrlsList })(SearchBar);

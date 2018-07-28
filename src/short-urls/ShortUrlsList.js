@@ -8,6 +8,7 @@ import Tag from '../utils/Tag';
 import { ShortUrlsRow } from './helpers/ShortUrlsRow';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
+import { pick } from 'ramda';
 
 export class ShortUrlsList extends React.Component {
   refreshList = extraParams => {
@@ -122,7 +123,4 @@ export class ShortUrlsList extends React.Component {
   }
 }
 
-export default connect(state => ({
-  selectedServer: state.selectedServer,
-  shortUrlsListParams: state.shortUrlsListParams,
-}), { listShortUrls })(ShortUrlsList);
+export default connect(pick(['selectedServer', 'shortUrlsListParams']), { listShortUrls })(ShortUrlsList);

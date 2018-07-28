@@ -2,15 +2,18 @@ import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { assoc, replace } from 'ramda';
+import { assoc, replace, pick } from 'ramda';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import ReactTags from 'react-tag-autocomplete';
 import { Collapse } from 'reactstrap';
 import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 import './CreateShortUrl.scss';
+import CreateShortUrlResult from './helpers/CreateShortUrlResult';
+import { createShortUrl } from './reducers/shortUrlCreationResult';
+import { connect } from 'react-redux';
 
-export default class CreateShortUrl extends React.Component {
+export class CreateShortUrl extends React.Component {
   state = {
     longUrl: '',
     tags: [],
@@ -49,10 +52,13 @@ export default class CreateShortUrl extends React.Component {
         readOnly
         {...props}
       />;
+    const save = e => {
+      e.preventDefault();
+    };
 
     return (
       <div className="short-urls-container">
-        <form onSubmit={e => e.preventDefault()}>
+        <form onSubmit={save}>
           <div className="form-group">
             <input
               className="form-control form-control-lg"
@@ -109,8 +115,12 @@ export default class CreateShortUrl extends React.Component {
             </button>
             <button className="btn btn-outline-primary create-short-url__btn float-right">Create</button>
           </div>
+
+          <CreateShortUrlResult creationResult={this.props.shortUrlCreationResult} />
         </form>
       </div>
     );
   }
 }
+
+export default connect(pick(['shortUrlCreationResult']), { createShortUrl })(CreateShortUrl);

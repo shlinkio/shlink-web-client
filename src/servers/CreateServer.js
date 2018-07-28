@@ -1,4 +1,4 @@
-import { assoc } from 'ramda';
+import { assoc, pick } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createServer } from './reducers/server';
@@ -57,7 +57,4 @@ export class CreateServer extends React.Component {
   }
 }
 
-export default connect(state => ({ selectedServer: state.selectedServer }), {
-  createServer,
-  resetSelectedServer
-})(CreateServer);
+export default connect(pick(['selectedServer']), {createServer, resetSelectedServer })(CreateServer);

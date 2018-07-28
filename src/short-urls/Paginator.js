@@ -1,9 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { connect } from 'react-redux';
 
-export class Paginator extends React.Component {
+export default class Paginator extends React.Component {
   render() {
     const { paginator = {}, serverId } = this.props;
     const { currentPage, pagesCount = 0 } = paginator;
@@ -51,5 +50,3 @@ export class Paginator extends React.Component {
     );
   }
 }
-
-export default connect()(Paginator);

@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ColorGenerator from '../utils/ColorGenerator';
 import './Tag.scss';
 
-export class Tag extends React.Component {
+export default class Tag extends React.Component {
   constructor(props) {
     super(props);
     this.colorGenerator = props.ColorGenerator;
@@ -18,4 +17,6 @@ export class Tag extends React.Component {
   }
 }
 
-export default connect(state => ({ ColorGenerator }))(Tag);
+Tag.defaultProps = {
+  ColorGenerator
+};

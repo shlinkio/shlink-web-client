@@ -41,15 +41,13 @@ export const listShortUrls = (serverId, params = {}) => {
   return updateShortUrlsList(params);
 };
 
-export const updateShortUrlsList = (params = {}) => {
-  return async dispatch => {
-    dispatch({ type: LIST_SHORT_URLS_START });
+export const updateShortUrlsList = (params = {}) => async dispatch => {
+  dispatch({ type: LIST_SHORT_URLS_START });
 
-    try {
-      const shortUrls = await ShlinkApiClient.listShortUrls(params);
-      dispatch({ type: LIST_SHORT_URLS, shortUrls, params });
-    } catch (e) {
-      dispatch({ type: LIST_SHORT_URLS_ERROR, params });
-    }
-  };
+  try {
+    const shortUrls = await ShlinkApiClient.listShortUrls(params);
+    dispatch({ type: LIST_SHORT_URLS, shortUrls, params });
+  } catch (e) {
+    dispatch({ type: LIST_SHORT_URLS_ERROR, params });
+  }
 };

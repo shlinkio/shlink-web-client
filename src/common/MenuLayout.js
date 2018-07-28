@@ -5,6 +5,7 @@ import { selectServer } from '../servers/reducers/selectedServer';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
 import ShortUrls from '../short-urls/ShortUrls';
 import AsideMenu from './AsideMenu';
+import { pick } from 'ramda';
 
 export class MenuLayout extends React.Component {
   componentDidMount() {
@@ -35,7 +36,4 @@ export class MenuLayout extends React.Component {
   }
 }
 
-export default connect(state => ({
-  selectedServer: state.selectedServer,
-  shortUrlsListParams: state.shortUrlsListParams,
-}), { selectServer })(MenuLayout);
+export default connect(pick(['selectedServer', 'shortUrlsListParams']), { selectServer })(MenuLayout);

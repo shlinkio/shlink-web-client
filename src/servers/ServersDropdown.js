@@ -1,4 +1,4 @@
-import { isEmpty } from 'ramda';
+import { isEmpty, pick } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { listServers } from './reducers/server';
 
 export class ServersDropdown extends React.Component {
   renderServers = () => {
-    const { servers, currentServer } = this.props;
+    const { servers, selectedServer } = this.props;
 
     if (isEmpty(servers)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>
@@ -19,7 +19,7 @@ export class ServersDropdown extends React.Component {
         <DropdownItem
           tag={Link}
           to={`/server/${id}/list-short-urls/1`}
-          active={currentServer && currentServer.id === id}
+          active={selectedServer && selectedServer.id === id}
         >
           {name}
         </DropdownItem>
@@ -41,9 +41,4 @@ export class ServersDropdown extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  servers: state.servers,
-  currentServer: state.selectedServer,
-});
-
-export default connect(mapStateToProps, { listServers })(ServersDropdown);
+export default connect(pick(['servers', 'selectedServer']), { listServers })(ServersDropdown);

@@ -2,6 +2,8 @@ import axios from 'axios';
 import { isEmpty } from 'ramda';
 import qs from 'qs';
 
+const API_VERSION = '1';
+
 export class ShlinkApiClient {
   constructor(axios) {
     this.axios = axios;
@@ -16,7 +18,7 @@ export class ShlinkApiClient {
    * @param {String} apiKey
    */
   setConfig = ({ url, apiKey }) => {
-    this._baseUrl = url;
+    this._baseUrl = `${url}/rest/v${API_VERSION}`;
     this._apiKey = apiKey;
   };
 
@@ -26,9 +28,16 @@ export class ShlinkApiClient {
    * @returns {Promise<Array>}
    */
   listShortUrls = (options = {}) => {
-    return this._performRequest('/rest/short-codes', 'GET', options)
+    return this._performRequest('/short-codes', 'GET', options)
       .then(resp => resp.data.shortUrls)
       .catch(e => this._handleAuthError(e, this.listShortUrls, [options]));
+  };
+
+  createShortUrl = options => {
+    console.log(options);
+    // this._performRequest('/short-codes', 'POST', options)
+    //   .then(resp => resp.data)
+    //   .catch(e => this._handleAuthError(e, this.listShortUrls, [options]));
   };
 
   _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
@@ -54,7 +63,7 @@ export class ShlinkApiClient {
   _authenticate = async () => {
     const resp = await this.axios({
       method: 'POST',
-      url: `${this._baseUrl}/rest/authenticate`,
+      url: `${this._baseUrl}/authenticate`,
       data: { apiKey: this._apiKey }
     });
     return resp.data.token;
