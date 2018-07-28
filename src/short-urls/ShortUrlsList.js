@@ -1,20 +1,12 @@
+import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
+import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { isEmpty } from 'ramda';
 import React from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
-import { isEmpty } from 'ramda';
-import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
-import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
-import pieChartIcon from '@fortawesome/fontawesome-free-solid/faChartPie';
-import pictureIcon from '@fortawesome/fontawesome-free-regular/faImage';
-import qrIcon from '@fortawesome/fontawesome-free-solid/faQrcode';
-import copyIcon from '@fortawesome/fontawesome-free-regular/faCopy';
-import menuIcon from '@fortawesome/fontawesome-free-solid/faEllipsisV';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import Tag from '../utils/Tag';
-import PreviewModal from './helpers/PreviewModal';
-import QrCodeModal from './helpers/QrCodeModal';
+import { RowMenu } from './helpers/ShortUrlsRowMenu';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
 
@@ -172,60 +164,6 @@ class Row extends React.Component {
         </td>
       </tr>
     )
-  }
-}
-
-class RowMenu extends React.Component {
-  state = { isOpen: false, isQrModalOpen: false, isPreviewOpen: false };
-  toggle = () => this.setState({ isOpen: ! this.state.isOpen });
-
-  render () {
-    const { display, shortUrl, onCopyToClipboard } = this.props;
-    const baseClass = 'short-urls-list__dropdown-toggle';
-    const toggleClass = ! display ? `${baseClass} short-urls-list__dropdown-toggle--hidden` : baseClass;
-    const toggleQrCode = () => this.setState({ isQrModalOpen: !this.state.isQrModalOpen });
-    const togglePreview = () => this.setState({ isPreviewOpen: !this.state.isPreviewOpen });
-
-    return (
-      <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
-        <DropdownToggle color="white" size="sm" caret className={toggleClass}>
-          &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem>
-            <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit Stats
-          </DropdownItem>
-
-          <DropdownItem divider />
-
-          <DropdownItem onClick={togglePreview}>
-            <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
-          </DropdownItem>
-          <PreviewModal
-            url={shortUrl}
-            isOpen={this.state.isPreviewOpen}
-            toggle={togglePreview}
-          />
-
-          <DropdownItem onClick={toggleQrCode}>
-            <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
-          </DropdownItem>
-          <QrCodeModal
-            url={shortUrl}
-            isOpen={this.state.isQrModalOpen}
-            toggle={toggleQrCode}
-          />
-
-          <DropdownItem divider />
-
-          <CopyToClipboard text={shortUrl} onCopy={onCopyToClipboard}>
-            <DropdownItem>
-              <FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard
-            </DropdownItem>
-          </CopyToClipboard>
-        </DropdownMenu>
-      </ButtonDropdown>
-    );
   }
 }
 
