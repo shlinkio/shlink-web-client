@@ -1,22 +1,7 @@
-@import "../utils/mixins/vertical-align";
-
-.short-urls-list__cell {
-  vertical-align: middle !important;
-}
-
 .short-urls-list__header--with-action {
   cursor: pointer;
 }
 
 .short-urls-list__header-icon {
   margin-right: 5px;
-}
-
-.short-urls-list__cell--relative {
-  position: relative;
-}
-
-.short-urls-list__copy-hint {
-  @include vertical-align();
-  right: 10px;
 }

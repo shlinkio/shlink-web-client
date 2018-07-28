@@ -3,10 +3,9 @@ import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { isEmpty } from 'ramda';
 import React from 'react';
-import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import Tag from '../utils/Tag';
-import { RowMenu } from './helpers/ShortUrlsRowMenu';
+import { Row } from './helpers/ShortUrlsRow';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
 
@@ -120,50 +119,6 @@ export class ShortUrlsList extends React.Component {
     }
 
     return tags.map(tag => <Tag text={tag} />);
-  }
-}
-
-class Row extends React.Component {
-  state = { displayMenu: false, copiedToClipboard: false };
-
-  render() {
-    const { shortUrl, selectedServer } = this.props;
-    const completeShortUrl = !selectedServer ? shortUrl.shortCode : `${selectedServer.url}/${shortUrl.shortCode}`;
-
-    return (
-      <tr
-        onMouseEnter={() => this.setState({ displayMenu: true })}
-        onMouseLeave={() => this.setState({ displayMenu: false })}
-      >
-        <td className="nowrap short-urls-list__cell">
-          <Moment format="YYYY-MM-DD HH:mm" interval={0}>{shortUrl.dateCreated}</Moment>
-        </td>
-        <td className="short-urls-list__cell">
-          <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
-        </td>
-        <td className="short-urls-list__cell short-urls-list__cell--relative">
-          <a href={shortUrl.originalUrl} target="_blank">{shortUrl.originalUrl}</a>
-          <small
-            className="badge badge-warning short-urls-list__copy-hint"
-            hidden={!this.state.copiedToClipboard}
-          >
-            Copied short URL!
-          </small>
-        </td>
-        <td className="short-urls-list__cell">{ShortUrlsList.renderTags(shortUrl.tags)}</td>
-        <td className="short-urls-list__cell text-right">{shortUrl.visitsCount}</td>
-        <td className="short-urls-list__cell">
-          <RowMenu
-            display={this.state.displayMenu}
-            shortUrl={completeShortUrl}
-            onCopyToClipboard={() => {
-              this.setState({ copiedToClipboard: true });
-              setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
-            }}
-          />
-        </td>
-      </tr>
-    )
   }
 }
 
