@@ -1,4 +1,4 @@
-import ServersService from '../services';
+import ServersService from '../services/ServersService';
 
 const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
 const CREATE_SERVER = 'shlink/servers/CREATE_SERVER';

@@ -1,5 +1,5 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
-import ServersService from '../../servers/services';
+import ServersService from '../../servers/services/ServersService';
 
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';

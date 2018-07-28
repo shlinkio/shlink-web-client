@@ -1,5 +1,5 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
-import ServersService from '../../servers/services';
+import ServersService from '../../servers/services/ServersService';
 
 const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';
 const RESET_SELECTED_SERVER = 'shlink/selectedServer/RESET_SELECTED_SERVER';
