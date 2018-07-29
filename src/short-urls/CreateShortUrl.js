@@ -11,7 +11,7 @@ import { Collapse } from 'reactstrap';
 import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 import './CreateShortUrl.scss';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
-import { createShortUrl } from './reducers/shortUrlCreationResult';
+import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
 
 export class CreateShortUrl extends React.Component {
   state = {
@@ -25,6 +25,8 @@ export class CreateShortUrl extends React.Component {
   };
 
   render() {
+    const { createShortUrl, shortUrlCreationResult, resetCreateShortUrl } = this.props;
+
     const addTag = tag => this.setState({
       tags: [].concat(this.state.tags, assoc('name', replace(/ /g, '-', tag.name), tag))
     });
@@ -55,7 +57,7 @@ export class CreateShortUrl extends React.Component {
     const formatDate = date => isNil(date) ? date : date.format();
     const save = e => {
       e.preventDefault();
-      this.props.createShortUrl(pipe(
+      createShortUrl(pipe(
         dissoc('moreOptionsVisible'), // Remove moreOptionsVisible property
         assoc('tags', pluck('name', this.state.tags)), // Map tags array to use only their names
         assoc('validSince', formatDate(this.state.validSince)),
@@ -120,14 +122,22 @@ export class CreateShortUrl extends React.Component {
               &nbsp;
               {this.state.moreOptionsVisible ? 'Less' : 'More'} options
             </button>
-            <button className="btn btn-outline-primary create-short-url__btn float-right">Create</button>
+            <button
+              className="btn btn-outline-primary create-short-url__btn float-right"
+              disabled={shortUrlCreationResult.loading}
+            >
+              {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
+            </button>
           </div>
 
-          <CreateShortUrlResult {...this.props.shortUrlCreationResult} />
+          <CreateShortUrlResult {...shortUrlCreationResult} resetCreateShortUrl={resetCreateShortUrl} />
         </form>
       </div>
     );
   }
 }
 
-export default connect(pick(['shortUrlCreationResult']), { createShortUrl })(CreateShortUrl);
+export default connect(pick(['shortUrlCreationResult']), {
+  createShortUrl,
+  resetCreateShortUrl
+})(CreateShortUrl);

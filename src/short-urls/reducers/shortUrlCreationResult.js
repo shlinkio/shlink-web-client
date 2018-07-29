@@ -3,6 +3,7 @@ import ShlinkApiClient from '../../api/ShlinkApiClient';
 const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
+const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
 
 const defaultState = {
   result: null,
@@ -27,8 +28,10 @@ export default function reducer(state = defaultState, action) {
       return {
         result: action.result,
         saving: false,
-        error: true,
+        error: false,
       };
+    case RESET_CREATE_SHORT_URL:
+      return defaultState;
     default:
       return state;
   }
@@ -44,3 +47,5 @@ export const createShortUrl = data => async dispatch => {
     dispatch({ type: CREATE_SHORT_URL_ERROR });
   }
 };
+
+export const resetCreateShortUrl = () => ({ type: RESET_CREATE_SHORT_URL });

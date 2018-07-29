@@ -8,11 +8,15 @@
   white-space: nowrap;
 }
 
+.bg-main {
+  background-color: $mainColor !important;
+}
+
 .dropdown-item {
   cursor: pointer;
 }
 .dropdown-item.active {
-  background-color: $mainColor !important;
+  @extend .bg-main;
 }
 
 .short-urls-container {

@@ -38,8 +38,8 @@ export class ShortUrlsRow extends React.Component {
             display={this.state.displayMenu}
             shortUrl={completeShortUrl}
             onCopyToClipboard={() => {
-              this.setState({copiedToClipboard: true});
-              setTimeout(() => this.setState({copiedToClipboard: false}), 2000);
+              this.setState({ copiedToClipboard: true });
+              setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
             }}
           />
         </td>
