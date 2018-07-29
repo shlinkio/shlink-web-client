@@ -9,7 +9,8 @@ import AsideMenu from './AsideMenu';
 import { pick } from 'ramda';
 
 export class MenuLayout extends React.Component {
-  componentDidMount() {
+  // FIXME Shouldn't use componentWillMount, but this code has to be run before children components are rendered
+  componentWillMount() {
     const { serverId } = this.props.match.params;
     this.props.selectServer(serverId);
   }

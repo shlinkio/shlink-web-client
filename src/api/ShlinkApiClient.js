@@ -1,6 +1,6 @@
 import axios from 'axios';
 import qs from 'qs';
-import { isEmpty, isNil, pipe, reject } from 'ramda';
+import { isEmpty, isNil, reject } from 'ramda';
 
 const API_VERSION = '1';
 
@@ -22,11 +22,6 @@ export class ShlinkApiClient {
     this._apiKey = apiKey;
   };
 
-  /**
-   * Returns the list of short URLs
-   * @param options
-   * @returns {Promise<Array>}
-   */
   listShortUrls = (options = {}) =>
     this._performRequest('/short-codes', 'GET', options)
       .then(resp => resp.data.shortUrls)
@@ -38,6 +33,11 @@ export class ShlinkApiClient {
       .then(resp => resp.data)
       .catch(e => this._handleAuthError(e, this.listShortUrls, [filteredOptions]));
   };
+
+  getShortUrlVisits = shortCode =>
+    this._performRequest(`/short-codes/${shortCode}/visits`, 'GET')
+      .then(resp => resp.data.visits.data)
+      .catch(e => this._handleAuthError(e, this.listShortUrls, [shortCode]));
 
   _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
     if (isEmpty(this._token)) {

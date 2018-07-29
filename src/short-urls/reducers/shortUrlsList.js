@@ -1,10 +1,8 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
-import ServersService from '../../servers/services/ServersService';
 
-export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
-export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
+const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
+const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
-export const UPDATE_SHORT_URLS_LIST = LIST_SHORT_URLS;
 
 const initialState = {
   shortUrls: [],
@@ -32,16 +30,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const listShortUrls = (serverId, params = {}) => {
-  // FIXME   There should be a way to not need this, however, the active server is set when any route is loaded, in an
-  // FIXME   outer component's componentDidMount, which makes it be invoked after this action
-  const selectedServer = ServersService.findServerById(serverId);
-  ShlinkApiClient.setConfig(selectedServer);
-
-  return updateShortUrlsList(params);
-};
-
-export const updateShortUrlsList = (params = {}) => async dispatch => {
+export const listShortUrls = (params = {}) => async dispatch => {
   dispatch({ type: LIST_SHORT_URLS_START });
 
   try {

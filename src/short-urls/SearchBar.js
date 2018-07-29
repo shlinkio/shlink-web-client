@@ -2,7 +2,7 @@ import searchIcon from '@fortawesome/fontawesome-free-solid/faSearch';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateShortUrlsList } from './reducers/shortUrlsList';
+import { listShortUrls } from './reducers/shortUrlsList';
 import './SearchBar.scss';
 import { pick } from 'ramda';
 
@@ -47,10 +47,10 @@ export class SearchBar extends React.Component {
     resetTimer();
 
     this.timer = setTimeout(() => {
-      this.props.updateShortUrlsList({ ...this.props.shortUrlsListParams, searchTerm });
+      this.props.listShortUrls({ ...this.props.shortUrlsListParams, searchTerm });
       resetTimer();
     }, 500);
   }
 }
 
-export default connect(pick(['shortUrlsListParams']), { updateShortUrlsList })(SearchBar);
+export default connect(pick(['shortUrlsListParams']), { listShortUrls })(SearchBar);

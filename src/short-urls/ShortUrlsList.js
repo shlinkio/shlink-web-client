@@ -12,8 +12,8 @@ import { pick } from 'ramda';
 
 export class ShortUrlsList extends React.Component {
   refreshList = extraParams => {
-    const { listShortUrls, shortUrlsListParams, match: { params } } = this.props;
-    listShortUrls(params.serverId, {
+    const { listShortUrls, shortUrlsListParams } = this.props;
+    listShortUrls({
       ...shortUrlsListParams,
       ...extraParams
     });
