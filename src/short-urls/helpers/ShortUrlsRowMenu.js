@@ -6,6 +6,7 @@ import qrIcon from '@fortawesome/fontawesome-free-solid/faQrcode';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Link } from 'react-router-dom';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
@@ -16,7 +17,8 @@ export class ShortUrlsRowMenu extends React.Component {
   toggle = () => this.setState({ isOpen: !this.state.isOpen });
 
   render() {
-    const {display, shortUrl, onCopyToClipboard} = this.props;
+    const { display, shortUrl, onCopyToClipboard, selectedServer, shortCode } = this.props;
+    const serverId = selectedServer ? selectedServer.id : '';
     const baseClass = 'short-urls-row-menu__dropdown-toggle';
     const toggleClass = !display ? `${baseClass} short-urls-row-menu__dropdown-toggle--hidden` : baseClass;
     const toggleQrCode = () => this.setState({isQrModalOpen: !this.state.isQrModalOpen});
@@ -28,7 +30,7 @@ export class ShortUrlsRowMenu extends React.Component {
           &nbsp;<FontAwesomeIcon icon={menuIcon}/>&nbsp;
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem>
+          <DropdownItem tag={Link} to={`/server/${serverId}/short-code/${shortCode}/visits`}>
             <FontAwesomeIcon icon={pieChartIcon}/> &nbsp;Visit Stats
           </DropdownItem>
 

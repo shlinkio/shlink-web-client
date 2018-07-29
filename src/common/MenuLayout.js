@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { selectServer } from '../servers/reducers/selectedServer';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
 import ShortUrls from '../short-urls/ShortUrls';
+import ShortUrlsVisits from '../short-urls/ShortUrlVisits';
 import AsideMenu from './AsideMenu';
 import { pick } from 'ramda';
 
@@ -28,6 +29,11 @@ export class MenuLayout extends React.Component {
               exact
               path="/server/:serverId/create-short-url"
               component={CreateShortUrl}
+            />
+            <Route
+              exact
+              path="/server/:serverId/short-code/:shortCode/visits"
+              component={ShortUrlsVisits}
             />
           </Switch>
         </div>

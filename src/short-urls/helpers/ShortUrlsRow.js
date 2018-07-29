@@ -5,10 +5,10 @@ import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss'
 
 export class ShortUrlsRow extends React.Component {
-  state = {displayMenu: false, copiedToClipboard: false};
+  state = { displayMenu: false, copiedToClipboard: false };
 
   render() {
-    const {shortUrl, selectedServer} = this.props;
+    const { shortUrl, selectedServer } = this.props;
     const completeShortUrl = !selectedServer ? shortUrl.shortCode : `${selectedServer.url}/${shortUrl.shortCode}`;
 
     return (
@@ -37,6 +37,8 @@ export class ShortUrlsRow extends React.Component {
           <ShortUrlsRowMenu
             display={this.state.displayMenu}
             shortUrl={completeShortUrl}
+            selectedServer={selectedServer}
+            shortCode={shortUrl.shortCode}
             onCopyToClipboard={() => {
               this.setState({ copiedToClipboard: true });
               setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
