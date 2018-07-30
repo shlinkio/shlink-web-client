@@ -31,13 +31,13 @@ export class ShlinkApiClient {
     const filteredOptions = reject(value => isEmpty(value) || isNil(value), options);
     return this._performRequest('/short-codes', 'POST', {}, filteredOptions)
       .then(resp => resp.data)
-      .catch(e => this._handleAuthError(e, this.listShortUrls, [filteredOptions]));
+      .catch(e => this._handleAuthError(e, this.createShortUrl, [filteredOptions]));
   };
 
-  getShortUrlVisits = shortCode =>
-    this._performRequest(`/short-codes/${shortCode}/visits`, 'GET')
+  getShortUrlVisits = (shortCode, dates) =>
+    this._performRequest(`/short-codes/${shortCode}/visits`, 'GET', dates)
       .then(resp => resp.data.visits.data)
-      .catch(e => this._handleAuthError(e, this.listShortUrls, [shortCode]));
+      .catch(e => this._handleAuthError(e, this.getShortUrlVisits, [shortCode, dates]));
 
   _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
     if (isEmpty(this._token)) {

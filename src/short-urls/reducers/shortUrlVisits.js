@@ -34,11 +34,11 @@ export default function dispatch (state = initialState, action) {
   }
 }
 
-export const getShortUrlVisits = shortCode => async dispatch => {
+export const getShortUrlVisits = (shortCode, dates) => async dispatch => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
   try {
-    const visits = await ShlinkApiClient.getShortUrlVisits(shortCode);
+    const visits = await ShlinkApiClient.getShortUrlVisits(shortCode, dates);
     dispatch({ visits, type: GET_SHORT_URL_VISITS });
   } catch (e) {
     dispatch({ type: GET_SHORT_URL_VISITS_ERROR });
