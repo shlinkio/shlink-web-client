@@ -5,6 +5,8 @@ import { pick } from 'ramda';
 import { Card, CardBody, CardHeader } from 'reactstrap';
 import { getShortUrlVisits } from './reducers/shortUrlVisits';
 import VisitsParser from '../visits/services/VisitsParser';
+import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 
 export class ShortUrlsVisits extends React.Component {
   state = { startDate: '', endDate: '' };
@@ -15,13 +17,72 @@ export class ShortUrlsVisits extends React.Component {
   }
 
   render() {
-    const { match: { params }, selectedServer, visitsParser, shortUrlVisits } = this.props;
+    const { match: { params }, selectedServer, visitsParser, shortUrlVisits: { visits, loading, error } } = this.props;
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortUrl = `${serverUrl}/${params.shortCode}`;
     const generateGraphData = stats => ({
       labels: Object.keys(stats),
-      datasets: Object.values(stats)
+      data: Object.values(stats)
     });
+
+    const renderContent = () => {
+      if (loading) {
+        return (
+          <div className="col-md-10 offset-md-1">
+            <Card className="bg-light mt-4" body>
+              <h3 className="text-center text-muted">
+                <FontAwesomeIcon icon={preloader} spin /> Loading...
+              </h3>
+            </Card>
+          </div>
+        );
+      }
+
+      if (error) {
+        return (
+          <Card className="mt-4" body inverse color="danger">
+            An error occurred while loading visits :(
+          </Card>
+        );
+      }
+
+      return (
+        <div className="row">
+          <div className="col-md-6">
+            <Card className="mt-4">
+              <CardHeader>Operating systems</CardHeader>
+              <CardBody>
+                <Doughnut data={generateGraphData(visitsParser.processOsStats(visits))} />
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-md-6">
+            <Card className="mt-4">
+              <CardHeader>Browsers</CardHeader>
+              <CardBody>
+                <Doughnut data={generateGraphData(visitsParser.processBrowserStats(visits))} />
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-md-6">
+            <Card className="mt-4">
+              <CardHeader>Countries</CardHeader>
+              <CardBody>
+                <HorizontalBar data={generateGraphData(visitsParser.processCountriesStats(visits))} />
+              </CardBody>
+            </Card>
+          </div>
+          <div className="col-md-6">
+            <Card className="mt-4">
+              <CardHeader>Referrers</CardHeader>
+              <CardBody>
+                <HorizontalBar data={generateGraphData(visitsParser.processReferrersStats(visits))} />
+              </CardBody>
+            </Card>
+          </div>
+        </div>
+      );
+    };
 
     return (
       <div className="short-urls-container">
@@ -31,40 +92,7 @@ export class ShortUrlsVisits extends React.Component {
           </CardBody>
         </Card>
 
-        <div className="row">
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Operating systems</CardHeader>
-              <CardBody>
-                <Doughnut data={generateGraphData(visitsParser.processOsStats(shortUrlVisits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Browsers</CardHeader>
-              <CardBody>
-                <Doughnut data={generateGraphData(visitsParser.processBrowserStats(shortUrlVisits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Countries</CardHeader>
-              <CardBody>
-                <HorizontalBar data={generateGraphData(visitsParser.processCountriesStats(shortUrlVisits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Referrers</CardHeader>
-              <CardBody>
-                <HorizontalBar data={generateGraphData(visitsParser.processReferrersStats(shortUrlVisits))} />
-              </CardBody>
-            </Card>
-          </div>
-        </div>
+        {renderContent()}
       </div>
     );
   }

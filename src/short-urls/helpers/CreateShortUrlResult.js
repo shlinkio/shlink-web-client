@@ -4,7 +4,7 @@ import { isNil } from 'ramda';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './CreateShortUrlResult.scss'
-import { Tooltip } from 'reactstrap';
+import { Card, CardBody, Tooltip } from 'reactstrap';
 
 export default class CreateShortUrlResult extends React.Component {
   state = { showCopyTooltip: false };
@@ -17,7 +17,11 @@ export default class CreateShortUrlResult extends React.Component {
     const { error, result } = this.props;
 
     if (error) {
-      return <div className="alert bg-danger text-white mt-3">An error occurred while creating the URL :(</div>
+      return (
+        <Card body color="danger" inverse className="bg-danger mt-3">
+          An error occurred while creating the URL :(
+        </Card>
+      );
     }
     if (isNil(result)) {
       return null;
@@ -30,19 +34,21 @@ export default class CreateShortUrlResult extends React.Component {
     };
 
     return (
-      <div className="alert bg-main text-white mt-3">
-        <b>Great!</b> The short URL is <b>{shortUrl}</b>
+      <Card inverse className="bg-main mt-3">
+        <CardBody>
+          <b>Great!</b> The short URL is <b>{shortUrl}</b>
 
-        <CopyToClipboard text={shortUrl} onCopy={onCopy}>
-          <button className="btn btn-light btn-sm create-short-url-result__copy-btn" id="copyBtn">
-            <FontAwesomeIcon icon={copyIcon}/> Copy
-          </button>
-        </CopyToClipboard>
+          <CopyToClipboard text={shortUrl} onCopy={onCopy}>
+            <button className="btn btn-light btn-sm create-short-url-result__copy-btn" id="copyBtn" type="button">
+              <FontAwesomeIcon icon={copyIcon}/> Copy
+            </button>
+          </CopyToClipboard>
 
-        <Tooltip placement="left" isOpen={this.state.showCopyTooltip} target="copyBtn">
-          Copied!
-        </Tooltip>
-      </div>
+          <Tooltip placement="left" isOpen={this.state.showCopyTooltip} target="copyBtn">
+            Copied!
+          </Tooltip>
+        </CardBody>
+      </Card>
     );
   }
 };
