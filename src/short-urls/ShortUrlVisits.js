@@ -20,11 +20,27 @@ export class ShortUrlsVisits extends React.Component {
     const { match: { params }, selectedServer, visitsParser, shortUrlVisits: { visits, loading, error } } = this.props;
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortUrl = `${serverUrl}/${params.shortCode}`;
-    const generateGraphData = stats => ({
+    const generateGraphData = (stats, label, isBarChart) => ({
       labels: Object.keys(stats),
-      data: Object.values(stats)
+      datasets: [
+        {
+          label,
+          data: Object.values(stats),
+          backgroundColor: isBarChart ? 'rgba(200, 26, 80, 0.2)' : [],
+          borderColor: isBarChart ? 'rgba(200, 26, 80, 1)' : [],
+        }
+      ]
     });
-
+    const renderGraphCard = (title, stats, isBarChart = true) =>
+      <div className="col-md-6">
+        <Card className="mt-4">
+          <CardHeader>{title}</CardHeader>
+          <CardBody>
+            {!isBarChart && <Doughnut data={generateGraphData(stats, title, isBarChart)} />}
+            {isBarChart && <HorizontalBar data={generateGraphData(stats, title, isBarChart)} />}
+          </CardBody>
+        </Card>
+      </div>;
     const renderContent = () => {
       if (loading) {
         return (
@@ -48,38 +64,10 @@ export class ShortUrlsVisits extends React.Component {
 
       return (
         <div className="row">
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Operating systems</CardHeader>
-              <CardBody>
-                <Doughnut data={generateGraphData(visitsParser.processOsStats(visits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Browsers</CardHeader>
-              <CardBody>
-                <Doughnut data={generateGraphData(visitsParser.processBrowserStats(visits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Countries</CardHeader>
-              <CardBody>
-                <HorizontalBar data={generateGraphData(visitsParser.processCountriesStats(visits))} />
-              </CardBody>
-            </Card>
-          </div>
-          <div className="col-md-6">
-            <Card className="mt-4">
-              <CardHeader>Referrers</CardHeader>
-              <CardBody>
-                <HorizontalBar data={generateGraphData(visitsParser.processReferrersStats(visits))} />
-              </CardBody>
-            </Card>
-          </div>
+          {renderGraphCard('Operating systems', visitsParser.processOsStats(visits), false)}
+          {renderGraphCard('Browsers', visitsParser.processBrowserStats(visits), false)}
+          {renderGraphCard('Countries', visitsParser.processCountriesStats(visits))}
+          {renderGraphCard('Referrers', visitsParser.processReferrersStats(visits))}
         </div>
       );
     };
