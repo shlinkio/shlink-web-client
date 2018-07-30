@@ -39,6 +39,11 @@ export class ShlinkApiClient {
       .then(resp => resp.data.visits.data)
       .catch(e => this._handleAuthError(e, this.getShortUrlVisits, [shortCode, dates]));
 
+  getShortUrl = shortCode =>
+    this._performRequest(`/short-codes/${shortCode}`, 'GET')
+      .then(resp => resp.data)
+      .catch(e => this._handleAuthError(e, this.getShortUrl, [shortCode]));
+
   _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
     if (isEmpty(this._token)) {
       this._token = await this._authenticate();

@@ -1,8 +1,9 @@
 import React from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
+import Moment from 'react-moment';
 import { connect } from 'react-redux';
 import { pick } from 'ramda';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
 import { getShortUrlVisits } from './reducers/shortUrlVisits';
 import VisitsParser from '../visits/services/VisitsParser';
 import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
@@ -17,9 +18,14 @@ export class ShortUrlsVisits extends React.Component {
   }
 
   render() {
-    const { match: { params }, selectedServer, visitsParser, shortUrlVisits: { visits, loading, error } } = this.props;
+    const {
+      match: { params },
+      selectedServer,
+      visitsParser,
+      shortUrlVisits: { visits, loading, error, shortUrl }
+    } = this.props;
     const serverUrl = selectedServer ? selectedServer.url : '';
-    const shortUrl = `${serverUrl}/${params.shortCode}`;
+    const shortLink = `${serverUrl}/${params.shortCode}`;
     const generateGraphData = (stats, label, isBarChart) => ({
       labels: Object.keys(stats),
       datasets: [
@@ -72,15 +78,45 @@ export class ShortUrlsVisits extends React.Component {
       );
     };
 
+    const renderCreated = () =>
+      <span>
+        <b id="created"><Moment fromNow>{shortUrl.dateCreated}</Moment></b>
+        <UncontrolledTooltip placement="bottom" target="created">
+          <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
+        </UncontrolledTooltip>
+      </span>;
     return (
       <div className="short-urls-container">
-        <Card className="bg-light">
-          <CardBody>
-            <h2>Visit stats for <a target="_blank" href={shortUrl}>{shortUrl}</a></h2>
-          </CardBody>
-        </Card>
+        <header>
+          <Card className="bg-light">
+            <CardBody>
+              <h2>
+                {
+                  shortUrl.visitsCount &&
+                  <span className="badge badge-primary float-right">Visits: {shortUrl.visitsCount}</span>
+                }
+                Visit stats for <a target="_blank" href={shortLink}>{shortLink}</a>
+              </h2>
+              <hr />
+              {shortUrl.dateCreated && <div>
+                Created:
+                &nbsp;
+                {loading && <small>Loading...</small>}
+                {!loading && renderCreated()}
+              </div>}
+              <div>
+                Original URL:
+                &nbsp;
+                {loading && <small>Loading...</small>}
+                {!loading && <a target="_blank" href={shortUrl.longUrl}>{shortUrl.longUrl}</a>}
+              </div>
+            </CardBody>
+          </Card>
+        </header>
 
-        {renderContent()}
+        <section>
+          {renderContent()}
+        </section>
       </div>
     );
   }

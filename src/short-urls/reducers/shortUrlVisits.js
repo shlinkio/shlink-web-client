@@ -5,6 +5,7 @@ const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_E
 const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 
 const initialState = {
+  shortUrl: {},
   visits: [],
   loading: false,
   error: false
@@ -25,6 +26,7 @@ export default function dispatch (state = initialState, action) {
       };
     case GET_SHORT_URL_VISITS:
       return {
+        shortUrl: action.shortUrl,
         visits: action.visits,
         loading: false,
         error: false
@@ -34,13 +36,13 @@ export default function dispatch (state = initialState, action) {
   }
 }
 
-export const getShortUrlVisits = (shortCode, dates) => async dispatch => {
+export const getShortUrlVisits = (shortCode, dates) => dispatch => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
-  try {
-    const visits = await ShlinkApiClient.getShortUrlVisits(shortCode, dates);
-    dispatch({ visits, type: GET_SHORT_URL_VISITS });
-  } catch (e) {
-    dispatch({ type: GET_SHORT_URL_VISITS_ERROR });
-  }
+  Promise.all([
+    ShlinkApiClient.getShortUrlVisits(shortCode, dates),
+    ShlinkApiClient.getShortUrl(shortCode)
+  ])
+    .then(([visits, shortUrl]) => dispatch({ visits, shortUrl, type: GET_SHORT_URL_VISITS }))
+    .catch(() => dispatch({ type: GET_SHORT_URL_VISITS_ERROR }));
 };
