@@ -24,6 +24,15 @@ export class ShortUrlsVisits extends React.Component {
       visitsParser,
       shortUrlVisits: { visits, loading, error, shortUrl }
     } = this.props;
+    const colors = [
+      '#97BBCD',
+      '#DCDCDC',
+      '#F7464A',
+      '#46BFBD',
+      '#FDB45C',
+      '#949FB1',
+      '#4D5360'
+    ];
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortLink = `${serverUrl}/${params.shortCode}`;
     const generateGraphData = (stats, label, isBarChart) => ({
@@ -32,18 +41,27 @@ export class ShortUrlsVisits extends React.Component {
         {
           label,
           data: Object.values(stats),
-          backgroundColor: isBarChart ? 'rgba(200, 26, 80, 0.2)' : [],
-          borderColor: isBarChart ? 'rgba(200, 26, 80, 1)' : [],
+          backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : colors,
+          borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
+          borderWidth: 2
         }
       ]
     });
-    const renderGraphCard = (title, stats, isBarChart = true) =>
+    const renderGraphCard = (title, stats, isBarChart, label) =>
       <div className="col-md-6">
         <Card className="mt-4">
           <CardHeader>{title}</CardHeader>
           <CardBody>
-            {!isBarChart && <Doughnut data={generateGraphData(stats, title, isBarChart)} />}
-            {isBarChart && <HorizontalBar data={generateGraphData(stats, title, isBarChart)} />}
+            {!isBarChart && <Doughnut data={generateGraphData(stats, label || title, isBarChart)} options={{
+              legend: {
+                position: 'right'
+              }
+            }} />}
+            {isBarChart && <HorizontalBar data={generateGraphData(stats, label || title, isBarChart)} options={{
+              legend: {
+                display: false
+              }
+            }} />}
           </CardBody>
         </Card>
       </div>;
@@ -72,8 +90,8 @@ export class ShortUrlsVisits extends React.Component {
         <div className="row">
           {renderGraphCard('Operating systems', visitsParser.processOsStats(visits), false)}
           {renderGraphCard('Browsers', visitsParser.processBrowserStats(visits), false)}
-          {renderGraphCard('Countries', visitsParser.processCountriesStats(visits))}
-          {renderGraphCard('Referrers', visitsParser.processReferrersStats(visits))}
+          {renderGraphCard('Countries', visitsParser.processCountriesStats(visits), true, 'Visits')}
+          {renderGraphCard('Referrers', visitsParser.processReferrersStats(visits), true, 'Visits')}
         </div>
       );
     };

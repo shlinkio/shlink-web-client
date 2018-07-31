@@ -9,7 +9,7 @@ export default function PreviewModal ({ url, toggle, isOpen }) {
       <ModalBody>
         <div className="text-center">
           <p className="preview-modal__loader">Loading...</p>
-          <img src={`${url}/preview`} className="preview-modal__img" />
+          <img src={`${url}/preview`} className="preview-modal__img" alt="Preview" />
         </div>
       </ModalBody>
     </Modal>

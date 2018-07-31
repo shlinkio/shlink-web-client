@@ -8,7 +8,7 @@ export default function QrCodeModal ({ url, toggle, isOpen }) {
       <ModalHeader toggle={toggle}>QR code for <a target="_blank" href={url}>{url}</a></ModalHeader>
       <ModalBody>
         <div className="text-center">
-          <img src={`${url}/qr-code`} className="qr-code-modal__img" />
+          <img src={`${url}/qr-code`} className="qr-code-modal__img" alt="QR code" />
         </div>
       </ModalBody>
     </Modal>
