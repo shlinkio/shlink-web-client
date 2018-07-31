@@ -14,6 +14,7 @@ export default class DeleteServerButton extends React.Component {
         <span
           className={this.props.className}
           onClick={() => this.setState({ isModalOpen: true })}
+          key="deleteServerBtn"
         >
           <FontAwesomeIcon icon={deleteIcon} />
           <span className="aside-menu__item-text">Delete this server</span>
@@ -25,6 +26,7 @@ export default class DeleteServerButton extends React.Component {
           toggle={() => this.setState({ isModalOpen: !this.state.isModalOpen })}
           history={history}
           server={server}
+          key="deleteServerModal"
         />
       )
     ];

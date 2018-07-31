@@ -1,20 +1,37 @@
+import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { isEmpty, mapObjIndexed, pick } from 'ramda';
 import React from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { pick } from 'ramda';
 import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
-import { getShortUrlVisits } from './reducers/shortUrlVisits';
+import DateInput from '../common/DateInput';
 import VisitsParser from '../visits/services/VisitsParser';
-import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { getShortUrlVisits } from './reducers/shortUrlVisits';
+import './ShortUrlVisits.scss';
+
+const MutedMessage = ({ children }) =>
+  <div className="col-md-10 offset-md-1">
+    <Card className="bg-light mt-4" body>
+      <h3 className="text-center text-muted mb-0">
+        {children}
+      </h3>
+    </Card>
+  </div>;
 
 export class ShortUrlsVisits extends React.Component {
-  state = { startDate: '', endDate: '' };
+  state = { startDate: undefined, endDate: undefined };
+  loadVisits = (dates = {}) => {
+    const { match: { params } } = this.props;
+    this.props.getShortUrlVisits(params.shortCode, mapObjIndexed(
+      value => value && value.format ? value.format('YYYY-MM-DD') : value,
+      { ...this.state, ...dates }
+    ))
+  };
 
   componentDidMount() {
-    const { match: { params } } = this.props;
-    this.props.getShortUrlVisits(params.shortCode, this.state);
+    this.loadVisits();
   }
 
   render() {
@@ -24,15 +41,6 @@ export class ShortUrlsVisits extends React.Component {
       visitsParser,
       shortUrlVisits: { visits, loading, error, shortUrl }
     } = this.props;
-    const colors = [
-      '#97BBCD',
-      '#DCDCDC',
-      '#F7464A',
-      '#46BFBD',
-      '#FDB45C',
-      '#949FB1',
-      '#4D5360'
-    ];
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortLink = `${serverUrl}/${params.shortCode}`;
     const generateGraphData = (stats, label, isBarChart) => ({
@@ -41,7 +49,15 @@ export class ShortUrlsVisits extends React.Component {
         {
           label,
           data: Object.values(stats),
-          backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : colors,
+          backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
+            '#97BBCD',
+            '#DCDCDC',
+            '#F7464A',
+            '#46BFBD',
+            '#FDB45C',
+            '#949FB1',
+            '#4D5360'
+          ],
           borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
           borderWidth: 2
         }
@@ -67,15 +83,7 @@ export class ShortUrlsVisits extends React.Component {
       </div>;
     const renderContent = () => {
       if (loading) {
-        return (
-          <div className="col-md-10 offset-md-1">
-            <Card className="bg-light mt-4" body>
-              <h3 className="text-center text-muted">
-                <FontAwesomeIcon icon={preloader} spin /> Loading...
-              </h3>
-            </Card>
-          </div>
-        );
+        return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> Loading...</MutedMessage>;
       }
 
       if (error) {
@@ -84,6 +92,10 @@ export class ShortUrlsVisits extends React.Component {
             An error occurred while loading visits :(
           </Card>
         );
+      }
+
+      if (isEmpty(visits)) {
+        return <MutedMessage>There have been no visits matching current filter  :(</MutedMessage>;
       }
 
       return (
@@ -133,6 +145,31 @@ export class ShortUrlsVisits extends React.Component {
         </header>
 
         <section>
+          <form onSubmit={e => e.preventDefault()} className="form-inline mt-4 float-md-right">
+            <label>Period</label>
+            <DateInput
+              selected={this.state.startDate}
+              placeholderText="Since"
+              onChange={date => {
+                this.setState({ startDate: date });
+                this.loadVisits({ startDate: date });
+              }}
+              className="short-url-visits__date-input"
+            />
+            <DateInput
+              selected={this.state.endDate}
+              placeholderText="Until"
+              onChange={date => {
+                this.setState({ endDate: date });
+                this.loadVisits({ endDate: date });
+              }}
+              className="short-url-visits__date-input"
+            />
+          </form>
+          <div className="clearfix" />
+        </section>
+
+        <section>
           {renderContent()}
         </section>
       </div>
@@ -144,6 +181,4 @@ ShortUrlsVisits.defaultProps = {
   visitsParser: VisitsParser
 };
 
-export default connect(pick(['selectedServer', 'shortUrlVisits']), {
-  getShortUrlVisits
-})(ShortUrlsVisits);
+export default connect(pick(['selectedServer', 'shortUrlVisits']), { getShortUrlVisits })(ShortUrlsVisits);

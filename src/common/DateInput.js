@@ -15,7 +15,7 @@ export default class DateInput extends React.Component {
       <div className="date-input-container">
         <DatePicker
           {...this.props}
-          className="date-input-container__input form-control"
+          className={`date-input-container__input form-control ${this.props.className || ''}`}
           dateFormat="YYYY-MM-DD"
           readOnly
           ref={this.inputRef}
