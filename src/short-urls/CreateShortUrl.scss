@@ -1,24 +1,9 @@
 @import "../../node_modules/react-tag-autocomplete/example/styles.css";
 @import "../utils/mixins/box-shadow";
 @import "../utils/mixins/border-radius";
-@import "../utils/mixins/vertical-align";
 
 .create-short-url__btn:not(:first-child) {
   margin-left: 5px;
-}
-
-.create-short-url__date-container {
-  position: relative;
-}
-
-.create-short-url__date-input {
-  padding-right: 35px !important;
-  background-color: #fff !important;
-}
-
-.create-short-url__date-icon {
-  @include vertical-align();
-  right: 15px;
 }
 
 .react-tags {

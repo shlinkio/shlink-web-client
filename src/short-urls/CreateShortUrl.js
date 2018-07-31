@@ -1,14 +1,13 @@
-import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { assoc, dissoc, isNil, pick, pipe, pluck, replace } from 'ramda';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import { connect } from 'react-redux';
 import ReactTags from 'react-tag-autocomplete';
 import { Collapse } from 'reactstrap';
 import '../../node_modules/react-datepicker/dist/react-datepicker.css';
+import DateInput from '../common/DateInput';
 import './CreateShortUrl.scss';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
@@ -45,13 +44,10 @@ export class CreateShortUrl extends React.Component {
         {...props}
       />;
     const createDateInput = (id, placeholder, props = {}) =>
-      <DatePicker
+      <DateInput
         selected={this.state[id]}
-        className="form-control create-short-url__date-input"
         placeholderText={placeholder}
         onChange={date => this.setState({ [id]: date })}
-        dateFormat="YYYY-MM-DD"
-        readOnly
         {...props}
       />;
     const formatDate = date => isNil(date) ? date : date.format();
@@ -100,13 +96,11 @@ export class CreateShortUrl extends React.Component {
                 </div>
               </div>
               <div className="col-sm-6">
-                <div className="form-group create-short-url__date-container">
+                <div className="form-group">
                   {createDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
-                  <FontAwesomeIcon icon={calendarIcon} className="create-short-url__date-icon" />
                 </div>
-                <div className="form-group create-short-url__date-container">
+                <div className="form-group">
                   {createDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
-                  <FontAwesomeIcon icon={calendarIcon} className="create-short-url__date-icon" />
                 </div>
               </div>
             </div>
