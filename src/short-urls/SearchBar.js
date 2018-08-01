@@ -19,7 +19,7 @@ export class SearchBar extends React.Component {
     const selectedTag = shortUrlsListParams.tags ? shortUrlsListParams.tags[0] : '';
 
     return (
-      <div class="serach-bar-container">
+      <div className="serach-bar-container">
         <div className="search-bar">
           <input
             type="text"
