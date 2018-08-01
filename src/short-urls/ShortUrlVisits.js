@@ -22,11 +22,11 @@ const MutedMessage = ({ children }) =>
 
 export class ShortUrlsVisits extends React.Component {
   state = { startDate: undefined, endDate: undefined };
-  loadVisits = (dates = {}) => {
+  loadVisits = () => {
     const { match: { params } } = this.props;
     this.props.getShortUrlVisits(params.shortCode, mapObjIndexed(
       value => value && value.format ? value.format('YYYY-MM-DD') : value,
-      { ...this.state, ...dates }
+      this.state
     ))
   };
 
@@ -150,19 +150,13 @@ export class ShortUrlsVisits extends React.Component {
             <DateInput
               selected={this.state.startDate}
               placeholderText="Since"
-              onChange={date => {
-                this.setState({ startDate: date });
-                this.loadVisits({ startDate: date });
-              }}
+              onChange={date => this.setState({ startDate: date }, () => this.loadVisits())}
               className="short-url-visits__date-input"
             />
             <DateInput
               selected={this.state.endDate}
               placeholderText="Until"
-              onChange={date => {
-                this.setState({ endDate: date });
-                this.loadVisits({ endDate: date });
-              }}
+              onChange={date => this.setState({ endDate: date }, () => this.loadVisits())}
               className="short-url-visits__date-input"
             />
           </form>
