@@ -1,14 +1,12 @@
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { isEmpty } from 'ramda';
+import { isEmpty, pick } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import Tag from '../utils/Tag';
 import { ShortUrlsRow } from './helpers/ShortUrlsRow';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
-import { pick } from 'ramda';
 
 export class ShortUrlsList extends React.Component {
   refreshList = extraParams => {
@@ -110,16 +108,13 @@ export class ShortUrlsList extends React.Component {
     }
 
     return shortUrlsList.map(shortUrl => (
-      <ShortUrlsRow shortUrl={shortUrl} selectedServer={selectedServer} key={shortUrl.shortCode} />
+      <ShortUrlsRow
+        shortUrl={shortUrl}
+        selectedServer={selectedServer}
+        key={shortUrl.shortCode}
+        refreshList={this.refreshList}
+      />
     ));
-  }
-
-  static renderTags(tags) {
-    if (isEmpty(tags)) {
-      return <i className="nowrap"><small>No tags</small></i>;
-    }
-
-    return tags.map(tag => <Tag text={tag} />);
   }
 }
 

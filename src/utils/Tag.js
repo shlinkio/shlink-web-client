@@ -2,21 +2,27 @@ import React from 'react';
 import ColorGenerator from '../utils/ColorGenerator';
 import './Tag.scss';
 
-export default class Tag extends React.Component {
-  constructor(props) {
-    super(props);
-    this.colorGenerator = props.ColorGenerator;
+export default function Tag (
+  {
+    colorGenerator,
+    text,
+    clearable,
+    onClick = () => ({}),
+    onClose = () => ({})
   }
-
-  render() {
-    return (
-      <span className="badge tag" style={{ backgroundColor: this.colorGenerator.getColorForKey(this.props.text) }}>
-        {this.props.text}
-      </span>
-    );
-  }
+) {
+  return (
+    <span
+      className="badge tag"
+      style={{ backgroundColor: colorGenerator.getColorForKey(text), cursor: clearable ? 'auto' : 'pointer' }}
+      onClick={onClick}
+    >
+      {text}
+      {clearable && <span className="close tag__close-selected-tag" onClick={onClose}>&times;</span>}
+    </span>
+  );
 }
 
 Tag.defaultProps = {
-  ColorGenerator
+  colorGenerator: ColorGenerator
 };
