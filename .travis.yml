@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+  - "stable"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+install:
+  - yarn install
+
+script:
+  # - yarn inspect
+  - yarn test
+  - yarn build # Make sure the app can be built without errors
+
+sudo: false
