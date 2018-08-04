@@ -5,10 +5,11 @@ import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 import { listServers } from './reducers/server';
+import { selectServer } from '../servers/reducers/selectedServer';
 
 export class ServersDropdown extends React.Component {
   renderServers = () => {
-    const { servers, selectedServer } = this.props;
+    const { servers, selectedServer, selectServer } = this.props;
 
     if (isEmpty(servers)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>
@@ -20,6 +21,7 @@ export class ServersDropdown extends React.Component {
           tag={Link}
           to={`/server/${id}/list-short-urls/1`}
           active={selectedServer && selectedServer.id === id}
+          onClick={() => selectServer(id)} // FIXME This should be implicit
         >
           {name}
         </DropdownItem>
@@ -41,4 +43,4 @@ export class ServersDropdown extends React.Component {
   }
 }
 
-export default connect(pick(['servers', 'selectedServer']), { listServers })(ServersDropdown);
+export default connect(pick(['servers', 'selectedServer']), { listServers, selectServer })(ServersDropdown);
