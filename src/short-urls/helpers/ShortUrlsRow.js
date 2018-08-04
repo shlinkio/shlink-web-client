@@ -35,7 +35,7 @@ export class ShortUrlsRow extends React.Component {
         <td className="short-urls-row__cell">
           <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
         </td>
-        <td className="short-urls-row__cell">
+        <td className="short-urls-row__cell short-urls-row__cell--break">
           <a href={shortUrl.originalUrl} target="_blank">{shortUrl.originalUrl}</a>
         </td>
         <td className="short-urls-row__cell">{this.renderTags(shortUrl.tags)}</td>

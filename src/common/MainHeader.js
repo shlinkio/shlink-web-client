@@ -8,19 +8,12 @@ import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
 
 export default class MainHeader extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isOpen: false,
-    };
-  }
-
-  toggle() {
+  state = { isOpen: false };
+  toggle = () => {
     this.setState({
-      isOpen: ! this.state.isOpen
+      isOpen: !this.state.isOpen
     });
-  }
+  };
 
   render() {
     return (
@@ -28,7 +21,7 @@ export default class MainHeader extends React.Component {
         <NavbarBrand tag={Link} to="/">
           <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo"/> Shlink
         </NavbarBrand>
-        <NavbarToggler onClick={() => this.toggle()}/>
+        <NavbarToggler onClick={this.toggle}/>
         <Collapse navbar isOpen={this.state.isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>
