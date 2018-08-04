@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Tag from '../utils/Tag';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './SearchBar.scss';
-import { pick } from 'ramda';
+import { pick, isEmpty } from 'ramda';
 
 export class SearchBar extends React.Component {
   state = {
@@ -16,7 +16,7 @@ export class SearchBar extends React.Component {
 
   render() {
     const { listShortUrls, shortUrlsListParams } = this.props;
-    const selectedTag = shortUrlsListParams.tags ? shortUrlsListParams.tags[0] : '';
+    const selectedTags = shortUrlsListParams.tags || [];
 
     return (
       <div className="serach-bar-container">
@@ -39,15 +39,20 @@ export class SearchBar extends React.Component {
           </div>
         </div>
 
-        {selectedTag && (
+        {!isEmpty(selectedTags) && (
           <h4 className="search-bar__selected-tag mt-2">
-            <small>Filtering by tag:</small>
+            <small>Filtering by tags:</small>
             &nbsp;
-            <Tag
-              text={selectedTag}
+            {selectedTags.map(tag => <Tag
+              text={tag}
               clearable
-              onClose={() => listShortUrls({ ...shortUrlsListParams, tags: undefined })}
-            />
+              onClose={() => listShortUrls(
+                {
+                  ...shortUrlsListParams,
+                  tags: selectedTags.filter(selectedTag => selectedTag !== tag)
+                }
+              )}
+            />)}
           </h4>
         )}
       </div>
