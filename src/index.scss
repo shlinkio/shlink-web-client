@@ -20,5 +20,9 @@
 }
 
 .short-urls-container {
-  padding: 30px 30px 30px 20px;
+  padding: 20px 0;
+
+  @media (min-width: $mdMin) {
+    padding: 30px 30px 30px 20px;
+  }
 }

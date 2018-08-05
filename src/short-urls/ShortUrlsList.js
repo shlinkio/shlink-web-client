@@ -53,37 +53,37 @@ export class ShortUrlsList extends React.Component {
 
     return (
       <table className="table table-striped table-hover">
-        <thead>
+        <thead className="short-urls-list__header">
           <tr>
             <th
-              className="short-urls-list__header short-urls-list__header--with-action"
+              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
               onClick={() => orderBy('dateCreated')}
             >
               {renderOrderIcon('dateCreated')}
               Created at
             </th>
             <th
-              className="short-urls-list__header short-urls-list__header--with-action"
+              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
               onClick={() => orderBy('shortCode')}
             >
               {renderOrderIcon('shortCode')}
               Short URL
             </th>
             <th
-              className="short-urls-list__header short-urls-list__header--with-action"
+              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
               onClick={() => orderBy('originalUrl')}
             >
               {renderOrderIcon('originalUrl')}
-              Original URL
+              Long URL
             </th>
-            <th className="short-urls-list__header">Tags</th>
+            <th className="short-urls-list__header-cell">Tags</th>
             <th
-              className="short-urls-list__header short-urls-list__header--with-action"
+              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
               onClick={() => orderBy('visits')}
             >
               <span className="nowrap">{renderOrderIcon('visits')} Visits</span>
             </th>
-            <th className="short-urls-list__header">&nbsp;</th>
+            <th className="short-urls-list__header-cell">&nbsp;</th>
           </tr>
         </thead>
         <tbody>

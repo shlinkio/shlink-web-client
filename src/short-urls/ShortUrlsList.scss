@@ -1,3 +1,11 @@
+@import "../utils/base";
+
+.short-urls-list__header {
+  @media (max-width: $smMax) {
+    display: none;
+  }
+}
+
 .short-urls-list__header--with-action {
   cursor: pointer;
 }

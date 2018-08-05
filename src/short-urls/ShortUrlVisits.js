@@ -135,7 +135,7 @@ export class ShortUrlsVisits extends React.Component {
                 {!loading && renderCreated()}
               </div>}
               <div>
-                Original URL:
+                Long URL:
                 &nbsp;
                 {loading && <small>Loading...</small>}
                 {!loading && <a target="_blank" href={shortUrl.longUrl}>{shortUrl.longUrl}</a>}

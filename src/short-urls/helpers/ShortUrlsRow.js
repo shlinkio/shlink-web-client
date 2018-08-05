@@ -26,20 +26,21 @@ export class ShortUrlsRow extends React.Component {
 
     return (
       <tr
+        className="short-urls-row"
         onMouseEnter={() => this.setState({displayMenu: true})}
         onMouseLeave={() => this.setState({displayMenu: false})}
       >
-        <td className="nowrap short-urls-row__cell">
+        <td className="nowrap short-urls-row__cell" data-th="Created at: ">
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
-        <td className="short-urls-row__cell">
+        <td className="short-urls-row__cell" data-th="Short URL: ">
           <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
         </td>
-        <td className="short-urls-row__cell short-urls-row__cell--break">
+        <td className="short-urls-row__cell short-urls-row__cell--break" data-th="Long URL: ">
           <a href={shortUrl.originalUrl} target="_blank">{shortUrl.originalUrl}</a>
         </td>
-        <td className="short-urls-row__cell">{this.renderTags(shortUrl.tags)}</td>
-        <td className="short-urls-row__cell text-right">{shortUrl.visitsCount}</td>
+        <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
+        <td className="short-urls-row__cell text-md-right" data-th="Visits: ">{shortUrl.visitsCount}</td>
         <td className="short-urls-row__cell short-urls-row__cell--relative">
           <small
             className="badge badge-warning short-urls-row__copy-hint"
