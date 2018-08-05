@@ -6,7 +6,7 @@ import './ShortUrlsRow.scss';
 import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 
 export class ShortUrlsRow extends React.Component {
-  state = { displayMenu: false, copiedToClipboard: false };
+  state = { copiedToClipboard: false };
 
   renderTags(tags) {
     if (isEmpty(tags)) {
@@ -25,11 +25,7 @@ export class ShortUrlsRow extends React.Component {
     const completeShortUrl = !selectedServer ? shortUrl.shortCode : `${selectedServer.url}/${shortUrl.shortCode}`;
 
     return (
-      <tr
-        className="short-urls-row"
-        onMouseEnter={() => this.setState({displayMenu: true})}
-        onMouseLeave={() => this.setState({displayMenu: false})}
-      >
+      <tr className="short-urls-row">
         <td className="nowrap short-urls-row__cell" data-th="Created at: ">
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
@@ -49,7 +45,6 @@ export class ShortUrlsRow extends React.Component {
             Copied short URL!
           </small>
           <ShortUrlsRowMenu
-            display={this.state.displayMenu}
             shortUrl={completeShortUrl}
             selectedServer={selectedServer}
             shortCode={shortUrl.shortCode}

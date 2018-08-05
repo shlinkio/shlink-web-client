@@ -17,16 +17,14 @@ export class ShortUrlsRowMenu extends React.Component {
   toggle = () => this.setState({ isOpen: !this.state.isOpen });
 
   render() {
-    const { display, shortUrl, onCopyToClipboard, selectedServer, shortCode } = this.props;
+    const { shortUrl, onCopyToClipboard, selectedServer, shortCode } = this.props;
     const serverId = selectedServer ? selectedServer.id : '';
-    const baseClass = 'short-urls-row-menu__dropdown-toggle';
-    const toggleClass = !display ? `${baseClass} short-urls-row-menu__dropdown-toggle--hidden` : baseClass;
     const toggleQrCode = () => this.setState({isQrModalOpen: !this.state.isQrModalOpen});
     const togglePreview = () => this.setState({isPreviewOpen: !this.state.isPreviewOpen});
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
-        <DropdownToggle color="white" size="sm" caret className={toggleClass}>
+        <DropdownToggle color="white" size="sm" caret className="short-urls-row-menu__dropdown-toggle">
           &nbsp;<FontAwesomeIcon icon={menuIcon}/>&nbsp;
         </DropdownToggle>
         <DropdownMenu>

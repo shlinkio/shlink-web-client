@@ -1,11 +1,12 @@
-@import "../../utils/base";
-@import "../../utils/mixins/vertical-align";
+@import '../../utils/base';
+@import '../../utils/mixins/vertical-align';
 
 .short-urls-row {
   @media (max-width: $smMax) {
     display: block;
     margin-bottom: 10px;
     border-bottom: 1px solid $lightGrey;
+    position: relative;
   }
 }
 
@@ -25,7 +26,11 @@
     }
 
     &:last-child {
-      display: none;
+      position: absolute;
+      top: 3px;
+      right: .5rem;
+      width: auto;
+      padding: 0;
     }
   }
 }
