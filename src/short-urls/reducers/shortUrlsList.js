@@ -5,7 +5,7 @@ const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 
 const initialState = {
-  shortUrls: [],
+  shortUrls: {},
   loading: true,
 };
 

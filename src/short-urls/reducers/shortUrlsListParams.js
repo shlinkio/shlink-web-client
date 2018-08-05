@@ -2,7 +2,7 @@ import { LIST_SHORT_URLS } from './shortUrlsList';
 
 const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
 
-const defaultState = { page: 1 };
+const defaultState = { page: '1' };
 
 export default function reducer(state = defaultState, action) {
   switch (action.type) {
