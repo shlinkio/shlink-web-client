@@ -19,7 +19,7 @@ export class MenuLayout extends React.Component {
     return (
       <div className="row">
         <AsideMenu {...this.props} />
-        <div className="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
+        <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3">
           <Switch>
             <Route
               exact

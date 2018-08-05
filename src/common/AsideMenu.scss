@@ -1,18 +1,22 @@
 @import "../utils/base";
-@import "../utils/mixins/border-radius";
 
 .aside-menu {
-  position: fixed !important;
-  top: $headerHeight;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  display: block;
-  padding: 30px 15px 15px;
-  overflow-x: hidden;
-  overflow-y: auto;
   background-color: #f7f7f7;
-  border-right: 1px solid #eee;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  @media (min-width: $mdMin) {
+    position: fixed !important;
+    top: $headerHeight;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    display: block;
+    padding: 30px 15px 15px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-right: 1px solid #eee;
+  }
 }
 
 .aside-menu__nav {
@@ -47,9 +51,7 @@
 
 .aside-menu__item--danger {
   color: $dangerColor;
-  margin: 0;
   margin-top: auto;
-  @include border-radius(4px);
 }
 .aside-menu__item--danger:hover {
   color: #fff;

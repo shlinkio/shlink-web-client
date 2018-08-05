@@ -15,7 +15,7 @@ export default function AsideMenu({ selectedServer, history }) {
   };
 
   return (
-    <aside className="aside-menu col-md-2 col-sm-2">
+    <aside className="aside-menu col-lg-2 col-md-3">
       <nav className="nav flex-column aside-menu__nav">
         <NavLink
           className="aside-menu__item"
