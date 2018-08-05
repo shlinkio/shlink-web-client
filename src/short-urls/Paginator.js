@@ -30,7 +30,7 @@ export default class Paginator extends React.Component {
     };
 
     return (
-      <Pagination>
+      <Pagination listClassName="flex-wrap">
         <PaginationItem disabled={currentPage === 1}>
           <PaginationLink
             previous
