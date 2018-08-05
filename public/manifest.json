@@ -3,12 +3,32 @@
   "name": "Shlink web client",
   "icons": [
     {
-      "src": "./favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "./icons/shlink-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "./icons/shlink-64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "./icons/shlink-32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
+    {
+      "src": "./icons/shlink-24.png",
+      "type": "image/png",
+      "sizes": "24x24"
+    },
+    {
+      "src": "./icons/shlink-16.png",
+      "type": "image/png",
+      "sizes": "16x16"
     }
   ],
-  "start_url": "./index.html",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#4696e5",
   "background_color": "#4696e5"
