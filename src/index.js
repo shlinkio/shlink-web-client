@@ -8,6 +8,7 @@ import ReduxThunk from 'redux-thunk';
 
 import App from './App';
 import './index.scss';
+import ScrollToTop from './common/ScrollToTop'
 import reducers from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -21,7 +22,9 @@ const store = createStore(reducers, composeEnhancers(
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <ScrollToTop>
+        <App />
+      </ScrollToTop>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
