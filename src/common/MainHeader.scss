@@ -1,0 +1,15 @@
+@import '../utils/base';
+
+.main-header.main-header {
+  background-color: $mainColor !important;
+  color: white;
+
+  .navbar-brand {
+    color: inherit !important;
+  }
+}
+
+.main-header__brand-logo {
+  width: 26px;
+  margin-right: 5px;
+}

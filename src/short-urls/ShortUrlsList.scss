@@ -1,0 +1,15 @@
+@import '../utils/base';
+
+.short-urls-list__header {
+  @media (max-width: $smMax) {
+    display: none;
+  }
+}
+
+.short-urls-list__header--with-action {
+  cursor: pointer;
+}
+
+.short-urls-list__header-icon {
+  margin-right: 5px;
+}

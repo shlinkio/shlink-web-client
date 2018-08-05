@@ -1,19 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Switch } from 'react-router-dom';
 import './App.scss';
+import Home from './common/Home';
+import MainHeader from './common/MainHeader';
+import MenuLayout from './common/MenuLayout';
+import CreateServer from './servers/CreateServer';
 
 export default class App extends React.Component {
-    render() {
-        return (
-            <div className="App">
-                <header className="App-header">
-                    <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
-                </header>
-                <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </p>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="container-fluid">
+        <MainHeader/>
+
+        <div className="app">
+          <Switch>
+            <Route exact path="/server/create" component={CreateServer} />
+            <Route exact path="/" component={Home} />
+            <Route path="/server/:serverId" component={MenuLayout} />
+          </Switch>
+        </div>
+      </div>
+    );
+  }
 }

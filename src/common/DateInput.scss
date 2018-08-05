@@ -1,0 +1,16 @@
+@import '../utils/mixins/vertical-align';
+
+.date-input-container {
+  position: relative;
+}
+
+.date-input-container__input {
+  padding-right: 35px !important;
+  background-color: #fff !important;
+}
+
+.date-input-container__icon {
+  @include vertical-align();
+  right: 15px;
+  cursor: pointer;
+}

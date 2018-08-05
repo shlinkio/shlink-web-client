@@ -25,6 +25,7 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
+const AdmZip = require('adm-zip');
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
@@ -98,7 +99,8 @@ measureFileSizesBeforeBuild(paths.appBuild)
       printBuildError(err);
       process.exit(1);
     }
-  );
+  )
+  .then(zipDist);
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
@@ -147,4 +149,29 @@ function copyPublicFolder() {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
+}
+
+function zipDist() {
+  // If no version was provided, do nothing
+  if (process.argv.length < 3) {
+    return;
+  }
+
+  const version = process.argv[2];
+  const versionFileName = `./dist/shlink-web-client_${version}_dist.zip`;
+
+  console.log(chalk.cyan(`Generating dist file for version ${chalk.bold(version)}...`));
+  const zip = new AdmZip();
+
+  try {
+    if (fs.existsSync(versionFileName)) {
+      fs.unlink(versionFileName);
+    }
+    zip.addLocalFolder('./build', `shlink-web-client_${version}_dist`);
+    zip.writeZip(versionFileName);
+    console.log(chalk.green('Dist file properly generated'));
+  } catch (e) {
+    console.log(chalk.red('An error occurred while generating dist file'));
+    console.log(e);
+  }
 }

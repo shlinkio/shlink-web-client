@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker exec -it shlink_web_client_node /bin/sh -c "cd /home/shlink/www && $*"

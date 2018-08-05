@@ -1,0 +1,21 @@
+.tag {
+  color: #fff;
+  cursor: pointer;
+}
+
+.tag:not(:last-child) {
+  margin-right: 3px;
+}
+
+.tag__close-selected-tag.tag__close-selected-tag {
+  font-size: inherit;
+  color: inherit;
+  opacity: 1;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.tag__close-selected-tag.tag__close-selected-tag:hover {
+  color: inherit;
+  opacity: 1;
+}

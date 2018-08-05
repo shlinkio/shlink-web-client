@@ -1,5 +1,28 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
+@import './utils/base';
+
+* {
+  outline: none !important;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.bg-main {
+  background-color: $mainColor !important;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+.dropdown-item.active {
+  @extend .bg-main;
+}
+
+.short-urls-container {
+  padding: 20px 0;
+
+  @media (min-width: $mdMin) {
+    padding: 30px 30px 30px 20px;
+  }
 }

@@ -1,0 +1,52 @@
+@import '../../utils/base';
+@import '../../utils/mixins/vertical-align';
+
+.short-urls-row {
+  @media (max-width: $smMax) {
+    display: block;
+    margin-bottom: 10px;
+    border-bottom: 1px solid $lightGrey;
+    position: relative;
+  }
+}
+
+.short-urls-row__cell.short-urls-row__cell {
+  vertical-align: middle !important;
+
+  @media (max-width: $smMax) {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: .5rem;
+    font-size: .9rem;
+
+    &:before {
+      content: attr(data-th);
+      font-weight: bold;
+    }
+
+    &:last-child {
+      position: absolute;
+      top: 3px;
+      right: .5rem;
+      width: auto;
+      padding: 0;
+    }
+  }
+}
+.short-urls-row__cell--break {
+  word-break: break-all;
+}
+
+.short-urls-row__cell--relative {
+  position: relative;
+}
+
+.short-urls-row__copy-hint {
+  @include vertical-align();
+  right: 100%;
+
+  @media (max-width: $smMax) {
+    right: calc(100% + 10px);
+  }
+}
