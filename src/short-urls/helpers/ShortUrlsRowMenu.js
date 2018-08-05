@@ -24,7 +24,7 @@ export class ShortUrlsRowMenu extends React.Component {
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
-        <DropdownToggle color="white" size="sm" caret className="short-urls-row-menu__dropdown-toggle">
+        <DropdownToggle size="sm" caret className="short-urls-row-menu__dropdown-toggle btn-outline-secondary">
           &nbsp;<FontAwesomeIcon icon={menuIcon}/>&nbsp;
         </DropdownToggle>
         <DropdownMenu>

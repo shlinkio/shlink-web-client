@@ -45,4 +45,8 @@
 .short-urls-row__copy-hint {
   @include vertical-align();
   right: 100%;
+
+  @media (max-width: $smMax) {
+    right: calc(100% + 10px);
+  }
 }
