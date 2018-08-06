@@ -19,5 +19,3 @@ RUN cd ./shlink-web-client && \
 
     # Delete and uninstall build tools
     yarn cache clean && apk del yarn && apk del nodejs
-
-WORKDIR /usr/share/nginx/html
