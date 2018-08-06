@@ -1,13 +1,12 @@
 version: '3'
 
 services:
-    shlink_web_client_node:
-        container_name: shlink_web_client_node
-        build:
-            context: .
-            dockerfile: ./Dockerfile
-        volumes:
-            - ./:/home/shlink/www
-        ports:
-            - "3000:3000"
-            - "56745:56745"
+  shlink_web_client_node:
+    container_name: shlink_web_client_node
+    image: node:10.4.1-alpine
+    command: /bin/sh -c "cd /home/shlink/www && yarn install && yarn start"
+    volumes:
+      - ./:/home/shlink/www
+    ports:
+      - "3000:3000"
+      - "56745:56745"
