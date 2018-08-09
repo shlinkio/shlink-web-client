@@ -48,6 +48,7 @@ export class CreateShortUrl extends React.Component {
         selected={this.state[id]}
         placeholderText={placeholder}
         onChange={date => this.setState({ [id]: date })}
+        isClearable
         {...props}
       />;
     const formatDate = date => isNil(date) ? date : date.format();

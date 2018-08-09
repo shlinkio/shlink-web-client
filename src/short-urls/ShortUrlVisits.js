@@ -150,6 +150,7 @@ export class ShortUrlsVisits extends React.Component {
               <DateInput
                 selected={this.state.startDate}
                 placeholderText="Since"
+                isClearable
                 onChange={date => this.setState({ startDate: date }, () => this.loadVisits())}
               />
             </div>
@@ -157,6 +158,7 @@ export class ShortUrlsVisits extends React.Component {
               <DateInput
                 selected={this.state.endDate}
                 placeholderText="Until"
+                isClearable
                 onChange={date => this.setState({ endDate: date }, () => this.loadVisits())}
                 className="short-url-visits__date-input"
               />
