@@ -1,3 +1,7 @@
+@import '../utils/base';
+
 .short-url-visits__date-input {
-  margin-left: 10px;
+  @media(max-width: $smMax) {
+    margin-top: 0.5rem;
+  }
 }

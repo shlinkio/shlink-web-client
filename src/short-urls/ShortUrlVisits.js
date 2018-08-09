@@ -1,15 +1,15 @@
-import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { isEmpty, mapObjIndexed, pick } from 'ramda';
-import React from 'react';
-import { Doughnut, HorizontalBar } from 'react-chartjs-2';
-import Moment from 'react-moment';
-import { connect } from 'react-redux';
-import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
-import DateInput from '../common/DateInput';
-import VisitsParser from '../visits/services/VisitsParser';
-import { getShortUrlVisits } from './reducers/shortUrlVisits';
-import './ShortUrlVisits.scss';
+import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { isEmpty, mapObjIndexed, pick } from 'ramda'
+import React from 'react'
+import { Doughnut, HorizontalBar } from 'react-chartjs-2'
+import Moment from 'react-moment'
+import { connect } from 'react-redux'
+import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap'
+import DateInput from '../common/DateInput'
+import VisitsParser from '../visits/services/VisitsParser'
+import { getShortUrlVisits } from './reducers/shortUrlVisits'
+import './ShortUrlVisits.scss'
 
 const MutedMessage = ({ children }) =>
   <div className="col-md-10 offset-md-1">
@@ -144,23 +144,24 @@ export class ShortUrlsVisits extends React.Component {
           </Card>
         </header>
 
-        <section>
-          <form onSubmit={e => e.preventDefault()} className="form-inline mt-4 float-md-right">
-            <label>Period</label>
-            <DateInput
-              selected={this.state.startDate}
-              placeholderText="Since"
-              onChange={date => this.setState({ startDate: date }, () => this.loadVisits())}
-              className="short-url-visits__date-input"
-            />
-            <DateInput
-              selected={this.state.endDate}
-              placeholderText="Until"
-              onChange={date => this.setState({ endDate: date }, () => this.loadVisits())}
-              className="short-url-visits__date-input"
-            />
-          </form>
-          <div className="clearfix" />
+        <section className="mt-4">
+          <div className="row">
+            <div className="col-xl-3 col-lg-4 col-md-6 offset-xl-6 offset-lg-4">
+              <DateInput
+                selected={this.state.startDate}
+                placeholderText="Since"
+                onChange={date => this.setState({ startDate: date }, () => this.loadVisits())}
+              />
+            </div>
+            <div className="col-xl-3 col-lg-4 col-md-6">
+              <DateInput
+                selected={this.state.endDate}
+                placeholderText="Until"
+                onChange={date => this.setState({ endDate: date }, () => this.loadVisits())}
+                className="short-url-visits__date-input"
+              />
+            </div>
+          </div>
         </section>
 
         <section>
