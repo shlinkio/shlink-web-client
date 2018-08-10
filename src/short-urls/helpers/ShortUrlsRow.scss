@@ -27,10 +27,11 @@
 
     &:last-child {
       position: absolute;
-      top: 3px;
+      top: 3.5px;
       right: .5rem;
       width: auto;
       padding: 0;
+      border: none;
     }
   }
 }

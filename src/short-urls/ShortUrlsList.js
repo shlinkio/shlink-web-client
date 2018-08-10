@@ -1,7 +1,7 @@
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { isEmpty, pick } from 'ramda';
+import { head, isEmpty, pick } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { ShortUrlsRow } from './helpers/ShortUrlsRow';
@@ -20,10 +20,10 @@ export class ShortUrlsList extends React.Component {
   constructor(props) {
     super(props);
 
-    const orderBy = props.shortUrlsListParams.orderBy;
+    const { orderBy } = props.shortUrlsListParams;
     this.state = {
-      orderField: orderBy ? Object.keys(orderBy)[0] : 'dateCreated',
-      orderDir: orderBy ? Object.values(orderBy)[0] : 'ASC',
+      orderField: orderBy ? head(Object.keys(orderBy)) : undefined,
+      orderDir: orderBy ? head(Object.values(orderBy)) : undefined,
     }
   }
 
@@ -33,13 +33,24 @@ export class ShortUrlsList extends React.Component {
   }
 
   render() {
+    const determineOrderDir = field => {
+      if (this.state.orderField !== field) {
+        return 'ASC';
+      }
+
+      const newOrderMap = {
+        'ASC': 'DESC',
+        'DESC': undefined,
+      };
+      return this.state.orderDir ? newOrderMap[this.state.orderDir] : 'ASC';
+    }
     const orderBy = field => {
-      const newOrderDir = this.state.orderField !== field ? 'ASC' : (this.state.orderDir === 'DESC' ? 'ASC' : 'DESC');
+      const newOrderDir = determineOrderDir(field);
       this.setState({ orderField: field, orderDir: newOrderDir });
       this.refreshList({ orderBy: { [field]: newOrderDir } })
     };
     const renderOrderIcon = field => {
-      if (this.state.orderField !== field) {
+      if (this.state.orderField !== field || this.state.orderDir === undefined) {
           return null;
       }
 
