@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import TagsInput from 'react-tagsinput'
 import { Collapse } from 'reactstrap';
 import DateInput from '../common/DateInput';
-import './CreateShortUrl.scss';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
 
