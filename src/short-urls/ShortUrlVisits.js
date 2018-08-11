@@ -123,7 +123,7 @@ export class ShortUrlsVisits extends React.Component {
               <h2>
                 {
                   shortUrl.visitsCount &&
-                  <span className="badge badge-primary float-right">Visits: {shortUrl.visitsCount}</span>
+                  <span className="badge badge-main float-right">Visits: {shortUrl.visitsCount}</span>
                 }
                 Visit stats for <a target="_blank" href={shortLink}>{shortLink}</a>
               </h2>
