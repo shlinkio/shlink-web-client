@@ -1,0 +1,54 @@
+.react-tagsinput {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: .25rem;
+  overflow: hidden;
+  min-height: calc(2.6rem + 2px);
+  padding: 6px 0 0 6px;
+}
+
+.react-tagsinput--focused {
+  border-color: #80bdff;
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+  -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+  -o-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+.react-tagsinput-tag {
+  font-size: 1rem;
+  background-color: #f1f1f1;
+  border-radius: 2px;
+  border: 1px solid #d1d1d1;
+  display: inline-block;
+  font-weight: 400;
+  margin: 0 5px 6px 0;
+  padding: 6px 8px;
+  line-height: 1;
+}
+.react-tagsinput-tag:hover {
+  border-color: #b1b1b1;
+}
+
+.react-tagsinput-remove {
+  cursor: pointer;
+  font-weight: bold;
+  margin-left: 8px;
+}
+
+.react-tagsinput-tag a::before {
+  content: "\2715";
+  color: #aaa;
+}
+
+.react-tagsinput-input {
+  background: transparent;
+  border: 0;
+  outline: none;
+  padding: 3px 5px;
+  width: 155px;
+  margin-bottom: 6px;
+}

@@ -1,12 +1,11 @@
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { assoc, dissoc, isNil, pick, pipe, pluck, replace } from 'ramda';
+import { assoc, dissoc, isNil, pick, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import ReactTags from 'react-tag-autocomplete';
+import TagsInput from 'react-tagsinput'
 import { Collapse } from 'reactstrap';
-import '../../node_modules/react-datepicker/dist/react-datepicker.css';
 import DateInput from '../common/DateInput';
 import './CreateShortUrl.scss';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
@@ -26,14 +25,7 @@ export class CreateShortUrl extends React.Component {
   render() {
     const { createShortUrl, shortUrlCreationResult, resetCreateShortUrl } = this.props;
 
-    const addTag = tag => this.setState({
-      tags: [].concat(this.state.tags, assoc('name', replace(/ /g, '-', tag.name), tag))
-    });
-    const removeTag = i => {
-      const tags = this.state.tags.slice(0);
-      tags.splice(i, 1);
-      this.setState({ tags });
-    };
+    const changeTags = tags => this.setState({ tags: tags.map(pipe(trim, replace(/ /g, '-'))) });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) =>
       <input
         className="form-control"
@@ -56,7 +48,6 @@ export class CreateShortUrl extends React.Component {
       e.preventDefault();
       createShortUrl(pipe(
         dissoc('moreOptionsVisible'), // Remove moreOptionsVisible property
-        assoc('tags', pluck('name', this.state.tags)), // Map tags array to use only their names
         assoc('validSince', formatDate(this.state.validSince)),
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
@@ -78,12 +69,11 @@ export class CreateShortUrl extends React.Component {
 
           <Collapse isOpen={this.state.moreOptionsVisible}>
             <div className="form-group">
-              <ReactTags
-                tags={this.state.tags}
-                handleAddition={addTag}
-                handleDelete={removeTag}
-                allowNew={true}
-                placeholder="Add tags you want to apply to the URL"
+              <TagsInput
+                value={this.state.tags}
+                onChange={changeTags}
+                onlyUnique
+                inputProps={{ placeholder: 'Add tags to the URL' }}
               />
             </div>
 
