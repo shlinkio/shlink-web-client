@@ -1,4 +1,5 @@
 @import '../utils/base';
+@import '../utils/mixins/vertical-align';
 
 .home-container {
   text-align: center;
@@ -11,4 +12,21 @@
 
 .home-container__title {
   font-size: 36px;
+}
+
+.home-container__servers-list {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.home-container__servers-item.home-container__servers-item {
+  text-align: left;
+  position: relative;
+  padding: .75rem 2.5rem 0.75rem 1rem;
+}
+
+.home-container__servers-item-icon {
+  @include vertical-align();
+  right: 1rem;
 }
