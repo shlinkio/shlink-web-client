@@ -71,8 +71,9 @@ export class CreateShortUrl extends React.Component {
               <TagsInput
                 value={this.state.tags}
                 onChange={changeTags}
-                onlyUnique
                 inputProps={{ placeholder: 'Add tags to the URL' }}
+                onlyUnique
+                addOnBlur // FIXME Workaround to be able to add tags on Android
               />
             </div>
 

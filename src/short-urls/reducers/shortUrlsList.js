@@ -1,5 +1,4 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
-import { curry } from 'ramda';
 
 const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
@@ -41,4 +40,4 @@ export const _listShortUrls = (ShlinkApiClient, params = {}) => async dispatch =
     dispatch({ type: LIST_SHORT_URLS_ERROR, params });
   }
 };
-export const listShortUrls = curry(_listShortUrls)(ShlinkApiClient);
+export const listShortUrls = (params = {}) => _listShortUrls(ShlinkApiClient, params);
