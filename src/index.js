@@ -6,6 +6,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, compose, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
 
+import '../node_modules/react-datepicker/dist/react-datepicker.css';
+import './common/react-tagsinput.scss';
+
 import App from './App';
 import './index.scss';
 import ScrollToTop from './common/ScrollToTop'

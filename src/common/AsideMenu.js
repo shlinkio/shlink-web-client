@@ -5,14 +5,10 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import DeleteServerButton from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
+import PropTypes from 'prop-types';
 
-export default function AsideMenu({ selectedServer, history }) {
+export default function AsideMenu({ selectedServer }) {
   const serverId = selectedServer ? selectedServer.id : '';
-  const isListShortUrlsActive = (match, { pathname }) => {
-    // FIXME. Should use the 'match' params, but they are not being properly resolved. Investigate
-    const serverIdFromPathname = pathname.split('/')[2];
-    return serverIdFromPathname === serverId && pathname.indexOf('list-short-urls') !== -1;
-  };
 
   return (
     <aside className="aside-menu col-lg-2 col-md-3">
@@ -21,7 +17,6 @@ export default function AsideMenu({ selectedServer, history }) {
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
           to={`/server/${serverId}/list-short-urls/1`}
-          isActive={isListShortUrlsActive}
         >
           <FontAwesomeIcon icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>
@@ -37,10 +32,18 @@ export default function AsideMenu({ selectedServer, history }) {
 
         <DeleteServerButton
           className="aside-menu__item aside-menu__item--danger"
-          history={history}
           server={selectedServer}
         />
       </nav>
     </aside>
   );
 }
+
+AsideMenu.propTypes = {
+  selectedServer: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    url: PropTypes.string,
+    apiKey: PropTypes.string,
+  }),
+};

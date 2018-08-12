@@ -1,9 +1,12 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { compose } from 'redux';
 import { deleteServer } from './reducers/server';
 
-export const DeleteServerModal = ({ server, deleteServer, toggle, history, isOpen }) => {
+export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
     deleteServer(server);
     toggle();
@@ -15,7 +18,10 @@ export const DeleteServerModal = ({ server, deleteServer, toggle, history, isOpe
       <ModalHeader toggle={toggle}><span className="text-danger">Delete server</span></ModalHeader>
       <ModalBody>
         <p>Are you sure you want to delete server <b>{server ? server.name : ''}</b>?</p>
-        <p>No data will be deleted, only the access to that server will be removed from this host. You can create it again at any moment.</p>
+        <p>
+          No data will be deleted, only the access to that server will be removed from this host.
+          You can create it again at any moment.
+        </p>
       </ModalBody>
       <ModalFooter>
         <button className="btn btn-link" onClick={toggle}>Cancel</button>
@@ -25,4 +31,18 @@ export const DeleteServerModal = ({ server, deleteServer, toggle, history, isOpe
   );
 };
 
-export default connect(null, { deleteServer })(DeleteServerModal);
+DeleteServerModal.propTypes = {
+  toggle: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  server: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    url: PropTypes.string,
+    apiKey: PropTypes.string,
+  }),
+};
+
+export default compose(
+  withRouter,
+  connect(null, { deleteServer })
+)(DeleteServerModal);

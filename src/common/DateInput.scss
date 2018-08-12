@@ -1,4 +1,5 @@
 @import '../utils/mixins/vertical-align';
+@import '../utils/base';
 
 .date-input-container {
   position: relative;
@@ -11,6 +12,18 @@
 
 .date-input-container__icon {
   @include vertical-align();
-  right: 15px;
+  right: .75rem;
   cursor: pointer;
+}
+
+.react-datepicker__close-icon.react-datepicker__close-icon {
+  @include vertical-align();
+  right: 0;
+}
+
+.react-datepicker__close-icon.react-datepicker__close-icon::after {
+  right: .75rem;
+  line-height: 11px;
+  background-color: #333;
+  font-size: 14px;
 }

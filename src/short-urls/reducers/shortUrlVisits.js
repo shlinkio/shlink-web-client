@@ -1,4 +1,5 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
+import { curry } from 'ramda';
 
 const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
 const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_ERROR';
@@ -36,7 +37,7 @@ export default function dispatch (state = initialState, action) {
   }
 }
 
-export const getShortUrlVisits = (shortCode, dates) => dispatch => {
+export const _getShortUrlVisits = (ShlinkApiClient, shortCode, dates) => dispatch => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
   Promise.all([
@@ -46,3 +47,4 @@ export const getShortUrlVisits = (shortCode, dates) => dispatch => {
     .then(([visits, shortUrl]) => dispatch({ visits, shortUrl, type: GET_SHORT_URL_VISITS }))
     .catch(() => dispatch({ type: GET_SHORT_URL_VISITS_ERROR }));
 };
+export const getShortUrlVisits = curry(_getShortUrlVisits)(ShlinkApiClient);

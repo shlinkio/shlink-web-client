@@ -7,7 +7,7 @@ export default class DeleteServerButton extends React.Component {
   state = { isModalOpen: false };
 
   render() {
-    const { history, server } = this.props;
+    const { server } = this.props;
 
     return [
       (
@@ -24,7 +24,6 @@ export default class DeleteServerButton extends React.Component {
         <DeleteServerModal
           isOpen={this.state.isModalOpen}
           toggle={() => this.setState({ isModalOpen: !this.state.isModalOpen })}
-          history={history}
           server={server}
           key="deleteServerModal"
         />

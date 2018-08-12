@@ -30,7 +30,7 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const listShortUrls = (params = {}) => async dispatch => {
+export const _listShortUrls = (ShlinkApiClient, params = {}) => async dispatch => {
   dispatch({ type: LIST_SHORT_URLS_START });
 
   try {
@@ -40,3 +40,4 @@ export const listShortUrls = (params = {}) => async dispatch => {
     dispatch({ type: LIST_SHORT_URLS_ERROR, params });
   }
 };
+export const listShortUrls = (params = {}) => _listShortUrls(ShlinkApiClient, params);

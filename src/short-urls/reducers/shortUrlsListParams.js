@@ -1,6 +1,6 @@
 import { LIST_SHORT_URLS } from './shortUrlsList';
 
-const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
+export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
 
 const defaultState = { page: '1' };
 

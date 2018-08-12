@@ -1,4 +1,5 @@
 import searchIcon from '@fortawesome/fontawesome-free-solid/faSearch';
+import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -41,7 +42,7 @@ export class SearchBar extends React.Component {
 
         {!isEmpty(selectedTags) && (
           <h4 className="search-bar__selected-tag mt-2">
-            <small>Filtering by tags:</small>
+            <FontAwesomeIcon icon={tagsIcon} className="search-bar__tags-icon" />
             &nbsp;
             {selectedTags.map(tag => <Tag
               text={tag}

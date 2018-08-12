@@ -26,3 +26,13 @@
     padding: 30px 30px 30px 20px;
   }
 }
+
+.badge-main {
+  color: #fff;
+  background-color: $mainColor;
+}
+
+.react-datepicker__input-container,
+.react-datepicker-wrapper {
+  display: block !important;
+}

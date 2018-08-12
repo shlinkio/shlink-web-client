@@ -16,9 +16,11 @@ export class MenuLayout extends React.Component {
   }
 
   render() {
+    const { selectedServer } = this.props;
+
     return (
       <div className="row">
-        <AsideMenu {...this.props} />
+        <AsideMenu selectedServer={selectedServer} />
         <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3">
           <Switch>
             <Route

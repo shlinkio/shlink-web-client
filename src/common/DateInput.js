@@ -3,6 +3,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import './DateInput.scss';
+import { isNil } from 'ramda';
 
 export default class DateInput extends React.Component {
   constructor(props) {
@@ -11,6 +12,9 @@ export default class DateInput extends React.Component {
   }
 
   render() {
+    const { isClearable, selected } = this.props;
+    const showCalendarIcon = !isClearable || isNil(selected);
+
     return (
       <div className="date-input-container">
         <DatePicker
@@ -20,11 +24,13 @@ export default class DateInput extends React.Component {
           readOnly
           ref={this.inputRef}
         />
-        <FontAwesomeIcon
-          icon={calendarIcon}
-          className="date-input-container__icon"
-          onClick={() => this.inputRef.current.input.focus()}
-        />
+        {showCalendarIcon && (
+          <FontAwesomeIcon
+            icon={calendarIcon}
+            className="date-input-container__icon"
+            onClick={() => this.inputRef.current.input.focus()}
+          />
+        )}
       </div>
     );
   }
