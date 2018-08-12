@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom --colors"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -70,6 +70,7 @@
     "react-dev-utils": "^5.0.1",
     "resolve": "1.6.0",
     "sass-loader": "^7.0.1",
+    "sinon": "^6.1.5",
     "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",

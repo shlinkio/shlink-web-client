@@ -28,7 +28,12 @@ export class Home extends React.Component {
         {hasServers && (
           <ListGroup className="home__servers-list">
             {servers.map(({ name, id }) => (
-              <ListGroupItem tag={Link} to={`/server/${id}/list-short-urls/1`} className="home__servers-item">
+              <ListGroupItem
+                key={id}
+                tag={Link}
+                to={`/server/${id}/list-short-urls/1`}
+                className="home__servers-item"
+              >
                 {name}
                 <FontAwesomeIcon icon={chevronIcon} className="home__servers-item-icon" />
               </ListGroupItem>
