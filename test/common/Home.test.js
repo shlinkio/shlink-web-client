@@ -1,8 +1,8 @@
-import { shallow } from 'enzyme'
-import { values } from 'ramda'
-import React from 'react'
-import * as sinon from 'sinon'
-import { Home } from '../../src/common/Home'
+import { shallow } from 'enzyme';
+import { values } from 'ramda';
+import React from 'react';
+import * as sinon from 'sinon';
+import { Home } from '../../src/common/Home';
 
 describe('<Home />', () => {
   let wrapped;

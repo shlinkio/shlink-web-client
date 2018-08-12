@@ -1,12 +1,13 @@
-import listIcon from '@fortawesome/fontawesome-free-solid/faBars'
-import createIcon from '@fortawesome/fontawesome-free-solid/faPlus'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import React from 'react'
-import { NavLink } from 'react-router-dom'
-import DeleteServerButton from '../servers/DeleteServerButton'
-import './AsideMenu.scss'
+import listIcon from '@fortawesome/fontawesome-free-solid/faBars';
+import createIcon from '@fortawesome/fontawesome-free-solid/faPlus';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import DeleteServerButton from '../servers/DeleteServerButton';
+import './AsideMenu.scss';
+import PropTypes from 'prop-types';
 
-export default function AsideMenu({ selectedServer, history }) {
+export default function AsideMenu({ selectedServer }) {
   const serverId = selectedServer ? selectedServer.id : '';
 
   return (
@@ -31,10 +32,18 @@ export default function AsideMenu({ selectedServer, history }) {
 
         <DeleteServerButton
           className="aside-menu__item aside-menu__item--danger"
-          history={history}
           server={selectedServer}
         />
       </nav>
     </aside>
   );
 }
+
+AsideMenu.propTypes = {
+  selectedServer: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    url: PropTypes.string,
+    apiKey: PropTypes.string,
+  }),
+};
