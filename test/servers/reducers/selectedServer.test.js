@@ -1,4 +1,4 @@
-import {
+import reduce, {
   _selectServer,
   RESET_SELECTED_SERVER,
   resetSelectedServer,
@@ -8,13 +8,28 @@ import * as sinon from 'sinon';
 import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
 
 describe('selectedServerReducer', () => {
+  describe('reduce', () => {
+    it('returns default when action is not handled', () =>
+      expect(reduce(null, { type: 'unknown' })).toEqual(null)
+    );
+
+    it('returns default when action is RESET_SELECTED_SERVER', () =>
+      expect(reduce(null, { type: RESET_SELECTED_SERVER })).toEqual(null)
+    );
+
+    it('returns selected server when action is SELECT_SERVER', () => {
+      const selectedServer = { id: 'abc123' };
+      expect(reduce(null, { type: SELECT_SERVER, selectedServer })).toEqual(selectedServer);
+    });
+  });
+
   describe('resetSelectedServer', () => {
     it('returns proper action', () => {
       expect(resetSelectedServer()).toEqual({ type: RESET_SELECTED_SERVER });
     });
   });
 
-  describe('selectedServer', () => {
+  describe('selectServer', () => {
     const ShlinkApiClientMock = {
       setConfig: sinon.spy()
     };
