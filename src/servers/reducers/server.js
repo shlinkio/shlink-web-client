@@ -1,8 +1,9 @@
 import ServersService from '../services/ServersService';
+import { curry } from 'ramda';
 
-const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
-const CREATE_SERVER = 'shlink/servers/CREATE_SERVER';
-const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
+export const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
+export const CREATE_SERVER = 'shlink/servers/CREATE_SERVER';
+export const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
 
 export default function reducer(state = {}, action) {
   switch (action.type) {
@@ -17,19 +18,20 @@ export default function reducer(state = {}, action) {
   }
 }
 
-export const listServers = () => {
-  return {
-    type: FETCH_SERVERS,
-    servers: ServersService.listServers(),
-  };
-};
+export const _listServers = ServersService => ({
+  type: FETCH_SERVERS,
+  servers: ServersService.listServers(),
+});
+export const listServers = () => _listServers(ServersService);
 
-export const createServer = server => {
+export const _createServer = (ServersService, server) => {
   ServersService.createServer(server);
-  return listServers();
+  return _listServers(ServersService);
 };
+export const createServer = curry(_createServer)(ServersService);
 
-export const deleteServer = server => {
+export const _deleteServer = (ServersService, server) => {
   ServersService.deleteServer(server);
-  return listServers();
+  return _listServers(ServersService);
 };
+export const deleteServer = curry(_deleteServer)(ServersService);
