@@ -24,11 +24,13 @@ export default class DateInput extends React.Component {
           readOnly
           ref={this.inputRef}
         />
-        {showCalendarIcon && <FontAwesomeIcon
-          icon={calendarIcon}
-          className="date-input-container__icon"
-          onClick={() => this.inputRef.current.input.focus()}
-        />}
+        {showCalendarIcon && (
+          <FontAwesomeIcon
+            icon={calendarIcon}
+            className="date-input-container__icon"
+            onClick={() => this.inputRef.current.input.focus()}
+          />
+        )}
       </div>
     );
   }
