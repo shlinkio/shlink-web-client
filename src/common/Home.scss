@@ -1,7 +1,7 @@
 @import '../utils/base';
 @import '../utils/mixins/vertical-align';
 
-.home-container {
+.home {
   text-align: center;
   height: calc(100vh - #{$headerHeight});
   display: flex;
@@ -10,23 +10,23 @@
   flex-flow: column;
 }
 
-.home-container__title {
+.home__title {
   font-size: 36px;
 }
 
-.home-container__servers-list {
+.home__servers-list {
   margin-top: 1rem;
   width: 100%;
   max-width: 400px;
 }
 
-.home-container__servers-item.home-container__servers-item {
+.home__servers-item.home__servers-item {
   text-align: left;
   position: relative;
   padding: .75rem 2.5rem 0.75rem 1rem;
 }
 
-.home-container__servers-item-icon {
+.home__servers-item-icon {
   @include vertical-align();
   right: 1rem;
 }

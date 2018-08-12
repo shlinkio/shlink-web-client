@@ -18,19 +18,19 @@ export class Home extends React.Component {
     const hasServers = !isEmpty(servers);
 
     return (
-      <div className="home-container">
-        <h1 className="home-container__title">Welcome to Shlink</h1>
-        <h5 className="home-container__intro">
+      <div className="home">
+        <h1 className="home__title">Welcome to Shlink</h1>
+        <h5 className="home__intro">
           {hasServers && <span>Please, select a server.</span>}
           {!hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
         </h5>
 
         {hasServers && (
-          <ListGroup className="home-container__servers-list">
+          <ListGroup className="home__servers-list">
             {servers.map(({ name, id }) => (
-              <ListGroupItem tag={Link} to={`/server/${id}/list-short-urls/1`} className="home-container__servers-item">
+              <ListGroupItem tag={Link} to={`/server/${id}/list-short-urls/1`} className="home__servers-item">
                 {name}
-                <FontAwesomeIcon icon={chevronIcon} className="home-container__servers-item-icon" />
+                <FontAwesomeIcon icon={chevronIcon} className="home__servers-item-icon" />
               </ListGroupItem>
             ))}
           </ListGroup>
