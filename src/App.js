@@ -9,7 +9,7 @@ import CreateServer from './servers/CreateServer';
 export default class App extends React.Component {
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid app-container">
         <MainHeader/>
 
         <div className="app">

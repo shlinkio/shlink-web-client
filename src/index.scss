@@ -1,5 +1,11 @@
 @import './utils/base';
 
+html,
+body,
+#root {
+  height: 100%
+}
+
 * {
   outline: none !important;
 }

@@ -1,21 +1,37 @@
 @import '../utils/base';
+@import '../utils/mixins/box-shadow';
+
+$asideMenuMobileWidth: 280px;
 
 .aside-menu {
   background-color: #f7f7f7;
-  padding-top: 10px;
+  position: fixed !important;
+  padding-top: 13px;
   padding-bottom: 10px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  z-index: 1050;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   @media (min-width: $mdMin) {
-    position: fixed !important;
     top: $headerHeight;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    display: block;
     padding: 30px 15px 15px;
-    overflow-x: hidden;
-    overflow-y: auto;
     border-right: 1px solid #eee;
+  }
+
+  @media (max-width: $smMax) {
+    width: $asideMenuMobileWidth !important;
+    @include box-shadow(-10px 0px 50px 11px rgba(0, 0, 0, 0.55));
+    transition: left 300ms;
+  }
+}
+
+.aside-menu--hidden {
+  @media (max-width: $smMax) {
+    left: -($asideMenuMobileWidth + 35px);
   }
 }
 

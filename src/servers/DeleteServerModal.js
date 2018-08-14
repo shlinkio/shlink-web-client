@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { compose } from 'redux';
 import { deleteServer } from './reducers/server';
+import { serverType } from './prop-types';
 
 export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
@@ -34,12 +35,7 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
 DeleteServerModal.propTypes = {
   toggle: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  server: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    apiKey: PropTypes.string,
-  }),
+  server: serverType,
 };
 
 export default compose(

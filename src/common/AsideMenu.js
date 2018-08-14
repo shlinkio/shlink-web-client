@@ -6,12 +6,23 @@ import { NavLink } from 'react-router-dom';
 import DeleteServerButton from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
 import PropTypes from 'prop-types';
+import { serverType } from '../servers/prop-types';
 
-export default function AsideMenu({ selectedServer }) {
+const defaultProps = {
+  className: '',
+  showOnMobile: false,
+};
+const propTypes = {
+  selectedServer: serverType,
+  className: PropTypes.string,
+  showOnMobile: PropTypes.bool,
+};
+
+export default function AsideMenu({ selectedServer, className, showOnMobile }) {
   const serverId = selectedServer ? selectedServer.id : '';
 
   return (
-    <aside className="aside-menu col-lg-2 col-md-3">
+    <aside className={`aside-menu ${!showOnMobile ? 'aside-menu--hidden' : ''} ${className}`}>
       <nav className="nav flex-column aside-menu__nav">
         <NavLink
           className="aside-menu__item"
@@ -39,11 +50,5 @@ export default function AsideMenu({ selectedServer }) {
   );
 }
 
-AsideMenu.propTypes = {
-  selectedServer: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    apiKey: PropTypes.string,
-  }),
-};
+AsideMenu.defaultProps = defaultProps;
+AsideMenu.propTypes = propTypes;

@@ -1,5 +1,10 @@
 @import './utils/base';
 
+.app-container {
+  height: 100%;
+}
+
 .app {
   padding-top: $headerHeight;
+  height: 100%;
 }

@@ -1,0 +1,12 @@
+.menu-layout__swipeable {
+  $offset: 15px;
+  height: 100%;
+  margin-right: -$offset;
+  margin-left: -$offset;
+  padding-left: $offset;
+  padding-right: $offset;
+}
+
+.menu-layout__swipeable-inner {
+  height: 100%;
+}

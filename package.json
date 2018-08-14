@@ -29,6 +29,7 @@
     "react-moment": "^0.7.6",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "react-swipeable": "^4.3.0",
     "react-tagsinput": "^3.19.0",
     "reactstrap": "^6.0.1",
     "redux": "^4.0.0",
