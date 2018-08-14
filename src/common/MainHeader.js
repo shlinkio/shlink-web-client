@@ -22,6 +22,9 @@ export class MainHeader extends React.Component {
   }
 
   render() {
+    const { location } = this.props;
+    const createServerPath = '/server/create';
+
     return (
       <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
         <NavbarBrand tag={Link} to="/">
@@ -31,7 +34,11 @@ export class MainHeader extends React.Component {
         <Collapse navbar isOpen={this.state.isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>
-              <NavLink tag={Link} to="/server/create">
+              <NavLink
+                tag={Link}
+                to={createServerPath}
+                active={location.pathname === createServerPath}
+              >
                 <FontAwesomeIcon icon={plusIcon}/>&nbsp; Add server
               </NavLink>
             </NavItem>
