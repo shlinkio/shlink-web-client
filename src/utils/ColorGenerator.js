@@ -1,4 +1,5 @@
 import Storage from './Storage';
+import PropTypes from 'prop-types';
 
 const buildRandomColor = () => {
   const letters = '0123456789ABCDEF';
@@ -28,5 +29,9 @@ export class ColorGenerator {
     return color;
   };
 }
+
+export const colorGeneratorType = PropTypes.shape({
+  getColorForKey: PropTypes.func,
+});
 
 export default new ColorGenerator(Storage);

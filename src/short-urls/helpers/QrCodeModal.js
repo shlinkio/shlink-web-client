@@ -4,7 +4,7 @@ import './QrCodeModal.scss';
 
 export default function QrCodeModal ({ url, toggle, isOpen }) {
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered={true}>
+    <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}>QR code for <a target="_blank" href={url}>{url}</a></ModalHeader>
       <ModalBody>
         <div className="text-center">

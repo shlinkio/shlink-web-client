@@ -4,11 +4,11 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { assoc, dissoc, isNil, pick, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import TagsInput from 'react-tagsinput'
 import { Collapse } from 'reactstrap';
 import DateInput from '../common/DateInput';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
+import TagsSelector from '../utils/TagsSelector';
 
 export class CreateShortUrl extends React.Component {
   state = {
@@ -68,13 +68,7 @@ export class CreateShortUrl extends React.Component {
 
           <Collapse isOpen={this.state.moreOptionsVisible}>
             <div className="form-group">
-              <TagsInput
-                value={this.state.tags}
-                onChange={changeTags}
-                inputProps={{ placeholder: 'Add tags to the URL' }}
-                onlyUnique
-                addOnBlur // FIXME Workaround to be able to add tags on Android
-              />
+              <TagsSelector tags={this.state.tags} onChange={changeTags} />
             </div>
 
             <div className="row">

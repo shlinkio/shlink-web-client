@@ -3,7 +3,7 @@
   border: 1px solid #ccc;
   border-radius: .25rem;
   overflow: hidden;
-  min-height: calc(2.6rem + 2px);
+  min-height: 2.6rem;
   padding: 6px 0 0 6px;
 }
 
@@ -21,16 +21,13 @@
 .react-tagsinput-tag {
   font-size: 1rem;
   background-color: #f1f1f1;
-  border-radius: 2px;
-  border: 1px solid #d1d1d1;
+  border-radius: 4px;
   display: inline-block;
   font-weight: 400;
   margin: 0 5px 6px 0;
   padding: 6px 8px;
   line-height: 1;
-}
-.react-tagsinput-tag:hover {
-  border-color: #b1b1b1;
+  color: #fff;
 }
 
 .react-tagsinput-remove {
@@ -41,7 +38,7 @@
 
 .react-tagsinput-tag a::before {
   content: "\2715";
-  color: #aaa;
+  color: #fff;
 }
 
 .react-tagsinput-input {

@@ -45,9 +45,9 @@ export class ShortUrlsRow extends React.Component {
             Copied short URL!
           </small>
           <ShortUrlsRowMenu
-            shortUrl={completeShortUrl}
+            completeShortUrl={completeShortUrl}
             selectedServer={selectedServer}
-            shortCode={shortUrl.shortCode}
+            shortUrl={shortUrl}
             onCopyToClipboard={() => {
               this.setState({ copiedToClipboard: true });
               setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);

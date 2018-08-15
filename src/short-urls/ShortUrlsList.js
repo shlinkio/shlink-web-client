@@ -1,7 +1,7 @@
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown'
 import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { head, isEmpty, pick, toPairs } from 'ramda'
+import { head, isEmpty, pick, toPairs, keys, values } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
@@ -34,7 +34,7 @@ export class ShortUrlsList extends React.Component {
       'DESC': undefined,
     };
     return this.state.orderDir ? newOrderMap[this.state.orderDir] : 'ASC';
-  }
+  };
   orderBy = field => {
     const newOrderDir = this.determineOrderDir(field);
     this.setState({ orderField: newOrderDir !== undefined ? field : undefined, orderDir: newOrderDir });
@@ -58,8 +58,8 @@ export class ShortUrlsList extends React.Component {
 
     const { orderBy } = props.shortUrlsListParams;
     this.state = {
-      orderField: orderBy ? head(Object.keys(orderBy)) : undefined,
-      orderDir: orderBy ? head(Object.values(orderBy)) : undefined,
+      orderField: orderBy ? head(keys(orderBy)) : undefined,
+      orderDir: orderBy ? head(values(orderBy)) : undefined,
     }
   }
 
@@ -71,7 +71,11 @@ export class ShortUrlsList extends React.Component {
   renderShortUrls() {
     const { shortUrlsList, selectedServer, loading, error, shortUrlsListParams } = this.props;
     if (error) {
-      return <tr><td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td></tr>;
+      return (
+        <tr>
+          <td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td>
+        </tr>
+      );
     }
 
     if (loading) {
@@ -102,7 +106,7 @@ export class ShortUrlsList extends React.Component {
           </DropdownToggle>
           <DropdownMenu className="short-urls-list__order-dropdown">
             {toPairs(SORTABLE_FIELDS).map(([key, value]) =>
-              <DropdownItem active={this.state.orderField === key} onClick={() => this.orderBy(key)}>
+              <DropdownItem key={key} active={this.state.orderField === key} onClick={() => this.orderBy(key)}>
                 {value}
                 {this.renderOrderIcon(key, 'short-urls-list__header-icon--mobile')}
               </DropdownItem>)}
