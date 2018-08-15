@@ -7,6 +7,7 @@ import DeleteServerButton from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
 import PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
+import classnames from 'classnames';
 
 const defaultProps = {
   className: '',
@@ -20,9 +21,12 @@ const propTypes = {
 
 export default function AsideMenu({ selectedServer, className, showOnMobile }) {
   const serverId = selectedServer ? selectedServer.id : '';
+  const asideClass = classnames('aside-menu', className, {
+    'aside-menu--hidden': !showOnMobile,
+  });
 
   return (
-    <aside className={`aside-menu ${!showOnMobile ? 'aside-menu--hidden' : ''} ${className}`}>
+    <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
         <NavLink
           className="aside-menu__item"
