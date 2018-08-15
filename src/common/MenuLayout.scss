@@ -1,3 +1,5 @@
+@import '../utils/base';
+
 .menu-layout__swipeable {
   $offset: 15px;
   height: 100%;
@@ -9,4 +11,23 @@
 
 .menu-layout__swipeable-inner {
   height: 100%;
+}
+
+.menu-layout__burger-icon {
+  display: none;
+  transition: color 300ms;
+  position: fixed;
+  top: 18px;
+  z-index: 1035;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: rgba(255,255,255,.5);
+
+  @media (max-width: $smMax) {
+    display: inline-block;
+  }
+}
+
+.menu-layout__burger-icon--active {
+  color: white;
 }

@@ -1,4 +1,5 @@
 import plusIcon from '@fortawesome/fontawesome-free-solid/faPlus';
+import arrowIcon from '@fortawesome/fontawesome-free-solid/faChevronDown';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom'
@@ -6,6 +7,7 @@ import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } f
 import ServersDropdown from '../servers/ServersDropdown';
 import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
+import classnames from 'classnames';
 
 export class MainHeader extends React.Component {
   state = { isOpen: false };
@@ -24,13 +26,20 @@ export class MainHeader extends React.Component {
   render() {
     const { location } = this.props;
     const createServerPath = '/server/create';
+    const toggleClass = classnames('main-header__toggle-icon', {
+      'main-header__toggle-icon--opened': this.state.isOpen,
+    });
 
     return (
       <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
         <NavbarBrand tag={Link} to="/">
           <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo"/> Shlink
         </NavbarBrand>
-        <NavbarToggler onClick={this.toggle} />
+
+        <NavbarToggler onClick={this.toggle}>
+          <FontAwesomeIcon icon={arrowIcon} className={toggleClass} />
+        </NavbarToggler>
+
         <Collapse navbar isOpen={this.state.isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>

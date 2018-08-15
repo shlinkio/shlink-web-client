@@ -42,3 +42,10 @@ body,
 .react-datepicker-wrapper {
   display: block !important;
 }
+
+.navbar-brand {
+  @media (max-width: $smMax) {
+    margin-right: auto !important; // This is needed to override a third party style
+    margin: 0 auto;
+  }
+}
