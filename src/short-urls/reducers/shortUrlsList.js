@@ -41,3 +41,9 @@ export const _listShortUrls = (ShlinkApiClient, params = {}) => async dispatch =
   }
 };
 export const listShortUrls = (params = {}) => _listShortUrls(ShlinkApiClient, params);
+
+export const _refreshShortUrls = ShlinkApiClient => async (dispatch, getState) => {
+  const { shortUrlsListParams } = getState();
+  await _listShortUrls(ShlinkApiClient, shortUrlsListParams)(dispatch);
+};
+export const refreshShortUrls = () => _refreshShortUrls(ShlinkApiClient);

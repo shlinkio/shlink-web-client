@@ -1,11 +1,11 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
 import { curry } from 'ramda';
 import PropTypes from 'prop-types';
-import { _listShortUrls } from './shortUrlsList';
 
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
 export const EDIT_SHORT_URL_TAGS_ERROR = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_ERROR';
 export const EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS';
+export const RESET_EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/RESET_EDIT_SHORT_URL_TAGS';
 
 export const shortUrlTagsType = PropTypes.shape({
   shortCode: PropTypes.string,
@@ -42,6 +42,8 @@ export default function reducer(state = defaultState, action) {
         saving: false,
         error: false,
       };
+    case RESET_EDIT_SHORT_URL_TAGS:
+      return defaultState;
     default:
       return state;
   }
@@ -51,13 +53,14 @@ export const _editShortUrlTags = (ShlinkApiClient, shortCode, tags) => async (di
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
 
   try {
+    // Update short URL tags
     await ShlinkApiClient.updateShortUrlTags(shortCode, tags);
     dispatch({ tags, shortCode, type: EDIT_SHORT_URL_TAGS });
-
-    const { shortUrlsListParams } = getState();
-    await _listShortUrls(ShlinkApiClient, shortUrlsListParams)(dispatch);
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_TAGS_ERROR });
+    throw e;
   }
 };
 export const editShortUrlTags = curry(_editShortUrlTags)(ShlinkApiClient);
+
+export const resetShortUrlsTags = () => ({ type: RESET_EDIT_SHORT_URL_TAGS });
