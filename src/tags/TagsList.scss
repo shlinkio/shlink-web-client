@@ -1,0 +1,18 @@
+.tags-list__tag-container {
+  border-radius: .26rem;
+}
+
+.tags-list__tag-card.tags-list__tag-card {
+  padding: .75rem 2.5rem 0.75rem 1rem;
+  background-color: #eeeeee;
+  margin-bottom: .5rem;
+  transition: background-color 200ms, color 200ms;
+}
+.tags-list__tag-card.tags-list__tag-card:hover {
+  background-color: transparent;
+  color: #fff;
+}
+
+.tags-list__tag-title {
+  margin: 0;
+}

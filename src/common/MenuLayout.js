@@ -13,6 +13,7 @@ import burgerIcon from '@fortawesome/fontawesome-free-solid/faBars';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import './MenuLayout.scss';
+import TagsList from '../tags/TagsList';
 
 export class MenuLayout extends React.Component {
   state = { showSideBar: false };
@@ -77,6 +78,11 @@ export class MenuLayout extends React.Component {
                   exact
                   path="/server/:serverId/short-code/:shortCode/visits"
                   component={ShortUrlsVisits}
+                />
+                <Route
+                  exact
+                  path="/server/:serverId/tags"
+                  component={TagsList}
                 />
               </Switch>
             </div>

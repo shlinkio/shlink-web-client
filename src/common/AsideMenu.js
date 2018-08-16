@@ -1,5 +1,6 @@
-import listIcon from '@fortawesome/fontawesome-free-solid/faBars';
-import createIcon from '@fortawesome/fontawesome-free-solid/faPlus';
+import listIcon from '@fortawesome/fontawesome-free-solid/faList';
+import createIcon from '@fortawesome/fontawesome-free-solid/faLink';
+import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -41,8 +42,16 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
           activeClassName="aside-menu__item--selected"
           to={`/server/${serverId}/create-short-url`}
         >
-          <FontAwesomeIcon icon={createIcon} />
+          <FontAwesomeIcon icon={createIcon} flip="horizontal" />
           <span className="aside-menu__item-text">Create short URL</span>
+        </NavLink>
+        <NavLink
+          className="aside-menu__item"
+          activeClassName="aside-menu__item--selected"
+          to={`/server/${serverId}/tags`}
+        >
+          <FontAwesomeIcon icon={tagsIcon} />
+          <span className="aside-menu__item-text">List tags</span>
         </NavLink>
 
         <DeleteServerButton

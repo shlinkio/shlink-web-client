@@ -11,7 +11,7 @@ export function ShortUrls(props) {
   const urlsListKey = `${params.serverId}_${params.page}`;
 
   return (
-    <div className="short-urls-container">
+    <div className="shlink-container">
       <div className="form-group"><SearchBar /></div>
       <ShortUrlsList {...props} shortUrlsList={props.shortUrlsList.data || []} key={urlsListKey} />
       <Paginator paginator={props.shortUrlsList.pagination} serverId={props.match.params.serverId} />

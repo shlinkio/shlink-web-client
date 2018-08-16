@@ -53,7 +53,7 @@ export class CreateShortUrl extends React.Component {
     };
 
     return (
-      <div className="short-urls-container">
+      <div className="shlink-container">
         <form onSubmit={save}>
           <div className="form-group">
             <input

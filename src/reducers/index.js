@@ -7,6 +7,7 @@ import shortUrlsListParamsReducer from '../short-urls/reducers/shortUrlsListPara
 import shortUrlCreationResultReducer from '../short-urls/reducers/shortUrlCreationResult';
 import shortUrlVisitsReducer from '../short-urls/reducers/shortUrlVisits';
 import shortUrlTagsReducer from '../short-urls/reducers/shortUrlTags';
+import tagsListReducer from '../tags/reducers/tagsList';
 
 export default combineReducers({
   servers: serversReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   shortUrlCreationResult: shortUrlCreationResultReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   shortUrlTags: shortUrlTagsReducer,
+  tagsList: tagsListReducer,
 });

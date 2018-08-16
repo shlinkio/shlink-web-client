@@ -115,8 +115,9 @@ export class ShortUrlsVisits extends React.Component {
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </UncontrolledTooltip>
       </span>;
+
     return (
-      <div className="short-urls-container">
+      <div className="shlink-container">
         <header>
           <Card className="bg-light">
             <CardBody>
