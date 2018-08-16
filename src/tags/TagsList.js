@@ -18,7 +18,7 @@ export class TagsList extends React.Component {
   renderContent() {
     const { tagsList, colorGenerator } = this.props;
     if (tagsList.loading) {
-      return <MuttedMessage>Loading...</MuttedMessage>
+      return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>
     }
 
     if (tagsList.error) {

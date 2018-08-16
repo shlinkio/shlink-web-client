@@ -3,7 +3,9 @@ import { Card } from 'reactstrap';
 import classnames from 'classnames';
 
 export default function MutedMessage({ children, marginSize = 4 }) {
-  const cardClasses = classnames('bg-light', `mt-${marginSize}`);
+  const cardClasses = classnames('bg-light', {
+    [`mt-${marginSize}`]: marginSize > 0,
+  });
 
   return (
     <div className="col-md-10 offset-md-1">
