@@ -5,6 +5,9 @@ import { listTags } from './reducers/tagsList';
 import './TagsList.scss';
 import { Card } from 'reactstrap';
 import ColorGenerator from '../utils/ColorGenerator';
+import MuttedMessage from '../utils/MuttedMessage';
+
+const { round } = Math;
 
 export class TagsList extends React.Component {
   componentDidMount() {
@@ -12,32 +15,48 @@ export class TagsList extends React.Component {
     listTags();
   }
 
-  render() {
+  renderContent() {
     const { tagsList, colorGenerator } = this.props;
-    const tagsCount = Math.round(tagsList.tags.length);
-    if (tagsCount < 1) {
-      return <div>No tags</div>;
+    if (tagsList.loading) {
+      return <MuttedMessage>Loading...</MuttedMessage>
     }
 
-    const tagsGroups = splitEvery(Math.round(tagsCount / 4), tagsList.tags);
+    if (tagsList.error) {
+      return <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>;
+    }
 
+    const tagsCount = tagsList.tags.length;
+    if (tagsCount < 1) {
+      return <MuttedMessage>No tags found</MuttedMessage>;
+    }
+
+    const tagsGroups = splitEvery(round(tagsCount / 4), tagsList.tags);
+    return (
+      <React.Fragment>
+        {tagsGroups.map((group, index) => (
+          <div key={index} className="col-md-6 col-xl-3">
+            {group.map(tag => (
+              <div
+                style={{ backgroundColor: colorGenerator.getColorForKey(tag) }}
+                className="tags-list__tag-container"
+                key={tag}
+              >
+                <Card body className="tags-list__tag-card">
+                  <h5 className="tags-list__tag-title">{tag}</h5>
+                </Card>
+              </div>
+            ))}
+          </div>
+        ))}
+      </React.Fragment>
+    );
+  }
+
+  render() {
     return (
       <div className="shlink-container">
         <div className="row">
-          {tagsGroups.map((group, index) => (
-            <div key={index} className="col-md-6 col-xl-3">
-              {group.map(tag => (
-                <div
-                  style={{ backgroundColor: colorGenerator.getColorForKey(tag) }}
-                  className="tags-list__tag-container"
-                >
-                  <Card body className="tags-list__tag-card">
-                    <h5 className="tags-list__tag-title">{tag}</h5>
-                  </Card>
-                </div>
-              ))}
-            </div>
-          ))}
+          {this.renderContent()}
         </div>
       </div>
     );

@@ -10,15 +10,7 @@ import DateInput from '../common/DateInput'
 import VisitsParser from '../visits/services/VisitsParser'
 import { getShortUrlVisits } from './reducers/shortUrlVisits'
 import './ShortUrlVisits.scss'
-
-const MutedMessage = ({ children }) =>
-  <div className="col-md-10 offset-md-1">
-    <Card className="bg-light mt-4" body>
-      <h3 className="text-center text-muted mb-0">
-        {children}
-      </h3>
-    </Card>
-  </div>;
+import MutedMessage from '../utils/MuttedMessage';
 
 export class ShortUrlsVisits extends React.Component {
   state = { startDate: undefined, endDate: undefined };
