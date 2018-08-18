@@ -1,12 +1,12 @@
-.tags-list__tag-card.tags-list__tag-card {
+.tag-card.tag-card {
   background-color: #eeeeee;
   margin-bottom: .5rem;
 }
-.tags-list__tag-card-body.tags-list__tag-card-body {
+.tag-card__body.tag-card__body {
   padding: .75rem;
 }
 
-.tags-list__tag-title {
+.tag-card__tag-title {
   margin: 0;
   line-height: 31px;
   text-overflow: ellipsis;
@@ -15,7 +15,7 @@
   padding-right: 5px;
 }
 
-.tags-list__tag-bullet {
+.tag-card__tag-bullet {
   $width: 20px;
   border-radius: 50%;
   width: $width;
@@ -25,9 +25,9 @@
   margin-right: 7px;
 }
 
-.tags-list__btn {
+.tag-card__btn {
   float: right;
 }
-.tags-list__btn:not(:last-child) {
+.tag-card__btn:not(:last-child) {
   margin-left: 2px;
 }

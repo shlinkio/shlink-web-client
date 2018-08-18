@@ -2,24 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { pick, splitEvery } from 'ramda';
 import { listTags } from './reducers/tagsList';
-import { Card, CardBody } from 'reactstrap';
-import ColorGenerator from '../utils/ColorGenerator';
 import MuttedMessage from '../utils/MuttedMessage';
-import editIcon from '@fortawesome/fontawesome-free-solid/faPencilAlt';
-import deleteIcon from '@fortawesome/fontawesome-free-solid/faTrash';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import './TagsList.scss';
+import TagCard from './TagCard';
 
 const { round } = Math;
 
 export class TagsList extends React.Component {
+  state = { isDeleteModalOpen: false };
+
   componentDidMount() {
     const { listTags } = this.props;
     listTags();
   }
 
   renderContent() {
-    const { tagsList, colorGenerator } = this.props;
+    const { tagsList } = this.props;
     if (tagsList.loading) {
       return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>
     }
@@ -34,29 +31,12 @@ export class TagsList extends React.Component {
     }
 
     const tagsGroups = splitEvery(round(tagsCount / 4), tagsList.tags);
+
     return (
       <React.Fragment>
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
-            {group.map(tag => (
-              <Card className="tags-list__tag-card" key={tag}>
-                <CardBody className="tags-list__tag-card-body">
-                  <button className="btn btn-light btn-sm tags-list__btn">
-                    <FontAwesomeIcon icon={deleteIcon} />
-                  </button>
-                  <button className="btn btn-light btn-sm tags-list__btn">
-                    <FontAwesomeIcon icon={editIcon} />
-                  </button>
-                  <h5 className="tags-list__tag-title">
-                    <div
-                      style={{ backgroundColor: colorGenerator.getColorForKey(tag) }}
-                      className="tags-list__tag-bullet"
-                    />
-                    {tag}
-                  </h5>
-                </CardBody>
-              </Card>
-            ))}
+            {group.map(tag => <TagCard tag={tag} key={tag}/>)}
           </div>
         ))}
       </React.Fragment>
@@ -73,9 +53,5 @@ export class TagsList extends React.Component {
     );
   }
 }
-
-TagsList.defaultProps = {
-  colorGenerator: ColorGenerator
-};
 
 export default connect(pick(['tagsList']), { listTags })(TagsList);

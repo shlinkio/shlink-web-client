@@ -15,7 +15,7 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered={true}>
+    <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}><span className="text-danger">Delete server</span></ModalHeader>
       <ModalBody>
         <p>Are you sure you want to delete server <b>{server ? server.name : ''}</b>?</p>
