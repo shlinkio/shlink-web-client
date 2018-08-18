@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
 const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
 const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
+export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
 
 export const tagDeleteType = PropTypes.shape({
   deleting: PropTypes.bool,
@@ -50,3 +51,5 @@ export const _deleteTag = (ShlinkApiClient, tag) => async dispatch => {
   }
 };
 export const deleteTag = curry(_deleteTag)(ShlinkApiClient);
+
+export const tagDeleted = tag => ({ type: TAG_DELETED, tag });

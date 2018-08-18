@@ -1,4 +1,6 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
+import { TAG_DELETED } from './tagDelete';
+import { reject } from 'ramda';
 
 const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
 const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
@@ -29,6 +31,11 @@ export default function reducer(state = defaultState, action) {
         tags: action.tags,
         loading: false,
         error: false,
+      };
+    case TAG_DELETED:
+      return {
+        ...state,
+        tags: reject(tag => tag === action.tag, state.tags),
       };
     default:
       return state;

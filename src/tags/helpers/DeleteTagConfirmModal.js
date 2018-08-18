@@ -3,15 +3,13 @@ import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { pick } from 'ramda';
-import { deleteTag, tagDeleteType } from '../reducers/tagDelete';
-import { listTags } from '../reducers/tagsList';
+import { deleteTag, tagDeleted, tagDeleteType } from '../reducers/tagDelete';
 
 const propTypes = {
   tag: PropTypes.string.isRequired,
   toggle: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   deleteTag: PropTypes.func,
-  listTags: PropTypes.func,
   tagDelete: tagDeleteType,
 };
 
@@ -19,20 +17,21 @@ export class DeleteTagConfirmModal extends Component {
   doDelete = () => {
     const { tag, toggle, deleteTag } = this.props;
     deleteTag(tag).then(() => {
-      this.tagDeleted = true;
+      this.tagWasDeleted = true;
       toggle();
-    }).catch(() => {});
+    });
   };
   onClosed = () => {
-    if (!this.tagDeleted) {
+    if (!this.tagWasDeleted) {
       return;
     }
 
-    this.props.listTags();
+    const { tagDeleted, tag } = this.props;
+    tagDeleted(tag);
   };
 
   componentDidMount() {
-    this.tagDeleted = false;
+    this.tagWasDeleted = false;
   }
 
   render() {
@@ -70,5 +69,5 @@ DeleteTagConfirmModal.propTypes = propTypes;
 
 export default connect(
   pick(['tagDelete']),
-  { deleteTag, listTags }
+  { deleteTag, tagDeleted }
 )(DeleteTagConfirmModal);
