@@ -8,6 +8,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { ShortUrlsRow } from './helpers/ShortUrlsRow'
 import { listShortUrls } from './reducers/shortUrlsList'
 import './ShortUrlsList.scss'
+import qs from 'qs';
 
 const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
@@ -64,8 +65,10 @@ export class ShortUrlsList extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params } } = this.props;
-    this.refreshList({ page: params.page });
+    const { match: { params }, location } = this.props;
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+
+    this.refreshList({ page: params.page, tags: query.tag ? [query.tag] : [] });
   }
 
   renderShortUrls() {

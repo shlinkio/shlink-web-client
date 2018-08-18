@@ -16,7 +16,7 @@ export class TagsList extends React.Component {
   }
 
   renderContent() {
-    const { tagsList } = this.props;
+    const { tagsList, match } = this.props;
     if (tagsList.loading) {
       return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>
     }
@@ -40,7 +40,13 @@ export class TagsList extends React.Component {
       <React.Fragment>
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
-            {group.map(tag => <TagCard tag={tag} key={tag}/>)}
+            {group.map(tag => (
+              <TagCard
+                key={tag}
+                tag={tag}
+                currentServerId={match.params.serverId}
+              />
+            ))}
           </div>
         ))}
       </React.Fragment>

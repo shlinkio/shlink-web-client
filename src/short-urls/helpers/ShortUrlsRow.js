@@ -15,9 +15,13 @@ export class ShortUrlsRow extends React.Component {
 
     const { refreshList, shortUrlsListParams } = this.props;
     const selectedTags = shortUrlsListParams.tags || [];
-    return tags.map(
-      tag => <Tag key={tag} text={tag} onClick={() => refreshList({tags: [ ...selectedTags, tag ] })} />
-    );
+    return tags.map(tag => (
+      <Tag
+        key={tag}
+        text={tag}
+        onClick={() => refreshList({ tags: [ ...selectedTags, tag ] })}
+      />
+    ));
   }
 
   render() {

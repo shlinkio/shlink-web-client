@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ColorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
 import './TagCard.scss';
+import { Link } from 'react-router-dom';
 
 const propTypes = {
   tag: PropTypes.string,
@@ -20,7 +21,7 @@ export default class TagCard extends React.Component {
   state = { isDeleteModalOpen: false, isEditModalOpen: false };
 
   render() {
-    const { tag, colorGenerator } = this.props;
+    const { tag, colorGenerator, currentServerId } = this.props;
     const toggleDelete = () =>
       this.setState({ isDeleteModalOpen: !this.state.isDeleteModalOpen });
 
@@ -41,7 +42,9 @@ export default class TagCard extends React.Component {
               style={{backgroundColor: colorGenerator.getColorForKey(tag)}}
               className="tag-card__tag-bullet"
             />
-            {tag}
+            <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>
+              {tag}
+            </Link>
           </h5>
         </CardBody>
 

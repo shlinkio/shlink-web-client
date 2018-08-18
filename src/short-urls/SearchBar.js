@@ -44,16 +44,19 @@ export class SearchBar extends React.Component {
           <h4 className="search-bar__selected-tag mt-2">
             <FontAwesomeIcon icon={tagsIcon} className="search-bar__tags-icon" />
             &nbsp;
-            {selectedTags.map(tag => <Tag
-              text={tag}
-              clearable
-              onClose={() => listShortUrls(
-                {
-                  ...shortUrlsListParams,
-                  tags: selectedTags.filter(selectedTag => selectedTag !== tag)
-                }
-              )}
-            />)}
+            {selectedTags.map(tag => (
+              <Tag
+                key={tag}
+                text={tag}
+                clearable
+                onClose={() => listShortUrls(
+                  {
+                    ...shortUrlsListParams,
+                    tags: selectedTags.filter(selectedTag => selectedTag !== tag)
+                  }
+                )}
+              />
+            ))}
           </h4>
         )}
       </div>
