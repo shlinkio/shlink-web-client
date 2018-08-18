@@ -29,7 +29,6 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
   return (
     <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
-        <h4 className="aside-menu__nav-group-title">Short URLs</h4>
         <NavLink
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
@@ -47,7 +46,6 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
           <span className="aside-menu__item-text">Create short URL</span>
         </NavLink>
 
-        <h4 className="aside-menu__nav-group-title">Tags</h4>
         <NavLink
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
