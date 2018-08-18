@@ -1,18 +1,33 @@
-.tags-list__tag-container {
-  border-radius: .26rem;
-}
-
 .tags-list__tag-card.tags-list__tag-card {
-  padding: .75rem 2.5rem 0.75rem 1rem;
   background-color: #eeeeee;
   margin-bottom: .5rem;
-  transition: background-color 200ms, color 200ms;
 }
-.tags-list__tag-card.tags-list__tag-card:hover {
-  background-color: transparent;
-  color: #fff;
+.tags-list__tag-card-body.tags-list__tag-card-body {
+  padding: .75rem;
 }
 
 .tags-list__tag-title {
   margin: 0;
+  line-height: 31px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 5px;
+}
+
+.tags-list__tag-bullet {
+  $width: 20px;
+  border-radius: 50%;
+  width: $width;
+  height: $width;
+  display: inline-block;
+  vertical-align: -4px;
+  margin-right: 7px;
+}
+
+.tags-list__btn {
+  float: right;
+}
+.tags-list__btn:not(:last-child) {
+  margin-left: 2px;
 }
