@@ -22,7 +22,11 @@ export class TagsList extends React.Component {
     }
 
     if (tagsList.error) {
-      return <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>;
+      return (
+        <div className="col-12">
+          <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>
+        </div>
+      );
     }
 
     const tagsCount = tagsList.tags.length;

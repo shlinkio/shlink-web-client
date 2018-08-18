@@ -54,7 +54,12 @@ export class ShlinkApiClient {
       .then(resp => resp.data.tags.data)
       .catch(e => this._handleAuthError(e, this.listTags, []));
 
-  _performRequest = async (url, method = 'GET', params = {}, data = {}) => {
+  deleteTags = tags =>
+    this._performRequest('/tags', 'DELETE', { tags })
+      .then(() => ({ tags }))
+      .catch(e => this._handleAuthError(e, this.deleteTag, []));
+
+  _performRequest = async (url, method = 'GET', query = {}, body = {}) => {
     if (isEmpty(this._token)) {
       this._token = await this._authenticate();
     }
@@ -63,8 +68,8 @@ export class ShlinkApiClient {
       method,
       url: `${this._baseUrl}${url}`,
       headers: { 'Authorization': `Bearer ${this._token}` },
-      params,
-      data,
+      params: query,
+      data: body,
       paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets' })
     }).then(resp => {
       // Save new token

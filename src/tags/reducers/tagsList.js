@@ -43,7 +43,6 @@ export const _listTags = ShlinkApiClient => async dispatch => {
     dispatch({ tags, type: LIST_TAGS });
   } catch (e) {
     dispatch({ type: LIST_TAGS_ERROR });
-    throw e;
   }
 };
 export const listTags = () => _listTags(ShlinkApiClient);
