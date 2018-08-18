@@ -28,6 +28,6 @@
 .tag-card__btn {
   float: right;
 }
-.tag-card__btn:not(:last-child) {
-  margin-left: 2px;
+.tag-card__btn--last {
+  margin-left: 3px;
 }

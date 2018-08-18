@@ -59,6 +59,11 @@ export class ShlinkApiClient {
       .then(() => ({ tags }))
       .catch(e => this._handleAuthError(e, this.deleteTag, []));
 
+  editTag = (oldName, newName) =>
+    this._performRequest('/tags', 'PUT', {}, { oldName, newName })
+      .then(() => ({ oldName, newName }))
+      .catch(e => this._handleAuthError(e, this.editTag, [oldName, newName]));
+
   _performRequest = async (url, method = 'GET', query = {}, body = {}) => {
     if (isEmpty(this._token)) {
       this._token = await this._authenticate();

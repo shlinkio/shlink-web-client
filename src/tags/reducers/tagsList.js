@@ -1,6 +1,7 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
 import { TAG_DELETED } from './tagDelete';
 import { reject } from 'ramda';
+import { TAG_EDITED } from './tagEdit';
 
 const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
 const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
@@ -36,6 +37,13 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         tags: reject(tag => tag === action.tag, state.tags),
+      };
+    case TAG_EDITED:
+      return {
+        ...state,
+        tags: state.tags.map(
+          tag => tag === action.oldName ? action.newName : tag
+        ),
       };
     default:
       return state;

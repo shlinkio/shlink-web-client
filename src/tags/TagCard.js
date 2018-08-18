@@ -8,6 +8,7 @@ import React from 'react';
 import ColorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
 import './TagCard.scss';
 import { Link } from 'react-router-dom';
+import EditTagModal from './helpers/EditTagModal';
 
 const propTypes = {
   tag: PropTypes.string,
@@ -24,17 +25,22 @@ export default class TagCard extends React.Component {
     const { tag, colorGenerator, currentServerId } = this.props;
     const toggleDelete = () =>
       this.setState({ isDeleteModalOpen: !this.state.isDeleteModalOpen });
+    const toggleEdit = () =>
+      this.setState({ isEditModalOpen: !this.state.isEditModalOpen });
 
     return (
       <Card className="tag-card">
         <CardBody className="tag-card__body">
           <button
-            className="btn btn-light btn-sm tag-card__btn"
+            className="btn btn-light btn-sm tag-card__btn tag-card__btn--last"
             onClick={toggleDelete}
           >
             <FontAwesomeIcon icon={deleteIcon}/>
           </button>
-          <button className="btn btn-light btn-sm tag-card__btn">
+          <button
+            className="btn btn-light btn-sm tag-card__btn"
+            onClick={toggleEdit}
+          >
             <FontAwesomeIcon icon={editIcon}/>
           </button>
           <h5 className="tag-card__tag-title">
@@ -52,6 +58,11 @@ export default class TagCard extends React.Component {
           tag={tag}
           toggle={toggleDelete}
           isOpen={this.state.isDeleteModalOpen}
+        />
+        <EditTagModal
+          tag={tag}
+          toggle={toggleEdit}
+          isOpen={this.state.isEditModalOpen}
         />
       </Card>
     );

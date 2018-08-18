@@ -52,7 +52,7 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
           to={`/server/${serverId}/tags`}
         >
           <FontAwesomeIcon icon={tagsIcon} />
-          <span className="aside-menu__item-text">List tags</span>
+          <span className="aside-menu__item-text">Manage tags</span>
         </NavLink>
 
         <DeleteServerButton

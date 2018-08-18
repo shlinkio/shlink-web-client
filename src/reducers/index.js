@@ -9,6 +9,7 @@ import shortUrlVisitsReducer from '../short-urls/reducers/shortUrlVisits';
 import shortUrlTagsReducer from '../short-urls/reducers/shortUrlTags';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
+import tagEditReducer from '../tags/reducers/tagEdit';
 
 export default combineReducers({
   servers: serversReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   shortUrlTags: shortUrlTagsReducer,
   tagsList: tagsListReducer,
   tagDelete: tagDeleteReducer,
+  tagEdit: tagEditReducer,
 });
