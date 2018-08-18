@@ -1,4 +1,6 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
+import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
+import { assoc, assocPath } from 'ramda';
 
 const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
@@ -25,6 +27,13 @@ export default function reducer(state = initialState, action) {
         error: true,
         shortUrls: []
       };
+    case SHORT_URL_TAGS_EDITED:
+      const { data } = state.shortUrls;
+      return assocPath(['shortUrls', 'data'], data.map(shortUrl =>
+        shortUrl.shortCode === action.shortCode
+          ? assoc('tags', action.tags, shortUrl)
+          : shortUrl
+      ), state);
     default:
       return state;
   }
@@ -41,9 +50,3 @@ export const _listShortUrls = (ShlinkApiClient, params = {}) => async dispatch =
   }
 };
 export const listShortUrls = (params = {}) => _listShortUrls(ShlinkApiClient, params);
-
-export const _refreshShortUrls = ShlinkApiClient => async (dispatch, getState) => {
-  const { shortUrlsListParams } = getState();
-  await _listShortUrls(ShlinkApiClient, shortUrlsListParams)(dispatch);
-};
-export const refreshShortUrls = () => _refreshShortUrls(ShlinkApiClient);

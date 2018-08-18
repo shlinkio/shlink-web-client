@@ -3,9 +3,13 @@ import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import TagsSelector from '../../utils/TagsSelector';
 import PropTypes from 'prop-types';
-import { editShortUrlTags, resetShortUrlsTags, shortUrlTagsType } from '../reducers/shortUrlTags';
+import {
+  editShortUrlTags,
+  resetShortUrlsTags,
+  shortUrlTagsType,
+  shortUrlTagsEdited
+} from '../reducers/shortUrlTags';
 import { pick } from 'ramda';
-import { refreshShortUrls } from '../reducers/shortUrlsList';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -13,6 +17,7 @@ const propTypes = {
   url: PropTypes.string.isRequired,
   shortUrl: PropTypes.shape({
     tags: PropTypes.arrayOf(PropTypes.string),
+    shortCode: PropTypes.string,
   }).isRequired,
   shortUrlTags: shortUrlTagsType,
 };
@@ -32,7 +37,9 @@ export class EditTagsModal extends React.Component {
       return;
     }
 
-    this.props.refreshShortUrls();
+    const { shortUrlTagsEdited, shortUrl } = this.props;
+    const { tags } = this.state;
+    shortUrlTagsEdited(shortUrl.shortCode, tags);
   };
 
   componentDidMount() {
@@ -51,7 +58,9 @@ export class EditTagsModal extends React.Component {
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.refreshShortUrls}>
-        <ModalHeader toggle={toggle}>Edit tags for <a target="_blank" href={url}>{url}</a></ModalHeader>
+        <ModalHeader toggle={toggle}>
+          Edit tags for <a target="_blank" href={url}>{url}</a>
+        </ModalHeader>
         <ModalBody>
           <TagsSelector tags={this.state.tags} onChange={tags => this.setState({ tags })} />
           {shortUrlTags.error && (
@@ -80,5 +89,5 @@ EditTagsModal.propTypes = propTypes;
 
 export default connect(
   pick(['shortUrlTags']),
-  { editShortUrlTags, resetShortUrlsTags, refreshShortUrls }
+  { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited }
 )(EditTagsModal);

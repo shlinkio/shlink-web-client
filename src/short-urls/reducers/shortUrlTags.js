@@ -6,6 +6,7 @@ export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAG
 export const EDIT_SHORT_URL_TAGS_ERROR = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_ERROR';
 export const EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS';
 export const RESET_EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/RESET_EDIT_SHORT_URL_TAGS';
+export const SHORT_URL_TAGS_EDITED = 'shlink/shortUrlTags/SHORT_URL_TAGS_EDITED';
 
 export const shortUrlTagsType = PropTypes.shape({
   shortCode: PropTypes.string,
@@ -64,3 +65,9 @@ export const _editShortUrlTags = (ShlinkApiClient, shortCode, tags) => async (di
 export const editShortUrlTags = curry(_editShortUrlTags)(ShlinkApiClient);
 
 export const resetShortUrlsTags = () => ({ type: RESET_EDIT_SHORT_URL_TAGS });
+
+export const shortUrlTagsEdited = (shortCode, tags) => ({
+  tags,
+  shortCode,
+  type: SHORT_URL_TAGS_EDITED,
+});
