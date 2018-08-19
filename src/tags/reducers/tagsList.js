@@ -43,7 +43,7 @@ export default function reducer(state = defaultState, action) {
         ...state,
         tags: state.tags.map(
           tag => tag === action.oldName ? action.newName : tag
-        ),
+        ).sort(),
       };
     default:
       return state;
