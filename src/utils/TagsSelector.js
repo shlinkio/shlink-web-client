@@ -20,7 +20,7 @@ export default function TagsSelector({ tags, onChange, placeholder, colorGenerat
     return (
       <span key={key} style={{ backgroundColor: colorGenerator.getColorForKey(tag) }} {...other}>
         {getTagDisplayValue(tag)}
-        {!disabled && <a className={classNameRemove} onClick={() => onRemove(key)} />}
+        {!disabled && <a className={classNameRemove} onClick={() => onRemove(key)}> </a>}
       </span>
     )
   };
