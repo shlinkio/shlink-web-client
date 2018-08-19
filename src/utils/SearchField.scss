@@ -1,0 +1,21 @@
+@import '../utils/mixins/vertical-align';
+
+.search-field {
+  position: relative;
+}
+
+.search-field__input.search-field__input {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.search-field__icon {
+  @include vertical-align();
+  left: 15px;
+  color: #707581;
+}
+
+.search-field__close {
+  @include vertical-align();
+  right: 15px;
+}
