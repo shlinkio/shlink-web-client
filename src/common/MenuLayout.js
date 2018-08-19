@@ -81,7 +81,7 @@ export class MenuLayout extends React.Component {
                 />
                 <Route
                   exact
-                  path="/server/:serverId/tags"
+                  path="/server/:serverId/manage-tags"
                   component={TagsList}
                 />
               </Switch>

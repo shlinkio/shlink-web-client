@@ -5,6 +5,8 @@ import { pick } from 'ramda';
 import { editTag, tagEdited } from '../reducers/tagEdit';
 import { ChromePicker } from 'react-color';
 import ColorGenerator from '../../utils/ColorGenerator';
+import colorIcon from '@fortawesome/fontawesome-free-solid/faPalette'
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 import './EditTagModal.scss';
 
 const defaultProps = {
@@ -13,14 +15,12 @@ const defaultProps = {
 
 
 export class EditTagModal extends React.Component {
-  state = { showColorPicker: false };
-
   saveTag = e => {
     e.preventDefault();
     const { tag: oldName, editTag, toggle } = this.props;
-    const { tag: newName } = this.state;
+    const { tag: newName, color } = this.state;
 
-    editTag(oldName, newName)
+    editTag(oldName, newName, color)
       .then(() => {
         this.tagWasEdited = true;
         toggle();
@@ -33,8 +33,8 @@ export class EditTagModal extends React.Component {
     }
 
     const { tag: oldName, tagEdited } = this.props;
-    const { tag: newName } = this.state;
-    tagEdited(oldName, newName);
+    const { tag: newName, color } = this.state;
+    tagEdited(oldName, newName, color);
   };
 
   constructor(props) {
@@ -42,6 +42,7 @@ export class EditTagModal extends React.Component {
 
     const { colorGenerator, tag } = props;
     this.state = {
+      showColorPicker: false,
       tag,
       color: colorGenerator.getColorForKey(tag)
     }
@@ -62,15 +63,6 @@ export class EditTagModal extends React.Component {
         <form onSubmit={this.saveTag}>
           <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
           <ModalBody>
-            <Popover
-              isOpen={this.state.showColorPicker}
-              toggle={toggleColorPicker}
-              target="colorPickerBtn"
-              placement="right"
-            >
-              <ChromePicker color={color} />
-            </Popover>
-
             <div className="input-group">
               <div
                 className="input-group-prepend"
@@ -79,11 +71,26 @@ export class EditTagModal extends React.Component {
               >
                 <div
                   className="input-group-text edit-tag-modal__color-picker-toggle"
-                  style={{backgroundColor: color}}
+                  style={{
+                    backgroundColor: color,
+                    borderColor: color,
+                  }}
                 >
-                  &nbsp;&nbsp;
+                  <FontAwesomeIcon icon={colorIcon} className="edit-tag-modal__color-icon" />
                 </div>
               </div>
+              <Popover
+                isOpen={this.state.showColorPicker}
+                toggle={toggleColorPicker}
+                target="colorPickerBtn"
+                placement="right"
+              >
+                <ChromePicker
+                  color={color}
+                  onChange={color => this.setState({ color: color.hex })}
+                  disableAlpha
+                />
+              </Popover>
               <input
                 type="text"
                 value={tag}

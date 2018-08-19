@@ -49,7 +49,7 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
         <NavLink
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
-          to={`/server/${serverId}/tags`}
+          to={`/server/${serverId}/manage-tags`}
         >
           <FontAwesomeIcon icon={tagsIcon} />
           <span className="aside-menu__item-text">Manage tags</span>
