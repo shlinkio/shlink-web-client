@@ -2,10 +2,17 @@ import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import searchIcon from '@fortawesome/fontawesome-free-solid/faSearch';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import './SearchField.scss';
 
 const propTypes = {
   onChange: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  placeholder: PropTypes.string,
+};
+const defaultProps = {
+  className: '',
+  placeholder: 'Search...',
 };
 
 export default class SearchField extends React.Component {
@@ -31,12 +38,14 @@ export default class SearchField extends React.Component {
   }
 
   render() {
+    const { className, placeholder } = this.props;
+
     return (
-      <div className="search-field">
+      <div className={classnames('search-field', className)}>
         <input
           type="text"
           className="form-control form-control-lg search-field__input"
-          placeholder="Search..."
+          placeholder={placeholder}
           onChange={e => this.searchTermChanged(e.target.value)}
           value={this.state.searchTerm}
         />
@@ -55,3 +64,4 @@ export default class SearchField extends React.Component {
 }
 
 SearchField.propTypes = propTypes;
+SearchField.defaultProps = defaultProps;

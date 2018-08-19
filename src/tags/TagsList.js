@@ -1,11 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { pick, splitEvery } from 'ramda';
-import { listTags } from './reducers/tagsList';
+import { filterTags, listTags } from './reducers/tagsList';
 import MuttedMessage from '../utils/MuttedMessage';
 import TagCard from './TagCard';
+import SearchField from '../utils/SearchField';
 
-const { round } = Math;
+const { ceil } = Math;
 
 export class TagsList extends React.Component {
   state = { isDeleteModalOpen: false };
@@ -29,12 +30,12 @@ export class TagsList extends React.Component {
       );
     }
 
-    const tagsCount = tagsList.tags.length;
+    const tagsCount = tagsList.filteredTags.length;
     if (tagsCount < 1) {
       return <MuttedMessage>No tags found</MuttedMessage>;
     }
 
-    const tagsGroups = splitEvery(round(tagsCount / 4), tagsList.tags);
+    const tagsGroups = splitEvery(ceil(tagsCount / 4), tagsList.filteredTags);
 
     return (
       <React.Fragment>
@@ -54,8 +55,17 @@ export class TagsList extends React.Component {
   }
 
   render() {
+    const { filterTags } = this.props;
+
     return (
       <div className="shlink-container">
+        {!this.props.tagsList.loading && (
+          <SearchField
+            onChange={filterTags}
+            className="mb-3"
+            placeholder="Search tags..."
+          />
+        )}
         <div className="row">
           {this.renderContent()}
         </div>
@@ -64,4 +74,4 @@ export class TagsList extends React.Component {
   }
 }
 
-export default connect(pick(['tagsList']), { listTags })(TagsList);
+export default connect(pick(['tagsList']), { listTags, filterTags })(TagsList);
