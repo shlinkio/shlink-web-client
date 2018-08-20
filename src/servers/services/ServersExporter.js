@@ -1,6 +1,6 @@
 import Storage from '../../utils/Storage';
-import jsonexport from 'jsonexport/dist';
-import { dissoc, values } from 'ramda';
+import { dissoc, head, keys, values } from 'ramda';
+import csvjson from 'csvjson';
 
 const SERVERS_STORAGE_KEY = 'servers';
 
@@ -27,10 +27,10 @@ const saveCsv = (window, csv) => {
 };
 
 export class ServersExporter {
-  constructor(storage, window, jsonexport) {
+  constructor(storage, window, csvjson) {
     this.storage = storage;
     this.window = window;
-    this.jsonexport = jsonexport;
+    this.csvjson = csvjson;
   }
 
   exportServers = async () => {
@@ -39,10 +39,9 @@ export class ServersExporter {
     );
 
     try {
-      const csv = await new Promise((resolve, reject) => {
-        this.jsonexport(servers, (err, csv) => err ? reject(err) : resolve(csv));
+      const csv = this.csvjson.toCSV(servers, {
+        headers: keys(head(servers)).join(',')
       });
-
       saveCsv(this.window, csv);
     } catch (e) {
       // FIXME Handle error
@@ -51,4 +50,4 @@ export class ServersExporter {
   };
 }
 
-export default new ServersExporter(Storage, global.window, jsonexport);
+export default new ServersExporter(Storage, global.window, csvjson);
