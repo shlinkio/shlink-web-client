@@ -13,11 +13,26 @@ describe('<ServersDropdown />', () => {
   });
   afterEach(() => wrapped.unmount());
 
-  it('contains the list of servers', () => {
-    expect(wrapped.find(DropdownItem).length).toEqual(servers.length + 2);
+  it('contains the list of servers', () =>
+    expect(wrapped.find(DropdownItem).filter('[to]')).toHaveLength(servers.length)
+  );
+
+  it('contains a toggle with proper title', () =>
+    expect(wrapped.find(DropdownToggle)).toHaveLength(1)
+  );
+
+  it('contains a button to export servers', () => {
+    const items = wrapped.find(DropdownItem);
+    expect(items.filter('[divider]')).toHaveLength(1);
+    expect(items.filter('.servers-dropdown__export-item')).toHaveLength(1);
   });
 
-  it('contains a toggle with proper title', () => {
-    expect(wrapped.find(DropdownToggle).length).toEqual(1);
+  it('contains a message when no servers exist yet', () => {
+    wrapped = shallow(<ServersDropdown servers={[]} listServers={identity} />);
+    const item = wrapped.find(DropdownItem);
+
+    expect(item).toHaveLength(1);
+    expect(item.prop('disabled')).toEqual(true);
+    expect(item.find('i').text()).toEqual('Add a server first...');
   });
 });

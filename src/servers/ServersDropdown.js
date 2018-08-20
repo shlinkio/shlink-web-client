@@ -34,7 +34,10 @@ export class ServersDropdown extends React.Component {
           </DropdownItem>
         ))}
         <DropdownItem divider />
-        <DropdownItem onClick={serversExporter.exportServers}>
+        <DropdownItem
+          onClick={serversExporter.exportServers}
+          className="servers-dropdown__export-item"
+        >
           Export servers
         </DropdownItem>
       </React.Fragment>
