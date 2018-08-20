@@ -2,6 +2,7 @@ import { identity } from 'ramda';
 import React from 'react';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { shallow } from 'enzyme';
+import { DropdownItem, DropdownToggle } from 'reactstrap';
 
 describe('<ServersDropdown />', () => {
   let wrapped;
@@ -13,10 +14,10 @@ describe('<ServersDropdown />', () => {
   afterEach(() => wrapped.unmount());
 
   it('contains the list of servers', () => {
-    expect(wrapped.find('DropdownItem').length).toEqual(servers.length);
+    expect(wrapped.find(DropdownItem).length).toEqual(servers.length + 2);
   });
 
   it('contains a toggle with proper title', () => {
-    expect(wrapped.find('DropdownToggle').length).toEqual(1);
+    expect(wrapped.find(DropdownToggle).length).toEqual(1);
   });
 });
