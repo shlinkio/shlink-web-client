@@ -17,6 +17,7 @@
     "bootstrap": "^4.1.1",
     "chart.js": "^2.7.2",
     "classnames": "^2.2.6",
+    "jsonexport": "^2.2.1",
     "moment": "^2.22.2",
     "promise": "8.0.1",
     "prop-types": "^15.6.2",

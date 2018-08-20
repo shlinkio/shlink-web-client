@@ -4436,6 +4436,10 @@ json5@^0.5.0, json5@^0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
+jsonexport@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/jsonexport/-/jsonexport-2.2.1.tgz#b25a8a6e805e7179ef20460715ba2b92ebc32753"
+
 jsonfile@^2.1.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-2.4.0.tgz#3736a2b428b87bbda0cc83b53fa3d633a35c2ae8"

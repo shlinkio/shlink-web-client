@@ -21,7 +21,8 @@ body,
 .dropdown-item {
   cursor: pointer;
 }
-.dropdown-item.active {
+.dropdown-item.active,
+.dropdown-item:active {
   @extend .bg-main;
 }
 
