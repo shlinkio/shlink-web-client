@@ -15,9 +15,6 @@ export class ColorGenerator {
   constructor(storage) {
     this.storage = storage;
     this.colors = this.storage.get('colors') || {};
-
-    this.getColorForKey = this.getColorForKey.bind(this);
-    this.setColorForKey = this.setColorForKey.bind(this);
   }
 
   getColorForKey = key => {

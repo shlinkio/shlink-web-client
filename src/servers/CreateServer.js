@@ -1,33 +1,32 @@
-import { assoc, pick } from 'ramda';
+import { assoc, dissoc, pick, pipe } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { createServer } from './reducers/server';
 import { resetSelectedServer } from './reducers/selectedServer';
 import { v4 as uuid } from 'uuid';
-import { UncontrolledTooltip } from 'reactstrap';
 import './CreateServer.scss';
+import ImportServersBtn from './helpers/ImportServersBtn';
 
 export class CreateServer extends React.Component {
   state = {
     name: '',
     url: '',
     apiKey: '',
+    serversImported: false,
   };
 
   submit = e => {
     e.preventDefault();
 
     const { createServer, history: { push } } = this.props;
-    const server = assoc('id', uuid(), this.state);
+    const server = pipe(
+      assoc('id', uuid()),
+      dissoc('serversImported')
+    )(this.state);
 
     createServer(server);
     push(`/server/${server.id}/list-short-urls/1`)
   };
-
-  constructor(props) {
-    super(props);
-    this.fileRef = React.createRef();
-  }
 
   componentDidMount() {
     this.props.resetSelectedServer();
@@ -60,30 +59,29 @@ export class CreateServer extends React.Component {
           {renderInputGroup('apiKey', 'API key')}
 
           <div className="text-right">
-            <button
-              type="button"
-              className="btn btn-outline-secondary mr-2"
-              onClick={() => this.fileRef.current.click()}
-              id="importBtn"
-            >
-              Import from file
-            </button>
-            <UncontrolledTooltip placement="top" target="importBtn">
-              You can create servers by importing a CSV file with columns "name", "apiKey" and "url"
-            </UncontrolledTooltip>
-            <input
-              type="file"
-              onChange={file => console.log(file)}
-              accept="text/csv"
-              className="create-server__csv-select"
-              ref={this.fileRef}
-            />
+            <ImportServersBtn onImport={() => {
+              this.setState({ serversImported: true });
+              setTimeout(() => this.setState({ serversImported: false }), 4000);
+            }} />
             <button className="btn btn-outline-primary">Create server</button>
           </div>
+
+          {this.state.serversImported && (
+            <div className="row">
+              <div className="col-md-10 offset-md-1">
+                <div className="p-2 mt-3 bg-main text-white text-center">
+                  Servers properly imported. You can now select one from the list :)
+                </div>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     );
   }
 }
 
-export default connect(pick(['selectedServer']), {createServer, resetSelectedServer })(CreateServer);
+export default connect(
+  pick(['selectedServer']),
+  {createServer, resetSelectedServer }
+)(CreateServer);

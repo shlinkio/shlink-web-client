@@ -2,8 +2,6 @@ import reduce, {
   _createServer,
   _deleteServer,
   _listServers,
-  CREATE_SERVER,
-  DELETE_SERVER,
   FETCH_SERVERS,
 } from '../../../src/servers/reducers/server';
 import * as sinon from 'sinon';
@@ -23,17 +21,6 @@ describe('serverReducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
       expect(reduce({}, { type: FETCH_SERVERS, servers })).toEqual(servers)
     );
-
-    it('returns servers when action is DELETE_SERVER', () =>
-      expect(reduce({}, { type: DELETE_SERVER, servers })).toEqual(servers)
-    );
-
-    it('adds server to list when action is CREATE_SERVER', () => {
-      const server = { id: 'abc123' };
-      expect(reduce({}, { type: CREATE_SERVER, server })).toEqual({
-        [server.id]: server
-      })
-    });
 
     it('returns default when action is unknown', () =>
       expect(reduce({}, { type: 'unknown' })).toEqual({})
