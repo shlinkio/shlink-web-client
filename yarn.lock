@@ -1691,6 +1691,10 @@ commander@^2.11.0:
   version "2.17.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.0.tgz#9d07b25e2a6f198b76d8b756a0e8a9604a6a1a60"
 
+commander@^2.9.0:
+  version "2.17.1"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
+
 commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
@@ -5312,6 +5316,12 @@ object.values@^1.0.4:
 obuf@^1.0.0, obuf@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/obuf/-/obuf-1.1.2.tgz#09bea3343d41859ebd446292d11c9d4db619084e"
+
+ocular.js@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ocular.js/-/ocular.js-0.1.0.tgz#3a146ab59864e97ffb12f83e1d8f03b9abf9a866"
+  dependencies:
+    commander "^2.9.0"
 
 on-finished@~2.3.0:
   version "2.3.0"
