@@ -57,7 +57,7 @@ export class ShlinkApiClient {
   deleteTags = tags =>
     this._performRequest('/tags', 'DELETE', { tags })
       .then(() => ({ tags }))
-      .catch(e => this._handleAuthError(e, this.deleteTag, []));
+      .catch(e => this._handleAuthError(e, this.deleteTags, [tags]));
 
   editTag = (oldName, newName) =>
     this._performRequest('/tags', 'PUT', {}, { oldName, newName })
