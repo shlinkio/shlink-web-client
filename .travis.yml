@@ -13,7 +13,7 @@ install:
 
 script:
   # - yarn inspect
-  - yarn test --coverage
+  - yarn test:ci
   - yarn build # Make sure the app can be built without errors
 
 after_script:

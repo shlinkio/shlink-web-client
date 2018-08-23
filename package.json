@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom --colors"
+    "test": "node scripts/test.js --env=jsdom --colors",
+    "test:ci": "yarn test --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=clover",
+    "test:pretty": "yarn test --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=html"
   },
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
@@ -86,12 +88,6 @@
     "whatwg-fetch": "2.0.3"
   },
   "jest": {
-    "coverageReporters": [
-      "text",
-      "text-summary",
-      "clover",
-      "html"
-    ],
     "coverageDirectory": "<rootDir>/coverage",
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
