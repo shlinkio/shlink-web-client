@@ -9,17 +9,19 @@ import PropTypes from 'prop-types';
 
 const defaultProps = {
   serversImporter,
+  onImport: () => {},
 };
 const propTypes = {
   onImport: PropTypes.func,
   serversImporter: serversImporterType,
   createServers: PropTypes.func,
+  fileRef: PropTypes.oneOfType([PropTypes.object, PropTypes.node]),
 };
 
 export class ImportServersBtn extends React.Component {
   constructor(props) {
     super(props);
-    this.fileRef = React.createRef();
+    this.fileRef = props.fileRef || React.createRef();
   }
 
   render() {
