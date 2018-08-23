@@ -1,4 +1,9 @@
 import csvjson from 'csvjson';
+import PropTypes from 'prop-types';
+
+export const serversImporterType = PropTypes.shape({
+  importServersFromFile: PropTypes.func,
+});
 
 export class ServersImporter {
   constructor(csvjson) {

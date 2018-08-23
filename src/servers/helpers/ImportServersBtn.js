@@ -1,7 +1,7 @@
 import React  from 'react';
 import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
-import serversImporter from '../services/ServersImporter';
+import serversImporter, { serversImporterType } from '../services/ServersImporter';
 import { createServers } from '../reducers/server';
 import { assoc } from 'ramda';
 import { v4 as uuid } from 'uuid';
@@ -11,7 +11,9 @@ const defaultProps = {
   serversImporter,
 };
 const propTypes = {
-  onChange: PropTypes.func,
+  onImport: PropTypes.func,
+  serversImporter: serversImporterType,
+  createServers: PropTypes.func,
 };
 
 export class ImportServersBtn extends React.Component {
@@ -21,15 +23,12 @@ export class ImportServersBtn extends React.Component {
   }
 
   render() {
-    const { serversImporter, onImport } = this.props;
-    const onChange = e => serversImporter.importServersFromFile(e.target.files[0]).then(
-      servers => {
-        const { createServers } = this.props;
-        const serversWithIds = servers.map(server => assoc('id', uuid(), server));
-        createServers(serversWithIds);
-        onImport(serversWithIds);
-      }
-    );
+    const { serversImporter: { importServersFromFile }, onImport, createServers } = this.props;
+    const onChange = e =>
+      importServersFromFile(e.target.files[0])
+        .then(servers => servers.map(server => assoc('id', uuid(), server)))
+        .then(createServers)
+        .then(onImport);
 
     return (
       <React.Fragment>
@@ -41,10 +40,10 @@ export class ImportServersBtn extends React.Component {
         >
           Import from file
         </button>
-
         <UncontrolledTooltip placement="top" target="importBtn">
           You can create servers by importing a CSV file with columns "name", "apiKey" and "url"
         </UncontrolledTooltip>
+
         <input
           type="file"
           onChange={onChange}
