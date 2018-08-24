@@ -7,6 +7,12 @@ import { compose } from 'redux';
 import { deleteServer } from './reducers/server';
 import { serverType } from './prop-types';
 
+const propTypes = {
+  toggle: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  server: serverType,
+};
+
 export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
     deleteServer(server);
@@ -32,11 +38,7 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
   );
 };
 
-DeleteServerModal.propTypes = {
-  toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  server: serverType,
-};
+DeleteServerModal.propTypes = propTypes;
 
 export default compose(
   withRouter,
