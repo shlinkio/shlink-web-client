@@ -6,6 +6,15 @@ import { resetSelectedServer } from './reducers/selectedServer';
 import { v4 as uuid } from 'uuid';
 import './CreateServer.scss';
 import ImportServersBtn from './helpers/ImportServersBtn';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  createServer: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  resetSelectedServer: PropTypes.func,
+};
 
 export class CreateServer extends React.Component {
   state = {
@@ -67,7 +76,7 @@ export class CreateServer extends React.Component {
           </div>
 
           {this.state.serversImported && (
-            <div className="row">
+            <div className="row create-server__import-success-msg">
               <div className="col-md-10 offset-md-1">
                 <div className="p-2 mt-3 bg-main text-white text-center">
                   Servers properly imported. You can now select one from the list :)
@@ -80,6 +89,8 @@ export class CreateServer extends React.Component {
     );
   }
 }
+
+CreateServer.propTypes = propTypes;
 
 export default connect(
   pick(['selectedServer']),
