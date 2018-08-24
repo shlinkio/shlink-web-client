@@ -7,13 +7,21 @@ import Moment from 'react-moment'
 import { connect } from 'react-redux'
 import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap'
 import DateInput from '../common/DateInput'
-import visitsParser from '../visits/services/VisitsParser'
+import {
+  processOsStats,
+  processBrowserStats,
+  processCountriesStats,
+  processReferrersStats,
+} from '../visits/services/VisitsParser'
 import { getShortUrlVisits } from './reducers/shortUrlVisits'
 import './ShortUrlVisits.scss'
 import MutedMessage from '../utils/MuttedMessage';
 
 const defaultProps = {
-  visitsParser,
+  processOsStats,
+  processBrowserStats,
+  processCountriesStats,
+  processReferrersStats,
 };
 
 export class ShortUrlsVisits extends React.Component {
@@ -34,7 +42,10 @@ export class ShortUrlsVisits extends React.Component {
     const {
       match: { params },
       selectedServer,
-      visitsParser,
+      processOsStats,
+      processBrowserStats,
+      processCountriesStats,
+      processReferrersStats,
       shortUrlVisits: { visits, loading, error, shortUrl }
     } = this.props;
     const serverUrl = selectedServer ? selectedServer.url : '';
@@ -96,10 +107,10 @@ export class ShortUrlsVisits extends React.Component {
 
       return (
         <div className="row">
-          {renderGraphCard('Operating systems', visitsParser.processOsStats(visits), false)}
-          {renderGraphCard('Browsers', visitsParser.processBrowserStats(visits), false)}
-          {renderGraphCard('Countries', visitsParser.processCountriesStats(visits), true, 'Visits')}
-          {renderGraphCard('Referrers', visitsParser.processReferrersStats(visits), true, 'Visits')}
+          {renderGraphCard('Operating systems', processOsStats(visits), false)}
+          {renderGraphCard('Browsers', processBrowserStats(visits), false)}
+          {renderGraphCard('Countries', processCountriesStats(visits), true, 'Visits')}
+          {renderGraphCard('Referrers', processReferrersStats(visits), true, 'Visits')}
         </div>
       );
     };
@@ -173,4 +184,7 @@ export class ShortUrlsVisits extends React.Component {
 
 ShortUrlsVisits.defaultProps = defaultProps;
 
-export default connect(pick(['selectedServer', 'shortUrlVisits']), { getShortUrlVisits })(ShortUrlsVisits);
+export default connect(
+  pick(['selectedServer', 'shortUrlVisits']),
+  { getShortUrlVisits }
+)(ShortUrlsVisits);

@@ -1,4 +1,9 @@
-import visitsParser from '../../../src/visits/services/VisitsParser';
+import {
+  processOsStats,
+  processBrowserStats,
+  processReferrersStats,
+  processCountriesStats,
+} from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
   const visits = [
@@ -36,7 +41,7 @@ describe('VisitsParser', () => {
 
   describe('processOsStats', () => {
     it('properly parses OS stats', () => {
-      expect(visitsParser.processOsStats(visits)).toEqual({
+      expect(processOsStats(visits)).toEqual({
         'Linux': 3,
         'Windows': 1,
         'MacOS': 1,
@@ -46,7 +51,7 @@ describe('VisitsParser', () => {
 
   describe('processBrowserStats', () => {
     it('properly parses browser stats', () => {
-      expect(visitsParser.processBrowserStats(visits)).toEqual({
+      expect(processBrowserStats(visits)).toEqual({
         'Firefox': 2,
         'Chrome': 2,
         'Opera': 1,
@@ -56,7 +61,7 @@ describe('VisitsParser', () => {
 
   describe('processReferrersStats', () => {
     it('properly parses referrer stats', () => {
-      expect(visitsParser.processReferrersStats(visits)).toEqual({
+      expect(processReferrersStats(visits)).toEqual({
         'Unknown': 2,
         'google.com': 2,
         'm.facebook.com': 1,
@@ -66,7 +71,7 @@ describe('VisitsParser', () => {
 
   describe('processCountriesStats', () => {
     it('properly parses countries stats', () => {
-      expect(visitsParser.processCountriesStats(visits)).toEqual({
+      expect(processCountriesStats(visits)).toEqual({
         'Spain': 3,
         'United States': 1,
         'Unknown': 1,
