@@ -1,8 +1,6 @@
-import Storage from '../../utils/Storage';
+import serversService from './ServersService';
 import { dissoc, head, keys, values } from 'ramda';
 import csvjson from 'csvjson';
-
-const SERVERS_STORAGE_KEY = 'servers';
 
 const saveCsv = (window, csv) => {
   const { navigator, document } = window;
@@ -27,16 +25,14 @@ const saveCsv = (window, csv) => {
 };
 
 export class ServersExporter {
-  constructor(storage, window, csvjson) {
-    this.storage = storage;
+  constructor(serversService, window, csvjson) {
+    this.serversService = serversService;
     this.window = window;
     this.csvjson = csvjson;
   }
 
   exportServers = async () => {
-    const servers = values(this.storage.get(SERVERS_STORAGE_KEY) || {}).map(
-      dissoc('id')
-    );
+    const servers = values(this.serversService.listServers()).map(dissoc('id'));
 
     try {
       const csv = this.csvjson.toCSV(servers, {
@@ -50,4 +46,5 @@ export class ServersExporter {
   };
 }
 
-export default new ServersExporter(Storage, global.window, csvjson);
+const serverExporter = new ServersExporter(serversService, global.window, csvjson);
+export default serverExporter;
