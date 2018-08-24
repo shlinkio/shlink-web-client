@@ -1,4 +1,4 @@
-import { forEach, isNil, isEmpty } from 'ramda';
+import { assoc, isNil, isEmpty, reduce } from 'ramda';
 
 const osFromUserAgent = userAgent => {
   const lowerUserAgent = userAgent.toLowerCase();
@@ -41,61 +41,52 @@ const extractDomain = url => {
   return domain.split(':')[0];
 };
 
-// FIXME Refactor these foreach statements which mutate a stats object
 export class VisitsParser {
-  processOsStats = visits => {
-    const stats = {};
+  processOsStats = visits =>
+    reduce(
+      (stats, visit) => {
+        const userAgent = visit.userAgent;
+        const os = isNil(userAgent) ? 'Others' : osFromUserAgent(userAgent);
+        return assoc(os, (stats[os] || 0) + 1, stats);
+      },
+      {},
+      visits,
+    );
 
-    forEach(visit => {
-      const userAgent = visit.userAgent;
-      const os = isNil(userAgent) ? 'Others' : osFromUserAgent(userAgent);
+  processBrowserStats = visits =>
+    reduce(
+      (stats, visit) => {
+        const userAgent = visit.userAgent;
+        const browser = isNil(userAgent) ? 'Others' : browserFromUserAgent(userAgent);
+        return assoc(browser, (stats[browser] || 0) + 1, stats);
+      },
+      {},
+      visits,
+    );
 
-      stats[os] = typeof stats[os] === 'undefined' ? 1 : stats[os] + 1;
-    }, visits);
+  processReferrersStats = visits =>
+    reduce(
+      (stats, visit) => {
+        const notHasDomain = isNil(visit.referer) || isEmpty(visit.referer);
+        const domain = notHasDomain ? 'Unknown' : extractDomain(visit.referer);
+        return assoc(domain, (stats[domain]|| 0) + 1, stats);
+      },
+      {},
+      visits,
+    );
 
-    return stats;
-  };
-
-  processBrowserStats = visits => {
-    const stats = {};
-
-    forEach(visit => {
-      const userAgent = visit.userAgent;
-      const browser = isNil(userAgent) ? 'Others' : browserFromUserAgent(userAgent);
-
-      stats[browser] = typeof stats[browser] === 'undefined' ? 1 : stats[browser] + 1;
-    }, visits);
-
-    return stats;
-  };
-
-  processReferrersStats = visits => {
-    const stats = {};
-
-    forEach(visit => {
-      const notHasDomain = isNil(visit.referer) || isEmpty(visit.referer);
-      const domain = notHasDomain ? 'Unknown' : extractDomain(visit.referer);
-
-      stats[domain] = typeof stats[domain] === 'undefined' ? 1 : stats[domain] + 1;
-    }, visits);
-
-    return stats;
-  };
-
-  processCountriesStats = visits => {
-    const stats = {};
-
-    forEach(({ visitLocation }) => {
-      const notHasCountry = isNil(visitLocation)
-        || isNil(visitLocation.countryName)
-        || isEmpty(visitLocation.countryName);
-      const country = notHasCountry ? 'Unknown' : visitLocation.countryName;
-
-      stats[country] = typeof stats[country] === 'undefined' ? 1 : stats[country] + 1;
-    }, visits);
-
-    return stats;
-  };
+  processCountriesStats = visits =>
+    reduce(
+      (stats, { visitLocation }) => {
+        const notHasCountry = isNil(visitLocation)
+          || isNil(visitLocation.countryName)
+          || isEmpty(visitLocation.countryName);
+        const country = notHasCountry ? 'Unknown' : visitLocation.countryName;
+        return assoc(country, (stats[country]|| 0) + 1, stats);
+      },
+      {},
+      visits,
+    );
 }
 
 const visitsParser = new VisitsParser();
