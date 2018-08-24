@@ -12,7 +12,7 @@ install:
   - yarn install
 
 script:
-  # - yarn inspect
+  - yarn lint
   - yarn test:ci
   - yarn build # Make sure the app can be built without errors
 
