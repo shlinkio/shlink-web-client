@@ -1,5 +1,5 @@
 import ShlinkApiClient from '../../api/ShlinkApiClient';
-import ServersService from '../../servers/services/ServersService';
+import serversService from '../../servers/services/ServersService';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams'
 import { curry } from 'ramda';
 
@@ -21,10 +21,10 @@ export default function reducer(state = defaultState, action) {
 
 export const resetSelectedServer = () => ({ type: RESET_SELECTED_SERVER });
 
-export const _selectServer = (ShlinkApiClient, ServersService, serverId) => dispatch => {
+export const _selectServer = (ShlinkApiClient, serversService, serverId) => dispatch => {
   dispatch(resetShortUrlParams());
 
-  const selectedServer = ServersService.findServerById(serverId);
+  const selectedServer = serversService.findServerById(serverId);
   ShlinkApiClient.setConfig(selectedServer);
 
   dispatch({
@@ -32,4 +32,4 @@ export const _selectServer = (ShlinkApiClient, ServersService, serverId) => disp
     selectedServer
   })
 };
-export const selectServer = curry(_selectServer)(ShlinkApiClient, ServersService);
+export const selectServer = curry(_selectServer)(ShlinkApiClient, serversService);

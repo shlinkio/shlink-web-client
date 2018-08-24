@@ -30,4 +30,5 @@ export class ServersService {
     );
 }
 
-export default new ServersService(Storage);
+const serversService = new ServersService(Storage);
+export default serversService;

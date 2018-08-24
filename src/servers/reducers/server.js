@@ -1,4 +1,4 @@
-import ServersService from '../services/ServersService';
+import serversService from '../services/ServersService';
 import { curry } from 'ramda';
 
 export const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
@@ -12,26 +12,26 @@ export default function reducer(state = {}, action) {
   }
 }
 
-export const _listServers = ServersService => ({
+export const _listServers = serversService => ({
   type: FETCH_SERVERS,
-  servers: ServersService.listServers(),
+  servers: serversService.listServers(),
 });
-export const listServers = () => _listServers(ServersService);
+export const listServers = () => _listServers(serversService);
 
-export const _createServer = (ServersService, server) => {
-  ServersService.createServer(server);
-  return _listServers(ServersService);
+export const _createServer = (serversService, server) => {
+  serversService.createServer(server);
+  return _listServers(serversService);
 };
-export const createServer = curry(_createServer)(ServersService);
+export const createServer = curry(_createServer)(serversService);
 
-export const _deleteServer = (ServersService, server) => {
-  ServersService.deleteServer(server);
-  return _listServers(ServersService);
+export const _deleteServer = (serversService, server) => {
+  serversService.deleteServer(server);
+  return _listServers(serversService);
 };
-export const deleteServer = curry(_deleteServer)(ServersService);
+export const deleteServer = curry(_deleteServer)(serversService);
 
-export const _createServers = (ServersService, servers) => {
-  ServersService.createServers(servers);
-  return _listServers(ServersService);
+export const _createServers = (serversService, servers) => {
+  serversService.createServers(servers);
+  return _listServers(serversService);
 };
-export const createServers = curry(_createServers)(ServersService);
+export const createServers = curry(_createServers)(serversService);
