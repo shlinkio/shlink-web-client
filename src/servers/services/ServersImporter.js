@@ -17,12 +17,12 @@ export class ServersImporter {
 
     const reader = new FileReader();
     return new Promise(resolve => {
-      reader.onloadend = e => {
+      reader.addEventListener('loadend', e => {
         const content = e.target.result;
         const servers = this.csvjson.toObject(content);
 
         resolve(servers);
-      };
+      });
       reader.readAsText(file);
     });
   };
