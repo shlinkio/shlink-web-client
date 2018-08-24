@@ -5,10 +5,10 @@ import reduce, {
 import { LIST_SHORT_URLS } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlsListParamsReducer', () => {
-  describe('reduce', () => {
+  describe('reducer', () => {
     const defaultState = { page: '1' };
 
-    it('returns default value when action is anknown', () =>
+    it('returns default value when action is unknown', () =>
       expect(reduce(defaultState, { type: 'unknown' })).toEqual(defaultState)
     );
 

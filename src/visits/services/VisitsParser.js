@@ -21,14 +21,14 @@ const browserFromUserAgent = userAgent => {
   const lowerUserAgent = userAgent.toLowerCase();
 
   switch (true) {
+    case (lowerUserAgent.indexOf('opera') >= 0 || lowerUserAgent.indexOf('opr') >= 0):
+      return 'Opera';
     case (lowerUserAgent.indexOf('firefox') >= 0):
       return 'Firefox';
     case (lowerUserAgent.indexOf('chrome') >= 0):
       return 'Chrome';
     case (lowerUserAgent.indexOf('safari') >= 0):
       return 'Safari';
-    case (lowerUserAgent.indexOf('opera') >= 0):
-      return 'Opera';
     case (lowerUserAgent.indexOf('msie') >= 0):
       return 'Internet Explorer';
     default:
@@ -98,4 +98,5 @@ export class VisitsParser {
   };
 }
 
-export default new VisitsParser();
+const visitsParser = new VisitsParser();
+export default visitsParser;

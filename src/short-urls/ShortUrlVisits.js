@@ -7,10 +7,14 @@ import Moment from 'react-moment'
 import { connect } from 'react-redux'
 import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap'
 import DateInput from '../common/DateInput'
-import VisitsParser from '../visits/services/VisitsParser'
+import visitsParser from '../visits/services/VisitsParser'
 import { getShortUrlVisits } from './reducers/shortUrlVisits'
 import './ShortUrlVisits.scss'
 import MutedMessage from '../utils/MuttedMessage';
+
+const defaultProps = {
+  visitsParser,
+};
 
 export class ShortUrlsVisits extends React.Component {
   state = { startDate: undefined, endDate: undefined };
@@ -167,8 +171,6 @@ export class ShortUrlsVisits extends React.Component {
   }
 }
 
-ShortUrlsVisits.defaultProps = {
-  visitsParser: VisitsParser
-};
+ShortUrlsVisits.defaultProps = defaultProps;
 
 export default connect(pick(['selectedServer', 'shortUrlVisits']), { getShortUrlVisits })(ShortUrlsVisits);
