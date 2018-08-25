@@ -173,6 +173,11 @@
       "react/jsx-closing-bracket-location": ["error", "tag-aligned"],
       "react/no-array-index-key": "off",
       "react/no-did-update-set-state": "off"
+    },
+    "settings": {
+      "react": {
+        "version": "16.3"
+      }
     }
   }
 }
