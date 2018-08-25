@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "stylelint-config-adidas",
+    "stylelint-config-adidas-bem",
+    "stylelint-config-recommended-scss"
+  ],
+  "syntax": "scss",
+  "plugins": [
+    "stylelint-scss"
+  ]
+}
