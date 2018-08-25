@@ -5,7 +5,7 @@
   "private": false,
   "scripts": {
     "lint": "yarn lint:js && yarn lint:css",
-    "lint:js": "eslint src test",
+    "lint:js": "eslint src test scripts",
     "lint:js:fix": "yarn lint:js --fix",
     "lint:css": "stylelint src/**/*.scss",
     "lint:css:fix": "yarn lint:css --fix",
