@@ -1,8 +1,15 @@
 import React from 'react';
 import { Card } from 'reactstrap';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
-export default function MutedMessage({ children, marginSize = 4 }) {
+const DEFAULT_MARGIN_SIZE = 4;
+const propTypes = {
+  marginSize: PropTypes.number,
+  children: PropTypes.node,
+};
+
+export default function MutedMessage({ children, marginSize = DEFAULT_MARGIN_SIZE }) {
   const cardClasses = classnames('bg-light', {
     [`mt-${marginSize}`]: marginSize > 0,
   });
@@ -17,3 +24,5 @@ export default function MutedMessage({ children, marginSize = 4 }) {
     </div>
   );
 }
+
+MutedMessage.propTypes = propTypes;

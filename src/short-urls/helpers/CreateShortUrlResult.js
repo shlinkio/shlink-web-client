@@ -3,8 +3,18 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { isNil } from 'ramda';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import './CreateShortUrlResult.scss'
 import { Card, CardBody, Tooltip } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { createShortUrlResultType } from '../reducers/shortUrlCreationResult';
+import './CreateShortUrlResult.scss';
+
+const TIME_TO_SHOW_COPY_TOOLTIP = 2000;
+
+const propTypes = {
+  resetCreateShortUrl: PropTypes.func,
+  error: PropTypes.bool,
+  result: createShortUrlResultType,
+};
 
 export default class CreateShortUrlResult extends React.Component {
   state = { showCopyTooltip: false };
@@ -30,7 +40,7 @@ export default class CreateShortUrlResult extends React.Component {
     const { shortUrl } = result;
     const onCopy = () => {
       this.setState({ showCopyTooltip: true });
-      setTimeout(() => this.setState({ showCopyTooltip: false }), 2000);
+      setTimeout(() => this.setState({ showCopyTooltip: false }), TIME_TO_SHOW_COPY_TOOLTIP);
     };
 
     return (
@@ -39,8 +49,12 @@ export default class CreateShortUrlResult extends React.Component {
           <b>Great!</b> The short URL is <b>{shortUrl}</b>
 
           <CopyToClipboard text={shortUrl} onCopy={onCopy}>
-            <button className="btn btn-light btn-sm create-short-url-result__copy-btn" id="copyBtn" type="button">
-              <FontAwesomeIcon icon={copyIcon}/> Copy
+            <button
+              className="btn btn-light btn-sm create-short-url-result__copy-btn"
+              id="copyBtn"
+              type="button"
+            >
+              <FontAwesomeIcon icon={copyIcon} /> Copy
             </button>
           </CopyToClipboard>
 
@@ -51,4 +65,6 @@ export default class CreateShortUrlResult extends React.Component {
       </Card>
     );
   }
-};
+}
+
+CreateShortUrlResult.propTypes = propTypes;

@@ -2,20 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { pick } from 'ramda';
-import { editTag, tagEdited } from '../reducers/tagEdit';
 import { ChromePicker } from 'react-color';
-import ColorGenerator from '../../utils/ColorGenerator';
-import colorIcon from '@fortawesome/fontawesome-free-solid/faPalette'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import colorIcon from '@fortawesome/fontawesome-free-solid/faPalette';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import PropTypes from 'prop-types';
+import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
+import { editTag, tagEdited } from '../reducers/tagEdit';
 import './EditTagModal.scss';
 
+const propTypes = {
+  tag: PropTypes.string,
+  editTag: PropTypes.func,
+  toggle: PropTypes.func,
+  tagEdited: PropTypes.func,
+  colorGenerator: colorGeneratorType,
+  isOpen: PropTypes.bool,
+  tagEdit: PropTypes.shape({
+    error: PropTypes.bool,
+    editing: PropTypes.bool,
+  }),
+};
 const defaultProps = {
-  colorGenerator: ColorGenerator,
+  colorGenerator,
 };
 
-
-export class EditTagModal extends React.Component {
-  saveTag = e => {
+export class EditTagModalComponent extends React.Component {
+  saveTag = (e) => {
     e.preventDefault();
     const { tag: oldName, editTag, toggle } = this.props;
     const { tag: newName, color } = this.state;
@@ -27,13 +39,14 @@ export class EditTagModal extends React.Component {
       })
       .catch(() => {});
   };
-  onClosed = () => {
+  handleOnClosed = () => {
     if (!this.tagWasEdited) {
       return;
     }
 
     const { tag: oldName, tagEdited } = this.props;
     const { tag: newName, color } = this.state;
+
     tagEdited(oldName, newName, color);
   };
 
@@ -41,11 +54,12 @@ export class EditTagModal extends React.Component {
     super(props);
 
     const { colorGenerator, tag } = props;
+
     this.state = {
       showColorPicker: false,
       tag,
-      color: colorGenerator.getColorForKey(tag)
-    }
+      color: colorGenerator.getColorForKey(tag),
+    };
   }
 
   componentDidMount() {
@@ -56,11 +70,11 @@ export class EditTagModal extends React.Component {
     const { isOpen, toggle, tagEdit } = this.props;
     const { tag, color } = this.state;
     const toggleColorPicker = () =>
-      this.setState({ showColorPicker: !this.state.showColorPicker });
+      this.setState(({ showColorPicker }) => ({ showColorPicker: !showColorPicker }));
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.onClosed}>
-        <form onSubmit={this.saveTag}>
+      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.handleOnClosed}>
+        <form onSubmit={() => this.saveTag()}>
           <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
           <ModalBody>
             <div className="input-group">
@@ -87,17 +101,17 @@ export class EditTagModal extends React.Component {
               >
                 <ChromePicker
                   color={color}
-                  onChange={color => this.setState({ color: color.hex })}
                   disableAlpha
+                  onChange={(color) => this.setState({ color: color.hex })}
                 />
               </Popover>
               <input
                 type="text"
                 value={tag}
-                onChange={e => this.setState({ tag: e.target.value })}
                 placeholder="Tag"
                 required
                 className="form-control"
+                onChange={(e) => this.setState({ tag: e.target.value })}
               />
             </div>
 
@@ -119,6 +133,9 @@ export class EditTagModal extends React.Component {
   }
 }
 
-EditTagModal.defaultProps = defaultProps;
+EditTagModalComponent.propTypes = propTypes;
+EditTagModalComponent.defaultProps = defaultProps;
 
-export default connect(pick(['tagEdit']), { editTag, tagEdited })(EditTagModal);
+const EditTagModal = connect(pick([ 'tagEdit' ]), { editTag, tagEdited })(EditTagModalComponent);
+
+export default EditTagModal;

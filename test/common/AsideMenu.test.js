@@ -1,7 +1,7 @@
-import { shallow } from 'enzyme'
-import React from 'react'
-import AsideMenu from '../../src/common/AsideMenu'
+import { shallow } from 'enzyme';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
+import AsideMenu from '../../src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {
   let wrapped;
@@ -15,9 +15,10 @@ describe('<AsideMenu />', () => {
 
   it('contains links to different sections', () => {
     const links = wrapped.find(NavLink);
+    const expectedLength = 3;
 
-    expect(links).toHaveLength(3);
-    links.forEach(link => expect(link.prop('to')).toContain('abc123'));
+    expect(links).toHaveLength(expectedLength);
+    links.forEach((link) => expect(link.prop('to')).toContain('abc123'));
   });
 
   it('contains a button to delete server', () => {

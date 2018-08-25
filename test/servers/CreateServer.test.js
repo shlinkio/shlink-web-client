@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { CreateServer } from '../../src/servers/CreateServer';
 import { identity } from 'ramda';
 import sinon from 'sinon';
+import { CreateServerComponent } from '../../src/servers/CreateServer';
 import ImportServersBtn from '../../src/servers/helpers/ImportServersBtn';
 
 describe('<CreateServer />', () => {
@@ -17,7 +17,7 @@ describe('<CreateServer />', () => {
     historyMock.push.resetHistory();
 
     wrapper = shallow(
-      <CreateServer
+      <CreateServerComponent
         createServer={createServerMock}
         resetSelectedServer={identity}
         history={historyMock}
@@ -41,7 +41,10 @@ describe('<CreateServer />', () => {
 
   it('creates server and redirects to it when form is submitted', () => {
     const form = wrapper.find('form');
-    form.simulate('submit', { preventDefault: () => {} });
+
+    form.simulate('submit', { preventDefault() {
+      return '';
+    } });
 
     expect(createServerMock.callCount).toEqual(1);
     expect(historyMock.push.callCount).toEqual(1);

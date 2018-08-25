@@ -1,6 +1,6 @@
-import ShlinkApiClient from '../../api/ShlinkApiClient';
-import { TAG_DELETED } from './tagDelete';
 import { reject } from 'ramda';
+import shlinkApiClient from '../../api/ShlinkApiClient';
+import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
 const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -16,7 +16,7 @@ const defaultState = {
 };
 
 export default function reducer(state = defaultState, action) {
-  switch(action.type) {
+  switch (action.type) {
     case LIST_TAGS_START:
       return {
         ...state,
@@ -39,14 +39,17 @@ export default function reducer(state = defaultState, action) {
     case TAG_DELETED:
       return {
         ...state,
+
         // FIXME This should be optimized somehow...
-        tags: reject(tag => tag === action.tag, state.tags),
-        filteredTags: reject(tag => tag === action.tag, state.filteredTags),
+        tags: reject((tag) => tag === action.tag, state.tags),
+        filteredTags: reject((tag) => tag === action.tag, state.filteredTags),
       };
     case TAG_EDITED:
-      const renameTag = tag => tag === action.oldName ? action.newName : tag;
+      const renameTag = (tag) => tag === action.oldName ? action.newName : tag;
+
       return {
         ...state,
+
         // FIXME This should be optimized somehow...
         tags: state.tags.map(renameTag).sort(),
         filteredTags: state.filteredTags.map(renameTag).sort(),
@@ -55,7 +58,7 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         filteredTags: state.tags.filter(
-          tag => tag.toLowerCase().match(action.searchTerm),
+          (tag) => tag.toLowerCase().match(action.searchTerm),
         ),
       };
     default:
@@ -63,19 +66,21 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _listTags = ShlinkApiClient => async dispatch => {
+export const _listTags = (shlinkApiClient) => async (dispatch) => {
   dispatch({ type: LIST_TAGS_START });
 
   try {
-    const tags = await ShlinkApiClient.listTags();
+    const tags = await shlinkApiClient.listTags();
+
     dispatch({ tags, type: LIST_TAGS });
   } catch (e) {
     dispatch({ type: LIST_TAGS_ERROR });
   }
 };
-export const listTags = () => _listTags(ShlinkApiClient);
 
-export const filterTags = searchTerm => ({
+export const listTags = () => _listTags(shlinkApiClient);
+
+export const filterTags = (searchTerm) => ({
   type: FILTER_TAGS,
   searchTerm,
 });

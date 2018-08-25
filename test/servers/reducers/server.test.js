@@ -1,3 +1,5 @@
+import * as sinon from 'sinon';
+import { values } from 'ramda';
 import reduce, {
   _createServer,
   _deleteServer,
@@ -5,13 +7,11 @@ import reduce, {
   _createServers,
   FETCH_SERVERS,
 } from '../../../src/servers/reducers/server';
-import * as sinon from 'sinon';
-import { values } from 'ramda';
 
 describe('serverReducer', () => {
   const servers = {
     abc123: { id: 'abc123' },
-    def456: { id: 'def456' }
+    def456: { id: 'def456' },
   };
   const ServersServiceMock = {
     listServers: sinon.fake.returns(servers),
@@ -22,12 +22,10 @@ describe('serverReducer', () => {
 
   describe('reduce', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reduce({}, { type: FETCH_SERVERS, servers })).toEqual(servers)
-    );
+      expect(reduce({}, { type: FETCH_SERVERS, servers })).toEqual(servers));
 
     it('returns default when action is unknown', () =>
-      expect(reduce({}, { type: 'unknown' })).toEqual({})
-    );
+      expect(reduce({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('action creators', () => {

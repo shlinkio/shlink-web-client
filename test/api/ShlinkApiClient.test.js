@@ -1,20 +1,20 @@
-import { ShlinkApiClient } from '../../src/api/ShlinkApiClient'
 import sinon from 'sinon';
 import { head, last } from 'ramda';
+import { ShlinkApiClient } from '../../src/api/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
-  const createAxiosMock = extraData => () =>
+  const createAxiosMock = (extraData) => () =>
     Promise.resolve({
-     headers: { authorization: 'Bearer abc123' },
+      headers: { authorization: 'Bearer abc123' },
       data: { token: 'abc123' },
       ...extraData,
     });
-  const createApiClient = extraData =>
+  const createApiClient = (extraData) =>
     new ShlinkApiClient(createAxiosMock(extraData));
 
   describe('listShortUrls', () => {
     it('properly returns short URLs list', async () => {
-      const expectedList = ['foo', 'bar'];
+      const expectedList = [ 'foo', 'bar' ];
 
       const apiClient = createApiClient({
         data: {
@@ -23,6 +23,7 @@ describe('ShlinkApiClient', () => {
       });
 
       const actualList = await apiClient.listShortUrls();
+
       expect(expectedList).toEqual(actualList);
     });
   });
@@ -35,6 +36,7 @@ describe('ShlinkApiClient', () => {
     it('returns create short URL', async () => {
       const apiClient = createApiClient({ data: shortUrl });
       const result = await apiClient.createShortUrl({});
+
       expect(result).toEqual(shortUrl);
     });
 
@@ -54,7 +56,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getShortUrlVisits', () => {
     it('properly returns short URL visits', async () => {
-      const expectedVisits = ['foo', 'bar'];
+      const expectedVisits = [ 'foo', 'bar' ];
       const axiosSpy = sinon.spy(createAxiosMock({
         data: {
           visits: {
@@ -94,7 +96,7 @@ describe('ShlinkApiClient', () => {
 
   describe('updateShortUrlTags', () => {
     it('properly updates short URL tags', async () => {
-      const expectedTags = ['foo', 'bar'];
+      const expectedTags = [ 'foo', 'bar' ];
       const axiosSpy = sinon.spy(createAxiosMock({
         data: { tags: expectedTags },
       }));
@@ -112,10 +114,10 @@ describe('ShlinkApiClient', () => {
 
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
-      const expectedTags = ['foo', 'bar'];
+      const expectedTags = [ 'foo', 'bar' ];
       const axiosSpy = sinon.spy(createAxiosMock({
         data: {
-          tags: { data: expectedTags }
+          tags: { data: expectedTags },
         },
       }));
       const apiClient = new ShlinkApiClient(axiosSpy);
@@ -132,7 +134,7 @@ describe('ShlinkApiClient', () => {
 
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
-      const tags = ['foo', 'bar'];
+      const tags = [ 'foo', 'bar' ];
       const axiosSpy = sinon.spy(createAxiosMock({}));
       const apiClient = new ShlinkApiClient(axiosSpy);
 

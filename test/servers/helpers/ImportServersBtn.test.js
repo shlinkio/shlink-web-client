@@ -1,8 +1,8 @@
 import React from 'react';
-import { ImportServersBtn } from '../../../src/servers/helpers/ImportServersBtn';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
+import { ImportServersBtnComponent } from '../../../src/servers/helpers/ImportServersBtn';
 
 describe('<ImportServersBtn />', () => {
   let wrapper;
@@ -12,7 +12,7 @@ describe('<ImportServersBtn />', () => {
     importServersFromFile: sinon.fake.returns(Promise.resolve([])),
   };
   const fileRef = {
-    current: { click: sinon.fake() }
+    current: { click: sinon.fake() },
   };
 
   beforeEach(() => {
@@ -22,11 +22,11 @@ describe('<ImportServersBtn />', () => {
     fileRef.current.click.resetHistory();
 
     wrapper = shallow(
-      <ImportServersBtn
-        onImport={onImportMock}
+      <ImportServersBtnComponent
         createServers={createServersMock}
         serversImporter={serversImporterMock}
         fileRef={fileRef}
+        onImport={onImportMock}
       />
     );
   });
@@ -40,14 +40,16 @@ describe('<ImportServersBtn />', () => {
 
   it('triggers click on file ref when button is clicked', () => {
     const btn = wrapper.find('#importBtn');
+
     btn.simulate('click');
 
     expect(fileRef.current.click.callCount).toEqual(1);
   });
 
-  it('imports servers when file input changes', done => {
+  it('imports servers when file input changes', (done) => {
     const file = wrapper.find('.create-server__csv-select');
-    file.simulate('change', { target: { files: [''] } });
+
+    file.simulate('change', { target: { files: [ '' ] } });
 
     setImmediate(() => {
       expect(serversImporterMock.importServersFromFile.callCount).toEqual(1);

@@ -1,5 +1,5 @@
-import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import sinon from 'sinon';
+import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
   const servers = [{ name: 'foo' }, { name: 'bar' }];
@@ -29,10 +29,13 @@ describe('ServersImporter', () => {
 
     it('reads file when a CSV is provided', async () => {
       const readAsText = sinon.fake.returns('');
-      global.FileReader = function FileReader() {
-        this.readAsText = readAsText;
-        this.addEventListener = (eventName, listener) =>
-          listener({ target: { result: '' } });
+
+      global.FileReader = class FileReader {
+        constructor() {
+          this.readAsText = readAsText;
+          this.addEventListener = (eventName, listener) =>
+            listener({ target: { result: '' } });
+        }
       };
 
       await importer.importServersFromFile({ type: 'text/csv' });

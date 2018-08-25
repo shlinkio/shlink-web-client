@@ -1,9 +1,23 @@
 import { isEmpty } from 'ramda';
 import React from 'react';
 import Moment from 'react-moment';
+import PropTypes from 'prop-types';
 import Tag from '../../utils/Tag';
-import './ShortUrlsRow.scss';
+import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
+import { serverType } from '../../servers/prop-types';
+import ExternalLink from '../../utils/ExternalLink';
+import { shortUrlType } from '../reducers/shortUrlsList';
 import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
+import './ShortUrlsRow.scss';
+
+const COPIED_MSG_TIME = 2000;
+
+const propTypes = {
+  refreshList: PropTypes.func,
+  shortUrlsListParams: shortUrlsListParamsType,
+  selectedServer: serverType,
+  shortUrl: shortUrlType,
+};
 
 export class ShortUrlsRow extends React.Component {
   state = { copiedToClipboard: false };
@@ -15,7 +29,8 @@ export class ShortUrlsRow extends React.Component {
 
     const { refreshList, shortUrlsListParams } = this.props;
     const selectedTags = shortUrlsListParams.tags || [];
-    return tags.map(tag => (
+
+    return tags.map((tag) => (
       <Tag
         key={tag}
         text={tag}
@@ -34,10 +49,10 @@ export class ShortUrlsRow extends React.Component {
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-row__cell" data-th="Short URL: ">
-          <a href={completeShortUrl} target="_blank">{completeShortUrl}</a>
+          <ExternalLink href={completeShortUrl}>{completeShortUrl}</ExternalLink>
         </td>
         <td className="short-urls-row__cell short-urls-row__cell--break" data-th="Long URL: ">
-          <a href={shortUrl.originalUrl} target="_blank">{shortUrl.originalUrl}</a>
+          <ExternalLink href={shortUrl.originalUrl}>{shortUrl.originalUrl}</ExternalLink>
         </td>
         <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-row__cell text-md-right" data-th="Visits: ">{shortUrl.visitsCount}</td>
@@ -54,7 +69,7 @@ export class ShortUrlsRow extends React.Component {
             shortUrl={shortUrl}
             onCopyToClipboard={() => {
               this.setState({ copiedToClipboard: true });
-              setTimeout(() => this.setState({ copiedToClipboard: false }), 2000);
+              setTimeout(() => this.setState({ copiedToClipboard: false }), COPIED_MSG_TIME);
             }}
           />
         </td>
@@ -62,3 +77,5 @@ export class ShortUrlsRow extends React.Component {
     );
   }
 }
+
+ShortUrlsRow.propTypes = propTypes;

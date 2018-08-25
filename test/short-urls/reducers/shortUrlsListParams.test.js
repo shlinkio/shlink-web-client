@@ -9,24 +9,20 @@ describe('shortUrlsListParamsReducer', () => {
     const defaultState = { page: '1' };
 
     it('returns default value when action is unknown', () =>
-      expect(reduce(defaultState, { type: 'unknown' })).toEqual(defaultState)
-    );
+      expect(reduce(defaultState, { type: 'unknown' })).toEqual(defaultState));
 
     it('returns params when action is LIST_SHORT_URLS', () =>
       expect(reduce(defaultState, { type: LIST_SHORT_URLS, params: { searchTerm: 'foo' } })).toEqual({
         ...defaultState,
-        searchTerm: 'foo'
-      })
-    );
+        searchTerm: 'foo',
+      }));
 
     it('returns default value when action is RESET_SHORT_URL_PARAMS', () =>
-      expect(reduce(defaultState, { type: RESET_SHORT_URL_PARAMS })).toEqual(defaultState)
-    );
+      expect(reduce(defaultState, { type: RESET_SHORT_URL_PARAMS })).toEqual(defaultState));
   });
 
   describe('resetShortUrlParams', () => {
     it('returns proper action', () =>
-      expect(resetShortUrlParams()).toEqual({ type: RESET_SHORT_URL_PARAMS })
-    );
+      expect(resetShortUrlParams()).toEqual({ type: RESET_SHORT_URL_PARAMS }));
   });
 });

@@ -16,8 +16,9 @@ export class ServersImporter {
     }
 
     const reader = new FileReader();
-    return new Promise(resolve => {
-      reader.addEventListener('loadend', e => {
+
+    return new Promise((resolve) => {
+      reader.addEventListener('loadend', (e) => {
         const content = e.target.result;
         const servers = this.csvjson.toObject(content);
 
@@ -29,4 +30,5 @@ export class ServersImporter {
 }
 
 const serversImporter = new ServersImporter(csvjson);
+
 export default serversImporter;

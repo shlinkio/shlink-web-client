@@ -11,9 +11,13 @@ const propTypes = {
   toggle: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
   server: serverType,
+  deleteServer: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
 };
 
-export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
+export const DeleteServerModalComponent = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
     deleteServer(server);
     toggle();
@@ -38,9 +42,11 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
   );
 };
 
-DeleteServerModal.propTypes = propTypes;
+DeleteServerModalComponent.propTypes = propTypes;
 
-export default compose(
+const DeleteServerModal = compose(
   withRouter,
   connect(null, { deleteServer })
-)(DeleteServerModal);
+)(DeleteServerModalComponent);
+
+export default DeleteServerModal;

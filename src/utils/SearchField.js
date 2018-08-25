@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './SearchField.scss';
 
+const DEFAULT_SEARCH_INTERVAL = 500;
 const propTypes = {
   onChange: PropTypes.func.isRequired,
   className: PropTypes.string,
@@ -19,7 +20,7 @@ export default class SearchField extends React.Component {
   state = { showClearBtn: false, searchTerm: '' };
   timer = null;
 
-  searchTermChanged(searchTerm, timeout = 500) {
+  searchTermChanged(searchTerm, timeout = DEFAULT_SEARCH_INTERVAL) {
     this.setState({
       showClearBtn: searchTerm !== '',
       searchTerm,
@@ -29,6 +30,7 @@ export default class SearchField extends React.Component {
       clearTimeout(this.timer);
       this.timer = null;
     };
+
     resetTimer();
 
     this.timer = setTimeout(() => {
@@ -46,15 +48,15 @@ export default class SearchField extends React.Component {
           type="text"
           className="form-control form-control-lg search-field__input"
           placeholder={placeholder}
-          onChange={e => this.searchTermChanged(e.target.value)}
           value={this.state.searchTerm}
+          onChange={(e) => this.searchTermChanged(e.target.value)}
         />
         <FontAwesomeIcon icon={searchIcon} className="search-field__icon" />
         <div
           className="close search-field__close"
-          hidden={! this.state.showClearBtn}
-          onClick={() => this.searchTermChanged('', 0)}
+          hidden={!this.state.showClearBtn}
           id="search-field__close"
+          onClick={() => this.searchTermChanged('', 0)}
         >
           &times;
         </div>

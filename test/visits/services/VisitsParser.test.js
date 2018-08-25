@@ -42,9 +42,9 @@ describe('VisitsParser', () => {
   describe('processOsStats', () => {
     it('properly parses OS stats', () => {
       expect(processOsStats(visits)).toEqual({
-        'Linux': 3,
-        'Windows': 1,
-        'MacOS': 1,
+        Linux: 3,
+        Windows: 1,
+        MacOS: 1,
       });
     });
   });
@@ -52,9 +52,9 @@ describe('VisitsParser', () => {
   describe('processBrowserStats', () => {
     it('properly parses browser stats', () => {
       expect(processBrowserStats(visits)).toEqual({
-        'Firefox': 2,
-        'Chrome': 2,
-        'Opera': 1,
+        Firefox: 2,
+        Chrome: 2,
+        Opera: 1,
       });
     });
   });

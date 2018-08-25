@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
@@ -11,22 +11,25 @@ const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   deleteTag: PropTypes.func,
   tagDelete: tagDeleteType,
+  tagDeleted: PropTypes.func,
 };
 
-export class DeleteTagConfirmModal extends Component {
+export class DeleteTagConfirmModalComponent extends React.Component {
   doDelete = () => {
     const { tag, toggle, deleteTag } = this.props;
+
     deleteTag(tag).then(() => {
       this.tagWasDeleted = true;
       toggle();
     });
   };
-  onClosed = () => {
+  handleOnClosed = () => {
     if (!this.tagWasDeleted) {
       return;
     }
 
     const { tagDeleted, tag } = this.props;
+
     tagDeleted(tag);
   };
 
@@ -38,7 +41,7 @@ export class DeleteTagConfirmModal extends Component {
     const { tag, toggle, isOpen, tagDelete } = this.props;
 
     return (
-      <Modal toggle={toggle} isOpen={isOpen} centered onClosed={this.onClosed}>
+      <Modal toggle={toggle} isOpen={isOpen} centered onClosed={this.handleOnClosed}>
         <ModalHeader toggle={toggle}>
           <span className="text-danger">Delete tag</span>
         </ModalHeader>
@@ -54,8 +57,8 @@ export class DeleteTagConfirmModal extends Component {
           <button className="btn btn-link" onClick={toggle}>Cancel</button>
           <button
             className="btn btn-danger"
-            onClick={this.doDelete}
             disabled={tagDelete.deleting}
+            onClick={() => this.doDelete()}
           >
             {tagDelete.deleting ? 'Deleting tag...' : 'Delete tag'}
           </button>
@@ -65,9 +68,11 @@ export class DeleteTagConfirmModal extends Component {
   }
 }
 
-DeleteTagConfirmModal.propTypes = propTypes;
+DeleteTagConfirmModalComponent.propTypes = propTypes;
 
-export default connect(
-  pick(['tagDelete']),
+const DeleteTagConfirmModal = connect(
+  pick([ 'tagDelete' ]),
   { deleteTag, tagDeleted }
-)(DeleteTagConfirmModal);
+)(DeleteTagConfirmModalComponent);
+
+export default DeleteTagConfirmModal;

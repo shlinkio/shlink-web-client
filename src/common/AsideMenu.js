@@ -4,11 +4,11 @@ import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import DeleteServerButton from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
-import PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
-import classnames from 'classnames';
 
 const defaultProps = {
   className: '',

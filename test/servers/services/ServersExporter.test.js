@@ -1,5 +1,5 @@
-import { ServersExporter } from '../../../src/servers/services/ServersExporter';
 import sinon from 'sinon';
+import { ServersExporter } from '../../../src/servers/services/ServersExporter';
 
 describe('ServersExporter', () => {
   const createLinkMock = () => ({
@@ -17,7 +17,7 @@ describe('ServersExporter', () => {
         appendChild: sinon.fake(),
         removeChild: sinon.fake(),
       },
-    }
+    },
   });
   const serversServiceMock = {
     listServers: sinon.fake.returns({
@@ -41,11 +41,13 @@ describe('ServersExporter', () => {
     beforeEach(() => {
       originalConsole = global.console;
       global.console = { error: sinon.fake() };
-      global.Blob = function Blob() {};
+      global.Blob = class Blob {};
       global.URL = { createObjectURL: () => '' };
       serversServiceMock.listServers.resetHistory();
     });
-    afterEach(() => global.console = originalConsole);
+    afterEach(() => {
+      global.console = originalConsole;
+    });
 
     it('logs an error if something fails', () => {
       const csvjsonMock = createCsvjsonMock(true);

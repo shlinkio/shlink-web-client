@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import sinon from 'sinon';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { DeleteServerModalComponent } from '../../src/servers/DeleteServerModal';
 
 describe('<DeleteServerModal />', () => {
   let wrapper;
@@ -17,7 +17,7 @@ describe('<DeleteServerModal />', () => {
     historyMock.push.resetHistory();
 
     wrapper = shallow(
-      <DeleteServerModal
+      <DeleteServerModalComponent
         server={{ name: serverName }}
         toggle={toggleMock}
         isOpen={true}
@@ -37,6 +37,7 @@ describe('<DeleteServerModal />', () => {
 
   it('displays the name of the server as part of the content', () => {
     const modalBody = wrapper.find(ModalBody);
+
     expect(modalBody.find('p').first().text()).toEqual(
       `Are you sure you want to delete server ${serverName}?`
     );
@@ -44,6 +45,7 @@ describe('<DeleteServerModal />', () => {
 
   it('toggles when clicking cancel button', () => {
     const cancelBtn = wrapper.find('button').first();
+
     cancelBtn.simulate('click');
 
     expect(toggleMock.callCount).toEqual(1);
@@ -53,6 +55,7 @@ describe('<DeleteServerModal />', () => {
 
   it('deletes server when clicking accept button', () => {
     const acceptBtn = wrapper.find('button').last();
+
     acceptBtn.simulate('click');
 
     expect(toggleMock.callCount).toEqual(1);

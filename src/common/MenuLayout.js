@@ -2,26 +2,38 @@ import React from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { selectServer } from '../servers/reducers/selectedServer';
-import CreateShortUrl from '../short-urls/CreateShortUrl';
-import ShortUrls from '../short-urls/ShortUrls';
-import ShortUrlsVisits from '../short-urls/ShortUrlVisits';
-import AsideMenu from './AsideMenu';
 import { pick } from 'ramda';
 import Swipeable from 'react-swipeable';
 import burgerIcon from '@fortawesome/fontawesome-free-solid/faBars';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
+import * as PropTypes from 'prop-types';
+import ShortUrlsVisits from '../short-urls/ShortUrlVisits';
+import { selectServer } from '../servers/reducers/selectedServer';
+import CreateShortUrl from '../short-urls/CreateShortUrl';
+import ShortUrls from '../short-urls/ShortUrls';
 import './MenuLayout.scss';
 import TagsList from '../tags/TagsList';
+import { serverType } from '../servers/prop-types';
+import AsideMenu from './AsideMenu';
 
-export class MenuLayout extends React.Component {
+const propTypes = {
+  match: PropTypes.object,
+  selectServer: PropTypes.func,
+  location: PropTypes.object,
+  selectedServer: serverType,
+};
+
+export class MenuLayoutComponent extends React.Component {
   state = { showSideBar: false };
 
   // FIXME Shouldn't use componentWillMount, but this code has to be run before children components are rendered
+  /* eslint react/no-deprecated: "off" */
   componentWillMount() {
-    const { serverId } = this.props.match.params;
-    this.props.selectServer(serverId);
+    const { match, selectServer } = this.props;
+    const { params: { serverId } } = match;
+
+    selectServer(serverId);
   }
 
   componentDidUpdate(prevProps) {
@@ -44,14 +56,14 @@ export class MenuLayout extends React.Component {
         <FontAwesomeIcon
           icon={burgerIcon}
           className={burgerClasses}
-          onClick={() => this.setState({ showSideBar: !this.state.showSideBar })}
+          onClick={() => this.setState(({ showSideBar }) => ({ showSideBar: !showSideBar }))}
         />
 
         <Swipeable
           delta={40}
+          className="menu-layout__swipeable"
           onSwipedLeft={() => this.setState({ showSideBar: false })}
           onSwipedRight={() => this.setState({ showSideBar: true })}
-          className="menu-layout__swipeable"
         >
           <div className="row menu-layout__swipeable-inner">
             <AsideMenu
@@ -93,7 +105,11 @@ export class MenuLayout extends React.Component {
   }
 }
 
-export default compose(
-  connect(pick(['selectedServer', 'shortUrlsListParams']), { selectServer }),
+MenuLayoutComponent.propTypes = propTypes;
+
+const MenuLayout = compose(
+  connect(pick([ 'selectedServer', 'shortUrlsListParams' ]), { selectServer }),
   withRouter
-)(MenuLayout);
+)(MenuLayoutComponent);
+
+export default MenuLayout;

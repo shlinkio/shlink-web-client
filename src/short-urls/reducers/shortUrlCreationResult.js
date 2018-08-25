@@ -1,10 +1,19 @@
-import ShlinkApiClient from '../../api/ShlinkApiClient';
 import { curry } from 'ramda';
+import PropTypes from 'prop-types';
+import shlinkApiClient from '../../api/ShlinkApiClient';
 
 const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
+
+export const createShortUrlResultType = {
+  result: PropTypes.shape({
+    shortUrl: PropTypes.string,
+  }),
+  saving: PropTypes.bool,
+  error: PropTypes.bool,
+};
 
 const defaultState = {
   result: null,
@@ -38,16 +47,18 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _createShortUrl = (ShlinkApiClient, data) => async dispatch => {
+export const _createShortUrl = (shlinkApiClient, data) => async (dispatch) => {
   dispatch({ type: CREATE_SHORT_URL_START });
 
   try {
-    const result = await ShlinkApiClient.createShortUrl(data);
+    const result = await shlinkApiClient.createShortUrl(data);
+
     dispatch({ type: CREATE_SHORT_URL, result });
   } catch (e) {
     dispatch({ type: CREATE_SHORT_URL_ERROR });
   }
 };
-export const createShortUrl = curry(_createShortUrl)(ShlinkApiClient);
+
+export const createShortUrl = curry(_createShortUrl)(shlinkApiClient);
 
 export const resetCreateShortUrl = () => ({ type: RESET_CREATE_SHORT_URL });

@@ -2,20 +2,21 @@ import { Card, CardBody } from 'reactstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import deleteIcon from '@fortawesome/fontawesome-free-solid/faTrash';
 import editIcon from '@fortawesome/fontawesome-free-solid/faPencilAlt';
-import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ColorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
-import './TagCard.scss';
 import { Link } from 'react-router-dom';
+import colorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
+import './TagCard.scss';
+import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
 import EditTagModal from './helpers/EditTagModal';
 
 const propTypes = {
   tag: PropTypes.string,
+  currentServerId: PropTypes.string,
   colorGenerator: colorGeneratorType,
 };
 const defaultProps = {
-  colorGenerator: ColorGenerator,
+  colorGenerator,
 };
 
 export default class TagCard extends React.Component {
@@ -24,9 +25,9 @@ export default class TagCard extends React.Component {
   render() {
     const { tag, colorGenerator, currentServerId } = this.props;
     const toggleDelete = () =>
-      this.setState({ isDeleteModalOpen: !this.state.isDeleteModalOpen });
+      this.setState(({ isDeleteModalOpen }) => ({ isDeleteModalOpen: !isDeleteModalOpen }));
     const toggleEdit = () =>
-      this.setState({ isEditModalOpen: !this.state.isEditModalOpen });
+      this.setState(({ isEditModalOpen }) => ({ isEditModalOpen: !isEditModalOpen }));
 
     return (
       <Card className="tag-card">
@@ -35,17 +36,17 @@ export default class TagCard extends React.Component {
             className="btn btn-light btn-sm tag-card__btn tag-card__btn--last"
             onClick={toggleDelete}
           >
-            <FontAwesomeIcon icon={deleteIcon}/>
+            <FontAwesomeIcon icon={deleteIcon} />
           </button>
           <button
             className="btn btn-light btn-sm tag-card__btn"
             onClick={toggleEdit}
           >
-            <FontAwesomeIcon icon={editIcon}/>
+            <FontAwesomeIcon icon={editIcon} />
           </button>
           <h5 className="tag-card__tag-title">
             <div
-              style={{backgroundColor: colorGenerator.getColorForKey(tag)}}
+              style={{ backgroundColor: colorGenerator.getColorForKey(tag) }}
               className="tag-card__tag-bullet"
             />
             <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>

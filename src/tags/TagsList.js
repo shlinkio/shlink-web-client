@@ -1,25 +1,35 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { pick, splitEvery } from 'ramda';
-import { filterTags, listTags } from './reducers/tagsList';
+import PropTypes from 'prop-types';
 import MuttedMessage from '../utils/MuttedMessage';
-import TagCard from './TagCard';
 import SearchField from '../utils/SearchField';
+import { filterTags, listTags } from './reducers/tagsList';
+import TagCard from './TagCard';
 
 const { ceil } = Math;
+const TAGS_GROUP_SIZE = 4;
+const propTypes = {
+  filterTags: PropTypes.func,
+  listTags: PropTypes.func,
+  tagsList: PropTypes.shape({
+    loading: PropTypes.bool,
+  }),
+  match: PropTypes.object,
+};
 
-export class TagsList extends React.Component {
-  state = { isDeleteModalOpen: false };
-
+export class TagsListComponent extends React.Component {
   componentDidMount() {
     const { listTags } = this.props;
+
     listTags();
   }
 
   renderContent() {
     const { tagsList, match } = this.props;
+
     if (tagsList.loading) {
-      return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>
+      return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>;
     }
 
     if (tagsList.error) {
@@ -31,17 +41,18 @@ export class TagsList extends React.Component {
     }
 
     const tagsCount = tagsList.filteredTags.length;
+
     if (tagsCount < 1) {
       return <MuttedMessage>No tags found</MuttedMessage>;
     }
 
-    const tagsGroups = splitEvery(ceil(tagsCount / 4), tagsList.filteredTags);
+    const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUP_SIZE), tagsList.filteredTags);
 
     return (
       <React.Fragment>
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
-            {group.map(tag => (
+            {group.map((tag) => (
               <TagCard
                 key={tag}
                 tag={tag}
@@ -61,9 +72,9 @@ export class TagsList extends React.Component {
       <div className="shlink-container">
         {!this.props.tagsList.loading && (
           <SearchField
-            onChange={filterTags}
             className="mb-3"
             placeholder="Search tags..."
+            onChange={filterTags}
           />
         )}
         <div className="row">
@@ -74,4 +85,8 @@ export class TagsList extends React.Component {
   }
 }
 
-export default connect(pick(['tagsList']), { listTags, filterTags })(TagsList);
+TagsListComponent.propTypes = propTypes;
+
+const TagsList = connect(pick([ 'tagsList' ]), { listTags, filterTags })(TagsListComponent);
+
+export default TagsList;

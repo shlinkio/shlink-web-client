@@ -6,20 +6,18 @@ import MainHeader from './common/MainHeader';
 import MenuLayout from './common/MenuLayout';
 import CreateServer from './servers/CreateServer';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <div className="container-fluid app-container">
-        <MainHeader/>
+export default function App() {
+  return (
+    <div className="container-fluid app-container">
+      <MainHeader />
 
-        <div className="app">
-          <Switch>
-            <Route exact path="/server/create" component={CreateServer} />
-            <Route exact path="/" component={Home} />
-            <Route path="/server/:serverId" component={MenuLayout} />
-          </Switch>
-        </div>
+      <div className="app">
+        <Switch>
+          <Route exact path="/server/create" component={CreateServer} />
+          <Route exact path="/" component={Home} />
+          <Route path="/server/:serverId" component={MenuLayout} />
+        </Switch>
       </div>
-    );
-  }
+    </div>
+  );
 }

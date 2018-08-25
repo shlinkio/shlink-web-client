@@ -3,21 +3,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-
-import { listServers } from './reducers/server';
+import PropTypes from 'prop-types';
 import { selectServer } from '../servers/reducers/selectedServer';
 import serversExporter from '../servers/services/ServersExporter';
+import { listServers } from './reducers/server';
+import { serverType } from './prop-types';
 
 const defaultProps = {
   serversExporter,
 };
+const propTypes = {
+  servers: PropTypes.object,
+  serversExporter: PropTypes.shape({
+    exportServers: PropTypes.func,
+  }),
+  selectedServer: serverType,
+  selectServer: PropTypes.func,
+  listServers: PropTypes.func,
+};
 
-export class ServersDropdown extends React.Component {
+export class ServersDropdownComponent extends React.Component {
   renderServers = () => {
     const { servers, selectedServer, selectServer, serversExporter } = this.props;
 
     if (isEmpty(servers)) {
-      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>
+      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
     }
 
     return (
@@ -28,15 +38,17 @@ export class ServersDropdown extends React.Component {
             tag={Link}
             to={`/server/${id}/list-short-urls/1`}
             active={selectedServer && selectedServer.id === id}
-            onClick={() => selectServer(id)} // FIXME This should be implicit
+
+            // FIXME This should be implicit
+            onClick={() => selectServer(id)}
           >
             {name}
           </DropdownItem>
         ))}
         <DropdownItem divider />
         <DropdownItem
-          onClick={serversExporter.exportServers}
           className="servers-dropdown__export-item"
+          onClick={() => serversExporter.exportServers()}
         >
           Export servers
         </DropdownItem>
@@ -58,9 +70,12 @@ export class ServersDropdown extends React.Component {
   }
 }
 
-ServersDropdown.defaultProps = defaultProps;
+ServersDropdownComponent.defaultProps = defaultProps;
+ServersDropdownComponent.propTypes = propTypes;
 
-export default connect(
-  pick(['servers', 'selectedServer']),
+const ServersDropdown = connect(
+  pick([ 'servers', 'selectedServer' ]),
   { listServers, selectServer }
-)(ServersDropdown);
+)(ServersDropdownComponent);
+
+export default ServersDropdown;

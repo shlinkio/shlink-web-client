@@ -1,13 +1,13 @@
-import { ServersService } from '../../../src/servers/services/ServersService';
 import sinon from 'sinon';
 import { last } from 'ramda';
+import { ServersService } from '../../../src/servers/services/ServersService';
 
 describe('ServersService', () => {
   const servers = {
     abc123: { id: 'abc123' },
     def456: { id: 'def456' },
   };
-  const createStorageMock = returnValue => ({
+  const createStorageMock = (returnValue) => ({
     set: sinon.fake(),
     get: sinon.fake.returns(returnValue),
   });

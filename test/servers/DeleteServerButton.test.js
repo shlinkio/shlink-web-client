@@ -1,13 +1,14 @@
 import React from 'react';
-import DeleteServerButton from '../../src/servers/DeleteServerButton';
 import { shallow } from 'enzyme';
+import DeleteServerButton from '../../src/servers/DeleteServerButton';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
 
 describe('<DeleteServerButton />', () => {
   let wrapper;
 
-  beforeEach(() =>
-      wrapper = shallow(<DeleteServerButton server={{}} className="button" />));
+  beforeEach(() => {
+    wrapper = shallow(<DeleteServerButton server={{}} className="button" />);
+  });
   afterEach(() => wrapper.unmount());
 
   it('renders a button and a modal', () => {

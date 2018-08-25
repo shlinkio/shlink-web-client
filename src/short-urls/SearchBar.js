@@ -2,26 +2,34 @@ import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { connect } from 'react-redux';
-import Tag from '../utils/Tag';
-import { listShortUrls } from './reducers/shortUrlsList';
 import { isEmpty, pick } from 'ramda';
+import PropTypes from 'prop-types';
+import Tag from '../utils/Tag';
 import SearchField from '../utils/SearchField';
+import { listShortUrls } from './reducers/shortUrlsList';
 import './SearchBar.scss';
+import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 
-export function SearchBar({ listShortUrls, shortUrlsListParams }) {
+const propTypes = {
+  listShortUrls: PropTypes.func,
+  shortUrlsListParams: shortUrlsListParamsType,
+};
+
+export function SearchBarComponent({ listShortUrls, shortUrlsListParams }) {
   const selectedTags = shortUrlsListParams.tags || [];
 
   return (
     <div className="serach-bar-container">
       <SearchField onChange={
-        searchTerm => listShortUrls({ ...shortUrlsListParams, searchTerm })
-      }/>
+        (searchTerm) => listShortUrls({ ...shortUrlsListParams, searchTerm })
+      }
+      />
 
       {!isEmpty(selectedTags) && (
         <h4 className="search-bar__selected-tag mt-2">
-          <FontAwesomeIcon icon={tagsIcon} className="search-bar__tags-icon"/>
+          <FontAwesomeIcon icon={tagsIcon} className="search-bar__tags-icon" />
           &nbsp;
-          {selectedTags.map(tag => (
+          {selectedTags.map((tag) => (
             <Tag
               key={tag}
               text={tag}
@@ -29,7 +37,7 @@ export function SearchBar({ listShortUrls, shortUrlsListParams }) {
               onClose={() => listShortUrls(
                 {
                   ...shortUrlsListParams,
-                  tags: selectedTags.filter(selectedTag => selectedTag !== tag)
+                  tags: selectedTags.filter((selectedTag) => selectedTag !== tag),
                 }
               )}
             />
@@ -40,4 +48,8 @@ export function SearchBar({ listShortUrls, shortUrlsListParams }) {
   );
 }
 
-export default connect(pick(['shortUrlsListParams']), { listShortUrls })(SearchBar);
+SearchBarComponent.propTypes = propTypes;
+
+const SearchBar = connect(pick([ 'shortUrlsListParams' ]), { listShortUrls })(SearchBarComponent);
+
+export default SearchBar;

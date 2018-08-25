@@ -2,18 +2,23 @@ import plusIcon from '@fortawesome/fontawesome-free-solid/faPlus';
 import arrowIcon from '@fortawesome/fontawesome-free-solid/faChevronDown';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import ServersDropdown from '../servers/ServersDropdown';
 import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
-import classnames from 'classnames';
 
-export class MainHeader extends React.Component {
+const propTypes = {
+  location: PropTypes.object,
+};
+
+export class MainHeaderComponent extends React.Component {
   state = { isOpen: false };
-  toggle = () => {
+  handleToggle = () => {
     this.setState(({ isOpen }) => ({
-      isOpen: !isOpen
+      isOpen: !isOpen,
     }));
   };
 
@@ -33,10 +38,10 @@ export class MainHeader extends React.Component {
     return (
       <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
         <NavbarBrand tag={Link} to="/">
-          <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo"/> Shlink
+          <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo" /> Shlink
         </NavbarBrand>
 
-        <NavbarToggler onClick={this.toggle}>
+        <NavbarToggler onClick={this.handleToggle}>
           <FontAwesomeIcon icon={arrowIcon} className={toggleClass} />
         </NavbarToggler>
 
@@ -48,7 +53,7 @@ export class MainHeader extends React.Component {
                 to={createServerPath}
                 active={location.pathname === createServerPath}
               >
-                <FontAwesomeIcon icon={plusIcon}/>&nbsp; Add server
+                <FontAwesomeIcon icon={plusIcon} />&nbsp; Add server
               </NavLink>
             </NavItem>
             <ServersDropdown />
@@ -59,4 +64,8 @@ export class MainHeader extends React.Component {
   }
 }
 
-export default withRouter(MainHeader);
+MainHeaderComponent.propTypes = propTypes;
+
+const MainHeader = withRouter(MainHeaderComponent);
+
+export default MainHeader;

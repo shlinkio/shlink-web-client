@@ -1,13 +1,14 @@
 import { assoc, dissoc, pick, pipe } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import { createServer } from './reducers/server';
-import { resetSelectedServer } from './reducers/selectedServer';
 import { v4 as uuid } from 'uuid';
+import PropTypes from 'prop-types';
+import { resetSelectedServer } from './reducers/selectedServer';
+import { createServer } from './reducers/server';
 import './CreateServer.scss';
 import ImportServersBtn from './helpers/ImportServersBtn';
-import PropTypes from 'prop-types';
 
+const SHOW_IMPORT_MSG_TIME = 4000;
 const propTypes = {
   createServer: PropTypes.func,
   history: PropTypes.shape({
@@ -16,7 +17,7 @@ const propTypes = {
   resetSelectedServer: PropTypes.func,
 };
 
-export class CreateServer extends React.Component {
+export class CreateServerComponent extends React.Component {
   state = {
     name: '',
     url: '',
@@ -24,7 +25,7 @@ export class CreateServer extends React.Component {
     serversImported: false,
   };
 
-  submit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const { createServer, history: { push } } = this.props;
@@ -34,7 +35,7 @@ export class CreateServer extends React.Component {
     )(this.state);
 
     createServer(server);
-    push(`/server/${server.id}/list-short-urls/1`)
+    push(`/server/${server.id}/list-short-urls/1`);
   };
 
   componentDidMount() {
@@ -42,7 +43,7 @@ export class CreateServer extends React.Component {
   }
 
   render() {
-    const renderInputGroup = (id, placeholder, type = 'text') =>
+    const renderInputGroup = (id, placeholder, type = 'text') => (
       <div className="form-group row">
         <label htmlFor={id} className="col-lg-1 col-md-2 col-form-label create-server__label">
           {placeholder}:
@@ -54,24 +55,27 @@ export class CreateServer extends React.Component {
             id={id}
             placeholder={placeholder}
             value={this.state[id]}
-            onChange={e => this.setState({ [id]: e.target.value })}
             required
+            onChange={(e) => this.setState({ [id]: e.target.value })}
           />
         </div>
-      </div>;
+      </div>
+    );
 
     return (
       <div className="create-server">
-        <form onSubmit={this.submit}>
+        <form onSubmit={this.handleSubmit}>
           {renderInputGroup('name', 'Name')}
           {renderInputGroup('url', 'URL', 'url')}
           {renderInputGroup('apiKey', 'API key')}
 
           <div className="text-right">
-            <ImportServersBtn onImport={() => {
-              this.setState({ serversImported: true });
-              setTimeout(() => this.setState({ serversImported: false }), 4000);
-            }} />
+            <ImportServersBtn
+              onImport={() => {
+                this.setState({ serversImported: true });
+                setTimeout(() => this.setState({ serversImported: false }), SHOW_IMPORT_MSG_TIME);
+              }}
+            />
             <button className="btn btn-outline-primary">Create server</button>
           </div>
 
@@ -90,9 +94,11 @@ export class CreateServer extends React.Component {
   }
 }
 
-CreateServer.propTypes = propTypes;
+CreateServerComponent.propTypes = propTypes;
 
-export default connect(
-  pick(['selectedServer']),
-  {createServer, resetSelectedServer }
-)(CreateServer);
+const CreateServer = connect(
+  pick([ 'selectedServer' ]),
+  { createServer, resetSelectedServer }
+)(CreateServerComponent);
+
+export default CreateServer;

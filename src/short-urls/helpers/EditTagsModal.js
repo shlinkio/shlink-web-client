@@ -1,30 +1,33 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import TagsSelector from '../../utils/TagsSelector';
 import PropTypes from 'prop-types';
+import { pick } from 'ramda';
+import TagsSelector from '../../utils/TagsSelector';
 import {
   editShortUrlTags,
   resetShortUrlsTags,
   shortUrlTagsType,
-  shortUrlTagsEdited
+  shortUrlTagsEdited,
 } from '../reducers/shortUrlTags';
-import { pick } from 'ramda';
+import ExternalLink from '../../utils/ExternalLink';
+import { shortUrlType } from '../reducers/shortUrlsList';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
   url: PropTypes.string.isRequired,
-  shortUrl: PropTypes.shape({
-    tags: PropTypes.arrayOf(PropTypes.string),
-    shortCode: PropTypes.string,
-  }).isRequired,
+  shortUrl: shortUrlType.isRequired,
   shortUrlTags: shortUrlTagsType,
+  editShortUrlTags: PropTypes.func,
+  shortUrlTagsEdited: PropTypes.func,
+  resetShortUrlsTags: PropTypes.func,
 };
 
-export class EditTagsModal extends React.Component {
+export class EditTagsModalComponent extends React.Component {
   saveTags = () => {
     const { editShortUrlTags, shortUrl, toggle } = this.props;
+
     editShortUrlTags(shortUrl.shortCode, this.state.tags)
       .then(() => {
         this.tagsSaved = true;
@@ -39,11 +42,13 @@ export class EditTagsModal extends React.Component {
 
     const { shortUrlTagsEdited, shortUrl } = this.props;
     const { tags } = this.state;
+
     shortUrlTagsEdited(shortUrl.shortCode, tags);
   };
 
   componentDidMount() {
     const { resetShortUrlsTags } = this.props;
+
     resetShortUrlsTags();
     this.tagsSaved = false;
   }
@@ -57,12 +62,12 @@ export class EditTagsModal extends React.Component {
     const { isOpen, toggle, url, shortUrlTags } = this.props;
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.refreshShortUrls}>
+      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={() => this.refreshShortUrls}>
         <ModalHeader toggle={toggle}>
-          Edit tags for <a target="_blank" href={url}>{url}</a>
+          Edit tags for <ExternalLink href={url}>{url}</ExternalLink>
         </ModalHeader>
         <ModalBody>
-          <TagsSelector tags={this.state.tags} onChange={tags => this.setState({ tags })} />
+          <TagsSelector tags={this.state.tags} onChange={(tags) => this.setState({ tags })} />
           {shortUrlTags.error && (
             <div className="p-2 mt-2 bg-danger text-white text-center">
               Something went wrong while saving the tags :(
@@ -74,8 +79,8 @@ export class EditTagsModal extends React.Component {
           <button
             className="btn btn-primary"
             type="button"
-            onClick={this.saveTags}
             disabled={shortUrlTags.saving}
+            onClick={() => this.saveTags}
           >
             {shortUrlTags.saving ? 'Saving tags...' : 'Save tags'}
           </button>
@@ -85,9 +90,11 @@ export class EditTagsModal extends React.Component {
   }
 }
 
-EditTagsModal.propTypes = propTypes;
+EditTagsModalComponent.propTypes = propTypes;
 
-export default connect(
-  pick(['shortUrlTags']),
+const EditTagsModal = connect(
+  pick([ 'shortUrlTags' ]),
   { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited }
-)(EditTagsModal);
+)(EditTagsModalComponent);
+
+export default EditTagsModal;

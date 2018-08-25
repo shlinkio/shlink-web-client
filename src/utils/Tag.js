@@ -1,15 +1,28 @@
 import React from 'react';
-import ColorGenerator from '../utils/ColorGenerator';
+import PropTypes from 'prop-types';
+import colorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
 import './Tag.scss';
 
-export default function Tag (
+const propTypes = {
+  colorGenerator: colorGeneratorType,
+  text: PropTypes.string,
+  children: PropTypes.node,
+  clearable: PropTypes.bool,
+  onClick: PropTypes.func,
+  onClose: PropTypes.func,
+};
+const defaultProps = {
+  colorGenerator,
+};
+
+export default function Tag(
   {
     colorGenerator,
     text,
     children,
     clearable,
     onClick = () => ({}),
-    onClose = () => ({})
+    onClose = () => ({}),
   }
 ) {
   return (
@@ -24,6 +37,5 @@ export default function Tag (
   );
 }
 
-Tag.defaultProps = {
-  colorGenerator: ColorGenerator
-};
+Tag.defaultProps = defaultProps;
+Tag.propTypes = propTypes;
