@@ -11,11 +11,13 @@
 
 .search-field__icon {
   @include vertical-align();
+
   left: 15px;
   color: #707581;
 }
 
 .search-field__close {
   @include vertical-align();
+
   right: 15px;
 }

@@ -1,7 +1,8 @@
 .tag-card.tag-card {
-  background-color: #eeeeee;
+  background-color: #eee;
   margin-bottom: .5rem;
 }
+
 .tag-card__body.tag-card__body {
   padding: .75rem;
 }
@@ -17,6 +18,7 @@
 
 .tag-card__tag-bullet {
   $width: 20px;
+
   border-radius: 50%;
   width: $width;
   height: $width;
@@ -28,6 +30,7 @@
 .tag-card__btn {
   float: right;
 }
+
 .tag-card__btn--last {
   margin-left: 3px;
 }

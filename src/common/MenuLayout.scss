@@ -2,6 +2,7 @@
 
 .menu-layout__swipeable {
   $offset: 15px;
+
   height: 100%;
   margin-right: -$offset;
   margin-left: -$offset;
@@ -21,7 +22,7 @@
   z-index: 1035;
   font-size: 1.5rem;
   cursor: pointer;
-  color: rgba(255,255,255,.5);
+  color: rgba(255, 255, 255, .5);
 
   @media (max-width: $smMax) {
     display: inline-block;

@@ -24,9 +24,10 @@ $asideMenuMobileWidth: 280px;
 
   @media (max-width: $smMax) {
     width: $asideMenuMobileWidth !important;
-    @include box-shadow(-10px 0px 50px 11px rgba(0, 0, 0, 0.55));
     transition: left 300ms;
     top: $headerHeight - 3px;
+
+    @include box-shadow(-10px 0 50px 11px rgba(0, 0, 0, .55));
   }
 }
 
@@ -46,6 +47,7 @@ $asideMenuMobileWidth: 280px;
   text-decoration: none !important;
   cursor: pointer;
 }
+
 .aside-menu__item:hover {
   background-color: $lightHoverColor;
 }
@@ -54,6 +56,7 @@ $asideMenuMobileWidth: 280px;
   color: #fff;
   background-color: $mainColor;
 }
+
 .aside-menu__item--selected:hover {
   color: #fff;
   background-color: $mainColor;
@@ -68,6 +71,7 @@ $asideMenuMobileWidth: 280px;
   color: $dangerColor;
   margin-top: auto;
 }
+
 .aside-menu__item--danger:hover {
   color: #fff;
   background-color: $dangerColor;

@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint src test scripts config",
-    "lint:css": "echo \"no css linting\"",
+    "lint:css": "stylelint src/**/*.scss",
+    "lint:css:fix": "yarn lint:css --fix",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --colors",
