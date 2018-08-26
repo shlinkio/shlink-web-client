@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "adidas-env/browser",
+    "adidas-env/module",
+    "adidas-es6",
+    "adidas-babel",
+    "adidas-react"
+  ],
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
+  },
+  "globals": {
+    "process": true,
+    "setImmediate": true
+  },
+  "settings": {
+    "react": {
+      "version": "16.3"
+    }
+  },
+  "rules": {
+    "comma-dangle": ["error", "always-multiline"],
+    "no-invalid-this": "off",
+    "template-curly-spacing": ["error", "never"],
+    "no-warning-comments": "off",
+    "no-undefined": "off",
+    "indent": ["error", 2, {
+      "SwitchCase": 1
+    }
+    ],
+    "react/jsx-curly-spacing": ["error", "never"],
+    "react/jsx-indent-props": ["error", 2],
+    "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
+    "react/jsx-closing-bracket-location": ["error", "tag-aligned"],
+    "react/no-array-index-key": "off",
+    "react/no-did-update-set-state": "off"
+  }
+}
