@@ -1,43 +1,31 @@
-import reduce, {
+import * as sinon from 'sinon';
+import { values } from 'ramda';
+import reducer, {
   _createServer,
   _deleteServer,
   _listServers,
-  CREATE_SERVER,
-  DELETE_SERVER,
+  _createServers,
   FETCH_SERVERS,
 } from '../../../src/servers/reducers/server';
-import * as sinon from 'sinon';
 
 describe('serverReducer', () => {
   const servers = {
     abc123: { id: 'abc123' },
-    def456: { id: 'def456' }
+    def456: { id: 'def456' },
   };
   const ServersServiceMock = {
     listServers: sinon.fake.returns(servers),
     createServer: sinon.fake(),
     deleteServer: sinon.fake(),
+    createServers: sinon.fake(),
   };
 
-  describe('reduce', () => {
+  describe('reducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reduce({}, { type: FETCH_SERVERS, servers })).toEqual(servers)
-    );
-
-    it('returns servers when action is DELETE_SERVER', () =>
-      expect(reduce({}, { type: DELETE_SERVER, servers })).toEqual(servers)
-    );
-
-    it('adds server to list when action is CREATE_SERVER', () => {
-      const server = { id: 'abc123' };
-      expect(reduce({}, { type: CREATE_SERVER, server })).toEqual({
-        [server.id]: server
-      })
-    });
+      expect(reducer({}, { type: FETCH_SERVERS, servers })).toEqual(servers));
 
     it('returns default when action is unknown', () =>
-      expect(reduce({}, { type: 'unknown' })).toEqual({})
-    );
+      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('action creators', () => {
@@ -45,6 +33,7 @@ describe('serverReducer', () => {
       ServersServiceMock.listServers.resetHistory();
       ServersServiceMock.createServer.resetHistory();
       ServersServiceMock.deleteServer.resetHistory();
+      ServersServiceMock.createServers.resetHistory();
     });
 
     describe('listServers', () => {
@@ -55,6 +44,7 @@ describe('serverReducer', () => {
         expect(ServersServiceMock.listServers.callCount).toEqual(1);
         expect(ServersServiceMock.createServer.callCount).toEqual(0);
         expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
+        expect(ServersServiceMock.createServers.callCount).toEqual(0);
       });
     });
 
@@ -68,6 +58,7 @@ describe('serverReducer', () => {
         expect(ServersServiceMock.createServer.callCount).toEqual(1);
         expect(ServersServiceMock.createServer.firstCall.calledWith(serverToCreate)).toEqual(true);
         expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
+        expect(ServersServiceMock.createServers.callCount).toEqual(0);
       });
     });
 
@@ -79,8 +70,23 @@ describe('serverReducer', () => {
         expect(result).toEqual({ type: FETCH_SERVERS, servers });
         expect(ServersServiceMock.listServers.callCount).toEqual(1);
         expect(ServersServiceMock.createServer.callCount).toEqual(0);
+        expect(ServersServiceMock.createServers.callCount).toEqual(0);
         expect(ServersServiceMock.deleteServer.callCount).toEqual(1);
         expect(ServersServiceMock.deleteServer.firstCall.calledWith(serverToDelete)).toEqual(true);
+      });
+    });
+
+    describe('createServer', () => {
+      it('creates multiple servers and then fetches servers again', () => {
+        const serversToCreate = values(servers);
+        const result = _createServers(ServersServiceMock, serversToCreate);
+
+        expect(result).toEqual({ type: FETCH_SERVERS, servers });
+        expect(ServersServiceMock.listServers.callCount).toEqual(1);
+        expect(ServersServiceMock.createServer.callCount).toEqual(0);
+        expect(ServersServiceMock.createServers.callCount).toEqual(1);
+        expect(ServersServiceMock.createServers.firstCall.calledWith(serversToCreate)).toEqual(true);
+        expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
       });
     });
   });

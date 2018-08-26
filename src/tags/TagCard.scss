@@ -1,0 +1,36 @@
+.tag-card.tag-card {
+  background-color: #eee;
+  margin-bottom: .5rem;
+}
+
+.tag-card__body.tag-card__body {
+  padding: .75rem;
+}
+
+.tag-card__tag-title {
+  margin: 0;
+  line-height: 31px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 5px;
+}
+
+.tag-card__tag-bullet {
+  $width: 20px;
+
+  border-radius: 50%;
+  width: $width;
+  height: $width;
+  display: inline-block;
+  vertical-align: -4px;
+  margin-right: 7px;
+}
+
+.tag-card__btn {
+  float: right;
+}
+
+.tag-card__btn--last {
+  margin-left: 3px;
+}

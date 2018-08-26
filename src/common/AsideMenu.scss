@@ -1,28 +1,44 @@
 @import '../utils/base';
+@import '../utils/mixins/box-shadow';
+@import '../utils/mixins/vertical-align';
+
+$asideMenuMobileWidth: 280px;
 
 .aside-menu {
   background-color: #f7f7f7;
-  padding-top: 10px;
+  position: fixed !important;
+  padding-top: 13px;
   padding-bottom: 10px;
+  top: $headerHeight;
+  bottom: 0;
+  left: 0;
+  display: block;
+  z-index: 1010;
+  overflow-x: hidden;
+  overflow-y: auto;
 
   @media (min-width: $mdMin) {
-    position: fixed !important;
-    top: $headerHeight;
-    bottom: 0;
-    left: 0;
-    z-index: 1000;
-    display: block;
     padding: 30px 15px 15px;
-    overflow-x: hidden;
-    overflow-y: auto;
     border-right: 1px solid #eee;
+  }
+
+  @media (max-width: $smMax) {
+    width: $asideMenuMobileWidth !important;
+    transition: left 300ms;
+    top: $headerHeight - 3px;
+
+    @include box-shadow(-10px 0 50px 11px rgba(0, 0, 0, .55));
+  }
+}
+
+.aside-menu--hidden {
+  @media (max-width: $smMax) {
+    left: -($asideMenuMobileWidth + 35px);
   }
 }
 
 .aside-menu__nav {
-  @media(min-width: $smMin) {
-    height: 100%;
-  }
+  height: 100%;
 }
 
 .aside-menu__item {
@@ -31,6 +47,7 @@
   text-decoration: none !important;
   cursor: pointer;
 }
+
 .aside-menu__item:hover {
   background-color: $lightHoverColor;
 }
@@ -39,6 +56,7 @@
   color: #fff;
   background-color: $mainColor;
 }
+
 .aside-menu__item--selected:hover {
   color: #fff;
   background-color: $mainColor;
@@ -53,6 +71,7 @@
   color: $dangerColor;
   margin-top: auto;
 }
+
 .aside-menu__item--danger:hover {
   color: #fff;
   background-color: $dangerColor;

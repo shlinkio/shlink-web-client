@@ -1,16 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import DateInput from '../../src/common/DateInput';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import moment from 'moment';
+import DateInput from '../../src/common/DateInput';
 
 describe('<DateInput />', () => {
   let wrapped;
 
   const createComponent = (props = {}) => {
     wrapped = shallow(<DateInput {...props} />);
+
     return wrapped;
   };
+
   afterEach(() => {
     if (wrapped !== undefined) {
       wrapped.unmount();

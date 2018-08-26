@@ -2,17 +2,21 @@ import { shallow } from 'enzyme';
 import { values } from 'ramda';
 import React from 'react';
 import * as sinon from 'sinon';
-import { Home } from '../../src/common/Home';
+import { HomeComponent } from '../../src/common/Home';
 
 describe('<Home />', () => {
   let wrapped;
   const defaultProps = {
-    resetSelectedServer: () => {},
+    resetSelectedServer() {
+      return '';
+    },
     servers: {},
   };
-  const createComponent = props => {
+  const createComponent = (props) => {
     const actualProps = { ...defaultProps, ...props };
-    wrapped = shallow(<Home {...actualProps} />);
+
+    wrapped = shallow(<HomeComponent {...actualProps} />);
+
     return wrapped;
   };
 
@@ -42,7 +46,7 @@ describe('<Home />', () => {
     const servers = {
       1: { name: 'foo', id: '123' },
       2: { name: 'bar', id: '456' },
-    }
+    };
     const wrapped = createComponent({ servers });
 
     expect(wrapped.find('Link')).toHaveLength(0);

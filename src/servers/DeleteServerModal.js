@@ -5,8 +5,19 @@ import { withRouter } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { compose } from 'redux';
 import { deleteServer } from './reducers/server';
+import { serverType } from './prop-types';
 
-export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
+const propTypes = {
+  toggle: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool.isRequired,
+  server: serverType,
+  deleteServer: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};
+
+export const DeleteServerModalComponent = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
     deleteServer(server);
     toggle();
@@ -14,7 +25,7 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered={true}>
+    <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}><span className="text-danger">Delete server</span></ModalHeader>
       <ModalBody>
         <p>Are you sure you want to delete server <b>{server ? server.name : ''}</b>?</p>
@@ -31,18 +42,11 @@ export const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, histor
   );
 };
 
-DeleteServerModal.propTypes = {
-  toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  server: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    apiKey: PropTypes.string,
-  }),
-};
+DeleteServerModalComponent.propTypes = propTypes;
 
-export default compose(
+const DeleteServerModal = compose(
   withRouter,
   connect(null, { deleteServer })
-)(DeleteServerModal);
+)(DeleteServerModalComponent);
+
+export default DeleteServerModal;

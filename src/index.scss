@@ -1,5 +1,11 @@
 @import './utils/base';
 
+html,
+body,
+#root {
+  height: 100%
+}
+
 * {
   outline: none !important;
 }
@@ -15,15 +21,16 @@
 .dropdown-item {
   cursor: pointer;
 }
-.dropdown-item.active {
+.dropdown-item.active,
+.dropdown-item:active {
   @extend .bg-main;
 }
 
-.short-urls-container {
+.shlink-container {
   padding: 20px 0;
 
   @media (min-width: $mdMin) {
-    padding: 30px 30px 30px 20px;
+    padding: 30px 15px;
   }
 }
 
@@ -35,4 +42,11 @@
 .react-datepicker__input-container,
 .react-datepicker-wrapper {
   display: block !important;
+}
+
+.navbar-brand {
+  @media (max-width: $smMax) {
+    margin-right: auto !important; // This is needed to override a third party style
+    margin: 0 auto;
+  }
 }

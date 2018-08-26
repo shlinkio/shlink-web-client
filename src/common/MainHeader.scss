@@ -13,3 +13,12 @@
   width: 26px;
   margin-right: 5px;
 }
+
+.main-header__toggle-icon {
+  width: 20px;
+  transition: transform 300ms;
+}
+
+.main-header__toggle-icon--opened {
+  transform: rotate(180deg);
+}

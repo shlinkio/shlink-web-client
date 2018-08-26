@@ -4,13 +4,13 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { assoc, dissoc, isNil, pick, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import TagsInput from 'react-tagsinput'
 import { Collapse } from 'reactstrap';
 import DateInput from '../common/DateInput';
+import TagsSelector from '../utils/TagsSelector';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
 
-export class CreateShortUrl extends React.Component {
+export class CreateShortUrlComponent extends React.Component {
   state = {
     longUrl: '',
     tags: [],
@@ -18,42 +18,44 @@ export class CreateShortUrl extends React.Component {
     validSince: undefined,
     validUntil: undefined,
     maxVisits: undefined,
-    moreOptionsVisible: false
+    moreOptionsVisible: false,
   };
 
   render() {
     const { createShortUrl, shortUrlCreationResult, resetCreateShortUrl } = this.props;
 
-    const changeTags = tags => this.setState({ tags: tags.map(pipe(trim, replace(/ /g, '-'))) });
-    const renderOptionalInput = (id, placeholder, type = 'text', props = {}) =>
+    const changeTags = (tags) => this.setState({ tags: tags.map(pipe(trim, replace(/ /g, '-'))) });
+    const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
       <input
         className="form-control"
         type={type}
         placeholder={placeholder}
         value={this.state[id]}
-        onChange={e => this.setState({ [id]: e.target.value })}
+        onChange={(e) => this.setState({ [id]: e.target.value })}
         {...props}
-      />;
-    const createDateInput = (id, placeholder, props = {}) =>
+      />
+    );
+    const createDateInput = (id, placeholder, props = {}) => (
       <DateInput
         selected={this.state[id]}
         placeholderText={placeholder}
-        onChange={date => this.setState({ [id]: date })}
         isClearable
+        onChange={(date) => this.setState({ [id]: date })}
         {...props}
-      />;
-    const formatDate = date => isNil(date) ? date : date.format();
-    const save = e => {
+      />
+    );
+    const formatDate = (date) => isNil(date) ? date : date.format();
+    const save = (e) => {
       e.preventDefault();
       createShortUrl(pipe(
-        dissoc('moreOptionsVisible'), // Remove moreOptionsVisible property
+        dissoc('moreOptionsVisible'),
         assoc('validSince', formatDate(this.state.validSince)),
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
     };
 
     return (
-      <div className="short-urls-container">
+      <div className="shlink-container">
         <form onSubmit={save}>
           <div className="form-group">
             <input
@@ -62,19 +64,13 @@ export class CreateShortUrl extends React.Component {
               placeholder="Insert the URL to be shortened"
               required
               value={this.state.longUrl}
-              onChange={e => this.setState({ longUrl: e.target.value })}
+              onChange={(e) => this.setState({ longUrl: e.target.value })}
             />
           </div>
 
           <Collapse isOpen={this.state.moreOptionsVisible}>
             <div className="form-group">
-              <TagsInput
-                value={this.state.tags}
-                onChange={changeTags}
-                inputProps={{ placeholder: 'Add tags to the URL' }}
-                onlyUnique
-                addOnBlur // FIXME Workaround to be able to add tags on Android
-              />
+              <TagsSelector tags={this.state.tags} onChange={changeTags} />
             </div>
 
             <div className="row">
@@ -101,7 +97,7 @@ export class CreateShortUrl extends React.Component {
             <button
               type="button"
               className="btn btn-outline-secondary create-short-url__btn"
-              onClick={() => this.setState({ moreOptionsVisible: !this.state.moreOptionsVisible })}
+              onClick={() => this.setState(({ moreOptionsVisible }) => ({ moreOptionsVisible: !moreOptionsVisible }))}
             >
               <FontAwesomeIcon icon={this.state.moreOptionsVisible ? upIcon : downIcon} />
               &nbsp;
@@ -122,7 +118,9 @@ export class CreateShortUrl extends React.Component {
   }
 }
 
-export default connect(pick(['shortUrlCreationResult']), {
+const CreateShortUrl = connect(pick([ 'shortUrlCreationResult' ]), {
   createShortUrl,
-  resetCreateShortUrl
-})(CreateShortUrl);
+  resetCreateShortUrl,
+})(CreateShortUrlComponent);
+
+export default CreateShortUrl;

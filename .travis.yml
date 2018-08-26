@@ -12,8 +12,11 @@ install:
   - yarn install
 
 script:
-  # - yarn inspect
-  - yarn test
+  - yarn lint
+  - yarn test:ci
   - yarn build # Make sure the app can be built without errors
+
+after_script:
+  - yarn ocular coverage/clover.xml
 
 sudo: false

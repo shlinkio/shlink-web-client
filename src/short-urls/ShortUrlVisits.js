@@ -1,33 +1,51 @@
-import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { isEmpty, mapObjIndexed, pick } from 'ramda'
-import React from 'react'
-import { Doughnut, HorizontalBar } from 'react-chartjs-2'
-import Moment from 'react-moment'
-import { connect } from 'react-redux'
-import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap'
-import DateInput from '../common/DateInput'
-import VisitsParser from '../visits/services/VisitsParser'
-import { getShortUrlVisits } from './reducers/shortUrlVisits'
-import './ShortUrlVisits.scss'
+import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { isEmpty, mapObjIndexed, pick } from 'ramda';
+import React from 'react';
+import { Doughnut, HorizontalBar } from 'react-chartjs-2';
+import Moment from 'react-moment';
+import { connect } from 'react-redux';
+import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
+import PropTypes from 'prop-types';
+import DateInput from '../common/DateInput';
+import {
+  processOsStats,
+  processBrowserStats,
+  processCountriesStats,
+  processReferrersStats,
+} from '../visits/services/VisitsParser';
+import MutedMessage from '../utils/MuttedMessage';
+import ExternalLink from '../utils/ExternalLink';
+import { serverType } from '../servers/prop-types';
+import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
+import './ShortUrlVisits.scss';
 
-const MutedMessage = ({ children }) =>
-  <div className="col-md-10 offset-md-1">
-    <Card className="bg-light mt-4" body>
-      <h3 className="text-center text-muted mb-0">
-        {children}
-      </h3>
-    </Card>
-  </div>;
+const propTypes = {
+  processOsStats: PropTypes.func,
+  processBrowserStats: PropTypes.func,
+  processCountriesStats: PropTypes.func,
+  processReferrersStats: PropTypes.func,
+  match: PropTypes.object,
+  getShortUrlVisits: PropTypes.func,
+  selectedServer: serverType,
+  shortUrlVisits: shortUrlVisitsType,
+};
+const defaultProps = {
+  processOsStats,
+  processBrowserStats,
+  processCountriesStats,
+  processReferrersStats,
+};
 
-export class ShortUrlsVisits extends React.Component {
+export class ShortUrlsVisitsComponent extends React.Component {
   state = { startDate: undefined, endDate: undefined };
   loadVisits = () => {
-    const { match: { params } } = this.props;
-    this.props.getShortUrlVisits(params.shortCode, mapObjIndexed(
-      value => value && value.format ? value.format('YYYY-MM-DD') : value,
+    const { match: { params }, getShortUrlVisits } = this.props;
+
+    getShortUrlVisits(params.shortCode, mapObjIndexed(
+      (value) => value && value.format ? value.format('YYYY-MM-DD') : value,
       this.state
-    ))
+    ));
   };
 
   componentDidMount() {
@@ -38,8 +56,11 @@ export class ShortUrlsVisits extends React.Component {
     const {
       match: { params },
       selectedServer,
-      visitsParser,
-      shortUrlVisits: { visits, loading, error, shortUrl }
+      processOsStats,
+      processBrowserStats,
+      processCountriesStats,
+      processReferrersStats,
+      shortUrlVisits: { visits, loading, error, shortUrl },
     } = this.props;
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortLink = `${serverUrl}/${params.shortCode}`;
@@ -56,31 +77,42 @@ export class ShortUrlsVisits extends React.Component {
             '#46BFBD',
             '#FDB45C',
             '#949FB1',
-            '#4D5360'
+            '#4D5360',
           ],
           borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
-          borderWidth: 2
-        }
-      ]
+          borderWidth: 2,
+        },
+      ],
     });
-    const renderGraphCard = (title, stats, isBarChart, label) =>
+    const renderGraphCard = (title, stats, isBarChart, label) => (
       <div className="col-md-6">
         <Card className="mt-4">
           <CardHeader>{title}</CardHeader>
           <CardBody>
-            {!isBarChart && <Doughnut data={generateGraphData(stats, label || title, isBarChart)} options={{
-              legend: {
-                position: 'right'
-              }
-            }} />}
-            {isBarChart && <HorizontalBar data={generateGraphData(stats, label || title, isBarChart)} options={{
-              legend: {
-                display: false
-              }
-            }} />}
+            {!isBarChart && (
+              <Doughnut
+                data={generateGraphData(stats, label || title, isBarChart)}
+                options={{
+                  legend: {
+                    position: 'right',
+                  },
+                }}
+              />
+            )}
+            {isBarChart && (
+              <HorizontalBar
+                data={generateGraphData(stats, label || title, isBarChart)}
+                options={{
+                  legend: {
+                    display: false,
+                  },
+                }}
+              />
+            )}
           </CardBody>
         </Card>
-      </div>;
+      </div>
+    );
     const renderContent = () => {
       if (loading) {
         return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> Loading...</MutedMessage>;
@@ -100,23 +132,25 @@ export class ShortUrlsVisits extends React.Component {
 
       return (
         <div className="row">
-          {renderGraphCard('Operating systems', visitsParser.processOsStats(visits), false)}
-          {renderGraphCard('Browsers', visitsParser.processBrowserStats(visits), false)}
-          {renderGraphCard('Countries', visitsParser.processCountriesStats(visits), true, 'Visits')}
-          {renderGraphCard('Referrers', visitsParser.processReferrersStats(visits), true, 'Visits')}
+          {renderGraphCard('Operating systems', processOsStats(visits), false)}
+          {renderGraphCard('Browsers', processBrowserStats(visits), false)}
+          {renderGraphCard('Countries', processCountriesStats(visits), true, 'Visits')}
+          {renderGraphCard('Referrers', processReferrersStats(visits), true, 'Visits')}
         </div>
       );
     };
 
-    const renderCreated = () =>
+    const renderCreated = () => (
       <span>
         <b id="created"><Moment fromNow>{shortUrl.dateCreated}</Moment></b>
         <UncontrolledTooltip placement="bottom" target="created">
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </UncontrolledTooltip>
-      </span>;
+      </span>
+    );
+
     return (
-      <div className="short-urls-container">
+      <div className="shlink-container">
         <header>
           <Card className="bg-light">
             <CardBody>
@@ -125,20 +159,22 @@ export class ShortUrlsVisits extends React.Component {
                   shortUrl.visitsCount &&
                   <span className="badge badge-main float-right">Visits: {shortUrl.visitsCount}</span>
                 }
-                Visit stats for <a target="_blank" href={shortLink}>{shortLink}</a>
+                Visit stats for <ExternalLink href={shortLink}>{shortLink}</ExternalLink>
               </h2>
               <hr />
-              {shortUrl.dateCreated && <div>
-                Created:
-                &nbsp;
-                {loading && <small>Loading...</small>}
-                {!loading && renderCreated()}
-              </div>}
+              {shortUrl.dateCreated && (
+                <div>
+                  Created:
+                  &nbsp;
+                  {loading && <small>Loading...</small>}
+                  {!loading && renderCreated()}
+                </div>
+              )}
               <div>
                 Long URL:
                 &nbsp;
                 {loading && <small>Loading...</small>}
-                {!loading && <a target="_blank" href={shortUrl.longUrl}>{shortUrl.longUrl}</a>}
+                {!loading && <ExternalLink href={shortUrl.longUrl}>{shortUrl.longUrl}</ExternalLink>}
               </div>
             </CardBody>
           </Card>
@@ -151,7 +187,7 @@ export class ShortUrlsVisits extends React.Component {
                 selected={this.state.startDate}
                 placeholderText="Since"
                 isClearable
-                onChange={date => this.setState({ startDate: date }, () => this.loadVisits())}
+                onChange={(date) => this.setState({ startDate: date }, () => this.loadVisits())}
               />
             </div>
             <div className="col-xl-3 col-lg-4 col-md-6">
@@ -159,8 +195,8 @@ export class ShortUrlsVisits extends React.Component {
                 selected={this.state.endDate}
                 placeholderText="Until"
                 isClearable
-                onChange={date => this.setState({ endDate: date }, () => this.loadVisits())}
                 className="short-url-visits__date-input"
+                onChange={(date) => this.setState({ endDate: date }, () => this.loadVisits())}
               />
             </div>
           </div>
@@ -174,8 +210,12 @@ export class ShortUrlsVisits extends React.Component {
   }
 }
 
-ShortUrlsVisits.defaultProps = {
-  visitsParser: VisitsParser
-};
+ShortUrlsVisitsComponent.propTypes = propTypes;
+ShortUrlsVisitsComponent.defaultProps = defaultProps;
 
-export default connect(pick(['selectedServer', 'shortUrlVisits']), { getShortUrlVisits })(ShortUrlsVisits);
+const ShortUrlsVisits = connect(
+  pick([ 'selectedServer', 'shortUrlVisits' ]),
+  { getShortUrlVisits }
+)(ShortUrlsVisitsComponent);
+
+export default ShortUrlsVisits;

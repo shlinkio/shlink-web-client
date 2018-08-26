@@ -1,5 +1,5 @@
-import Storage from '../../utils/Storage';
-import { dissoc } from 'ramda';
+import { assoc, dissoc, reduce } from 'ramda';
+import storage from '../../utils/Storage';
 
 const SERVERS_STORAGE_KEY = 'servers';
 
@@ -8,25 +8,29 @@ export class ServersService {
     this.storage = storage;
   }
 
-  listServers = () => {
-    return this.storage.get(SERVERS_STORAGE_KEY) || {};
+  listServers = () => this.storage.get(SERVERS_STORAGE_KEY) || {};
+
+  findServerById = (serverId) => this.listServers()[serverId];
+
+  createServer = (server) => this.createServers([ server ]);
+
+  createServers = (servers) => {
+    const allServers = reduce(
+      (serversObj, server) => assoc(server.id, server, serversObj),
+      this.listServers(),
+      servers
+    );
+
+    this.storage.set(SERVERS_STORAGE_KEY, allServers);
   };
 
-  findServerById = serverId => {
-    const servers = this.listServers();
-    return servers[serverId];
-  };
-
-  createServer = server => {
-    const servers = this.listServers();
-    servers[server.id] = server;
-    this.storage.set(SERVERS_STORAGE_KEY, servers);
-  };
-
-  deleteServer = server => {
-    const servers = dissoc(server.id, this.listServers());
-    this.storage.set(SERVERS_STORAGE_KEY, servers);
-  };
+  deleteServer = (server) =>
+    this.storage.set(
+      SERVERS_STORAGE_KEY,
+      dissoc(server.id, this.listServers())
+    );
 }
 
-export default new ServersService(Storage);
+const serversService = new ServersService(storage);
+
+export default serversService;

@@ -1,32 +1,59 @@
-import { isEmpty, pick } from 'ramda';
+import { isEmpty, pick, values } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-
-import { listServers } from './reducers/server';
+import PropTypes from 'prop-types';
 import { selectServer } from '../servers/reducers/selectedServer';
+import serversExporter from '../servers/services/ServersExporter';
+import { listServers } from './reducers/server';
+import { serverType } from './prop-types';
 
-export class ServersDropdown extends React.Component {
+const defaultProps = {
+  serversExporter,
+};
+const propTypes = {
+  servers: PropTypes.object,
+  serversExporter: PropTypes.shape({
+    exportServers: PropTypes.func,
+  }),
+  selectedServer: serverType,
+  selectServer: PropTypes.func,
+  listServers: PropTypes.func,
+};
+
+export class ServersDropdownComponent extends React.Component {
   renderServers = () => {
-    const { servers, selectedServer, selectServer } = this.props;
+    const { servers, selectedServer, selectServer, serversExporter } = this.props;
 
     if (isEmpty(servers)) {
-      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>
+      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
     }
 
-    return Object.values(servers).map(({ name, id }) => (
-      <span key={id}>
+    return (
+      <React.Fragment>
+        {values(servers).map(({ name, id }) => (
+          <DropdownItem
+            key={id}
+            tag={Link}
+            to={`/server/${id}/list-short-urls/1`}
+            active={selectedServer && selectedServer.id === id}
+
+            // FIXME This should be implicit
+            onClick={() => selectServer(id)}
+          >
+            {name}
+          </DropdownItem>
+        ))}
+        <DropdownItem divider />
         <DropdownItem
-          tag={Link}
-          to={`/server/${id}/list-short-urls/1`}
-          active={selectedServer && selectedServer.id === id}
-          onClick={() => selectServer(id)} // FIXME This should be implicit
+          className="servers-dropdown__export-item"
+          onClick={() => serversExporter.exportServers()}
         >
-          {name}
+          Export servers
         </DropdownItem>
-      </span>
-    ));
+      </React.Fragment>
+    );
   };
 
   componentDidMount() {
@@ -35,12 +62,20 @@ export class ServersDropdown extends React.Component {
 
   render() {
     return (
-      <UncontrolledDropdown nav>
+      <UncontrolledDropdown nav inNavbar>
         <DropdownToggle nav caret>Servers</DropdownToggle>
-        <DropdownMenu>{this.renderServers()}</DropdownMenu>
+        <DropdownMenu right>{this.renderServers()}</DropdownMenu>
       </UncontrolledDropdown>
     );
   }
 }
 
-export default connect(pick(['servers', 'selectedServer']), { listServers, selectServer })(ServersDropdown);
+ServersDropdownComponent.defaultProps = defaultProps;
+ServersDropdownComponent.propTypes = propTypes;
+
+const ServersDropdown = connect(
+  pick([ 'servers', 'selectedServer' ]),
+  { listServers, selectServer }
+)(ServersDropdownComponent);
+
+export default ServersDropdown;

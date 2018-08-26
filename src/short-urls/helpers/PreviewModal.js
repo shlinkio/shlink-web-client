@@ -1,11 +1,21 @@
-import React from 'react'
+import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import PropTypes from 'prop-types';
 import './PreviewModal.scss';
+import ExternalLink from '../../utils/ExternalLink';
 
-export default function PreviewModal ({ url, toggle, isOpen }) {
+const propTypes = {
+  url: PropTypes.string,
+  toggle: PropTypes.func,
+  isOpen: PropTypes.bool,
+};
+
+export default function PreviewModal({ url, toggle, isOpen }) {
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg">
-      <ModalHeader toggle={toggle}>Preview for <a target="_blank" href={url}>{url}</a></ModalHeader>
+      <ModalHeader toggle={toggle}>
+        Preview for <ExternalLink href={url}>{url}</ExternalLink>
+      </ModalHeader>
       <ModalBody>
         <div className="text-center">
           <p className="preview-modal__loader">Loading...</p>
@@ -15,3 +25,5 @@ export default function PreviewModal ({ url, toggle, isOpen }) {
     </Modal>
   );
 }
+
+PreviewModal.propTypes = propTypes;

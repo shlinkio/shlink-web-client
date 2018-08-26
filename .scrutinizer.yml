@@ -1,0 +1,5 @@
+build:
+  environment:
+    node: v10.4.1
+tools:
+  external_code_coverage: true

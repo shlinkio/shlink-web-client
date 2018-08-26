@@ -1,17 +1,33 @@
-import listIcon from '@fortawesome/fontawesome-free-solid/faBars';
-import createIcon from '@fortawesome/fontawesome-free-solid/faPlus';
+import listIcon from '@fortawesome/fontawesome-free-solid/faList';
+import createIcon from '@fortawesome/fontawesome-free-solid/faLink';
+import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import DeleteServerButton from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
-import PropTypes from 'prop-types';
+import { serverType } from '../servers/prop-types';
 
-export default function AsideMenu({ selectedServer }) {
+const defaultProps = {
+  className: '',
+  showOnMobile: false,
+};
+const propTypes = {
+  selectedServer: serverType,
+  className: PropTypes.string,
+  showOnMobile: PropTypes.bool,
+};
+
+export default function AsideMenu({ selectedServer, className, showOnMobile }) {
   const serverId = selectedServer ? selectedServer.id : '';
+  const asideClass = classnames('aside-menu', className, {
+    'aside-menu--hidden': !showOnMobile,
+  });
 
   return (
-    <aside className="aside-menu col-lg-2 col-md-3">
+    <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
         <NavLink
           className="aside-menu__item"
@@ -26,8 +42,17 @@ export default function AsideMenu({ selectedServer }) {
           activeClassName="aside-menu__item--selected"
           to={`/server/${serverId}/create-short-url`}
         >
-          <FontAwesomeIcon icon={createIcon} />
+          <FontAwesomeIcon icon={createIcon} flip="horizontal" />
           <span className="aside-menu__item-text">Create short URL</span>
+        </NavLink>
+
+        <NavLink
+          className="aside-menu__item"
+          activeClassName="aside-menu__item--selected"
+          to={`/server/${serverId}/manage-tags`}
+        >
+          <FontAwesomeIcon icon={tagsIcon} />
+          <span className="aside-menu__item-text">Manage tags</span>
         </NavLink>
 
         <DeleteServerButton
@@ -39,11 +64,5 @@ export default function AsideMenu({ selectedServer }) {
   );
 }
 
-AsideMenu.propTypes = {
-  selectedServer: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string,
-    url: PropTypes.string,
-    apiKey: PropTypes.string,
-  }),
-};
+AsideMenu.defaultProps = defaultProps;
+AsideMenu.propTypes = propTypes;

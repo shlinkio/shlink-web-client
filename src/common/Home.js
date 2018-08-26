@@ -1,14 +1,20 @@
-import chevronIcon from '@fortawesome/fontawesome-free-solid/faChevronRight'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { isEmpty, pick, values } from 'ramda'
-import React from 'react'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { ListGroup, ListGroupItem } from 'reactstrap'
-import { resetSelectedServer } from '../servers/reducers/selectedServer'
-import './Home.scss'
+import chevronIcon from '@fortawesome/fontawesome-free-solid/faChevronRight';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { isEmpty, pick, values } from 'ramda';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { resetSelectedServer } from '../servers/reducers/selectedServer';
+import './Home.scss';
 
-export class Home extends React.Component {
+const propTypes = {
+  resetSelectedServer: PropTypes.func,
+  servers: PropTypes.object,
+};
+
+export class HomeComponent extends React.Component {
   componentDidMount() {
     this.props.resetSelectedServer();
   }
@@ -45,4 +51,8 @@ export class Home extends React.Component {
   }
 }
 
-export default connect(pick(['servers']), { resetSelectedServer })(Home);
+HomeComponent.propTypes = propTypes;
+
+const Home = connect(pick([ 'servers' ]), { resetSelectedServer })(HomeComponent);
+
+export default Home;

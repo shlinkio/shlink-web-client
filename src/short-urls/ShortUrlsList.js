@@ -1,13 +1,17 @@
-import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown'
-import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp'
-import FontAwesomeIcon from '@fortawesome/react-fontawesome'
-import { head, isEmpty, pick, toPairs } from 'ramda'
-import React from 'react'
-import { connect } from 'react-redux'
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
-import { ShortUrlsRow } from './helpers/ShortUrlsRow'
-import { listShortUrls } from './reducers/shortUrlsList'
-import './ShortUrlsList.scss'
+import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
+import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { head, isEmpty, pick, toPairs, keys, values } from 'ramda';
+import React from 'react';
+import { connect } from 'react-redux';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import qs from 'qs';
+import PropTypes from 'prop-types';
+import { serverType } from '../servers/prop-types';
+import { ShortUrlsRow } from './helpers/ShortUrlsRow';
+import { listShortUrls, shortUrlType } from './reducers/shortUrlsList';
+import './ShortUrlsList.scss';
+import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 
 const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
@@ -16,29 +20,43 @@ const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
-export class ShortUrlsList extends React.Component {
-  refreshList = extraParams => {
+const propTypes = {
+  listShortUrls: PropTypes.func,
+  shortUrlsListParams: shortUrlsListParamsType,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  shortUrlsList: PropTypes.arrayOf(shortUrlType),
+  selectedServer: serverType,
+};
+
+export class ShortUrlsListComponent extends React.Component {
+  refreshList = (extraParams) => {
     const { listShortUrls, shortUrlsListParams } = this.props;
+
     listShortUrls({
       ...shortUrlsListParams,
-      ...extraParams
+      ...extraParams,
     });
   };
-  determineOrderDir = field => {
+  determineOrderDir = (field) => {
     if (this.state.orderField !== field) {
       return 'ASC';
     }
 
     const newOrderMap = {
-      'ASC': 'DESC',
-      'DESC': undefined,
+      ASC: 'DESC',
+      DESC: undefined,
     };
+
     return this.state.orderDir ? newOrderMap[this.state.orderDir] : 'ASC';
-  }
-  orderBy = field => {
+  };
+  orderBy = (field) => {
     const newOrderDir = this.determineOrderDir(field);
+
     this.setState({ orderField: newOrderDir !== undefined ? field : undefined, orderDir: newOrderDir });
-    this.refreshList({ orderBy: { [field]: newOrderDir } })
+    this.refreshList({ orderBy: { [field]: newOrderDir } });
   };
   renderOrderIcon = (field, className = 'short-urls-list__header-icon') => {
     if (this.state.orderField !== field) {
@@ -57,32 +75,40 @@ export class ShortUrlsList extends React.Component {
     super(props);
 
     const { orderBy } = props.shortUrlsListParams;
+
     this.state = {
-      orderField: orderBy ? head(Object.keys(orderBy)) : undefined,
-      orderDir: orderBy ? head(Object.values(orderBy)) : undefined,
-    }
+      orderField: orderBy ? head(keys(orderBy)) : undefined,
+      orderDir: orderBy ? head(values(orderBy)) : undefined,
+    };
   }
 
   componentDidMount() {
-    const { match: { params } } = this.props;
-    this.refreshList({ page: params.page });
+    const { match: { params }, location } = this.props;
+    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+
+    this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : [] });
   }
 
   renderShortUrls() {
     const { shortUrlsList, selectedServer, loading, error, shortUrlsListParams } = this.props;
+
     if (error) {
-      return <tr><td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td></tr>;
+      return (
+        <tr>
+          <td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td>
+        </tr>
+      );
     }
 
     if (loading) {
       return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
     }
 
-    if (! loading && isEmpty(shortUrlsList)) {
+    if (!loading && isEmpty(shortUrlsList)) {
       return <tr><td colSpan="6" className="text-center">No results found</td></tr>;
     }
 
-    return shortUrlsList.map(shortUrl => (
+    return shortUrlsList.map((shortUrl) => (
       <ShortUrlsRow
         shortUrl={shortUrl}
         selectedServer={selectedServer}
@@ -101,11 +127,12 @@ export class ShortUrlsList extends React.Component {
             Order by
           </DropdownToggle>
           <DropdownMenu className="short-urls-list__order-dropdown">
-            {toPairs(SORTABLE_FIELDS).map(([key, value]) =>
-              <DropdownItem active={this.state.orderField === key} onClick={() => this.orderBy(key)}>
+            {toPairs(SORTABLE_FIELDS).map(([ key, value ]) => (
+              <DropdownItem key={key} active={this.state.orderField === key} onClick={() => this.orderBy(key)}>
                 {value}
                 {this.renderOrderIcon(key, 'short-urls-list__header-icon--mobile')}
-              </DropdownItem>)}
+              </DropdownItem>
+            ))}
           </DropdownMenu>
         </UncontrolledDropdown>
       </div>
@@ -159,4 +186,11 @@ export class ShortUrlsList extends React.Component {
   }
 }
 
-export default connect(pick(['selectedServer', 'shortUrlsListParams']), { listShortUrls })(ShortUrlsList);
+ShortUrlsListComponent.propTypes = propTypes;
+
+const ShortUrlsList = connect(
+  pick([ 'selectedServer', 'shortUrlsListParams' ]),
+  { listShortUrls }
+)(ShortUrlsListComponent);
+
+export default ShortUrlsList;
