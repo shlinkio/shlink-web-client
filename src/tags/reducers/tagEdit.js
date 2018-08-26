@@ -2,9 +2,11 @@ import { curry, pick } from 'ramda';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 import colorGenerator from '../../utils/ColorGenerator';
 
+/* eslint-disable padding-line-between-statements, newline-after-var */
 const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
 const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
 const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
+/* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
 

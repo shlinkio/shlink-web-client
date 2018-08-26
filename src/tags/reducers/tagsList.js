@@ -3,10 +3,12 @@ import shlinkApiClient from '../../api/ShlinkApiClient';
 import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
+/* eslint-disable padding-line-between-statements, newline-after-var */
 const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
 const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
 const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
 const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
+/* eslint-enable padding-line-between-statements, newline-after-var */
 
 const defaultState = {
   tags: [],

@@ -2,15 +2,13 @@ import { curry } from 'ramda';
 import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 
+/* eslint-disable padding-line-between-statements, newline-after-var */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
-
 export const EDIT_SHORT_URL_TAGS_ERROR = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_ERROR';
-
 export const EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS';
-
 export const RESET_EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/RESET_EDIT_SHORT_URL_TAGS';
-
 export const SHORT_URL_TAGS_EDITED = 'shlink/shortUrlTags/SHORT_URL_TAGS_EDITED';
+/* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlTagsType = PropTypes.shape({
   shortCode: PropTypes.string,

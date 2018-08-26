@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 
+/* eslint-disable padding-line-between-statements, newline-after-var */
 const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
-
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
+/* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlType = PropTypes.shape({
   tags: PropTypes.arrayOf(PropTypes.string),
