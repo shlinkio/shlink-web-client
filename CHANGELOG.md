@@ -1,5 +1,44 @@
 # CHANGELOG
 
+## 1.0.0 - 2018-08-26
+
+#### Added
+
+* [#4](https://github.com/shlinkio/shlink-web-client/issues/4) Now it is possible to export and import servers.
+
+    * Export all servers in a CSV file.
+    * Import the CSV in a different device.
+
+* [#4](https://github.com/shlinkio/shlink-web-client/issues/4) Added tags management.
+
+    * List existing tags, and filter the list.
+    * Change their name and color.
+    * Jump to URLs list filtering by one tag.
+
+* [#5](https://github.com/shlinkio/shlink-web-client/issues/5) Tags for existing URLs can be edited now.
+* [#24](https://github.com/shlinkio/shlink-web-client/issues/24) Improved left menu in mobile devices, which is now a swipeable sidebar instead of a stacked top bar.
+* [#22](https://github.com/shlinkio/shlink-web-client/issues/22) Improved code coverage.
+* [#28](https://github.com/shlinkio/shlink-web-client/issues/28) Added integration with [Scrutinizer](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/).
+
+#### Changed
+
+* [#33](https://github.com/shlinkio/shlink-web-client/issues/33) Changed to [adidas coding style](https://github.com/adidas/js-linter-configs) for Javascript.
+* [#32](https://github.com/shlinkio/shlink-web-client/issues/32) Changed to [adidas coding style](https://github.com/adidas/js-linter-configs) for stylesheets.
+* [#26](https://github.com/shlinkio/shlink-web-client/issues/26) The tags input now displays tags using their actual color.
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* *Nothing*
+
+
 ## 0.2.0 - 2018-08-12
 
 #### Added
