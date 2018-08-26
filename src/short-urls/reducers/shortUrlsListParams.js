@@ -3,11 +3,11 @@ import { LIST_SHORT_URLS } from './shortUrlsList';
 
 export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
 
-export const shortUrlsListParamsType = {
+export const shortUrlsListParamsType = PropTypes.shape({
   page: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
   searchTerm: PropTypes.string,
-};
+});
 
 const defaultState = { page: '1' };
 

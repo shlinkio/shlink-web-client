@@ -9,12 +9,12 @@ const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_E
 const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
-export const shortUrlVisitsType = {
+export const shortUrlVisitsType = PropTypes.shape({
   shortUrl: shortUrlType,
   visits: PropTypes.array,
   loading: PropTypes.bool,
   error: PropTypes.bool,
-};
+});
 
 const initialState = {
   shortUrl: {},

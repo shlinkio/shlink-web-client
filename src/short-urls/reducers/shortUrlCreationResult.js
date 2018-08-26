@@ -9,13 +9,13 @@ const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
-export const createShortUrlResultType = {
+export const createShortUrlResultType = PropTypes.shape({
   result: PropTypes.shape({
     shortUrl: PropTypes.string,
   }),
   saving: PropTypes.bool,
   error: PropTypes.bool,
-};
+});
 
 const defaultState = {
   result: null,
