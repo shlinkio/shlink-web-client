@@ -15,6 +15,14 @@ export class Storage {
   set = (key, value) => this.localStorage.setItem(buildPath(key), JSON.stringify(value));
 }
 
-const storage = typeof localStorage !== 'undefined' ? localStorage : {};
+const browserStorage = global.localStorage || {
+  getItem() {
+    return '';
+  },
+  setItem() {
+    return '';
+  },
+};
+const storage = new Storage(browserStorage);
 
-export default new Storage(storage);
+export default storage;
