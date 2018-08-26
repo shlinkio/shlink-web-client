@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import { values } from 'ramda';
-import reduce, {
+import reducer, {
   _createServer,
   _deleteServer,
   _listServers,
@@ -20,12 +20,12 @@ describe('serverReducer', () => {
     createServers: sinon.fake(),
   };
 
-  describe('reduce', () => {
+  describe('reducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reduce({}, { type: FETCH_SERVERS, servers })).toEqual(servers));
+      expect(reducer({}, { type: FETCH_SERVERS, servers })).toEqual(servers));
 
     it('returns default when action is unknown', () =>
-      expect(reduce({}, { type: 'unknown' })).toEqual({}));
+      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('action creators', () => {

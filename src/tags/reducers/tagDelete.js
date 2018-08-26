@@ -19,7 +19,7 @@ const defaultState = {
   error: false,
 };
 
-export default function reduce(state = defaultState, action) {
+export default function reducer(state = defaultState, action) {
   switch (action.type) {
     case DELETE_TAG_START:
       return {

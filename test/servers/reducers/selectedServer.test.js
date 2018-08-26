@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import reduce, {
+import reducer, {
   _selectServer,
   RESET_SELECTED_SERVER,
   resetSelectedServer,
@@ -8,17 +8,17 @@ import reduce, {
 import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
 
 describe('selectedServerReducer', () => {
-  describe('reduce', () => {
+  describe('reducer', () => {
     it('returns default when action is not handled', () =>
-      expect(reduce(null, { type: 'unknown' })).toEqual(null));
+      expect(reducer(null, { type: 'unknown' })).toEqual(null));
 
     it('returns default when action is RESET_SELECTED_SERVER', () =>
-      expect(reduce(null, { type: RESET_SELECTED_SERVER })).toEqual(null));
+      expect(reducer(null, { type: RESET_SELECTED_SERVER })).toEqual(null));
 
     it('returns selected server when action is SELECT_SERVER', () => {
       const selectedServer = { id: 'abc123' };
 
-      expect(reduce(null, { type: SELECT_SERVER, selectedServer })).toEqual(selectedServer);
+      expect(reducer(null, { type: SELECT_SERVER, selectedServer })).toEqual(selectedServer);
     });
   });
 
