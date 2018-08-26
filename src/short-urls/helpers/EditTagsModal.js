@@ -62,7 +62,7 @@ export class EditTagsModalComponent extends React.Component {
     const { isOpen, toggle, url, shortUrlTags } = this.props;
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={() => this.refreshShortUrls}>
+      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={() => this.refreshShortUrls()}>
         <ModalHeader toggle={toggle}>
           Edit tags for <ExternalLink href={url}>{url}</ExternalLink>
         </ModalHeader>
@@ -80,7 +80,7 @@ export class EditTagsModalComponent extends React.Component {
             className="btn btn-primary"
             type="button"
             disabled={shortUrlTags.saving}
-            onClick={() => this.saveTags}
+            onClick={() => this.saveTags()}
           >
             {shortUrlTags.saving ? 'Saving tags...' : 'Save tags'}
           </button>

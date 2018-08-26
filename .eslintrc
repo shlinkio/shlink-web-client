@@ -22,6 +22,7 @@
   "rules": {
     "comma-dangle": ["error", "always-multiline"],
     "no-invalid-this": "off",
+    "no-console": "warn",
     "template-curly-spacing": ["error", "never"],
     "no-warning-comments": "off",
     "no-undefined": "off",

@@ -74,7 +74,7 @@ export class EditTagModalComponent extends React.Component {
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.handleOnClosed}>
-        <form onSubmit={() => this.saveTag()}>
+        <form onSubmit={(e) => this.saveTag(e)}>
           <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
           <ModalBody>
             <div className="input-group">
