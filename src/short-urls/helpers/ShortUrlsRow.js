@@ -7,10 +7,9 @@ import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
 import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
+import { stateFlagTimeout } from '../../utils/utils';
 import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
-
-const COPIED_MSG_TIME = 2000;
 
 const propTypes = {
   refreshList: PropTypes.func,
@@ -67,10 +66,7 @@ export class ShortUrlsRow extends React.Component {
             completeShortUrl={completeShortUrl}
             selectedServer={selectedServer}
             shortUrl={shortUrl}
-            onCopyToClipboard={() => {
-              this.setState({ copiedToClipboard: true });
-              setTimeout(() => this.setState({ copiedToClipboard: false }), COPIED_MSG_TIME);
-            }}
+            onCopyToClipboard={() => stateFlagTimeout(this.setState.bind(this), 'copiedToClipboard')}
           />
         </td>
       </tr>

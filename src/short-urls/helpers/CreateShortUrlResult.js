@@ -6,9 +6,8 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Card, CardBody, Tooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { createShortUrlResultType } from '../reducers/shortUrlCreationResult';
+import { stateFlagTimeout } from '../../utils/utils';
 import './CreateShortUrlResult.scss';
-
-const TIME_TO_SHOW_COPY_TOOLTIP = 2000;
 
 const propTypes = {
   resetCreateShortUrl: PropTypes.func,
@@ -38,10 +37,7 @@ export default class CreateShortUrlResult extends React.Component {
     }
 
     const { shortUrl } = result;
-    const onCopy = () => {
-      this.setState({ showCopyTooltip: true });
-      setTimeout(() => this.setState({ showCopyTooltip: false }), TIME_TO_SHOW_COPY_TOOLTIP);
-    };
+    const onCopy = () => stateFlagTimeout(this.setState.bind(this), 'showCopyTooltip');
 
     return (
       <Card inverse className="bg-main mt-3">
