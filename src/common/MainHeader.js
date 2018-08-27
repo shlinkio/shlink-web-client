@@ -10,11 +10,11 @@ import ServersDropdown from '../servers/ServersDropdown';
 import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
 
-const propTypes = {
-  location: PropTypes.object,
-};
-
 export class MainHeaderComponent extends React.Component {
+  static propTypes = {
+    location: PropTypes.object,
+  };
+
   state = { isOpen: false };
   handleToggle = () => {
     this.setState(({ isOpen }) => ({
@@ -63,8 +63,6 @@ export class MainHeaderComponent extends React.Component {
     );
   }
 }
-
-MainHeaderComponent.propTypes = propTypes;
 
 const MainHeader = withRouter(MainHeaderComponent);
 

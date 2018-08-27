@@ -9,16 +9,17 @@ import TagCard from './TagCard';
 
 const { ceil } = Math;
 const TAGS_GROUP_SIZE = 4;
-const propTypes = {
-  filterTags: PropTypes.func,
-  listTags: PropTypes.func,
-  tagsList: PropTypes.shape({
-    loading: PropTypes.bool,
-  }),
-  match: PropTypes.object,
-};
 
 export class TagsListComponent extends React.Component {
+  static propTypes = {
+    filterTags: PropTypes.func,
+    listTags: PropTypes.func,
+    tagsList: PropTypes.shape({
+      loading: PropTypes.bool,
+    }),
+    match: PropTypes.object,
+  };
+
   componentDidMount() {
     const { listTags } = this.props;
 
@@ -84,8 +85,6 @@ export class TagsListComponent extends React.Component {
     );
   }
 }
-
-TagsListComponent.propTypes = propTypes;
 
 const TagsList = connect(pick([ 'tagsList' ]), { listTags, filterTags })(TagsListComponent);
 

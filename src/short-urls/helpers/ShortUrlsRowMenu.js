@@ -17,14 +17,14 @@ import QrCodeModal from './QrCodeModal';
 import './ShortUrlsRowMenu.scss';
 import EditTagsModal from './EditTagsModal';
 
-const propTypes = {
-  completeShortUrl: PropTypes.string,
-  onCopyToClipboard: PropTypes.func,
-  selectedServer: serverType,
-  shortUrl: shortUrlType,
-};
-
 export class ShortUrlsRowMenu extends React.Component {
+  static propTypes = {
+    completeShortUrl: PropTypes.string,
+    onCopyToClipboard: PropTypes.func,
+    selectedServer: serverType,
+    shortUrl: shortUrlType,
+  };
+
   state = {
     isOpen: false,
     isQrModalOpen: false,
@@ -91,5 +91,3 @@ export class ShortUrlsRowMenu extends React.Component {
     );
   }
 }
-
-ShortUrlsRowMenu.propTypes = propTypes;

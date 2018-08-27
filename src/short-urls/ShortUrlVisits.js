@@ -20,24 +20,24 @@ import { serverType } from '../servers/prop-types';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import './ShortUrlVisits.scss';
 
-const propTypes = {
-  processOsStats: PropTypes.func,
-  processBrowserStats: PropTypes.func,
-  processCountriesStats: PropTypes.func,
-  processReferrersStats: PropTypes.func,
-  match: PropTypes.object,
-  getShortUrlVisits: PropTypes.func,
-  selectedServer: serverType,
-  shortUrlVisits: shortUrlVisitsType,
-};
-const defaultProps = {
-  processOsStats,
-  processBrowserStats,
-  processCountriesStats,
-  processReferrersStats,
-};
-
 export class ShortUrlsVisitsComponent extends React.Component {
+  static propTypes = {
+    processOsStats: PropTypes.func,
+    processBrowserStats: PropTypes.func,
+    processCountriesStats: PropTypes.func,
+    processReferrersStats: PropTypes.func,
+    match: PropTypes.object,
+    getShortUrlVisits: PropTypes.func,
+    selectedServer: serverType,
+    shortUrlVisits: shortUrlVisitsType,
+  };
+  static defaultProps = {
+    processOsStats,
+    processBrowserStats,
+    processCountriesStats,
+    processReferrersStats,
+  };
+
   state = { startDate: undefined, endDate: undefined };
   loadVisits = () => {
     const { match: { params }, getShortUrlVisits } = this.props;
@@ -209,9 +209,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
     );
   }
 }
-
-ShortUrlsVisitsComponent.propTypes = propTypes;
-ShortUrlsVisitsComponent.defaultProps = defaultProps;
 
 const ShortUrlsVisits = connect(
   pick([ 'selectedServer', 'shortUrlVisits' ]),

@@ -11,14 +11,14 @@ import { stateFlagTimeout } from '../../utils/utils';
 import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
-const propTypes = {
-  refreshList: PropTypes.func,
-  shortUrlsListParams: shortUrlsListParamsType,
-  selectedServer: serverType,
-  shortUrl: shortUrlType,
-};
-
 export class ShortUrlsRow extends React.Component {
+  static propTypes = {
+    refreshList: PropTypes.func,
+    shortUrlsListParams: shortUrlsListParamsType,
+    selectedServer: serverType,
+    shortUrl: shortUrlType,
+  };
+
   state = { copiedToClipboard: false };
 
   renderTags(tags) {
@@ -73,5 +73,3 @@ export class ShortUrlsRow extends React.Component {
     );
   }
 }
-
-ShortUrlsRow.propTypes = propTypes;

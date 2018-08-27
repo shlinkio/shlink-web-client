@@ -9,13 +9,13 @@ import { createShortUrlResultType } from '../reducers/shortUrlCreationResult';
 import { stateFlagTimeout } from '../../utils/utils';
 import './CreateShortUrlResult.scss';
 
-const propTypes = {
-  resetCreateShortUrl: PropTypes.func,
-  error: PropTypes.bool,
-  result: createShortUrlResultType,
-};
-
 export default class CreateShortUrlResult extends React.Component {
+  static propTypes = {
+    resetCreateShortUrl: PropTypes.func,
+    error: PropTypes.bool,
+    result: createShortUrlResultType,
+  };
+
   state = { showCopyTooltip: false };
 
   componentDidMount() {
@@ -62,5 +62,3 @@ export default class CreateShortUrlResult extends React.Component {
     );
   }
 }
-
-CreateShortUrlResult.propTypes = propTypes;

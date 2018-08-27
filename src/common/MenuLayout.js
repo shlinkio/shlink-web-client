@@ -17,14 +17,14 @@ import TagsList from '../tags/TagsList';
 import { serverType } from '../servers/prop-types';
 import AsideMenu from './AsideMenu';
 
-const propTypes = {
-  match: PropTypes.object,
-  selectServer: PropTypes.func,
-  location: PropTypes.object,
-  selectedServer: serverType,
-};
-
 export class MenuLayoutComponent extends React.Component {
+  static propTypes = {
+    match: PropTypes.object,
+    selectServer: PropTypes.func,
+    location: PropTypes.object,
+    selectedServer: serverType,
+  };
+
   state = { showSideBar: false };
 
   // FIXME Shouldn't use componentWillMount, but this code has to be run before children components are rendered
@@ -104,8 +104,6 @@ export class MenuLayoutComponent extends React.Component {
     );
   }
 }
-
-MenuLayoutComponent.propTypes = propTypes;
 
 const MenuLayout = compose(
   connect(pick([ 'selectedServer', 'shortUrlsListParams' ]), { selectServer }),

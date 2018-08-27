@@ -20,18 +20,18 @@ const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
-const propTypes = {
-  listShortUrls: PropTypes.func,
-  shortUrlsListParams: shortUrlsListParamsType,
-  match: PropTypes.object,
-  location: PropTypes.object,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-  shortUrlsList: PropTypes.arrayOf(shortUrlType),
-  selectedServer: serverType,
-};
-
 export class ShortUrlsListComponent extends React.Component {
+  static propTypes = {
+    listShortUrls: PropTypes.func,
+    shortUrlsListParams: shortUrlsListParamsType,
+    match: PropTypes.object,
+    location: PropTypes.object,
+    loading: PropTypes.bool,
+    error: PropTypes.bool,
+    shortUrlsList: PropTypes.arrayOf(shortUrlType),
+    selectedServer: serverType,
+  };
+
   refreshList = (extraParams) => {
     const { listShortUrls, shortUrlsListParams } = this.props;
 
@@ -185,8 +185,6 @@ export class ShortUrlsListComponent extends React.Component {
     );
   }
 }
-
-ShortUrlsListComponent.propTypes = propTypes;
 
 const ShortUrlsList = connect(
   pick([ 'selectedServer', 'shortUrlsListParams' ]),

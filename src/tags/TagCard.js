@@ -10,16 +10,16 @@ import './TagCard.scss';
 import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
 import EditTagModal from './helpers/EditTagModal';
 
-const propTypes = {
-  tag: PropTypes.string,
-  currentServerId: PropTypes.string,
-  colorGenerator: colorGeneratorType,
-};
-const defaultProps = {
-  colorGenerator,
-};
-
 export default class TagCard extends React.Component {
+  static propTypes = {
+    tag: PropTypes.string,
+    currentServerId: PropTypes.string,
+    colorGenerator: colorGeneratorType,
+  };
+  static defaultProps = {
+    colorGenerator,
+  };
+
   state = { isDeleteModalOpen: false, isEditModalOpen: false };
 
   render() {
@@ -69,6 +69,3 @@ export default class TagCard extends React.Component {
     );
   }
 }
-
-TagCard.propTypes = propTypes;
-TagCard.defaultProps = defaultProps;

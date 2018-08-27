@@ -13,18 +13,18 @@ import {
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 
-const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
-  shortUrl: shortUrlType.isRequired,
-  shortUrlTags: shortUrlTagsType,
-  editShortUrlTags: PropTypes.func,
-  shortUrlTagsEdited: PropTypes.func,
-  resetShortUrlsTags: PropTypes.func,
-};
-
 export class EditTagsModalComponent extends React.Component {
+  static propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    toggle: PropTypes.func.isRequired,
+    url: PropTypes.string.isRequired,
+    shortUrl: shortUrlType.isRequired,
+    shortUrlTags: shortUrlTagsType,
+    editShortUrlTags: PropTypes.func,
+    shortUrlTagsEdited: PropTypes.func,
+    resetShortUrlsTags: PropTypes.func,
+  };
+
   saveTags = () => {
     const { editShortUrlTags, shortUrl, toggle } = this.props;
 
@@ -89,8 +89,6 @@ export class EditTagsModalComponent extends React.Component {
     );
   }
 }
-
-EditTagsModalComponent.propTypes = propTypes;
 
 const EditTagsModal = connect(
   pick([ 'shortUrlTags' ]),
