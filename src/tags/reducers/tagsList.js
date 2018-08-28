@@ -1,4 +1,4 @@
-import { reject } from 'ramda';
+import { isEmpty, reject } from 'ramda';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
@@ -68,7 +68,13 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _listTags = (shlinkApiClient) => async (dispatch) => {
+export const _listTags = (shlinkApiClient, force = false) => async (dispatch, getState) => {
+  const { tagsList } = getState();
+
+  if (!force && (tagsList.loading || !isEmpty(tagsList.tags))) {
+    return;
+  }
+
   dispatch({ type: LIST_TAGS_START });
 
   try {
@@ -81,6 +87,8 @@ export const _listTags = (shlinkApiClient) => async (dispatch) => {
 };
 
 export const listTags = () => _listTags(shlinkApiClient);
+
+export const forceListTags = () => _listTags(shlinkApiClient, true);
 
 export const filterTags = (searchTerm) => ({
   type: FILTER_TAGS,

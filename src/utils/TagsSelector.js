@@ -15,16 +15,12 @@ const propTypes = {
 };
 
 export default function TagsSelector({ tags, onChange, placeholder, colorGenerator }) {
-  const renderTag = (props) => {
-    const { tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other } = props;
-
-    return (
-      <span key={key} style={{ backgroundColor: colorGenerator.getColorForKey(tag) }} {...other}>
-        {getTagDisplayValue(tag)}
-        {!disabled && <span className={classNameRemove} onClick={() => onRemove(key)} />}
-      </span>
-    );
-  };
+  const renderTag = ({ tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other }) => (
+    <span key={key} style={{ backgroundColor: colorGenerator.getColorForKey(tag) }} {...other}>
+      {getTagDisplayValue(tag)}
+      {!disabled && <span className={classNameRemove} onClick={() => onRemove(key)} />}
+    </span>
+  );
 
   return (
     <TagsInput

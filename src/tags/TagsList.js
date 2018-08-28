@@ -4,7 +4,7 @@ import { pick, splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
 import MuttedMessage from '../utils/MuttedMessage';
 import SearchField from '../utils/SearchField';
-import { filterTags, listTags } from './reducers/tagsList';
+import { filterTags, forceListTags } from './reducers/tagsList';
 import TagCard from './TagCard';
 
 const { ceil } = Math;
@@ -13,7 +13,7 @@ const TAGS_GROUP_SIZE = 4;
 export class TagsListComponent extends React.Component {
   static propTypes = {
     filterTags: PropTypes.func,
-    listTags: PropTypes.func,
+    forceListTags: PropTypes.func,
     tagsList: PropTypes.shape({
       loading: PropTypes.bool,
     }),
@@ -21,9 +21,9 @@ export class TagsListComponent extends React.Component {
   };
 
   componentDidMount() {
-    const { listTags } = this.props;
+    const { forceListTags } = this.props;
 
-    listTags();
+    forceListTags(true);
   }
 
   renderContent() {
@@ -86,6 +86,6 @@ export class TagsListComponent extends React.Component {
   }
 }
 
-const TagsList = connect(pick([ 'tagsList' ]), { listTags, filterTags })(TagsListComponent);
+const TagsList = connect(pick([ 'tagsList' ]), { forceListTags, filterTags })(TagsListComponent);
 
 export default TagsList;
