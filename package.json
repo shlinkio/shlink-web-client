@@ -31,6 +31,7 @@
     "qs": "^6.5.2",
     "ramda": "^0.25.0",
     "react": "^16.3.2",
+    "react-autosuggest": "^9.4.0",
     "react-chartjs-2": "^2.7.4",
     "react-color": "^2.14.1",
     "react-copy-to-clipboard": "^5.0.1",

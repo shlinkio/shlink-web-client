@@ -5,7 +5,7 @@ import editIcon from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import colorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
+import TagBullet from '../utils/TagBullet';
 import './TagCard.scss';
 import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
 import EditTagModal from './helpers/EditTagModal';
@@ -14,16 +14,12 @@ export default class TagCard extends React.Component {
   static propTypes = {
     tag: PropTypes.string,
     currentServerId: PropTypes.string,
-    colorGenerator: colorGeneratorType,
-  };
-  static defaultProps = {
-    colorGenerator,
   };
 
   state = { isDeleteModalOpen: false, isEditModalOpen: false };
 
   render() {
-    const { tag, colorGenerator, currentServerId } = this.props;
+    const { tag, currentServerId } = this.props;
     const toggleDelete = () =>
       this.setState(({ isDeleteModalOpen }) => ({ isDeleteModalOpen: !isDeleteModalOpen }));
     const toggleEdit = () =>
@@ -45,10 +41,7 @@ export default class TagCard extends React.Component {
             <FontAwesomeIcon icon={editIcon} />
           </button>
           <h5 className="tag-card__tag-title">
-            <div
-              style={{ backgroundColor: colorGenerator.getColorForKey(tag) }}
-              className="tag-card__tag-bullet"
-            />
+            <TagBullet tag={tag} />
             <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>
               {tag}
             </Link>

@@ -59,9 +59,7 @@ export default function reducer(state = defaultState, action) {
     case FILTER_TAGS:
       return {
         ...state,
-        filteredTags: state.tags.filter(
-          (tag) => tag.toLowerCase().match(action.searchTerm),
-        ),
+        filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(action.searchTerm)),
       };
     default:
       return state;
