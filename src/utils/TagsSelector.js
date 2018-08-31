@@ -39,33 +39,24 @@ export class TagsSelectorComponent extends React.Component {
       </span>
     );
     const renderAutocompleteInput = (data) => {
-      const { addTag, ...rest } = data;
-
+      const { addTag, ...otherProps } = data;
       const handleOnChange = (e, { method }) => {
-        if (method === 'enter') {
-          e.preventDefault();
-        } else {
-          rest.onChange(e);
-        }
+        method === 'enter' ? e.preventDefault() : otherProps.onChange(e);
       };
 
       // eslint-disable-next-line no-extra-parens
-      const inputValue = (rest.value && rest.value.trim().toLowerCase()) || '';
+      const inputValue = (otherProps.value && otherProps.value.trim().toLowerCase()) || '';
       const inputLength = inputValue.length;
       const suggestions = tagsList.tags.filter((state) => state.toLowerCase().slice(0, inputLength) === inputValue);
 
       return (
         <Autosuggest
-          ref={rest.ref}
+          ref={otherProps.ref}
           suggestions={suggestions}
-          inputProps={{ ...rest, onChange: handleOnChange }}
+          inputProps={{ ...otherProps, onChange: handleOnChange }}
           highlightFirstSuggestion
           shouldRenderSuggestions={(value) => value && value.trim().length > 0}
-          getSuggestionValue={(suggestion) => {
-            console.log(suggestion);
-
-            return suggestion;
-          }}
+          getSuggestionValue={(suggestion) => suggestion}
           renderSuggestion={(suggestion) => (
             <React.Fragment>
               <TagBullet tag={suggestion} />
