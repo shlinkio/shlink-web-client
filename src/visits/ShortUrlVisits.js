@@ -2,23 +2,22 @@ import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { isEmpty, mapObjIndexed, pick } from 'ramda';
 import React from 'react';
-import { Doughnut, HorizontalBar } from 'react-chartjs-2';
-import Moment from 'react-moment';
 import { connect } from 'react-redux';
-import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
+import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../common/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
-import ExternalLink from '../utils/ExternalLink';
 import { serverType } from '../servers/prop-types/index';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import {
-  processOsStats,
   processBrowserStats,
   processCountriesStats,
+  processOsStats,
   processReferrersStats,
 } from './services/VisitsParser';
 import './ShortUrlVisits.scss';
+import { VisitsHeader } from './VisitsHeader';
+import { GraphCard } from './GraphCard';
 
 export class ShortUrlsVisitsComponent extends React.Component {
   static propTypes = {
@@ -60,59 +59,12 @@ export class ShortUrlsVisitsComponent extends React.Component {
       processBrowserStats,
       processCountriesStats,
       processReferrersStats,
-      shortUrlVisits: { visits, loading, error, shortUrl },
+      shortUrlVisits,
     } = this.props;
+    const { visits, loading, error } = shortUrlVisits;
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortLink = `${serverUrl}/${params.shortCode}`;
-    const generateGraphData = (stats, label, isBarChart) => ({
-      labels: Object.keys(stats),
-      datasets: [
-        {
-          label,
-          data: Object.values(stats),
-          backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
-            '#97BBCD',
-            '#DCDCDC',
-            '#F7464A',
-            '#46BFBD',
-            '#FDB45C',
-            '#949FB1',
-            '#4D5360',
-          ],
-          borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
-          borderWidth: 2,
-        },
-      ],
-    });
-    const renderGraphCard = (title, stats, isBarChart, label) => (
-      <div className="col-md-6">
-        <Card className="mt-4">
-          <CardHeader>{title}</CardHeader>
-          <CardBody>
-            {!isBarChart && (
-              <Doughnut
-                data={generateGraphData(stats, label || title, isBarChart)}
-                options={{
-                  legend: {
-                    position: 'right',
-                  },
-                }}
-              />
-            )}
-            {isBarChart && (
-              <HorizontalBar
-                data={generateGraphData(stats, label || title, isBarChart)}
-                options={{
-                  legend: {
-                    display: false,
-                  },
-                }}
-              />
-            )}
-          </CardBody>
-        </Card>
-      </div>
-    );
+
     const renderContent = () => {
       if (loading) {
         return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> Loading...</MutedMessage>;
@@ -132,53 +84,25 @@ export class ShortUrlsVisitsComponent extends React.Component {
 
       return (
         <div className="row">
-          {renderGraphCard('Operating systems', processOsStats(visits), false)}
-          {renderGraphCard('Browsers', processBrowserStats(visits), false)}
-          {renderGraphCard('Countries', processCountriesStats(visits), true, 'Visits')}
-          {renderGraphCard('Referrers', processReferrersStats(visits), true, 'Visits')}
+          <div className="col-md-6">
+            <GraphCard title="Operating systems" stats={processOsStats(visits)} />
+          </div>
+          <div className="col-md-6">
+            <GraphCard title="Browsers" stats={processBrowserStats(visits)} />
+          </div>
+          <div className="col-md-6">
+            <GraphCard title="Countries" stats={processCountriesStats(visits)} isBarChart />
+          </div>
+          <div className="col-md-6">
+            <GraphCard title="Referrers" stats={processReferrersStats(visits)} isBarChart />
+          </div>
         </div>
       );
     };
 
-    const renderCreated = () => (
-      <span>
-        <b id="created"><Moment fromNow>{shortUrl.dateCreated}</Moment></b>
-        <UncontrolledTooltip placement="bottom" target="created">
-          <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
-        </UncontrolledTooltip>
-      </span>
-    );
-
     return (
       <div className="shlink-container">
-        <header>
-          <Card className="bg-light">
-            <CardBody>
-              <h2>
-                {
-                  shortUrl.visitsCount &&
-                  <span className="badge badge-main float-right">Visits: {shortUrl.visitsCount}</span>
-                }
-                Visit stats for <ExternalLink href={shortLink}>{shortLink}</ExternalLink>
-              </h2>
-              <hr />
-              {shortUrl.dateCreated && (
-                <div>
-                  Created:
-                  &nbsp;
-                  {loading && <small>Loading...</small>}
-                  {!loading && renderCreated()}
-                </div>
-              )}
-              <div>
-                Long URL:
-                &nbsp;
-                {loading && <small>Loading...</small>}
-                {!loading && <ExternalLink href={shortUrl.longUrl}>{shortUrl.longUrl}</ExternalLink>}
-              </div>
-            </CardBody>
-          </Card>
-        </header>
+        <VisitsHeader shortUrlVisits={shortUrlVisits} shortLink={shortLink} />
 
         <section className="mt-4">
           <div className="row">
