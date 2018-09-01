@@ -3,16 +3,16 @@ import Moment from 'react-moment';
 import React from 'react';
 import PropTypes from 'prop-types';
 import ExternalLink from '../utils/ExternalLink';
-import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import './VisitsHeader.scss';
+import { shortUrlDetailType } from './reducers/shortUrlDetail';
 
 const propTypes = {
-  shortUrlVisits: shortUrlVisitsType,
+  shortUrlDetail: shortUrlDetailType,
   shortLink: PropTypes.string,
 };
 
-export function VisitsHeader({ shortUrlVisits, shortLink }) {
-  const { shortUrl, loading } = shortUrlVisits;
+export function VisitsHeader({ shortUrlDetail, shortLink }) {
+  const { shortUrl, loading } = shortUrlDetail;
   const renderDate = () => (
     <span>
       <b id="created" className="visits-header__created-at"><Moment fromNow>{shortUrl.dateCreated}</Moment></b>

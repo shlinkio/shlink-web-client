@@ -15,9 +15,10 @@ import {
   processOsStats,
   processReferrersStats,
 } from './services/VisitsParser';
-import './ShortUrlVisits.scss';
 import { VisitsHeader } from './VisitsHeader';
 import { GraphCard } from './GraphCard';
+import { getShortUrlDetail, shortUrlDetailType } from './reducers/shortUrlDetail';
+import './ShortUrlVisits.scss';
 
 export class ShortUrlsVisitsComponent extends React.Component {
   static propTypes = {
@@ -26,9 +27,11 @@ export class ShortUrlsVisitsComponent extends React.Component {
     processCountriesStats: PropTypes.func,
     processReferrersStats: PropTypes.func,
     match: PropTypes.object,
-    getShortUrlVisits: PropTypes.func,
     selectedServer: serverType,
+    getShortUrlVisits: PropTypes.func,
     shortUrlVisits: shortUrlVisitsType,
+    getShortUrlDetail: PropTypes.func,
+    shortUrlDetail: shortUrlDetailType,
   };
   static defaultProps = {
     processOsStats,
@@ -48,7 +51,10 @@ export class ShortUrlsVisitsComponent extends React.Component {
   };
 
   componentDidMount() {
+    const { match: { params }, getShortUrlDetail } = this.props;
+
     this.loadVisits();
+    getShortUrlDetail(params.shortCode);
   }
 
   render() {
@@ -60,12 +66,14 @@ export class ShortUrlsVisitsComponent extends React.Component {
       processCountriesStats,
       processReferrersStats,
       shortUrlVisits,
+      shortUrlDetail,
     } = this.props;
-    const { visits, loading, error } = shortUrlVisits;
     const serverUrl = selectedServer ? selectedServer.url : '';
     const shortLink = `${serverUrl}/${params.shortCode}`;
 
-    const renderContent = () => {
+    const renderVisitsContent = () => {
+      const { visits, loading, error } = shortUrlVisits;
+
       if (loading) {
         return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> Loading...</MutedMessage>;
       }
@@ -79,7 +87,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
       }
 
       if (isEmpty(visits)) {
-        return <MutedMessage>There have been no visits matching current filter  :(</MutedMessage>;
+        return <MutedMessage>There are no visits matching current filter  :(</MutedMessage>;
       }
 
       return (
@@ -102,7 +110,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
 
     return (
       <div className="shlink-container">
-        <VisitsHeader shortUrlVisits={shortUrlVisits} shortLink={shortLink} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} shortLink={shortLink} />
 
         <section className="mt-4">
           <div className="row">
@@ -127,7 +135,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
         </section>
 
         <section>
-          {renderContent()}
+          {renderVisitsContent()}
         </section>
       </div>
     );
@@ -135,8 +143,8 @@ export class ShortUrlsVisitsComponent extends React.Component {
 }
 
 const ShortUrlsVisits = connect(
-  pick([ 'selectedServer', 'shortUrlVisits' ]),
-  { getShortUrlVisits }
+  pick([ 'selectedServer', 'shortUrlVisits', 'shortUrlDetail' ]),
+  { getShortUrlVisits, getShortUrlDetail }
 )(ShortUrlsVisitsComponent);
 
 export default ShortUrlsVisits;

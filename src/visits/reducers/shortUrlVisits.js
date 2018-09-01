@@ -1,7 +1,6 @@
 import { curry } from 'ramda';
 import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
-import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
@@ -10,7 +9,6 @@ const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlVisitsType = PropTypes.shape({
-  shortUrl: shortUrlType,
   visits: PropTypes.array,
   loading: PropTypes.bool,
   error: PropTypes.bool,
@@ -23,7 +21,7 @@ const initialState = {
   error: false,
 };
 
-export default function dispatch(state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_SHORT_URL_VISITS_START:
       return {
@@ -38,7 +36,6 @@ export default function dispatch(state = initialState, action) {
       };
     case GET_SHORT_URL_VISITS:
       return {
-        shortUrl: action.shortUrl,
         visits: action.visits,
         loading: false,
         error: false,
@@ -48,15 +45,16 @@ export default function dispatch(state = initialState, action) {
   }
 }
 
-export const _getShortUrlVisits = (shlinkApiClient, shortCode, dates) => (dispatch) => {
+export const _getShortUrlVisits = (shlinkApiClient, shortCode, dates) => async (dispatch) => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
-  Promise.all([
-    shlinkApiClient.getShortUrlVisits(shortCode, dates),
-    shlinkApiClient.getShortUrl(shortCode),
-  ])
-    .then(([ visits, shortUrl ]) => dispatch({ visits, shortUrl, type: GET_SHORT_URL_VISITS }))
-    .catch(() => dispatch({ type: GET_SHORT_URL_VISITS_ERROR }));
+  try {
+    const visits = await shlinkApiClient.getShortUrlVisits(shortCode, dates);
+
+    dispatch({ visits, type: GET_SHORT_URL_VISITS });
+  } catch (e) {
+    dispatch({ type: GET_SHORT_URL_VISITS_ERROR });
+  }
 };
 
 export const getShortUrlVisits = curry(_getShortUrlVisits)(shlinkApiClient);
