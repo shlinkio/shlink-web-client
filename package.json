@@ -7,7 +7,7 @@
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint src test scripts config",
     "lint:js:fix": "yarn lint:js --fix",
-    "lint:css": "stylelint src/**/*.scss",
+    "lint:css": "stylelint src/*.scss src/**/*.scss",
     "lint:css:fix": "yarn lint:css --fix",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",

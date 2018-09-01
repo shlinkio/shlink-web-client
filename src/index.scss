@@ -3,7 +3,7 @@
 html,
 body,
 #root {
-  height: 100%
+  height: 100%;
 }
 
 * {
@@ -21,6 +21,7 @@ body,
 .dropdown-item {
   cursor: pointer;
 }
+
 .dropdown-item.active,
 .dropdown-item:active {
   @extend .bg-main;
@@ -46,7 +47,6 @@ body,
 
 .navbar-brand {
   @media (max-width: $smMax) {
-    margin-right: auto !important; // This is needed to override a third party style
-    margin: 0 auto;
+    margin: 0 auto !important;
   }
 }
