@@ -8,16 +8,16 @@ import { connect } from 'react-redux';
 import { Card, CardBody, CardHeader, UncontrolledTooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../common/DateInput';
+import MutedMessage from '../utils/MuttedMessage';
+import ExternalLink from '../utils/ExternalLink';
+import { serverType } from '../servers/prop-types/index';
+import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import {
   processOsStats,
   processBrowserStats,
   processCountriesStats,
   processReferrersStats,
-} from '../visits/services/VisitsParser';
-import MutedMessage from '../utils/MuttedMessage';
-import ExternalLink from '../utils/ExternalLink';
-import { serverType } from '../servers/prop-types';
-import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
+} from './services/VisitsParser';
 import './ShortUrlVisits.scss';
 
 export class ShortUrlsVisitsComponent extends React.Component {

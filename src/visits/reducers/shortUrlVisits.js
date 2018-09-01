@@ -1,7 +1,7 @@
 import { curry } from 'ramda';
 import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
-import { shortUrlType } from './shortUrlsList';
+import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';

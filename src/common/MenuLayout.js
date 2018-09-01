@@ -8,7 +8,7 @@ import burgerIcon from '@fortawesome/fontawesome-free-solid/faBars';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
-import ShortUrlsVisits from '../short-urls/ShortUrlVisits';
+import ShortUrlsVisits from '../visits/ShortUrlVisits';
 import { selectServer } from '../servers/reducers/selectedServer';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
 import ShortUrls from '../short-urls/ShortUrls';
