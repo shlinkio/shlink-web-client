@@ -4,8 +4,8 @@ import TagsInput from 'react-tagsinput';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
 import { pick, identity } from 'ramda';
-import { listTags } from '../tags/reducers/tagsList';
-import colorGenerator, { colorGeneratorType } from './ColorGenerator';
+import { listTags } from '../reducers/tagsList';
+import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
 import './TagsSelector.scss';
 import TagBullet from './TagBullet';
 

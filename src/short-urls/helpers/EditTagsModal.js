@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { pick } from 'ramda';
-import TagsSelector from '../../utils/TagsSelector';
+import TagsSelector from '../../tags/helpers/TagsSelector';
 import {
   editShortUrlTags,
   resetShortUrlsTags,

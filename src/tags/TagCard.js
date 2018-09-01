@@ -5,7 +5,7 @@ import editIcon from '@fortawesome/fontawesome-free-solid/faPencilAlt';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import TagBullet from '../utils/TagBullet';
+import TagBullet from './helpers/TagBullet';
 import './TagCard.scss';
 import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
 import EditTagModal from './helpers/EditTagModal';

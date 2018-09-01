@@ -2,7 +2,7 @@ import { isEmpty } from 'ramda';
 import React from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
-import Tag from '../../utils/Tag';
+import Tag from '../../tags/helpers/Tag';
 import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
 import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';

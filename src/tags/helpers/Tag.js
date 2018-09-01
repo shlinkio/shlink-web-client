@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import colorGenerator, { colorGeneratorType } from '../utils/ColorGenerator';
+import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
 import './Tag.scss';
 
 const propTypes = {
