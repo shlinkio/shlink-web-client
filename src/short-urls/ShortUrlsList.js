@@ -83,10 +83,10 @@ export class ShortUrlsListComponent extends React.Component {
   }
 
   componentDidMount() {
-    const { match: { params }, location } = this.props;
+    const { match: { params }, location, shortUrlsListParams } = this.props;
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
 
-    this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : [] });
+    this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : shortUrlsListParams.tags });
   }
 
   renderShortUrls() {
