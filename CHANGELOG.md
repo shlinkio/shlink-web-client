@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## 1.0.1 - 2018-09-02
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#42](https://github.com/shlinkio/shlink-web-client/issues/42) Fixed selected tags lost when navigating between pages in short URLs list.
+* [#43](https://github.com/shlinkio/shlink-web-client/issues/43) Fixed "List short URLs" menu item only selected when in first page.
+
+
 ## 1.0.0 - 2018-08-26
 
 #### Added

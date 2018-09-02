@@ -25,6 +25,7 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
   const asideClass = classnames('aside-menu', className, {
     'aside-menu--hidden': !showOnMobile,
   });
+  const shortUrlsIsActive = (match, location) => location.pathname.match('/list-short-urls');
 
   return (
     <aside className={asideClass}>
@@ -33,6 +34,7 @@ export default function AsideMenu({ selectedServer, className, showOnMobile }) {
           className="aside-menu__item"
           activeClassName="aside-menu__item--selected"
           to={`/server/${serverId}/list-short-urls/1`}
+          isActive={shortUrlsIsActive}
         >
           <FontAwesomeIcon icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>

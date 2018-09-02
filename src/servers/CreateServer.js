@@ -3,21 +3,23 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
+import { stateFlagTimeout } from '../utils/utils';
 import { resetSelectedServer } from './reducers/selectedServer';
 import { createServer } from './reducers/server';
 import './CreateServer.scss';
 import ImportServersBtn from './helpers/ImportServersBtn';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
-const propTypes = {
-  createServer: PropTypes.func,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }),
-  resetSelectedServer: PropTypes.func,
-};
 
 export class CreateServerComponent extends React.Component {
+  static propTypes = {
+    createServer: PropTypes.func,
+    history: PropTypes.shape({
+      push: PropTypes.func,
+    }),
+    resetSelectedServer: PropTypes.func,
+  };
+
   state = {
     name: '',
     url: '',
@@ -71,10 +73,7 @@ export class CreateServerComponent extends React.Component {
 
           <div className="text-right">
             <ImportServersBtn
-              onImport={() => {
-                this.setState({ serversImported: true });
-                setTimeout(() => this.setState({ serversImported: false }), SHOW_IMPORT_MSG_TIME);
-              }}
+              onImport={() => stateFlagTimeout(this.setState.bind(this), 'serversImported', true, SHOW_IMPORT_MSG_TIME)}
             />
             <button className="btn btn-outline-primary">Create server</button>
           </div>
@@ -93,8 +92,6 @@ export class CreateServerComponent extends React.Component {
     );
   }
 }
-
-CreateServerComponent.propTypes = propTypes;
 
 const CreateServer = connect(
   pick([ 'selectedServer' ]),
