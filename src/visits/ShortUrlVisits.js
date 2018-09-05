@@ -110,7 +110,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
 
     return (
       <div className="shlink-container">
-        <VisitsHeader shortUrlDetail={shortUrlDetail} shortLink={shortLink} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} shortLink={shortLink} />
 
         <section className="mt-4">
           <div className="row">
@@ -119,6 +119,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
                 selected={this.state.startDate}
                 placeholderText="Since"
                 isClearable
+                maxDate={this.state.endDate}
                 onChange={(date) => this.setState({ startDate: date }, () => this.loadVisits())}
               />
             </div>
@@ -128,6 +129,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
                 placeholderText="Until"
                 isClearable
                 className="short-url-visits__date-input"
+                minDate={this.state.startDate}
                 onChange={(date) => this.setState({ endDate: date }, () => this.loadVisits())}
               />
             </div>
