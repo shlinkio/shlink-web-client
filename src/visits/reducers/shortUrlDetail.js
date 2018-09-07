@@ -4,9 +4,9 @@ import shlinkApiClient from '../../api/ShlinkApiClient';
 import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
-const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';
-const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
+export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
+export const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';
+export const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlDetailType = PropTypes.shape({

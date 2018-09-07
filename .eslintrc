@@ -2,6 +2,7 @@
   "extends": [
     "adidas-env/browser",
     "adidas-env/module",
+    "adidas-env/node",
     "adidas-es6",
     "adidas-babel",
     "adidas-react"
