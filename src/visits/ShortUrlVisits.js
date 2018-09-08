@@ -25,7 +25,9 @@ export class ShortUrlsVisitsComponent extends React.Component {
     processBrowserStats: PropTypes.func,
     processCountriesStats: PropTypes.func,
     processReferrersStats: PropTypes.func,
-    match: PropTypes.object,
+    match: PropTypes.shape({
+      params: PropTypes.object,
+    }),
     getShortUrlVisits: PropTypes.func,
     shortUrlVisits: shortUrlVisitsType,
     getShortUrlDetail: PropTypes.func,
@@ -122,7 +124,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
                 selected={this.state.endDate}
                 placeholderText="Until"
                 isClearable
-                className="short-url-visits__date-input"
                 minDate={this.state.startDate}
                 onChange={(date) => this.setState({ endDate: date }, () => this.loadVisits())}
               />
