@@ -11,7 +11,7 @@ export default function ExternalLink(props) {
 
   return (
     <a target="_blank" rel="noopener noreferrer" href={href} {...rest}>
-      {children}
+      {children || href}
     </a>
   );
 }

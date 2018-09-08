@@ -7,7 +7,6 @@ import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../common/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
-import { serverType } from '../servers/prop-types/index';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import {
   processBrowserStats,
@@ -27,7 +26,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
     processCountriesStats: PropTypes.func,
     processReferrersStats: PropTypes.func,
     match: PropTypes.object,
-    selectedServer: serverType,
     getShortUrlVisits: PropTypes.func,
     shortUrlVisits: shortUrlVisitsType,
     getShortUrlDetail: PropTypes.func,
@@ -59,8 +57,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
 
   render() {
     const {
-      match: { params },
-      selectedServer,
       processOsStats,
       processBrowserStats,
       processCountriesStats,
@@ -68,8 +64,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
       shortUrlVisits,
       shortUrlDetail,
     } = this.props;
-    const serverUrl = selectedServer ? selectedServer.url : '';
-    const shortLink = `${serverUrl}/${params.shortCode}`;
 
     const renderVisitsContent = () => {
       const { visits, loading, error } = shortUrlVisits;
@@ -110,7 +104,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
 
     return (
       <div className="shlink-container">
-        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} shortLink={shortLink} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
 
         <section className="mt-4">
           <div className="row">
@@ -145,7 +139,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
 }
 
 const ShortUrlsVisits = connect(
-  pick([ 'selectedServer', 'shortUrlVisits', 'shortUrlDetail' ]),
+  pick([ 'shortUrlVisits', 'shortUrlDetail' ]),
   { getShortUrlVisits, getShortUrlDetail }
 )(ShortUrlsVisitsComponent);
 
