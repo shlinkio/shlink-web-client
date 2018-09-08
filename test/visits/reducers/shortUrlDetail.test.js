@@ -66,6 +66,7 @@ describe('shortUrlDetailReducer', () => {
       const { type: secondCallType } = secondCallArg;
 
       expect(dispatchMock.callCount).toEqual(expectedDispatchCalls);
+      expect(ShlinkApiClient.getShortUrl.callCount).toEqual(1);
       expect(firstCallType).toEqual(GET_SHORT_URL_DETAIL_START);
       expect(secondCallType).toEqual(GET_SHORT_URL_DETAIL_ERROR);
     });
@@ -84,6 +85,7 @@ describe('shortUrlDetailReducer', () => {
       const { type: secondCallType, shortUrl } = secondCallArg;
 
       expect(dispatchMock.callCount).toEqual(expectedDispatchCalls);
+      expect(ShlinkApiClient.getShortUrl.callCount).toEqual(1);
       expect(firstCallType).toEqual(GET_SHORT_URL_DETAIL_START);
       expect(secondCallType).toEqual(GET_SHORT_URL_DETAIL);
       expect(shortUrl).toEqual(resolvedShortUrl);
