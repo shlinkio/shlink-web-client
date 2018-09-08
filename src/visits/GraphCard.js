@@ -2,6 +2,7 @@ import { Card, CardHeader, CardBody } from 'reactstrap';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { keys, values } from 'ramda';
 
 const propTypes = {
   title: PropTypes.string,
@@ -11,11 +12,11 @@ const propTypes = {
 
 export function GraphCard({ title, isBarChart, stats }) {
   const generateGraphData = (stats) => ({
-    labels: Object.keys(stats),
+    labels: keys(stats),
     datasets: [
       {
         title,
-        data: Object.values(stats),
+        data: values(stats),
         backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
           '#97BBCD',
           '#DCDCDC',
