@@ -26,6 +26,7 @@ describe('<GraphCard />', () => {
     expect(horizontal).toHaveLength(0);
 
     const { labels, datasets: [{ title, data, backgroundColor, borderColor }] } = doughnut.prop('data');
+    const { legend, scales } = doughnut.prop('options');
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
@@ -40,6 +41,8 @@ describe('<GraphCard />', () => {
       '#4D5360',
     ]);
     expect(borderColor).toEqual('white');
+    expect(legend).toEqual({ position: 'right' });
+    expect(scales).toBeNull();
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
@@ -51,8 +54,17 @@ describe('<GraphCard />', () => {
     expect(horizontal).toHaveLength(1);
 
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
+    const { legend, scales } = horizontal.prop('options');
 
     expect(backgroundColor).toEqual('rgba(70, 150, 229, 0.4)');
     expect(borderColor).toEqual('rgba(70, 150, 229, 1)');
+    expect(legend).toEqual({ display: false });
+    expect(scales).toEqual({
+      xAxes: [
+        {
+          ticks: { beginAtZero: true },
+        },
+      ],
+    });
   });
 });

@@ -33,9 +33,18 @@ export function GraphCard({ title, isBarChart, stats }) {
   });
   const renderGraph = () => {
     const Component = isBarChart ? HorizontalBar : Doughnut;
-    const legend = isBarChart ? { display: false } : { position: 'right' };
+    const options = {
+      legend: isBarChart ? { display: false } : { position: 'right' },
+      scales: isBarChart ? {
+        xAxes: [
+          {
+            ticks: { beginAtZero: true },
+          },
+        ],
+      } : null,
+    };
 
-    return <Component data={generateGraphData(stats)} options={{ legend }} />;
+    return <Component data={generateGraphData(stats)} options={options} />;
   };
 
   return (
