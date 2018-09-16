@@ -5,7 +5,7 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Card, CardBody, Tooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { createShortUrlResultType } from '../reducers/shortUrlCreationResult';
+import { createShortUrlResultType } from '../reducers/shortUrlCreation';
 import { stateFlagTimeout } from '../../utils/utils';
 import './CreateShortUrlResult.scss';
 

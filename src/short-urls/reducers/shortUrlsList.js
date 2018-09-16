@@ -1,7 +1,8 @@
-import { assoc, assocPath } from 'ramda';
+import { assoc, assocPath, reject } from 'ramda';
 import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
+import { SHORT_URL_DELETED } from './shortUrlDeletion';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
@@ -43,6 +44,12 @@ export default function reducer(state = initialState, action) {
         shortUrl.shortCode === action.shortCode
           ? assoc('tags', action.tags, shortUrl)
           : shortUrl), state);
+    case SHORT_URL_DELETED:
+      return assocPath(
+        [ 'shortUrls', 'data' ],
+        reject((shortUrl) => shortUrl.shortCode === action.shortCode, state.shortUrls.data),
+        state,
+      );
     default:
       return state;
   }

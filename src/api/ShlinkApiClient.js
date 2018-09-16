@@ -44,6 +44,11 @@ export class ShlinkApiClient {
       .then((resp) => resp.data)
       .catch((e) => this._handleAuthError(e, this.getShortUrl, [ shortCode ]));
 
+  deleteShortUrl = (shortCode) =>
+    this._performRequest(`/short-codes/${shortCode}`, 'DELETE')
+      .then(() => ({}))
+      .catch((e) => this._handleAuthError(e, this.deleteShortUrl, [ shortCode ]));
+
   updateShortUrlTags = (shortCode, tags) =>
     this._performRequest(`/short-codes/${shortCode}/tags`, 'PUT', {}, { tags })
       .then((resp) => resp.data.tags)
