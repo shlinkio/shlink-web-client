@@ -24,7 +24,8 @@ body,
 
 .dropdown-item.active,
 .dropdown-item:active {
-  @extend .bg-main;
+  background-color: $lightGrey !important;
+  color: inherit !important;
 }
 
 .shlink-container {
