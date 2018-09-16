@@ -1,7 +1,7 @@
 # shlink-web-client
 
 [![Build Status](https://img.shields.io/travis/shlinkio/shlink-web-client.svg?style=flat-square)](https://travis-ci.org/shlinkio/shlink-web-client)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/gshlinkio/shlink-web-client/?branch=master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/?branch=master)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/shlinkio/shlink-web-client.svg?style=flat-square)](https://scrutinizer-ci.com/g/shlinkio/shlink-web-client/?branch=master)
 [![GitHub release](https://img.shields.io/github/release/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/releases/latest)
 [![GitHub license](https://img.shields.io/github/license/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/blob/master/LICENSE)
