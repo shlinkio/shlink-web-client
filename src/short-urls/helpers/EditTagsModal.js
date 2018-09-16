@@ -40,8 +40,8 @@ export class EditTagsModalComponent extends React.Component {
       return;
     }
 
-    const { shortUrlTagsEdited, shortUrl } = this.props;
-    const { tags } = this.state;
+    const { shortUrlTagsEdited, shortUrl, shortUrlTags } = this.props;
+    const { tags } = shortUrlTags;
 
     shortUrlTagsEdited(shortUrl.shortCode, tags);
   };
