@@ -56,9 +56,9 @@ export const _editShortUrlTags = (shlinkApiClient, shortCode, tags) => async (di
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
 
   try {
-    // Update short URL tags
-    await shlinkApiClient.updateShortUrlTags(shortCode, tags);
-    dispatch({ tags, shortCode, type: EDIT_SHORT_URL_TAGS });
+    const normalizedTags = await shlinkApiClient.updateShortUrlTags(shortCode, tags);
+
+    dispatch({ tags: normalizedTags, shortCode, type: EDIT_SHORT_URL_TAGS });
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_TAGS_ERROR });
 

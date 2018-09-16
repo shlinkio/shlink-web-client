@@ -5,12 +5,12 @@ import PropTypes from 'prop-types';
 import DeleteServerModal from './DeleteServerModal';
 import { serverType } from './prop-types';
 
-const propTypes = {
-  server: serverType,
-  className: PropTypes.string,
-};
-
 export default class DeleteServerButton extends React.Component {
+  static propTypes = {
+    server: serverType,
+    className: PropTypes.string,
+  };
+
   state = { isModalOpen: false };
 
   render() {
@@ -37,5 +37,3 @@ export default class DeleteServerButton extends React.Component {
     );
   }
 }
-
-DeleteServerButton.propTypes = propTypes;

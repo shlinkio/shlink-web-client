@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## 1.1.0 - 2018-09-16
+
+#### Added
+
+* [#47](https://github.com/shlinkio/shlink-web-client/issues/47) Added support to delete short URLs (requires [shlink v1.12.0](https://github.com/shlinkio/shlink/releases/tag/v1.12.0) or greater).
+
+#### Changed
+
+* [#35](https://github.com/shlinkio/shlink-web-client/issues/35) Visits component split into two, which makes the header not to be refreshed when filtering by date, and also the visits global counter now reflects the actual number of visits which fulfill current filter.
+* [#36](https://github.com/shlinkio/shlink-web-client/issues/36) Tags selector now autocompletes existing tag names, to prevent typos and ease reusing existing tags.
+* [#39](https://github.com/shlinkio/shlink-web-client/issues/39) Defined `propTypes` as static properties in class components.
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#49](https://github.com/shlinkio/shlink-web-client/issues/49) Ensured filtering parameters are reseted when list component is unmounted so that params are not mixed when coming back.
+* [#45](https://github.com/shlinkio/shlink-web-client/issues/45) Ensured graphs x-axis start at `0` and don't use decimals.
+* [#51](https://github.com/shlinkio/shlink-web-client/issues/51) When editing short URL tags, the value returned form server is used when refreshing the list, which is normalized.
+
+
 ## 1.0.1 - 2018-09-02
 
 #### Added
@@ -33,7 +60,7 @@
     * Export all servers in a CSV file.
     * Import the CSV in a different device.
 
-* [#4](https://github.com/shlinkio/shlink-web-client/issues/4) Added tags management.
+* [#3](https://github.com/shlinkio/shlink-web-client/issues/3) Added tags management.
 
     * List existing tags, and filter the list.
     * Change their name and color.

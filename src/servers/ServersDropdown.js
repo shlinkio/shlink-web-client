@@ -9,20 +9,20 @@ import serversExporter from '../servers/services/ServersExporter';
 import { listServers } from './reducers/server';
 import { serverType } from './prop-types';
 
-const defaultProps = {
-  serversExporter,
-};
-const propTypes = {
-  servers: PropTypes.object,
-  serversExporter: PropTypes.shape({
-    exportServers: PropTypes.func,
-  }),
-  selectedServer: serverType,
-  selectServer: PropTypes.func,
-  listServers: PropTypes.func,
-};
-
 export class ServersDropdownComponent extends React.Component {
+  static defaultProps = {
+    serversExporter,
+  };
+  static propTypes = {
+    servers: PropTypes.object,
+    serversExporter: PropTypes.shape({
+      exportServers: PropTypes.func,
+    }),
+    selectedServer: serverType,
+    selectServer: PropTypes.func,
+    listServers: PropTypes.func,
+  };
+
   renderServers = () => {
     const { servers, selectedServer, selectServer, serversExporter } = this.props;
 
@@ -69,9 +69,6 @@ export class ServersDropdownComponent extends React.Component {
     );
   }
 }
-
-ServersDropdownComponent.defaultProps = defaultProps;
-ServersDropdownComponent.propTypes = propTypes;
 
 const ServersDropdown = connect(
   pick([ 'servers', 'selectedServer' ]),

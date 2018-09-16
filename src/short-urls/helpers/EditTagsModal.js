@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { pick } from 'ramda';
-import TagsSelector from '../../utils/TagsSelector';
+import TagsSelector from '../../tags/helpers/TagsSelector';
 import {
   editShortUrlTags,
   resetShortUrlsTags,
@@ -13,18 +13,18 @@ import {
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 
-const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-  url: PropTypes.string.isRequired,
-  shortUrl: shortUrlType.isRequired,
-  shortUrlTags: shortUrlTagsType,
-  editShortUrlTags: PropTypes.func,
-  shortUrlTagsEdited: PropTypes.func,
-  resetShortUrlsTags: PropTypes.func,
-};
-
 export class EditTagsModalComponent extends React.Component {
+  static propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    toggle: PropTypes.func.isRequired,
+    url: PropTypes.string.isRequired,
+    shortUrl: shortUrlType.isRequired,
+    shortUrlTags: shortUrlTagsType,
+    editShortUrlTags: PropTypes.func,
+    shortUrlTagsEdited: PropTypes.func,
+    resetShortUrlsTags: PropTypes.func,
+  };
+
   saveTags = () => {
     const { editShortUrlTags, shortUrl, toggle } = this.props;
 
@@ -40,8 +40,8 @@ export class EditTagsModalComponent extends React.Component {
       return;
     }
 
-    const { shortUrlTagsEdited, shortUrl } = this.props;
-    const { tags } = this.state;
+    const { shortUrlTagsEdited, shortUrl, shortUrlTags } = this.props;
+    const { tags } = shortUrlTags;
 
     shortUrlTagsEdited(shortUrl.shortCode, tags);
   };
@@ -89,8 +89,6 @@ export class EditTagsModalComponent extends React.Component {
     );
   }
 }
-
-EditTagsModalComponent.propTypes = propTypes;
 
 const EditTagsModal = connect(
   pick([ 'shortUrlTags' ]),

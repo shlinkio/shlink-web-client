@@ -6,9 +6,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
 import DateInput from '../common/DateInput';
-import TagsSelector from '../utils/TagsSelector';
+import TagsSelector from '../tags/helpers/TagsSelector';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
-import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreationResult';
+import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreation';
 
 export class CreateShortUrlComponent extends React.Component {
   state = {

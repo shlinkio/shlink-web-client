@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { isEmpty, pick } from 'ramda';
 import PropTypes from 'prop-types';
-import Tag from '../utils/Tag';
+import Tag from '../tags/helpers/Tag';
 import SearchField from '../utils/SearchField';
 import { listShortUrls } from './reducers/shortUrlsList';
 import './SearchBar.scss';

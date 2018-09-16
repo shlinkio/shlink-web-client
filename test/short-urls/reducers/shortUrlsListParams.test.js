@@ -5,7 +5,7 @@ import reducer, {
 import { LIST_SHORT_URLS } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlsListParamsReducer', () => {
-  describe('reducerr', () => {
+  describe('reducer', () => {
     const defaultState = { page: '1' };
 
     it('returns default value when action is unknown', () =>

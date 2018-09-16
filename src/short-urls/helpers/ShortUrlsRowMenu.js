@@ -4,6 +4,7 @@ import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
 import pieChartIcon from '@fortawesome/fontawesome-free-solid/faChartPie';
 import menuIcon from '@fortawesome/fontawesome-free-solid/faEllipsisV';
 import qrIcon from '@fortawesome/fontawesome-free-solid/faQrcode';
+import deleteIcon from '@fortawesome/fontawesome-free-solid/faMinusCircle';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -16,29 +17,33 @@ import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
 import './ShortUrlsRowMenu.scss';
 import EditTagsModal from './EditTagsModal';
-
-const propTypes = {
-  completeShortUrl: PropTypes.string,
-  onCopyToClipboard: PropTypes.func,
-  selectedServer: serverType,
-  shortUrl: shortUrlType,
-};
+import DeleteShortUrlModal from './DeleteShortUrlModal';
 
 export class ShortUrlsRowMenu extends React.Component {
+  static propTypes = {
+    completeShortUrl: PropTypes.string,
+    onCopyToClipboard: PropTypes.func,
+    selectedServer: serverType,
+    shortUrl: shortUrlType,
+  };
+
   state = {
     isOpen: false,
     isQrModalOpen: false,
     isPreviewOpen: false,
     isTagsModalOpen: false,
+    isDeleteModalOpen: false,
   };
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
   render() {
     const { completeShortUrl, onCopyToClipboard, selectedServer, shortUrl } = this.props;
     const serverId = selectedServer ? selectedServer.id : '';
-    const toggleQrCode = () => this.setState(({ isQrModalOpen }) => ({ isQrModalOpen: !isQrModalOpen }));
-    const togglePreview = () => this.setState(({ isPreviewOpen }) => ({ isPreviewOpen: !isPreviewOpen }));
-    const toggleTags = () => this.setState(({ isTagsModalOpen }) => ({ isTagsModalOpen: !isTagsModalOpen }));
+    const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
+    const toggleQrCode = toggleModal('isQrModalOpen');
+    const togglePreview = toggleModal('isPreviewOpen');
+    const toggleTags = toggleModal('isTagsModalOpen');
+    const toggleDelete = toggleModal('isDeleteModalOpen');
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
@@ -47,8 +52,9 @@ export class ShortUrlsRowMenu extends React.Component {
         </DropdownToggle>
         <DropdownMenu>
           <DropdownItem tag={Link} to={`/server/${serverId}/short-code/${shortUrl.shortCode}/visits`}>
-            <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit Stats
+            <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit stats
           </DropdownItem>
+
           <DropdownItem onClick={toggleTags}>
             <FontAwesomeIcon icon={tagsIcon} /> &nbsp;Edit tags
           </DropdownItem>
@@ -57,6 +63,15 @@ export class ShortUrlsRowMenu extends React.Component {
             shortUrl={shortUrl}
             isOpen={this.state.isTagsModalOpen}
             toggle={toggleTags}
+          />
+
+          <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
+            <FontAwesomeIcon icon={deleteIcon} /> &nbsp;Delete short URL
+          </DropdownItem>
+          <DeleteShortUrlModal
+            shortUrl={shortUrl}
+            isOpen={this.state.isDeleteModalOpen}
+            toggle={toggleDelete}
           />
 
           <DropdownItem divider />
@@ -91,5 +106,3 @@ export class ShortUrlsRowMenu extends React.Component {
     );
   }
 }
-
-ShortUrlsRowMenu.propTypes = propTypes;

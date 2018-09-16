@@ -11,7 +11,7 @@ import { serverType } from '../servers/prop-types';
 import { ShortUrlsRow } from './helpers/ShortUrlsRow';
 import { listShortUrls, shortUrlType } from './reducers/shortUrlsList';
 import './ShortUrlsList.scss';
-import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
+import { shortUrlsListParamsType, resetShortUrlParams } from './reducers/shortUrlsListParams';
 
 const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
@@ -20,18 +20,19 @@ const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
-const propTypes = {
-  listShortUrls: PropTypes.func,
-  shortUrlsListParams: shortUrlsListParamsType,
-  match: PropTypes.object,
-  location: PropTypes.object,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-  shortUrlsList: PropTypes.arrayOf(shortUrlType),
-  selectedServer: serverType,
-};
-
 export class ShortUrlsListComponent extends React.Component {
+  static propTypes = {
+    listShortUrls: PropTypes.func,
+    resetShortUrlParams: PropTypes.func,
+    shortUrlsListParams: shortUrlsListParamsType,
+    match: PropTypes.object,
+    location: PropTypes.object,
+    loading: PropTypes.bool,
+    error: PropTypes.bool,
+    shortUrlsList: PropTypes.arrayOf(shortUrlType),
+    selectedServer: serverType,
+  };
+
   refreshList = (extraParams) => {
     const { listShortUrls, shortUrlsListParams } = this.props;
 
@@ -87,6 +88,12 @@ export class ShortUrlsListComponent extends React.Component {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
 
     this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : shortUrlsListParams.tags });
+  }
+
+  componentWillUnmount() {
+    const { resetShortUrlParams } = this.props;
+
+    resetShortUrlParams();
   }
 
   renderShortUrls() {
@@ -186,11 +193,9 @@ export class ShortUrlsListComponent extends React.Component {
   }
 }
 
-ShortUrlsListComponent.propTypes = propTypes;
-
 const ShortUrlsList = connect(
   pick([ 'selectedServer', 'shortUrlsListParams' ]),
-  { listShortUrls }
+  { listShortUrls, resetShortUrlParams }
 )(ShortUrlsListComponent);
 
 export default ShortUrlsList;

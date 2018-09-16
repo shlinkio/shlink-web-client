@@ -5,15 +5,12 @@
   overflow: hidden;
   min-height: 2.6rem;
   padding: 6px 0 0 6px;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 .react-tagsinput--focused {
   border-color: #80bdff;
-  -webkit-box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
   box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
-  -webkit-transition: border-color .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
-  -o-transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out, -webkit-box-shadow .15s ease-in-out;
 }
 
 .react-tagsinput-tag {
@@ -44,6 +41,6 @@
   border: 0;
   outline: none;
   padding: 3px 5px;
-  width: 155px;
+  width: 100%;
   margin-bottom: 6px;
 }

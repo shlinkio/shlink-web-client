@@ -9,12 +9,12 @@ import PropTypes from 'prop-types';
 import { resetSelectedServer } from '../servers/reducers/selectedServer';
 import './Home.scss';
 
-const propTypes = {
-  resetSelectedServer: PropTypes.func,
-  servers: PropTypes.object,
-};
-
 export class HomeComponent extends React.Component {
+  static propTypes = {
+    resetSelectedServer: PropTypes.func,
+    servers: PropTypes.object,
+  };
+
   componentDidMount() {
     this.props.resetSelectedServer();
   }
@@ -50,8 +50,6 @@ export class HomeComponent extends React.Component {
     );
   }
 }
-
-HomeComponent.propTypes = propTypes;
 
 const Home = connect(pick([ 'servers' ]), { resetSelectedServer })(HomeComponent);
 

@@ -6,17 +6,18 @@ import classnames from 'classnames';
 import './SearchField.scss';
 
 const DEFAULT_SEARCH_INTERVAL = 500;
-const propTypes = {
-  onChange: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  placeholder: PropTypes.string,
-};
-const defaultProps = {
-  className: '',
-  placeholder: 'Search...',
-};
 
 export default class SearchField extends React.Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    placeholder: PropTypes.string,
+  };
+  static defaultProps = {
+    className: '',
+    placeholder: 'Search...',
+  };
+
   state = { showClearBtn: false, searchTerm: '' };
   timer = null;
 
@@ -64,6 +65,3 @@ export default class SearchField extends React.Component {
     );
   }
 }
-
-SearchField.propTypes = propTypes;
-SearchField.defaultProps = defaultProps;

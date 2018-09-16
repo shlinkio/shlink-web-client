@@ -7,18 +7,18 @@ import PropTypes from 'prop-types';
 import { createServers } from '../reducers/server';
 import serversImporter, { serversImporterType } from '../services/ServersImporter';
 
-const defaultProps = {
-  serversImporter,
-  onImport: () => ({}),
-};
-const propTypes = {
-  onImport: PropTypes.func,
-  serversImporter: serversImporterType,
-  createServers: PropTypes.func,
-  fileRef: PropTypes.oneOfType([ PropTypes.object, PropTypes.node ]),
-};
-
 export class ImportServersBtnComponent extends React.Component {
+  static defaultProps = {
+    serversImporter,
+    onImport: () => ({}),
+  };
+  static propTypes = {
+    onImport: PropTypes.func,
+    serversImporter: serversImporterType,
+    createServers: PropTypes.func,
+    fileRef: PropTypes.oneOfType([ PropTypes.object, PropTypes.node ]),
+  };
+
   constructor(props) {
     super(props);
     this.fileRef = props.fileRef || React.createRef();
@@ -57,9 +57,6 @@ export class ImportServersBtnComponent extends React.Component {
     );
   }
 }
-
-ImportServersBtnComponent.defaultProps = defaultProps;
-ImportServersBtnComponent.propTypes = propTypes;
 
 const ImportServersBtn = connect(null, { createServers })(ImportServersBtnComponent);
 

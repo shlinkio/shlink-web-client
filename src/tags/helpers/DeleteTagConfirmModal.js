@@ -5,16 +5,16 @@ import PropTypes from 'prop-types';
 import { pick } from 'ramda';
 import { deleteTag, tagDeleted, tagDeleteType } from '../reducers/tagDelete';
 
-const propTypes = {
-  tag: PropTypes.string.isRequired,
-  toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  deleteTag: PropTypes.func,
-  tagDelete: tagDeleteType,
-  tagDeleted: PropTypes.func,
-};
-
 export class DeleteTagConfirmModalComponent extends React.Component {
+  static propTypes = {
+    tag: PropTypes.string.isRequired,
+    toggle: PropTypes.func.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    deleteTag: PropTypes.func,
+    tagDelete: tagDeleteType,
+    tagDeleted: PropTypes.func,
+  };
+
   doDelete = () => {
     const { tag, toggle, deleteTag } = this.props;
 
@@ -67,8 +67,6 @@ export class DeleteTagConfirmModalComponent extends React.Component {
     );
   }
 }
-
-DeleteTagConfirmModalComponent.propTypes = propTypes;
 
 const DeleteTagConfirmModal = connect(
   pick([ 'tagDelete' ]),

@@ -1,0 +1,16 @@
+@import '../../utils/base';
+
+.react-autosuggest__suggestions-list {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.react-autosuggest__suggestion {
+  margin-left: -6px;
+  padding: 5px 8px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: $lightGrey;
+}

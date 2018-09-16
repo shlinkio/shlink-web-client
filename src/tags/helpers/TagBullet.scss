@@ -1,0 +1,10 @@
+.tag-bullet {
+  $width: 20px;
+
+  border-radius: 50%;
+  width: $width;
+  height: $width;
+  display: inline-block;
+  vertical-align: -4px;
+  margin-right: 7px;
+}

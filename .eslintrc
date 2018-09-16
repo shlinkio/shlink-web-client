@@ -2,6 +2,7 @@
   "extends": [
     "adidas-env/browser",
     "adidas-env/module",
+    "adidas-env/node",
     "adidas-es6",
     "adidas-babel",
     "adidas-react"
@@ -35,6 +36,7 @@
     "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
     "react/jsx-closing-bracket-location": ["error", "tag-aligned"],
     "react/no-array-index-key": "off",
-    "react/no-did-update-set-state": "off"
+    "react/no-did-update-set-state": "off",
+    "react/display-name": "off"
   }
 }

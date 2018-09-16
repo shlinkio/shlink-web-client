@@ -10,23 +10,23 @@ import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
 import { editTag, tagEdited } from '../reducers/tagEdit';
 import './EditTagModal.scss';
 
-const propTypes = {
-  tag: PropTypes.string,
-  editTag: PropTypes.func,
-  toggle: PropTypes.func,
-  tagEdited: PropTypes.func,
-  colorGenerator: colorGeneratorType,
-  isOpen: PropTypes.bool,
-  tagEdit: PropTypes.shape({
-    error: PropTypes.bool,
-    editing: PropTypes.bool,
-  }),
-};
-const defaultProps = {
-  colorGenerator,
-};
-
 export class EditTagModalComponent extends React.Component {
+  static propTypes = {
+    tag: PropTypes.string,
+    editTag: PropTypes.func,
+    toggle: PropTypes.func,
+    tagEdited: PropTypes.func,
+    colorGenerator: colorGeneratorType,
+    isOpen: PropTypes.bool,
+    tagEdit: PropTypes.shape({
+      error: PropTypes.bool,
+      editing: PropTypes.bool,
+    }),
+  };
+  static defaultProps = {
+    colorGenerator,
+  };
+
   saveTag = (e) => {
     e.preventDefault();
     const { tag: oldName, editTag, toggle } = this.props;
@@ -132,9 +132,6 @@ export class EditTagModalComponent extends React.Component {
     );
   }
 }
-
-EditTagModalComponent.propTypes = propTypes;
-EditTagModalComponent.defaultProps = defaultProps;
 
 const EditTagModal = connect(pick([ 'tagEdit' ]), { editTag, tagEdited })(EditTagModalComponent);
 
