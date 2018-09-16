@@ -20,13 +20,13 @@ export default function Paginator({ paginator = {}, serverId }) {
   }
 
   const renderPages = () =>
-    range(1, pagesCount + 1).map((i) => (
-      <PaginationItem key={i} active={currentPage === i}>
+    range(1, pagesCount + 1).map((pageNumber) => (
+      <PaginationItem key={pageNumber} active={currentPage === pageNumber}>
         <PaginationLink
           tag={Link}
-          to={`/server/${serverId}/list-short-urls/${i}`}
+          to={`/server/${serverId}/list-short-urls/${pageNumber}`}
         >
-          {i}
+          {pageNumber}
         </PaginationLink>
       </PaginationItem>
     ));
