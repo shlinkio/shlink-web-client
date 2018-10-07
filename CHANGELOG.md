@@ -4,7 +4,7 @@
 
 #### Added
 
-* *Nothing*
+* [#57](https://github.com/shlinkio/shlink-web-client/issues/57) Automated release generation in travis build.
 
 #### Changed
 
