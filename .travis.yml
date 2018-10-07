@@ -1,5 +1,7 @@
 language: node_js
 
+sudo: false
+
 node_js:
   - "stable"
 
@@ -16,7 +18,18 @@ script:
   - yarn test:ci
   - yarn build # Make sure the app can be built without errors
 
-after_script:
+after_success:
   - yarn ocular coverage/clover.xml
 
-sudo: false
+# Before deploying, build dist file for current travis tag
+before_deploy:
+  - yarn build ${TRAVIS_TAG#?}
+
+deploy:
+  provider: releases
+  api_key:
+    secure: jBvPwC7EAbViaNR83rwMSt5XQDK0Iu9rgvEMa7GoyShbHcvUCCPd73Tu9quNpKi6NKsDY3INHgtch3vgonjGNGDGJ+yDyIBzXcvsAX2x3UcHpRbgY12uiINVmQxBI1+OVQB016Nm+cKC/i5Z36K4EmDbYfo+MrKndngM6AjcQFTwI8EwniIMaQgg4gNes//K8NhP5u0c3gwG+Q6jEGnq6uH3kcRgh6/epIZYpQyxjqWqKwF77sgcYj+X2Nf6XxtB5neuCi301UKLoLx8G0skh/Lm6KAIO4s9iIhIFa3UpoF21Ka0TxLpd2JxalLryCnFGlWWE6lxC9Htmc0TeRowJQlGdJXCskJ37xT9MljKY0fwNMu06VS/FUgykuCv+jP3zQu51pKu7Ew7+WeNPjautoOTu54VkdGyHcf2ThBNEyJQuiEwAQe4u7yAxY6R5ovEdvHBSIg4w1E5/Mxy5SMTCUlIAv6H7QQ1X9Z/zJm9HH5KeKz5tsHvQ/RIdSpgHXq/tC8o4Yup/LCFucXfrgvy/8pJoO1UpOlmvm62974NFfo0EG5YWwv6brUqz3QXpMjb8sWqgjltYMYJX3J7WZ34rIc+zt4NAmfhqgczaOC4pUGCiJ8jX3rMWIaQRn1AJ+5V337jL9fNDpTHny4phQjHrMJ1e0HZuNp0Xb5Q8wgqDPM=
+  file: "./dist/shlink-web-client_${TRAVIS_TAG#?}_dist.zip"
+  skip_cleanup: true
+  on:
+    tags: true
