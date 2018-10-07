@@ -121,6 +121,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
             </div>
             <div className="col-xl-3 col-lg-4 col-md-6">
               <DateInput
+                className="short-url-visits__date-input"
                 selected={this.state.endDate}
                 placeholderText="Until"
                 isClearable
