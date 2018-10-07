@@ -11,6 +11,7 @@ const buildRandomColor = () =>
       .map(() => letters[floor(random() * letters.length)])
       .join('')
   }`;
+const normalizeKey = (key) => key.toLowerCase().trim();
 
 export class ColorGenerator {
   constructor(storage) {
@@ -19,21 +20,24 @@ export class ColorGenerator {
   }
 
   getColorForKey = (key) => {
-    const color = this.colors[key];
+    const normalizedKey = normalizeKey(key);
+    const color = this.colors[normalizedKey];
 
     // If a color has not been set yet, generate a random one and save it
     if (!color) {
-      this.setColorForKey(key, buildRandomColor());
-
-      return this.getColorForKey(key);
+      return this.setColorForKey(normalizedKey, buildRandomColor());
     }
 
     return color;
   };
 
   setColorForKey = (key, color) => {
-    this.colors[key] = color;
+    const normalizedKey = normalizeKey(key);
+
+    this.colors[normalizedKey] = color;
     this.storage.set('colors', this.colors);
+
+    return color;
   }
 }
 

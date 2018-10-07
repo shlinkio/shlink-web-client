@@ -1,5 +1,28 @@
 # CHANGELOG
 
+## Unreleased
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#56](https://github.com/shlinkio/shlink-web-client/issues/56) Ensured `ColorGenerator` matches keys in a case insensitive way.
+
+
 ## 1.1.0 - 2018-09-16
 
 #### Added
