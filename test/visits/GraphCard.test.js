@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
-import { GraphCard } from '../../src/visits/GraphCard';
+import GraphCard from '../../src/visits/GraphCard';
 
 describe('<GraphCard />', () => {
   let wrapper;

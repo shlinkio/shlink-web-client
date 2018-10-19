@@ -15,7 +15,7 @@ import {
   processReferrersStats,
 } from './services/VisitsParser';
 import { VisitsHeader } from './VisitsHeader';
-import { GraphCard } from './GraphCard';
+import GraphCard from './GraphCard';
 import { getShortUrlDetail, shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
 

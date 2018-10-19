@@ -10,49 +10,50 @@ const propTypes = {
   stats: PropTypes.object,
 };
 
-export function GraphCard({ title, isBarChart, stats }) {
-  const generateGraphData = (stats) => ({
-    labels: keys(stats),
-    datasets: [
-      {
-        title,
-        data: values(stats),
-        backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
-          '#97BBCD',
-          '#DCDCDC',
-          '#F7464A',
-          '#46BFBD',
-          '#FDB45C',
-          '#949FB1',
-          '#4D5360',
-        ],
-        borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
-        borderWidth: 2,
-      },
-    ],
-  });
-  const renderGraph = () => {
-    const Component = isBarChart ? HorizontalBar : Doughnut;
-    const options = {
-      legend: isBarChart ? { display: false } : { position: 'right' },
-      scales: isBarChart ? {
-        xAxes: [
-          {
-            ticks: { beginAtZero: true },
-          },
-        ],
-      } : null,
-    };
+const generateGraphData = (title, isBarChart, stats) => ({
+  labels: keys(stats),
+  datasets: [
+    {
+      title,
+      data: values(stats),
+      backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
+        '#97BBCD',
+        '#DCDCDC',
+        '#F7464A',
+        '#46BFBD',
+        '#FDB45C',
+        '#949FB1',
+        '#4D5360',
+      ],
+      borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
+      borderWidth: 2,
+    },
+  ],
+});
 
-    return <Component data={generateGraphData(stats)} options={options} />;
+const renderGraph = (title, isBarChart, stats) => {
+  const Component = isBarChart ? HorizontalBar : Doughnut;
+  const options = {
+    legend: isBarChart ? { display: false } : { position: 'right' },
+    scales: isBarChart ? {
+      xAxes: [
+        {
+          ticks: { beginAtZero: true },
+        },
+      ],
+    } : null,
   };
 
-  return (
-    <Card className="mt-4">
-      <CardHeader>{title}</CardHeader>
-      <CardBody>{renderGraph()}</CardBody>
-    </Card>
-  );
-}
+  return <Component data={generateGraphData(title, isBarChart, stats)} options={options} />;
+};
+
+const GraphCard = ({ title, isBarChart, stats }) => (
+  <Card className="mt-4">
+    <CardHeader>{title}</CardHeader>
+    <CardBody>{renderGraph(title, isBarChart, stats)}</CardBody>
+  </Card>
+);
 
 GraphCard.propTypes = propTypes;
+
+export default GraphCard;
