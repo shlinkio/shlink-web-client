@@ -10,6 +10,7 @@ describe('<GraphCard />', () => {
     foo: 123,
     bar: 456,
   };
+  const matchMedia = () => ({ matches: false });
 
   afterEach(() => {
     if (wrapper) {
@@ -18,7 +19,7 @@ describe('<GraphCard />', () => {
   });
 
   it('renders Doughnut when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard title="The chart" stats={stats} />);
+    wrapper = shallow(<GraphCard matchMedia={matchMedia} title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
 
@@ -46,7 +47,7 @@ describe('<GraphCard />', () => {
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} />);
+    wrapper = shallow(<GraphCard matchMedia={matchMedia} isBarChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
 
