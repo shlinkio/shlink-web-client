@@ -5,7 +5,7 @@ import { Card } from 'reactstrap';
 import * as sinon from 'sinon';
 import { ShortUrlsVisitsComponent as ShortUrlsVisits } from '../../src/visits/ShortUrlVisits';
 import MutedMessage from '../../src/utils/MuttedMessage';
-import { GraphCard } from '../../src/visits/GraphCard';
+import GraphCard from '../../src/visits/GraphCard';
 import DateInput from '../../src/common/DateInput';
 
 describe('<ShortUrlVisits />', () => {
