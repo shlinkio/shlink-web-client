@@ -9,9 +9,7 @@ describe('<AsideMenu />', () => {
   beforeEach(() => {
     wrapped = shallow(<AsideMenu selectedServer={{ id: 'abc123' }} />);
   });
-  afterEach(() => {
-    wrapped.unmount();
-  });
+  afterEach(() => wrapped.unmount());
 
   it('contains links to different sections', () => {
     const links = wrapped.find(NavLink);
