@@ -7,7 +7,7 @@ import { ShortUrlsVisitsComponent as ShortUrlsVisits } from '../../src/visits/Sh
 import MutedMessage from '../../src/utils/MuttedMessage';
 import GraphCard from '../../src/visits/GraphCard';
 import DateInput from '../../src/common/DateInput';
-import CountriesGraph from '../../src/visits/CountriesGraph';
+import SortableBarGraph from '../../src/visits/SortableBarGraph';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper;
@@ -70,11 +70,10 @@ describe('<ShortUrlVisits />', () => {
   it('renders all graphics when visits are properly loaded', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
     const graphs = wrapper.find(GraphCard);
-    const countriesGraphs = wrapper.find(CountriesGraph);
-    const expectedGraphsCount = 3;
+    const sortableBarGraphs = wrapper.find(SortableBarGraph);
+    const expectedGraphsCount = 4;
 
-    expect(graphs).toHaveLength(expectedGraphsCount);
-    expect(countriesGraphs).toHaveLength(1);
+    expect(graphs.length + sortableBarGraphs.length).toEqual(expectedGraphsCount);
   });
 
   it('reloads visits when selected dates change', () => {

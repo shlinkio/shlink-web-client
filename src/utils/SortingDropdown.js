@@ -54,7 +54,7 @@ const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, righ
           </DropdownItem>
         ))}
         <DropdownItem divider />
-        <DropdownItem onClick={() => onChange()}>
+        <DropdownItem disabled={!orderField} onClick={() => onChange()}>
           <i>Clear selection</i>
         </DropdownItem>
       </DropdownMenu>

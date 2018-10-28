@@ -7,7 +7,7 @@ import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../common/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
-import CountriesGraph from './CountriesGraph';
+import SortableBarGraph from './SortableBarGraph';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import {
   processBrowserStats,
@@ -96,10 +96,24 @@ export class ShortUrlsVisitsComponent extends React.Component {
             <GraphCard title="Browsers" stats={processBrowserStats(visits)} />
           </div>
           <div className="col-md-6">
-            <CountriesGraph stats={processCountriesStats(visits)} />
+            <SortableBarGraph
+              stats={processCountriesStats(visits)}
+              title="Countries"
+              sortingItems={{
+                name: 'Country name',
+                amount: 'Visits amount',
+              }}
+            />
           </div>
           <div className="col-md-6">
-            <GraphCard title="Referrers" stats={processReferrersStats(visits)} isBarChart />
+            <SortableBarGraph
+              stats={processReferrersStats(visits)}
+              title="Referrers"
+              sortingItems={{
+                name: 'Referrer name',
+                amount: 'Visits amount',
+              }}
+            />
           </div>
         </div>
       );
