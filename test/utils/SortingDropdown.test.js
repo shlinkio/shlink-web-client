@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
-import { values } from 'ramda';
+import { identity, values } from 'ramda';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import * as sinon from 'sinon';
@@ -15,7 +15,7 @@ describe('<SortingDropdown />', () => {
     baz: 'Hello World',
   };
   const createWrapper = (props) => {
-    wrapper = shallow(<SortingDropdown items={items} {...props} />);
+    wrapper = shallow(<SortingDropdown items={items} onChange={identity} {...props} />);
 
     return wrapper;
   };
@@ -26,8 +26,9 @@ describe('<SortingDropdown />', () => {
     const wrapper = createWrapper();
     const dropdownItems = wrapper.find(DropdownItem);
     const secondIndex = 2;
+    const clearItemsCount = 2;
 
-    expect(dropdownItems).toHaveLength(values(items).length);
+    expect(dropdownItems).toHaveLength(values(items).length + clearItemsCount);
     expect(dropdownItems.at(0).html()).toContain('Foo');
     expect(dropdownItems.at(1).html()).toContain('Bar');
     expect(dropdownItems.at(secondIndex).html()).toContain('Hello World');

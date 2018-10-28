@@ -7,6 +7,7 @@ import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../common/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
+import CountriesGraph from './CountriesGraph';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
 import {
   processBrowserStats,
@@ -95,7 +96,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
             <GraphCard title="Browsers" stats={processBrowserStats(visits)} />
           </div>
           <div className="col-md-6">
-            <GraphCard title="Countries" stats={processCountriesStats(visits)} isBarChart />
+            <CountriesGraph stats={processCountriesStats(visits)} />
           </div>
           <div className="col-md-6">
             <GraphCard title="Referrers" stats={processReferrersStats(visits)} isBarChart />

@@ -43,10 +43,7 @@ export class ShortUrlsListComponent extends React.Component {
     });
   };
   handleOrderBy = (orderField, orderDir) => {
-    this.setState({
-      orderDir,
-      orderField: orderDir !== undefined ? orderField : undefined,
-    });
+    this.setState({ orderField, orderDir });
     this.refreshList({ orderBy: { [orderField]: orderDir } });
   };
   orderByColumn = (columnName) => () =>
