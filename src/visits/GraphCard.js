@@ -6,6 +6,7 @@ import { keys, values } from 'ramda';
 
 const propTypes = {
   title: PropTypes.string,
+  children: PropTypes.node,
   isBarChart: PropTypes.bool,
   stats: PropTypes.object,
   matchMedia: PropTypes.func,
@@ -80,9 +81,9 @@ const renderGraph = (title, isBarChart, stats, matchMedia) => {
   return <Component data={generateGraphData(title, isBarChart, labels, data)} options={options} height={null} />;
 };
 
-const GraphCard = ({ title, isBarChart, stats, matchMedia }) => (
+const GraphCard = ({ title, children, isBarChart, stats, matchMedia }) => (
   <Card className="mt-4">
-    <CardHeader>{title}</CardHeader>
+    <CardHeader className="graph-card__header">{children || title}</CardHeader>
     <CardBody>{renderGraph(title, isBarChart, stats, matchMedia)}</CardBody>
   </Card>
 );

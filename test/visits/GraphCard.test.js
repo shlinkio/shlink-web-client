@@ -12,11 +12,7 @@ describe('<GraphCard />', () => {
   };
   const matchMedia = () => ({ matches: false });
 
-  afterEach(() => {
-    if (wrapper) {
-      wrapper.unmount();
-    }
-  });
+  afterEach(() => wrapper && wrapper.unmount());
 
   it('renders Doughnut when is not a bar chart', () => {
     wrapper = shallow(<GraphCard matchMedia={matchMedia} title="The chart" stats={stats} />);

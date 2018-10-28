@@ -1,17 +1,18 @@
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { head, isEmpty, pick, toPairs, keys, values } from 'ramda';
+import { head, isEmpty, keys, pick, values } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import qs from 'qs';
 import PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
+import SortingDropdown from '../utils/SortingDropdown';
+import { determineOrderDir } from '../utils/utils';
 import { ShortUrlsRow } from './helpers/ShortUrlsRow';
 import { listShortUrls, shortUrlType } from './reducers/shortUrlsList';
+import { resetShortUrlParams, shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
-import { shortUrlsListParamsType, resetShortUrlParams } from './reducers/shortUrlsListParams';
 
 const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
@@ -41,25 +42,13 @@ export class ShortUrlsListComponent extends React.Component {
       ...extraParams,
     });
   };
-  determineOrderDir = (field) => {
-    if (this.state.orderField !== field) {
-      return 'ASC';
-    }
-
-    const newOrderMap = {
-      ASC: 'DESC',
-      DESC: undefined,
-    };
-
-    return this.state.orderDir ? newOrderMap[this.state.orderDir] : 'ASC';
+  handleOrderBy = (orderField, orderDir) => {
+    this.setState({ orderField, orderDir });
+    this.refreshList({ orderBy: { [orderField]: orderDir } });
   };
-  orderBy = (field) => {
-    const newOrderDir = this.determineOrderDir(field);
-
-    this.setState({ orderField: newOrderDir !== undefined ? field : undefined, orderDir: newOrderDir });
-    this.refreshList({ orderBy: { [field]: newOrderDir } });
-  };
-  renderOrderIcon = (field, className = 'short-urls-list__header-icon') => {
+  orderByColumn = (columnName) => () =>
+    this.handleOrderBy(columnName, determineOrderDir(columnName, this.state.orderField, this.state.orderDir));
+  renderOrderIcon = (field) => {
     if (this.state.orderField !== field) {
       return null;
     }
@@ -67,7 +56,7 @@ export class ShortUrlsListComponent extends React.Component {
     return (
       <FontAwesomeIcon
         icon={this.state.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
-        className={className}
+        className="short-urls-list__header-icon"
       />
     );
   };
@@ -129,19 +118,12 @@ export class ShortUrlsListComponent extends React.Component {
   renderMobileOrderingControls() {
     return (
       <div className="d-block d-md-none mb-3">
-        <UncontrolledDropdown>
-          <DropdownToggle caret className="btn-block">
-            Order by
-          </DropdownToggle>
-          <DropdownMenu className="short-urls-list__order-dropdown">
-            {toPairs(SORTABLE_FIELDS).map(([ key, value ]) => (
-              <DropdownItem key={key} active={this.state.orderField === key} onClick={() => this.orderBy(key)}>
-                {value}
-                {this.renderOrderIcon(key, 'short-urls-list__header-icon--mobile')}
-              </DropdownItem>
-            ))}
-          </DropdownMenu>
-        </UncontrolledDropdown>
+        <SortingDropdown
+          items={SORTABLE_FIELDS}
+          orderField={this.state.orderField}
+          orderDir={this.state.orderDir}
+          onChange={this.handleOrderBy}
+        />
       </div>
     );
   }
@@ -155,21 +137,21 @@ export class ShortUrlsListComponent extends React.Component {
             <tr>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={() => this.orderBy('dateCreated')}
+                onClick={this.orderByColumn('dateCreated')}
               >
                 {this.renderOrderIcon('dateCreated')}
                 Created at
               </th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={() => this.orderBy('shortCode')}
+                onClick={this.orderByColumn('shortCode')}
               >
                 {this.renderOrderIcon('shortCode')}
                 Short URL
               </th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={() => this.orderBy('originalUrl')}
+                onClick={this.orderByColumn('originalUrl')}
               >
                 {this.renderOrderIcon('originalUrl')}
                 Long URL
@@ -177,7 +159,7 @@ export class ShortUrlsListComponent extends React.Component {
               <th className="short-urls-list__header-cell">Tags</th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={() => this.orderBy('visits')}
+                onClick={this.orderByColumn('visits')}
               >
                 <span className="nowrap">{this.renderOrderIcon('visits')} Visits</span>
               </th>

@@ -4,3 +4,16 @@ export const stateFlagTimeout = (setState, flagName, initialValue = true, delay 
   setState({ [flagName]: initialValue });
   setTimeout(() => setState({ [flagName]: !initialValue }), delay);
 };
+
+export const determineOrderDir = (clickedField, currentOrderField, currentOrderDir) => {
+  if (currentOrderField !== clickedField) {
+    return 'ASC';
+  }
+
+  const newOrderMap = {
+    ASC: 'DESC',
+    DESC: undefined,
+  };
+
+  return currentOrderDir ? newOrderMap[currentOrderDir] : 'ASC';
+};

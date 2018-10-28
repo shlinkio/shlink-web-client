@@ -6,11 +6,7 @@ import Paginator from '../../src/short-urls/Paginator';
 describe('<Paginator />', () => {
   let wrapper;
 
-  afterEach(() => {
-    if (wrapper) {
-      wrapper.unmount();
-    }
-  });
+  afterEach(() => wrapper && wrapper.unmount());
 
   it('renders nothing if the number of pages is below 2', () => {
     wrapper = shallow(<Paginator serverId="abc123" />);

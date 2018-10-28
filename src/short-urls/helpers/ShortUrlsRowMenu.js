@@ -15,9 +15,9 @@ import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
-import './ShortUrlsRowMenu.scss';
 import EditTagsModal from './EditTagsModal';
 import DeleteShortUrlModal from './DeleteShortUrlModal';
+import './ShortUrlsRowMenu.scss';
 
 export class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
@@ -46,11 +46,11 @@ export class ShortUrlsRowMenu extends React.Component {
     const toggleDelete = toggleModal('isDeleteModalOpen');
 
     return (
-      <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen} direction="left">
+      <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen}>
         <DropdownToggle size="sm" caret className="short-urls-row-menu__dropdown-toggle btn-outline-secondary">
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
-        <DropdownMenu>
+        <DropdownMenu right>
           <DropdownItem tag={Link} to={`/server/${serverId}/short-code/${shortUrl.shortCode}/visits`}>
             <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit stats
           </DropdownItem>
