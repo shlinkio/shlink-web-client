@@ -18,12 +18,12 @@ body,
   background-color: $mainColor !important;
 }
 
-.dropdown-item {
+.dropdown-item:not(:disabled) {
   cursor: pointer;
 }
 
-.dropdown-item.active,
-.dropdown-item:active {
+.dropdown-item.active:not(:disabled),
+.dropdown-item:active:not(:disabled) {
   background-color: $lightGrey !important;
   color: inherit !important;
 }
