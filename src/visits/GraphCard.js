@@ -76,6 +76,9 @@ const renderGraph = (title, isBarChart, stats, matchMedia) => {
         },
       ],
     } : null,
+    tooltips: {
+      intersect: !isBarChart,
+    },
   };
 
   return <Component data={generateGraphData(title, isBarChart, labels, data)} options={options} height={null} />;

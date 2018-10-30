@@ -3,8 +3,8 @@ import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from
 import { toPairs } from 'ramda';
 import PropTypes from 'prop-types';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
-import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
+import sortAscIcon from '@fortawesome/fontawesome-free-solid/faSortAmountUp';
+import sortDescIcon from '@fortawesome/fontawesome-free-solid/faSortAmountDown';
 import classNames from 'classnames';
 import { determineOrderDir } from '../utils/utils';
 import './SortingDropdown.scss';
@@ -47,7 +47,7 @@ const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, righ
             {fieldValue}
             {orderField === fieldKey && (
               <FontAwesomeIcon
-                icon={orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
+                icon={orderDir === 'ASC' ? sortAscIcon : sortDescIcon}
                 className="sorting-dropdown__sort-icon"
               />
             )}

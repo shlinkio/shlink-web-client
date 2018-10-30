@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, compose, createStore } from 'redux';
@@ -20,7 +20,7 @@ const store = createStore(reducers, composeEnhancers(
   applyMiddleware(ReduxThunk)
 ));
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <BrowserRouter>
       <ScrollToTop>
