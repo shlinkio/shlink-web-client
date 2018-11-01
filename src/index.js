@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { applyMiddleware, compose, createStore } from 'redux';
 import ReduxThunk from 'redux-thunk';
+import { homepage } from '../package.json';
 import App from './App';
 import './index.scss';
 import ScrollToTop from './common/ScrollToTop';
@@ -22,7 +23,7 @@ const store = createStore(reducers, composeEnhancers(
 
 render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename={homepage}>
       <ScrollToTop>
         <App />
       </ScrollToTop>
