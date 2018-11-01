@@ -1,5 +1,5 @@
-@import '../utils/mixins/vertical-align';
-@import '../utils/base';
+@import './mixins/vertical-align';
+@import './base';
 
 .date-input-container {
   position: relative;

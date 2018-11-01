@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import DateInput from '../../src/common/DateInput';
+import DateInput from '../../src/utils/DateInput';
 
 describe('<DateInput />', () => {
   let wrapped;

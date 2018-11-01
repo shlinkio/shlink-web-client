@@ -1,8 +1,8 @@
-import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import { isNil } from 'ramda';
+import DatePicker from 'react-datepicker';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
 import './DateInput.scss';
 
 export default class DateInput extends React.Component {
