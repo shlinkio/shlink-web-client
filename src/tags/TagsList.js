@@ -8,7 +8,7 @@ import { filterTags, forceListTags } from './reducers/tagsList';
 import TagCard from './TagCard';
 
 const { ceil } = Math;
-const TAGS_GROUP_SIZE = 4;
+const TAGS_GROUPS_AMOUNT = 4;
 
 export class TagsListComponent extends React.Component {
   static propTypes = {
@@ -16,6 +16,8 @@ export class TagsListComponent extends React.Component {
     forceListTags: PropTypes.func,
     tagsList: PropTypes.shape({
       loading: PropTypes.bool,
+      error: PropTypes.bool,
+      filteredTags: PropTypes.arrayOf(PropTypes.string),
     }),
     match: PropTypes.object,
   };
@@ -23,7 +25,7 @@ export class TagsListComponent extends React.Component {
   componentDidMount() {
     const { forceListTags } = this.props;
 
-    forceListTags(true);
+    forceListTags();
   }
 
   renderContent() {
@@ -47,7 +49,7 @@ export class TagsListComponent extends React.Component {
       return <MuttedMessage>No tags found</MuttedMessage>;
     }
 
-    const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUP_SIZE), tagsList.filteredTags);
+    const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
 
     return (
       <React.Fragment>
@@ -71,13 +73,9 @@ export class TagsListComponent extends React.Component {
 
     return (
       <div className="shlink-container">
-        {!this.props.tagsList.loading && (
-          <SearchField
-            className="mb-3"
-            placeholder="Search tags..."
-            onChange={filterTags}
-          />
-        )}
+        {!this.props.tagsList.loading &&
+          <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />
+        }
         <div className="row">
           {this.renderContent()}
         </div>
