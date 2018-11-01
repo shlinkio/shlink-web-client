@@ -31,7 +31,7 @@ There are three ways in which you can use this application.
 
     It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the assets on port 80.
 
-## Serve shlink in subpath
+## Serve project in subpath
 
 Official distributable files have been build so that they are served from the root of a domain.
 
