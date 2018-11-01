@@ -10,7 +10,7 @@ const propTypes = {
   isOpen: PropTypes.bool,
 };
 
-export default function PreviewModal({ url, toggle, isOpen }) {
+const PreviewModal = ({ url, toggle, isOpen }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg">
       <ModalHeader toggle={toggle}>
@@ -24,6 +24,8 @@ export default function PreviewModal({ url, toggle, isOpen }) {
       </ModalBody>
     </Modal>
   );
-}
+};
 
 PreviewModal.propTypes = propTypes;
+
+export default PreviewModal;
