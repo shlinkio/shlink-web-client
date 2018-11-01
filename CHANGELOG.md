@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* *Nothing*
+* [#50](https://github.com/shlinkio/shlink-web-client/issues/50) Improved tests and increased code coverage.
 
 #### Deprecated
 
