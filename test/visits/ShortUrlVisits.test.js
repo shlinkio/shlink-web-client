@@ -6,7 +6,7 @@ import * as sinon from 'sinon';
 import { ShortUrlsVisitsComponent as ShortUrlsVisits } from '../../src/visits/ShortUrlVisits';
 import MutedMessage from '../../src/utils/MuttedMessage';
 import GraphCard from '../../src/visits/GraphCard';
-import DateInput from '../../src/common/DateInput';
+import DateInput from '../../src/utils/DateInput';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
 
 describe('<ShortUrlVisits />', () => {

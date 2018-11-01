@@ -5,12 +5,22 @@ import { assoc, dissoc, isNil, pick, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
-import DateInput from '../common/DateInput';
+import * as PropTypes from 'prop-types';
+import DateInput from '../utils/DateInput';
 import TagsSelector from '../tags/helpers/TagsSelector';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
-import { createShortUrl, resetCreateShortUrl } from './reducers/shortUrlCreation';
+import { createShortUrl, createShortUrlResultType, resetCreateShortUrl } from './reducers/shortUrlCreation';
+
+const normalizeTag = pipe(trim, replace(/ /g, '-'));
+const formatDate = (date) => isNil(date) ? date : date.format();
 
 export class CreateShortUrlComponent extends React.Component {
+  static propTypes = {
+    createShortUrl: PropTypes.func,
+    shortUrlCreationResult: createShortUrlResultType,
+    resetCreateShortUrl: PropTypes.func,
+  };
+
   state = {
     longUrl: '',
     tags: [],
@@ -24,27 +34,31 @@ export class CreateShortUrlComponent extends React.Component {
   render() {
     const { createShortUrl, shortUrlCreationResult, resetCreateShortUrl } = this.props;
 
-    const changeTags = (tags) => this.setState({ tags: tags.map(pipe(trim, replace(/ /g, '-'))) });
+    const changeTags = (tags) => this.setState({ tags: tags.map(normalizeTag) });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
-      <input
-        className="form-control"
-        type={type}
-        placeholder={placeholder}
-        value={this.state[id]}
-        onChange={(e) => this.setState({ [id]: e.target.value })}
-        {...props}
-      />
+      <div className="form-group">
+        <input
+          className="form-control"
+          id={id}
+          type={type}
+          placeholder={placeholder}
+          value={this.state[id]}
+          onChange={(e) => this.setState({ [id]: e.target.value })}
+          {...props}
+        />
+      </div>
     );
-    const createDateInput = (id, placeholder, props = {}) => (
-      <DateInput
-        selected={this.state[id]}
-        placeholderText={placeholder}
-        isClearable
-        onChange={(date) => this.setState({ [id]: date })}
-        {...props}
-      />
+    const renderDateInput = (id, placeholder, props = {}) => (
+      <div className="form-group">
+        <DateInput
+          selected={this.state[id]}
+          placeholderText={placeholder}
+          isClearable
+          onChange={(date) => this.setState({ [id]: date })}
+          {...props}
+        />
+      </div>
     );
-    const formatDate = (date) => isNil(date) ? date : date.format();
     const save = (e) => {
       e.preventDefault();
       createShortUrl(pipe(
@@ -75,20 +89,12 @@ export class CreateShortUrlComponent extends React.Component {
 
             <div className="row">
               <div className="col-sm-6">
-                <div className="form-group">
-                  {renderOptionalInput('customSlug', 'Custom slug')}
-                </div>
-                <div className="form-group">
-                  {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-                </div>
+                {renderOptionalInput('customSlug', 'Custom slug')}
+                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
               </div>
               <div className="col-sm-6">
-                <div className="form-group">
-                  {createDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
-                </div>
-                <div className="form-group">
-                  {createDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
-                </div>
+                {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+                {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
               </div>
             </div>
           </Collapse>

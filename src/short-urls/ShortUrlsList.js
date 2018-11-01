@@ -115,23 +115,17 @@ export class ShortUrlsListComponent extends React.Component {
     ));
   }
 
-  renderMobileOrderingControls() {
-    return (
-      <div className="d-block d-md-none mb-3">
-        <SortingDropdown
-          items={SORTABLE_FIELDS}
-          orderField={this.state.orderField}
-          orderDir={this.state.orderDir}
-          onChange={this.handleOrderBy}
-        />
-      </div>
-    );
-  }
-
   render() {
     return (
       <React.Fragment>
-        {this.renderMobileOrderingControls()}
+        <div className="d-block d-md-none mb-3">
+          <SortingDropdown
+            items={SORTABLE_FIELDS}
+            orderField={this.state.orderField}
+            orderDir={this.state.orderDir}
+            onChange={this.handleOrderBy}
+          />
+        </div>
         <table className="table table-striped table-hover">
           <thead className="short-urls-list__header">
             <tr>

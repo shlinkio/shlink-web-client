@@ -28,36 +28,20 @@ export default class TagCard extends React.Component {
     return (
       <Card className="tag-card">
         <CardBody className="tag-card__body">
-          <button
-            className="btn btn-light btn-sm tag-card__btn tag-card__btn--last"
-            onClick={toggleDelete}
-          >
+          <button className="btn btn-light btn-sm tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} />
           </button>
-          <button
-            className="btn btn-light btn-sm tag-card__btn"
-            onClick={toggleEdit}
-          >
+          <button className="btn btn-light btn-sm tag-card__btn" onClick={toggleEdit}>
             <FontAwesomeIcon icon={editIcon} />
           </button>
           <h5 className="tag-card__tag-title">
             <TagBullet tag={tag} />
-            <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>
-              {tag}
-            </Link>
+            <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>{tag}</Link>
           </h5>
         </CardBody>
 
-        <DeleteTagConfirmModal
-          tag={tag}
-          toggle={toggleDelete}
-          isOpen={this.state.isDeleteModalOpen}
-        />
-        <EditTagModal
-          tag={tag}
-          toggle={toggleEdit}
-          isOpen={this.state.isEditModalOpen}
-        />
+        <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={this.state.isDeleteModalOpen} />
+        <EditTagModal tag={tag} toggle={toggleEdit} isOpen={this.state.isEditModalOpen} />
       </Card>
     );
   }

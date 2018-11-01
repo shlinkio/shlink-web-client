@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
-import DateInput from '../common/DateInput';
+import DateInput from '../utils/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
 import SortableBarGraph from './SortableBarGraph';
 import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';

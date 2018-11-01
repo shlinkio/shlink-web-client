@@ -47,6 +47,8 @@ export class DeleteShortUrlModalComponent extends Component {
   render() {
     const { shortUrl, toggle, isOpen, shortUrlDeletion } = this.props;
     const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
+    const hasThresholdError = shortUrlDeletion.error && shortUrlDeletion.errorData.error === THRESHOLD_REACHED;
+    const hasErrorOtherThanThreshold = shortUrlDeletion.error && shortUrlDeletion.errorData.error !== THRESHOLD_REACHED;
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered>
@@ -66,12 +68,12 @@ export class DeleteShortUrlModalComponent extends Component {
               onChange={(e) => this.setState({ inputValue: e.target.value })}
             />
 
-            {shortUrlDeletion.error && shortUrlDeletion.errorData.error === THRESHOLD_REACHED && (
+            {hasThresholdError && (
               <div className="p-2 mt-2 bg-warning text-center">
                 This short URL has received too many visits and therefore, it cannot be deleted
               </div>
             )}
-            {shortUrlDeletion.error && shortUrlDeletion.errorData.error !== THRESHOLD_REACHED && (
+            {hasErrorOtherThanThreshold && (
               <div className="p-2 mt-2 bg-danger text-white text-center">
                 Something went wrong while deleting the URL :(
               </div>

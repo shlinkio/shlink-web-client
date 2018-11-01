@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import DateInput from '../../src/common/DateInput';
+import DateInput from '../../src/utils/DateInput';
 
 describe('<DateInput />', () => {
   let wrapped;
@@ -13,12 +13,7 @@ describe('<DateInput />', () => {
     return wrapped;
   };
 
-  afterEach(() => {
-    if (wrapped !== undefined) {
-      wrapped.unmount();
-      wrapped = undefined;
-    }
-  });
+  afterEach(() => wrapped && wrapped.unmount());
 
   it('wrapps a DatePicker', () => {
     wrapped = createComponent();
