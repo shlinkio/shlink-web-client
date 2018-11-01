@@ -3,9 +3,9 @@ import shlinkApiClient from '../../api/ShlinkApiClient';
 import colorGenerator from '../../utils/ColorGenerator';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
-const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
-const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
+export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
+export const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
+export const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
@@ -42,20 +42,19 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _editTag = (shlinkApiClient, colorGenerator, oldName, newName, color) =>
-  async (dispatch) => {
-    dispatch({ type: EDIT_TAG_START });
+export const _editTag = (shlinkApiClient, colorGenerator, oldName, newName, color) => async (dispatch) => {
+  dispatch({ type: EDIT_TAG_START });
 
-    try {
-      await shlinkApiClient.editTag(oldName, newName);
-      colorGenerator.setColorForKey(newName, color);
-      dispatch({ type: EDIT_TAG, oldName, newName });
-    } catch (e) {
-      dispatch({ type: EDIT_TAG_ERROR });
+  try {
+    await shlinkApiClient.editTag(oldName, newName);
+    colorGenerator.setColorForKey(newName, color);
+    dispatch({ type: EDIT_TAG, oldName, newName });
+  } catch (e) {
+    dispatch({ type: EDIT_TAG_ERROR });
 
-      throw e;
-    }
-  };
+    throw e;
+  }
+};
 
 export const editTag = curry(_editTag)(shlinkApiClient, colorGenerator);
 
