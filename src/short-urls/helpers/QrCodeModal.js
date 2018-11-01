@@ -10,20 +10,18 @@ const propTypes = {
   isOpen: PropTypes.bool,
 };
 
-const QrCodeModal = ({ url, toggle, isOpen }) => {
-  return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
-      <ModalHeader toggle={toggle}>
-        QR code for <ExternalLink href={url}>{url}</ExternalLink>
-      </ModalHeader>
-      <ModalBody>
-        <div className="text-center">
-          <img src={`${url}/qr-code`} className="qr-code-modal__img" alt="QR code" />
-        </div>
-      </ModalBody>
-    </Modal>
-  );
-};
+const QrCodeModal = ({ url, toggle, isOpen }) => (
+  <Modal isOpen={isOpen} toggle={toggle} centered>
+    <ModalHeader toggle={toggle}>
+      QR code for <ExternalLink href={url}>{url}</ExternalLink>
+    </ModalHeader>
+    <ModalBody>
+      <div className="text-center">
+        <img src={`${url}/qr-code`} className="qr-code-modal__img" alt="QR code" />
+      </div>
+    </ModalBody>
+  </Modal>
+);
 
 QrCodeModal.propTypes = propTypes;
 
