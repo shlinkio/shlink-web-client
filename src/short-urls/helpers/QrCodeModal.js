@@ -10,7 +10,7 @@ const propTypes = {
   isOpen: PropTypes.bool,
 };
 
-export default function QrCodeModal({ url, toggle, isOpen }) {
+const QrCodeModal = ({ url, toggle, isOpen }) => {
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}>
@@ -23,6 +23,8 @@ export default function QrCodeModal({ url, toggle, isOpen }) {
       </ModalBody>
     </Modal>
   );
-}
+};
 
 QrCodeModal.propTypes = propTypes;
+
+export default QrCodeModal;
