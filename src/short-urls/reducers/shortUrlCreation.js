@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
-const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
-const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
-const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
+export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
+export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
+export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
+export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const createShortUrlResultType = PropTypes.shape({
@@ -29,6 +29,7 @@ export default function reducer(state = defaultState, action) {
       return {
         ...state,
         saving: true,
+        error: false,
       };
     case CREATE_SHORT_URL_ERROR:
       return {
