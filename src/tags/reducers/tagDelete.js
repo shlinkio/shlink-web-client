@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import shlinkApiClient from '../../api/ShlinkApiClient';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
-const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
-const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
+export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
+export const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
+export const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
 export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
