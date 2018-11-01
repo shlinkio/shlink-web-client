@@ -21,10 +21,30 @@ There are three ways in which you can use this application.
 
     Get the [latest release](https://github.com/shlinkio/shlink-web-client/releases/latest) and download the distributable zip file attached to it (`shlink-web-client_X.X.X_dist.zip`).
 
-    The package contains static files only, so just put it in a folder and serve it with the web server of your choice (just take into account that all the files are served using absolute paths, so you have to serve it from the root of your domain, not from a subpath).
+    The package contains static files only, so just put it in a folder and serve it with the web server of your choice.
+
+    Provided dist files are configured to be served from the root of your domain. If you need to serve shlink-web-client from a subpath, you will have to build it yourself following [these simple steps](#serve-shlink-in-subpath).
 
 * Use the official [docker image](https://hub.docker.com/r/shlinkio/shlink-web-client/)
 
-    If you want to deploy shlink-web-client in a container-based cluster (docker swarm, kubernetes, etc), just pick the image and do it.
+    If you want to deploy shlink-web-client in a container-based cluster (kubernetes, docker swarm, etc), just pick the image and do it.
 
-    It's a lightweight [nginx:alpine image](https://hub.docker.com/r/library/nginx/) serving the assets on port 80.
+    It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the assets on port 80.
+
+## Serve shlink in subpath
+
+Official distributable files have been build so that they are served from the root of a domain.
+
+If you need to host shlink-web-client yourself and serve it from a subpath, follow these steps:
+
+* Download [node](https://nodejs.org/en/download/package-manager/) 10.4 or later (if you don't have it yet).
+* Download [yarn](https://yarnpkg.com/en/docs/install) package manager.
+* Download shlink-web-client source files for the version you want to build.
+    * For example, if you want to build `v1.0.1`, use this link https://github.com/shlinkio/shlink-web-client/archive/v1.0.1.zip
+    * Replace the `v1.0.1` part in the link with the one of the version you want to build.
+* Decompress the file and `cd` into the resulting folder.
+* Install project dependencies by running `yarn install`.
+* Open the `package.json` file in the root of the project, locate the `homepage` property and replace the value (which should be an empty string) by the path from which you want to serve shlink-web-client.
+    * For example: `"homepage": "/my-projects/shlink-web-client",`.
+* Build the distributable contents by running `yarn build`.
+* Once the command finishes, you will have a `build` folder with all the static assets you need to run shlink-web-client. Just place them wherever you want them to be served from.
