@@ -3,35 +3,40 @@ import { isNil } from 'ramda';
 import DatePicker from 'react-datepicker';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
+import * as PropTypes from 'prop-types';
 import './DateInput.scss';
 
-export default class DateInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.inputRef = props.ref || React.createRef();
-  }
+const propTypes = {
+  className: PropTypes.string,
+  isClearable: PropTypes.bool,
+  selected: PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]),
+  ref: PropTypes.object,
+};
 
-  render() {
-    const { className, isClearable, selected } = this.props;
-    const showCalendarIcon = !isClearable || isNil(selected);
+const DateInput = (props) => {
+  const { className, isClearable, selected, ref = React.createRef() } = props;
+  const showCalendarIcon = !isClearable || isNil(selected);
 
-    return (
-      <div className="date-input-container">
-        <DatePicker
-          {...this.props}
-          className={`date-input-container__input form-control ${className || ''}`}
-          dateFormat="YYYY-MM-DD"
-          readOnly
-          ref={this.inputRef}
+  return (
+    <div className="date-input-container">
+      <DatePicker
+        {...props}
+        className={`date-input-container__input form-control ${className || ''}`}
+        dateFormat="YYYY-MM-DD"
+        readOnly
+        ref={ref}
+      />
+      {showCalendarIcon && (
+        <FontAwesomeIcon
+          icon={calendarIcon}
+          className="date-input-container__icon"
+          onClick={() => ref.current.input.focus()}
         />
-        {showCalendarIcon && (
-          <FontAwesomeIcon
-            icon={calendarIcon}
-            className="date-input-container__icon"
-            onClick={() => this.inputRef.current.input.focus()}
-          />
-        )}
-      </div>
-    );
-  }
-}
+      )}
+    </div>
+  );
+};
+
+DateInput.propTypes = propTypes;
+
+export default DateInput;

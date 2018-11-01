@@ -13,12 +13,7 @@ describe('<DateInput />', () => {
     return wrapped;
   };
 
-  afterEach(() => {
-    if (wrapped !== undefined) {
-      wrapped.unmount();
-      wrapped = undefined;
-    }
-  });
+  afterEach(() => wrapped && wrapped.unmount());
 
   it('wrapps a DatePicker', () => {
     wrapped = createComponent();
