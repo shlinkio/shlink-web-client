@@ -1,13 +1,16 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Route } from 'react-router-dom';
-import App from '../src/App';
-import MainHeader from '../src/common/MainHeader';
+import { identity } from 'ramda';
+import appFactory from '../src/App';
 
 describe('<App />', () => {
   let wrapper;
+  const MainHeader = () => '';
 
   beforeEach(() => {
+    const App = appFactory(MainHeader, identity, identity, identity);
+
     wrapper = shallow(<App />);
   });
   afterEach(() => wrapper.unmount());

@@ -49,7 +49,7 @@ describe('selectedServerReducer', () => {
       const dispatch = sinon.spy();
       const expectedDispatchCalls = 2;
 
-      _selectServer(ShlinkApiClientMock, ServersServiceMock, serverId)(dispatch);
+      _selectServer(ShlinkApiClientMock, ServersServiceMock)(serverId)(dispatch);
 
       expect(dispatch.callCount).toEqual(expectedDispatchCalls);
       expect(dispatch.firstCall.calledWith({ type: RESET_SHORT_URL_PARAMS })).toEqual(true);
@@ -60,7 +60,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('invokes dependencies', () => {
-      _selectServer(ShlinkApiClientMock, ServersServiceMock, serverId)(() => {});
+      _selectServer(ShlinkApiClientMock, ServersServiceMock)(serverId)(() => {});
 
       expect(ShlinkApiClientMock.setConfig.callCount).toEqual(1);
       expect(ServersServiceMock.findServerById.callCount).toEqual(1);

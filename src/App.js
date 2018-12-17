@@ -1,10 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.scss';
-import MenuLayout from './common/MenuLayout';
-import CreateServer from './servers/CreateServer';
 
-const App = (MainHeader, Home) => () => (
+const App = (MainHeader, Home, MenuLayout, CreateServer) => () => (
   <div className="container-fluid app-container">
     <MainHeader />
 

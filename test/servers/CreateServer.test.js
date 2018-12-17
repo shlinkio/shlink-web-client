@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import sinon from 'sinon';
-import { CreateServerComponent } from '../../src/servers/CreateServer';
+import CreateServer from '../../src/servers/CreateServer';
 import ImportServersBtn from '../../src/servers/helpers/ImportServersBtn';
 
 describe('<CreateServer />', () => {
@@ -17,11 +17,7 @@ describe('<CreateServer />', () => {
     historyMock.push.resetHistory();
 
     wrapper = shallow(
-      <CreateServerComponent
-        createServer={createServerMock}
-        resetSelectedServer={identity}
-        history={historyMock}
-      />
+      <CreateServer createServer={createServerMock} resetSelectedServer={identity} history={historyMock} />
     );
   });
   afterEach(() => wrapper.unmount());

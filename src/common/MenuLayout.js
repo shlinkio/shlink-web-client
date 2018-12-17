@@ -1,15 +1,11 @@
 import React from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { pick } from 'ramda';
+import { Route, Switch } from 'react-router-dom';
 import Swipeable from 'react-swipeable';
 import burgerIcon from '@fortawesome/fontawesome-free-solid/faBars';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import ShortUrlsVisits from '../visits/ShortUrlVisits';
-import { selectServer } from '../servers/reducers/selectedServer';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
 import ShortUrls from '../short-urls/ShortUrls';
 import './MenuLayout.scss';
@@ -17,7 +13,7 @@ import TagsList from '../tags/TagsList';
 import { serverType } from '../servers/prop-types';
 import AsideMenu from './AsideMenu';
 
-export class MenuLayoutComponent extends React.Component {
+export default class MenuLayout extends React.Component {
   static propTypes = {
     match: PropTypes.object,
     selectServer: PropTypes.func,
@@ -104,10 +100,3 @@ export class MenuLayoutComponent extends React.Component {
     );
   }
 }
-
-const MenuLayout = compose(
-  connect(pick([ 'selectedServer', 'shortUrlsListParams' ]), { selectServer }),
-  withRouter
-)(MenuLayoutComponent);
-
-export default MenuLayout;
