@@ -6,11 +6,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { homepage } from '../package.json';
 import registerServiceWorker from './registerServiceWorker';
 import container from './container';
+import store from './container/store';
 import '../node_modules/react-datepicker/dist/react-datepicker.css';
 import './common/react-tagsinput.scss';
 import './index.scss';
 
-const { App, ScrollToTop, store } = container;
+const { App, ScrollToTop } = container;
 
 render(
   <Provider store={store}>

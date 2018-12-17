@@ -2,16 +2,14 @@ import { isEmpty } from 'ramda';
 import React from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
-import Tag from '../../tags/helpers/Tag';
 import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
 import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { stateFlagTimeout } from '../../utils/utils';
-import { ShortUrlsRowMenu } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
-export class ShortUrlsRow extends React.Component {
+const ShortUrlsRow = (Tag, ShortUrlsRowMenu) => class ShortUrlsRow extends React.Component {
   static propTypes = {
     refreshList: PropTypes.func,
     shortUrlsListParams: shortUrlsListParamsType,
@@ -72,4 +70,6 @@ export class ShortUrlsRow extends React.Component {
       </tr>
     );
   }
-}
+};
+
+export default ShortUrlsRow;

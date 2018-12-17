@@ -19,7 +19,7 @@ import EditTagsModal from './EditTagsModal';
 import DeleteShortUrlModal from './DeleteShortUrlModal';
 import './ShortUrlsRowMenu.scss';
 
-export class ShortUrlsRowMenu extends React.Component {
+export default class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
     completeShortUrl: PropTypes.string,
     onCopyToClipboard: PropTypes.func,

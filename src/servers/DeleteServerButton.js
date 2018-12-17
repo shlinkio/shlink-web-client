@@ -2,10 +2,9 @@ import deleteIcon from '@fortawesome/fontawesome-free-solid/faMinusCircle';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
 import PropTypes from 'prop-types';
-import DeleteServerModal from './DeleteServerModal';
 import { serverType } from './prop-types';
 
-export default class DeleteServerButton extends React.Component {
+const DeleteServerButton = (DeleteServerModal) => class DeleteServerButton extends React.Component {
   static propTypes = {
     server: serverType,
     className: PropTypes.string,
@@ -36,4 +35,6 @@ export default class DeleteServerButton extends React.Component {
       </React.Fragment>
     );
   }
-}
+};
+
+export default DeleteServerButton;

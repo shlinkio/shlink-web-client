@@ -7,13 +7,10 @@ import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import ShortUrlsVisits from '../visits/ShortUrlVisits';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
-import ShortUrls from '../short-urls/ShortUrls';
 import './MenuLayout.scss';
-import TagsList from '../tags/TagsList';
 import { serverType } from '../servers/prop-types';
-import AsideMenu from './AsideMenu';
 
-export default class MenuLayout extends React.Component {
+const MenuLayout = (TagsList, ShortUrls, AsideMenu) => class MenuLayout extends React.Component {
   static propTypes = {
     match: PropTypes.object,
     selectServer: PropTypes.func,
@@ -99,4 +96,6 @@ export default class MenuLayout extends React.Component {
       </React.Fragment>
     );
   }
-}
+};
+
+export default MenuLayout;

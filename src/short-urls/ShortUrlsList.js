@@ -1,17 +1,15 @@
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { head, isEmpty, keys, pick, values } from 'ramda';
+import { head, isEmpty, keys, values } from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 import qs from 'qs';
 import PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir } from '../utils/utils';
-import { ShortUrlsRow } from './helpers/ShortUrlsRow';
-import { listShortUrls, shortUrlType } from './reducers/shortUrlsList';
-import { resetShortUrlParams, shortUrlsListParamsType } from './reducers/shortUrlsListParams';
+import { shortUrlType } from './reducers/shortUrlsList';
+import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
 
 const SORTABLE_FIELDS = {
@@ -21,7 +19,7 @@ const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
-export class ShortUrlsListComponent extends React.Component {
+const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Component {
   static propTypes = {
     listShortUrls: PropTypes.func,
     resetShortUrlParams: PropTypes.func,
@@ -167,11 +165,6 @@ export class ShortUrlsListComponent extends React.Component {
       </React.Fragment>
     );
   }
-}
-
-const ShortUrlsList = connect(
-  pick([ 'selectedServer', 'shortUrlsListParams' ]),
-  { listShortUrls, resetShortUrlParams }
-)(ShortUrlsListComponent);
+};
 
 export default ShortUrlsList;

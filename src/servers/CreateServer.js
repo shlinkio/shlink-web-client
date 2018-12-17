@@ -4,11 +4,10 @@ import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
 import { stateFlagTimeout } from '../utils/utils';
 import './CreateServer.scss';
-import ImportServersBtn from './helpers/ImportServersBtn';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-export default class CreateServer extends React.Component {
+const CreateServer = (ImportServersBtn) => class CreateServer extends React.Component {
   static propTypes = {
     createServer: PropTypes.func,
     history: PropTypes.shape({
@@ -88,4 +87,6 @@ export default class CreateServer extends React.Component {
       </div>
     );
   }
-}
+};
+
+export default CreateServer;

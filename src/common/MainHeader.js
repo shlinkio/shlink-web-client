@@ -6,11 +6,10 @@ import { Link } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import ServersDropdown from '../servers/ServersDropdown';
-import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
+import './MainHeader.scss';
 
-const MainHeader = () => class MainHeaderComponent extends React.Component {
+const MainHeader = (ServersDropdown) => class MainHeader extends React.Component {
   static propTypes = {
     location: PropTypes.object,
   };
