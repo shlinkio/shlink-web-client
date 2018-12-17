@@ -2,7 +2,7 @@ import React from 'react';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
-import { ImportServersBtnComponent } from '../../../src/servers/helpers/ImportServersBtn';
+import importServersBtnConstruct from '../../../src/servers/helpers/ImportServersBtn';
 
 describe('<ImportServersBtn />', () => {
   let wrapper;
@@ -21,13 +21,10 @@ describe('<ImportServersBtn />', () => {
     serversImporterMock.importServersFromFile.resetHistory();
     fileRef.current.click.resetHistory();
 
+    const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
+
     wrapper = shallow(
-      <ImportServersBtnComponent
-        createServers={createServersMock}
-        serversImporter={serversImporterMock}
-        fileRef={fileRef}
-        onImport={onImportMock}
-      />
+      <ImportServersBtn createServers={createServersMock} fileRef={fileRef} onImport={onImportMock} />
     );
   });
   afterEach(() => wrapper.unmount());

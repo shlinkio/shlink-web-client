@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity, range } from 'ramda';
 import * as sinon from 'sinon';
-import { TagsListComponent as TagsList } from '../../src/tags/TagsList';
+import TagsList from '../../src/tags/TagsList';
 import MuttedMessage from '../../src/utils/MuttedMessage';
 import TagCard from '../../src/tags/TagCard';
 import SearchField from '../../src/utils/SearchField';

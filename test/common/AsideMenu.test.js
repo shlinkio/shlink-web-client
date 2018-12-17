@@ -1,12 +1,15 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import AsideMenu from '../../src/common/AsideMenu';
+import asideMenuCreator from '../../src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {
   let wrapped;
+  const DeleteServerButton = () => '';
 
   beforeEach(() => {
+    const AsideMenu = asideMenuCreator(DeleteServerButton);
+
     wrapped = shallow(<AsideMenu selectedServer={{ id: 'abc123' }} />);
   });
   afterEach(() => wrapped.unmount());
@@ -20,6 +23,6 @@ describe('<AsideMenu />', () => {
   });
 
   it('contains a button to delete server', () => {
-    expect(wrapped.find('DeleteServerButton')).toHaveLength(1);
+    expect(wrapped.find(DeleteServerButton)).toHaveLength(1);
   });
 });

@@ -2,10 +2,11 @@ import { identity, values } from 'ramda';
 import React from 'react';
 import { shallow } from 'enzyme';
 import { DropdownItem, DropdownToggle } from 'reactstrap';
-import ServersDropdown from '../../src/servers/ServersDropdown';
+import serversDropdownCreator from '../../src/servers/ServersDropdown';
 
 describe('<ServersDropdown />', () => {
   let wrapped;
+  let ServersDropdown;
   const servers = {
     '1a': { name: 'foo', id: 1 },
     '2b': { name: 'bar', id: 2 },
@@ -13,6 +14,7 @@ describe('<ServersDropdown />', () => {
   };
 
   beforeEach(() => {
+    ServersDropdown = serversDropdownCreator({});
     wrapped = shallow(<ServersDropdown servers={servers} listServers={identity} />);
   });
   afterEach(() => wrapped.unmount());
