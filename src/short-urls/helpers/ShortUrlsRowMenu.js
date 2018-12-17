@@ -15,11 +15,9 @@ import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
-import EditTagsModal from './EditTagsModal';
-import DeleteShortUrlModal from './DeleteShortUrlModal';
 import './ShortUrlsRowMenu.scss';
 
-export default class ShortUrlsRowMenu extends React.Component {
+const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
     completeShortUrl: PropTypes.string,
     onCopyToClipboard: PropTypes.func,
@@ -105,4 +103,6 @@ export default class ShortUrlsRowMenu extends React.Component {
       </ButtonDropdown>
     );
   }
-}
+};
+
+export default ShortUrlsRowMenu;

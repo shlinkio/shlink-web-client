@@ -1,26 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import TagsInput from 'react-tagsinput';
 import PropTypes from 'prop-types';
 import Autosuggest from 'react-autosuggest';
-import { pick, identity } from 'ramda';
-import { listTags } from '../reducers/tagsList';
-import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
-import './TagsSelector.scss';
+import { identity } from 'ramda';
 import TagBullet from './TagBullet';
+import './TagsSelector.scss';
 
-export class TagsSelectorComponent extends React.Component {
+const TagsSelector = (colorGenerator) => class TagsSelector extends React.Component {
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
     onChange: PropTypes.func.isRequired,
     placeholder: PropTypes.string,
-    colorGenerator: colorGeneratorType,
     tagsList: PropTypes.shape({
       tags: PropTypes.arrayOf(PropTypes.string),
     }),
   };
   static defaultProps = {
-    colorGenerator,
     placeholder: 'Add tags to the URL',
   };
 
@@ -31,7 +26,7 @@ export class TagsSelectorComponent extends React.Component {
   }
 
   render() {
-    const { tags, onChange, placeholder, colorGenerator, tagsList } = this.props;
+    const { tags, onChange, placeholder, tagsList } = this.props;
     const renderTag = ({ tag, key, disabled, onRemove, classNameRemove, getTagDisplayValue, ...other }) => (
       <span key={key} style={{ backgroundColor: colorGenerator.getColorForKey(tag) }} {...other}>
         {getTagDisplayValue(tag)}
@@ -86,8 +81,6 @@ export class TagsSelectorComponent extends React.Component {
       />
     );
   }
-}
-
-const TagsSelector = connect(pick([ 'tagsList' ]), { listTags })(TagsSelectorComponent);
+};
 
 export default TagsSelector;

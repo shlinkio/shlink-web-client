@@ -1,20 +1,18 @@
 import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
 import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { assoc, dissoc, isNil, pick, pipe, replace, trim } from 'ramda';
+import { assoc, dissoc, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
-import TagsSelector from '../tags/helpers/TagsSelector';
 import CreateShortUrlResult from './helpers/CreateShortUrlResult';
-import { createShortUrl, createShortUrlResultType, resetCreateShortUrl } from './reducers/shortUrlCreation';
+import { createShortUrlResultType } from './reducers/shortUrlCreation';
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const formatDate = (date) => isNil(date) ? date : date.format();
 
-export class CreateShortUrlComponent extends React.Component {
+const CreateShortUrl = (TagsSelector) => class CreateShortUrl extends React.Component {
   static propTypes = {
     createShortUrl: PropTypes.func,
     shortUrlCreationResult: createShortUrlResultType,
@@ -122,11 +120,6 @@ export class CreateShortUrlComponent extends React.Component {
       </div>
     );
   }
-}
-
-const CreateShortUrl = connect(pick([ 'shortUrlCreationResult' ]), {
-  createShortUrl,
-  resetCreateShortUrl,
-})(CreateShortUrlComponent);
+};
 
 export default CreateShortUrl;

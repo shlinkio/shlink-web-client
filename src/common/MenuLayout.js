@@ -6,11 +6,10 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import ShortUrlsVisits from '../visits/ShortUrlVisits';
-import CreateShortUrl from '../short-urls/CreateShortUrl';
 import './MenuLayout.scss';
 import { serverType } from '../servers/prop-types';
 
-const MenuLayout = (TagsList, ShortUrls, AsideMenu) => class MenuLayout extends React.Component {
+const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl) => class MenuLayout extends React.Component {
   static propTypes = {
     match: PropTypes.object,
     selectServer: PropTypes.func,

@@ -1,18 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { pick, identity } from 'ramda';
+import { identity } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
-import {
-  deleteShortUrl,
-  resetDeleteShortUrl,
-  shortUrlDeleted,
-  shortUrlDeletionType,
-} from '../reducers/shortUrlDeletion';
-import './QrCodeModal.scss';
+import { shortUrlDeletionType } from '../reducers/shortUrlDeletion';
 
-export class DeleteShortUrlModalComponent extends Component {
+export default class DeleteShortUrlModal extends React.Component {
   static propTypes = {
     shortUrl: shortUrlType,
     toggle: PropTypes.func,
@@ -94,10 +87,3 @@ export class DeleteShortUrlModalComponent extends Component {
     );
   }
 }
-
-const DeleteShortUrlModal = connect(
-  pick([ 'shortUrlDeletion' ]),
-  { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted }
-)(DeleteShortUrlModalComponent);
-
-export default DeleteShortUrlModal;
