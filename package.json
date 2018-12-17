@@ -24,6 +24,7 @@
     "@fortawesome/react-fontawesome": "0.0.19",
     "axios": "^0.18.0",
     "bootstrap": "^4.1.1",
+    "bottlejs": "^1.7.1",
     "chart.js": "^2.7.2",
     "classnames": "^2.2.6",
     "csvjson": "^5.1.0",
