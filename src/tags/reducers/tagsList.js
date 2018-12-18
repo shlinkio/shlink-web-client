@@ -1,5 +1,5 @@
 import { isEmpty, reject } from 'ramda';
-import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../api/ShlinkApiClientBuilder';
+import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../utils/services/ShlinkApiClientBuilder';
 import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
