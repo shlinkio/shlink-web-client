@@ -6,9 +6,9 @@ import DeleteServerButton from '../DeleteServerButton';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, listServers } from '../reducers/server';
-import { ServersImporter } from './ServersImporter';
-import { ServersService } from './ServersService';
-import { ServersExporter } from './ServersExporter';
+import ServersImporter from './ServersImporter';
+import ServersService from './ServersService';
+import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle, connect, withRouter) => {
   // Components

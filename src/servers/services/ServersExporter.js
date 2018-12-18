@@ -1,6 +1,4 @@
 import { dissoc, head, keys, values } from 'ramda';
-import csvjson from 'csvjson';
-import serversService from './ServersService';
 
 const saveCsv = (window, csv) => {
   const { navigator, document } = window;
@@ -26,7 +24,7 @@ const saveCsv = (window, csv) => {
   document.body.removeChild(link);
 };
 
-export class ServersExporter {
+export default class ServersExporter {
   constructor(serversService, window, csvjson) {
     this.serversService = serversService;
     this.window = window;
@@ -49,7 +47,3 @@ export class ServersExporter {
     }
   };
 }
-
-const serverExporter = new ServersExporter(serversService, global.window, csvjson);
-
-export default serverExporter;

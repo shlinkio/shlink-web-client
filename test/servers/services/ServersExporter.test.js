@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import { ServersExporter } from '../../../src/servers/services/ServersExporter';
+import ServersExporter from '../../../src/servers/services/ServersExporter';
 
 describe('ServersExporter', () => {
   const createLinkMock = () => ({

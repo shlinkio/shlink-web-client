@@ -23,8 +23,6 @@ export const resetSelectedServer = () => ({ type: RESET_SELECTED_SERVER });
 export const selectServer = (serversService) => (serverId) => (dispatch) => {
   dispatch(resetShortUrlParams());
 
-  console.log('Setting server');
-
   const selectedServer = serversService.findServerById(serverId);
 
   dispatch({

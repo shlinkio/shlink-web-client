@@ -4,7 +4,7 @@ import reducer, {
   CREATE_SHORT_URL_ERROR,
   CREATE_SHORT_URL,
   RESET_CREATE_SHORT_URL,
-  _createShortUrl,
+  createShortUrl,
   resetCreateShortUrl,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 
@@ -62,7 +62,7 @@ describe('shortUrlCreationReducer', () => {
       const expectedDispatchCalls = 2;
       const result = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve(result));
-      const dispatchable = _createShortUrl(() => apiClientMock, {});
+      const dispatchable = createShortUrl(() => apiClientMock)({});
 
       await dispatchable(dispatch, getState);
 
@@ -77,7 +77,7 @@ describe('shortUrlCreationReducer', () => {
       const expectedDispatchCalls = 2;
       const error = 'Error';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = _createShortUrl(() => apiClientMock, {});
+      const dispatchable = createShortUrl(() => apiClientMock)({});
 
       try {
         await dispatchable(dispatch, getState);

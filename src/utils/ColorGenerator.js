@@ -1,6 +1,5 @@
 import { range } from 'ramda';
 import PropTypes from 'prop-types';
-import storage from './Storage';
 
 const HEX_COLOR_LENGTH = 6;
 const { floor, random } = Math;
@@ -13,7 +12,7 @@ const buildRandomColor = () =>
   }`;
 const normalizeKey = (key) => key.toLowerCase().trim();
 
-export class ColorGenerator {
+export default class ColorGenerator {
   constructor(storage) {
     this.storage = storage;
     this.colors = this.storage.get('colors') || {};
@@ -45,7 +44,3 @@ export const colorGeneratorType = PropTypes.shape({
   getColorForKey: PropTypes.func,
   setColorForKey: PropTypes.func,
 });
-
-const colorGenerator = new ColorGenerator(storage);
-
-export default colorGenerator;
