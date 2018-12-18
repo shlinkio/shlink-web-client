@@ -1,20 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { UncontrolledTooltip } from 'reactstrap';
 import { assoc } from 'ramda';
 import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
-import { createServers } from '../reducers/server';
-import serversImporter, { serversImporterType } from '../services/ServersImporter';
 
-export class ImportServersBtnComponent extends React.Component {
+const ImportServersBtn = (serversImporter) => class ImportServersBtn extends React.Component {
   static defaultProps = {
-    serversImporter,
     onImport: () => ({}),
   };
   static propTypes = {
     onImport: PropTypes.func,
-    serversImporter: serversImporterType,
     createServers: PropTypes.func,
     fileRef: PropTypes.oneOfType([ PropTypes.object, PropTypes.node ]),
   };
@@ -25,7 +20,8 @@ export class ImportServersBtnComponent extends React.Component {
   }
 
   render() {
-    const { serversImporter: { importServersFromFile }, onImport, createServers } = this.props;
+    const { importServersFromFile } = serversImporter;
+    const { onImport, createServers } = this.props;
     const onChange = (e) =>
       importServersFromFile(e.target.files[0])
         .then((servers) => servers.map((server) => assoc('id', uuid(), server)))
@@ -56,8 +52,6 @@ export class ImportServersBtnComponent extends React.Component {
       </React.Fragment>
     );
   }
-}
-
-const ImportServersBtn = connect(null, { createServers })(ImportServersBtnComponent);
+};
 
 export default ImportServersBtn;

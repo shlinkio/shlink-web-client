@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import { ServersImporter } from '../../../src/servers/services/ServersImporter';
+import ServersImporter from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
   const servers = [{ name: 'foo' }, { name: 'bar' }];

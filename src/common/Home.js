@@ -1,15 +1,13 @@
 import chevronIcon from '@fortawesome/fontawesome-free-solid/faChevronRight';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { isEmpty, pick, values } from 'ramda';
+import { isEmpty, values } from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { resetSelectedServer } from '../servers/reducers/selectedServer';
 import './Home.scss';
 
-export class HomeComponent extends React.Component {
+export default class Home extends React.Component {
   static propTypes = {
     resetSelectedServer: PropTypes.func,
     servers: PropTypes.object,
@@ -50,7 +48,3 @@ export class HomeComponent extends React.Component {
     );
   }
 }
-
-const Home = connect(pick([ 'servers' ]), { resetSelectedServer })(HomeComponent);
-
-export default Home;

@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import { ColorGenerator } from '../../src/utils/ColorGenerator';
+import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 
 describe('ColorGenerator', () => {
   let colorGenerator;

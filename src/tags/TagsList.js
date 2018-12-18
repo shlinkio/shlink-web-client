@@ -1,16 +1,13 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { pick, splitEvery } from 'ramda';
+import { splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
 import MuttedMessage from '../utils/MuttedMessage';
 import SearchField from '../utils/SearchField';
-import { filterTags, forceListTags } from './reducers/tagsList';
-import TagCard from './TagCard';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
-export class TagsListComponent extends React.Component {
+const TagsList = (TagCard) => class TagsList extends React.Component {
   static propTypes = {
     filterTags: PropTypes.func,
     forceListTags: PropTypes.func,
@@ -82,8 +79,6 @@ export class TagsListComponent extends React.Component {
       </div>
     );
   }
-}
-
-const TagsList = connect(pick([ 'tagsList' ]), { forceListTags, filterTags })(TagsListComponent);
+};
 
 export default TagsList;

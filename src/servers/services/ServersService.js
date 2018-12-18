@@ -1,9 +1,8 @@
 import { assoc, dissoc, reduce } from 'ramda';
-import storage from '../../utils/Storage';
 
 const SERVERS_STORAGE_KEY = 'servers';
 
-export class ServersService {
+export default class ServersService {
   constructor(storage) {
     this.storage = storage;
   }
@@ -30,7 +29,3 @@ export class ServersService {
       dissoc(server.id, this.listServers())
     );
 }
-
-const serversService = new ServersService(storage);
-
-export default serversService;

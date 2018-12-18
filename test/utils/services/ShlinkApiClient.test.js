@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import { head, last } from 'ramda';
-import { ShlinkApiClient } from '../../src/api/ShlinkApiClient';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
   const createAxiosMock = (extraData) => () =>

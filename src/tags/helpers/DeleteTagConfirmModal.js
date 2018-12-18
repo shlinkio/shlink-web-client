@@ -1,11 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { pick } from 'ramda';
-import { deleteTag, tagDeleted, tagDeleteType } from '../reducers/tagDelete';
+import { tagDeleteType } from '../reducers/tagDelete';
 
-export class DeleteTagConfirmModalComponent extends React.Component {
+export default class DeleteTagConfirmModal extends React.Component {
   static propTypes = {
     tag: PropTypes.string.isRequired,
     toggle: PropTypes.func.isRequired,
@@ -67,10 +65,3 @@ export class DeleteTagConfirmModalComponent extends React.Component {
     );
   }
 }
-
-const DeleteTagConfirmModal = connect(
-  pick([ 'tagDelete' ]),
-  { deleteTag, tagDeleted }
-)(DeleteTagConfirmModalComponent);
-
-export default DeleteTagConfirmModal;

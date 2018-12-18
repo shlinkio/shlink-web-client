@@ -1,30 +1,20 @@
-import { isEmpty, pick, values } from 'ramda';
+import { isEmpty, values } from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { selectServer } from '../servers/reducers/selectedServer';
-import serversExporter from '../servers/services/ServersExporter';
-import { listServers } from './reducers/server';
 import { serverType } from './prop-types';
 
-export class ServersDropdownComponent extends React.Component {
-  static defaultProps = {
-    serversExporter,
-  };
+const ServersDropdown = (serversExporter) => class ServersDropdown extends React.Component {
   static propTypes = {
     servers: PropTypes.object,
-    serversExporter: PropTypes.shape({
-      exportServers: PropTypes.func,
-    }),
     selectedServer: serverType,
     selectServer: PropTypes.func,
     listServers: PropTypes.func,
   };
 
   renderServers = () => {
-    const { servers, selectedServer, selectServer, serversExporter } = this.props;
+    const { servers, selectedServer, selectServer } = this.props;
 
     if (isEmpty(servers)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
@@ -68,11 +58,6 @@ export class ServersDropdownComponent extends React.Component {
       </UncontrolledDropdown>
     );
   }
-}
-
-const ServersDropdown = connect(
-  pick([ 'servers', 'selectedServer' ]),
-  { listServers, selectServer }
-)(ServersDropdownComponent);
+};
 
 export default ServersDropdown;

@@ -1,6 +1,4 @@
-import { curry } from 'ramda';
 import PropTypes from 'prop-types';
-import shlinkApiClient from '../../api/ShlinkApiClient';
 import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
@@ -45,8 +43,11 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const _getShortUrlDetail = (shlinkApiClient, shortCode) => async (dispatch) => {
+export const getShortUrlDetail = (buildShlinkApiClient) => (shortCode) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_DETAIL_START });
+
+  const { selectedServer } = getState();
+  const shlinkApiClient = buildShlinkApiClient(selectedServer);
 
   try {
     const shortUrl = await shlinkApiClient.getShortUrl(shortCode);
@@ -56,5 +57,3 @@ export const _getShortUrlDetail = (shlinkApiClient, shortCode) => async (dispatc
     dispatch({ type: GET_SHORT_URL_DETAIL_ERROR });
   }
 };
-
-export const getShortUrlDetail = curry(_getShortUrlDetail)(shlinkApiClient);

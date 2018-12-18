@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import * as sinon from 'sinon';
-import { DeleteShortUrlModalComponent as DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
+import DeleteShortUrlModal from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 
 describe('<DeleteShortUrlModal />', () => {
   let wrapper;

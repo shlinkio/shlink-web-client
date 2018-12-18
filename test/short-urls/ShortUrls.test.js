@@ -1,18 +1,20 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ShortUrlsComponent as ShortUrls } from '../../src/short-urls/ShortUrls';
+import shortUrlsCreator from '../../src/short-urls/ShortUrls';
 import Paginator from '../../src/short-urls/Paginator';
-import ShortUrlsList from '../../src/short-urls/ShortUrlsList';
-import SearchBar from '../../src/short-urls/SearchBar';
 
-describe('<ShortUrlsList />', () => {
+describe('<ShortUrls />', () => {
   let wrapper;
+  const SearchBar = () => '';
+  const ShortUrlsList = () => '';
 
   beforeEach(() => {
     const params = {
       serverId: '1',
       page: '1',
     };
+
+    const ShortUrls = shortUrlsCreator(SearchBar, ShortUrlsList);
 
     wrapper = shallow(<ShortUrls match={{ params }} shortUrlsList={{ data: [] }} />);
   });

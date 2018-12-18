@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { compose } from 'redux';
-import { deleteServer } from './reducers/server';
 import { serverType } from './prop-types';
 
 const propTypes = {
@@ -17,7 +13,7 @@ const propTypes = {
   }),
 };
 
-export const DeleteServerModalComponent = ({ server, toggle, isOpen, deleteServer, history }) => {
+const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
   const closeModal = () => {
     deleteServer(server);
     toggle();
@@ -42,11 +38,6 @@ export const DeleteServerModalComponent = ({ server, toggle, isOpen, deleteServe
   );
 };
 
-DeleteServerModalComponent.propTypes = propTypes;
-
-const DeleteServerModal = compose(
-  withRouter,
-  connect(null, { deleteServer })
-)(DeleteServerModalComponent);
+DeleteServerModal.propTypes = propTypes;
 
 export default DeleteServerModal;

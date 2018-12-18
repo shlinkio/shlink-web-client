@@ -2,11 +2,11 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import sinon from 'sinon';
-import { CreateServerComponent } from '../../src/servers/CreateServer';
-import ImportServersBtn from '../../src/servers/helpers/ImportServersBtn';
+import createServerConstruct from '../../src/servers/CreateServer';
 
 describe('<CreateServer />', () => {
   let wrapper;
+  const ImportServersBtn = () => '';
   const createServerMock = sinon.fake();
   const historyMock = {
     push: sinon.fake(),
@@ -16,12 +16,10 @@ describe('<CreateServer />', () => {
     createServerMock.resetHistory();
     historyMock.push.resetHistory();
 
+    const CreateServer = createServerConstruct(ImportServersBtn);
+
     wrapper = shallow(
-      <CreateServerComponent
-        createServer={createServerMock}
-        resetSelectedServer={identity}
-        history={historyMock}
-      />
+      <CreateServer createServer={createServerMock} resetSelectedServer={identity} history={historyMock} />
     );
   });
   afterEach(() => wrapper.unmount());

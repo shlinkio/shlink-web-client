@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import { last } from 'ramda';
-import { ServersService } from '../../../src/servers/services/ServersService';
+import ServersService from '../../../src/servers/services/ServersService';
 
 describe('ServersService', () => {
   const servers = {

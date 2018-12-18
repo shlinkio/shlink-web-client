@@ -1,8 +1,7 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export class ScrollToTopComponent extends React.Component {
+export default class ScrollToTop extends React.Component {
   static propTypes = {
     location: PropTypes.object,
     window: PropTypes.shape({
@@ -11,7 +10,7 @@ export class ScrollToTopComponent extends React.Component {
     children: PropTypes.node,
   };
   static defaultProps = {
-    window,
+    window: global.window,
   };
 
   componentDidUpdate(prevProps) {
@@ -26,7 +25,3 @@ export class ScrollToTopComponent extends React.Component {
     return this.props.children;
   }
 }
-
-const ScrollToTop = withRouter(ScrollToTopComponent);
-
-export default ScrollToTop;

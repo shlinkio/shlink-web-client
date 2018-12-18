@@ -2,7 +2,7 @@ import { shallow } from 'enzyme';
 import { values } from 'ramda';
 import React from 'react';
 import * as sinon from 'sinon';
-import { HomeComponent } from '../../src/common/Home';
+import Home from '../../src/common/Home';
 
 describe('<Home />', () => {
   let wrapped;
@@ -15,7 +15,7 @@ describe('<Home />', () => {
   const createComponent = (props) => {
     const actualProps = { ...defaultProps, ...props };
 
-    wrapped = shallow(<HomeComponent {...actualProps} />);
+    wrapped = shallow(<Home {...actualProps} />);
 
     return wrapped;
   };

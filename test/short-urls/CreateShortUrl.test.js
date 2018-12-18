@@ -3,18 +3,20 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import * as sinon from 'sinon';
 import { identity } from 'ramda';
-import { CreateShortUrlComponent as CreateShortUrl } from '../../src/short-urls/CreateShortUrl';
-import TagsSelector from '../../src/tags/helpers/TagsSelector';
+import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
 import DateInput from '../../src/utils/DateInput';
 
 describe('<CreateShortUrl />', () => {
   let wrapper;
+  const TagsSelector = () => '';
   const shortUrlCreationResult = {
     loading: false,
   };
   const createShortUrl = sinon.spy();
 
   beforeEach(() => {
+    const CreateShortUrl = createShortUrlsCreator(TagsSelector);
+
     wrapper = shallow(
       <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />
     );

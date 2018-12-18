@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { Card } from 'reactstrap';
 import * as sinon from 'sinon';
-import { ShortUrlsVisitsComponent as ShortUrlsVisits } from '../../src/visits/ShortUrlVisits';
+import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
 import MutedMessage from '../../src/utils/MuttedMessage';
 import GraphCard from '../../src/visits/GraphCard';
 import DateInput from '../../src/utils/DateInput';
@@ -18,14 +18,17 @@ describe('<ShortUrlVisits />', () => {
   };
 
   const createComponent = (shortUrlVisits) => {
+    const ShortUrlVisits = createShortUrlVisits({
+      processBrowserStats: statsProcessor,
+      processCountriesStats: statsProcessor,
+      processOsStats: statsProcessor,
+      processReferrersStats: statsProcessor,
+    });
+
     wrapper = shallow(
-      <ShortUrlsVisits
+      <ShortUrlVisits
         getShortUrlDetail={identity}
         getShortUrlVisits={getShortUrlVisitsMock}
-        processBrowserStats={statsProcessor}
-        processCountriesStats={statsProcessor}
-        processOsStats={statsProcessor}
-        processReferrersStats={statsProcessor}
         match={match}
         shortUrlVisits={shortUrlVisits}
         shortUrlDetail={{}}

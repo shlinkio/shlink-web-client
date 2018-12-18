@@ -2,15 +2,14 @@ import plusIcon from '@fortawesome/fontawesome-free-solid/faPlus';
 import arrowIcon from '@fortawesome/fontawesome-free-solid/faChevronDown';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import ServersDropdown from '../servers/ServersDropdown';
-import './MainHeader.scss';
 import shlinkLogo from './shlink-logo-white.png';
+import './MainHeader.scss';
 
-export class MainHeaderComponent extends React.Component {
+const MainHeader = (ServersDropdown) => class MainHeader extends React.Component {
   static propTypes = {
     location: PropTypes.object,
   };
@@ -62,8 +61,6 @@ export class MainHeaderComponent extends React.Component {
       </Navbar>
     );
   }
-}
-
-const MainHeader = withRouter(MainHeaderComponent);
+};
 
 export default MainHeader;

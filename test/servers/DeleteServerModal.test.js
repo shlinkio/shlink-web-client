@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { DeleteServerModalComponent } from '../../src/servers/DeleteServerModal';
+import DeleteServerModal from '../../src/servers/DeleteServerModal';
 
 describe('<DeleteServerModal />', () => {
   let wrapper;
@@ -17,7 +17,7 @@ describe('<DeleteServerModal />', () => {
     historyMock.push.resetHistory();
 
     wrapper = shallow(
-      <DeleteServerModalComponent
+      <DeleteServerModal
         server={{ name: serverName }}
         toggle={toggleMock}
         isOpen={true}

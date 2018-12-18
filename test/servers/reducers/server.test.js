@@ -1,10 +1,10 @@
 import * as sinon from 'sinon';
 import { values } from 'ramda';
 import reducer, {
-  _createServer,
-  _deleteServer,
-  _listServers,
-  _createServers,
+  createServer,
+  deleteServer,
+  listServers,
+  createServers,
   FETCH_SERVERS,
 } from '../../../src/servers/reducers/server';
 
@@ -38,7 +38,7 @@ describe('serverReducer', () => {
 
     describe('listServers', () => {
       it('fetches servers and returns them as part of the action', () => {
-        const result = _listServers(ServersServiceMock);
+        const result = listServers(ServersServiceMock)();
 
         expect(result).toEqual({ type: FETCH_SERVERS, servers });
         expect(ServersServiceMock.listServers.callCount).toEqual(1);
@@ -51,7 +51,7 @@ describe('serverReducer', () => {
     describe('createServer', () => {
       it('adds new server and then fetches servers again', () => {
         const serverToCreate = { id: 'abc123' };
-        const result = _createServer(ServersServiceMock, serverToCreate);
+        const result = createServer(ServersServiceMock)(serverToCreate);
 
         expect(result).toEqual({ type: FETCH_SERVERS, servers });
         expect(ServersServiceMock.listServers.callCount).toEqual(1);
@@ -65,7 +65,7 @@ describe('serverReducer', () => {
     describe('deleteServer', () => {
       it('deletes a server and then fetches servers again', () => {
         const serverToDelete = { id: 'abc123' };
-        const result = _deleteServer(ServersServiceMock, serverToDelete);
+        const result = deleteServer(ServersServiceMock)(serverToDelete);
 
         expect(result).toEqual({ type: FETCH_SERVERS, servers });
         expect(ServersServiceMock.listServers.callCount).toEqual(1);
@@ -79,7 +79,7 @@ describe('serverReducer', () => {
     describe('createServer', () => {
       it('creates multiple servers and then fetches servers again', () => {
         const serversToCreate = values(servers);
-        const result = _createServers(ServersServiceMock, serversToCreate);
+        const result = createServers(ServersServiceMock)(serversToCreate);
 
         expect(result).toEqual({ type: FETCH_SERVERS, servers });
         expect(ServersServiceMock.listServers.callCount).toEqual(1);

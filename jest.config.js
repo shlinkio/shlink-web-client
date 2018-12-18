@@ -1,9 +1,11 @@
 module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: [
-    'src/**/*.{js,jsx,mjs}',
+    'src/**/*.js',
     '!src/registerServiceWorker.js',
     '!src/index.js',
+    '!src/**/provideServices.js',
+    '!src/container/*.js',
   ],
   setupFiles: [
     '<rootDir>/config/polyfills.js',
