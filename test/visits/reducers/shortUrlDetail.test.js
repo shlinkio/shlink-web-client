@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import reducer, {
-  _getShortUrlDetail,
+  getShortUrlDetail,
   GET_SHORT_URL_DETAIL_START,
   GET_SHORT_URL_DETAIL_ERROR,
   GET_SHORT_URL_DETAIL,
@@ -58,7 +58,7 @@ describe('shortUrlDetailReducer', () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject());
       const expectedDispatchCalls = 2;
 
-      await _getShortUrlDetail(() => ShlinkApiClient, 'abc123')(dispatchMock, getState);
+      await getShortUrlDetail(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
 
       const [ firstCallArg ] = dispatchMock.getCall(0).args;
       const { type: firstCallType } = firstCallArg;
@@ -77,7 +77,7 @@ describe('shortUrlDetailReducer', () => {
       const ShlinkApiClient = buildApiClientMock(Promise.resolve(resolvedShortUrl));
       const expectedDispatchCalls = 2;
 
-      await _getShortUrlDetail(() => ShlinkApiClient, 'abc123')(dispatchMock, getState);
+      await getShortUrlDetail(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
 
       const [ firstCallArg ] = dispatchMock.getCall(0).args;
       const { type: firstCallType } = firstCallArg;

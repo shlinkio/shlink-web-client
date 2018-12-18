@@ -1,31 +1,25 @@
 import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { isEmpty, mapObjIndexed, pick } from 'ramda';
+import { isEmpty, mapObjIndexed } from 'ramda';
 import React from 'react';
-import { connect } from 'react-redux';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
 import SortableBarGraph from './SortableBarGraph';
-import { getShortUrlVisits, shortUrlVisitsType } from './reducers/shortUrlVisits';
-import {
-  processBrowserStats,
-  processCountriesStats,
-  processOsStats,
-  processReferrersStats,
-} from './services/VisitsParser';
+import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import { VisitsHeader } from './VisitsHeader';
 import GraphCard from './GraphCard';
-import { getShortUrlDetail, shortUrlDetailType } from './reducers/shortUrlDetail';
+import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
 
-export class ShortUrlsVisitsComponent extends React.Component {
+const ShortUrlVisits = ({
+  processOsStats,
+  processBrowserStats,
+  processCountriesStats,
+  processReferrersStats,
+}) => class ShortUrlVisits extends React.Component {
   static propTypes = {
-    processOsStats: PropTypes.func,
-    processBrowserStats: PropTypes.func,
-    processCountriesStats: PropTypes.func,
-    processReferrersStats: PropTypes.func,
     match: PropTypes.shape({
       params: PropTypes.object,
     }),
@@ -33,12 +27,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
     shortUrlVisits: shortUrlVisitsType,
     getShortUrlDetail: PropTypes.func,
     shortUrlDetail: shortUrlDetailType,
-  };
-  static defaultProps = {
-    processOsStats,
-    processBrowserStats,
-    processCountriesStats,
-    processReferrersStats,
   };
 
   state = { startDate: undefined, endDate: undefined };
@@ -59,14 +47,7 @@ export class ShortUrlsVisitsComponent extends React.Component {
   }
 
   render() {
-    const {
-      processOsStats,
-      processBrowserStats,
-      processCountriesStats,
-      processReferrersStats,
-      shortUrlVisits,
-      shortUrlDetail,
-    } = this.props;
+    const { shortUrlVisits, shortUrlDetail } = this.props;
 
     const renderVisitsContent = () => {
       const { visits, loading, error } = shortUrlVisits;
@@ -153,11 +134,6 @@ export class ShortUrlsVisitsComponent extends React.Component {
       </div>
     );
   }
-}
+};
 
-const ShortUrlsVisits = connect(
-  pick([ 'shortUrlVisits', 'shortUrlDetail' ]),
-  { getShortUrlVisits, getShortUrlDetail }
-)(ShortUrlsVisitsComponent);
-
-export default ShortUrlsVisits;
+export default ShortUrlVisits;

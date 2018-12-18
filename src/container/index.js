@@ -45,6 +45,7 @@ import DeleteTagConfirmModal from '../tags/helpers/DeleteTagConfirmModal';
 import { deleteTag, tagDeleted } from '../tags/reducers/tagDelete';
 import EditTagModal from '../tags/helpers/EditTagModal';
 import { editTag, tagEdited } from '../tags/reducers/tagEdit';
+import provideVisitsServices from '../visits/container/provideServices';
 
 const bottle = new Bottle();
 const { container } = bottle;
@@ -70,7 +71,15 @@ bottle.decorator('MainHeader', withRouter);
 bottle.serviceFactory('Home', () => Home);
 bottle.decorator('Home', connectDecorator([ 'servers' ], { resetSelectedServer }));
 
-bottle.serviceFactory('MenuLayout', MenuLayout, 'TagsList', 'ShortUrls', 'AsideMenu', 'CreateShortUrl');
+bottle.serviceFactory(
+  'MenuLayout',
+  MenuLayout,
+  'TagsList',
+  'ShortUrls',
+  'AsideMenu',
+  'CreateShortUrl',
+  'ShortUrlVisits'
+);
 bottle.decorator('MenuLayout', connectDecorator([ 'selectedServer', 'shortUrlsListParams' ], { selectServer }));
 bottle.decorator('MenuLayout', withRouter);
 
@@ -160,5 +169,7 @@ bottle.decorator('DeleteTagConfirmModal', connectDecorator([ 'tagDelete' ], { de
 
 bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
 bottle.decorator('EditTagModal', connectDecorator([ 'tagEdit' ], { editTag, tagEdited }));
+
+provideVisitsServices(bottle, connectDecorator);
 
 export default container;
