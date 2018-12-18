@@ -54,7 +54,7 @@ const TagsSelector = (colorGenerator) => class TagsSelector extends React.Compon
           getSuggestionValue={(suggestion) => suggestion}
           renderSuggestion={(suggestion) => (
             <React.Fragment>
-              <TagBullet tag={suggestion} />
+              <TagBullet tag={suggestion} colorGenerator={colorGenerator} />
               {suggestion}
             </React.Fragment>
           )}

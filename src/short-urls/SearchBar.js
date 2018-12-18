@@ -4,6 +4,7 @@ import React from 'react';
 import { isEmpty } from 'ramda';
 import PropTypes from 'prop-types';
 import SearchField from '../utils/SearchField';
+import Tag from '../tags/helpers/Tag';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './SearchBar.scss';
 
@@ -12,7 +13,7 @@ const propTypes = {
   shortUrlsListParams: shortUrlsListParamsType,
 };
 
-const SearchBar = (Tag) => {
+const SearchBar = (colorGenerator) => {
   const SearchBar = ({ listShortUrls, shortUrlsListParams }) => {
     const selectedTags = shortUrlsListParams.tags || [];
 
@@ -29,6 +30,7 @@ const SearchBar = (Tag) => {
             &nbsp;
             {selectedTags.map((tag) => (
               <Tag
+                colorGenerator={colorGenerator}
                 key={tag}
                 text={tag}
                 clearable

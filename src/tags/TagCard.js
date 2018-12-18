@@ -7,10 +7,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import TagBullet from './helpers/TagBullet';
 import './TagCard.scss';
-import DeleteTagConfirmModal from './helpers/DeleteTagConfirmModal';
-import EditTagModal from './helpers/EditTagModal';
 
-export default class TagCard extends React.Component {
+const TagCard = (DeleteTagConfirmModal, EditTagModal, colorGenerator) => class TagCard extends React.Component {
   static propTypes = {
     tag: PropTypes.string,
     currentServerId: PropTypes.string,
@@ -35,7 +33,7 @@ export default class TagCard extends React.Component {
             <FontAwesomeIcon icon={editIcon} />
           </button>
           <h5 className="tag-card__tag-title">
-            <TagBullet tag={tag} />
+            <TagBullet tag={tag} colorGenerator={colorGenerator} />
             <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>{tag}</Link>
           </h5>
         </CardBody>
@@ -45,4 +43,6 @@ export default class TagCard extends React.Component {
       </Card>
     );
   }
-}
+};
+
+export default TagCard;

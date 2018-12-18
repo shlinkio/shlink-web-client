@@ -3,12 +3,11 @@ import { splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
 import MuttedMessage from '../utils/MuttedMessage';
 import SearchField from '../utils/SearchField';
-import TagCard from './TagCard';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
-export default class TagsList extends React.Component {
+const TagsList = (TagCard) => class TagsList extends React.Component {
   static propTypes = {
     filterTags: PropTypes.func,
     forceListTags: PropTypes.func,
@@ -80,4 +79,6 @@ export default class TagsList extends React.Component {
       </div>
     );
   }
-}
+};
+
+export default TagsList;

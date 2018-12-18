@@ -20,7 +20,6 @@ import SearchBar from '../short-urls/SearchBar';
 import { listShortUrls } from '../short-urls/reducers/shortUrlsList';
 import ShortUrlsList from '../short-urls/ShortUrlsList';
 import { resetShortUrlParams } from '../short-urls/reducers/shortUrlsListParams';
-import Tag from '../tags/helpers/Tag';
 import { ColorGenerator } from '../utils/ColorGenerator';
 import { Storage } from '../utils/Storage';
 import ShortUrlsRow from '../short-urls/helpers/ShortUrlsRow';
@@ -41,6 +40,11 @@ import { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted } from '../short-u
 import EditTagsModal from '../short-urls/helpers/EditTagsModal';
 import { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited } from '../short-urls/reducers/shortUrlTags';
 import buildShlinkApiClient from '../api/ShlinkApiClientBuilder';
+import TagCard from '../tags/TagCard';
+import DeleteTagConfirmModal from '../tags/helpers/DeleteTagConfirmModal';
+import { deleteTag, tagDeleted } from '../tags/reducers/tagDelete';
+import EditTagModal from '../tags/helpers/EditTagModal';
+import { editTag, tagEdited } from '../tags/reducers/tagEdit';
 
 const bottle = new Bottle();
 const { container } = bottle;
@@ -78,7 +82,7 @@ bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateSer
 bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
 bottle.decorator('ServersDropdown', connectDecorator([ 'servers', 'selectedServer' ], { listServers, selectServer }));
 
-bottle.serviceFactory('TagsList', () => TagsList);
+bottle.serviceFactory('TagsList', TagsList, 'TagCard');
 bottle.decorator('TagsList', connectDecorator([ 'tagsList' ], { forceListTags, filterTags }));
 
 bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
@@ -86,7 +90,7 @@ bottle.decorator('ShortUrls', connect(
   (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList)
 ));
 
-bottle.serviceFactory('SearchBar', SearchBar, 'Tag');
+bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
 bottle.decorator('SearchBar', connectDecorator([ 'shortUrlsListParams' ], { listShortUrls }));
 
 bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
@@ -95,13 +99,11 @@ bottle.decorator('ShortUrlsList', connectDecorator(
   { listShortUrls, resetShortUrlParams }
 ));
 
-bottle.serviceFactory('Tag', Tag, 'ColorGenerator');
-
 bottle.constant('localStorage', global.localStorage);
 bottle.service('Storage', Storage, 'localStorage');
 bottle.service('ColorGenerator', ColorGenerator, 'Storage');
 
-bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'Tag', 'ShortUrlsRowMenu');
+bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator');
 
 bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'EditTagsModal');
 
@@ -150,5 +152,13 @@ bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
 bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
 
 bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
+
+bottle.serviceFactory('TagCard', TagCard, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
+
+bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
+bottle.decorator('DeleteTagConfirmModal', connectDecorator([ 'tagDelete' ], { deleteTag, tagDeleted }));
+
+bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
+bottle.decorator('EditTagModal', connectDecorator([ 'tagEdit' ], { editTag, tagEdited }));
 
 export default container;

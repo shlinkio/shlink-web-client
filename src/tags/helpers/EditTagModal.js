@@ -1,30 +1,22 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
-import { pick } from 'ramda';
 import { ChromePicker } from 'react-color';
 import colorIcon from '@fortawesome/fontawesome-free-solid/faPalette';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import colorGenerator, { colorGeneratorType } from '../../utils/ColorGenerator';
-import { editTag, tagEdited } from '../reducers/tagEdit';
 import './EditTagModal.scss';
 
-export class EditTagModalComponent extends React.Component {
+const EditTagModal = ({ getColorForKey }) => class EditTagModal extends React.Component {
   static propTypes = {
     tag: PropTypes.string,
     editTag: PropTypes.func,
     toggle: PropTypes.func,
     tagEdited: PropTypes.func,
-    colorGenerator: colorGeneratorType,
     isOpen: PropTypes.bool,
     tagEdit: PropTypes.shape({
       error: PropTypes.bool,
       editing: PropTypes.bool,
     }),
-  };
-  static defaultProps = {
-    colorGenerator,
   };
 
   saveTag = (e) => {
@@ -53,12 +45,12 @@ export class EditTagModalComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    const { colorGenerator, tag } = props;
+    const { tag } = props;
 
     this.state = {
       showColorPicker: false,
       tag,
-      color: colorGenerator.getColorForKey(tag),
+      color: getColorForKey(tag),
     };
   }
 
@@ -131,8 +123,6 @@ export class EditTagModalComponent extends React.Component {
       </Modal>
     );
   }
-}
-
-const EditTagModal = connect(pick([ 'tagEdit' ]), { editTag, tagEdited })(EditTagModalComponent);
+};
 
 export default EditTagModal;

@@ -3,12 +3,12 @@ import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
+import Tag from '../../src/tags/helpers/Tag';
 
 describe('<SearchBar />', () => {
   let wrapper;
   const listShortUrlsMock = sinon.spy();
-  const Tag = () => '';
-  const SearchBar = searchBarCreator(Tag);
+  const SearchBar = searchBarCreator({});
 
   afterEach(() => {
     listShortUrlsMock.resetHistory();

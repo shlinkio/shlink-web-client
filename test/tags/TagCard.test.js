@@ -1,13 +1,15 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from 'react-router-dom';
-import TagCard from '../../src/tags/TagCard';
+import createTagCard from '../../src/tags/TagCard';
 import TagBullet from '../../src/tags/helpers/TagBullet';
 
 describe('<TagCard />', () => {
   let wrapper;
 
   beforeEach(() => {
+    const TagCard = createTagCard(() => '', () => '', {});
+
     wrapper = shallow(<TagCard tag="ssr" currentServerId="1" />);
   });
   afterEach(() => wrapper.unmount());

@@ -7,9 +7,10 @@ import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { stateFlagTimeout } from '../../utils/utils';
+import Tag from '../../tags/helpers/Tag';
 import './ShortUrlsRow.scss';
 
-const ShortUrlsRow = (Tag, ShortUrlsRowMenu) => class ShortUrlsRow extends React.Component {
+const ShortUrlsRow = (ShortUrlsRowMenu, colorGenerator) => class ShortUrlsRow extends React.Component {
   static propTypes = {
     refreshList: PropTypes.func,
     shortUrlsListParams: shortUrlsListParamsType,
@@ -29,6 +30,7 @@ const ShortUrlsRow = (Tag, ShortUrlsRowMenu) => class ShortUrlsRow extends React
 
     return tags.map((tag) => (
       <Tag
+        colorGenerator={colorGenerator}
         key={tag}
         text={tag}
         onClick={() => refreshList({ tags: [ ...selectedTags, tag ] })}
