@@ -1,6 +1,4 @@
-import { curry, pick } from 'ramda';
-import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../api/ShlinkApiClientBuilder';
-import colorGenerator from '../../utils/ColorGenerator';
+import { pick } from 'ramda';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
@@ -42,7 +40,7 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _editTag = (buildShlinkApiClient, colorGenerator, oldName, newName, color) => async (
+export const editTag = (buildShlinkApiClient, colorGenerator) => (oldName, newName, color) => async (
   dispatch,
   getState
 ) => {
@@ -61,8 +59,6 @@ export const _editTag = (buildShlinkApiClient, colorGenerator, oldName, newName,
     throw e;
   }
 };
-
-export const editTag = curry(_editTag)(buildShlinkApiClient, colorGenerator);
 
 export const tagEdited = (oldName, newName, color) => ({
   type: TAG_EDITED,

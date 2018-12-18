@@ -5,7 +5,7 @@ import reducer, {
   DELETE_TAG,
   TAG_DELETED,
   tagDeleted,
-  _deleteTag,
+  deleteTag,
 } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagDeleteReducer', () => {
@@ -56,7 +56,7 @@ describe('tagDeleteReducer', () => {
       const expectedDispatchCalls = 2;
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = _deleteTag(() => apiClientMock, tag);
+      const dispatchable = deleteTag(() => apiClientMock)(tag);
 
       await dispatchable(dispatch, getState);
 
@@ -73,7 +73,7 @@ describe('tagDeleteReducer', () => {
       const error = 'Error';
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = _deleteTag(() => apiClientMock, tag);
+      const dispatchable = deleteTag(() => apiClientMock)(tag);
 
       try {
         await dispatchable(dispatch, getState);

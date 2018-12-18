@@ -1,6 +1,6 @@
 import Bottle from 'bottlejs';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect as reduxConnect } from 'react-redux';
 import { assoc, pick } from 'ramda';
 import csvjson from 'csvjson';
 import axios from 'axios';
@@ -13,8 +13,6 @@ import MenuLayout from '../common/MenuLayout';
 import { createServer, createServers, deleteServer, listServers } from '../servers/reducers/server';
 import CreateServer from '../servers/CreateServer';
 import ServersDropdown from '../servers/ServersDropdown';
-import TagsList from '../tags/TagsList';
-import { filterTags, forceListTags, listTags } from '../tags/reducers/tagsList';
 import ShortUrls from '../short-urls/ShortUrls';
 import SearchBar from '../short-urls/SearchBar';
 import { listShortUrls } from '../short-urls/reducers/shortUrlsList';
@@ -34,18 +32,13 @@ import { ServersExporter } from '../servers/services/ServersExporter';
 import { ServersService } from '../servers/services/ServersService';
 import CreateShortUrl from '../short-urls/CreateShortUrl';
 import { createShortUrl, resetCreateShortUrl } from '../short-urls/reducers/shortUrlCreation';
-import TagsSelector from '../tags/helpers/TagsSelector';
 import DeleteShortUrlModal from '../short-urls/helpers/DeleteShortUrlModal';
 import { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted } from '../short-urls/reducers/shortUrlDeletion';
 import EditTagsModal from '../short-urls/helpers/EditTagsModal';
 import { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited } from '../short-urls/reducers/shortUrlTags';
 import buildShlinkApiClient from '../api/ShlinkApiClientBuilder';
-import TagCard from '../tags/TagCard';
-import DeleteTagConfirmModal from '../tags/helpers/DeleteTagConfirmModal';
-import { deleteTag, tagDeleted } from '../tags/reducers/tagDelete';
-import EditTagModal from '../tags/helpers/EditTagModal';
-import { editTag, tagEdited } from '../tags/reducers/tagEdit';
-import provideVisitsServices from '../visits/container/provideServices';
+import provideVisitsServices from '../visits/services/provideServices';
+import provideTagsServices from '../tags/services/provideServices';
 
 const bottle = new Bottle();
 const { container } = bottle;
@@ -56,8 +49,8 @@ const mapActionService = (map, actionName) => ({
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: (...args) => container[actionName](...args),
 });
-const connectDecorator = (propsFromState, actionServiceNames) =>
-  connect(
+const connect = (propsFromState, actionServiceNames) =>
+  reduxConnect(
     pick(propsFromState),
     Array.isArray(actionServiceNames) ? actionServiceNames.reduce(mapActionService, {}) : actionServiceNames
   );
@@ -69,7 +62,7 @@ bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');
 bottle.decorator('MainHeader', withRouter);
 
 bottle.serviceFactory('Home', () => Home);
-bottle.decorator('Home', connectDecorator([ 'servers' ], { resetSelectedServer }));
+bottle.decorator('Home', connect([ 'servers' ], { resetSelectedServer }));
 
 bottle.serviceFactory(
   'MenuLayout',
@@ -80,30 +73,27 @@ bottle.serviceFactory(
   'CreateShortUrl',
   'ShortUrlVisits'
 );
-bottle.decorator('MenuLayout', connectDecorator([ 'selectedServer', 'shortUrlsListParams' ], { selectServer }));
+bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], { selectServer }));
 bottle.decorator('MenuLayout', withRouter);
 
 bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn');
-bottle.decorator('CreateServer', connectDecorator([ 'selectedServer' ], { createServer, resetSelectedServer }));
+bottle.decorator('CreateServer', connect([ 'selectedServer' ], { createServer, resetSelectedServer }));
 
 bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer');
 
 bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
-bottle.decorator('ServersDropdown', connectDecorator([ 'servers', 'selectedServer' ], { listServers, selectServer }));
-
-bottle.serviceFactory('TagsList', TagsList, 'TagCard');
-bottle.decorator('TagsList', connectDecorator([ 'tagsList' ], { forceListTags, filterTags }));
+bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ], { listServers, selectServer }));
 
 bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
-bottle.decorator('ShortUrls', connect(
+bottle.decorator('ShortUrls', reduxConnect(
   (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList)
 ));
 
 bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-bottle.decorator('SearchBar', connectDecorator([ 'shortUrlsListParams' ], { listShortUrls }));
+bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], { listShortUrls }));
 
 bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
-bottle.decorator('ShortUrlsList', connectDecorator(
+bottle.decorator('ShortUrlsList', connect(
   [ 'selectedServer', 'shortUrlsListParams' ],
   { listShortUrls, resetShortUrlParams }
 ));
@@ -111,6 +101,8 @@ bottle.decorator('ShortUrlsList', connectDecorator(
 bottle.constant('localStorage', global.localStorage);
 bottle.service('Storage', Storage, 'localStorage');
 bottle.service('ColorGenerator', ColorGenerator, 'Storage');
+
+bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
 
 bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator');
 
@@ -121,13 +113,13 @@ bottle.service('ShlinkApiClient', ShlinkApiClient, 'axios');
 
 bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
 bottle.decorator('DeleteServerModal', withRouter);
-bottle.decorator('DeleteServerModal', connect(null, { deleteServer }));
+bottle.decorator('DeleteServerModal', reduxConnect(null, { deleteServer }));
 
 bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
 bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
 bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
-bottle.decorator('ImportServersBtn', connect(null, { createServers }));
+bottle.decorator('ImportServersBtn', reduxConnect(null, { createServers }));
 
 bottle.constant('csvjson', csvjson);
 bottle.constant('window', global.window);
@@ -136,22 +128,19 @@ bottle.service('ServersService', ServersService, 'Storage');
 bottle.service('ServersExporter', ServersExporter, 'ServersService', 'window', 'csvjson');
 
 bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector');
-bottle.decorator('CreateShortUrl', connectDecorator([ 'shortUrlCreationResult' ], {
+bottle.decorator('CreateShortUrl', connect([ 'shortUrlCreationResult' ], {
   createShortUrl,
   resetCreateShortUrl,
 }));
 
-bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
-bottle.decorator('TagsSelector', connectDecorator([ 'tagsList' ], { listTags }));
-
 bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
-bottle.decorator('DeleteShortUrlModal', connectDecorator(
+bottle.decorator('DeleteShortUrlModal', connect(
   [ 'shortUrlDeletion' ],
   { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted }
 ));
 
 bottle.serviceFactory('EditTagsModal', EditTagsModal, 'TagsSelector');
-bottle.decorator('EditTagsModal', connectDecorator(
+bottle.decorator('EditTagsModal', connect(
   [ 'shortUrlTags' ],
   [ 'editShortUrlTags', 'resetShortUrlsTags', 'shortUrlTagsEdited' ]
 ));
@@ -160,16 +149,7 @@ bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'buildShlinkApiClien
 bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
 bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
 
-bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
-
-bottle.serviceFactory('TagCard', TagCard, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
-
-bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
-bottle.decorator('DeleteTagConfirmModal', connectDecorator([ 'tagDelete' ], { deleteTag, tagDeleted }));
-
-bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
-bottle.decorator('EditTagModal', connectDecorator([ 'tagEdit' ], { editTag, tagEdited }));
-
-provideVisitsServices(bottle, connectDecorator);
+provideTagsServices(bottle, connect);
+provideVisitsServices(bottle, connect);
 
 export default container;

@@ -1,6 +1,4 @@
-import { curry } from 'ramda';
 import PropTypes from 'prop-types';
-import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../api/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
@@ -41,7 +39,7 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _deleteTag = (buildShlinkApiClient, tag) => async (dispatch, getState) => {
+export const deleteTag = (buildShlinkApiClient) => (tag) => async (dispatch, getState) => {
   dispatch({ type: DELETE_TAG_START });
 
   const { selectedServer } = getState();
@@ -56,7 +54,5 @@ export const _deleteTag = (buildShlinkApiClient, tag) => async (dispatch, getSta
     throw e;
   }
 };
-
-export const deleteTag = curry(_deleteTag)(buildShlinkApiClient);
 
 export const tagDeleted = (tag) => ({ type: TAG_DELETED, tag });

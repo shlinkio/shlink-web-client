@@ -5,7 +5,7 @@ import reducer, {
   EDIT_TAG,
   TAG_EDITED,
   tagEdited,
-  _editTag,
+  editTag,
 } from '../../../src/tags/reducers/tagEdit';
 
 describe('tagEditReducer', () => {
@@ -68,7 +68,7 @@ describe('tagEditReducer', () => {
       const newName = 'bar';
       const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = _editTag(() => apiClientMock, colorGenerator, oldName, newName, color);
+      const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
 
       await dispatchable(dispatch, getState);
 
@@ -90,7 +90,7 @@ describe('tagEditReducer', () => {
       const newName = 'bar';
       const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = _editTag(() => apiClientMock, colorGenerator, oldName, newName, color);
+      const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
 
       try {
         await dispatchable(dispatch, getState);

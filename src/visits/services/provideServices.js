@@ -1,7 +1,7 @@
 import ShortUrlVisits from '../ShortUrlVisits';
 import { getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
-import * as visitsParser from '../services/VisitsParser';
+import * as visitsParser from './VisitsParser';
 
 const provideServices = (bottle, connect) => {
   // Components
