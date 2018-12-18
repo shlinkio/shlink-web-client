@@ -1,6 +1,5 @@
 import { assoc, assocPath, reject } from 'ramda';
 import PropTypes from 'prop-types';
-import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../api/ShlinkApiClientBuilder';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 
@@ -55,10 +54,10 @@ export default function reducer(state = initialState, action) {
   }
 }
 
-export const _listShortUrls = (buildShlinkApiClient, params = {}) => async (dispatch, getState) => {
+export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (dispatch, getState) => {
   dispatch({ type: LIST_SHORT_URLS_START });
 
-  const { selectedServer } = getState();
+  const { selectedServer = {} } = getState();
   const shlinkApiClient = buildShlinkApiClient(selectedServer);
 
   try {
@@ -69,5 +68,3 @@ export const _listShortUrls = (buildShlinkApiClient, params = {}) => async (disp
     dispatch({ type: LIST_SHORT_URLS_ERROR, params });
   }
 };
-
-export const listShortUrls = (params = {}) => _listShortUrls(buildShlinkApiClient, params);

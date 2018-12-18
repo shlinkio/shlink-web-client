@@ -1,4 +1,3 @@
-import serversService from '../../servers/services/ServersService';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
@@ -21,8 +20,10 @@ export default function reducer(state = defaultState, action) {
 
 export const resetSelectedServer = () => ({ type: RESET_SELECTED_SERVER });
 
-export const _selectServer = (serversService) => (serverId) => (dispatch) => {
+export const selectServer = (serversService) => (serverId) => (dispatch) => {
   dispatch(resetShortUrlParams());
+
+  console.log('Setting server');
 
   const selectedServer = serversService.findServerById(serverId);
 
@@ -31,5 +32,3 @@ export const _selectServer = (serversService) => (serverId) => (dispatch) => {
     selectedServer,
   });
 };
-
-export const selectServer = _selectServer(serversService);
