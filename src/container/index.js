@@ -45,7 +45,8 @@ const bottle = new Bottle();
 const { container } = bottle;
 
 const mapActionService = (map, actionName) => {
-  map[actionName] = container[actionName];
+  // Wrap actual action service in a function so that it is lazily created the first time it is called
+  map[actionName] = (...args) => container[actionName](...args);
 
   return map;
 };
@@ -137,14 +138,14 @@ bottle.decorator('DeleteShortUrlModal', connectDecorator(
   { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted }
 ));
 
-bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'ShlinkApiClient');
-bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
-bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
-
 bottle.serviceFactory('EditTagsModal', EditTagsModal, 'TagsSelector');
 bottle.decorator('EditTagsModal', connectDecorator(
   [ 'shortUrlTags' ],
   [ 'editShortUrlTags', 'resetShortUrlsTags', 'shortUrlTagsEdited' ]
 ));
+
+bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'ShlinkApiClient');
+bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
+bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
 
 export default container;
