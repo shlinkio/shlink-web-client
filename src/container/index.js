@@ -136,10 +136,15 @@ bottle.decorator('DeleteShortUrlModal', connectDecorator(
   [ 'shortUrlDeletion' ],
   { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted }
 ));
+
+bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'ShlinkApiClient');
+bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
+bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
+
 bottle.serviceFactory('EditTagsModal', EditTagsModal, 'TagsSelector');
 bottle.decorator('EditTagsModal', connectDecorator(
   [ 'shortUrlTags' ],
-  { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited }
+  [ 'editShortUrlTags', 'resetShortUrlsTags', 'shortUrlTagsEdited' ]
 ));
 
 export default container;

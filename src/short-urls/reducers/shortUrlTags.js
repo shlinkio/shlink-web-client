@@ -1,6 +1,5 @@
-import { curry } from 'ramda';
 import PropTypes from 'prop-types';
-import shlinkApiClient from '../../api/ShlinkApiClient';
+import { pick } from 'ramda';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -40,8 +39,7 @@ export default function reducer(state = defaultState, action) {
       };
     case EDIT_SHORT_URL_TAGS:
       return {
-        shortCode: action.shortCode,
-        tags: action.tags,
+        ...pick([ 'shortCode', 'tags' ], action),
         saving: false,
         error: false,
       };
@@ -52,7 +50,7 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _editShortUrlTags = (shlinkApiClient, shortCode, tags) => async (dispatch) => {
+export const editShortUrlTags = (shlinkApiClient) => (shortCode, tags) => async (dispatch) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
 
   try {
@@ -65,8 +63,6 @@ export const _editShortUrlTags = (shlinkApiClient, shortCode, tags) => async (di
     throw e;
   }
 };
-
-export const editShortUrlTags = curry(_editShortUrlTags)(shlinkApiClient);
 
 export const resetShortUrlsTags = () => ({ type: RESET_EDIT_SHORT_URL_TAGS });
 
