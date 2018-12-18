@@ -1,4 +1,4 @@
-FROM nginx:1.15.2-alpine
+FROM nginx:1.15.7-alpine
 MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
 
 # Install node and yarn
