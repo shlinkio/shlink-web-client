@@ -55,6 +55,7 @@ describe('tagEditReducer', () => {
       setColorForKey: sinon.spy(),
     };
     const dispatch = sinon.spy();
+    const getState = () => ({});
 
     afterEach(() => {
       colorGenerator.setColorForKey.resetHistory();
@@ -67,9 +68,9 @@ describe('tagEditReducer', () => {
       const newName = 'bar';
       const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = _editTag(apiClientMock, colorGenerator, oldName, newName, color);
+      const dispatchable = _editTag(() => apiClientMock, colorGenerator, oldName, newName, color);
 
-      await dispatchable(dispatch);
+      await dispatchable(dispatch, getState);
 
       expect(apiClientMock.editTag.callCount).toEqual(1);
       expect(apiClientMock.editTag.getCall(0).args).toEqual([ oldName, newName ]);
@@ -89,10 +90,10 @@ describe('tagEditReducer', () => {
       const newName = 'bar';
       const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = _editTag(apiClientMock, colorGenerator, oldName, newName, color);
+      const dispatchable = _editTag(() => apiClientMock, colorGenerator, oldName, newName, color);
 
       try {
-        await dispatchable(dispatch);
+        await dispatchable(dispatch, getState);
       } catch (e) {
         expect(e).toEqual(error);
       }

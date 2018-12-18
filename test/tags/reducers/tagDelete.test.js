@@ -48,6 +48,7 @@ describe('tagDeleteReducer', () => {
       deleteTags: sinon.fake.returns(result),
     });
     const dispatch = sinon.spy();
+    const getState = () => ({});
 
     afterEach(() => dispatch.resetHistory());
 
@@ -55,9 +56,9 @@ describe('tagDeleteReducer', () => {
       const expectedDispatchCalls = 2;
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = _deleteTag(apiClientMock, tag);
+      const dispatchable = _deleteTag(() => apiClientMock, tag);
 
-      await dispatchable(dispatch);
+      await dispatchable(dispatch, getState);
 
       expect(apiClientMock.deleteTags.callCount).toEqual(1);
       expect(apiClientMock.deleteTags.getCall(0).args).toEqual([[ tag ]]);
@@ -72,10 +73,10 @@ describe('tagDeleteReducer', () => {
       const error = 'Error';
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = _deleteTag(apiClientMock, tag);
+      const dispatchable = _deleteTag(() => apiClientMock, tag);
 
       try {
-        await dispatchable(dispatch);
+        await dispatchable(dispatch, getState);
       } catch (e) {
         expect(e).toEqual(error);
       }

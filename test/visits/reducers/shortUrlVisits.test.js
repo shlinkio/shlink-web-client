@@ -50,6 +50,7 @@ describe('shortUrlVisitsReducer', () => {
       getShortUrlVisits: sinon.fake.returns(returned),
     });
     const dispatchMock = sinon.spy();
+    const getState = () => ({});
 
     beforeEach(() => dispatchMock.resetHistory());
 
@@ -57,7 +58,7 @@ describe('shortUrlVisitsReducer', () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject());
       const expectedDispatchCalls = 2;
 
-      await _getShortUrlVisits(ShlinkApiClient, 'abc123')(dispatchMock);
+      await _getShortUrlVisits(() => ShlinkApiClient, 'abc123')(dispatchMock, getState);
 
       const [ firstCallArg ] = dispatchMock.getCall(0).args;
       const { type: firstCallType } = firstCallArg;
@@ -76,7 +77,7 @@ describe('shortUrlVisitsReducer', () => {
       const ShlinkApiClient = buildApiClientMock(Promise.resolve(resolvedVisits));
       const expectedDispatchCalls = 2;
 
-      await _getShortUrlVisits(ShlinkApiClient, 'abc123')(dispatchMock);
+      await _getShortUrlVisits(() => ShlinkApiClient, 'abc123')(dispatchMock, getState);
 
       const [ firstCallArg ] = dispatchMock.getCall(0).args;
       const { type: firstCallType } = firstCallArg;
