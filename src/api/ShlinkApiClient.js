@@ -1,25 +1,17 @@
-import axios from 'axios';
 import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 
 const API_VERSION = '1';
 const STATUS_UNAUTHORIZED = 401;
+const buildRestUrl = (url) => url ? `${url}/rest/v${API_VERSION}` : '';
 
-export class ShlinkApiClient {
-  constructor(axios) {
+export default class ShlinkApiClient {
+  constructor(axios, baseUrl, apiKey) {
     this.axios = axios;
-    this._baseUrl = '';
-    this._apiKey = '';
+    this._baseUrl = buildRestUrl(baseUrl);
+    this._apiKey = apiKey || '';
     this._token = '';
   }
-
-  /**
-   * Sets the base URL to be used on any request
-   */
-  setConfig = ({ url, apiKey }) => {
-    this._baseUrl = `${url}/rest/v${API_VERSION}`;
-    this._apiKey = apiKey;
-  };
 
   listShortUrls = (options = {}) =>
     this._performRequest('/short-codes', 'GET', options)
@@ -113,7 +105,3 @@ export class ShlinkApiClient {
     return Promise.reject(e);
   };
 }
-
-const shlinkApiClient = new ShlinkApiClient(axios);
-
-export default shlinkApiClient;

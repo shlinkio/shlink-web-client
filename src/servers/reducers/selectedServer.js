@@ -1,4 +1,3 @@
-import shlinkApiClient from '../../api/ShlinkApiClient';
 import serversService from '../../servers/services/ServersService';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
 
@@ -22,12 +21,10 @@ export default function reducer(state = defaultState, action) {
 
 export const resetSelectedServer = () => ({ type: RESET_SELECTED_SERVER });
 
-export const _selectServer = (shlinkApiClient, serversService) => (serverId) => (dispatch) => {
+export const _selectServer = (serversService) => (serverId) => (dispatch) => {
   dispatch(resetShortUrlParams());
 
   const selectedServer = serversService.findServerById(serverId);
-
-  shlinkApiClient.setConfig(selectedServer);
 
   dispatch({
     type: SELECT_SERVER,
@@ -35,4 +32,4 @@ export const _selectServer = (shlinkApiClient, serversService) => (serverId) => 
   });
 };
 
-export const selectServer = _selectServer(shlinkApiClient, serversService);
+export const selectServer = _selectServer(serversService);

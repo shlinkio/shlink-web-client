@@ -50,8 +50,10 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const editShortUrlTags = (shlinkApiClient) => (shortCode, tags) => async (dispatch) => {
+export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, tags) => async (dispatch, getState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
+  const { selectedServer } = getState();
+  const shlinkApiClient = buildShlinkApiClient(selectedServer);
 
   try {
     const normalizedTags = await shlinkApiClient.updateShortUrlTags(shortCode, tags);

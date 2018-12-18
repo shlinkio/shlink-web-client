@@ -1,6 +1,6 @@
 import { curry } from 'ramda';
 import PropTypes from 'prop-types';
-import shlinkApiClient from '../../api/ShlinkApiClient';
+import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../api/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
@@ -56,8 +56,11 @@ export default function reducer(state = defaultState, action) {
   }
 }
 
-export const _deleteShortUrl = (shlinkApiClient, shortCode) => async (dispatch) => {
+export const _deleteShortUrl = (buildShlinkApiClient, shortCode) => async (dispatch, getState) => {
   dispatch({ type: DELETE_SHORT_URL_START });
+
+  const { selectedServer } = getState();
+  const shlinkApiClient = buildShlinkApiClient(selectedServer);
 
   try {
     await shlinkApiClient.deleteShortUrl(shortCode);
@@ -69,7 +72,7 @@ export const _deleteShortUrl = (shlinkApiClient, shortCode) => async (dispatch) 
   }
 };
 
-export const deleteShortUrl = curry(_deleteShortUrl)(shlinkApiClient);
+export const deleteShortUrl = curry(_deleteShortUrl)(buildShlinkApiClient);
 
 export const resetDeleteShortUrl = () => ({ type: RESET_DELETE_SHORT_URL });
 

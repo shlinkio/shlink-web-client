@@ -25,7 +25,7 @@ import { ColorGenerator } from '../utils/ColorGenerator';
 import { Storage } from '../utils/Storage';
 import ShortUrlsRow from '../short-urls/helpers/ShortUrlsRow';
 import ShortUrlsRowMenu from '../short-urls/helpers/ShortUrlsRowMenu';
-import { ShlinkApiClient } from '../api/ShlinkApiClient';
+import ShlinkApiClient from '../api/ShlinkApiClient';
 import DeleteServerModal from '../servers/DeleteServerModal';
 import DeleteServerButton from '../servers/DeleteServerButton';
 import AsideMenu from '../common/AsideMenu';
@@ -40,16 +40,17 @@ import DeleteShortUrlModal from '../short-urls/helpers/DeleteShortUrlModal';
 import { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted } from '../short-urls/reducers/shortUrlDeletion';
 import EditTagsModal from '../short-urls/helpers/EditTagsModal';
 import { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited } from '../short-urls/reducers/shortUrlTags';
+import buildShlinkApiClient from '../api/ShlinkApiClientBuilder';
 
 const bottle = new Bottle();
 const { container } = bottle;
 
-const mapActionService = (map, actionName) => {
-  // Wrap actual action service in a function so that it is lazily created the first time it is called
-  map[actionName] = (...args) => container[actionName](...args);
+const mapActionService = (map, actionName) => ({
+  ...map,
 
-  return map;
-};
+  // Wrap actual action service in a function so that it is lazily created the first time it is called
+  [actionName]: (...args) => container[actionName](...args),
+});
 const connectDecorator = (propsFromState, actionServiceNames) =>
   connect(
     pick(propsFromState),
@@ -144,8 +145,10 @@ bottle.decorator('EditTagsModal', connectDecorator(
   [ 'editShortUrlTags', 'resetShortUrlsTags', 'shortUrlTagsEdited' ]
 ));
 
-bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'ShlinkApiClient');
+bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'buildShlinkApiClient');
 bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
 bottle.serviceFactory('shortUrlTagsEdited', () => shortUrlTagsEdited);
+
+bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
 
 export default container;
