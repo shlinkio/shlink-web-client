@@ -16,7 +16,7 @@ install:
 script:
   - yarn lint
   - yarn test:ci
-  - yarn build # Make sure the app can be built without errors
+  - if [[ -z $TRAVIS_TAG ]]; then yarn build ; fi
 
 after_success:
   - yarn ocular coverage/clover.xml
