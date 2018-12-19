@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fromPairs, head, keys, prop, reverse, sortBy, toPairs } from 'ramda';
+import { fromPairs, head, identity, keys, pipe, prop, reverse, sortBy, toLower, toPairs, type } from 'ramda';
 import SortingDropdown from '../utils/SortingDropdown';
 import GraphCard from './GraphCard';
 
@@ -23,7 +23,14 @@ export default class SortableBarGraph extends React.Component {
         return stats;
       }
 
-      const sortedPairs = sortBy(prop(this.state.orderField === head(keys(sortingItems)) ? 0 : 1), toPairs(stats));
+      const toLowerIfString = (value) => type(value) === 'String' ? toLower(value) : identity(value);
+      const sortedPairs = sortBy(
+        pipe(
+          prop(this.state.orderField === head(keys(sortingItems)) ? 0 : 1),
+          toLowerIfString
+        ),
+        toPairs(stats)
+      );
 
       return fromPairs(this.state.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs));
     };
