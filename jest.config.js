@@ -4,6 +4,7 @@ module.exports = {
     'src/**/*.js',
     '!src/registerServiceWorker.js',
     '!src/index.js',
+    '!src/reducers/index.js',
     '!src/**/provideServices.js',
     '!src/container/*.js',
   ],
