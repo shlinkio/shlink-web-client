@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
-const DELETE_SHORT_URL_ERROR = 'shlink/deleteShortUrl/DELETE_SHORT_URL_ERROR';
-const DELETE_SHORT_URL = 'shlink/deleteShortUrl/DELETE_SHORT_URL';
-const RESET_DELETE_SHORT_URL = 'shlink/deleteShortUrl/RESET_DELETE_SHORT_URL';
+export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
+export const DELETE_SHORT_URL_ERROR = 'shlink/deleteShortUrl/DELETE_SHORT_URL_ERROR';
+export const DELETE_SHORT_URL = 'shlink/deleteShortUrl/DELETE_SHORT_URL';
+export const RESET_DELETE_SHORT_URL = 'shlink/deleteShortUrl/RESET_DELETE_SHORT_URL';
 export const SHORT_URL_DELETED = 'shlink/deleteShortUrl/SHORT_URL_DELETED';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
@@ -58,10 +58,10 @@ export const deleteShortUrl = (buildShlinkApiClient) => (shortCode) => async (di
   dispatch({ type: DELETE_SHORT_URL_START });
 
   const { selectedServer } = getState();
-  const shlinkApiClient = buildShlinkApiClient(selectedServer);
+  const { deleteShortUrl } = buildShlinkApiClient(selectedServer);
 
   try {
-    await shlinkApiClient.deleteShortUrl(shortCode);
+    await deleteShortUrl(shortCode);
     dispatch({ type: DELETE_SHORT_URL, shortCode });
   } catch (e) {
     dispatch({ type: DELETE_SHORT_URL_ERROR, errorData: e.response.data });
