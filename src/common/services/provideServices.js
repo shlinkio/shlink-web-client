@@ -5,7 +5,9 @@ import MenuLayout from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
 
 const provideServices = (bottle, connect, withRouter) => {
-  bottle.constant('ScrollToTop', ScrollToTop);
+  bottle.constant('window', global.window);
+
+  bottle.serviceFactory('ScrollToTop', ScrollToTop, 'window');
   bottle.decorator('ScrollToTop', withRouter);
 
   bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');

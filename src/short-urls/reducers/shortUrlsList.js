@@ -1,11 +1,11 @@
-import { assoc, assocPath, reject } from 'ramda';
+import { assoc, assocPath, propEq, reject } from 'ramda';
 import PropTypes from 'prop-types';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
-const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
-const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
+export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
+export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
@@ -18,6 +18,7 @@ export const shortUrlType = PropTypes.shape({
 const initialState = {
   shortUrls: {},
   loading: true,
+  error: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -34,7 +35,7 @@ export default function reducer(state = initialState, action) {
       return {
         loading: false,
         error: true,
-        shortUrls: [],
+        shortUrls: {},
       };
     case SHORT_URL_TAGS_EDITED:
       const { data } = state.shortUrls;
@@ -46,7 +47,7 @@ export default function reducer(state = initialState, action) {
     case SHORT_URL_DELETED:
       return assocPath(
         [ 'shortUrls', 'data' ],
-        reject((shortUrl) => shortUrl.shortCode === action.shortCode, state.shortUrls.data),
+        reject(propEq('shortCode', action.shortCode), state.shortUrls.data),
         state,
       );
     default:
@@ -58,10 +59,10 @@ export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (d
   dispatch({ type: LIST_SHORT_URLS_START });
 
   const { selectedServer = {} } = getState();
-  const shlinkApiClient = buildShlinkApiClient(selectedServer);
+  const { listShortUrls } = buildShlinkApiClient(selectedServer);
 
   try {
-    const shortUrls = await shlinkApiClient.listShortUrls(params);
+    const shortUrls = await listShortUrls(params);
 
     dispatch({ type: LIST_SHORT_URLS, shortUrls, params });
   } catch (e) {

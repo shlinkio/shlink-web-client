@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { shortUrlTagsType } from '../reducers/shortUrlTags';
 import ExternalLink from '../../utils/ExternalLink';
+import { shortUrlTagsType } from '../reducers/shortUrlTags';
 import { shortUrlType } from '../reducers/shortUrlsList';
 
 const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Component {
