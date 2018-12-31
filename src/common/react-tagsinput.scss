@@ -27,12 +27,12 @@
 
 .react-tagsinput-remove {
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 700;
   margin-left: 8px;
 }
 
 .react-tagsinput-tag span:before {
-  content: "\2715";
+  content: '\2715';
   color: #fff;
 }
 

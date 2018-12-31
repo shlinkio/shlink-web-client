@@ -41,7 +41,7 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 
 // Tools like Cloud9 rely on this.
 const FALLBACK_PORT = 3000;
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || FALLBACK_PORT;
+const DEFAULT_PORT = parseInt(process.env.PORT) || FALLBACK_PORT;
 const HOST = process.env.HOST || '0.0.0.0';
 
 if (process.env.HOST) {

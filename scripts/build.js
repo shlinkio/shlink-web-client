@@ -102,7 +102,8 @@ measureFileSizesBeforeBuild(paths.appBuild)
       process.exit(1);
     }
   )
-  .then(zipDist);
+  .then(zipDist)
+  .catch((err) => console.error(err));
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
