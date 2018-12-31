@@ -6,7 +6,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import sortAscIcon from '@fortawesome/fontawesome-free-solid/faSortAmountUp';
 import sortDescIcon from '@fortawesome/fontawesome-free-solid/faSortAmountDown';
 import classNames from 'classnames';
-import { determineOrderDir } from '../utils/utils';
+import { determineOrderDir } from './utils';
 import './SortingDropdown.scss';
 
 const propTypes = {

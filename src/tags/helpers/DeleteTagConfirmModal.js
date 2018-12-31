@@ -16,7 +16,7 @@ export default class DeleteTagConfirmModal extends React.Component {
   doDelete = () => {
     const { tag, toggle, deleteTag } = this.props;
 
-    deleteTag(tag).then(() => {
+    return deleteTag(tag).then(() => {
       this.tagWasDeleted = true;
       toggle();
     });

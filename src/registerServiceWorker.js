@@ -43,22 +43,22 @@ export default function register() {
 
         // Add some additional logging to localhost, pointing developers to the
         // service worker/PWA documentation.
-        navigator.serviceWorker.ready.then(() => {
+        return navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
-              'worker. To learn more, visit https://goo.gl/SC7cgQ'
+            'worker. To learn more, visit https://goo.gl/SC7cgQ'
           );
         });
-      } else {
-        // Is not local host. Just register service worker
-        registerValidSW(swUrl);
       }
+
+      // Is not local host. Just register service worker
+      return registerValidSW(swUrl);
     });
   }
 }
 
 function registerValidSW(swUrl) {
-  navigator.serviceWorker
+  return navigator.serviceWorker
     .register(swUrl)
     .then((registration) => {
       registration.onupdatefound = () => {
@@ -99,15 +99,14 @@ function checkValidServiceWorker(swUrl) {
         response.headers.get('content-type').indexOf('javascript') === -1
       ) {
         // No service worker found. Probably a different app. Reload the page.
-        navigator.serviceWorker.ready.then((registration) => {
+        return navigator.serviceWorker.ready.then((registration) =>
           registration.unregister().then(() => {
             window.location.reload();
-          });
-        });
-      } else {
-        // Service worker found. Proceed as normal.
-        registerValidSW(swUrl);
+          }));
       }
+
+      // Service worker found. Proceed as normal.
+      return registerValidSW(swUrl);
     })
     .catch(() => {
       console.log(
@@ -120,6 +119,6 @@ export function unregister() {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.ready.then((registration) => {
       registration.unregister();
-    });
+    }).catch(() => {});
   }
 }
