@@ -1,5 +1,5 @@
-import copyIcon from '@fortawesome/fontawesome-free-regular/faCopy';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil } from 'ramda';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';

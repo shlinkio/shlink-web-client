@@ -1,6 +1,5 @@
-import plusIcon from '@fortawesome/fontawesome-free-solid/faPlus';
-import arrowIcon from '@fortawesome/fontawesome-free-solid/faChevronDown';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faPlus as plusIcon, faChevronDown as arrowIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';

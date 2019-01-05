@@ -1,6 +1,5 @@
-import downIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleDown';
-import upIcon from '@fortawesome/fontawesome-free-solid/faAngleDoubleUp';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { assoc, dissoc, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { Collapse } from 'reactstrap';

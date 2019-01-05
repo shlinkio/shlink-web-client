@@ -1,6 +1,5 @@
-import caretDownIcon from '@fortawesome/fontawesome-free-solid/faCaretDown';
-import caretUpIcon from '@fortawesome/fontawesome-free-solid/faCaretUp';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, isEmpty, keys, values } from 'ramda';
 import React from 'react';
 import qs from 'qs';

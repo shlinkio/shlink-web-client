@@ -1,11 +1,12 @@
-import copyIcon from '@fortawesome/fontawesome-free-regular/faCopy';
-import pictureIcon from '@fortawesome/fontawesome-free-regular/faImage';
-import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
-import pieChartIcon from '@fortawesome/fontawesome-free-solid/faChartPie';
-import menuIcon from '@fortawesome/fontawesome-free-solid/faEllipsisV';
-import qrIcon from '@fortawesome/fontawesome-free-solid/faQrcode';
-import deleteIcon from '@fortawesome/fontawesome-free-solid/faMinusCircle';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faCopy as copyIcon, faImage as pictureIcon } from '@fortawesome/free-regular-svg-icons';
+import {
+  faTags as tagsIcon,
+  faChartPie as pieChartIcon,
+  faEllipsisV as menuIcon,
+  faQrcode as qrIcon,
+  faMinusCircle as deleteIcon,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';

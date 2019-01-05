@@ -1,8 +1,8 @@
 import React from 'react';
 import { isNil } from 'ramda';
 import DatePicker from 'react-datepicker';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import calendarIcon from '@fortawesome/fontawesome-free-regular/faCalendarAlt';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import * as PropTypes from 'prop-types';
 import './DateInput.scss';
 
