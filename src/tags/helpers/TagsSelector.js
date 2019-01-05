@@ -10,6 +10,7 @@ const TagsSelector = (colorGenerator) => class TagsSelector extends React.Compon
   static propTypes = {
     tags: PropTypes.arrayOf(PropTypes.string).isRequired,
     onChange: PropTypes.func.isRequired,
+    listTags: PropTypes.func,
     placeholder: PropTypes.string,
     tagsList: PropTypes.shape({
       tags: PropTypes.arrayOf(PropTypes.string),
