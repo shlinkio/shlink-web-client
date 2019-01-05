@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
 import { identity, values } from 'ramda';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import caretDownIcon from '@fortawesome/fontawesome-free-solid/faSortAmountDown';
 import * as sinon from 'sinon';
 import SortingDropdown from '../../src/utils/SortingDropdown';
