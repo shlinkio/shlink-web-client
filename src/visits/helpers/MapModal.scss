@@ -1,24 +1,17 @@
 @import '../../utils/base';
+@import '../../utils/mixins/fit-with-margin';
 
 .map-modal__modal {
   @media (min-width: $mdMin) {
     $margin: 20px;
-    $offset: $margin * 2;
 
-    width: calc(100% - #{$offset});
-    max-width: calc(100% - #{$offset});
-    height: calc(100% - #{$offset});
-    margin: $margin;
+    @include fit-with-margin($margin);
   }
 
   @media (max-width: $smMax) {
     $margin: 10px;
-    $offset: $margin * 2;
 
-    width: calc(100% - #{$offset});
-    max-width: calc(100% - #{$offset});
-    height: calc(100% - #{$offset});
-    margin: $margin;
+    @include fit-with-margin($margin);
   }
 }
 
