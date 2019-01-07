@@ -3,6 +3,7 @@ import {
   processBrowserStats,
   processReferrersStats,
   processCountriesStats,
+  processCitiesStats,
 } from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
@@ -12,6 +13,7 @@ describe('VisitsParser', () => {
       referer: 'https://google.com',
       visitLocation: {
         countryName: 'Spain',
+        cityName: 'Zaragoza',
       },
     },
     {
@@ -19,6 +21,7 @@ describe('VisitsParser', () => {
       referer: 'https://google.com',
       visitLocation: {
         countryName: 'United States',
+        cityName: 'New York',
       },
     },
     {
@@ -32,6 +35,7 @@ describe('VisitsParser', () => {
       referer: 'https://m.facebook.com',
       visitLocation: {
         countryName: 'Spain',
+        cityName: 'Zaragoza',
       },
     },
     {
@@ -75,6 +79,16 @@ describe('VisitsParser', () => {
         'Spain': 3,
         'United States': 1,
         'Unknown': 1,
+      });
+    });
+  });
+
+  describe('processCitiesStats', () => {
+    it('properly parses cities stats', () => {
+      expect(processCitiesStats(visits)).toEqual({
+        'Zaragoza': 2,
+        'New York': 1,
+        'Unknown': 2,
       });
     });
   });

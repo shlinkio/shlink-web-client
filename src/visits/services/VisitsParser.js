@@ -76,16 +76,20 @@ export const processReferrersStats = (visits) =>
     visits,
   );
 
-export const processCountriesStats = (visits) =>
+const buildLocationStatsProcessorByProperty = (propertyName) => (visits) =>
   reduce(
     (stats, { visitLocation }) => {
       const notHasCountry = isNil(visitLocation)
-        || isNil(visitLocation.countryName)
-        || isEmpty(visitLocation.countryName);
-      const country = notHasCountry ? 'Unknown' : visitLocation.countryName;
+        || isNil(visitLocation[propertyName])
+        || isEmpty(visitLocation[propertyName]);
+      const country = notHasCountry ? 'Unknown' : visitLocation[propertyName];
 
       return assoc(country, (stats[country] || 0) + 1, stats);
     },
     {},
     visits,
   );
+
+export const processCountriesStats = buildLocationStatsProcessorByProperty('countryName');
+
+export const processCitiesStats = buildLocationStatsProcessorByProperty('cityName');

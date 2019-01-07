@@ -23,6 +23,7 @@ describe('<ShortUrlVisits />', () => {
       processCountriesStats: statsProcessor,
       processOsStats: statsProcessor,
       processReferrersStats: statsProcessor,
+      processCitiesStats: statsProcessor,
     });
 
     wrapper = shallow(
@@ -74,7 +75,7 @@ describe('<ShortUrlVisits />', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
     const graphs = wrapper.find(GraphCard);
     const sortableBarGraphs = wrapper.find(SortableBarGraph);
-    const expectedGraphsCount = 4;
+    const expectedGraphsCount = 5;
 
     expect(graphs.length + sortableBarGraphs.length).toEqual(expectedGraphsCount);
   });
