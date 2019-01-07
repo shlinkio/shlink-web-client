@@ -8,6 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import container from './container';
 import store from './container/store';
 import '../node_modules/react-datepicker/dist/react-datepicker.css';
+import '../node_modules/leaflet/dist/leaflet.css';
 import './common/react-tagsinput.scss';
 import './index.scss';
 

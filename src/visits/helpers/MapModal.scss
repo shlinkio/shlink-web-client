@@ -1,0 +1,38 @@
+@import '../../utils/base';
+
+.map-modal__modal {
+  @media (min-width: $mdMin) {
+    $margin: 20px;
+    $offset: $margin * 2;
+
+    width: calc(100% - #{$offset});
+    max-width: calc(100% - #{$offset});
+    height: calc(100% - #{$offset});
+    margin: $margin;
+  }
+
+  @media (max-width: $smMax) {
+    $margin: 10px;
+    $offset: $margin * 2;
+
+    width: calc(100% - #{$offset});
+    max-width: calc(100% - #{$offset});
+    height: calc(100% - #{$offset});
+    margin: $margin;
+  }
+}
+
+.map-modal__modal .modal-content {
+  height: 100%;
+}
+
+.map-modal__modal .modal-body {
+  padding: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.map-modal__modal .leaflet-container {
+  flex: 1 1 auto;
+  border-radius: 0 0 .3rem .3rem;
+}
