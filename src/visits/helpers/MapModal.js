@@ -10,28 +10,30 @@ const propTypes = {
   title: PropTypes.string,
 };
 
-const madridLat = 40.416775;
-const madridLong = -3.703790;
-const latLong = [ madridLat, madridLong ];
+const MapModal = ({ toggle, isOpen, title }) => {
+  const madridLat = 40.416775;
+  const madridLong = -3.703790;
+  const latLong = [ madridLat, madridLong ];
 
-const MapModal = ({ toggle, isOpen, title }) => (
-  <Modal toggle={toggle} isOpen={isOpen} centered size="lg" className="map-modal__modal">
-    <ModalHeader toggle={toggle}>{title}</ModalHeader>
-    <ModalBody>
-      <Map center={latLong} zoom="13">
-        <TileLayer
-          attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Marker position={latLong}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </Marker>
-      </Map>
-    </ModalBody>
-  </Modal>
-);
+  return (
+    <Modal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
+      <ModalHeader toggle={toggle}>{title}</ModalHeader>
+      <ModalBody className="map-modal__modal-body">
+        <Map center={latLong} zoom="13">
+          <TileLayer
+            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <Marker position={latLong}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </Map>
+      </ModalBody>
+    </Modal>
+  );
+};
 
 MapModal.propTypes = propTypes;
 

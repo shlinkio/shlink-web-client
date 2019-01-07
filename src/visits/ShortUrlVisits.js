@@ -12,6 +12,7 @@ import { VisitsHeader } from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
+import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 
 const ShortUrlVisits = ({
   processOsStats,
@@ -101,6 +102,7 @@ const ShortUrlVisits = ({
             <SortableBarGraph
               stats={processCitiesStats(visits)}
               title="Cities"
+              extraHeaderContent={[ () => <OpenMapModalBtn title="Cities" /> ]}
               sortingItems={{
                 name: 'City name',
                 amount: 'Visits amount',
