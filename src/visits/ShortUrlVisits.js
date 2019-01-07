@@ -1,6 +1,6 @@
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isEmpty, mapObjIndexed } from 'ramda';
+import { isEmpty, mapObjIndexed, values } from 'ramda';
 import React from 'react';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ const ShortUrlVisits = ({
   processCountriesStats,
   processCitiesStats,
   processReferrersStats,
+  processCitiesStatsForMap,
 }) => class ShortUrlVisits extends React.Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -102,7 +103,14 @@ const ShortUrlVisits = ({
             <SortableBarGraph
               stats={processCitiesStats(visits)}
               title="Cities"
-              extraHeaderContent={[ () => <OpenMapModalBtn title="Cities" /> ]}
+              extraHeaderContent={[
+                () => (
+                  <OpenMapModalBtn
+                    title="Cities"
+                    locations={values(processCitiesStatsForMap(visits))}
+                  />
+                ),
+              ]}
               sortingItems={{
                 name: 'City name',
                 amount: 'Visits amount',

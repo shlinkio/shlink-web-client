@@ -9,12 +9,13 @@ import './OpenMapModalBtn.scss';
 export default class OpenMapModalBtn extends React.Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
+    locations: PropTypes.arrayOf(PropTypes.object),
   };
 
   state = { mapIsOpened: false };
 
   render() {
-    const { title } = this.props;
+    const { title, locations = [] } = this.props;
     const toggleMap = () => this.setState(({ mapIsOpened }) => ({ mapIsOpened: !mapIsOpened }));
     const buttonRef = React.createRef();
 
@@ -24,7 +25,7 @@ export default class OpenMapModalBtn extends React.Component {
           <FontAwesomeIcon icon={mapIcon} />
         </button>
         <UncontrolledTooltip placement="bottom" target={() => buttonRef.current}>Show in map</UncontrolledTooltip>
-        <MapModal toggle={toggleMap} isOpen={this.state.mapIsOpened} title={title} />
+        <MapModal toggle={toggleMap} isOpen={this.state.mapIsOpened} title={title} locations={locations} />
       </React.Fragment>
     );
   }

@@ -7,10 +7,14 @@ import { homepage } from '../package.json';
 import registerServiceWorker from './registerServiceWorker';
 import container from './container';
 import store from './container/store';
-import '../node_modules/react-datepicker/dist/react-datepicker.css';
-import '../node_modules/leaflet/dist/leaflet.css';
+import { fixLeafletIcons } from './utils/utils';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'leaflet/dist/leaflet.css';
 import './common/react-tagsinput.scss';
 import './index.scss';
+
+// This overwrites icons used for leaflet maps, fixing some issues caused by webpack while processing the CSS
+fixLeafletIcons();
 
 const { App, ScrollToTop } = container;
 
