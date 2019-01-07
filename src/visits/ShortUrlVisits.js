@@ -17,6 +17,7 @@ const ShortUrlVisits = ({
   processOsStats,
   processBrowserStats,
   processCountriesStats,
+  processCitiesStats,
   processReferrersStats,
 }) => class ShortUrlVisits extends React.Component {
   static propTypes = {
@@ -70,13 +71,23 @@ const ShortUrlVisits = ({
 
       return (
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-xl-4 col-lg-6">
             <GraphCard title="Operating systems" stats={processOsStats(visits)} />
           </div>
-          <div className="col-md-6">
+          <div className="col-xl-4 col-lg-6">
             <GraphCard title="Browsers" stats={processBrowserStats(visits)} />
           </div>
-          <div className="col-md-6">
+          <div className="col-xl-4">
+            <SortableBarGraph
+              stats={processReferrersStats(visits)}
+              title="Referrers"
+              sortingItems={{
+                name: 'Referrer name',
+                amount: 'Visits amount',
+              }}
+            />
+          </div>
+          <div className="col-lg-6">
             <SortableBarGraph
               stats={processCountriesStats(visits)}
               title="Countries"
@@ -86,12 +97,12 @@ const ShortUrlVisits = ({
               }}
             />
           </div>
-          <div className="col-md-6">
+          <div className="col-lg-6">
             <SortableBarGraph
-              stats={processReferrersStats(visits)}
-              title="Referrers"
+              stats={processCitiesStats(visits)}
+              title="Cities"
               sortingItems={{
-                name: 'Referrer name',
+                name: 'City name',
                 amount: 'Visits amount',
               }}
             />
