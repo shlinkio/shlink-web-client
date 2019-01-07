@@ -1,5 +1,5 @@
-import chevronIcon from '@fortawesome/fontawesome-free-solid/faChevronRight';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, values } from 'ramda';
 import React from 'react';
 import { Link } from 'react-router-dom';

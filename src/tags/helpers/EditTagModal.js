@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ChromePicker } from 'react-color';
-import colorIcon from '@fortawesome/fontawesome-free-solid/faPalette';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import './EditTagModal.scss';
 

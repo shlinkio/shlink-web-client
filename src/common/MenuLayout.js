@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Swipeable from 'react-swipeable';
-import burgerIcon from '@fortawesome/fontawesome-free-solid/faBars';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';

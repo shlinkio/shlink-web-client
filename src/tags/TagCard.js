@@ -1,7 +1,6 @@
 import { Card, CardBody } from 'reactstrap';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import deleteIcon from '@fortawesome/fontawesome-free-solid/faTrash';
-import editIcon from '@fortawesome/fontawesome-free-solid/faPencilAlt';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash as deleteIcon, faPencilAlt as editIcon } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';

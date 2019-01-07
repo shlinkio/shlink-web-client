@@ -1,5 +1,5 @@
-import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faTags as tagsIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { isEmpty } from 'ramda';
 import PropTypes from 'prop-types';

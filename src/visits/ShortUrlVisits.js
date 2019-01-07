@@ -1,5 +1,5 @@
-import preloader from '@fortawesome/fontawesome-free-solid/faCircleNotch';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, mapObjIndexed } from 'ramda';
 import React from 'react';
 import { Card } from 'reactstrap';

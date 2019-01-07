@@ -1,7 +1,5 @@
-import listIcon from '@fortawesome/fontawesome-free-solid/faList';
-import createIcon from '@fortawesome/fontawesome-free-solid/faLink';
-import tagsIcon from '@fortawesome/fontawesome-free-solid/faTags';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faList as listIcon, faLink as createIcon, faTags as tagsIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';

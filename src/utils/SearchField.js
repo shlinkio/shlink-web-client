@@ -1,6 +1,6 @@
 import React from 'react';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import searchIcon from '@fortawesome/fontawesome-free-solid/faSearch';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './SearchField.scss';

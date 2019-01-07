@@ -1,8 +1,8 @@
-FROM nginx:1.15.7-alpine
-MAINTAINER Alejandro Celaya <alejandro@alejandrocelaya.com>
+FROM nginx:1.15.8-alpine
+LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 
 # Install node and yarn
-RUN apk add --no-cache --virtual nodejs && apk add --no-cache --virtual yarn
+RUN apk add --no-cache nodejs && apk add --no-cache yarn
 
 ADD . ./shlink-web-client
 
