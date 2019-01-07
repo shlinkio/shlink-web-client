@@ -76,7 +76,7 @@ export const processReferrersStats = (visits) =>
     visits,
   );
 
-const processLocationStats = (propertyName) => (visits) =>
+const buildLocationStatsProcessorByProperty = (propertyName) => (visits) =>
   reduce(
     (stats, { visitLocation }) => {
       const notHasCountry = isNil(visitLocation)
@@ -90,6 +90,6 @@ const processLocationStats = (propertyName) => (visits) =>
     visits,
   );
 
-export const processCountriesStats = processLocationStats('countryName');
+export const processCountriesStats = buildLocationStatsProcessorByProperty('countryName');
 
-export const processCitiesStats = processLocationStats('cityName');
+export const processCitiesStats = buildLocationStatsProcessorByProperty('cityName');
