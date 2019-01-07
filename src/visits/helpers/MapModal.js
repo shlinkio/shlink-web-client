@@ -9,7 +9,7 @@ const propTypes = {
   isOpen: PropTypes.bool,
   title: PropTypes.string,
   locations: PropTypes.arrayOf(PropTypes.shape({
-    city: PropTypes.string.isRequired,
+    cityName: PropTypes.string.isRequired,
     latLong: PropTypes.arrayOf(PropTypes.number).isRequired,
     count: PropTypes.number.isRequired,
   })),
@@ -31,9 +31,9 @@ const MapModal = ({ toggle, isOpen, title, locations }) => (
     <ModalBody className="map-modal__modal-body">
       <Map center={[ 0, 0 ]} zoom="3">
         <OpenStreetMapTile />
-        {locations.map(({ city, latLong, count }, index) => (
+        {locations.map(({ cityName, latLong, count }, index) => (
           <Marker key={index} position={latLong}>
-            <Popup><b>{count}</b> visit{count > 1 ? 's' : ''} from <b>{city}</b></Popup>
+            <Popup><b>{count}</b> visit{count > 1 ? 's' : ''} from <b>{cityName}</b></Popup>
           </Marker>
         ))}
       </Map>

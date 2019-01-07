@@ -100,17 +100,20 @@ export const processCitiesStats = buildLocationStatsProcessorByProperty('cityNam
 export const processCitiesStatsForMap = (visits) =>
   reduce(
     (stats, { visitLocation }) => {
-      const hasCity = visitLocationHasProperty(visitLocation, 'cityName');
-      const city = hasCity ? visitLocation.cityName : 'unknown';
-      const currentCity = stats[city] || {
-        city,
+      if (!visitLocationHasProperty(visitLocation, 'cityName')) {
+        return stats;
+      }
+
+      const { cityName, latitude, longitude } = visitLocation;
+      const currentCity = stats[cityName] || {
+        cityName,
         count: 0,
-        latLong: hasCity ? [ parseFloat(visitLocation.latitude), parseFloat(visitLocation.longitude) ] : [ 0, 0 ],
+        latLong: [ parseFloat(latitude), parseFloat(longitude) ],
       };
 
       currentCity.count++;
 
-      return assoc(city, currentCity, stats);
+      return assoc(cityName, currentCity, stats);
     },
     {},
     visits,
