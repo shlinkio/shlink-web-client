@@ -1,4 +1,4 @@
-/* eslint no-console: "off" */
+/* eslint-disable no-console */
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'production';
@@ -18,14 +18,16 @@ const path = require('path');
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
+const bfj = require('bfj');
+const AdmZip = require('adm-zip');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
-const AdmZip = require('adm-zip');
+const { checkBrowsers } = require('react-dev-utils/browsersHelper');
 const paths = require('../config/paths');
-const config = require('../config/webpack.config.prod');
+const configFactory = require('../config/webpack.config');
 
 const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } = FileSizeReporter;
 const useYarn = fs.existsSync(paths.yarnLockFile);
@@ -34,14 +36,27 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024; // eslint-disable-line
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024; // eslint-disable-line
 
+const isInteractive = process.stdout.isTTY;
+
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
   process.exit(1);
 }
 
-// First, read the current file sizes in build directory.
-// This lets us display how much they changed later.
-measureFileSizesBeforeBuild(paths.appBuild)
+// Process CLI arguments
+const argvSliceStart = 2;
+const argv = process.argv.slice(argvSliceStart);
+const writeStatsJson = argv.indexOf('--stats') !== -1;
+
+// Generate configuration
+const config = configFactory('production');
+
+checkBrowsers(paths.appPath, isInteractive)
+  .then(() =>
+
+    // First, read the current file sizes in build directory.
+    // This lets us display how much they changed later.
+    measureFileSizesBeforeBuild(paths.appBuild))
   .then((previousFileSizes) => {
     // Remove all content but keep the directory so that
     // if you're in it, you don't end up in Trash
@@ -85,7 +100,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
       const appPackage = require(paths.appPackageJson);
 
       const { publicUrl } = paths;
-      const { publicPath } = config.output;
+      const { output: { publicPath } } = config;
       const buildFolder = path.relative(process.cwd(), paths.appBuild);
 
       printHostingInstructions(
@@ -103,7 +118,13 @@ measureFileSizesBeforeBuild(paths.appBuild)
     }
   )
   .then(zipDist)
-  .catch((err) => console.error(err));
+  .catch((err) => {
+    if (err && err.message) {
+      console.log(err.message);
+    }
+
+    process.exit(1);
+  });
 
 // Create the production build and print the deployment instructions.
 function build(previousFileSizes) {
@@ -113,12 +134,22 @@ function build(previousFileSizes) {
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {
+      let messages;
+
       if (err) {
-        return reject(err);
+        if (!err.message) {
+          return reject(err);
+        }
+
+        messages = formatWebpackMessages({
+          errors: [ err.message ],
+          warnings: [],
+        });
+      } else {
+        messages = formatWebpackMessages(
+          stats.toJson({ all: false, warnings: true, errors: true })
+        );
       }
-
-      const messages = formatWebpackMessages(stats.toJson({}, true));
-
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative
         // of the same problem, but confuse the reader with noise.
@@ -144,11 +175,20 @@ function build(previousFileSizes) {
         return reject(new Error(messages.warnings.join('\n\n')));
       }
 
-      return resolve({
+      const resolveArgs = {
         stats,
         previousFileSizes,
         warnings: messages.warnings,
-      });
+      };
+
+      if (writeStatsJson) {
+        return bfj // eslint-disable-line promise/no-promise-in-callback
+          .write(`${paths.appBuild}/bundle-stats.json`, stats.toJson())
+          .then(() => resolve(resolveArgs))
+          .catch((error) => reject(new Error(error)));
+      }
+
+      return resolve(resolveArgs);
     });
   });
 }
