@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { stateFlagTimeout } from '../utils';
 import Storage from './Storage';
 import ColorGenerator from './ColorGenerator';
 import buildShlinkApiClient from './ShlinkApiClientBuilder';
@@ -10,6 +11,9 @@ const provideServices = (bottle) => {
 
   bottle.constant('axios', axios);
   bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
+
+  bottle.constant('setTimeout', global.setTimeout);
+  bottle.serviceFactory('stateFlagTimeout', stateFlagTimeout, 'setTimeout');
 };
 
 export default provideServices;

@@ -8,6 +8,7 @@ import ShortUrlsRowMenu from '../helpers/ShortUrlsRowMenu';
 import CreateShortUrl from '../CreateShortUrl';
 import DeleteShortUrlModal from '../helpers/DeleteShortUrlModal';
 import EditTagsModal from '../helpers/EditTagsModal';
+import CreateShortUrlResult from '../helpers/CreateShortUrlResult';
 import { listShortUrls } from '../reducers/shortUrlsList';
 import { createShortUrl, resetCreateShortUrl } from '../reducers/shortUrlCreation';
 import { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted } from '../reducers/shortUrlDeletion';
@@ -30,11 +31,12 @@ const provideServices = (bottle, connect) => {
     [ 'listShortUrls', 'resetShortUrlParams' ]
   ));
 
-  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator');
+  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'stateFlagTimeout');
 
   bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'EditTagsModal');
+  bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'stateFlagTimeout');
 
-  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector');
+  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
     connect([ 'shortUrlCreationResult' ], [ 'createShortUrl', 'resetCreateShortUrl' ])

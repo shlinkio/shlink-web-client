@@ -5,7 +5,12 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 const DEFAULT_TIMEOUT_DELAY = 2000;
 
-export const stateFlagTimeout = (setState, flagName, initialValue = true, delay = DEFAULT_TIMEOUT_DELAY) => {
+export const stateFlagTimeout = (setTimeout) => (
+  setState,
+  flagName,
+  initialValue = true,
+  delay = DEFAULT_TIMEOUT_DELAY
+) => {
   setState({ [flagName]: initialValue });
   setTimeout(() => setState({ [flagName]: !initialValue }), delay);
 };

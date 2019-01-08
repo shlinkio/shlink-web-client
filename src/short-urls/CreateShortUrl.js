@@ -5,13 +5,12 @@ import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
-import CreateShortUrlResult from './helpers/CreateShortUrlResult';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const formatDate = (date) => isNil(date) ? date : date.format();
 
-const CreateShortUrl = (TagsSelector) => class CreateShortUrl extends React.Component {
+const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShortUrl extends React.Component {
   static propTypes = {
     createShortUrl: PropTypes.func,
     shortUrlCreationResult: createShortUrlResultType,
