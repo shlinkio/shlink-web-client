@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Modal, ModalHeader } from 'reactstrap';
+import { Modal } from 'reactstrap';
 import { Marker, Popup } from 'react-leaflet';
 import MapModal from '../../../src/visits/helpers/MapModal';
 
@@ -34,12 +34,12 @@ describe('<MapModal />', () => {
 
   it('renders modal with provided props', () => {
     const modal = wrapper.find(Modal);
-    const headerheader = wrapper.find(ModalHeader);
+    const headerheader = wrapper.find('.map-modal__modal-title');
 
     expect(modal.prop('toggle')).toEqual(toggle);
     expect(modal.prop('isOpen')).toEqual(isOpen);
-    expect(headerheader.prop('toggle')).toEqual(toggle);
-    expect(headerheader.prop('children')).toEqual(title);
+    expect(headerheader.find('.close').prop('onClick')).toEqual(toggle);
+    expect(headerheader.text()).toContain(title);
   });
 
   it('renders open street map tile', () => {

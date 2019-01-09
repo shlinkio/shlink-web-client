@@ -19,6 +19,16 @@
   height: 100%;
 }
 
+.map-modal__modal-title {
+  position: absolute;
+  width: 100%;
+  z-index: 1001;
+  padding: .5rem 1rem 1rem;
+  margin: 0;
+  color: #fff;
+  background: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, 0));
+}
+
 .map-modal__modal-body {
   padding: 0;
   display: flex;
@@ -27,5 +37,9 @@
 
 .map-modal__modal .leaflet-container {
   flex: 1 1 auto;
-  border-radius: 0 0 .3rem .3rem;
+  border-radius: .3rem;
+}
+
+.map-modal__modal .leaflet-top .leaflet-control {
+  margin-top: 60px;
 }
