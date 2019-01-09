@@ -106,7 +106,7 @@ const ShortUrlVisits = ({
               extraHeaderContent={[
                 () => (
                   <OpenMapModalBtn
-                    title="Cities"
+                    modalTitle="Cities"
                     locations={values(processCitiesStatsForMap(visits))}
                   />
                 ),

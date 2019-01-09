@@ -4,6 +4,7 @@ import {
   processReferrersStats,
   processCountriesStats,
   processCitiesStats,
+  processCitiesStatsForMap,
 } from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
@@ -14,6 +15,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
+        latitude: '123.45',
+        longitude: '-543.21',
       },
     },
     {
@@ -22,6 +25,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'United States',
         cityName: 'New York',
+        latitude: '1029',
+        longitude: '6758',
       },
     },
     {
@@ -36,6 +41,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
+        latitude: '123.45',
+        longitude: '-543.21',
       },
     },
     {
@@ -89,6 +96,28 @@ describe('VisitsParser', () => {
         'Zaragoza': 2,
         'New York': 1,
         'Unknown': 2,
+      });
+    });
+  });
+
+  describe('processCitiesStatsForMap', () => {
+    it('properly parses cities stats with lat and long', () => {
+      const zaragozaLat = 123.45;
+      const zaragozaLong = -543.21;
+      const newYorkLat = 1029;
+      const newYorkLong = 6758;
+
+      expect(processCitiesStatsForMap(visits)).toEqual({
+        'Zaragoza': {
+          cityName: 'Zaragoza',
+          count: 2,
+          latLong: [ zaragozaLat, zaragozaLong ],
+        },
+        'New York': {
+          cityName: 'New York',
+          count: 1,
+          latLong: [ newYorkLat, newYorkLong ],
+        },
       });
     });
   });
