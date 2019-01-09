@@ -1,5 +1,4 @@
 @import '../utils/base';
-@import '../utils/mixins/box-shadow';
 @import '../utils/mixins/vertical-align';
 
 $asideMenuMobileWidth: 280px;
@@ -26,8 +25,7 @@ $asideMenuMobileWidth: 280px;
     width: $asideMenuMobileWidth !important;
     transition: left 300ms;
     top: $headerHeight - 3px;
-
-    @include box-shadow(-10px 0 50px 11px rgba(0, 0, 0, .55));
+    box-shadow: -10px 0 50px 11px rgba(0, 0, 0, .55);
   }
 }
 

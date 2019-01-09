@@ -3,17 +3,24 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
-import CreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
+import * as sinon from 'sinon';
+import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
 
 describe('<CreateShortUrlResult />', () => {
   let wrapper;
+  const stateFlagTimeout = sinon.spy();
   const createWrapper = (result, error = false) => {
+    const CreateShortUrlResult = createCreateShortUrlResult(stateFlagTimeout);
+
     wrapper = shallow(<CreateShortUrlResult resetCreateShortUrl={identity} result={result} error={error} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => {
+    stateFlagTimeout.resetHistory();
+    wrapper && wrapper.unmount();
+  });
 
   it('renders an error when error is true', () => {
     const wrapper = createWrapper({}, true);
@@ -37,12 +44,12 @@ describe('<CreateShortUrlResult />', () => {
     expect(wrapper.find(Tooltip)).toHaveLength(1);
   });
 
-  it('Shows tooltip when copy to clipboard button is clicked', () => {
+  it('Invokes tooltip timeout when copy to clipboard button is clicked', () => {
     const wrapper = createWrapper({ shortUrl: 'https://doma.in/abc123' });
     const copyBtn = wrapper.find(CopyToClipboard);
 
-    expect(wrapper.state('showCopyTooltip')).toEqual(false);
+    expect(stateFlagTimeout.callCount).toEqual(0);
     copyBtn.simulate('copy');
-    expect(wrapper.state('showCopyTooltip')).toEqual(true);
+    expect(stateFlagTimeout.callCount).toEqual(1);
   });
 });

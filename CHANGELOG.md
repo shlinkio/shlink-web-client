@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Added
 
 * [#54](https://github.com/shlinkio/shlink-web-client/issues/54) Added stats by city graphic in visits page.
+* [#55](https://github.com/shlinkio/shlink-web-client/issues/55) Added map in visits page locating cities from which visits have occurred.
 
 #### Changed
 

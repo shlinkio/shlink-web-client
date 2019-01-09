@@ -6,10 +6,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Card, CardBody, Tooltip } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { createShortUrlResultType } from '../reducers/shortUrlCreation';
-import { stateFlagTimeout } from '../../utils/utils';
 import './CreateShortUrlResult.scss';
 
-export default class CreateShortUrlResult extends React.Component {
+const CreateShortUrlResult = (stateFlagTimeout) => class CreateShortUrlResult extends React.Component {
   static propTypes = {
     resetCreateShortUrl: PropTypes.func,
     error: PropTypes.bool,
@@ -61,4 +60,6 @@ export default class CreateShortUrlResult extends React.Component {
       </Card>
     );
   }
-}
+};
+
+export default CreateShortUrlResult;

@@ -2,12 +2,11 @@ import { assoc, dissoc, pipe } from 'ramda';
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
-import { stateFlagTimeout } from '../utils/utils';
 import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-const CreateServer = (ImportServersBtn) => class CreateServer extends React.Component {
+const CreateServer = (ImportServersBtn, stateFlagTimeout) => class CreateServer extends React.Component {
   static propTypes = {
     createServer: PropTypes.func,
     history: PropTypes.shape({

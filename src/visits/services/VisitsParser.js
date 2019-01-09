@@ -76,15 +76,18 @@ export const processReferrersStats = (visits) =>
     visits,
   );
 
+const visitLocationHasProperty = (visitLocation, propertyName) =>
+  !isNil(visitLocation)
+  && !isNil(visitLocation[propertyName])
+  && !isEmpty(visitLocation[propertyName]);
+
 const buildLocationStatsProcessorByProperty = (propertyName) => (visits) =>
   reduce(
     (stats, { visitLocation }) => {
-      const notHasCountry = isNil(visitLocation)
-        || isNil(visitLocation[propertyName])
-        || isEmpty(visitLocation[propertyName]);
-      const country = notHasCountry ? 'Unknown' : visitLocation[propertyName];
+      const hasLocationProperty = visitLocationHasProperty(visitLocation, propertyName);
+      const value = hasLocationProperty ? visitLocation[propertyName] : 'Unknown';
 
-      return assoc(country, (stats[country] || 0) + 1, stats);
+      return assoc(value, (stats[value] || 0) + 1, stats);
     },
     {},
     visits,
@@ -93,3 +96,25 @@ const buildLocationStatsProcessorByProperty = (propertyName) => (visits) =>
 export const processCountriesStats = buildLocationStatsProcessorByProperty('countryName');
 
 export const processCitiesStats = buildLocationStatsProcessorByProperty('cityName');
+
+export const processCitiesStatsForMap = (visits) =>
+  reduce(
+    (stats, { visitLocation }) => {
+      if (!visitLocationHasProperty(visitLocation, 'cityName')) {
+        return stats;
+      }
+
+      const { cityName, latitude, longitude } = visitLocation;
+      const currentCity = stats[cityName] || {
+        cityName,
+        count: 0,
+        latLong: [ parseFloat(latitude), parseFloat(longitude) ],
+      };
+
+      currentCity.count++;
+
+      return assoc(cityName, currentCity, stats);
+    },
+    {},
+    visits,
+  );

@@ -24,6 +24,7 @@ describe('<ShortUrlVisits />', () => {
       processOsStats: statsProcessor,
       processReferrersStats: statsProcessor,
       processCitiesStats: statsProcessor,
+      processCitiesStatsForMap: statsProcessor,
     });
 
     wrapper = shallow(
@@ -91,5 +92,14 @@ describe('<ShortUrlVisits />', () => {
 
     expect(getShortUrlVisitsMock.callCount).toEqual(expectedGetShortUrlVisitsCalls);
     expect(wrapper.state('startDate')).toEqual('2016-01-03T00:00:00+01:00');
+  });
+
+  it('holds the map button content generator on cities graph extraHeaderContent', () => {
+    const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
+    const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
+    const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
+
+    expect(extraHeaderContent).toHaveLength(1);
+    expect(typeof extraHeaderContent[0]).toEqual('function');
   });
 });
