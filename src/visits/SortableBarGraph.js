@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fromPairs, head, identity, keys, pipe, prop, reverse, sortBy, toLower, toPairs, type } from 'ramda';
+import { fromPairs, head, keys, pipe, prop, reverse, sortBy, toLower, toPairs, type } from 'ramda';
 import SortingDropdown from '../utils/SortingDropdown';
 import GraphCard from './GraphCard';
 
-const toLowerIfString = (value) => type(value) === 'String' ? toLower(value) : identity(value);
+const toLowerIfString = (value) => type(value) === 'String' ? toLower(value) : value;
 
 export default class SortableBarGraph extends React.Component {
   static propTypes = {
