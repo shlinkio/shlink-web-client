@@ -46,10 +46,23 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
   const { selectedServer } = getState();
-  const shlinkApiClient = buildShlinkApiClient(selectedServer);
+  const { getShortUrlVisits } = buildShlinkApiClient(selectedServer);
+  const itemsPerPage = 5000;
+  const isLastPage = ({ currentPage, pagesCount }) => currentPage >= pagesCount;
+
+  const loadVisits = async (page = 1) => {
+    const { pagination, data } = await getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage });
+
+    // If pagination was not returned, then this is an older shlink version. Just return data
+    if (!pagination || isLastPage(pagination)) {
+      return data;
+    }
+
+    return data.concat(await loadVisits(page + 1));
+  };
 
   try {
-    const visits = await shlinkApiClient.getShortUrlVisits(shortCode, dates);
+    const visits = await loadVisits();
 
     dispatch({ visits, type: GET_SHORT_URL_VISITS });
   } catch (e) {

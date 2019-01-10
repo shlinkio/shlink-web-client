@@ -22,9 +22,9 @@ export default class ShlinkApiClient {
       .then((resp) => resp.data);
   };
 
-  getShortUrlVisits = (shortCode, dates) =>
-    this._performRequest(`/short-urls/${shortCode}/visits`, 'GET', dates)
-      .then((resp) => resp.data.visits.data);
+  getShortUrlVisits = (shortCode, query) =>
+    this._performRequest(`/short-urls/${shortCode}/visits`, 'GET', query)
+      .then((resp) => resp.data.visits);
 
   getShortUrl = (shortCode) =>
     this._performRequest(`/short-urls/${shortCode}`, 'GET')
