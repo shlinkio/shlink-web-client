@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Changed
 
 * [#87](https://github.com/shlinkio/shlink-web-client/issues/87) and [#89](https://github.com/shlinkio/shlink-web-client/issues/89) Updated all dependencies to latest major versions.
+* [#96](https://github.com/shlinkio/shlink-web-client/issues/96) Updated visits page to load visits in multiple paginated requests of `5000` visits when used shlink server supports it. This will prevent shlink to hang when trying to load big amounts of visits.
 
 #### Deprecated
 
