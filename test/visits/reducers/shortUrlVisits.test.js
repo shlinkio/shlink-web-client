@@ -47,7 +47,7 @@ describe('shortUrlVisitsReducer', () => {
 
   describe('getShortUrlVisits', () => {
     const buildApiClientMock = (returned) => ({
-      getShortUrlVisits: sinon.fake.returns(returned),
+      getShortUrlVisits: typeof returned === 'function' ? sinon.fake(returned) : sinon.fake.returns(returned),
     });
     const dispatchMock = sinon.spy();
     const getState = () => ({});
@@ -74,7 +74,13 @@ describe('shortUrlVisitsReducer', () => {
 
     it('dispatches start and success when promise is resolved', async () => {
       const resolvedVisits = [{}, {}];
-      const ShlinkApiClient = buildApiClientMock(Promise.resolve(resolvedVisits));
+      const ShlinkApiClient = buildApiClientMock(Promise.resolve({
+        data: resolvedVisits,
+        pagination: {
+          currentPage: 1,
+          pagesCount: 1,
+        },
+      }));
       const expectedDispatchCalls = 2;
 
       await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
@@ -90,6 +96,26 @@ describe('shortUrlVisitsReducer', () => {
       expect(firstCallType).toEqual(GET_SHORT_URL_VISITS_START);
       expect(secondCallType).toEqual(GET_SHORT_URL_VISITS);
       expect(visits).toEqual(resolvedVisits);
+    });
+
+    it('performs two API requests when response contains more pages', async () => {
+      const expectedRequests = 3;
+      const ShlinkApiClient = buildApiClientMock((shortCode, { page }) =>
+        Promise.resolve({
+          data: [{}, {}],
+          pagination: {
+            currentPage: page,
+            pagesCount: expectedRequests,
+          },
+        }));
+
+      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+
+      const [ secondCallArg ] = dispatchMock.getCall(1).args;
+      const { visits } = secondCallArg;
+
+      expect(ShlinkApiClient.getShortUrlVisits.callCount).toEqual(expectedRequests);
+      expect(visits).toEqual([{}, {}, {}, {}, {}, {}]);
     });
   });
 });

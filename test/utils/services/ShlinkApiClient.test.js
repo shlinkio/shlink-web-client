@@ -64,7 +64,7 @@ describe('ShlinkApiClient', () => {
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
-      expect(expectedVisits).toEqual(actualVisits);
+      expect({ data: expectedVisits }).toEqual(actualVisits);
       expect(axiosArgs.url).toContain('/short-urls/abc123/visits');
       expect(axiosArgs.method).toEqual('GET');
     });
