@@ -3,26 +3,20 @@ import { head, last } from 'ramda';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
-  const createAxiosMock = (extraData) => () =>
-    Promise.resolve({
-      headers: { authorization: 'Bearer abc123' },
-      data: { token: 'abc123' },
-      ...extraData,
-    });
-  const createApiClient = (extraData) =>
-    new ShlinkApiClient(createAxiosMock(extraData));
+  const createAxiosMock = (data) => () => Promise.resolve(data);
+  const createApiClient = (data) => new ShlinkApiClient(createAxiosMock(data));
 
   describe('listShortUrls', () => {
     it('properly returns short URLs list', async () => {
       const expectedList = [ 'foo', 'bar' ];
 
-      const apiClient = createApiClient({
+      const { listShortUrls } = createApiClient({
         data: {
           shortUrls: expectedList,
         },
       });
 
-      const actualList = await apiClient.listShortUrls();
+      const actualList = await listShortUrls();
 
       expect(expectedList).toEqual(actualList);
     });
@@ -34,17 +28,17 @@ describe('ShlinkApiClient', () => {
     };
 
     it('returns create short URL', async () => {
-      const apiClient = createApiClient({ data: shortUrl });
-      const result = await apiClient.createShortUrl({});
+      const { createShortUrl } = createApiClient({ data: shortUrl });
+      const result = await createShortUrl({});
 
       expect(result).toEqual(shortUrl);
     });
 
     it('removes all empty options', async () => {
       const axiosSpy = sinon.spy(createAxiosMock({ data: shortUrl }));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { createShortUrl } = new ShlinkApiClient(axiosSpy);
 
-      await apiClient.createShortUrl(
+      await createShortUrl(
         { foo: 'bar', empty: undefined, anotherEmpty: null }
       );
       const lastAxiosCall = last(axiosSpy.getCalls());
@@ -64,14 +58,14 @@ describe('ShlinkApiClient', () => {
           },
         },
       }));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { getShortUrlVisits } = new ShlinkApiClient(axiosSpy);
 
-      const actualVisits = await apiClient.getShortUrlVisits('abc123', {});
+      const actualVisits = await getShortUrlVisits('abc123', {});
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedVisits).toEqual(actualVisits);
-      expect(axiosArgs.url).toContain('/short-codes/abc123/visits');
+      expect(axiosArgs.url).toContain('/short-urls/abc123/visits');
       expect(axiosArgs.method).toEqual('GET');
     });
   });
@@ -82,14 +76,14 @@ describe('ShlinkApiClient', () => {
       const axiosSpy = sinon.spy(createAxiosMock({
         data: expectedShortUrl,
       }));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { getShortUrl } = new ShlinkApiClient(axiosSpy);
 
-      const result = await apiClient.getShortUrl('abc123');
+      const result = await getShortUrl('abc123');
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedShortUrl).toEqual(result);
-      expect(axiosArgs.url).toContain('/short-codes/abc123');
+      expect(axiosArgs.url).toContain('/short-urls/abc123');
       expect(axiosArgs.method).toEqual('GET');
     });
   });
@@ -100,14 +94,14 @@ describe('ShlinkApiClient', () => {
       const axiosSpy = sinon.spy(createAxiosMock({
         data: { tags: expectedTags },
       }));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy);
 
-      const result = await apiClient.updateShortUrlTags('abc123', expectedTags);
+      const result = await updateShortUrlTags('abc123', expectedTags);
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedTags).toEqual(result);
-      expect(axiosArgs.url).toContain('/short-codes/abc123/tags');
+      expect(axiosArgs.url).toContain('/short-urls/abc123/tags');
       expect(axiosArgs.method).toEqual('PUT');
     });
   });
@@ -120,9 +114,9 @@ describe('ShlinkApiClient', () => {
           tags: { data: expectedTags },
         },
       }));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { listTags } = new ShlinkApiClient(axiosSpy);
 
-      const result = await apiClient.listTags();
+      const result = await listTags();
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
@@ -136,9 +130,9 @@ describe('ShlinkApiClient', () => {
     it('properly deletes provided tags', async () => {
       const tags = [ 'foo', 'bar' ];
       const axiosSpy = sinon.spy(createAxiosMock({}));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { deleteTags } = new ShlinkApiClient(axiosSpy);
 
-      await apiClient.deleteTags(tags);
+      await deleteTags(tags);
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
@@ -149,19 +143,33 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('editTag', () => {
-    it('properly deletes provided tags', async () => {
+    it('properly edits provided tag', async () => {
       const oldName = 'foo';
       const newName = 'bar';
       const axiosSpy = sinon.spy(createAxiosMock({}));
-      const apiClient = new ShlinkApiClient(axiosSpy);
+      const { editTag } = new ShlinkApiClient(axiosSpy);
 
-      await apiClient.editTag(oldName, newName);
+      await editTag(oldName, newName);
       const lastAxiosCall = last(axiosSpy.getCalls());
       const axiosArgs = head(lastAxiosCall.args);
 
       expect(axiosArgs.url).toContain('/tags');
       expect(axiosArgs.method).toEqual('PUT');
       expect(axiosArgs.data).toEqual({ oldName, newName });
+    });
+  });
+
+  describe('deleteShortUrl', () => {
+    it('properly deletes provided short URL', async () => {
+      const axiosSpy = sinon.spy(createAxiosMock({}));
+      const { deleteShortUrl } = new ShlinkApiClient(axiosSpy);
+
+      await deleteShortUrl('abc123');
+      const lastAxiosCall = last(axiosSpy.getCalls());
+      const axiosArgs = head(lastAxiosCall.args);
+
+      expect(axiosArgs.url).toContain('/short-urls/abc123');
+      expect(axiosArgs.method).toEqual('DELETE');
     });
   });
 });

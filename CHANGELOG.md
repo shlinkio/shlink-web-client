@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Removed
 
 * [#59](https://github.com/shlinkio/shlink-web-client/issues/59) Dropped support for old browsers. Internet explorer and dead browsers are no longer supported.
+* [#97](https://github.com/shlinkio/shlink-web-client/issues/97) Dropped support for authentication via `Authorization` header with Bearer type and JWT, which will make this version no longer work with shlink earlier than v1.13.0.
 
 #### Fixed
 
