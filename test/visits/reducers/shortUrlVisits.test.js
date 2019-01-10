@@ -98,7 +98,7 @@ describe('shortUrlVisitsReducer', () => {
       expect(visits).toEqual(resolvedVisits);
     });
 
-    it('performs two API requests when response contains more pages', async () => {
+    it('performs multiple API requests when response contains more pages', async () => {
       const expectedRequests = 3;
       const ShlinkApiClient = buildApiClientMock((shortCode, { page }) =>
         Promise.resolve({
