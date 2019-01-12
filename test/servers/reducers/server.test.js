@@ -13,6 +13,7 @@ describe('serverReducer', () => {
     abc123: { id: 'abc123' },
     def456: { id: 'def456' },
   };
+  const expectedFetchServersResult = { type: FETCH_SERVERS, servers };
   const ServersServiceMock = {
     listServers: sinon.fake.returns(servers),
     createServer: sinon.fake(),
@@ -40,38 +41,38 @@ describe('serverReducer', () => {
       it('fetches servers and returns them as part of the action', () => {
         const result = listServers(ServersServiceMock)();
 
-        expect(result).toEqual({ type: FETCH_SERVERS, servers });
-        expect(ServersServiceMock.listServers.callCount).toEqual(1);
-        expect(ServersServiceMock.createServer.callCount).toEqual(0);
-        expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
-        expect(ServersServiceMock.createServers.callCount).toEqual(0);
+        expect(result).toEqual(expectedFetchServersResult);
+        expect(ServersServiceMock.listServers.calledOnce).toEqual(true);
+        expect(ServersServiceMock.createServer.called).toEqual(false);
+        expect(ServersServiceMock.deleteServer.called).toEqual(false);
+        expect(ServersServiceMock.createServers.called).toEqual(false);
       });
     });
 
     describe('createServer', () => {
       it('adds new server and then fetches servers again', () => {
         const serverToCreate = { id: 'abc123' };
-        const result = createServer(ServersServiceMock)(serverToCreate);
+        const result = createServer(ServersServiceMock, () => expectedFetchServersResult)(serverToCreate);
 
-        expect(result).toEqual({ type: FETCH_SERVERS, servers });
-        expect(ServersServiceMock.listServers.callCount).toEqual(1);
-        expect(ServersServiceMock.createServer.callCount).toEqual(1);
+        expect(result).toEqual(expectedFetchServersResult);
+        expect(ServersServiceMock.createServer.calledOnce).toEqual(true);
         expect(ServersServiceMock.createServer.firstCall.calledWith(serverToCreate)).toEqual(true);
-        expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
-        expect(ServersServiceMock.createServers.callCount).toEqual(0);
+        expect(ServersServiceMock.listServers.called).toEqual(false);
+        expect(ServersServiceMock.deleteServer.called).toEqual(false);
+        expect(ServersServiceMock.createServers.called).toEqual(false);
       });
     });
 
     describe('deleteServer', () => {
       it('deletes a server and then fetches servers again', () => {
         const serverToDelete = { id: 'abc123' };
-        const result = deleteServer(ServersServiceMock)(serverToDelete);
+        const result = deleteServer(ServersServiceMock, () => expectedFetchServersResult)(serverToDelete);
 
-        expect(result).toEqual({ type: FETCH_SERVERS, servers });
-        expect(ServersServiceMock.listServers.callCount).toEqual(1);
-        expect(ServersServiceMock.createServer.callCount).toEqual(0);
-        expect(ServersServiceMock.createServers.callCount).toEqual(0);
-        expect(ServersServiceMock.deleteServer.callCount).toEqual(1);
+        expect(result).toEqual(expectedFetchServersResult);
+        expect(ServersServiceMock.listServers.called).toEqual(false);
+        expect(ServersServiceMock.createServer.called).toEqual(false);
+        expect(ServersServiceMock.createServers.called).toEqual(false);
+        expect(ServersServiceMock.deleteServer.calledOnce).toEqual(true);
         expect(ServersServiceMock.deleteServer.firstCall.calledWith(serverToDelete)).toEqual(true);
       });
     });
@@ -79,14 +80,14 @@ describe('serverReducer', () => {
     describe('createServer', () => {
       it('creates multiple servers and then fetches servers again', () => {
         const serversToCreate = values(servers);
-        const result = createServers(ServersServiceMock)(serversToCreate);
+        const result = createServers(ServersServiceMock, () => expectedFetchServersResult)(serversToCreate);
 
-        expect(result).toEqual({ type: FETCH_SERVERS, servers });
-        expect(ServersServiceMock.listServers.callCount).toEqual(1);
-        expect(ServersServiceMock.createServer.callCount).toEqual(0);
-        expect(ServersServiceMock.createServers.callCount).toEqual(1);
+        expect(result).toEqual(expectedFetchServersResult);
+        expect(ServersServiceMock.listServers.called).toEqual(false);
+        expect(ServersServiceMock.createServer.called).toEqual(false);
+        expect(ServersServiceMock.createServers.calledOnce).toEqual(true);
         expect(ServersServiceMock.createServers.firstCall.calledWith(serversToCreate)).toEqual(true);
-        expect(ServersServiceMock.deleteServer.callCount).toEqual(0);
+        expect(ServersServiceMock.deleteServer.called).toEqual(false);
       });
     });
   });
