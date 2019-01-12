@@ -14,18 +14,21 @@ export const listServers = (serversService) => () => ({
   servers: serversService.listServers(),
 });
 
+// FIXME listServers action should be injected and not directly invoked
 export const createServer = (serversService) => (server) => {
   serversService.createServer(server);
 
   return listServers(serversService)();
 };
 
+// FIXME listServers action should be injected and not directly invoked
 export const deleteServer = (serversService) => (server) => {
   serversService.deleteServer(server);
 
   return listServers(serversService)();
 };
 
+// FIXME listServers action should be injected and not directly invoked
 export const createServers = (serversService) => (servers) => {
   serversService.createServers(servers);
 
