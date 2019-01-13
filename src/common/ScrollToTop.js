@@ -7,10 +7,10 @@ const ScrollToTop = ({ scrollTo }) => class ScrollToTop extends React.Component 
     children: PropTypes.node,
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate({ location: prevLocation }) {
     const { location } = this.props;
 
-    if (location !== prevProps.location) {
+    if (location !== prevLocation) {
       scrollTo(0, 0);
     }
   }
