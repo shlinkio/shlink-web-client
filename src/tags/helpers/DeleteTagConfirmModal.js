@@ -13,13 +13,12 @@ export default class DeleteTagConfirmModal extends React.Component {
     tagDeleted: PropTypes.func,
   };
 
-  doDelete = () => {
+  doDelete = async () => {
     const { tag, toggle, deleteTag } = this.props;
 
-    return deleteTag(tag).then(() => {
-      this.tagWasDeleted = true;
-      toggle();
-    });
+    await deleteTag(tag);
+    this.tagWasDeleted = true;
+    toggle();
   };
   handleOnClosed = () => {
     if (!this.tagWasDeleted) {

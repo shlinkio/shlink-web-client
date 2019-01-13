@@ -15,7 +15,7 @@ describe('<CreateShortUrl />', () => {
   const createShortUrl = sinon.spy();
 
   beforeEach(() => {
-    const CreateShortUrl = createShortUrlsCreator(TagsSelector);
+    const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '');
 
     wrapper = shallow(
       <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />
