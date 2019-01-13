@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ScrollToTop = (window) => class ScrollToTop extends React.Component {
+const ScrollToTop = ({ scrollTo }) => class ScrollToTop extends React.Component {
   static propTypes = {
     location: PropTypes.object,
     children: PropTypes.node,
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate({ location: prevLocation }) {
     const { location } = this.props;
 
-    if (location !== prevProps.location) {
-      window.scrollTo(0, 0);
+    if (location !== prevLocation) {
+      scrollTo(0, 0);
     }
   }
 

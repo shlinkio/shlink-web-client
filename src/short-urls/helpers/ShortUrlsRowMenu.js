@@ -20,7 +20,6 @@ import './ShortUrlsRowMenu.scss';
 
 const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
-    completeShortUrl: PropTypes.string,
     onCopyToClipboard: PropTypes.func,
     selectedServer: serverType,
     shortUrl: shortUrlType,
@@ -29,18 +28,18 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
   state = {
     isOpen: false,
     isQrModalOpen: false,
-    isPreviewOpen: false,
+    isPreviewModalOpen: false,
     isTagsModalOpen: false,
     isDeleteModalOpen: false,
   };
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
   render() {
-    const { completeShortUrl, onCopyToClipboard, selectedServer, shortUrl } = this.props;
-    const serverId = selectedServer ? selectedServer.id : '';
+    const { onCopyToClipboard, shortUrl, selectedServer: { id } } = this.props;
+    const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
-    const togglePreview = toggleModal('isPreviewOpen');
+    const togglePreview = toggleModal('isPreviewModalOpen');
     const toggleTags = toggleModal('isTagsModalOpen');
     const toggleDelete = toggleModal('isDeleteModalOpen');
 
@@ -50,7 +49,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem tag={Link} to={`/server/${serverId}/short-code/${shortUrl.shortCode}/visits`}>
+          <DropdownItem tag={Link} to={`/server/${id}/short-code/${shortUrl.shortCode}/visits`}>
             <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit stats
           </DropdownItem>
 
@@ -67,31 +66,19 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
           <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} /> &nbsp;Delete short URL
           </DropdownItem>
-          <DeleteShortUrlModal
-            shortUrl={shortUrl}
-            isOpen={this.state.isDeleteModalOpen}
-            toggle={toggleDelete}
-          />
+          <DeleteShortUrlModal shortUrl={shortUrl} isOpen={this.state.isDeleteModalOpen} toggle={toggleDelete} />
 
           <DropdownItem divider />
 
           <DropdownItem onClick={togglePreview}>
             <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
           </DropdownItem>
-          <PreviewModal
-            url={completeShortUrl}
-            isOpen={this.state.isPreviewOpen}
-            toggle={togglePreview}
-          />
+          <PreviewModal url={completeShortUrl} isOpen={this.state.isPreviewModalOpen} toggle={togglePreview} />
 
           <DropdownItem onClick={toggleQrCode}>
             <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
           </DropdownItem>
-          <QrCodeModal
-            url={completeShortUrl}
-            isOpen={this.state.isQrModalOpen}
-            toggle={toggleQrCode}
-          />
+          <QrCodeModal url={completeShortUrl} isOpen={this.state.isQrModalOpen} toggle={toggleQrCode} />
 
           <DropdownItem divider />
 

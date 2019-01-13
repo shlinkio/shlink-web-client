@@ -14,20 +14,20 @@ export const listServers = (serversService) => () => ({
   servers: serversService.listServers(),
 });
 
-export const createServer = (serversService) => (server) => {
+export const createServer = (serversService, listServers) => (server) => {
   serversService.createServer(server);
 
-  return listServers(serversService)();
+  return listServers();
 };
 
-export const deleteServer = (serversService) => (server) => {
+export const deleteServer = (serversService, listServers) => (server) => {
   serversService.deleteServer(server);
 
-  return listServers(serversService)();
+  return listServers();
 };
 
-export const createServers = (serversService) => (servers) => {
+export const createServers = (serversService, listServers) => (servers) => {
   serversService.createServers(servers);
 
-  return listServers(serversService)();
+  return listServers();
 };

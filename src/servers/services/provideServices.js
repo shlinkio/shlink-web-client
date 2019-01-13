@@ -35,9 +35,9 @@ const provideServices = (bottle, connect, withRouter) => {
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'ServersService');
-  bottle.serviceFactory('createServer', createServer, 'ServersService');
-  bottle.serviceFactory('createServers', createServers, 'ServersService');
-  bottle.serviceFactory('deleteServer', deleteServer, 'ServersService');
+  bottle.serviceFactory('createServer', createServer, 'ServersService', 'listServers');
+  bottle.serviceFactory('createServers', createServers, 'ServersService', 'listServers');
+  bottle.serviceFactory('deleteServer', deleteServer, 'ServersService', 'listServers');
   bottle.serviceFactory('listServers', listServers, 'ServersService');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);

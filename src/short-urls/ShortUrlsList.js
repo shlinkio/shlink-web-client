@@ -14,7 +14,7 @@ import './ShortUrlsList.scss';
 const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
   shortCode: 'Short URL',
-  originalUrl: 'Long URL',
+  longUrl: 'Long URL',
   visits: 'Visits',
 };
 
@@ -142,9 +142,9 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
               </th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={this.orderByColumn('originalUrl')}
+                onClick={this.orderByColumn('longUrl')}
               >
-                {this.renderOrderIcon('originalUrl')}
+                {this.renderOrderIcon('longUrl')}
                 Long URL
               </th>
               <th className="short-urls-list__header-cell">Tags</th>

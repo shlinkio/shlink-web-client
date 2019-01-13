@@ -13,11 +13,12 @@ import provideUtilsServices from '../utils/services/provideServices';
 const bottle = new Bottle();
 const { container } = bottle;
 
+const lazyService = (container, serviceName) => (...args) => container[serviceName](...args);
 const mapActionService = (map, actionName) => ({
   ...map,
 
   // Wrap actual action service in a function so that it is lazily created the first time it is called
-  [actionName]: (...args) => container[actionName](...args),
+  [actionName]: lazyService(container, actionName),
 });
 const connect = (propsFromState, actionServiceNames) =>
   reduxConnect(
