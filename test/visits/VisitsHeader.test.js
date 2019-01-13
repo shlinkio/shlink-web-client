@@ -8,6 +8,7 @@ describe('<VisitsHeader />', () => {
   let wrapper;
   const shortUrlDetail = {
     shortUrl: {
+      shortUrl: 'https://doma.in/abc123',
       longUrl: 'https://foo.bar/bar/foo',
       dateCreated: '2018-01-01T10:00:00+01:00',
     },

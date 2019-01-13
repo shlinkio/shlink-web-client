@@ -43,7 +43,6 @@ const ShortUrlsRow = (
 
   render() {
     const { shortUrl, selectedServer } = this.props;
-    const completeShortUrl = !selectedServer ? shortUrl.shortCode : `${selectedServer.url}/${shortUrl.shortCode}`;
 
     return (
       <tr className="short-urls-row">
@@ -51,10 +50,10 @@ const ShortUrlsRow = (
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-row__cell" data-th="Short URL: ">
-          <ExternalLink href={completeShortUrl}>{completeShortUrl}</ExternalLink>
+          <ExternalLink href={shortUrl.shortUrl} />
         </td>
         <td className="short-urls-row__cell short-urls-row__cell--break" data-th="Long URL: ">
-          <ExternalLink href={shortUrl.originalUrl}>{shortUrl.originalUrl}</ExternalLink>
+          <ExternalLink href={shortUrl.longUrl} />
         </td>
         <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-row__cell text-md-right" data-th="Visits: ">{shortUrl.visitsCount}</td>
@@ -66,7 +65,6 @@ const ShortUrlsRow = (
             Copied short URL!
           </small>
           <ShortUrlsRowMenu
-            completeShortUrl={completeShortUrl}
             selectedServer={selectedServer}
             shortUrl={shortUrl}
             onCopyToClipboard={() => stateFlagTimeout(this.setState.bind(this), 'copiedToClipboard')}

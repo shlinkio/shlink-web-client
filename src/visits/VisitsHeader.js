@@ -34,13 +34,7 @@ export function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
           Visit stats for <ExternalLink href={shortLink} />
         </h2>
         <hr />
-        {shortUrl.dateCreated && (
-          <div>
-            Created:
-            &nbsp;
-            {renderDate()}
-          </div>
-        )}
+        <div>Created: {renderDate()}</div>
         <div>
           Long URL:
           &nbsp;

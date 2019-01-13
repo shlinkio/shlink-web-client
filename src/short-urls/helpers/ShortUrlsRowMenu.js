@@ -20,7 +20,6 @@ import './ShortUrlsRowMenu.scss';
 
 const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
-    completeShortUrl: PropTypes.string,
     onCopyToClipboard: PropTypes.func,
     selectedServer: serverType,
     shortUrl: shortUrlType,
@@ -36,7 +35,8 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
   render() {
-    const { completeShortUrl, onCopyToClipboard, selectedServer, shortUrl } = this.props;
+    const { onCopyToClipboard, selectedServer, shortUrl } = this.props;
+    const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
     const serverId = selectedServer ? selectedServer.id : '';
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');

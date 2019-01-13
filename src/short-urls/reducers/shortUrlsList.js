@@ -10,9 +10,10 @@ export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlType = PropTypes.shape({
-  tags: PropTypes.arrayOf(PropTypes.string),
   shortCode: PropTypes.string,
-  originalUrl: PropTypes.string,
+  shortUrl: PropTypes.string,
+  longUrl: PropTypes.string,
+  tags: PropTypes.arrayOf(PropTypes.string),
 });
 
 const initialState = {
