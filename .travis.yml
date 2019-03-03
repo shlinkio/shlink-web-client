@@ -14,7 +14,7 @@ install:
 script:
   - yarn lint
   - yarn test:ci
-  - if [[ -z $TRAVIS_TAG ]]; then yarn build ; fi
+  - if [[ -z $TRAVIS_TAG ]]; then docker build . -t shlink-web-client:test ; fi # Test docker image build only when no tag is present
 
 after_success:
   - yarn ocular coverage/clover.xml
