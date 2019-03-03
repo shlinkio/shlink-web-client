@@ -19,12 +19,17 @@ describe('<App />', () => {
 
   it('renders app main routes', () => {
     const routes = wrapper.find(Route);
-    const expectedRoutesCount = 3;
-    const second = 2;
+    const expectedRoutesCount = 4;
+    const expectedPaths = [
+      '/server/create',
+      '/',
+      '/server/:serverId',
+    ];
 
+    expect.assertions(expectedPaths.length + 1);
     expect(routes).toHaveLength(expectedRoutesCount);
-    expect(routes.at(0).prop('path')).toEqual('/server/create');
-    expect(routes.at(1).prop('path')).toEqual('/');
-    expect(routes.at(second).prop('path')).toEqual('/server/:serverId');
+    expectedPaths.forEach((path, index) => {
+      expect(routes.at(index).prop('path')).toEqual(path);
+    });
   });
 });
