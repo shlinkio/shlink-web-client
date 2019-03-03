@@ -8,13 +8,16 @@ cache:
   directories:
     - node_modules
 
+services:
+  - docker
+
 install:
   - yarn install
 
 script:
   - yarn lint
   - yarn test:ci
-  - if [[ -z $TRAVIS_TAG ]]; then docker build . -t shlink-web-client:test ; fi # Test docker image build only when no tag is present
+  - if [[ -z $TRAVIS_TAG ]]; then docker build -t shlink-web-client:test . ; fi # Test docker image build only when no tag is present
 
 after_success:
   - yarn ocular coverage/clover.xml
