@@ -1,4 +1,4 @@
-FROM nginx:1.15.8-alpine
+FROM nginx:1.15.9-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 
 # Install node and yarn
