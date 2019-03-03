@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unpublished]
+## 2.0.1 - 2019-03-03
 
 #### Added
 
@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#104](https://github.com/shlinkio/shlink-web-client/issues/104) Fixed blank page being showed when not-found paths are loaded.
 * [#94](https://github.com/shlinkio/shlink-web-client/issues/94) Fixed initial zoom and center on maps.
+* [#93](https://github.com/shlinkio/shlink-web-client/issues/93) Prevented side menu to be swipeable while a modal window is displayed.
 
 
 ## 2.0.0 - 2019-01-13
