@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unpublished]
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* [#106](https://github.com/shlinkio/shlink-web-client/issues/106) Reduced size of docker image by using a multi-stage build Dockerfile.
+* [#95](https://github.com/shlinkio/shlink-web-client/issues/95) Tested docker image build during travis executions.
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* *Nothing*
+
+
 ## 2.0.0 - 2019-01-13
 
 #### Added
