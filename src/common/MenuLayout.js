@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classnames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
+import NotFound from './NotFound';
 import './MenuLayout.scss';
 
 const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits) =>
@@ -38,7 +39,8 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
     }
 
     render() {
-      const { selectedServer } = this.props;
+      const { selectedServer, match } = this.props;
+      const { params: { serverId } } = match;
       const burgerClasses = classnames('menu-layout__burger-icon', {
         'menu-layout__burger-icon--active': this.state.showSideBar,
       });
@@ -87,6 +89,11 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
                     exact
                     path="/server/:serverId/manage-tags"
                     component={TagsList}
+                  />
+                  <Route
+                    component={
+                      () => <NotFound to={`/server/${serverId}/list-short-urls/1`} btnText="List short URLs" />
+                    }
                   />
                 </Switch>
               </div>
