@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { map, prop } from 'ramda';
 import * as PropTypes from 'prop-types';
 import './MapModal.scss';
 
@@ -25,6 +26,8 @@ const OpenStreetMapTile = () => (
   />
 );
 
+const calculateMapBounds = map(prop('latLong'));
+
 const MapModal = ({ toggle, isOpen, title, locations }) => (
   <Modal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
     <ModalBody className="map-modal__modal-body">
@@ -32,7 +35,7 @@ const MapModal = ({ toggle, isOpen, title, locations }) => (
         {title}
         <button type="button" className="close" onClick={toggle}>&times;</button>
       </h3>
-      <Map center={[ 0, 0 ]} zoom="3">
+      <Map bounds={calculateMapBounds(locations)}>
         <OpenStreetMapTile />
         {locations.map(({ cityName, latLong, count }, index) => (
           <Marker key={index} position={latLong}>
