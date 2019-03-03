@@ -44,6 +44,13 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
       const burgerClasses = classnames('menu-layout__burger-icon', {
         'menu-layout__burger-icon--active': this.state.showSideBar,
       });
+      const swipeMenuIfNoModalExists = (showSideBar) => () => {
+        if (document.querySelector('.modal')) {
+          return;
+        }
+
+        this.setState({ showSideBar });
+      };
 
       return (
         <React.Fragment>
@@ -56,8 +63,8 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
           <Swipeable
             delta={40}
             className="menu-layout__swipeable"
-            onSwipedLeft={() => this.setState({ showSideBar: false })}
-            onSwipedRight={() => this.setState({ showSideBar: true })}
+            onSwipedLeft={swipeMenuIfNoModalExists(false)}
+            onSwipedRight={swipeMenuIfNoModalExists(true)}
           >
             <div className="row menu-layout__swipeable-inner">
               <AsideMenu
