@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.0.2 - 2019-03-04
 
 #### Added
 
@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Fixed
 
 * [#103](https://github.com/shlinkio/shlink-web-client/issues/103) Fixed visits page getting freezed when loading large amounts of visits.
+* [#111](https://github.com/shlinkio/shlink-web-client/issues/111) Fixed crash when trying to load a map modal with only one location.
 
 
 ## 2.0.1 - 2019-03-03
