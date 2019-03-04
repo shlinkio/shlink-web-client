@@ -1,4 +1,4 @@
-import { isNil, isEmpty, memoizeWith, prop, reduce } from 'ramda';
+import { isNil, isEmpty, memoizeWith, prop } from 'ramda';
 
 const osFromUserAgent = (userAgent) => {
   const lowerUserAgent = userAgent.toLowerCase();
@@ -94,7 +94,7 @@ const updateCitiesForMapForVisit = (citiesForMapStats, { visitLocation }) => {
 };
 
 export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
-  reduce(
+  visits.reduce(
     (stats, visit) => {
       // We mutate the original object because it has a big side effect when large data sets are processed
       updateOsStatsForVisit(stats.os, visit);
@@ -106,6 +106,5 @@ export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
 
       return stats;
     },
-    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} },
-    visits,
+    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
   ));
