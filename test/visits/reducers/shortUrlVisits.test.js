@@ -4,6 +4,7 @@ import reducer, {
   GET_SHORT_URL_VISITS_START,
   GET_SHORT_URL_VISITS_ERROR,
   GET_SHORT_URL_VISITS,
+  GET_SHORT_URL_VISITS_LARGE,
 } from '../../../src/visits/reducers/shortUrlVisits';
 
 describe('shortUrlVisitsReducer', () => {
@@ -13,6 +14,13 @@ describe('shortUrlVisitsReducer', () => {
       const { loading } = state;
 
       expect(loading).toEqual(true);
+    });
+
+    it('returns loadingLarge on GET_SHORT_URL_VISITS_LARGE', () => {
+      const state = reducer({ loadingLarge: false }, { type: GET_SHORT_URL_VISITS_LARGE });
+      const { loadingLarge } = state;
+
+      expect(loadingLarge).toEqual(true);
     });
 
     it('stops loading and returns error on GET_SHORT_URL_VISITS_ERROR', () => {

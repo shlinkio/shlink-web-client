@@ -37,7 +37,7 @@
     "promise": "^8.0.1",
     "prop-types": "^15.6.2",
     "qs": "^6.5.2",
-    "ramda": "^0.25.0",
+    "ramda": "^0.26.1",
     "react": "^16.7.0",
     "react-autosuggest": "^9.4.0",
     "react-chartjs-2": "^2.7.4",

@@ -11,21 +11,16 @@ import SortableBarGraph from '../../src/visits/SortableBarGraph';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper;
-  const statsProcessor = () => ({});
+  const processStatsFromVisits = () => (
+    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
+  );
   const getShortUrlVisitsMock = sinon.spy();
   const match = {
     params: { shortCode: 'abc123' },
   };
 
   const createComponent = (shortUrlVisits) => {
-    const ShortUrlVisits = createShortUrlVisits({
-      processBrowserStats: statsProcessor,
-      processCountriesStats: statsProcessor,
-      processOsStats: statsProcessor,
-      processReferrersStats: statsProcessor,
-      processCitiesStats: statsProcessor,
-      processCitiesStatsForMap: statsProcessor,
-    });
+    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits });
 
     wrapper = shallow(
       <ShortUrlVisits
@@ -48,12 +43,20 @@ describe('<ShortUrlVisits />', () => {
     }
   });
 
-  it('Renders a preloader when visits are loading', () => {
+  it('renders a preloader when visits are loading', () => {
     const wrapper = createComponent({ loading: true });
     const loadingMessage = wrapper.find(MutedMessage);
 
     expect(loadingMessage).toHaveLength(1);
     expect(loadingMessage.html()).toContain('Loading...');
+  });
+
+  it('renders a warning when loading large amounts of visits', () => {
+    const wrapper = createComponent({ loading: true, loadingLarge: true });
+    const loadingMessage = wrapper.find(MutedMessage);
+
+    expect(loadingMessage).toHaveLength(1);
+    expect(loadingMessage.html()).toContain('This is going to take a while... :S');
   });
 
   it('renders an error message when visits could not be loaded', () => {

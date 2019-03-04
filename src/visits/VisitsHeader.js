@@ -11,7 +11,7 @@ const propTypes = {
   shortUrlVisits: shortUrlVisitsType.isRequired,
 };
 
-export function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
+export default function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
   const { shortUrl, loading } = shortUrlDetail;
   const { visits } = shortUrlVisits;
   const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';

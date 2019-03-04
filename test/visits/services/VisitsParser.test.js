@@ -1,11 +1,4 @@
-import {
-  processOsStats,
-  processBrowserStats,
-  processReferrersStats,
-  processCountriesStats,
-  processCitiesStats,
-  processCitiesStatsForMap,
-} from '../../../src/visits/services/VisitsParser';
+import { processStatsFromVisits } from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
   const visits = [
@@ -50,64 +43,71 @@ describe('VisitsParser', () => {
     },
   ];
 
-  describe('processOsStats', () => {
+  describe('processStatsFromVisits', () => {
+    let stats;
+
+    beforeAll(() => {
+      stats = processStatsFromVisits({ id: 'id', visits });
+    });
+
     it('properly parses OS stats', () => {
-      expect(processOsStats(visits)).toEqual({
+      const { os } = stats;
+
+      expect(os).toEqual({
         Linux: 3,
         Windows: 1,
         MacOS: 1,
       });
     });
-  });
 
-  describe('processBrowserStats', () => {
     it('properly parses browser stats', () => {
-      expect(processBrowserStats(visits)).toEqual({
+      const { browsers } = stats;
+
+      expect(browsers).toEqual({
         Firefox: 2,
         Chrome: 2,
         Opera: 1,
       });
     });
-  });
 
-  describe('processReferrersStats', () => {
     it('properly parses referrer stats', () => {
-      expect(processReferrersStats(visits)).toEqual({
+      const { referrers } = stats;
+
+      expect(referrers).toEqual({
         'Unknown': 2,
         'google.com': 2,
         'm.facebook.com': 1,
       });
     });
-  });
 
-  describe('processCountriesStats', () => {
     it('properly parses countries stats', () => {
-      expect(processCountriesStats(visits)).toEqual({
+      const { countries } = stats;
+
+      expect(countries).toEqual({
         'Spain': 3,
         'United States': 1,
         'Unknown': 1,
       });
     });
-  });
 
-  describe('processCitiesStats', () => {
     it('properly parses cities stats', () => {
-      expect(processCitiesStats(visits)).toEqual({
+      const { cities } = stats;
+
+      expect(cities).toEqual({
         'Zaragoza': 2,
         'New York': 1,
         'Unknown': 2,
       });
     });
-  });
 
-  describe('processCitiesStatsForMap', () => {
     it('properly parses cities stats with lat and long', () => {
+      const { citiesForMap } = stats;
       const zaragozaLat = 123.45;
       const zaragozaLong = -543.21;
       const newYorkLat = 1029;
       const newYorkLong = 6758;
 
-      expect(processCitiesStatsForMap(visits)).toEqual({
+      expect(citiesForMap).toEqual({
         'Zaragoza': {
           cityName: 'Zaragoza',
           count: 2,
