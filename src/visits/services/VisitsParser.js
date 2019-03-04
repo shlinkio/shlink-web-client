@@ -1,4 +1,4 @@
-import { assoc, isNil, isEmpty, reduce } from 'ramda';
+import { isNil, isEmpty, memoizeWith, prop, reduce } from 'ramda';
 
 const osFromUserAgent = (userAgent) => {
   const lowerUserAgent = userAgent.toLowerCase();
@@ -42,79 +42,70 @@ const extractDomain = (url) => {
   return domain.split(':')[0];
 };
 
-export const processOsStats = (visits) =>
-  reduce(
-    (stats, { userAgent }) => {
-      const os = isNil(userAgent) ? 'Others' : osFromUserAgent(userAgent);
-
-      return assoc(os, (stats[os] || 0) + 1, stats);
-    },
-    {},
-    visits,
-  );
-
-export const processBrowserStats = (visits) =>
-  reduce(
-    (stats, { userAgent }) => {
-      const browser = isNil(userAgent) ? 'Others' : browserFromUserAgent(userAgent);
-
-      return assoc(browser, (stats[browser] || 0) + 1, stats);
-    },
-    {},
-    visits,
-  );
-
-export const processReferrersStats = (visits) =>
-  reduce(
-    (stats, visit) => {
-      const notHasDomain = isNil(visit.referer) || isEmpty(visit.referer);
-      const domain = notHasDomain ? 'Unknown' : extractDomain(visit.referer);
-
-      return assoc(domain, (stats[domain] || 0) + 1, stats);
-    },
-    {},
-    visits,
-  );
-
 const visitLocationHasProperty = (visitLocation, propertyName) =>
   !isNil(visitLocation)
   && !isNil(visitLocation[propertyName])
   && !isEmpty(visitLocation[propertyName]);
 
-const buildLocationStatsProcessorByProperty = (propertyName) => (visits) =>
+const updateOsStatsForVisit = (osStats, { userAgent }) => {
+  const os = isNil(userAgent) ? 'Others' : osFromUserAgent(userAgent);
+
+  osStats[os] = (osStats[os] || 0) + 1;
+};
+
+const updateBrowsersStatsForVisit = (browsersStats, { userAgent }) => {
+  const browser = isNil(userAgent) ? 'Others' : browserFromUserAgent(userAgent);
+
+  browsersStats[browser] = (browsersStats[browser] || 0) + 1;
+};
+
+const updateReferrersStatsForVisit = (referrersStats, { referer }) => {
+  const notHasDomain = isNil(referer) || isEmpty(referer);
+  const domain = notHasDomain ? 'Unknown' : extractDomain(referer);
+
+  referrersStats[domain] = (referrersStats[domain] || 0) + 1;
+};
+
+const updateLocationsStatsForVisit = (propertyName) => (stats, { visitLocation }) => {
+  const hasLocationProperty = visitLocationHasProperty(visitLocation, propertyName);
+  const value = hasLocationProperty ? visitLocation[propertyName] : 'Unknown';
+
+  stats[value] = (stats[value] || 0) + 1;
+};
+
+const updateCountriesStatsForVisit = updateLocationsStatsForVisit('countryName');
+const updateCitiesStatsForVisit = updateLocationsStatsForVisit('cityName');
+
+const updateCitiesForMapForVisit = (citiesForMapStats, { visitLocation }) => {
+  if (!visitLocationHasProperty(visitLocation, 'cityName')) {
+    return;
+  }
+
+  const { cityName, latitude, longitude } = visitLocation;
+  const currentCity = citiesForMapStats[cityName] || {
+    cityName,
+    count: 0,
+    latLong: [ parseFloat(latitude), parseFloat(longitude) ],
+  };
+
+  currentCity.count++;
+
+  citiesForMapStats[cityName] = currentCity;
+};
+
+export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
   reduce(
-    (stats, { visitLocation }) => {
-      const hasLocationProperty = visitLocationHasProperty(visitLocation, propertyName);
-      const value = hasLocationProperty ? visitLocation[propertyName] : 'Unknown';
+    (stats, visit) => {
+      // We mutate the original object because it has a big side effect when large data sets are processed
+      updateOsStatsForVisit(stats.os, visit);
+      updateBrowsersStatsForVisit(stats.browsers, visit);
+      updateReferrersStatsForVisit(stats.referrers, visit);
+      updateCountriesStatsForVisit(stats.countries, visit);
+      updateCitiesStatsForVisit(stats.cities, visit);
+      updateCitiesForMapForVisit(stats.citiesForMap, visit);
 
-      return assoc(value, (stats[value] || 0) + 1, stats);
+      return stats;
     },
-    {},
+    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} },
     visits,
-  );
-
-export const processCountriesStats = buildLocationStatsProcessorByProperty('countryName');
-
-export const processCitiesStats = buildLocationStatsProcessorByProperty('cityName');
-
-export const processCitiesStatsForMap = (visits) =>
-  reduce(
-    (stats, { visitLocation }) => {
-      if (!visitLocationHasProperty(visitLocation, 'cityName')) {
-        return stats;
-      }
-
-      const { cityName, latitude, longitude } = visitLocation;
-      const currentCity = stats[cityName] || {
-        cityName,
-        count: 0,
-        latLong: [ parseFloat(latitude), parseFloat(longitude) ],
-      };
-
-      currentCity.count++;
-
-      return assoc(cityName, currentCity, stats);
-    },
-    {},
-    visits,
-  );
+  ));

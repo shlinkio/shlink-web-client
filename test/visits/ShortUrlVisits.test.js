@@ -11,21 +11,16 @@ import SortableBarGraph from '../../src/visits/SortableBarGraph';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper;
-  const statsProcessor = () => ({});
+  const processStatsFromVisits = () => (
+    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
+  );
   const getShortUrlVisitsMock = sinon.spy();
   const match = {
     params: { shortCode: 'abc123' },
   };
 
   const createComponent = (shortUrlVisits) => {
-    const ShortUrlVisits = createShortUrlVisits({
-      processBrowserStats: statsProcessor,
-      processCountriesStats: statsProcessor,
-      processOsStats: statsProcessor,
-      processReferrersStats: statsProcessor,
-      processCitiesStats: statsProcessor,
-      processCitiesStatsForMap: statsProcessor,
-    });
+    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits });
 
     wrapper = shallow(
       <ShortUrlVisits

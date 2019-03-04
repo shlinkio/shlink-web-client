@@ -8,20 +8,13 @@ import DateInput from '../utils/DateInput';
 import MutedMessage from '../utils/MuttedMessage';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
-import { VisitsHeader } from './VisitsHeader';
+import VisitsHeader from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 
-const ShortUrlVisits = ({
-  processOsStats,
-  processBrowserStats,
-  processCountriesStats,
-  processCitiesStats,
-  processReferrersStats,
-  processCitiesStatsForMap,
-}) => class ShortUrlVisits extends React.Component {
+const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits extends React.PureComponent {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.object,
@@ -35,18 +28,25 @@ const ShortUrlVisits = ({
   state = { startDate: undefined, endDate: undefined };
   loadVisits = () => {
     const { match: { params }, getShortUrlVisits } = this.props;
-
-    getShortUrlVisits(params.shortCode, mapObjIndexed(
+    const { shortCode } = params;
+    const dates = mapObjIndexed(
       (value) => value && value.format ? value.format('YYYY-MM-DD') : value,
       this.state
-    ));
+    );
+    const { startDate, endDate } = dates;
+
+    // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calcs
+    this.memoizationId = `${new Date().getTime()}_${shortCode}_${startDate}_${endDate}`;
+
+    getShortUrlVisits(shortCode, dates);
   };
 
   componentDidMount() {
     const { match: { params }, getShortUrlDetail } = this.props;
+    const { shortCode } = params;
 
     this.loadVisits();
-    getShortUrlDetail(params.shortCode);
+    getShortUrlDetail(shortCode);
   }
 
   render() {
@@ -71,17 +71,21 @@ const ShortUrlVisits = ({
         return <MutedMessage>There are no visits matching current filter  :(</MutedMessage>;
       }
 
+      const { os, browsers, referrers, countries, cities, citiesForMap } = processStatsFromVisits(
+        { id: this.memoizationId, visits }
+      );
+
       return (
         <div className="row">
           <div className="col-xl-4 col-lg-6">
-            <GraphCard title="Operating systems" stats={processOsStats(visits)} />
+            <GraphCard title="Operating systems" stats={os} />
           </div>
           <div className="col-xl-4 col-lg-6">
-            <GraphCard title="Browsers" stats={processBrowserStats(visits)} />
+            <GraphCard title="Browsers" stats={browsers} />
           </div>
           <div className="col-xl-4">
             <SortableBarGraph
-              stats={processReferrersStats(visits)}
+              stats={referrers}
               title="Referrers"
               sortingItems={{
                 name: 'Referrer name',
@@ -91,7 +95,7 @@ const ShortUrlVisits = ({
           </div>
           <div className="col-lg-6">
             <SortableBarGraph
-              stats={processCountriesStats(visits)}
+              stats={countries}
               title="Countries"
               sortingItems={{
                 name: 'Country name',
@@ -101,13 +105,13 @@ const ShortUrlVisits = ({
           </div>
           <div className="col-lg-6">
             <SortableBarGraph
-              stats={processCitiesStats(visits)}
+              stats={cities}
               title="Cities"
               extraHeaderContent={[
                 () => (
                   <OpenMapModalBtn
                     modalTitle="Cities"
-                    locations={values(processCitiesStatsForMap(visits))}
+                    locations={values(citiesForMap)}
                   />
                 ),
               ]}
