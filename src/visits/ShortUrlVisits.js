@@ -53,10 +53,12 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
     const { shortUrlVisits, shortUrlDetail } = this.props;
 
     const renderVisitsContent = () => {
-      const { visits, loading, error } = shortUrlVisits;
+      const { visits, loading, loadingLarge, error } = shortUrlVisits;
 
       if (loading) {
-        return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> Loading...</MutedMessage>;
+        const message = loadingLarge ? 'This is going to take a while... :S' : 'Loading...';
+
+        return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> {message}</MutedMessage>;
       }
 
       if (error) {
