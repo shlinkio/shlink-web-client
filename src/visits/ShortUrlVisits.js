@@ -36,8 +36,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
     const { startDate, endDate } = dates;
 
     // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calcs
-    this.memoizationId = `${new Date().getTime()}_${shortCode}_${startDate}_${endDate}`;
-
+    this.memoizationId = `${this.timeWhenMounted}_${shortCode}_${startDate}_${endDate}`;
     getShortUrlVisits(shortCode, dates);
   };
 
@@ -45,6 +44,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
     const { match: { params }, getShortUrlDetail } = this.props;
     const { shortCode } = params;
 
+    this.timeWhenMounted = new Date().getTime();
     this.loadVisits();
     getShortUrlDetail(shortCode);
   }
@@ -137,7 +137,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
                 placeholderText="Since"
                 isClearable
                 maxDate={this.state.endDate}
-                onChange={(date) => this.setState({ startDate: date }, () => this.loadVisits())}
+                onChange={(date) => this.setState({ startDate: date }, this.loadVisits)}
               />
             </div>
             <div className="col-xl-3 col-lg-4 col-md-6">
@@ -147,7 +147,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
                 placeholderText="Until"
                 isClearable
                 minDate={this.state.startDate}
-                onChange={(date) => this.setState({ endDate: date }, () => this.loadVisits())}
+                onChange={(date) => this.setState({ endDate: date }, this.loadVisits)}
               />
             </div>
           </div>
