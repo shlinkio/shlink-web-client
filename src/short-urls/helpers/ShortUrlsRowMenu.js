@@ -45,7 +45,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen}>
-        <DropdownToggle size="sm" caret className="short-urls-row-menu__dropdown-toggle btn-outline-secondary">
+        <DropdownToggle size="sm" caret outline className="short-urls-row-menu__dropdown-toggle">
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
         <DropdownMenu right>

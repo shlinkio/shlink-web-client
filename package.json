@@ -27,7 +27,7 @@
     "array-map": "^0.0.0",
     "array-reduce": "^0.0.0",
     "axios": "^0.18.0",
-    "bootstrap": "~4.1.1",
+    "bootstrap": "^4.3.1",
     "bottlejs": "^1.7.1",
     "chart.js": "^2.7.2",
     "classnames": "^2.2.6",
