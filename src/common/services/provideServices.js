@@ -3,6 +3,7 @@ import MainHeader from '../MainHeader';
 import Home from '../Home';
 import MenuLayout from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
+import ErrorHandler from '../ErrorHandler';
 
 const provideServices = (bottle, connect, withRouter) => {
   bottle.constant('window', global.window);
@@ -29,6 +30,8 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.decorator('MenuLayout', withRouter);
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
+
+  bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window');
 };
 
 export default provideServices;

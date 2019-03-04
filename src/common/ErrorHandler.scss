@@ -1,0 +1,9 @@
+@import '../utils/mixins/vertical-align.scss';
+
+.error-handler {
+  @include vertical-align();
+
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+}
