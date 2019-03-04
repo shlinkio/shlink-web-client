@@ -16,14 +16,16 @@ import './index.scss';
 // This overwrites icons used for leaflet maps, fixing some issues caused by webpack while processing the CSS
 fixLeafletIcons();
 
-const { App, ScrollToTop } = container;
+const { App, ScrollToTop, ErrorHandler } = container;
 
 render(
   <Provider store={store}>
     <BrowserRouter basename={homepage}>
-      <ScrollToTop>
-        <App />
-      </ScrollToTop>
+      <ErrorHandler>
+        <ScrollToTop>
+          <App />
+        </ScrollToTop>
+      </ErrorHandler>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
