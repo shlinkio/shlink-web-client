@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import './ErrorHandler.scss';
 import { Button } from 'reactstrap';
 
-const ErrorHandler = ({ location }) => class ErrorHandler extends React.Component {
+const ErrorHandler = ({ location }, { error }) => class ErrorHandler extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,
   };
@@ -15,6 +15,12 @@ const ErrorHandler = ({ location }) => class ErrorHandler extends React.Componen
 
   static getDerivedStateFromError() {
     return { hasError: true };
+  }
+
+  componentDidCatch(e) {
+    if (process.env.NODE_ENV !== 'development') {
+      error(e);
+    }
   }
 
   render() {

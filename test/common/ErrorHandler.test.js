@@ -9,10 +9,11 @@ describe('<ErrorHandler />', () => {
       reload: jest.fn(),
     },
   };
+  const console = { error: jest.fn() };
   let wrapper;
 
   beforeEach(() => {
-    const ErrorHandler = createErrorHandler(window);
+    const ErrorHandler = createErrorHandler(window, console);
 
     wrapper = shallow(<ErrorHandler children={<span>Foo</span>} />);
   });
