@@ -7,6 +7,7 @@ import ErrorHandler from '../ErrorHandler';
 
 const provideServices = (bottle, connect, withRouter) => {
   bottle.constant('window', global.window);
+  bottle.constant('console', global.console);
 
   bottle.serviceFactory('ScrollToTop', ScrollToTop, 'window');
   bottle.decorator('ScrollToTop', withRouter);
@@ -31,7 +32,7 @@ const provideServices = (bottle, connect, withRouter) => {
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
-  bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window');
+  bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
 };
 
 export default provideServices;

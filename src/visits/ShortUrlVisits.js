@@ -76,6 +76,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
       const { os, browsers, referrers, countries, cities, citiesForMap } = processStatsFromVisits(
         { id: this.memoizationId, visits }
       );
+      const mapLocations = values(citiesForMap);
 
       return (
         <div className="row">
@@ -109,14 +110,9 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
             <SortableBarGraph
               stats={cities}
               title="Cities"
-              extraHeaderContent={[
-                () => (
-                  <OpenMapModalBtn
-                    modalTitle="Cities"
-                    locations={values(citiesForMap)}
-                  />
-                ),
-              ]}
+              extraHeaderContent={
+                [ () => mapLocations.length > 0 && <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} /> ]
+              }
               sortingItems={{
                 name: 'City name',
                 amount: 'Visits amount',
