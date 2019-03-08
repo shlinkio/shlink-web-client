@@ -1,4 +1,4 @@
-FROM node:10.15.2 as node
+FROM node:10.15.3-alpine as node
 COPY . /shlink-web-client
 RUN cd /shlink-web-client && yarn install && yarn build
 

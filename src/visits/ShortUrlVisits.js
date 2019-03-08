@@ -23,6 +23,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
     shortUrlVisits: shortUrlVisitsType,
     getShortUrlDetail: PropTypes.func,
     shortUrlDetail: shortUrlDetailType,
+    cancelGetShortUrlVisits: PropTypes.func,
   };
 
   state = { startDate: undefined, endDate: undefined };
@@ -47,6 +48,10 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
     this.timeWhenMounted = new Date().getTime();
     this.loadVisits();
     getShortUrlDetail(shortCode);
+  }
+
+  componentWillUnmount() {
+    this.props.cancelGetShortUrlVisits();
   }
 
   render() {

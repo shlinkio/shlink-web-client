@@ -1,5 +1,5 @@
 import ShortUrlVisits from '../ShortUrlVisits';
-import { getShortUrlVisits } from '../reducers/shortUrlVisits';
+import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import * as visitsParser from './VisitsParser';
 
@@ -8,7 +8,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsParser');
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail' ],
-    [ 'getShortUrlVisits', 'getShortUrlDetail' ]
+    [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits' ]
   ));
 
   // Services
@@ -17,6 +17,7 @@ const provideServices = (bottle, connect) => {
   // Actions
   bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('getShortUrlDetail', getShortUrlDetail, 'buildShlinkApiClient');
+  bottle.serviceFactory('cancelGetShortUrlVisits', () => cancelGetShortUrlVisits);
 };
 
 export default provideServices;
