@@ -113,8 +113,7 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
       (page) =>
         getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage })
           .then(prop('data'))
-    ))
-      .then(flatten);
+    )).then(flatten);
 
   try {
     const visits = await loadVisits();
