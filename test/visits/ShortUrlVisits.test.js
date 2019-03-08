@@ -29,6 +29,7 @@ describe('<ShortUrlVisits />', () => {
         match={match}
         shortUrlVisits={shortUrlVisits}
         shortUrlDetail={{}}
+        cancelGetShortUrlVisits={identity}
       />
     );
 

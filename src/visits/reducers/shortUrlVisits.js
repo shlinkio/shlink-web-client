@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
-import { flatten, range, splitEvery } from 'ramda';
+import { flatten, prop, range, splitEvery } from 'ramda';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
 export const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_ERROR';
 export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_LARGE';
+export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
 /* eslint-enable padding-line-between-statements, newline-after-var */
 
 export const shortUrlVisitsType = PropTypes.shape({
@@ -19,6 +20,7 @@ const initialState = {
   loading: false,
   loadingLarge: false,
   error: false,
+  cancelLoad: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -28,6 +30,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: true,
         loadingLarge: false,
+        cancelLoad: false,
       };
     case GET_SHORT_URL_VISITS_ERROR:
       return {
@@ -35,6 +38,7 @@ export default function reducer(state = initialState, action) {
         loading: false,
         loadingLarge: false,
         error: true,
+        cancelLoad: false,
       };
     case GET_SHORT_URL_VISITS:
       return {
@@ -42,11 +46,17 @@ export default function reducer(state = initialState, action) {
         loading: false,
         loadingLarge: false,
         error: false,
+        cancelLoad: false,
       };
     case GET_SHORT_URL_VISITS_LARGE:
       return {
         ...state,
         loadingLarge: true,
+      };
+    case GET_SHORT_URL_VISITS_CANCEL:
+      return {
+        ...state,
+        cancelLoad: true,
       };
     default:
       return state;
@@ -83,6 +93,12 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   };
 
   const loadPagesBlocks = async (pagesBlocks, index = 0) => {
+    const { shortUrlVisits: { cancelLoad } } = getState();
+
+    if (cancelLoad) {
+      return [];
+    }
+
     const data = await loadVisitsInParallel(pagesBlocks[index]);
 
     if (index < pagesBlocks.length - 1) {
@@ -93,11 +109,12 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   };
 
   const loadVisitsInParallel = (pages) =>
-    Promise.all(pages.map(async (page) => {
-      const { data } = await getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage });
-
-      return data;
-    })).then(flatten);
+    Promise.all(pages.map(
+      (page) =>
+        getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage })
+          .then(prop('data'))
+    ))
+      .then(flatten);
 
   try {
     const visits = await loadVisits();
@@ -107,3 +124,5 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
     dispatch({ type: GET_SHORT_URL_VISITS_ERROR });
   }
 };
+
+export const cancelGetShortUrlVisits = () => ({ type: GET_SHORT_URL_VISITS_CANCEL });

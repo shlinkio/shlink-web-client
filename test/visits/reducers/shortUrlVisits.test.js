@@ -5,6 +5,7 @@ import reducer, {
   GET_SHORT_URL_VISITS_ERROR,
   GET_SHORT_URL_VISITS,
   GET_SHORT_URL_VISITS_LARGE,
+  GET_SHORT_URL_VISITS_CANCEL,
 } from '../../../src/visits/reducers/shortUrlVisits';
 
 describe('shortUrlVisitsReducer', () => {
@@ -21,6 +22,13 @@ describe('shortUrlVisitsReducer', () => {
       const { loadingLarge } = state;
 
       expect(loadingLarge).toEqual(true);
+    });
+
+    it('returns cancelLoad on GET_SHORT_URL_VISITS_CANCEL', () => {
+      const state = reducer({ cancelLoad: false }, { type: GET_SHORT_URL_VISITS_CANCEL });
+      const { cancelLoad } = state;
+
+      expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_SHORT_URL_VISITS_ERROR', () => {
@@ -58,7 +66,9 @@ describe('shortUrlVisitsReducer', () => {
       getShortUrlVisits: typeof returned === 'function' ? sinon.fake(returned) : sinon.fake.returns(returned),
     });
     const dispatchMock = sinon.spy();
-    const getState = () => ({});
+    const getState = () => ({
+      shortUrlVisits: { cancelVisits: false },
+    });
 
     beforeEach(() => dispatchMock.resetHistory());
 
