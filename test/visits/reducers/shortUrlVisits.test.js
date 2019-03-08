@@ -1,6 +1,7 @@
 import * as sinon from 'sinon';
 import reducer, {
   getShortUrlVisits,
+  cancelGetShortUrlVisits,
   GET_SHORT_URL_VISITS_START,
   GET_SHORT_URL_VISITS_ERROR,
   GET_SHORT_URL_VISITS,
@@ -135,5 +136,10 @@ describe('shortUrlVisitsReducer', () => {
       expect(ShlinkApiClient.getShortUrlVisits.callCount).toEqual(expectedRequests);
       expect(visits).toEqual([{}, {}, {}, {}, {}, {}]);
     });
+  });
+
+  describe('cancelGetShortUrlVisits', () => {
+    it('just returns the action with proper type', () =>
+      expect(cancelGetShortUrlVisits()).toEqual({ type: GET_SHORT_URL_VISITS_CANCEL }));
   });
 });
