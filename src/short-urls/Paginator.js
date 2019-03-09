@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { range } from 'ramda';
+import { rangeOf } from '../utils/utils';
 
 const propTypes = {
   serverId: PropTypes.string.isRequired,
@@ -20,7 +20,7 @@ export default function Paginator({ paginator = {}, serverId }) {
   }
 
   const renderPages = () =>
-    range(1, pagesCount + 1).map((pageNumber) => (
+    rangeOf(pagesCount, (pageNumber) => (
       <PaginationItem key={pageNumber} active={currentPage === pageNumber}>
         <PaginationLink
           tag={Link}

@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { identity, range } from 'ramda';
+import { identity } from 'ramda';
 import * as sinon from 'sinon';
 import createTagsList from '../../src/tags/TagsList';
 import MuttedMessage from '../../src/utils/MuttedMessage';
 import SearchField from '../../src/utils/SearchField';
+import { rangeOf } from '../../src/utils/utils';
 
 describe('<TagsList />', () => {
   let wrapper;
@@ -53,7 +54,7 @@ describe('<TagsList />', () => {
   it('renders the proper amount of groups and cards based on the amount of tags', () => {
     const amountOfTags = 10;
     const amountOfGroups = 4;
-    const wrapper = createWrapper({ filteredTags: range(0, amountOfTags).map((i) => `tag_${i}`) });
+    const wrapper = createWrapper({ filteredTags: rangeOf(amountOfTags, (i) => `tag_${i}`) });
     const cards = wrapper.find(TagCard);
     const groups = wrapper.find('.col-md-6');
 

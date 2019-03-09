@@ -2,6 +2,7 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { range } from 'ramda';
 
 const DEFAULT_TIMEOUT_DELAY = 2000;
 
@@ -37,3 +38,5 @@ export const fixLeafletIcons = () => {
     shadowUrl: markerShadow,
   });
 };
+
+export const rangeOf = (size, mappingFn, startAt = 1) => range(startAt, size + 1).map(mappingFn);

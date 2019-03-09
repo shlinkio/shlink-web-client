@@ -1,15 +1,11 @@
-import { range } from 'ramda';
 import PropTypes from 'prop-types';
+import { rangeOf } from '../utils';
 
 const HEX_COLOR_LENGTH = 6;
 const { floor, random } = Math;
 const letters = '0123456789ABCDEF';
 const buildRandomColor = () =>
-  `#${
-    range(0, HEX_COLOR_LENGTH)
-      .map(() => letters[floor(random() * letters.length)])
-      .join('')
-  }`;
+  `#${rangeOf(HEX_COLOR_LENGTH, () => letters[floor(random() * letters.length)]).join('')}`;
 const normalizeKey = (key) => key.toLowerCase().trim();
 
 export default class ColorGenerator {
