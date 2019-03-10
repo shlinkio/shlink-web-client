@@ -96,11 +96,7 @@ export default class SortableBarGraph extends React.Component {
   render() {
     const { stats, sortingItems, title, extraHeaderContent, withPagination = true } = this.props;
     const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
-    const filterLocations = (locations) => {
-      const validCities = keys(currentPageStats);
-
-      return locations.filter(({ cityName }) => validCities.includes(cityName));
-    };
+    const activeCities = keys(currentPageStats);
     const computedTitle = (
       <React.Fragment>
         {title}
@@ -129,7 +125,7 @@ export default class SortableBarGraph extends React.Component {
         )}
         {extraHeaderContent && (
           <div className="float-right">
-            {extraHeaderContent(pagination ? filterLocations : undefined)}
+            {extraHeaderContent(pagination ? activeCities : undefined)}
           </div>
         )}
       </React.Fragment>
