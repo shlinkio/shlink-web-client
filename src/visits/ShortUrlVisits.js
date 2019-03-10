@@ -12,9 +12,11 @@ import VisitsHeader from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
-import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 
-const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits extends React.PureComponent {
+const ShortUrlVisits = (
+  { processStatsFromVisits },
+  OpenMapModalBtn
+) => class ShortUrlVisits extends React.PureComponent {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.object,
