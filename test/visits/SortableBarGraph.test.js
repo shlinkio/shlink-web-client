@@ -15,7 +15,7 @@ describe('<SortableBarGraph />', () => {
     Foo: 100,
     Bar: 50,
   };
-  const createWrapper = (extraHeaderContent = []) => {
+  const createWrapper = (extraHeaderContent) => {
     wrapper = shallow(
       <SortableBarGraph title="Foo" stats={stats} sortingItems={sortingItems} extraHeaderContent={extraHeaderContent} />
     );
@@ -53,24 +53,19 @@ describe('<SortableBarGraph />', () => {
       };
     });
 
-    // eslint-disable-next-line no-magic-numbers
     it('name - ASC', (done) => assert('name', 'ASC', [ 'Bar', 'Foo' ], [ 50, 100 ], done));
-
-    // eslint-disable-next-line no-magic-numbers
     it('name - DESC', (done) => assert('name', 'DESC', [ 'Foo', 'Bar' ], [ 100, 50 ], done));
-
-    // eslint-disable-next-line no-magic-numbers
     it('value - ASC', (done) => assert('value', 'ASC', [ 'Bar', 'Foo' ], [ 50, 100 ], done));
-
-    // eslint-disable-next-line no-magic-numbers
     it('value - DESC', (done) => assert('value', 'DESC', [ 'Foo', 'Bar' ], [ 100, 50 ], done));
   });
 
   it('renders extra header functions', () => {
-    const wrapper = createWrapper([
-      () => <span className="foo-span">Foo</span>,
-      () => <span className="bar-span">Bar</span>,
-    ]);
+    const wrapper = createWrapper((
+      <React.Fragment>
+        <span className="foo-span">Foo</span>
+        <span className="bar-span">Bar</span>
+      </React.Fragment>
+    ));
 
     expect(wrapper.find('.foo-span')).toHaveLength(1);
     expect(wrapper.find('.bar-span')).toHaveLength(1);

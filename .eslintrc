@@ -26,6 +26,7 @@
     "no-console": "warn",
     "template-curly-spacing": ["error", "never"],
     "no-warning-comments": "off",
+    "no-magic-numbers": "off",
     "no-undefined": "off",
     "indent": ["error", 2, {
       "SwitchCase": 1

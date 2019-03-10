@@ -94,6 +94,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
           <div className="col-xl-4">
             <SortableBarGraph
               stats={referrers}
+              supportPagination={false}
               title="Referrers"
               sortingItems={{
                 name: 'Referrer name',
@@ -115,9 +116,9 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
             <SortableBarGraph
               stats={cities}
               title="Cities"
-              extraHeaderContent={
-                [ () => mapLocations.length > 0 && <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} /> ]
-              }
+              extraHeaderContent={(
+                mapLocations.length > 0 && <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} />
+              )}
               sortingItems={{
                 name: 'City name',
                 amount: 'Visits amount',
