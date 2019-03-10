@@ -3,6 +3,7 @@ import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { keys, values } from 'ramda';
+import './GraphCard.scss';
 
 const propTypes = {
   title: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
@@ -66,7 +67,7 @@ const GraphCard = ({ title, footer, isBarChart, stats, max, redraw = false }) =>
   <Card className="mt-4">
     <CardHeader className="graph-card__header">{title}</CardHeader>
     <CardBody>{renderGraph(title, isBarChart, stats, max, redraw)}</CardBody>
-    {footer && <CardFooter>{footer}</CardFooter>}
+    {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
   </Card>
 );
 
