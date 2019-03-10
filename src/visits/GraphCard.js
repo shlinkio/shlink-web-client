@@ -6,7 +6,7 @@ import { keys, values } from 'ramda';
 import './GraphCard.scss';
 
 const propTypes = {
-  title: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
+  title: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]),
   footer: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
   isBarChart: PropTypes.bool,
   stats: PropTypes.object,
@@ -65,7 +65,7 @@ const renderGraph = (title, isBarChart, stats, max, redraw) => {
 
 const GraphCard = ({ title, footer, isBarChart, stats, max, redraw = false }) => (
   <Card className="mt-4">
-    <CardHeader className="graph-card__header">{title}</CardHeader>
+    <CardHeader className="graph-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
     <CardBody>{renderGraph(title, isBarChart, stats, max, redraw)}</CardBody>
     {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
   </Card>

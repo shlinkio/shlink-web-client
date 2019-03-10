@@ -1,9 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { keys, values } from 'ramda';
+import { keys, range, values } from 'ramda';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
 import GraphCard from '../../src/visits/GraphCard';
 import SortingDropdown from '../../src/utils/SortingDropdown';
+import PaginationDropdown from '../../src/utils/PaginationDropdown';
+import { rangeOf } from '../../src/utils/utils';
 
 describe('<SortableBarGraph />', () => {
   let wrapper;
@@ -15,9 +17,14 @@ describe('<SortableBarGraph />', () => {
     Foo: 100,
     Bar: 50,
   };
-  const createWrapper = (extraHeaderContent) => {
+  const createWrapper = (withPagination = false, extraStats = {}) => {
     wrapper = shallow(
-      <SortableBarGraph title="Foo" stats={stats} sortingItems={sortingItems} extraHeaderContent={extraHeaderContent} />
+      <SortableBarGraph
+        title="Foo"
+        stats={{ ...stats, ...extraStats }}
+        sortingItems={sortingItems}
+        withPagination={withPagination}
+      />
     );
 
     return wrapper;
@@ -37,7 +44,7 @@ describe('<SortableBarGraph />', () => {
 
     beforeEach(() => {
       const wrapper = createWrapper();
-      const dropdown = wrapper.find(SortingDropdown);
+      const dropdown = wrapper.renderProp('title')().find(SortingDropdown);
 
       assert = (sortName, sortDir, expectedKeys, expectedValues, done) => {
         dropdown.prop('onChange')(sortName, sortDir);
@@ -59,15 +66,56 @@ describe('<SortableBarGraph />', () => {
     it('value - DESC', (done) => assert('value', 'DESC', [ 'Foo', 'Bar' ], [ 100, 50 ], done));
   });
 
-  it('renders extra header functions', () => {
-    const wrapper = createWrapper((
-      <React.Fragment>
-        <span className="foo-span">Foo</span>
-        <span className="bar-span">Bar</span>
-      </React.Fragment>
-    ));
+  describe('renders properly paginated stats when pagination is set', () => {
+    let assert;
 
-    expect(wrapper.find('.foo-span')).toHaveLength(1);
-    expect(wrapper.find('.bar-span')).toHaveLength(1);
+    beforeEach(() => {
+      const wrapper = createWrapper(true, range(1, 159).reduce((accum, value) => {
+        accum[`key_${value}`] = value;
+
+        return accum;
+      }, {}));
+      const dropdown = wrapper.renderProp('title')().find(PaginationDropdown);
+
+      assert = (itemsPerPage, expectedStats, done) => {
+        dropdown.prop('setValue')(itemsPerPage);
+        setImmediate(() => {
+          const graphCard = wrapper.find(GraphCard);
+          const statsKeys = keys(graphCard.prop('stats'));
+
+          expect(statsKeys).toEqual(expectedStats);
+          done();
+        });
+      };
+    });
+
+    const buildExpected = (size) => [ 'Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`) ];
+
+    it('50 items per page', (done) => assert(50, buildExpected(50), done));
+    it('100 items per page', (done) => assert(100, buildExpected(100), done));
+    it('200 items per page', (done) => assert(200, buildExpected(160), done));
+    it('500 items per page', (done) => assert(500, buildExpected(160), done));
+  });
+
+  it('renders extra header content', () => {
+    wrapper = shallow(
+      <span>
+        <SortableBarGraph
+          title="Foo"
+          stats={stats}
+          sortingItems={sortingItems}
+          extraHeaderContent={() => (
+            <span>
+              <span className="foo-span">Foo</span>
+              <span className="bar-span">Bar</span>
+            </span>
+          )}
+        />
+      </span>
+    ).find(SortableBarGraph);
+    const header = wrapper.renderProp('extraHeaderContent')();
+
+    expect(header.find('.foo-span')).toHaveLength(1);
+    expect(header.find('.bar-span')).toHaveLength(1);
   });
 });

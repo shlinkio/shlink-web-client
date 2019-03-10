@@ -97,7 +97,7 @@ export default class SortableBarGraph extends React.Component {
     const { stats, sortingItems, title, extraHeaderContent, withPagination = true } = this.props;
     const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
     const activeCities = keys(currentPageStats);
-    const computedTitle = (
+    const computeTitle = () => (
       <React.Fragment>
         {title}
         <div className="float-right">
@@ -134,7 +134,7 @@ export default class SortableBarGraph extends React.Component {
     return (
       <GraphCard
         isBarChart
-        title={computedTitle}
+        title={computeTitle}
         stats={currentPageStats}
         footer={pagination}
         max={max}
