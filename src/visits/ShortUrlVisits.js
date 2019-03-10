@@ -94,7 +94,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
           <div className="col-xl-4">
             <SortableBarGraph
               stats={referrers}
-              supportPagination={false}
+              withPagination={false}
               title="Referrers"
               sortingItems={{
                 name: 'Referrer name',

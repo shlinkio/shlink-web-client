@@ -17,7 +17,7 @@ export default class SortableBarGraph extends React.Component {
     title: PropTypes.string.isRequired,
     sortingItems: PropTypes.object.isRequired,
     extraHeaderContent: PropTypes.node,
-    supportPagination: PropTypes.bool,
+    withPagination: PropTypes.bool,
   };
 
   state = {
@@ -26,23 +26,24 @@ export default class SortableBarGraph extends React.Component {
     currentPage: 1,
     itemsPerPage: Infinity,
   };
-  redraw = false;
+  redrawChart = false;
 
-  doRedraw() {
-    const prev = this.redraw;
+  doRedrawChart() {
+    const prev = this.redrawChart;
 
-    this.redraw = false;
+    this.redrawChart = false;
 
     return prev;
   }
 
   determineStats(stats, sortingItems) {
-    const sortedPairs = !this.state.orderField ? toPairs(stats) : sortBy(
+    const pairs = toPairs(stats);
+    const sortedPairs = !this.state.orderField ? pairs : sortBy(
       pipe(
         prop(this.state.orderField === head(keys(sortingItems)) ? 0 : 1),
         toLowerIfString
       ),
-      toPairs(stats)
+      pairs
     );
     const directionalPairs = !this.state.orderDir || this.state.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs);
 
@@ -93,7 +94,8 @@ export default class SortableBarGraph extends React.Component {
   }
 
   render() {
-    const { stats, sortingItems, title, extraHeaderContent, supportPagination = true } = this.props;
+    const { stats, sortingItems, title, extraHeaderContent, withPagination = true } = this.props;
+    const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
     const computedTitle = (
       <React.Fragment>
         {title}
@@ -107,14 +109,14 @@ export default class SortableBarGraph extends React.Component {
             onChange={(orderField, orderDir) => this.setState({ orderField, orderDir, currentPage: 1 })}
           />
         </div>
-        {supportPagination && (
+        {withPagination && keys(stats).length > 50 && (
           <div className="float-right">
             <PaginationDropdown
               toggleClassName="btn-sm paddingless mr-3"
               ranges={[ 50, 100, 200, 500 ]}
               value={this.state.itemsPerPage}
               setValue={(itemsPerPage) => {
-                this.redraw = true;
+                this.redrawChart = true;
                 this.setState({ itemsPerPage, currentPage: 1 });
               }}
             />
@@ -123,7 +125,6 @@ export default class SortableBarGraph extends React.Component {
         {extraHeaderContent && <div className="float-right">{extraHeaderContent}</div>}
       </React.Fragment>
     );
-    const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
 
     return (
       <GraphCard
@@ -132,7 +133,7 @@ export default class SortableBarGraph extends React.Component {
         stats={currentPageStats}
         footer={pagination}
         max={max}
-        redraw={this.doRedraw()}
+        redraw={this.doRedrawChart()}
       />
     );
   }
