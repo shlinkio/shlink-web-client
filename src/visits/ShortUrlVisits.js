@@ -116,9 +116,15 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
             <SortableBarGraph
               stats={cities}
               title="Cities"
-              extraHeaderContent={(
-                mapLocations.length > 0 && <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} />
-              )}
+              extraHeaderContent={(filterLocations) =>
+                mapLocations.length > 0 && (
+                  <OpenMapModalBtn
+                    modalTitle="Cities"
+                    locations={mapLocations}
+                    filterLocations={filterLocations}
+                  />
+                )
+              }
               sortingItems={{
                 name: 'City name',
                 amount: 'Visits amount',
