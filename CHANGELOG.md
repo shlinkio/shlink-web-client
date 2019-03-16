@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.0.3 - 2019-03-16
 
 #### Added
 
@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#120](https://github.com/shlinkio/shlink-web-client/issues/120) Fixed crash when visits page is loaded and there are no visits with known cities.
 * [#113](https://github.com/shlinkio/shlink-web-client/issues/113) Ensured visits loading is cancelled when the visits page is unmounted. Requests on flight will still finish.
+* [#118](https://github.com/shlinkio/shlink-web-client/issues/118) Fixed chart crashing when trying to render lots of bars by adding pagination.
 
 
 ## 2.0.2 - 2019-03-04

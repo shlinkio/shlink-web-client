@@ -11,7 +11,6 @@ const propTypes = {
   isBarChart: PropTypes.bool,
   stats: PropTypes.object,
   max: PropTypes.number,
-  redraw: PropTypes.bool,
 };
 
 const generateGraphData = (title, isBarChart, labels, data) => ({
@@ -37,19 +36,19 @@ const generateGraphData = (title, isBarChart, labels, data) => ({
 
 const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
 
-const renderGraph = (title, isBarChart, stats, max, redraw) => {
+const renderGraph = (title, isBarChart, stats, max) => {
   const Component = isBarChart ? HorizontalBar : Doughnut;
   const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(stats);
   const options = {
     legend: isBarChart ? { display: false } : { position: 'right' },
-    scales: isBarChart ? {
+    scales: isBarChart && {
       xAxes: [
         {
           ticks: { beginAtZero: true, max },
         },
       ],
-    } : null,
+    },
     tooltips: {
       intersect: !isBarChart,
 
@@ -58,15 +57,16 @@ const renderGraph = (title, isBarChart, stats, max, redraw) => {
     },
   };
   const graphData = generateGraphData(title, isBarChart, labels, data);
-  const height = labels.length < 20 ? null : labels.length * 8;
+  const height = isBarChart && labels.length > 20 ? labels.length * 8 : null;
 
-  return <Component data={graphData} options={options} height={height} redraw={redraw} />;
+  // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
+  return <Component key={height} data={graphData} options={options} height={height} />;
 };
 
-const GraphCard = ({ title, footer, isBarChart, stats, max, redraw = false }) => (
+const GraphCard = ({ title, footer, isBarChart, stats, max }) => (
   <Card className="mt-4">
     <CardHeader className="graph-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
-    <CardBody>{renderGraph(title, isBarChart, stats, max, redraw)}</CardBody>
+    <CardBody>{renderGraph(title, isBarChart, stats, max)}</CardBody>
     {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
   </Card>
 );

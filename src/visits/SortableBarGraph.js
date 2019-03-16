@@ -26,15 +26,6 @@ export default class SortableBarGraph extends React.Component {
     currentPage: 1,
     itemsPerPage: Infinity,
   };
-  redrawChart = false;
-
-  doRedrawChart() {
-    const prev = this.redrawChart;
-
-    this.redrawChart = false;
-
-    return prev;
-  }
 
   determineStats(stats, sortingItems) {
     const pairs = toPairs(stats);
@@ -116,10 +107,7 @@ export default class SortableBarGraph extends React.Component {
               toggleClassName="btn-sm paddingless mr-3"
               ranges={[ 50, 100, 200, 500 ]}
               value={this.state.itemsPerPage}
-              setValue={(itemsPerPage) => {
-                this.redrawChart = true;
-                this.setState({ itemsPerPage, currentPage: 1 });
-              }}
+              setValue={(itemsPerPage) => this.setState({ itemsPerPage, currentPage: 1 })}
             />
           </div>
         )}
@@ -131,15 +119,6 @@ export default class SortableBarGraph extends React.Component {
       </React.Fragment>
     );
 
-    return (
-      <GraphCard
-        isBarChart
-        title={computeTitle}
-        stats={currentPageStats}
-        footer={pagination}
-        max={max}
-        redraw={this.doRedrawChart()}
-      />
-    );
+    return <GraphCard isBarChart title={computeTitle} stats={currentPageStats} footer={pagination} max={max} />;
   }
 }

@@ -39,7 +39,7 @@ describe('<GraphCard />', () => {
     ]);
     expect(borderColor).toEqual('white');
     expect(legend).toEqual({ position: 'right' });
-    expect(scales).toBeNull();
+    expect(scales).toBeUndefined();
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
