@@ -3,7 +3,13 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { stateFlagTimeout as stateFlagTimeoutFactory, determineOrderDir, fixLeafletIcons } from '../../src/utils/utils';
+import {
+  stateFlagTimeout as stateFlagTimeoutFactory,
+  determineOrderDir,
+  fixLeafletIcons,
+  rangeOf,
+  roundTen,
+} from '../../src/utils/utils';
 
 describe('utils', () => {
   describe('stateFlagTimeout', () => {
@@ -55,6 +61,48 @@ describe('utils', () => {
       expect(iconRetinaUrl).toEqual(marker2x);
       expect(iconUrl).toEqual(marker);
       expect(shadowUrl).toEqual(markerShadow);
+    });
+  });
+
+  describe('rangeOf', () => {
+    const func = (i) => `result_${i}`;
+    const size = 5;
+
+    it('builds a range of specified size invike provided function', () => {
+      expect(rangeOf(size, func)).toEqual([
+        'result_1',
+        'result_2',
+        'result_3',
+        'result_4',
+        'result_5',
+      ]);
+    });
+
+    it('builds a range starting at provided pos', () => {
+      const startAt = 3;
+
+      expect(rangeOf(size, func, startAt)).toEqual([
+        'result_3',
+        'result_4',
+        'result_5',
+      ]);
+    });
+  });
+
+  describe('roundTen', () => {
+    it('rounds provided number to the next multiple of ten', () => {
+      const expectationsPairs = [
+        [ 10, 10 ],
+        [ 12, 20 ],
+        [ 158, 160 ],
+        [ 5, 10 ],
+        [ -42, -40 ],
+      ];
+
+      expect.assertions(expectationsPairs.length);
+      expectationsPairs.forEach(([ number, expected ]) => {
+        expect(roundTen(number)).toEqual(expected);
+      });
     });
   });
 });

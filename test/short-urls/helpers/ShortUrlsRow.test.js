@@ -53,7 +53,7 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('renders long URL in third row', () => {
-    const col = wrapper.find('td').at(2); // eslint-disable-line no-magic-numbers
+    const col = wrapper.find('td').at(2);
     const link = col.find(ExternalLink);
 
     expect(link.prop('href')).toEqual(shortUrl.longUrl);
@@ -61,7 +61,7 @@ describe('<ShortUrlsRow />', () => {
 
   describe('renders list of tags in fourth row', () => {
     it('with tags', () => {
-      const col = wrapper.find('td').at(3); // eslint-disable-line no-magic-numbers
+      const col = wrapper.find('td').at(3);
       const tags = col.find(Tag);
 
       expect(tags).toHaveLength(shortUrl.tags.length);
@@ -75,20 +75,20 @@ describe('<ShortUrlsRow />', () => {
     it('without tags', () => {
       wrapper.setProps({ shortUrl: assoc('tags', [], shortUrl) });
 
-      const col = wrapper.find('td').at(3); // eslint-disable-line no-magic-numbers
+      const col = wrapper.find('td').at(3);
 
       expect(col.text()).toContain('No tags');
     });
   });
 
   it('renders visits count in fifth row', () => {
-    const col = wrapper.find('td').at(4); // eslint-disable-line no-magic-numbers
+    const col = wrapper.find('td').at(4);
 
     expect(col.text()).toEqual(toString(shortUrl.visitsCount));
   });
 
   it('updates state when copied to clipboard', () => {
-    const col = wrapper.find('td').at(5); // eslint-disable-line no-magic-numbers
+    const col = wrapper.find('td').at(5);
     const menu = col.find(ShortUrlsRowMenu);
 
     expect(menu).toHaveLength(1);
@@ -98,7 +98,6 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('shows copy hint when state prop is true', () => {
-    // eslint-disable-next-line no-magic-numbers
     const isHidden = () => wrapper.find('td').at(5).find('.short-urls-row__copy-hint').prop('hidden');
 
     expect(isHidden()).toEqual(true);

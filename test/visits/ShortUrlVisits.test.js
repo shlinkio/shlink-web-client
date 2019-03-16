@@ -104,6 +104,6 @@ describe('<ShortUrlVisits />', () => {
     const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
 
     expect(extraHeaderContent).toHaveLength(1);
-    expect(typeof extraHeaderContent[0]).toEqual('function');
+    expect(typeof extraHeaderContent).toEqual('function');
   });
 });

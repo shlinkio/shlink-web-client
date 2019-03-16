@@ -1,18 +1,16 @@
-import { Card, CardHeader, CardBody } from 'reactstrap';
+import { Card, CardHeader, CardBody, CardFooter } from 'reactstrap';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { keys, values } from 'ramda';
+import './GraphCard.scss';
 
 const propTypes = {
-  title: PropTypes.string,
-  children: PropTypes.node,
+  title: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]),
+  footer: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
   isBarChart: PropTypes.bool,
   stats: PropTypes.object,
-  matchMedia: PropTypes.func,
-};
-const defaultProps = {
-  matchMedia: global.window ? global.window.matchMedia : () => {},
+  max: PropTypes.number,
 };
 
 const generateGraphData = (title, isBarChart, labels, data) => ({
@@ -36,62 +34,43 @@ const generateGraphData = (title, isBarChart, labels, data) => ({
   ],
 });
 
-const determineGraphAspectRatio = (barsCount, isBarChart, matchMedia) => {
-  const determineAspectRationModifier = () => {
-    switch (true) {
-      case matchMedia('(max-width: 1200px)').matches:
-        return 1.5; // eslint-disable-line no-magic-numbers
-      case matchMedia('(max-width: 992px)').matches:
-        return 1.75; // eslint-disable-line no-magic-numbers
-      case matchMedia('(max-width: 768px)').matches:
-        return 2; // eslint-disable-line no-magic-numbers
-      case matchMedia('(max-width: 576px)').matches:
-        return 2.25; // eslint-disable-line no-magic-numbers
-      default:
-        return 1;
-    }
-  };
+const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
 
-  const MAX_BARS_WITHOUT_HEIGHT = 20;
-  const DEFAULT_ASPECT_RATION = 2;
-  const shouldCalculateAspectRatio = isBarChart && barsCount > MAX_BARS_WITHOUT_HEIGHT;
-
-  return shouldCalculateAspectRatio
-    ? MAX_BARS_WITHOUT_HEIGHT / determineAspectRationModifier() * DEFAULT_ASPECT_RATION / barsCount
-    : DEFAULT_ASPECT_RATION;
-};
-
-const renderGraph = (title, isBarChart, stats, matchMedia) => {
+const renderGraph = (title, isBarChart, stats, max) => {
   const Component = isBarChart ? HorizontalBar : Doughnut;
-  const labels = keys(stats);
+  const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(stats);
-  const aspectRatio = determineGraphAspectRatio(labels.length, isBarChart, matchMedia);
   const options = {
-    aspectRatio,
     legend: isBarChart ? { display: false } : { position: 'right' },
-    scales: isBarChart ? {
+    scales: isBarChart && {
       xAxes: [
         {
-          ticks: { beginAtZero: true },
+          ticks: { beginAtZero: true, max },
         },
       ],
-    } : null,
+    },
     tooltips: {
       intersect: !isBarChart,
+
+      // Do not show tooltip on items with empty label when in a bar chart
+      filter: ({ yLabel }) => !isBarChart || yLabel !== '',
     },
   };
+  const graphData = generateGraphData(title, isBarChart, labels, data);
+  const height = isBarChart && labels.length > 20 ? labels.length * 8 : null;
 
-  return <Component data={generateGraphData(title, isBarChart, labels, data)} options={options} height={null} />;
+  // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
+  return <Component key={height} data={graphData} options={options} height={height} />;
 };
 
-const GraphCard = ({ title, children, isBarChart, stats, matchMedia }) => (
+const GraphCard = ({ title, footer, isBarChart, stats, max }) => (
   <Card className="mt-4">
-    <CardHeader className="graph-card__header">{children || title}</CardHeader>
-    <CardBody>{renderGraph(title, isBarChart, stats, matchMedia)}</CardBody>
+    <CardHeader className="graph-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
+    <CardBody>{renderGraph(title, isBarChart, stats, max)}</CardBody>
+    {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
   </Card>
 );
 
 GraphCard.propTypes = propTypes;
-GraphCard.defaultProps = defaultProps;
 
 export default GraphCard;

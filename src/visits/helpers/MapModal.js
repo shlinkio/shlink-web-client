@@ -27,6 +27,10 @@ const OpenStreetMapTile = () => (
 );
 
 const calculateMapProps = (locations) => {
+  if (locations.length === 0) {
+    return {};
+  }
+
   if (locations.length > 1) {
     return { bounds: locations.map(prop('latLong')) };
   }

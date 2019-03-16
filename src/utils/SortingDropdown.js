@@ -33,7 +33,7 @@ const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, righ
       <DropdownToggle
         caret
         color={isButton ? 'secondary' : 'link'}
-        className={classNames({ 'btn-block': isButton, 'btn-sm sorting-dropdown__paddingless': !isButton })}
+        className={classNames({ 'btn-block': isButton, 'btn-sm paddingless': !isButton })}
       >
         Order by
       </DropdownToggle>

@@ -12,9 +12,11 @@ import VisitsHeader from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './ShortUrlVisits.scss';
-import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 
-const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits extends React.PureComponent {
+const ShortUrlVisits = (
+  { processStatsFromVisits },
+  OpenMapModalBtn
+) => class ShortUrlVisits extends React.PureComponent {
   static propTypes = {
     match: PropTypes.shape({
       params: PropTypes.object,
@@ -94,6 +96,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
           <div className="col-xl-4">
             <SortableBarGraph
               stats={referrers}
+              withPagination={false}
               title="Referrers"
               sortingItems={{
                 name: 'Referrer name',
@@ -115,8 +118,9 @@ const ShortUrlVisits = ({ processStatsFromVisits }) => class ShortUrlVisits exte
             <SortableBarGraph
               stats={cities}
               title="Cities"
-              extraHeaderContent={
-                [ () => mapLocations.length > 0 && <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} /> ]
+              extraHeaderContent={(activeCities) =>
+                mapLocations.length > 0 &&
+                  <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
               }
               sortingItems={{
                 name: 'City name',
