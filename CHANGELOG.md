@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* [#125](https://github.com/shlinkio/shlink-web-client/issues/125) Refactored reducers to replace `switch` statements by `handleActions` from [redux-actions](https://github.com/redux-utilities/redux-actions).
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* *Nothing*
+
+
 ## 2.0.3 - 2019-03-16
 
 #### Added
