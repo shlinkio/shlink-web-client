@@ -5,7 +5,9 @@ import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
+import Checkbox from '../utils/Checkbox';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
+import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const formatDate = (date) => isNil(date) ? date : date.format();
@@ -24,6 +26,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
     validSince: undefined,
     validUntil: undefined,
     maxVisits: undefined,
+    findIfExists: false,
     moreOptionsVisible: false,
   };
 
@@ -93,22 +96,30 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
               </div>
             </div>
+
+            <div className="mb-3 text-right">
+              <Checkbox
+                className="mr-2"
+                checked={this.state.findIfExists}
+                onChange={(findIfExists) => this.setState({ findIfExists })}
+              >
+                Use existing URL if found
+              </Checkbox>
+              <UseExistingIfFoundInfoIcon />
+            </div>
           </Collapse>
 
           <div>
             <button
               type="button"
-              className="btn btn-outline-secondary create-short-url__btn"
+              className="btn btn-outline-secondary"
               onClick={() => this.setState(({ moreOptionsVisible }) => ({ moreOptionsVisible: !moreOptionsVisible }))}
             >
               <FontAwesomeIcon icon={this.state.moreOptionsVisible ? upIcon : downIcon} />
               &nbsp;
               {this.state.moreOptionsVisible ? 'Less' : 'More'} options
             </button>
-            <button
-              className="btn btn-outline-primary create-short-url__btn float-right"
-              disabled={shortUrlCreationResult.loading}
-            >
+            <button className="btn btn-outline-primary float-right" disabled={shortUrlCreationResult.loading}>
               {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
             </button>
           </div>
