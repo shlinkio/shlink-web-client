@@ -17,7 +17,7 @@ export const shortUrlTagsType = PropTypes.shape({
   error: PropTypes.bool.isRequired,
 });
 
-const defaultState = {
+const initialState = {
   shortCode: null,
   tags: [],
   saving: false,
@@ -28,8 +28,8 @@ export default handleActions({
   [EDIT_SHORT_URL_TAGS_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_TAGS_ERROR]: (state) => ({ ...state, saving: false, error: true }),
   [EDIT_SHORT_URL_TAGS]: (state, action) => ({ ...pick([ 'shortCode', 'tags' ], action), saving: false, error: false }),
-  [RESET_EDIT_SHORT_URL_TAGS]: () => defaultState,
-}, defaultState);
+  [RESET_EDIT_SHORT_URL_TAGS]: () => initialState,
+}, initialState);
 
 export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, tags) => async (dispatch, getState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });

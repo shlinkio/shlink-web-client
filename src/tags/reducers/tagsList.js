@@ -11,7 +11,7 @@ const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
 const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
 /* eslint-enable padding-line-between-statements */
 
-const defaultState = {
+const initialState = {
   tags: [],
   filteredTags: [],
   loading: false,
@@ -39,7 +39,7 @@ export default handleActions({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm)),
   }),
-}, defaultState);
+}, initialState);
 
 export const _listTags = (buildShlinkApiClient, force = false) => async (dispatch, getState) => {
   const { tagsList, selectedServer } = getState();

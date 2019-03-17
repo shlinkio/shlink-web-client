@@ -9,7 +9,7 @@ export const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
 
 export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
 
-const defaultState = {
+const initialState = {
   oldName: '',
   newName: '',
   editing: false,
@@ -24,7 +24,7 @@ export default handleActions({
     editing: false,
     error: false,
   }),
-}, defaultState);
+}, initialState);
 
 export const editTag = (buildShlinkApiClient, colorGenerator) => (oldName, newName, color) => async (
   dispatch,

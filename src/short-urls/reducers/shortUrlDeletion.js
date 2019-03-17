@@ -19,7 +19,7 @@ export const shortUrlDeletionType = PropTypes.shape({
   }).isRequired,
 });
 
-const defaultState = {
+const initialState = {
   shortCode: '',
   loading: false,
   error: false,
@@ -30,8 +30,8 @@ export default handleActions({
   [DELETE_SHORT_URL_START]: (state) => ({ ...state, loading: true, error: false }),
   [DELETE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, errorData, loading: false, error: true }),
   [DELETE_SHORT_URL]: (state, { shortCode }) => ({ ...state, shortCode, loading: false, error: false }),
-  [RESET_DELETE_SHORT_URL]: () => defaultState,
-}, defaultState);
+  [RESET_DELETE_SHORT_URL]: () => initialState,
+}, initialState);
 
 export const deleteShortUrl = (buildShlinkApiClient) => (shortCode) => async (dispatch, getState) => {
   dispatch({ type: DELETE_SHORT_URL_START });

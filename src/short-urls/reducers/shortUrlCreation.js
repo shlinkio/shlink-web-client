@@ -16,7 +16,7 @@ export const createShortUrlResultType = PropTypes.shape({
   error: PropTypes.bool,
 });
 
-const defaultState = {
+const initialState = {
   result: null,
   saving: false,
   error: false,
@@ -26,8 +26,8 @@ export default handleActions({
   [CREATE_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
   [CREATE_SHORT_URL_ERROR]: (state) => ({ ...state, saving: false, error: true }),
   [CREATE_SHORT_URL]: (state, { result }) => ({ result, saving: false, error: false }),
-  [RESET_CREATE_SHORT_URL]: () => defaultState,
-}, defaultState);
+  [RESET_CREATE_SHORT_URL]: () => initialState,
+}, initialState);
 
 export const createShortUrl = (buildShlinkApiClient) => (data) => async (dispatch, getState) => {
   dispatch({ type: CREATE_SHORT_URL_START });

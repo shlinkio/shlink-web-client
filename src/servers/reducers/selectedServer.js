@@ -6,7 +6,7 @@ export const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';
 export const RESET_SELECTED_SERVER = 'shlink/selectedServer/RESET_SELECTED_SERVER';
 /* eslint-enable padding-line-between-statements */
 
-const defaultState = null;
+const initialState = null;
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
@@ -22,6 +22,6 @@ export const selectServer = (serversService) => (serverId) => (dispatch) => {
 };
 
 export default handleActions({
-  [RESET_SELECTED_SERVER]: () => defaultState,
+  [RESET_SELECTED_SERVER]: () => initialState,
   [SELECT_SERVER]: (state, { selectedServer }) => selectedServer,
-}, defaultState);
+}, initialState);
