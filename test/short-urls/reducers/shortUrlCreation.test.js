@@ -39,9 +39,6 @@ describe('shortUrlCreationReducer', () => {
         error: false,
       });
     });
-
-    it('returns provided state on unknown action', () =>
-      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('resetCreateShortUrl', () => {

@@ -49,17 +49,6 @@ describe('shortUrlVisitsReducer', () => {
       expect(error).toEqual(false);
       expect(visits).toEqual(actionVisits);
     });
-
-    it('returns default state on unknown action', () => {
-      const defaultState = {
-        visits: [],
-        loading: false,
-        error: false,
-      };
-      const state = reducer(defaultState, { type: 'unknown' });
-
-      expect(state).toEqual(defaultState);
-    });
   });
 
   describe('getShortUrlVisits', () => {

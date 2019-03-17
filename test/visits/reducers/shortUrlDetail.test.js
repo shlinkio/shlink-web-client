@@ -32,17 +32,6 @@ describe('shortUrlDetailReducer', () => {
       expect(error).toEqual(false);
       expect(shortUrl).toEqual(actionShortUrl);
     });
-
-    it('returns default state on unknown action', () => {
-      const defaultState = {
-        shortUrl: {},
-        loading: false,
-        error: false,
-      };
-      const state = reducer(defaultState, { type: 'unknown' });
-
-      expect(state).toEqual(defaultState);
-    });
   });
 
   describe('getShortUrlDetail', () => {

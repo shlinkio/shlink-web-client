@@ -1,11 +1,12 @@
+import { handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 
-/* eslint-disable padding-line-between-statements, newline-after-var */
+/* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
 export const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';
 export const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
-/* eslint-enable padding-line-between-statements, newline-after-var */
+/* eslint-enable padding-line-between-statements */
 
 export const shortUrlDetailType = PropTypes.shape({
   shortUrl: shortUrlType,
@@ -19,29 +20,11 @@ const initialState = {
   error: false,
 };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case GET_SHORT_URL_DETAIL_START:
-      return {
-        ...state,
-        loading: true,
-      };
-    case GET_SHORT_URL_DETAIL_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: true,
-      };
-    case GET_SHORT_URL_DETAIL:
-      return {
-        shortUrl: action.shortUrl,
-        loading: false,
-        error: false,
-      };
-    default:
-      return state;
-  }
-}
+export default handleActions({
+  [GET_SHORT_URL_DETAIL_START]: (state) => ({ ...state, loading: true }),
+  [GET_SHORT_URL_DETAIL_ERROR]: (state) => ({ ...state, loading: false, error: true }),
+  [GET_SHORT_URL_DETAIL]: (state, { shortUrl }) => ({ shortUrl, loading: false, error: false }),
+}, initialState);
 
 export const getShortUrlDetail = (buildShlinkApiClient) => (shortCode) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_DETAIL_START });

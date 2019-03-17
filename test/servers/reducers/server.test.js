@@ -9,13 +9,13 @@ import reducer, {
 } from '../../../src/servers/reducers/server';
 
 describe('serverReducer', () => {
-  const servers = {
+  const payload = {
     abc123: { id: 'abc123' },
     def456: { id: 'def456' },
   };
-  const expectedFetchServersResult = { type: FETCH_SERVERS, servers };
+  const expectedFetchServersResult = { type: FETCH_SERVERS, payload };
   const ServersServiceMock = {
-    listServers: sinon.fake.returns(servers),
+    listServers: sinon.fake.returns(payload),
     createServer: sinon.fake(),
     deleteServer: sinon.fake(),
     createServers: sinon.fake(),
@@ -23,10 +23,7 @@ describe('serverReducer', () => {
 
   describe('reducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reducer({}, { type: FETCH_SERVERS, servers })).toEqual(servers));
-
-    it('returns default when action is unknown', () =>
-      expect(reducer({}, { type: 'unknown' })).toEqual({}));
+      expect(reducer({}, { type: FETCH_SERVERS, payload })).toEqual(payload));
   });
 
   describe('action creators', () => {
@@ -79,7 +76,7 @@ describe('serverReducer', () => {
 
     describe('createServer', () => {
       it('creates multiple servers and then fetches servers again', () => {
-        const serversToCreate = values(servers);
+        const serversToCreate = values(payload);
         const result = createServers(ServersServiceMock, () => expectedFetchServersResult)(serversToCreate);
 
         expect(result).toEqual(expectedFetchServersResult);

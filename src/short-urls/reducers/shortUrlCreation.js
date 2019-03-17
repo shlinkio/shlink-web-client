@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types';
+import { createAction, handleActions } from 'redux-actions';
 
-/* eslint-disable padding-line-between-statements, newline-after-var */
+/* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
-/* eslint-enable padding-line-between-statements, newline-after-var */
+/* eslint-enable padding-line-between-statements */
 
 export const createShortUrlResultType = PropTypes.shape({
   result: PropTypes.shape({
@@ -15,38 +16,18 @@ export const createShortUrlResultType = PropTypes.shape({
   error: PropTypes.bool,
 });
 
-const defaultState = {
+const initialState = {
   result: null,
   saving: false,
   error: false,
 };
 
-export default function reducer(state = defaultState, action) {
-  switch (action.type) {
-    case CREATE_SHORT_URL_START:
-      return {
-        ...state,
-        saving: true,
-        error: false,
-      };
-    case CREATE_SHORT_URL_ERROR:
-      return {
-        ...state,
-        saving: false,
-        error: true,
-      };
-    case CREATE_SHORT_URL:
-      return {
-        result: action.result,
-        saving: false,
-        error: false,
-      };
-    case RESET_CREATE_SHORT_URL:
-      return defaultState;
-    default:
-      return state;
-  }
-}
+export default handleActions({
+  [CREATE_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
+  [CREATE_SHORT_URL_ERROR]: (state) => ({ ...state, saving: false, error: true }),
+  [CREATE_SHORT_URL]: (state, { result }) => ({ result, saving: false, error: false }),
+  [RESET_CREATE_SHORT_URL]: () => initialState,
+}, initialState);
 
 export const createShortUrl = (buildShlinkApiClient) => (data) => async (dispatch, getState) => {
   dispatch({ type: CREATE_SHORT_URL_START });
@@ -63,4 +44,4 @@ export const createShortUrl = (buildShlinkApiClient) => (data) => async (dispatc
   }
 };
 
-export const resetCreateShortUrl = () => ({ type: RESET_CREATE_SHORT_URL });
+export const resetCreateShortUrl = createAction(RESET_CREATE_SHORT_URL);

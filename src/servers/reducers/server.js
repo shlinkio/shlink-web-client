@@ -1,33 +1,16 @@
+import { createAction, handleActions } from 'redux-actions';
+import { pipe } from 'ramda';
+
 export const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
 
-export default function reducer(state = {}, action) {
-  switch (action.type) {
-    case FETCH_SERVERS:
-      return action.servers;
-    default:
-      return state;
-  }
-}
+export const listServers = ({ listServers }) => createAction(FETCH_SERVERS, () => listServers());
 
-export const listServers = (serversService) => () => ({
-  type: FETCH_SERVERS,
-  servers: serversService.listServers(),
-});
+export const createServer = ({ createServer }, listServers) => pipe(createServer, listServers);
 
-export const createServer = (serversService, listServers) => (server) => {
-  serversService.createServer(server);
+export const deleteServer = ({ deleteServer }, listServers) => pipe(deleteServer, listServers);
 
-  return listServers();
-};
+export const createServers = ({ createServers }, listServers) => pipe(createServers, listServers);
 
-export const deleteServer = (serversService, listServers) => (server) => {
-  serversService.deleteServer(server);
-
-  return listServers();
-};
-
-export const createServers = (serversService, listServers) => (servers) => {
-  serversService.createServers(servers);
-
-  return listServers();
-};
+export default handleActions({
+  [FETCH_SERVERS]: (state, { payload }) => payload,
+}, {});
