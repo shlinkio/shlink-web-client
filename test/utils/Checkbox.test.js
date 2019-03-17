@@ -1,7 +1,6 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import Checkbox from '../../src/utils/Checkbox';
-import DateInput from './DateInput.test';
 
 describe('<Checkbox />', () => {
   let wrapped;
