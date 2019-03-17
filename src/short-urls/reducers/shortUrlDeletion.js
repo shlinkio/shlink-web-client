@@ -1,3 +1,4 @@
+import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 
 /* eslint-disable padding-line-between-statements, newline-after-var */
@@ -25,34 +26,12 @@ const defaultState = {
   errorData: {},
 };
 
-export default function reducer(state = defaultState, action) {
-  switch (action.type) {
-    case DELETE_SHORT_URL_START:
-      return {
-        ...state,
-        loading: true,
-        error: false,
-      };
-    case DELETE_SHORT_URL_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: true,
-        errorData: action.errorData,
-      };
-    case DELETE_SHORT_URL:
-      return {
-        ...state,
-        shortCode: action.shortCode,
-        loading: false,
-        error: false,
-      };
-    case RESET_DELETE_SHORT_URL:
-      return defaultState;
-    default:
-      return state;
-  }
-}
+export default handleActions({
+  [DELETE_SHORT_URL_START]: (state) => ({ ...state, loading: true, error: false }),
+  [DELETE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, errorData, loading: false, error: true }),
+  [DELETE_SHORT_URL]: (state, { shortCode }) => ({ ...state, shortCode, loading: false, error: false }),
+  [RESET_DELETE_SHORT_URL]: () => defaultState,
+}, defaultState);
 
 export const deleteShortUrl = (buildShlinkApiClient) => (shortCode) => async (dispatch, getState) => {
   dispatch({ type: DELETE_SHORT_URL_START });
@@ -70,6 +49,6 @@ export const deleteShortUrl = (buildShlinkApiClient) => (shortCode) => async (di
   }
 };
 
-export const resetDeleteShortUrl = () => ({ type: RESET_DELETE_SHORT_URL });
+export const resetDeleteShortUrl = createAction(RESET_DELETE_SHORT_URL);
 
 export const shortUrlDeleted = (shortCode) => ({ type: SHORT_URL_DELETED, shortCode });
