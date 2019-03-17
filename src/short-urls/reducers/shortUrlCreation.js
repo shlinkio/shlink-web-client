@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import { createAction, handleActions } from 'redux-actions';
 
-/* eslint-disable padding-line-between-statements, newline-after-var */
+/* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
-/* eslint-enable padding-line-between-statements, newline-after-var */
+/* eslint-enable padding-line-between-statements */
 
 export const createShortUrlResultType = PropTypes.shape({
   result: PropTypes.shape({

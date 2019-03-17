@@ -1,13 +1,13 @@
 import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 
-/* eslint-disable padding-line-between-statements, newline-after-var */
+/* eslint-disable padding-line-between-statements */
 export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
 export const DELETE_SHORT_URL_ERROR = 'shlink/deleteShortUrl/DELETE_SHORT_URL_ERROR';
 export const DELETE_SHORT_URL = 'shlink/deleteShortUrl/DELETE_SHORT_URL';
 export const RESET_DELETE_SHORT_URL = 'shlink/deleteShortUrl/RESET_DELETE_SHORT_URL';
 export const SHORT_URL_DELETED = 'shlink/deleteShortUrl/SHORT_URL_DELETED';
-/* eslint-enable padding-line-between-statements, newline-after-var */
+/* eslint-enable padding-line-between-statements */
 
 export const shortUrlDeletionType = PropTypes.shape({
   shortCode: PropTypes.string.isRequired,
