@@ -12,16 +12,11 @@ const propTypes = {
 
 const Checkbox = ({ checked, onChange, className, children }) => {
   const id = uuid();
+  const onChecked = (e) => onChange(e.target.checked, e);
 
   return (
     <span className={classNames('custom-control custom-checkbox', className)} style={{ display: 'inline' }}>
-      <input
-        type="checkbox"
-        className="custom-control-input"
-        id={id}
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked, e)}
-      />
+      <input type="checkbox" className="custom-control-input" id={id} checked={checked} onChange={onChecked} />
       <label className="custom-control-label" htmlFor={id}>{children}</label>
     </span>
   );
