@@ -21,9 +21,7 @@ export const selectServer = (serversService) => (serverId) => (dispatch) => {
   });
 };
 
-const reducer = handleActions({
+export default handleActions({
   [RESET_SELECTED_SERVER]: () => defaultState,
   [SELECT_SERVER]: (state, { selectedServer }) => selectedServer,
 }, defaultState);
-
-export default reducer;
