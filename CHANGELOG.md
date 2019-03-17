@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Added
 
-* *Nothing*
+* [#101](https://github.com/shlinkio/shlink-web-client/issues/101) Added checkbox to short URL creation form that allows to determine the value of the `findIfExists` flag introduced in Shlink v1.16.0.
 
 #### Changed
 
