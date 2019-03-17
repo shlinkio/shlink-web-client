@@ -59,6 +59,7 @@ describe('<CreateShortUrl />', () => {
             validSince: validSince.format(),
             validUntil: validUntil.format(),
             maxVisits: '20',
+            findIfExists: false,
           },
         ]
       );
