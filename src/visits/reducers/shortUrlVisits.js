@@ -1,13 +1,14 @@
+import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { flatten, prop, range, splitEvery } from 'ramda';
 
-/* eslint-disable padding-line-between-statements, newline-after-var */
+/* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
 export const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_ERROR';
 export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_LARGE';
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
-/* eslint-enable padding-line-between-statements, newline-after-var */
+/* eslint-enable padding-line-between-statements */
 
 export const shortUrlVisitsType = PropTypes.shape({
   visits: PropTypes.array,
@@ -23,45 +24,30 @@ const initialState = {
   cancelLoad: false,
 };
 
-export default function reducer(state = initialState, action) {
-  switch (action.type) {
-    case GET_SHORT_URL_VISITS_START:
-      return {
-        ...state,
-        loading: true,
-        loadingLarge: false,
-        cancelLoad: false,
-      };
-    case GET_SHORT_URL_VISITS_ERROR:
-      return {
-        ...state,
-        loading: false,
-        loadingLarge: false,
-        error: true,
-        cancelLoad: false,
-      };
-    case GET_SHORT_URL_VISITS:
-      return {
-        visits: action.visits,
-        loading: false,
-        loadingLarge: false,
-        error: false,
-        cancelLoad: false,
-      };
-    case GET_SHORT_URL_VISITS_LARGE:
-      return {
-        ...state,
-        loadingLarge: true,
-      };
-    case GET_SHORT_URL_VISITS_CANCEL:
-      return {
-        ...state,
-        cancelLoad: true,
-      };
-    default:
-      return state;
-  }
-}
+export default handleActions({
+  [GET_SHORT_URL_VISITS_START]: (state) => ({
+    ...state,
+    loading: true,
+    loadingLarge: false,
+    cancelLoad: false,
+  }),
+  [GET_SHORT_URL_VISITS_ERROR]: (state) => ({
+    ...state,
+    loading: false,
+    loadingLarge: false,
+    error: true,
+    cancelLoad: false,
+  }),
+  [GET_SHORT_URL_VISITS]: (state, { visits }) => ({
+    visits,
+    loading: false,
+    loadingLarge: false,
+    error: false,
+    cancelLoad: false,
+  }),
+  [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
+  [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
+}, initialState);
 
 export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
@@ -124,4 +110,4 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   }
 };
 
-export const cancelGetShortUrlVisits = () => ({ type: GET_SHORT_URL_VISITS_CANCEL });
+export const cancelGetShortUrlVisits = createAction(GET_SHORT_URL_VISITS_CANCEL);
