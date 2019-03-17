@@ -1,3 +1,4 @@
+import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { LIST_SHORT_URLS } from './shortUrlsList';
 
@@ -11,15 +12,9 @@ export const shortUrlsListParamsType = PropTypes.shape({
 
 const defaultState = { page: '1' };
 
-export default function reducer(state = defaultState, action) {
-  switch (action.type) {
-    case LIST_SHORT_URLS:
-      return { ...state, ...action.params };
-    case RESET_SHORT_URL_PARAMS:
-      return defaultState;
-    default:
-      return state;
-  }
-}
+export default handleActions({
+  [LIST_SHORT_URLS]: (state, { params }) => ({ ...state, ...params }),
+  [RESET_SHORT_URL_PARAMS]: () => defaultState,
+}, defaultState);
 
-export const resetShortUrlParams = () => ({ type: RESET_SHORT_URL_PARAMS });
+export const resetShortUrlParams = createAction(RESET_SHORT_URL_PARAMS);
