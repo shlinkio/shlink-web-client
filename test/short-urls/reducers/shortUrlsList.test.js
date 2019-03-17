@@ -70,12 +70,6 @@ describe('shortUrlsListReducer', () => {
         },
       });
     });
-
-    it('returns provided state as is on unknown action', () => {
-      const state = { foo: 'bar' };
-
-      expect(reducer(state, { type: 'unknown' })).toEqual(state);
-    });
   });
 
   describe('listShortUrls', () => {

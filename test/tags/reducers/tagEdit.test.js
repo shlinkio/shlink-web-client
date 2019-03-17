@@ -32,9 +32,6 @@ describe('tagEditReducer', () => {
         newName: 'bar',
       });
     });
-
-    it('returns provided state on unknown action', () =>
-      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('tagEdited', () => {

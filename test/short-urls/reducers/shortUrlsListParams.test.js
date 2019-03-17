@@ -8,9 +8,6 @@ describe('shortUrlsListParamsReducer', () => {
   describe('reducer', () => {
     const defaultState = { page: '1' };
 
-    it('returns default value when action is unknown', () =>
-      expect(reducer(defaultState, { type: 'unknown' })).toEqual(defaultState));
-
     it('returns params when action is LIST_SHORT_URLS', () =>
       expect(reducer(defaultState, { type: LIST_SHORT_URLS, params: { searchTerm: 'foo' } })).toEqual({
         ...defaultState,

@@ -30,9 +30,6 @@ describe('tagDeleteReducer', () => {
         error: false,
       });
     });
-
-    it('returns provided state on unknown action', () =>
-      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('tagDeleted', () => {

@@ -9,9 +9,6 @@ import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUr
 
 describe('selectedServerReducer', () => {
   describe('reducer', () => {
-    it('returns default when action is not handled', () =>
-      expect(reducer(null, { type: 'unknown' })).toEqual(null));
-
     it('returns default when action is RESET_SELECTED_SERVER', () =>
       expect(reducer(null, { type: RESET_SELECTED_SERVER })).toEqual(null));
 

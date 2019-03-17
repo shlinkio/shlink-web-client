@@ -24,9 +24,6 @@ describe('serverReducer', () => {
   describe('reducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
       expect(reducer({}, { type: FETCH_SERVERS, payload })).toEqual(payload));
-
-    it('returns default when action is unknown', () =>
-      expect(reducer({}, { type: 'unknown' })).toEqual({}));
   });
 
   describe('action creators', () => {
