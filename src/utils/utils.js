@@ -3,6 +3,7 @@ import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { range } from 'ramda';
+import { useState } from 'react';
 
 const TEN_ROUNDING_NUMBER = 10;
 const DEFAULT_TIMEOUT_DELAY = 2000;
@@ -44,3 +45,9 @@ export const fixLeafletIcons = () => {
 export const rangeOf = (size, mappingFn, startAt = 1) => range(startAt, size + 1).map(mappingFn);
 
 export const roundTen = (number) => ceil(number / TEN_ROUNDING_NUMBER) * TEN_ROUNDING_NUMBER;
+
+export const useToggle = (initialValue = false) => {
+  const [ flag, setFlag ] = useState(initialValue);
+
+  return [ flag, () => setFlag(!flag) ];
+};

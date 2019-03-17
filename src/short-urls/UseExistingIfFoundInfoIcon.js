@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import './UseExistingIfFoundInfoIcon.scss';
+import { useToggle } from '../utils/utils';
 
 const renderInfoModal = (isOpen, toggle) => (
   <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
@@ -40,8 +41,7 @@ const renderInfoModal = (isOpen, toggle) => (
 );
 
 const UseExistingIfFoundInfoIcon = () => {
-  const [ isModalOpen, setIsModalOpen ] = useState(false);
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const [ isModalOpen, toggleModal ] = useToggle(false);
 
   return (
     <React.Fragment>
