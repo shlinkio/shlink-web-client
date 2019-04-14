@@ -3,8 +3,8 @@ version: '3'
 services:
   shlink_web_client_node:
     container_name: shlink_web_client_node
-    image: node:10.15.0-alpine
-    command: /bin/sh -c "cd /home/shlink/www && yarn install && yarn start"
+    image: node:10.15.3-alpine
+    command: /bin/sh -c "cd /home/shlink/www && npm install && npm run start"
     volumes:
       - ./:/home/shlink/www
     ports:

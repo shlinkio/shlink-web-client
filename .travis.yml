@@ -4,7 +4,6 @@ node_js:
   - "10.15.3"
 
 cache:
-  yarn: true
   directories:
     - node_modules
 
@@ -12,19 +11,19 @@ services:
   - docker
 
 install:
-  - yarn install
+  - npm ci
 
 script:
-  - yarn lint
-  - yarn test:ci
+  - npm run lint
+  - npm run test:ci
   - if [[ -z $TRAVIS_TAG ]]; then docker build -t shlink-web-client:test . ; fi # Test docker image build only when no tag is present
 
 after_success:
-  - yarn ocular coverage/clover.xml
+  - node_modules/.bin/ocular coverage/clover.xml
 
 # Before deploying, build dist file for current travis tag
 before_deploy:
-  - yarn build ${TRAVIS_TAG#?}
+  - npm run build ${TRAVIS_TAG#?}
 
 deploy:
   provider: releases

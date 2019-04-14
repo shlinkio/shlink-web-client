@@ -38,14 +38,13 @@ Official distributable files have been build so that they are served from the ro
 
 If you need to host shlink-web-client yourself and serve it from a subpath, follow these steps:
 
-* Download [node](https://nodejs.org/en/download/package-manager/) 10.4 or later (if you don't have it yet).
-* Download [yarn](https://yarnpkg.com/en/docs/install) package manager.
+* Download [node](https://nodejs.org/en/download/package-manager/) 10.15 or later (if you don't have it yet).
 * Download shlink-web-client source files for the version you want to build.
     * For example, if you want to build `v1.0.1`, use this link https://github.com/shlinkio/shlink-web-client/archive/v1.0.1.zip
     * Replace the `v1.0.1` part in the link with the one of the version you want to build.
 * Decompress the file and `cd` into the resulting folder.
-* Install project dependencies by running `yarn install`.
+* Install project dependencies by running `npm install`.
 * Open the `package.json` file in the root of the project, locate the `homepage` property and replace the value (which should be an empty string) by the path from which you want to serve shlink-web-client.
     * For example: `"homepage": "/my-projects/shlink-web-client",`.
-* Build the distributable contents by running `yarn build`.
+* Build the distributable contents by running `npm run build`.
 * Once the command finishes, you will have a `build` folder with all the static assets you need to run shlink-web-client. Just place them wherever you want them to be served from.
