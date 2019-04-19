@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Changed
 
 * [#125](https://github.com/shlinkio/shlink-web-client/issues/125) Refactored reducers to replace `switch` statements by `handleActions` from [redux-actions](https://github.com/redux-utilities/redux-actions).
+* [#116](https://github.com/shlinkio/shlink-web-client/issues/116) Removed sinon in favor of jest mocks.
 
 #### Deprecated
 
