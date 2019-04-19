@@ -49,7 +49,6 @@ describe('tagDeleteReducer', () => {
     afterEach(() => dispatch.mockReset());
 
     it('calls API on success', async () => {
-      const expectedDispatchCalls = 2;
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve());
       const dispatchable = deleteTag(() => apiClientMock)(tag);
@@ -59,13 +58,12 @@ describe('tagDeleteReducer', () => {
       expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
       expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG });
     });
 
     it('throws on error', async () => {
-      const expectedDispatchCalls = 2;
       const error = 'Error';
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.reject(error));
@@ -80,7 +78,7 @@ describe('tagDeleteReducer', () => {
       expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
       expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG_ERROR });
     });

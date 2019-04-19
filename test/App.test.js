@@ -19,7 +19,6 @@ describe('<App />', () => {
 
   it('renders app main routes', () => {
     const routes = wrapper.find(Route);
-    const expectedRoutesCount = 4;
     const expectedPaths = [
       '/server/create',
       '/',
@@ -27,7 +26,7 @@ describe('<App />', () => {
     ];
 
     expect.assertions(expectedPaths.length + 1);
-    expect(routes).toHaveLength(expectedRoutesCount);
+    expect(routes).toHaveLength(4);
     expectedPaths.forEach((path, index) => {
       expect(routes.at(index).prop('path')).toEqual(path);
     });

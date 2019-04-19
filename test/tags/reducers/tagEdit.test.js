@@ -59,7 +59,6 @@ describe('tagEditReducer', () => {
     });
 
     it('calls API on success', async () => {
-      const expectedDispatchCalls = 2;
       const oldName = 'foo';
       const newName = 'bar';
       const color = '#ff0000';
@@ -74,7 +73,7 @@ describe('tagEditReducer', () => {
       expect(colorGenerator.setColorForKey).toHaveBeenCalledTimes(1);
       expect(colorGenerator.setColorForKey).toHaveBeenCalledWith(newName, color);
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_TAG_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG, oldName, newName });
     });
