@@ -49,19 +49,15 @@ describe('<CreateShortUrl />', () => {
 
       form.simulate('submit', { preventDefault: identity });
       expect(createShortUrl).toHaveBeenCalledTimes(1);
-      expect(createShortUrl.mock.calls[0]).toEqual(
-        [
-          {
-            longUrl: 'https://long-domain.com/foo/bar',
-            tags: [ 'tag_foo', 'tag_bar' ],
-            customSlug: 'my-slug',
-            validSince: validSince.format(),
-            validUntil: validUntil.format(),
-            maxVisits: '20',
-            findIfExists: false,
-          },
-        ]
-      );
+      expect(createShortUrl).toHaveBeenCalledWith({
+        longUrl: 'https://long-domain.com/foo/bar',
+        tags: [ 'tag_foo', 'tag_bar' ],
+        customSlug: 'my-slug',
+        validSince: validSince.format(),
+        validUntil: validUntil.format(),
+        maxVisits: '20',
+        findIfExists: false,
+      });
       done();
     });
   });

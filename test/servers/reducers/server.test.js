@@ -52,7 +52,7 @@ describe('serverReducer', () => {
 
         expect(result).toEqual(expectedFetchServersResult);
         expect(ServersServiceMock.createServer).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.createServer.mock.calls[0]).toEqual([ serverToCreate ]);
+        expect(ServersServiceMock.createServer).toHaveBeenCalledWith(serverToCreate);
         expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
         expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
         expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
@@ -69,7 +69,7 @@ describe('serverReducer', () => {
         expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
         expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
         expect(ServersServiceMock.deleteServer).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.deleteServer.mock.calls[0]).toEqual([ serverToDelete ]);
+        expect(ServersServiceMock.deleteServer).toHaveBeenCalledWith(serverToDelete);
       });
     });
 
@@ -82,7 +82,7 @@ describe('serverReducer', () => {
         expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
         expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
         expect(ServersServiceMock.createServers).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.createServers.mock.calls[0]).toEqual([ serversToCreate ]);
+        expect(ServersServiceMock.createServers).toHaveBeenCalledWith(serversToCreate);
         expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
       });
     });

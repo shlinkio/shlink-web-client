@@ -1,4 +1,3 @@
-import { last } from 'ramda';
 import ServersService from '../../../src/servers/services/ServersService';
 
 describe('ServersService', () => {
@@ -68,10 +67,7 @@ describe('ServersService', () => {
 
       expect(storageMock.get).toHaveBeenCalledTimes(1);
       expect(storageMock.set).toHaveBeenCalledTimes(1);
-
-      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
-
-      expect(setLastCallLastArg).toEqual({
+      expect(storageMock.set).toHaveBeenCalledWith(expect.anything(), {
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -88,10 +84,7 @@ describe('ServersService', () => {
 
       expect(storageMock.get).toHaveBeenCalledTimes(1);
       expect(storageMock.set).toHaveBeenCalledTimes(1);
-
-      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
-
-      expect(setLastCallLastArg).toEqual({
+      expect(storageMock.set).toHaveBeenCalledWith(expect.anything(), {
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -109,10 +102,7 @@ describe('ServersService', () => {
 
       expect(storageMock.get).toHaveBeenCalledTimes(1);
       expect(storageMock.set).toHaveBeenCalledTimes(1);
-
-      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
-
-      expect(setLastCallLastArg).toEqual({
+      expect(storageMock.set).toHaveBeenCalledWith(expect.anything(), {
         def456: { id: 'def456' },
       });
     });

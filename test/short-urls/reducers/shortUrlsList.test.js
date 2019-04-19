@@ -84,14 +84,12 @@ describe('shortUrlsListReducer', () => {
       const apiClientMock = {
         listShortUrls: jest.fn().mockResolvedValue([]),
       };
-      const expectedDispatchCalls = 2;
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS, shortUrls: [], params: {} }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [], params: {} });
 
       expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
     });
@@ -100,14 +98,12 @@ describe('shortUrlsListReducer', () => {
       const apiClientMock = {
         listShortUrls: jest.fn().mockRejectedValue(),
       };
-      const expectedDispatchCalls = 2;
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_ERROR, params: {} }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS_ERROR, params: {} });
 
       expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
     });

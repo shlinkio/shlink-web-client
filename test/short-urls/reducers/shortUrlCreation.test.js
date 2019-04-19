@@ -55,22 +55,19 @@ describe('shortUrlCreationReducer', () => {
     afterEach(() => dispatch.mockReset());
 
     it('calls API on success', async () => {
-      const expectedDispatchCalls = 2;
       const result = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve(result));
       const dispatchable = createShortUrl(() => apiClientMock)({});
 
       await dispatchable(dispatch, getState);
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
       expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: CREATE_SHORT_URL_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: CREATE_SHORT_URL, result }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL, result });
     });
 
     it('throws on error', async () => {
-      const expectedDispatchCalls = 2;
       const error = 'Error';
       const apiClientMock = createApiClientMock(Promise.reject(error));
       const dispatchable = createShortUrl(() => apiClientMock)({});
@@ -80,12 +77,11 @@ describe('shortUrlCreationReducer', () => {
       } catch (e) {
         expect(e).toEqual(error);
       }
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
       expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: CREATE_SHORT_URL_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: CREATE_SHORT_URL_ERROR }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL_ERROR });
     });
   });
 });

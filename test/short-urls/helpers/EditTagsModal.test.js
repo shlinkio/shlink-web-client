@@ -92,7 +92,7 @@ describe('<EditTagsModal />', () => {
     saveBtn.simulate('click');
 
     expect(editShortUrlTags).toHaveBeenCalledTimes(1);
-    expect(editShortUrlTags.mock.calls[0]).toEqual([ shortCode, []]);
+    expect(editShortUrlTags).toHaveBeenCalledWith(shortCode, []);
 
     // Wrap this expect in a setImmediate since it is called as a result of an inner promise
     setImmediate(() => {
@@ -130,7 +130,7 @@ describe('<EditTagsModal />', () => {
     setImmediate(() => {
       modal.simulate('closed');
       expect(shortUrlTagsEdited).toHaveBeenCalledTimes(1);
-      expect(shortUrlTagsEdited.mock.calls[0]).toEqual([ shortCode, []]);
+      expect(shortUrlTagsEdited).toHaveBeenCalledWith(shortCode, []);
       done();
     });
   });

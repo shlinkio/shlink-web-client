@@ -70,17 +70,15 @@ describe('shortUrlDeletionReducer', () => {
         deleteShortUrl: jest.fn(() => ''),
       };
       const shortCode = 'abc123';
-      const expectedDispatchCalls = 2;
 
       await deleteShortUrl(() => apiClientMock)(shortCode)(dispatch, getState);
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: DELETE_SHORT_URL_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: DELETE_SHORT_URL, shortCode }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_SHORT_URL, shortCode });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl.mock.calls[0]).toEqual([ shortCode ]);
+      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
@@ -90,21 +88,19 @@ describe('shortUrlDeletionReducer', () => {
         deleteShortUrl: jest.fn(() => Promise.reject(error)),
       };
       const shortCode = 'abc123';
-      const expectedDispatchCalls = 2;
 
       try {
         await deleteShortUrl(() => apiClientMock)(shortCode)(dispatch, getState);
       } catch (e) {
         expect(e).toEqual(error);
       }
-      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstDispatchCallArgs).toEqual([{ type: DELETE_SHORT_URL_START }]);
-      expect(secondDispatchCallArgs).toEqual([{ type: DELETE_SHORT_URL_ERROR, errorData: data }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_SHORT_URL_ERROR, errorData: data });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl.mock.calls[0]).toEqual([ shortCode ]);
+      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode);
     });
   });
 });

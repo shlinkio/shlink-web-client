@@ -39,20 +39,12 @@ describe('selectedServerReducer', () => {
 
     it('dispatches proper actions', () => {
       const dispatch = jest.fn();
-      const expectedDispatchCalls = 2;
 
       selectServer(ServersServiceMock)(serverId)(dispatch);
 
-      const [ firstCallArgs, secondCallArgs ] = dispatch.mock.calls;
-
-      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(firstCallArgs).toEqual([{ type: RESET_SHORT_URL_PARAMS }]);
-      expect(secondCallArgs).toEqual([
-        {
-          type: SELECT_SERVER,
-          selectedServer,
-        },
-      ]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SHORT_URL_PARAMS });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer });
     });
 
     it('invokes dependencies', () => {
