@@ -1,21 +1,17 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 
 describe('<SearchBar />', () => {
   let wrapper;
-  const listShortUrlsMock = sinon.spy();
+  const listShortUrlsMock = jest.fn();
   const SearchBar = searchBarCreator({});
 
   afterEach(() => {
-    listShortUrlsMock.resetHistory();
-
-    if (wrapper) {
-      wrapper.unmount();
-    }
+    listShortUrlsMock.mockReset();
+    wrapper && wrapper.unmount();
   });
 
   it('renders a SearchField', () => {
@@ -42,9 +38,9 @@ describe('<SearchBar />', () => {
     wrapper = shallow(<SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />);
     const searchField = wrapper.find(SearchField);
 
-    expect(listShortUrlsMock.callCount).toEqual(0);
+    expect(listShortUrlsMock).not.toHaveBeenCalled();
     searchField.simulate('change');
-    expect(listShortUrlsMock.callCount).toEqual(1);
+    expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 
   it('updates short URLs list when a tag is removed', () => {
@@ -53,8 +49,8 @@ describe('<SearchBar />', () => {
     );
     const tag = wrapper.find(Tag).first();
 
-    expect(listShortUrlsMock.callCount).toEqual(0);
+    expect(listShortUrlsMock).not.toHaveBeenCalled();
     tag.simulate('close');
-    expect(listShortUrlsMock.callCount).toEqual(1);
+    expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 });

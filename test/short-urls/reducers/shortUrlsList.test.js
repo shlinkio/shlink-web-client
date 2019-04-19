@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import reducer, {
   LIST_SHORT_URLS,
   LIST_SHORT_URLS_ERROR,
@@ -73,42 +72,44 @@ describe('shortUrlsListReducer', () => {
   });
 
   describe('listShortUrls', () => {
-    const dispatch = sinon.spy();
-    const getState = sinon.fake.returns({ selectedServer: {} });
+    const dispatch = jest.fn();
+    const getState = jest.fn().mockReturnValue({ selectedServer: {} });
 
     afterEach(() => {
-      dispatch.resetHistory();
-      getState.resetHistory();
+      dispatch.mockReset();
+      getState.mockClear();
     });
 
     it('dispatches proper actions if API client request succeeds', async () => {
       const apiClientMock = {
-        listShortUrls: sinon.fake.resolves([]),
+        listShortUrls: jest.fn().mockResolvedValue([]),
       };
       const expectedDispatchCalls = 2;
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
+      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: LIST_SHORT_URLS_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: LIST_SHORT_URLS, shortUrls: [], params: {} }]);
+      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(firstDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_START }]);
+      expect(secondDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS, shortUrls: [], params: {} }]);
 
-      expect(apiClientMock.listShortUrls.callCount).toEqual(1);
+      expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
       const apiClientMock = {
-        listShortUrls: sinon.fake.rejects(),
+        listShortUrls: jest.fn().mockRejectedValue(),
       };
       const expectedDispatchCalls = 2;
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
+      const [ firstDispatchCallArgs, secondDispatchCallArgs ] = dispatch.mock.calls;
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: LIST_SHORT_URLS_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: LIST_SHORT_URLS_ERROR, params: {} }]);
+      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(firstDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_START }]);
+      expect(secondDispatchCallArgs).toEqual([{ type: LIST_SHORT_URLS_ERROR, params: {} }]);
 
-      expect(apiClientMock.listShortUrls.callCount).toEqual(1);
+      expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
     });
   });
 });

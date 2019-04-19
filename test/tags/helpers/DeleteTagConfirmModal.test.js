@@ -1,14 +1,13 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as sinon from 'sinon';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DeleteTagConfirmModal from '../../../src/tags/helpers/DeleteTagConfirmModal';
 
 describe('<DeleteTagConfirmModal />', () => {
   let wrapper;
   const tag = 'nodejs';
-  const deleteTag = sinon.spy();
-  const tagDeleted = sinon.spy();
+  const deleteTag = jest.fn();
+  const tagDeleted = jest.fn();
   const createWrapper = (tagDelete) => {
     wrapper = shallow(
       <DeleteTagConfirmModal
@@ -26,8 +25,8 @@ describe('<DeleteTagConfirmModal />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    deleteTag.resetHistory();
-    tagDeleted.resetHistory();
+    deleteTag.mockReset();
+    tagDeleted.mockReset();
   });
 
   it('asks confirmation for provided tag to be deleted', () => {
@@ -63,8 +62,8 @@ describe('<DeleteTagConfirmModal />', () => {
     const delBtn = footer.find('.btn-danger');
 
     delBtn.simulate('click');
-    expect(deleteTag.calledOnce).toEqual(true);
-    expect(deleteTag.calledWith(tag)).toEqual(true);
+    expect(deleteTag).toHaveBeenCalledTimes(1);
+    expect(deleteTag).toHaveBeenCalledWith(tag);
   });
 
   it('does no further actions when modal is closed without deleting tag', () => {
@@ -72,7 +71,7 @@ describe('<DeleteTagConfirmModal />', () => {
     const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
-    expect(tagDeleted.called).toEqual(false);
+    expect(tagDeleted).not.toHaveBeenCalled();
   });
 
   it('notifies tag to be deleted when modal is closed after deleting tag', () => {
@@ -81,7 +80,7 @@ describe('<DeleteTagConfirmModal />', () => {
 
     wrapper.instance().tagWasDeleted = true;
     modal.simulate('closed');
-    expect(tagDeleted.calledOnce).toEqual(true);
-    expect(tagDeleted.calledWith(tag)).toEqual(true);
+    expect(tagDeleted).toHaveBeenCalledTimes(1);
+    expect(tagDeleted).toHaveBeenCalledWith(tag);
   });
 });

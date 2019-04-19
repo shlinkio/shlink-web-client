@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import reducer, {
   EDIT_TAG_START,
   EDIT_TAG_ERROR,
@@ -46,17 +45,17 @@ describe('tagEditReducer', () => {
 
   describe('editTag', () => {
     const createApiClientMock = (result) => ({
-      editTag: sinon.fake.returns(result),
+      editTag: jest.fn(() => result),
     });
     const colorGenerator = {
-      setColorForKey: sinon.spy(),
+      setColorForKey: jest.fn(),
     };
-    const dispatch = sinon.spy();
+    const dispatch = jest.fn();
     const getState = () => ({});
 
     afterEach(() => {
-      colorGenerator.setColorForKey.resetHistory();
-      dispatch.resetHistory();
+      colorGenerator.setColorForKey.mockReset();
+      dispatch.mockReset();
     });
 
     it('calls API on success', async () => {
@@ -69,19 +68,18 @@ describe('tagEditReducer', () => {
 
       await dispatchable(dispatch, getState);
 
-      expect(apiClientMock.editTag.callCount).toEqual(1);
-      expect(apiClientMock.editTag.getCall(0).args).toEqual([ oldName, newName ]);
+      expect(apiClientMock.editTag).toHaveBeenCalledTimes(1);
+      expect(apiClientMock.editTag).toHaveBeenCalledWith(oldName, newName);
 
-      expect(colorGenerator.setColorForKey.callCount).toEqual(1);
-      expect(colorGenerator.setColorForKey.getCall(0).args).toEqual([ newName, color ]);
+      expect(colorGenerator.setColorForKey).toHaveBeenCalledTimes(1);
+      expect(colorGenerator.setColorForKey).toHaveBeenCalledWith(newName, color);
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: EDIT_TAG_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: EDIT_TAG, oldName, newName }]);
+      expect(dispatch).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_TAG_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG, oldName, newName });
     });
 
     it('throws on error', async () => {
-      const expectedDispatchCalls = 2;
       const error = 'Error';
       const oldName = 'foo';
       const newName = 'bar';
@@ -95,14 +93,14 @@ describe('tagEditReducer', () => {
         expect(e).toEqual(error);
       }
 
-      expect(apiClientMock.editTag.callCount).toEqual(1);
-      expect(apiClientMock.editTag.getCall(0).args).toEqual([ oldName, newName ]);
+      expect(apiClientMock.editTag).toHaveBeenCalledTimes(1);
+      expect(apiClientMock.editTag).toHaveBeenCalledWith(oldName, newName);
 
-      expect(colorGenerator.setColorForKey.callCount).toEqual(0);
+      expect(colorGenerator.setColorForKey).not.toHaveBeenCalled();
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: EDIT_TAG_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: EDIT_TAG_ERROR }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_TAG_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG_ERROR });
     });
   });
 });

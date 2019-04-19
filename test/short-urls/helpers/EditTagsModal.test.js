@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as sinon from 'sinon';
 import { Modal } from 'reactstrap';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 
@@ -8,10 +7,10 @@ describe('<EditTagsModal />', () => {
   let wrapper;
   const shortCode = 'abc123';
   const TagsSelector = () => '';
-  const editShortUrlTags = sinon.fake.resolves();
-  const shortUrlTagsEdited = sinon.fake();
-  const resetShortUrlsTags = sinon.fake();
-  const toggle = sinon.fake();
+  const editShortUrlTags = jest.fn(() => Promise.resolve());
+  const shortUrlTagsEdited = jest.fn();
+  const resetShortUrlsTags = jest.fn();
+  const toggle = jest.fn();
   const createWrapper = (shortUrlTags) => {
     const EditTagsModal = createEditTagsModal(TagsSelector);
 
@@ -37,10 +36,10 @@ describe('<EditTagsModal />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    editShortUrlTags.resetHistory();
-    shortUrlTagsEdited.resetHistory();
-    resetShortUrlsTags.resetHistory();
-    toggle.resetHistory();
+    editShortUrlTags.mockClear();
+    shortUrlTagsEdited.mockReset();
+    resetShortUrlsTags.mockReset();
+    toggle.mockReset();
   });
 
   it('resets tags when component is mounted', () => {
@@ -51,7 +50,7 @@ describe('<EditTagsModal />', () => {
       error: false,
     });
 
-    expect(resetShortUrlsTags.callCount).toEqual(1);
+    expect(resetShortUrlsTags).toHaveBeenCalledTimes(1);
   });
 
   it('renders tags selector and save button when loaded', () => {
@@ -92,12 +91,12 @@ describe('<EditTagsModal />', () => {
 
     saveBtn.simulate('click');
 
-    expect(editShortUrlTags.callCount).toEqual(1);
-    expect(editShortUrlTags.getCall(0).args).toEqual([ shortCode, []]);
+    expect(editShortUrlTags).toHaveBeenCalledTimes(1);
+    expect(editShortUrlTags.mock.calls[0]).toEqual([ shortCode, []]);
 
     // Wrap this expect in a setImmediate since it is called as a result of an inner promise
     setImmediate(() => {
-      expect(toggle.callCount).toEqual(1);
+      expect(toggle).toHaveBeenCalledTimes(1);
       done();
     });
   });
@@ -112,7 +111,7 @@ describe('<EditTagsModal />', () => {
     const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
-    expect(shortUrlTagsEdited.callCount).toEqual(0);
+    expect(shortUrlTagsEdited).not.toHaveBeenCalled();
   });
 
   it('notifies tags have been edited when window is closed after saving', (done) => {
@@ -130,8 +129,8 @@ describe('<EditTagsModal />', () => {
     // Wrap this expect in a setImmediate since it is called as a result of an inner promise
     setImmediate(() => {
       modal.simulate('closed');
-      expect(shortUrlTagsEdited.callCount).toEqual(1);
-      expect(shortUrlTagsEdited.getCall(0).args).toEqual([ shortCode, []]);
+      expect(shortUrlTagsEdited).toHaveBeenCalledTimes(1);
+      expect(shortUrlTagsEdited.mock.calls[0]).toEqual([ shortCode, []]);
       done();
     });
   });
@@ -146,6 +145,6 @@ describe('<EditTagsModal />', () => {
     const cancelBtn = wrapper.find('.btn-link');
 
     cancelBtn.simulate('click');
-    expect(toggle.callCount).toEqual(1);
+    expect(toggle).toHaveBeenCalledTimes(1);
   });
 });

@@ -3,12 +3,11 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
-import * as sinon from 'sinon';
 import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
 
 describe('<CreateShortUrlResult />', () => {
   let wrapper;
-  const stateFlagTimeout = sinon.spy();
+  const stateFlagTimeout = jest.fn();
   const createWrapper = (result, error = false) => {
     const CreateShortUrlResult = createCreateShortUrlResult(stateFlagTimeout);
 
@@ -18,7 +17,7 @@ describe('<CreateShortUrlResult />', () => {
   };
 
   afterEach(() => {
-    stateFlagTimeout.resetHistory();
+    stateFlagTimeout.mockReset();
     wrapper && wrapper.unmount();
   });
 
@@ -48,8 +47,8 @@ describe('<CreateShortUrlResult />', () => {
     const wrapper = createWrapper({ shortUrl: 'https://doma.in/abc123' });
     const copyBtn = wrapper.find(CopyToClipboard);
 
-    expect(stateFlagTimeout.callCount).toEqual(0);
+    expect(stateFlagTimeout).not.toHaveBeenCalled();
     copyBtn.simulate('copy');
-    expect(stateFlagTimeout.callCount).toEqual(1);
+    expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
   });
 });

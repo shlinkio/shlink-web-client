@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
-import * as sinon from 'sinon';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import ExternalLink from '../../../src/utils/ExternalLink';
 import Tag from '../../../src/tags/helpers/Tag';
@@ -12,7 +11,7 @@ describe('<ShortUrlsRow />', () => {
   let wrapper;
   const mockFunction = () => '';
   const ShortUrlsRowMenu = mockFunction;
-  const stateFlagTimeout = sinon.spy();
+  const stateFlagTimeout = jest.fn();
   const colorGenerator = {
     getColorForKey: mockFunction,
     setColorForKey: mockFunction,
@@ -92,9 +91,9 @@ describe('<ShortUrlsRow />', () => {
     const menu = col.find(ShortUrlsRowMenu);
 
     expect(menu).toHaveLength(1);
-    expect(stateFlagTimeout.called).toEqual(false);
+    expect(stateFlagTimeout).not.toHaveBeenCalled();
     menu.simulate('copyToClipboard');
-    expect(stateFlagTimeout.calledOnce).toEqual(true);
+    expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
   });
 
   it('shows copy hint when state prop is true', () => {

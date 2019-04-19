@@ -1,16 +1,15 @@
-import * as sinon from 'sinon';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 
 describe('ColorGenerator', () => {
   let colorGenerator;
   const storageMock = {
-    set: sinon.fake(),
-    get: sinon.fake.returns(undefined),
+    set: jest.fn(),
+    get: jest.fn(),
   };
 
   beforeEach(() => {
-    storageMock.set.resetHistory();
-    storageMock.get.resetHistory();
+    storageMock.set.mockReset();
+    storageMock.get.mockReset();
 
     colorGenerator = new ColorGenerator(storageMock);
   });
@@ -21,14 +20,14 @@ describe('ColorGenerator', () => {
     colorGenerator.setColorForKey('foo', color);
 
     expect(colorGenerator.getColorForKey('foo')).toEqual(color);
-    expect(storageMock.set.callCount).toEqual(1);
-    expect(storageMock.get.callCount).toEqual(1);
+    expect(storageMock.set).toHaveBeenCalledTimes(1);
+    expect(storageMock.get).toHaveBeenCalledTimes(1);
   });
 
   it('generates a random color when none is available for requested key', () => {
     expect(colorGenerator.getColorForKey('bar')).toEqual(expect.stringMatching(/^#(?:[0-9a-fA-F]{6})$/));
-    expect(storageMock.set.callCount).toEqual(1);
-    expect(storageMock.get.callCount).toEqual(1);
+    expect(storageMock.set).toHaveBeenCalledTimes(1);
+    expect(storageMock.get).toHaveBeenCalledTimes(1);
   });
 
   it('trims and lower cases keys before trying to match', () => {
@@ -42,7 +41,7 @@ describe('ColorGenerator', () => {
     expect(colorGenerator.getColorForKey('FOO')).toEqual(color);
     expect(colorGenerator.getColorForKey('FOO  ')).toEqual(color);
     expect(colorGenerator.getColorForKey(' FoO  ')).toEqual(color);
-    expect(storageMock.set.callCount).toEqual(1);
-    expect(storageMock.get.callCount).toEqual(1);
+    expect(storageMock.set).toHaveBeenCalledTimes(1);
+    expect(storageMock.get).toHaveBeenCalledTimes(1);
   });
 });
