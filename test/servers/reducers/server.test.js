@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { values } from 'ramda';
 import reducer, {
   createServer,
@@ -15,10 +14,10 @@ describe('serverReducer', () => {
   };
   const expectedFetchServersResult = { type: FETCH_SERVERS, payload };
   const ServersServiceMock = {
-    listServers: sinon.fake.returns(payload),
-    createServer: sinon.fake(),
-    deleteServer: sinon.fake(),
-    createServers: sinon.fake(),
+    listServers: jest.fn(() => payload),
+    createServer: jest.fn(),
+    deleteServer: jest.fn(),
+    createServers: jest.fn(),
   };
 
   describe('reducer', () => {
@@ -28,10 +27,10 @@ describe('serverReducer', () => {
 
   describe('action creators', () => {
     beforeEach(() => {
-      ServersServiceMock.listServers.resetHistory();
-      ServersServiceMock.createServer.resetHistory();
-      ServersServiceMock.deleteServer.resetHistory();
-      ServersServiceMock.createServers.resetHistory();
+      ServersServiceMock.listServers.mockClear();
+      ServersServiceMock.createServer.mockReset();
+      ServersServiceMock.deleteServer.mockReset();
+      ServersServiceMock.createServers.mockReset();
     });
 
     describe('listServers', () => {
@@ -39,10 +38,10 @@ describe('serverReducer', () => {
         const result = listServers(ServersServiceMock)();
 
         expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers.calledOnce).toEqual(true);
-        expect(ServersServiceMock.createServer.called).toEqual(false);
-        expect(ServersServiceMock.deleteServer.called).toEqual(false);
-        expect(ServersServiceMock.createServers.called).toEqual(false);
+        expect(ServersServiceMock.listServers).toHaveBeenCalledTimes(1);
+        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
+        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
       });
     });
 
@@ -52,11 +51,11 @@ describe('serverReducer', () => {
         const result = createServer(ServersServiceMock, () => expectedFetchServersResult)(serverToCreate);
 
         expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.createServer.calledOnce).toEqual(true);
-        expect(ServersServiceMock.createServer.firstCall.calledWith(serverToCreate)).toEqual(true);
-        expect(ServersServiceMock.listServers.called).toEqual(false);
-        expect(ServersServiceMock.deleteServer.called).toEqual(false);
-        expect(ServersServiceMock.createServers.called).toEqual(false);
+        expect(ServersServiceMock.createServer).toHaveBeenCalledTimes(1);
+        expect(ServersServiceMock.createServer.mock.calls[0]).toEqual([ serverToCreate ]);
+        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
+        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
       });
     });
 
@@ -66,11 +65,11 @@ describe('serverReducer', () => {
         const result = deleteServer(ServersServiceMock, () => expectedFetchServersResult)(serverToDelete);
 
         expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers.called).toEqual(false);
-        expect(ServersServiceMock.createServer.called).toEqual(false);
-        expect(ServersServiceMock.createServers.called).toEqual(false);
-        expect(ServersServiceMock.deleteServer.calledOnce).toEqual(true);
-        expect(ServersServiceMock.deleteServer.firstCall.calledWith(serverToDelete)).toEqual(true);
+        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
+        expect(ServersServiceMock.deleteServer).toHaveBeenCalledTimes(1);
+        expect(ServersServiceMock.deleteServer.mock.calls[0]).toEqual([ serverToDelete ]);
       });
     });
 
@@ -80,11 +79,11 @@ describe('serverReducer', () => {
         const result = createServers(ServersServiceMock, () => expectedFetchServersResult)(serversToCreate);
 
         expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers.called).toEqual(false);
-        expect(ServersServiceMock.createServer.called).toEqual(false);
-        expect(ServersServiceMock.createServers.calledOnce).toEqual(true);
-        expect(ServersServiceMock.createServers.firstCall.calledWith(serversToCreate)).toEqual(true);
-        expect(ServersServiceMock.deleteServer.called).toEqual(false);
+        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
+        expect(ServersServiceMock.createServers).toHaveBeenCalledTimes(1);
+        expect(ServersServiceMock.createServers.mock.calls[0]).toEqual([ serversToCreate ]);
+        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
       });
     });
   });

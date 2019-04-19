@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import { last } from 'ramda';
 import ServersService from '../../../src/servers/services/ServersService';
 
@@ -8,8 +7,8 @@ describe('ServersService', () => {
     def456: { id: 'def456' },
   };
   const createStorageMock = (returnValue) => ({
-    set: sinon.fake(),
-    get: sinon.fake.returns(returnValue),
+    set: jest.fn(),
+    get: jest.fn(() => returnValue),
   });
 
   describe('listServers', () => {
@@ -20,8 +19,8 @@ describe('ServersService', () => {
       const result = service.listServers();
 
       expect(result).toEqual({});
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(0);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).not.toHaveBeenCalled();
     });
 
     it('returns value from storage when found', () => {
@@ -31,8 +30,8 @@ describe('ServersService', () => {
       const result = service.listServers();
 
       expect(result).toEqual(servers);
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(0);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).not.toHaveBeenCalled();
     });
   });
 
@@ -44,8 +43,8 @@ describe('ServersService', () => {
       const result = service.findServerById('ghi789');
 
       expect(result).toBeUndefined();
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(0);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).not.toHaveBeenCalled();
     });
 
     it('returns server from list when found', () => {
@@ -55,8 +54,8 @@ describe('ServersService', () => {
       const result = service.findServerById('abc123');
 
       expect(result).toEqual({ id: 'abc123' });
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(0);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).not.toHaveBeenCalled();
     });
   });
 
@@ -67,9 +66,12 @@ describe('ServersService', () => {
 
       service.createServer({ id: 'ghi789' });
 
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(1);
-      expect(last(storageMock.set.lastCall.args)).toEqual({
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).toHaveBeenCalledTimes(1);
+
+      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
+
+      expect(setLastCallLastArg).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -84,9 +86,12 @@ describe('ServersService', () => {
 
       service.createServers([{ id: 'ghi789' }, { id: 'jkl123' }]);
 
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(1);
-      expect(last(storageMock.set.lastCall.args)).toEqual({
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).toHaveBeenCalledTimes(1);
+
+      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
+
+      expect(setLastCallLastArg).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -102,9 +107,12 @@ describe('ServersService', () => {
 
       service.deleteServer({ id: 'abc123' });
 
-      expect(storageMock.get.callCount).toEqual(1);
-      expect(storageMock.set.callCount).toEqual(1);
-      expect(last(storageMock.set.lastCall.args)).toEqual({
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
+      expect(storageMock.set).toHaveBeenCalledTimes(1);
+
+      const setLastCallLastArg = last(last(storageMock.set.mock.calls));
+
+      expect(setLastCallLastArg).toEqual({
         def456: { id: 'def456' },
       });
     });

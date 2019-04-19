@@ -1,25 +1,24 @@
 import React from 'react';
-import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import importServersBtnConstruct from '../../../src/servers/helpers/ImportServersBtn';
 
 describe('<ImportServersBtn />', () => {
   let wrapper;
-  const onImportMock = sinon.fake();
-  const createServersMock = sinon.fake();
+  const onImportMock = jest.fn();
+  const createServersMock = jest.fn();
   const serversImporterMock = {
-    importServersFromFile: sinon.fake.returns(Promise.resolve([])),
+    importServersFromFile: jest.fn().mockResolvedValue([]),
   };
   const fileRef = {
-    current: { click: sinon.fake() },
+    current: { click: jest.fn() },
   };
 
   beforeEach(() => {
-    onImportMock.resetHistory();
-    createServersMock.resetHistory();
-    serversImporterMock.importServersFromFile.resetHistory();
-    fileRef.current.click.resetHistory();
+    onImportMock.mockReset();
+    createServersMock.mockReset();
+    serversImporterMock.importServersFromFile.mockClear();
+    fileRef.current.click.mockReset();
 
     const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
 
@@ -40,7 +39,7 @@ describe('<ImportServersBtn />', () => {
 
     btn.simulate('click');
 
-    expect(fileRef.current.click.callCount).toEqual(1);
+    expect(fileRef.current.click).toHaveBeenCalledTimes(1);
   });
 
   it('imports servers when file input changes', (done) => {
@@ -49,9 +48,9 @@ describe('<ImportServersBtn />', () => {
     file.simulate('change', { target: { files: [ '' ] } });
 
     setImmediate(() => {
-      expect(serversImporterMock.importServersFromFile.callCount).toEqual(1);
-      expect(createServersMock.callCount).toEqual(1);
-      expect(onImportMock.callCount).toEqual(1);
+      expect(serversImporterMock.importServersFromFile).toHaveBeenCalledTimes(1);
+      expect(createServersMock).toHaveBeenCalledTimes(1);
+      expect(onImportMock).toHaveBeenCalledTimes(1);
       done();
     });
   });

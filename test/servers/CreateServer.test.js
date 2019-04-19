@@ -1,20 +1,18 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
-import sinon from 'sinon';
 import createServerConstruct from '../../src/servers/CreateServer';
 
 describe('<CreateServer />', () => {
   let wrapper;
   const ImportServersBtn = () => '';
-  const createServerMock = sinon.fake();
+  const createServerMock = jest.fn();
   const historyMock = {
-    push: sinon.fake(),
+    push: jest.fn(),
   };
 
   beforeEach(() => {
-    createServerMock.resetHistory();
-    historyMock.push.resetHistory();
+    createServerMock.mockReset();
 
     const CreateServer = createServerConstruct(ImportServersBtn);
 
@@ -44,8 +42,8 @@ describe('<CreateServer />', () => {
       return '';
     } });
 
-    expect(createServerMock.callCount).toEqual(1);
-    expect(historyMock.push.callCount).toEqual(1);
+    expect(createServerMock).toHaveBeenCalledTimes(1);
+    expect(historyMock.push).toHaveBeenCalledTimes(1);
   });
 
   it('updates state when inputs are changed', () => {

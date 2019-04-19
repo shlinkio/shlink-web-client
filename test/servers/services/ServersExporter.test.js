@@ -1,26 +1,25 @@
-import sinon from 'sinon';
 import ServersExporter from '../../../src/servers/services/ServersExporter';
 
 describe('ServersExporter', () => {
   const createLinkMock = () => ({
-    setAttribute: sinon.fake(),
-    click: sinon.fake(),
+    setAttribute: jest.fn(),
+    click: jest.fn(),
     style: {},
   });
   const createWindowMock = (isIe10 = true) => ({
     navigator: {
-      msSaveBlob: isIe10 ? sinon.fake() : undefined,
+      msSaveBlob: isIe10 ? jest.fn() : undefined,
     },
     document: {
-      createElement: sinon.fake.returns(createLinkMock()),
+      createElement: jest.fn(() => createLinkMock()),
       body: {
-        appendChild: sinon.fake(),
-        removeChild: sinon.fake(),
+        appendChild: jest.fn(),
+        removeChild: jest.fn(),
       },
     },
   });
   const serversServiceMock = {
-    listServers: sinon.fake.returns({
+    listServers: jest.fn(() => ({
       abc123: {
         id: 'abc123',
         name: 'foo',
@@ -29,10 +28,16 @@ describe('ServersExporter', () => {
         id: 'def456',
         name: 'bar',
       },
-    }),
+    })),
   };
   const createCsvjsonMock = (throwError = false) => ({
-    toCSV: throwError ? sinon.fake.throws('') : sinon.fake.returns(''),
+    toCSV: jest.fn(() => {
+      if (throwError) {
+        throw new Error('');
+      }
+
+      return '';
+    }),
   });
 
   describe('exportServers', () => {
@@ -40,10 +45,10 @@ describe('ServersExporter', () => {
 
     beforeEach(() => {
       originalConsole = global.console;
-      global.console = { error: sinon.fake() };
+      global.console = { error: jest.fn() };
       global.Blob = class Blob {};
       global.URL = { createObjectURL: () => '' };
-      serversServiceMock.listServers.resetHistory();
+      serversServiceMock.listServers.mockReset();
     });
     afterEach(() => {
       global.console = originalConsole;
@@ -59,8 +64,8 @@ describe('ServersExporter', () => {
 
       exporter.exportServers();
 
-      expect(global.console.error.callCount).toEqual(1);
-      expect(csvjsonMock.toCSV.callCount).toEqual(1);
+      expect(global.console.error).toHaveBeenCalledTimes(1);
+      expect(csvjsonMock.toCSV).toHaveBeenCalledTimes(1);
     });
 
     it('makes use of msSaveBlob API when available', () => {
@@ -73,9 +78,9 @@ describe('ServersExporter', () => {
 
       exporter.exportServers();
 
-      expect(serversServiceMock.listServers.callCount).toEqual(1);
-      expect(windowMock.navigator.msSaveBlob.callCount).toEqual(1);
-      expect(windowMock.document.createElement.callCount).toEqual(0);
+      expect(serversServiceMock.listServers).toHaveBeenCalledTimes(1);
+      expect(windowMock.navigator.msSaveBlob).toHaveBeenCalledTimes(1);
+      expect(windowMock.document.createElement).not.toHaveBeenCalled();
     });
 
     it('makes use of download link API when available', () => {
@@ -88,10 +93,10 @@ describe('ServersExporter', () => {
 
       exporter.exportServers();
 
-      expect(serversServiceMock.listServers.callCount).toEqual(1);
-      expect(windowMock.document.createElement.callCount).toEqual(1);
-      expect(windowMock.document.body.appendChild.callCount).toEqual(1);
-      expect(windowMock.document.body.removeChild.callCount).toEqual(1);
+      expect(serversServiceMock.listServers).toHaveBeenCalledTimes(1);
+      expect(windowMock.document.createElement).toHaveBeenCalledTimes(1);
+      expect(windowMock.document.body.appendChild).toHaveBeenCalledTimes(1);
+      expect(windowMock.document.body.removeChild).toHaveBeenCalledTimes(1);
     });
   });
 });
