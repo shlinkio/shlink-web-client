@@ -1,7 +1,6 @@
 import { shallow } from 'enzyme';
 import { values } from 'ramda';
 import React from 'react';
-import * as sinon from 'sinon';
 import Home from '../../src/common/Home';
 
 describe('<Home />', () => {
@@ -28,11 +27,11 @@ describe('<Home />', () => {
   });
 
   it('resets selected server when mounted', () => {
-    const resetSelectedServer = sinon.spy();
+    const resetSelectedServer = jest.fn();
 
-    expect(resetSelectedServer.called).toEqual(false);
+    expect(resetSelectedServer).not.toHaveBeenCalled();
     createComponent({ resetSelectedServer });
-    expect(resetSelectedServer.called).toEqual(true);
+    expect(resetSelectedServer).toHaveBeenCalled();
   });
 
   it('shows link to create server when no servers exist', () => {

@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
@@ -14,19 +13,18 @@ import {
 describe('utils', () => {
   describe('stateFlagTimeout', () => {
     it('sets state and initializes timeout with provided delay', () => {
-      const setTimeout = sinon.fake((callback) => callback());
-      const setState = sinon.spy();
+      const setTimeout = jest.fn((callback) => callback());
+      const setState = jest.fn();
       const stateFlagTimeout = stateFlagTimeoutFactory(setTimeout);
       const delay = 5000;
-      const expectedSetStateCalls = 2;
 
       stateFlagTimeout(setState, 'foo', false, delay);
 
-      expect(setState.callCount).toEqual(expectedSetStateCalls);
-      expect(setState.getCall(0).args).toEqual([{ foo: false }]);
-      expect(setState.getCall(1).args).toEqual([{ foo: true }]);
-      expect(setTimeout.callCount).toEqual(1);
-      expect(setTimeout.getCall(0).args[1]).toEqual(delay);
+      expect(setState).toHaveBeenCalledTimes(2);
+      expect(setState).toHaveBeenNthCalledWith(1, { foo: false });
+      expect(setState).toHaveBeenNthCalledWith(2, { foo: true });
+      expect(setTimeout).toHaveBeenCalledTimes(1);
+      expect(setTimeout).toHaveBeenCalledWith(expect.anything(), delay);
     });
   });
 

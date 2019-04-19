@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-import { head, last } from 'ramda';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
@@ -35,23 +33,21 @@ describe('ShlinkApiClient', () => {
     });
 
     it('removes all empty options', async () => {
-      const axiosSpy = sinon.spy(createAxiosMock({ data: shortUrl }));
+      const axiosSpy = jest.fn(createAxiosMock({ data: shortUrl }));
       const { createShortUrl } = new ShlinkApiClient(axiosSpy);
 
       await createShortUrl(
         { foo: 'bar', empty: undefined, anotherEmpty: null }
       );
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
-      expect(axiosArgs.data).toEqual({ foo: 'bar' });
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { foo: 'bar' } }));
     });
   });
 
   describe('getShortUrlVisits', () => {
     it('properly returns short URL visits', async () => {
       const expectedVisits = [ 'foo', 'bar' ];
-      const axiosSpy = sinon.spy(createAxiosMock({
+      const axiosSpy = jest.fn(createAxiosMock({
         data: {
           visits: {
             data: expectedVisits,
@@ -61,55 +57,55 @@ describe('ShlinkApiClient', () => {
       const { getShortUrlVisits } = new ShlinkApiClient(axiosSpy);
 
       const actualVisits = await getShortUrlVisits('abc123', {});
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
-      expect(axiosArgs.url).toContain('/short-urls/abc123/visits');
-      expect(axiosArgs.method).toEqual('GET');
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/short-urls/abc123/visits',
+        method: 'GET',
+      }));
     });
   });
 
   describe('getShortUrl', () => {
     it('properly returns short URL', async () => {
       const expectedShortUrl = { foo: 'bar' };
-      const axiosSpy = sinon.spy(createAxiosMock({
+      const axiosSpy = jest.fn(createAxiosMock({
         data: expectedShortUrl,
       }));
       const { getShortUrl } = new ShlinkApiClient(axiosSpy);
 
       const result = await getShortUrl('abc123');
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedShortUrl).toEqual(result);
-      expect(axiosArgs.url).toContain('/short-urls/abc123');
-      expect(axiosArgs.method).toEqual('GET');
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/short-urls/abc123',
+        method: 'GET',
+      }));
     });
   });
 
   describe('updateShortUrlTags', () => {
     it('properly updates short URL tags', async () => {
       const expectedTags = [ 'foo', 'bar' ];
-      const axiosSpy = sinon.spy(createAxiosMock({
+      const axiosSpy = jest.fn(createAxiosMock({
         data: { tags: expectedTags },
       }));
       const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy);
 
       const result = await updateShortUrlTags('abc123', expectedTags);
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedTags).toEqual(result);
-      expect(axiosArgs.url).toContain('/short-urls/abc123/tags');
-      expect(axiosArgs.method).toEqual('PUT');
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/short-urls/abc123/tags',
+        method: 'PUT',
+      }));
     });
   });
 
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
       const expectedTags = [ 'foo', 'bar' ];
-      const axiosSpy = sinon.spy(createAxiosMock({
+      const axiosSpy = jest.fn(createAxiosMock({
         data: {
           tags: { data: expectedTags },
         },
@@ -117,28 +113,25 @@ describe('ShlinkApiClient', () => {
       const { listTags } = new ShlinkApiClient(axiosSpy);
 
       const result = await listTags();
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
       expect(expectedTags).toEqual(result);
-      expect(axiosArgs.url).toContain('/tags');
-      expect(axiosArgs.method).toEqual('GET');
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ url: '/tags', method: 'GET' }));
     });
   });
 
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
       const tags = [ 'foo', 'bar' ];
-      const axiosSpy = sinon.spy(createAxiosMock({}));
+      const axiosSpy = jest.fn(createAxiosMock({}));
       const { deleteTags } = new ShlinkApiClient(axiosSpy);
 
       await deleteTags(tags);
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
-      expect(axiosArgs.url).toContain('/tags');
-      expect(axiosArgs.method).toEqual('DELETE');
-      expect(axiosArgs.params).toEqual({ tags });
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/tags',
+        method: 'DELETE',
+        params: { tags },
+      }));
     });
   });
 
@@ -146,30 +139,30 @@ describe('ShlinkApiClient', () => {
     it('properly edits provided tag', async () => {
       const oldName = 'foo';
       const newName = 'bar';
-      const axiosSpy = sinon.spy(createAxiosMock({}));
+      const axiosSpy = jest.fn(createAxiosMock({}));
       const { editTag } = new ShlinkApiClient(axiosSpy);
 
       await editTag(oldName, newName);
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
-      expect(axiosArgs.url).toContain('/tags');
-      expect(axiosArgs.method).toEqual('PUT');
-      expect(axiosArgs.data).toEqual({ oldName, newName });
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/tags',
+        method: 'PUT',
+        data: { oldName, newName },
+      }));
     });
   });
 
   describe('deleteShortUrl', () => {
     it('properly deletes provided short URL', async () => {
-      const axiosSpy = sinon.spy(createAxiosMock({}));
+      const axiosSpy = jest.fn(createAxiosMock({}));
       const { deleteShortUrl } = new ShlinkApiClient(axiosSpy);
 
       await deleteShortUrl('abc123');
-      const lastAxiosCall = last(axiosSpy.getCalls());
-      const axiosArgs = head(lastAxiosCall.args);
 
-      expect(axiosArgs.url).toContain('/short-urls/abc123');
-      expect(axiosArgs.method).toEqual('DELETE');
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/short-urls/abc123',
+        method: 'DELETE',
+      }));
     });
   });
 });

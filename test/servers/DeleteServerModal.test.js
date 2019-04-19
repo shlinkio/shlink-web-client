@@ -1,20 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
 
 describe('<DeleteServerModal />', () => {
   let wrapper;
-  const deleteServerMock = sinon.fake();
-  const historyMock = { push: sinon.fake() };
-  const toggleMock = sinon.fake();
+  const deleteServerMock = jest.fn();
+  const historyMock = { push: jest.fn() };
+  const toggleMock = jest.fn();
   const serverName = 'the_server_name';
 
   beforeEach(() => {
-    toggleMock.resetHistory();
-    deleteServerMock.resetHistory();
-    historyMock.push.resetHistory();
+    deleteServerMock.mockReset();
+    toggleMock.mockReset();
+    historyMock.push.mockReset();
 
     wrapper = shallow(
       <DeleteServerModal
@@ -48,9 +47,9 @@ describe('<DeleteServerModal />', () => {
 
     cancelBtn.simulate('click');
 
-    expect(toggleMock.callCount).toEqual(1);
-    expect(deleteServerMock.callCount).toEqual(0);
-    expect(historyMock.push.callCount).toEqual(0);
+    expect(toggleMock).toHaveBeenCalledTimes(1);
+    expect(deleteServerMock).not.toHaveBeenCalled();
+    expect(historyMock.push).not.toHaveBeenCalled();
   });
 
   it('deletes server when clicking accept button', () => {
@@ -58,8 +57,8 @@ describe('<DeleteServerModal />', () => {
 
     acceptBtn.simulate('click');
 
-    expect(toggleMock.callCount).toEqual(1);
-    expect(deleteServerMock.callCount).toEqual(1);
-    expect(historyMock.push.callCount).toEqual(1);
+    expect(toggleMock).toHaveBeenCalledTimes(1);
+    expect(deleteServerMock).toHaveBeenCalledTimes(1);
+    expect(historyMock.push).toHaveBeenCalledTimes(1);
   });
 });

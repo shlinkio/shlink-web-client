@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
-import * as sinon from 'sinon';
 import DeleteShortUrlModal from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 
 describe('<DeleteShortUrlModal />', () => {
@@ -11,7 +10,7 @@ describe('<DeleteShortUrlModal />', () => {
     shortCode: 'abc123',
     originalUrl: 'https://long-domain.com/foo/bar',
   };
-  const deleteShortUrl = sinon.fake.returns(Promise.resolve());
+  const deleteShortUrl = jest.fn(() => Promise.resolve());
   const createWrapper = (shortUrlDeletion) => {
     wrapper = shallow(
       <DeleteShortUrlModal
@@ -30,7 +29,7 @@ describe('<DeleteShortUrlModal />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    deleteShortUrl.resetHistory();
+    deleteShortUrl.mockClear();
   });
 
   it('shows threshold error message when threshold error occurs', () => {
@@ -106,9 +105,9 @@ describe('<DeleteShortUrlModal />', () => {
     setImmediate(() => {
       const form = wrapper.find('form');
 
-      expect(deleteShortUrl.callCount).toEqual(0);
+      expect(deleteShortUrl).not.toHaveBeenCalled();
       form.simulate('submit', { preventDefault: identity });
-      expect(deleteShortUrl.callCount).toEqual(1);
+      expect(deleteShortUrl).toHaveBeenCalledTimes(1);
       done();
     });
   });

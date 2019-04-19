@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { Card } from 'reactstrap';
-import * as sinon from 'sinon';
 import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
 import MutedMessage from '../../src/utils/MuttedMessage';
 import GraphCard from '../../src/visits/GraphCard';
@@ -14,7 +13,7 @@ describe('<ShortUrlVisits />', () => {
   const processStatsFromVisits = () => (
     { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
   );
-  const getShortUrlVisitsMock = sinon.spy();
+  const getShortUrlVisitsMock = jest.fn();
   const match = {
     params: { shortCode: 'abc123' },
   };
@@ -37,11 +36,8 @@ describe('<ShortUrlVisits />', () => {
   };
 
   afterEach(() => {
-    getShortUrlVisitsMock.resetHistory();
-
-    if (wrapper) {
-      wrapper.unmount();
-    }
+    getShortUrlVisitsMock.mockReset();
+    wrapper && wrapper.unmount();
   });
 
   it('renders a preloader when visits are loading', () => {
@@ -80,21 +76,19 @@ describe('<ShortUrlVisits />', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
     const graphs = wrapper.find(GraphCard);
     const sortableBarGraphs = wrapper.find(SortableBarGraph);
-    const expectedGraphsCount = 5;
 
-    expect(graphs.length + sortableBarGraphs.length).toEqual(expectedGraphsCount);
+    expect(graphs.length + sortableBarGraphs.length).toEqual(5);
   });
 
   it('reloads visits when selected dates change', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
     const dateInput = wrapper.find(DateInput).first();
-    const expectedGetShortUrlVisitsCalls = 4;
 
     dateInput.simulate('change', '2016-01-01T00:00:00+01:00');
     dateInput.simulate('change', '2016-01-02T00:00:00+01:00');
     dateInput.simulate('change', '2016-01-03T00:00:00+01:00');
 
-    expect(getShortUrlVisitsMock.callCount).toEqual(expectedGetShortUrlVisitsCalls);
+    expect(getShortUrlVisitsMock).toHaveBeenCalledTimes(4);
     expect(wrapper.state('startDate')).toEqual('2016-01-03T00:00:00+01:00');
   });
 

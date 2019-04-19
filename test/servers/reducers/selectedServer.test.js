@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import reducer, {
   selectServer,
   resetSelectedServer,
@@ -31,31 +30,27 @@ describe('selectedServerReducer', () => {
       id: serverId,
     };
     const ServersServiceMock = {
-      findServerById: sinon.fake.returns(selectedServer),
+      findServerById: jest.fn(() => selectedServer),
     };
 
     afterEach(() => {
-      ServersServiceMock.findServerById.resetHistory();
+      ServersServiceMock.findServerById.mockClear();
     });
 
     it('dispatches proper actions', () => {
-      const dispatch = sinon.spy();
-      const expectedDispatchCalls = 2;
+      const dispatch = jest.fn();
 
       selectServer(ServersServiceMock)(serverId)(dispatch);
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.firstCall.calledWith({ type: RESET_SHORT_URL_PARAMS })).toEqual(true);
-      expect(dispatch.secondCall.calledWith({
-        type: SELECT_SERVER,
-        selectedServer,
-      })).toEqual(true);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SHORT_URL_PARAMS });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer });
     });
 
     it('invokes dependencies', () => {
       selectServer(ServersServiceMock)(serverId)(() => {});
 
-      expect(ServersServiceMock.findServerById.callCount).toEqual(1);
+      expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
     });
   });
 });

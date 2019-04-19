@@ -1,14 +1,13 @@
-import sinon from 'sinon';
 import ServersImporter from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
   const servers = [{ name: 'foo' }, { name: 'bar' }];
   const csvjsonMock = {
-    toObject: sinon.fake.returns(servers),
+    toObject: jest.fn(() => servers),
   };
   const importer = new ServersImporter(csvjsonMock);
 
-  beforeEach(() => csvjsonMock.toObject.resetHistory());
+  beforeEach(() => csvjsonMock.toObject.mockClear());
 
   describe('importServersFromFile', () => {
     it('rejects with error if no file was provided', async () => {
@@ -28,7 +27,7 @@ describe('ServersImporter', () => {
     });
 
     it('reads file when a CSV is provided', async () => {
-      const readAsText = sinon.fake.returns('');
+      const readAsText = jest.fn(() => '');
 
       global.FileReader = class FileReader {
         constructor() {
@@ -40,8 +39,8 @@ describe('ServersImporter', () => {
 
       await importer.importServersFromFile({ type: 'text/csv' });
 
-      expect(readAsText.callCount).toEqual(1);
-      expect(csvjsonMock.toObject.callCount).toEqual(1);
+      expect(readAsText).toHaveBeenCalledTimes(1);
+      expect(csvjsonMock.toObject).toHaveBeenCalledTimes(1);
     });
   });
 });

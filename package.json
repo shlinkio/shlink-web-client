@@ -113,7 +113,6 @@
     "resolve": "^1.8.1",
     "sass-loader": "^7.1.0",
     "serve": "^10.0.0",
-    "sinon": "^6.1.5",
     "style-loader": "^0.23.0",
     "stylelint": "^9.9.0",
     "stylelint-config-adidas": "^1.2.1",

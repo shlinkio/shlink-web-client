@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import * as sinon from 'sinon';
 import { ButtonDropdown, DropdownItem } from 'reactstrap';
 import createShortUrlsRowMenu from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
 import PreviewModal from '../../../src/short-urls/helpers/PreviewModal';
@@ -10,7 +9,7 @@ describe('<ShortUrlsRowMenu />', () => {
   let wrapper;
   const DeleteShortUrlModal = () => '';
   const EditTagsModal = () => '';
-  const onCopyToClipboard = sinon.spy();
+  const onCopyToClipboard = jest.fn();
   const selectedServer = { id: 'abc123' };
   const shortUrl = {
     shortCode: 'abc123',

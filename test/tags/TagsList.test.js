@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
-import * as sinon from 'sinon';
 import createTagsList from '../../src/tags/TagsList';
 import MuttedMessage from '../../src/utils/MuttedMessage';
 import SearchField from '../../src/utils/SearchField';
@@ -9,7 +8,7 @@ import { rangeOf } from '../../src/utils/utils';
 
 describe('<TagsList />', () => {
   let wrapper;
-  const filterTags = sinon.spy();
+  const filterTags = jest.fn();
   const TagCard = () => '';
   const createWrapper = (tagsList) => {
     const params = { serverId: '1' };
@@ -24,7 +23,7 @@ describe('<TagsList />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    filterTags.resetHistory();
+    filterTags.mockReset();
   });
 
   it('shows a loading message when tags are being loaded', () => {
@@ -67,11 +66,11 @@ describe('<TagsList />', () => {
     const searchField = wrapper.find(SearchField);
 
     expect(searchField).toHaveLength(1);
-    expect(filterTags.callCount).toEqual(0);
+    expect(filterTags).not.toHaveBeenCalled();
     searchField.simulate('change');
 
     setImmediate(() => {
-      expect(filterTags.callCount).toEqual(1);
+      expect(filterTags).toHaveBeenCalledTimes(1);
       done();
     });
   });

@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import moment from 'moment';
-import * as sinon from 'sinon';
 import { identity } from 'ramda';
 import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
 import DateInput from '../../src/utils/DateInput';
@@ -12,7 +11,7 @@ describe('<CreateShortUrl />', () => {
   const shortUrlCreationResult = {
     loading: false,
   };
-  const createShortUrl = sinon.spy();
+  const createShortUrl = jest.fn();
 
   beforeEach(() => {
     const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '');
@@ -23,7 +22,7 @@ describe('<CreateShortUrl />', () => {
   });
   afterEach(() => {
     wrapper.unmount();
-    createShortUrl.resetHistory();
+    createShortUrl.mockReset();
   });
 
   it('saves short URL with data set in form controls', (done) => {
@@ -49,20 +48,16 @@ describe('<CreateShortUrl />', () => {
       const form = wrapper.find('form');
 
       form.simulate('submit', { preventDefault: identity });
-      expect(createShortUrl.callCount).toEqual(1);
-      expect(createShortUrl.getCall(0).args).toEqual(
-        [
-          {
-            longUrl: 'https://long-domain.com/foo/bar',
-            tags: [ 'tag_foo', 'tag_bar' ],
-            customSlug: 'my-slug',
-            validSince: validSince.format(),
-            validUntil: validUntil.format(),
-            maxVisits: '20',
-            findIfExists: false,
-          },
-        ]
-      );
+      expect(createShortUrl).toHaveBeenCalledTimes(1);
+      expect(createShortUrl).toHaveBeenCalledWith({
+        longUrl: 'https://long-domain.com/foo/bar',
+        tags: [ 'tag_foo', 'tag_bar' ],
+        customSlug: 'my-slug',
+        validSince: validSince.format(),
+        validUntil: validUntil.format(),
+        maxVisits: '20',
+        findIfExists: false,
+      });
       done();
     });
   });

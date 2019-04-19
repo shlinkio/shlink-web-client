@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import reducer, {
   CREATE_SHORT_URL_START,
   CREATE_SHORT_URL_ERROR,
@@ -48,30 +47,27 @@ describe('shortUrlCreationReducer', () => {
 
   describe('createShortUrl', () => {
     const createApiClientMock = (result) => ({
-      createShortUrl: sinon.fake.returns(result),
+      createShortUrl: jest.fn(() => result),
     });
-    const dispatch = sinon.spy();
+    const dispatch = jest.fn();
     const getState = () => ({});
 
-    afterEach(() => dispatch.resetHistory());
+    afterEach(() => dispatch.mockReset());
 
     it('calls API on success', async () => {
-      const expectedDispatchCalls = 2;
       const result = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve(result));
       const dispatchable = createShortUrl(() => apiClientMock)({});
 
       await dispatchable(dispatch, getState);
 
-      expect(apiClientMock.createShortUrl.callCount).toEqual(1);
-
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: CREATE_SHORT_URL_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: CREATE_SHORT_URL, result }]);
+      expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL, result });
     });
 
     it('throws on error', async () => {
-      const expectedDispatchCalls = 2;
       const error = 'Error';
       const apiClientMock = createApiClientMock(Promise.reject(error));
       const dispatchable = createShortUrl(() => apiClientMock)({});
@@ -82,11 +78,10 @@ describe('shortUrlCreationReducer', () => {
         expect(e).toEqual(error);
       }
 
-      expect(apiClientMock.createShortUrl.callCount).toEqual(1);
-
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: CREATE_SHORT_URL_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: CREATE_SHORT_URL_ERROR }]);
+      expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL_ERROR });
     });
   });
 });

@@ -4,7 +4,6 @@ import { DropdownItem } from 'reactstrap';
 import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
-import * as sinon from 'sinon';
 import SortingDropdown from '../../src/utils/SortingDropdown';
 
 describe('<SortingDropdown />', () => {
@@ -44,35 +43,35 @@ describe('<SortingDropdown />', () => {
   });
 
   it('triggers change function when item is clicked and no order field was provided', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = createWrapper({ onChange });
     const firstItem = wrapper.find(DropdownItem).first();
 
     firstItem.simulate('click');
 
-    expect(onChange.callCount).toEqual(1);
-    expect(onChange.calledWith('foo', 'ASC')).toEqual(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith('foo', 'ASC');
   });
 
   it('triggers change function when item is clicked and an order field was provided', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = createWrapper({ onChange, orderField: 'baz', orderDir: 'ASC' });
     const firstItem = wrapper.find(DropdownItem).first();
 
     firstItem.simulate('click');
 
-    expect(onChange.callCount).toEqual(1);
-    expect(onChange.calledWith('foo', 'ASC')).toEqual(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith('foo', 'ASC');
   });
 
   it('updates order dir when already selected item is clicked', () => {
-    const onChange = sinon.spy();
+    const onChange = jest.fn();
     const wrapper = createWrapper({ onChange, orderField: 'foo', orderDir: 'ASC' });
     const firstItem = wrapper.find(DropdownItem).first();
 
     firstItem.simulate('click');
 
-    expect(onChange.callCount).toEqual(1);
-    expect(onChange.calledWith('foo', 'DESC')).toEqual(true);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith('foo', 'DESC');
   });
 });

@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import reducer, {
   DELETE_TAG_START,
   DELETE_TAG_ERROR,
@@ -42,31 +41,29 @@ describe('tagDeleteReducer', () => {
 
   describe('deleteTag', () => {
     const createApiClientMock = (result) => ({
-      deleteTags: sinon.fake.returns(result),
+      deleteTags: jest.fn(() => result),
     });
-    const dispatch = sinon.spy();
+    const dispatch = jest.fn();
     const getState = () => ({});
 
-    afterEach(() => dispatch.resetHistory());
+    afterEach(() => dispatch.mockReset());
 
     it('calls API on success', async () => {
-      const expectedDispatchCalls = 2;
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.resolve());
       const dispatchable = deleteTag(() => apiClientMock)(tag);
 
       await dispatchable(dispatch, getState);
 
-      expect(apiClientMock.deleteTags.callCount).toEqual(1);
-      expect(apiClientMock.deleteTags.getCall(0).args).toEqual([[ tag ]]);
+      expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
+      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: DELETE_TAG_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: DELETE_TAG }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG });
     });
 
     it('throws on error', async () => {
-      const expectedDispatchCalls = 2;
       const error = 'Error';
       const tag = 'foo';
       const apiClientMock = createApiClientMock(Promise.reject(error));
@@ -78,12 +75,12 @@ describe('tagDeleteReducer', () => {
         expect(e).toEqual(error);
       }
 
-      expect(apiClientMock.deleteTags.callCount).toEqual(1);
-      expect(apiClientMock.deleteTags.getCall(0).args).toEqual([[ tag ]]);
+      expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
+      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
 
-      expect(dispatch.callCount).toEqual(expectedDispatchCalls);
-      expect(dispatch.getCall(0).args).toEqual([{ type: DELETE_TAG_START }]);
-      expect(dispatch.getCall(1).args).toEqual([{ type: DELETE_TAG_ERROR }]);
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG_ERROR });
     });
   });
 });
