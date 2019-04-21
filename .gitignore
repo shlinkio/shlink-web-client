@@ -3,6 +3,7 @@
 
 # testing
 /coverage
+/.stryker-tmp
 
 # production
 /build
