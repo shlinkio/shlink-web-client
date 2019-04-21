@@ -35,7 +35,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
   render() {
-    const { onCopyToClipboard, shortUrl, selectedServer: { id } } = this.props;
+    const { onCopyToClipboard, shortUrl, selectedServer } = this.props;
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
@@ -49,7 +49,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem tag={Link} to={`/server/${id}/short-code/${shortUrl.shortCode}/visits`}>
+          <DropdownItem tag={Link} to={`/server/${selectedServer ? selectedServer.id : ''}/short-code/${shortUrl.shortCode}/visits`}>
             <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit stats
           </DropdownItem>
 

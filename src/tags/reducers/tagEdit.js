@@ -32,11 +32,10 @@ export const editTag = (buildShlinkApiClient, colorGenerator) => (oldName, newNa
 ) => {
   dispatch({ type: EDIT_TAG_START });
 
-  const { selectedServer } = getState();
-  const shlinkApiClient = buildShlinkApiClient(selectedServer);
+  const { editTag } = await buildShlinkApiClient(getState);
 
   try {
-    await shlinkApiClient.editTag(oldName, newName);
+    await editTag(oldName, newName);
     colorGenerator.setColorForKey(newName, color);
     dispatch({ type: EDIT_TAG, oldName, newName });
   } catch (e) {

@@ -45,8 +45,7 @@ export default handleActions({
 export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (dispatch, getState) => {
   dispatch({ type: LIST_SHORT_URLS_START });
 
-  const { selectedServer = {} } = getState();
-  const { listShortUrls } = buildShlinkApiClient(selectedServer);
+  const { listShortUrls } = await buildShlinkApiClient(getState);
 
   try {
     const shortUrls = await listShortUrls(params);

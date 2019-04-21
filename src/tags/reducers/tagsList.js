@@ -1,6 +1,5 @@
 import { handleActions } from 'redux-actions';
 import { isEmpty, reject } from 'ramda';
-import { buildShlinkApiClientWithAxios as buildShlinkApiClient } from '../../utils/services/ShlinkApiClientBuilder';
 import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
@@ -41,8 +40,8 @@ export default handleActions({
   }),
 }, initialState);
 
-export const _listTags = (buildShlinkApiClient, force = false) => async (dispatch, getState) => {
-  const { tagsList, selectedServer } = getState();
+export const listTags = (buildShlinkApiClient, force = true) => () => async (dispatch, getState) => {
+  const { tagsList } = getState();
 
   if (!force && (tagsList.loading || !isEmpty(tagsList.tags))) {
     return;
@@ -51,18 +50,14 @@ export const _listTags = (buildShlinkApiClient, force = false) => async (dispatc
   dispatch({ type: LIST_TAGS_START });
 
   try {
-    const shlinkApiClient = buildShlinkApiClient(selectedServer);
-    const tags = await shlinkApiClient.listTags();
+    const { listTags } = await buildShlinkApiClient(getState);
+    const tags = await listTags();
 
     dispatch({ tags, type: LIST_TAGS });
   } catch (e) {
     dispatch({ type: LIST_TAGS_ERROR });
   }
 };
-
-export const listTags = () => _listTags(buildShlinkApiClient);
-
-export const forceListTags = () => _listTags(buildShlinkApiClient, true);
 
 export const filterTags = (searchTerm) => ({
   type: FILTER_TAGS,

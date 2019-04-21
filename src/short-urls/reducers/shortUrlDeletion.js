@@ -36,8 +36,7 @@ export default handleActions({
 export const deleteShortUrl = (buildShlinkApiClient) => (shortCode) => async (dispatch, getState) => {
   dispatch({ type: DELETE_SHORT_URL_START });
 
-  const { selectedServer } = getState();
-  const { deleteShortUrl } = buildShlinkApiClient(selectedServer);
+  const { deleteShortUrl } = await buildShlinkApiClient(getState);
 
   try {
     await deleteShortUrl(shortCode);

@@ -1,9 +1,20 @@
-import * as axios from 'axios';
+import { wait } from '../utils';
 import ShlinkApiClient from './ShlinkApiClient';
 
 const apiClients = {};
 
-const buildShlinkApiClient = (axios) => ({ url, apiKey }) => {
+const getSelectedServerFromState = async (getState) => {
+  const { selectedServer } = getState();
+
+  if (!selectedServer) {
+    return wait(250).then(() => getSelectedServerFromState(getState));
+  }
+
+  return selectedServer;
+};
+
+const buildShlinkApiClient = (axios) => async (getState) => {
+  const { url, apiKey } = await getSelectedServerFromState(getState);
   const clientKey = `${url}_${apiKey}`;
 
   if (!apiClients[clientKey]) {
@@ -14,5 +25,3 @@ const buildShlinkApiClient = (axios) => ({ url, apiKey }) => {
 };
 
 export default buildShlinkApiClient;
-
-export const buildShlinkApiClientWithAxios = buildShlinkApiClient(axios);

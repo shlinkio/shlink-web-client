@@ -32,11 +32,10 @@ export default handleActions({
 export const createShortUrl = (buildShlinkApiClient) => (data) => async (dispatch, getState) => {
   dispatch({ type: CREATE_SHORT_URL_START });
 
-  const { selectedServer } = getState();
-  const shlinkApiClient = buildShlinkApiClient(selectedServer);
+  const { createShortUrl } = await buildShlinkApiClient(getState);
 
   try {
-    const result = await shlinkApiClient.createShortUrl(data);
+    const result = await createShortUrl(data);
 
     dispatch({ type: CREATE_SHORT_URL, result });
   } catch (e) {
