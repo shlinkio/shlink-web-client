@@ -1,23 +1,33 @@
 import buildShlinkApiClient from '../../../src/utils/services/ShlinkApiClientBuilder';
 
 describe('ShlinkApiClientBuilder', () => {
-  const builder = buildShlinkApiClient({});
+  const createBuilder = () => {
+    const builder = buildShlinkApiClient({});
 
-  it('creates new instances when provided params are different', () => {
-    const firstApiClient = builder({ url: 'foo', apiKey: 'bar' });
-    const secondApiClient = builder({ url: 'bar', apiKey: 'bar' });
-    const thirdApiClient = builder({ url: 'bar', apiKey: 'foo' });
+    return (selectedServer) => builder(() => ({ selectedServer }));
+  };
+
+  it('creates new instances when provided params are different', async () => {
+    const builder = createBuilder();
+    const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
+      builder({ url: 'foo', apiKey: 'bar' }),
+      builder({ url: 'bar', apiKey: 'bar' }),
+      builder({ url: 'bar', apiKey: 'foo' }),
+    ]);
 
     expect(firstApiClient).not.toBe(secondApiClient);
     expect(firstApiClient).not.toBe(thirdApiClient);
     expect(secondApiClient).not.toBe(thirdApiClient);
   });
 
-  it('returns existing instances when provided params are the same', () => {
-    const params = { url: 'foo', apiKey: 'bar' };
-    const firstApiClient = builder(params);
-    const secondApiClient = builder(params);
-    const thirdApiClient = builder(params);
+  it('returns existing instances when provided params are the same', async () => {
+    const builder = createBuilder();
+    const selectedServer = { url: 'foo', apiKey: 'bar' };
+    const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
+      builder(selectedServer),
+      builder(selectedServer),
+      builder(selectedServer),
+    ]);
 
     expect(firstApiClient).toBe(secondApiClient);
     expect(firstApiClient).toBe(thirdApiClient);

@@ -51,3 +51,5 @@ export const useToggle = (initialValue = false) => {
 
   return [ flag, () => setFlag(!flag) ];
 };
+
+export const wait = (seconds) => new Promise((resolve) => setTimeout(resolve, seconds));

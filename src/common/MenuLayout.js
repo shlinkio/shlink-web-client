@@ -20,9 +20,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
 
     state = { showSideBar: false };
 
-    // FIXME Shouldn't use componentWillMount, but this code has to be run before children components are rendered
-    /* eslint react/no-deprecated: "off" */
-    componentWillMount() {
+    componentDidMount() {
       const { match, selectServer } = this.props;
       const { params: { serverId } } = match;
 
