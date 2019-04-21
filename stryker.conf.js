@@ -1,12 +1,19 @@
+const jestConfig = require(`${__dirname}/jest.config.js`);
+
+// reporters: clear-text
+
 module.exports = (config) => config.set({
-  mutate: [ 'src/**/*.js' ],
-  mutator: 'javascript',
+  mutate: jestConfig.collectCoverageFrom,
+  mutator: {
+    name: 'javascript',
+    excludedMutations: [ 'BooleanSubstitution', 'StringLiteral' ],
+  },
   testRunner: 'jest',
-  reporters: [ 'progress', 'clear-text', 'html' ],
+  reporters: [ 'progress' ],
   coverageAnalysis: 'off',
   jest: {
     projectType: 'custom',
-    config: require(`${__dirname}/jest.config.js`),
+    config: jestConfig,
     enableFindRelatedTests: true,
   },
   thresholds: {
