@@ -13,10 +13,14 @@ services:
 install:
   - npm ci
 
+before_script:
+  - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/master} --name-only | grep src/ | paste -sd ",")
+
 script:
   - npm run lint
   - npm run test:ci
-  - if [[ -z $TRAVIS_TAG ]]; then docker build -t shlink-web-client:test . ; fi # Test docker image build only when no tag is present
+  - if [[ -z $TRAVIS_TAG ]]; then docker build -t shlink-web-client:test . ; fi
+  - if [[ -z $TRAVIS_TAG ]]; then npm run mutate:ci ; fi
 
 after_success:
   - node_modules/.bin/ocular coverage/clover.xml
