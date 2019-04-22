@@ -1,15 +1,10 @@
 const jestConfig = require(`${__dirname}/jest.config.js`);
 
-// reporters: clear-text
-
 module.exports = (config) => config.set({
   mutate: jestConfig.collectCoverageFrom,
-  mutator: {
-    name: 'javascript',
-    excludedMutations: [ 'BooleanSubstitution', 'StringLiteral' ],
-  },
+  mutator: 'javascript',
   testRunner: 'jest',
-  reporters: [ 'progress' ],
+  reporters: [ 'progress', 'clear-text' ],
   coverageAnalysis: 'off',
   jest: {
     projectType: 'custom',
@@ -20,5 +15,8 @@ module.exports = (config) => config.set({
     high: 80,
     low: 60,
     break: null,
+  },
+  clearTextReporter: {
+    logTests: false,
   },
 });
