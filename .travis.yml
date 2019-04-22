@@ -14,6 +14,7 @@ install:
   - npm ci
 
 before_script:
+  - echo "Building commit range ${TRAVIS_COMMIT_RANGE}"
   - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/master} --name-only | grep src/ | paste -sd ",")
 
 script:
