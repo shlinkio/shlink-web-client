@@ -1,7 +1,5 @@
 import React from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { assoc, map } from 'ramda';
-import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
 
 const ImportServersBtn = (serversImporter) => class ImportServersBtn extends React.Component {
@@ -22,10 +20,8 @@ const ImportServersBtn = (serversImporter) => class ImportServersBtn extends Rea
   render() {
     const { importServersFromFile } = serversImporter;
     const { onImport, createServers } = this.props;
-    const assocId = (server) => assoc('id', uuid(), server);
     const onChange = ({ target }) =>
       importServersFromFile(target.files[0])
-        .then(map(assocId))
         .then(createServers)
         .then(onImport)
         .then(() => {

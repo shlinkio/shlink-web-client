@@ -18,18 +18,20 @@ export default class Home extends React.Component {
   }
 
   render() {
-    const servers = values(this.props.servers);
+    const { servers: { list, loading } } = this.props;
+    const servers = values(list);
     const hasServers = !isEmpty(servers);
 
     return (
       <div className="home">
         <h1 className="home__title">Welcome to Shlink</h1>
         <h5 className="home__intro">
-          {hasServers && <span>Please, select a server.</span>}
-          {!hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
+          {!loading && hasServers && <span>Please, select a server.</span>}
+          {!loading && !hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
+          {loading && <span>Trying to load servers....</span>}
         </h5>
 
-        {hasServers && (
+        {!loading && hasServers && (
           <ListGroup className="home__servers-list">
             {servers.map(({ name, id }) => (
               <ListGroupItem

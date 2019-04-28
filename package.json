@@ -3,7 +3,7 @@
   "description": "A React-based progressive web application for shlink",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://shlink.io",
+  "homepage": "",
   "scripts": {
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint src test scripts config",

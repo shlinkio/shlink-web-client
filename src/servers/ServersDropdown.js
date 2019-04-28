@@ -14,7 +14,12 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
   };
 
   renderServers = () => {
-    const { servers, selectedServer, selectServer } = this.props;
+    const { servers: { list, loading }, selectedServer, selectServer } = this.props;
+    const servers = values(list);
+
+    if (loading) {
+      return <DropdownItem disabled><i>Trying to load servers...</i></DropdownItem>;
+    }
 
     if (isEmpty(servers)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
@@ -22,7 +27,7 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
 
     return (
       <React.Fragment>
-        {values(servers).map(({ name, id }) => (
+        {servers.map(({ name, id }) => (
           <DropdownItem
             key={id}
             tag={Link}
@@ -46,18 +51,14 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
     );
   };
 
-  componentDidMount() {
-    this.props.listServers();
-  }
+  componentDidMount = this.props.listServers;
 
-  render() {
-    return (
-      <UncontrolledDropdown nav inNavbar>
-        <DropdownToggle nav caret>Servers</DropdownToggle>
-        <DropdownMenu right>{this.renderServers()}</DropdownMenu>
-      </UncontrolledDropdown>
-    );
-  }
+  render = () => (
+    <UncontrolledDropdown nav inNavbar>
+      <DropdownToggle nav caret>Servers</DropdownToggle>
+      <DropdownMenu right>{this.renderServers()}</DropdownMenu>
+    </UncontrolledDropdown>
+  );
 };
 
 export default ServersDropdown;
