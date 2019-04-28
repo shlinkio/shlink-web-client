@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { pipe, isEmpty, assoc, map } from 'ramda';
+import { pipe, isEmpty, assoc, map, prop } from 'ramda';
 import { v4 as uuid } from 'uuid';
 import { homepage } from '../../../package.json';
 
@@ -31,11 +31,13 @@ export const listServers = ({ listServers, createServers }, { get }) => () => as
   }
 
   // If local list is empty, try to fetch it remotely and calculate IDs for every server
-  const { data: remoteList } = await get(`${homepage}/servers.json`);
-  const listWithIds = map(assocId, remoteList);
+  const remoteList = await get(`${homepage}/servers.json`)
+    .then(prop('data'))
+    .then(map(assocId))
+    .catch(() => []);
 
-  createServers(listWithIds);
-  dispatch({ type: FETCH_SERVERS, list: listWithIds.reduce((map, server) => ({ ...map, [server.id]: server }), {}) });
+  createServers(remoteList);
+  dispatch({ type: FETCH_SERVERS, list: remoteList.reduce((map, server) => ({ ...map, [server.id]: server }), {}) });
 };
 
 export const createServer = ({ createServer }, listServersAction) => pipe(createServer, listServersAction);
