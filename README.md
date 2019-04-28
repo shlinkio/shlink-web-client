@@ -36,7 +36,7 @@ There are three ways in which you can use this application.
 
 The first time you access shlink-web-client from a browser, you will have to configure the list of shlink servers you want to manage, and they will be saved in the local storage.
 
-Those servers can be exported and imported in other browsers, but if for some reason you need some servers to be there from the beginning, you can provide a `servers.json` file in the project root folder (the same containing the `index.html`, `favicon.ico`, etc) with a structure like this:
+Those servers can be exported and imported in other browsers, but if for some reason you need some servers to be there from the beginning, starting with shlink-web-client 2.1.0, you can provide a `servers.json` file in the project root folder (the same containing the `index.html`, `favicon.ico`, etc) with a structure like this:
 
 ```json
 [
