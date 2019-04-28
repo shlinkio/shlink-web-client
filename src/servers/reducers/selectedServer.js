@@ -10,10 +10,10 @@ const initialState = null;
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
-export const selectServer = (serversService) => (serverId) => (dispatch) => {
+export const selectServer = ({ findServerById }) => (serverId) => (dispatch) => {
   dispatch(resetShortUrlParams());
 
-  const selectedServer = serversService.findServerById(serverId);
+  const selectedServer = findServerById(serverId);
 
   dispatch({
     type: SELECT_SERVER,

@@ -23,9 +23,6 @@ export default class ServersService {
     this.storage.set(SERVERS_STORAGE_KEY, allServers);
   };
 
-  deleteServer = (server) =>
-    this.storage.set(
-      SERVERS_STORAGE_KEY,
-      dissoc(server.id, this.listServers())
-    );
+  deleteServer = ({ id }) =>
+    this.storage.set(SERVERS_STORAGE_KEY, dissoc(id, this.listServers()));
 }

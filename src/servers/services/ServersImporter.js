@@ -1,9 +1,3 @@
-import PropTypes from 'prop-types';
-
-export const serversImporterType = PropTypes.shape({
-  importServersFromFile: PropTypes.func,
-});
-
 export default class ServersImporter {
   constructor(csvjson) {
     this.csvjson = csvjson;
