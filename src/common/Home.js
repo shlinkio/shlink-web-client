@@ -28,7 +28,7 @@ export default class Home extends React.Component {
         <h5 className="home__intro">
           {!loading && hasServers && <span>Please, select a server.</span>}
           {!loading && !hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
-          {loading && <span>Trying to load servers....</span>}
+          {loading && <span>Trying to load servers...</span>}
         </h5>
 
         {!loading && hasServers && (

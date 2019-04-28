@@ -1,11 +1,10 @@
-import { assoc, curry, dissoc, reduce } from 'ramda';
+import { assoc, dissoc, reduce } from 'ramda';
 
 const SERVERS_STORAGE_KEY = 'servers';
 
 export default class ServersService {
   constructor(storage) {
     this.storage = storage;
-    this.setServers = curry(this.storage.set)(SERVERS_STORAGE_KEY);
   }
 
   listServers = () => this.storage.get(SERVERS_STORAGE_KEY) || {};
@@ -21,9 +20,9 @@ export default class ServersService {
       servers
     );
 
-    this.setServers(allServers);
+    this.storage.set(SERVERS_STORAGE_KEY, allServers);
   };
 
   deleteServer = ({ id }) =>
-    this.setServers(dissoc(id, this.listServers()));
+    this.storage.set(SERVERS_STORAGE_KEY, dissoc(id, this.listServers()));
 }

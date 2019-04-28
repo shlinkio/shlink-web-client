@@ -13,7 +13,7 @@ const initialState = {
   loading: false,
 };
 
-const assocId = (server) => assoc('id', uuid(), server);
+const assocId = (server) => assoc('id', server.id || uuid(), server);
 
 export default handleActions({
   [FETCH_SERVERS_START]: (state) => ({ ...state, loading: true }),
@@ -22,8 +22,6 @@ export default handleActions({
 
 export const listServers = ({ listServers, createServers }, { get }) => () => async (dispatch) => {
   dispatch({ type: FETCH_SERVERS_START });
-
-  // Fetch list from local storage.
   const localList = listServers();
 
   if (!isEmpty(localList)) {
@@ -32,12 +30,12 @@ export const listServers = ({ listServers, createServers }, { get }) => () => as
     return;
   }
 
-  // If local list is empty, try to fetch it remotely, calculate IDs for every server, and use it
+  // If local list is empty, try to fetch it remotely and calculate IDs for every server
   const { data: remoteList } = await get(`${homepage}/servers.json`);
   const listWithIds = map(assocId, remoteList);
 
   createServers(listWithIds);
-  dispatch({ type: FETCH_SERVERS, list: listWithIds });
+  dispatch({ type: FETCH_SERVERS, list: listWithIds.reduce((map, server) => ({ ...map, [server.id]: server }), {}) });
 };
 
 export const createServer = ({ createServer }, listServersAction) => pipe(createServer, listServersAction);

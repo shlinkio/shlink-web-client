@@ -4,17 +4,17 @@ import reducer, {
   deleteServer,
   listServers,
   createServers,
-  FETCH_SERVERS,
+  FETCH_SERVERS, FETCH_SERVERS_START,
 } from '../../../src/servers/reducers/server';
 
 describe('serverReducer', () => {
-  const payload = {
+  const list = {
     abc123: { id: 'abc123' },
     def456: { id: 'def456' },
   };
-  const expectedFetchServersResult = { type: FETCH_SERVERS, payload };
+  const expectedFetchServersResult = { type: FETCH_SERVERS, list };
   const ServersServiceMock = {
-    listServers: jest.fn(() => payload),
+    listServers: jest.fn(() => list),
     createServer: jest.fn(),
     deleteServer: jest.fn(),
     createServers: jest.fn(),
@@ -22,7 +22,7 @@ describe('serverReducer', () => {
 
   describe('reducer', () => {
     it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reducer({}, { type: FETCH_SERVERS, payload })).toEqual(payload));
+      expect(reducer({}, { type: FETCH_SERVERS, list })).toEqual({ loading: false, list }));
   });
 
   describe('action creators', () => {
@@ -34,14 +34,40 @@ describe('serverReducer', () => {
     });
 
     describe('listServers', () => {
-      it('fetches servers and returns them as part of the action', () => {
-        const result = listServers(ServersServiceMock)();
+      const axios = { get: jest.fn().mockResolvedValue({ data: [] }) };
+      const dispatch = jest.fn();
 
-        expect(result).toEqual(expectedFetchServersResult);
+      beforeEach(() => {
+        axios.get.mockClear();
+        dispatch.mockReset();
+      });
+
+      it('fetches servers from local storage when found', async () => {
+        await listServers(ServersServiceMock, axios)()(dispatch);
+
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenNthCalledWith(1, { type: FETCH_SERVERS_START });
+        expect(dispatch).toHaveBeenNthCalledWith(2, expectedFetchServersResult);
         expect(ServersServiceMock.listServers).toHaveBeenCalledTimes(1);
         expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
         expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
         expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
+        expect(axios.get).not.toHaveBeenCalled();
+      });
+
+      it('tries to fetch servers from remote when not found locally', async () => {
+        const NoListServersServiceMock = { ...ServersServiceMock, listServers: jest.fn(() => ({})) };
+
+        await listServers(NoListServersServiceMock, axios)()(dispatch);
+
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenNthCalledWith(1, { type: FETCH_SERVERS_START });
+        expect(dispatch).toHaveBeenNthCalledWith(2, { type: FETCH_SERVERS, list: {} });
+        expect(NoListServersServiceMock.listServers).toHaveBeenCalledTimes(1);
+        expect(NoListServersServiceMock.createServer).not.toHaveBeenCalled();
+        expect(NoListServersServiceMock.deleteServer).not.toHaveBeenCalled();
+        expect(NoListServersServiceMock.createServers).toHaveBeenCalledTimes(1);
+        expect(axios.get).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -75,7 +101,7 @@ describe('serverReducer', () => {
 
     describe('createServer', () => {
       it('creates multiple servers and then fetches servers again', () => {
-        const serversToCreate = values(payload);
+        const serversToCreate = values(list);
         const result = createServers(ServersServiceMock, () => expectedFetchServersResult)(serversToCreate);
 
         expect(result).toEqual(expectedFetchServersResult);

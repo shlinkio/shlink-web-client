@@ -6,10 +6,8 @@ import Home from '../../src/common/Home';
 describe('<Home />', () => {
   let wrapped;
   const defaultProps = {
-    resetSelectedServer() {
-      return '';
-    },
-    servers: {},
+    resetSelectedServer: () => '',
+    servers: { loading: false, list: {} },
   };
   const createComponent = (props) => {
     const actualProps = { ...defaultProps, ...props };
@@ -41,10 +39,22 @@ describe('<Home />', () => {
     expect(wrapped.find('ListGroup')).toHaveLength(0);
   });
 
+  it('shows message when loading servers', () => {
+    const wrapped = createComponent({ servers: { loading: true } });
+    const span = wrapped.find('span');
+
+    expect(span).toHaveLength(1);
+    expect(span.text()).toContain('Trying to load servers...');
+    expect(wrapped.find('ListGroup')).toHaveLength(0);
+  });
+
   it('shows servers list when list of servers is not empty', () => {
     const servers = {
-      1: { name: 'foo', id: '123' },
-      2: { name: 'bar', id: '456' },
+      loading: false,
+      list: {
+        1: { name: 'foo', id: '123' },
+        2: { name: 'bar', id: '456' },
+      },
     };
     const wrapped = createComponent({ servers });
 
