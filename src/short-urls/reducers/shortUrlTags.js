@@ -1,6 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
-import { pick } from 'ramda';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -27,7 +26,7 @@ const initialState = {
 export default handleActions({
   [EDIT_SHORT_URL_TAGS_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_TAGS_ERROR]: (state) => ({ ...state, saving: false, error: true }),
-  [EDIT_SHORT_URL_TAGS]: (state, action) => ({ ...pick([ 'shortCode', 'tags' ], action), saving: false, error: false }),
+  [EDIT_SHORT_URL_TAGS]: (state, { shortCode, tags }) => ({ shortCode, tags, saving: false, error: false }),
   [RESET_EDIT_SHORT_URL_TAGS]: () => initialState,
 }, initialState);
 
