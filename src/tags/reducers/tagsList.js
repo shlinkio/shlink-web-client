@@ -4,10 +4,10 @@ import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
 /* eslint-disable padding-line-between-statements */
-const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
-const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
-const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
-const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
+export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
+export const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
+export const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
+export const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
 /* eslint-enable padding-line-between-statements */
 
 const initialState = {
