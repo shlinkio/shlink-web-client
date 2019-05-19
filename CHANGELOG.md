@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.1.0 - 2019-05-19
 
 #### Added
 
@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#125](https://github.com/shlinkio/shlink-web-client/issues/125) Refactored reducers to replace `switch` statements by `handleActions` from [redux-actions](https://github.com/redux-utilities/redux-actions).
 * [#116](https://github.com/shlinkio/shlink-web-client/issues/116) Removed sinon in favor of jest mocks.
+* [#72](https://github.com/shlinkio/shlink-web-client/issues/72) Increased code coverage up to 80%.
 
 #### Deprecated
 
