@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "private": false,
   "homepage": "",
+  "repository": "https://github.com/shlinkio/shlink-web-client",
+  "license": "MIT",
   "scripts": {
     "lint": "npm run lint:js && npm run lint:css",
     "lint:js": "eslint src test scripts config",
