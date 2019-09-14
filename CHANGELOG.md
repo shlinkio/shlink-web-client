@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Fixed
 
-* *Nothing*
+* [#151](https://github.com/shlinkio/shlink-web-client/issues/151) Bugfix: When no order is specified, the order by indicator(triangle) still indicate ASC on column header.
 
 
 ## 2.1.0 - 2019-05-19
