@@ -6,7 +6,7 @@ import { LIST_SHORT_URLS } from '../../../src/short-urls/reducers/shortUrlsList'
 
 describe('shortUrlsListParamsReducer', () => {
   describe('reducer', () => {
-    const defaultState = { page: '1' };
+    const defaultState = { page: '1', orderBy: { dateCreated: 'DESC' } };
 
     it('returns params when action is LIST_SHORT_URLS', () =>
       expect(reducer(defaultState, { type: LIST_SHORT_URLS, params: { searchTerm: 'foo' } })).toEqual({

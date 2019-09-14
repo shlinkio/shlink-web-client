@@ -50,9 +50,22 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
       return null;
     }
 
+    let icon = null;
+
+    switch (this.state.orderDir) {
+      case 'ASC':
+        icon = caretUpIcon;
+        break;
+      case 'DESC':
+        icon = caretDownIcon;
+        break;
+      default:
+        return null;
+    }
+
     return (
       <FontAwesomeIcon
-        icon={this.state.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
+        icon={icon}
         className="short-urls-list__header-icon"
       />
     );
@@ -70,10 +83,13 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
   }
 
   componentDidMount() {
-    const { match: { params }, location, shortUrlsListParams } = this.props;
+    const { match: { params }, location, shortUrlsListParams: { tags } } = this.props;
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
 
-    this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : shortUrlsListParams.tags });
+    this.refreshList({
+      page: params.page,
+      tags: query.tag ? [ query.tag ] : tags,
+    });
   }
 
   componentWillUnmount() {
