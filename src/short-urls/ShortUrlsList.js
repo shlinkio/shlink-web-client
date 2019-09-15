@@ -11,7 +11,7 @@ import { shortUrlType } from './reducers/shortUrlsList';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
 
-const SORTABLE_FIELDS = {
+export const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
   shortCode: 'Short URL',
   longUrl: 'Long URL',
@@ -47,6 +47,10 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
     this.handleOrderBy(columnName, determineOrderDir(columnName, this.state.orderField, this.state.orderDir));
   renderOrderIcon = (field) => {
     if (this.state.orderField !== field) {
+      return null;
+    }
+
+    if (!this.state.orderDir) {
       return null;
     }
 
