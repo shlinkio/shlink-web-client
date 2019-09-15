@@ -84,7 +84,7 @@ describe('<ShortUrlsList />', () => {
 
     for (const sortableField of Object.getOwnPropertyNames(SORTABLE_FIELDS)) {
       wrapper.setState({ orderField: sortableField, orderDir: undefined });
-      const [ dateCreatedThElement ] = wrapper.find('table').shallow()
+      const [ sortableThElement ] = wrapper.find('table').shallow()
         .find('thead').shallow()
         .find('tr').shallow()
         .find('th')
@@ -93,13 +93,13 @@ describe('<ShortUrlsList />', () => {
             e.text().includes(SORTABLE_FIELDS[sortableField])
         );
 
-      const dateCreatedThElementWrapper = shallow(dateCreatedThElement);
+      const sortableThElementWrapper = shallow(sortableThElement);
 
-      expect(dateCreatedThElementWrapper.find(FontAwesomeIcon)).toHaveLength(0);
+      expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(0);
 
       for (const orderDir of Object.getOwnPropertyNames(orderDirOptionToIconMap)) {
         wrapper.setState({ orderField: sortableField, orderDir });
-        const [ dateCreatedThElement ] = wrapper.find('table').shallow()
+        const [ sortableThElement ] = wrapper.find('table').shallow()
           .find('thead').shallow()
           .find('tr').shallow()
           .find('th')
@@ -108,11 +108,11 @@ describe('<ShortUrlsList />', () => {
               e.text().includes(SORTABLE_FIELDS[sortableField])
           );
 
-        const dateCreatedThElementWrapper = shallow(dateCreatedThElement);
+        const sortableThElementWrapper = shallow(sortableThElement);
 
-        expect(dateCreatedThElementWrapper.find(FontAwesomeIcon)).toHaveLength(1);
+        expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(1);
         expect(
-          dateCreatedThElementWrapper.find(FontAwesomeIcon).prop('icon')
+          sortableThElementWrapper.find(FontAwesomeIcon).prop('icon')
         ).toEqual(orderDirOptionToIconMap[orderDir]);
       }
     }
