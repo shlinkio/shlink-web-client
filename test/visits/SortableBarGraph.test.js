@@ -49,12 +49,10 @@ describe('<SortableBarGraph />', () => {
       assert = (sortName, sortDir, expectedKeys, expectedValues, done) => {
         dropdown.prop('onChange')(sortName, sortDir);
         setImmediate(() => {
-          const graphCard = wrapper.find(GraphCard);
-          const statsKeys = keys(graphCard.prop('stats'));
-          const statsValues = values(graphCard.prop('stats'));
+          const stats = wrapper.find(GraphCard).prop('stats');
 
-          expect(statsKeys).toEqual(expectedKeys);
-          expect(statsValues).toEqual(expectedValues);
+          expect(keys(stats)).toEqual(expectedKeys);
+          expect(values(stats)).toEqual(expectedValues);
           done();
         });
       };
@@ -80,10 +78,9 @@ describe('<SortableBarGraph />', () => {
       assert = (itemsPerPage, expectedStats, done) => {
         dropdown.prop('setValue')(itemsPerPage);
         setImmediate(() => {
-          const graphCard = wrapper.find(GraphCard);
-          const statsKeys = keys(graphCard.prop('stats'));
+          const stats = wrapper.find(GraphCard).prop('stats');
 
-          expect(statsKeys).toEqual(expectedStats);
+          expect(keys(stats)).toEqual(expectedStats);
           done();
         });
       };

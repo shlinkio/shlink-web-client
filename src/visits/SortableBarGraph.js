@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type } from 'ramda';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
 import PaginationDropdown from '../utils/PaginationDropdown';
 import { rangeOf, roundTen } from '../utils/utils';
+import SimplePaginator from '../common/SimplePaginator';
 import GraphCard from './GraphCard';
 
 const { max } = Math;
@@ -66,22 +66,9 @@ export default class SortableBarGraph extends React.Component {
 
   renderPagination(pagesCount) {
     const { currentPage } = this.state;
+    const setCurrentPage = (currentPage) => () => this.setState({ currentPage });
 
-    return (
-      <Pagination listClassName="flex-wrap mb-0">
-        <PaginationItem disabled={currentPage === 1}>
-          <PaginationLink previous tag="span" onClick={() => this.setState({ currentPage: currentPage - 1 })} />
-        </PaginationItem>
-        {rangeOf(pagesCount, (page) => (
-          <PaginationItem key={page} active={page === currentPage}>
-            <PaginationLink tag="span" onClick={() => this.setState({ currentPage: page })}>{page}</PaginationLink>
-          </PaginationItem>
-        ))}
-        <PaginationItem disabled={currentPage >= pagesCount}>
-          <PaginationLink next tag="span" onClick={() => this.setState({ currentPage: currentPage + 1 })} />
-        </PaginationItem>
-      </Pagination>
-    );
+    return <SimplePaginator currentPage={currentPage} pagesCount={pagesCount} setCurrentPage={setCurrentPage} />;
   }
 
   render() {
