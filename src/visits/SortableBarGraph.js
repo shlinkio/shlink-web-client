@@ -66,7 +66,7 @@ export default class SortableBarGraph extends React.Component {
 
   renderPagination(pagesCount) {
     const { currentPage } = this.state;
-    const setCurrentPage = (currentPage) => () => this.setState({ currentPage });
+    const setCurrentPage = (currentPage) => this.setState({ currentPage });
 
     return <SimplePaginator currentPage={currentPage} pagesCount={pagesCount} setCurrentPage={setCurrentPage} />;
   }
