@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.1.1 - 2019-09-22
 
 #### Added
 
@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#151](https://github.com/shlinkio/shlink-web-client/issues/151) Fixed "order by" indicator (caret) still indicate ASC on column header when no order is specified.
 * [#157](https://github.com/shlinkio/shlink-web-client/issues/157) Fixed pagination control on graphs expanding too much when lots of pages need to be rendered.
+* [#155](https://github.com/shlinkio/shlink-web-client/issues/155) Fixed client-side paths resolve to 404 when served from nginx in docker image instead of falling back to `index.html`.
 
 
 ## 2.1.0 - 2019-05-19
