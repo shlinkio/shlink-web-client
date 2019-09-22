@@ -24,7 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Fixed
 
-* [#151](https://github.com/shlinkio/shlink-web-client/issues/151) Bugfix: When no order is specified, the order by indicator(triangle) still indicate ASC on column header.
+* [#151](https://github.com/shlinkio/shlink-web-client/issues/151) Fixed "order by" indicator (caret) still indicate ASC on column header when no order is specified.
+* [#157](https://github.com/shlinkio/shlink-web-client/issues/157) Fixed pagination control on graphs expanding too much when lots of pages need to be rendered.
 
 
 ## 2.1.0 - 2019-05-19
