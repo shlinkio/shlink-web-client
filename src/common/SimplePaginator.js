@@ -2,12 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { range, max, min } from 'ramda';
+import './SimplePaginator.scss';
 
 const propTypes = {
   pagesCount: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
 };
+
+export const ellipsis = '...';
 
 const pagination = (currentPage, pageCount) => {
   const delta = 2;
@@ -17,10 +20,10 @@ const pagination = (currentPage, pageCount) => {
   );
 
   if (currentPage - delta > delta) {
-    pages.unshift('...');
+    pages.unshift(ellipsis);
   }
   if (currentPage + delta < pageCount - 1) {
-    pages.push('...');
+    pages.push(ellipsis);
   }
 
   pages.unshift(1);
@@ -37,15 +40,15 @@ const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
   const onClick = (page) => () => setCurrentPage(page);
 
   return (
-    <Pagination listClassName="flex-wrap justify-content-center mb-0">
+    <Pagination listClassName="flex-wrap justify-content-center mb-0 simple-paginator">
       <PaginationItem disabled={currentPage <= 1}>
         <PaginationLink previous tag="span" onClick={onClick(currentPage - 1)} />
       </PaginationItem>
       {pagination(currentPage, pagesCount).map((page, index) => (
         <PaginationItem
-          key={page !== '...' ? page : `${page}_${index}`}
+          key={page !== ellipsis ? page : `${page}_${index}`}
           active={page === currentPage}
-          disabled={page === '...'}
+          disabled={page === ellipsis}
         >
           <PaginationLink tag="span" onClick={onClick(page)}>{page}</PaginationLink>
         </PaginationItem>
