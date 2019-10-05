@@ -15,15 +15,18 @@ describe('<ServersDropdown />', () => {
     },
     loading: false,
   };
+  const history = {
+    push: jest.fn(),
+  };
 
   beforeEach(() => {
     ServersDropdown = serversDropdownCreator({});
-    wrapped = shallow(<ServersDropdown servers={servers} listServers={identity} />);
+    wrapped = shallow(<ServersDropdown servers={servers} listServers={identity} history={history} />);
   });
   afterEach(() => wrapped.unmount());
 
-  it('contains the list of servers', () =>
-    expect(wrapped.find(DropdownItem).filter('[to]')).toHaveLength(values(servers.list).length));
+  it('contains the list of servers, the divider and the export button', () =>
+    expect(wrapped.find(DropdownItem)).toHaveLength(values(servers.list).length + 2));
 
   it('contains a toggle with proper title', () =>
     expect(wrapped.find(DropdownToggle)).toHaveLength(1));
@@ -36,7 +39,9 @@ describe('<ServersDropdown />', () => {
   });
 
   it('shows a message when no servers exist yet', () => {
-    wrapped = shallow(<ServersDropdown servers={{ loading: false, list: {} }} listServers={identity} />);
+    wrapped = shallow(
+      <ServersDropdown servers={{ loading: false, list: {} }} listServers={identity} history={history} />
+    );
     const item = wrapped.find(DropdownItem);
 
     expect(item).toHaveLength(1);
@@ -45,7 +50,9 @@ describe('<ServersDropdown />', () => {
   });
 
   it('shows a message when loading', () => {
-    wrapped = shallow(<ServersDropdown servers={{ loading: true, list: {} }} listServers={identity} />);
+    wrapped = shallow(
+      <ServersDropdown servers={{ loading: true, list: {} }} listServers={identity} history={history} />
+    );
     const item = wrapped.find(DropdownItem);
 
     expect(item).toHaveLength(1);
