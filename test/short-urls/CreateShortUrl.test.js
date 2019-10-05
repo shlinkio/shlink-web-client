@@ -32,6 +32,7 @@ describe('<CreateShortUrl />', () => {
     const urlInput = wrapper.find('.form-control-lg');
     const tagsInput = wrapper.find(TagsSelector);
     const customSlugInput = wrapper.find('#customSlug');
+    const domain = wrapper.find('#domain');
     const maxVisitsInput = wrapper.find('#maxVisits');
     const dateInputs = wrapper.find(DateInput);
     const validSinceInput = dateInputs.at(0);
@@ -40,6 +41,7 @@ describe('<CreateShortUrl />', () => {
     urlInput.simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
     tagsInput.simulate('change', [ 'tag_foo', 'tag_bar' ]);
     customSlugInput.simulate('change', { target: { value: 'my-slug' } });
+    domain.simulate('change', { target: { value: 'example.com' } });
     maxVisitsInput.simulate('change', { target: { value: '20' } });
     validSinceInput.simulate('change', validSince);
     validUntilInput.simulate('change', validUntil);
@@ -53,6 +55,7 @@ describe('<CreateShortUrl />', () => {
         longUrl: 'https://long-domain.com/foo/bar',
         tags: [ 'tag_foo', 'tag_bar' ],
         customSlug: 'my-slug',
+        domain: 'example.com',
         validSince: validSince.format(),
         validUntil: validUntil.format(),
         maxVisits: '20',

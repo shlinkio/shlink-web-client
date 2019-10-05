@@ -20,11 +20,11 @@ const renderInfoModal = (isOpen, toggle) => (
       <ul>
         <li>
           When only the long URL is provided: The most recent match will be returned, or a new short URL will be created
-          if none is found
+          if none is found.
         </li>
         <li>
-          When long URL and custom slug are provided: Same as in previous case, but it will try to match the short URL
-          using both the long URL and the slug.
+          When long URL and custom slug and/or domain are provided: Same as in previous case, but it will try to match
+          the short URL using both the long URL and the slug, the long URL and the domain, or the three of them.
           <br />
           If the slug is being used by another long URL, an error will be returned.
         </li>
@@ -33,9 +33,6 @@ const renderInfoModal = (isOpen, toggle) => (
           all provided data. If any of them does not match, a new short URL will be created
         </li>
       </ul>
-      <blockquote className="use-existing-if-found-info-icon__modal-quote">
-        <b>Important:</b> This feature will be ignored while using a Shlink version older than v1.16.0.
-      </blockquote>
     </ModalBody>
   </Modal>
 );

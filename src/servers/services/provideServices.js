@@ -34,7 +34,7 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.service('ServersExporter', ServersExporter, 'ServersService', 'window', 'csvjson');
 
   // Actions
-  bottle.serviceFactory('selectServer', selectServer, 'ServersService');
+  bottle.serviceFactory('selectServer', selectServer, 'ServersService', 'buildShlinkApiClient');
   bottle.serviceFactory('createServer', createServer, 'ServersService', 'listServers');
   bottle.serviceFactory('createServers', createServers, 'ServersService', 'listServers');
   bottle.serviceFactory('deleteServer', deleteServer, 'ServersService', 'listServers');

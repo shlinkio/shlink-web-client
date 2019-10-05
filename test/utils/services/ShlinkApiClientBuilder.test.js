@@ -1,4 +1,5 @@
 import buildShlinkApiClient from '../../../src/utils/services/ShlinkApiClientBuilder';
+import { buildShlinkBaseUrl } from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClientBuilder', () => {
   const createBuilder = () => {
@@ -32,5 +33,14 @@ describe('ShlinkApiClientBuilder', () => {
     expect(firstApiClient).toBe(secondApiClient);
     expect(firstApiClient).toBe(thirdApiClient);
     expect(secondApiClient).toBe(thirdApiClient);
+  });
+
+  it('does not fetch from state when provided param is already selected server', async () => {
+    const url = 'url';
+    const apiKey = 'apiKey';
+    const apiClient = await buildShlinkApiClient({})({ url, apiKey });
+
+    expect(apiClient._baseUrl).toEqual(buildShlinkBaseUrl(url));
+    expect(apiClient._apiKey).toEqual(apiKey);
   });
 });

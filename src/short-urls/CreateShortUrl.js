@@ -1,11 +1,14 @@
 import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { assoc, dissoc, isNil, pipe, replace, trim } from 'ramda';
+import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
+import ForVersion from '../utils/ForVersion';
+import { serverType } from '../servers/prop-types';
+import { compareVersions } from '../utils/utils';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
@@ -17,12 +20,14 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
     createShortUrl: PropTypes.func,
     shortUrlCreationResult: createShortUrlResultType,
     resetCreateShortUrl: PropTypes.func,
+    selectedServer: serverType,
   };
 
   state = {
     longUrl: '',
     tags: [],
     customSlug: undefined,
+    domain: undefined,
     validSince: undefined,
     validUntil: undefined,
     maxVisits: undefined,
@@ -66,6 +71,8 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
     };
+    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '';
+    const disableDomain = isEmpty(currentServerVersion) || compareVersions(currentServerVersion, '<', '1.19.0-beta.1');
 
     return (
       <div className="shlink-container">
@@ -89,24 +96,39 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
             <div className="row">
               <div className="col-sm-6">
                 {renderOptionalInput('customSlug', 'Custom slug')}
-                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
               </div>
               <div className="col-sm-6">
+                {renderOptionalInput('domain', 'Domain', 'text', {
+                  disabled: disableDomain,
+                  ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
+                })}
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-6">
+                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
+              </div>
+              <div className="col-sm-3">
                 {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+              </div>
+              <div className="col-sm-3">
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
               </div>
             </div>
 
-            <div className="mb-3 text-right">
-              <Checkbox
-                className="mr-2"
-                checked={this.state.findIfExists}
-                onChange={(findIfExists) => this.setState({ findIfExists })}
-              >
-                Use existing URL if found
-              </Checkbox>
-              <UseExistingIfFoundInfoIcon />
-            </div>
+            <ForVersion minVersion="1.16.0" currentServerVersion={currentServerVersion}>
+              <div className="mb-4 text-right">
+                <Checkbox
+                  className="mr-2"
+                  checked={this.state.findIfExists}
+                  onChange={(findIfExists) => this.setState({ findIfExists })}
+                >
+                  Use existing URL if found
+                </Checkbox>
+                <UseExistingIfFoundInfoIcon />
+              </div>
+            </ForVersion>
           </Collapse>
 
           <div>
@@ -119,7 +141,10 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
               &nbsp;
               {this.state.moreOptionsVisible ? 'Less' : 'More'} options
             </button>
-            <button className="btn btn-outline-primary float-right" disabled={shortUrlCreationResult.loading}>
+            <button
+              className="btn btn-outline-primary float-right"
+              disabled={shortUrlCreationResult.loading || isEmpty(this.state.longUrl)}
+            >
               {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
             </button>
           </div>

@@ -29,22 +29,30 @@ describe('selectedServerReducer', () => {
     const selectedServer = {
       id: serverId,
     };
+    const version = '1.19.0';
     const ServersServiceMock = {
       findServerById: jest.fn(() => selectedServer),
+    };
+    const apiClientMock = {
+      health: jest.fn().mockResolvedValue({ version }),
     };
 
     afterEach(() => {
       ServersServiceMock.findServerById.mockClear();
     });
 
-    it('dispatches proper actions', () => {
+    it('dispatches proper actions', async () => {
       const dispatch = jest.fn();
+      const expectedSelectedServer = {
+        ...selectedServer,
+        version,
+      };
 
-      selectServer(ServersServiceMock)(serverId)(dispatch);
+      await selectServer(ServersServiceMock, async () => apiClientMock)(serverId)(dispatch);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SHORT_URL_PARAMS });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
     });
 
     it('invokes dependencies', () => {
