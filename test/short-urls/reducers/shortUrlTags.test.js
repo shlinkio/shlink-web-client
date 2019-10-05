@@ -46,15 +46,17 @@ describe('shortUrlTagsReducer', () => {
     });
   });
 
-  describe('resetShortUrlsTags', () =>
-    it('creates expected action', () => expect(resetShortUrlsTags()).toEqual({ type: RESET_EDIT_SHORT_URL_TAGS })));
+  describe('resetShortUrlsTags', () => {
+    it('creates expected action', () => expect(resetShortUrlsTags()).toEqual({ type: RESET_EDIT_SHORT_URL_TAGS }));
+  });
 
-  describe('shortUrlTagsEdited', () =>
+  describe('shortUrlTagsEdited', () => {
     it('creates expected action', () => expect(shortUrlTagsEdited(shortCode, tags)).toEqual({
       tags,
       shortCode,
       type: SHORT_URL_TAGS_EDITED,
-    })));
+    }));
+  });
 
   describe('editShortUrlTags', () => {
     const updateShortUrlTags = jest.fn();
