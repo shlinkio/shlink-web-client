@@ -15,7 +15,7 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
 
   const selectedServer = findServerById(serverId);
   const { health } = await buildShlinkApiClient(selectedServer);
-  const { version } = await health();
+  const { version } = await health().catch(() => ({ version: '1.0.0' }));
 
   dispatch({
     type: SELECT_SERVER,
