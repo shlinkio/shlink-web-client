@@ -1,6 +1,6 @@
 import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { assoc, dissoc, isNil, pipe, replace, trim } from 'ramda';
+import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
@@ -23,6 +23,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
     longUrl: '',
     tags: [],
     customSlug: undefined,
+    domain: undefined,
     validSince: undefined,
     validUntil: undefined,
     maxVisits: undefined,
@@ -89,15 +90,25 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
             <div className="row">
               <div className="col-sm-6">
                 {renderOptionalInput('customSlug', 'Custom slug')}
-                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
               </div>
               <div className="col-sm-6">
+                {renderOptionalInput('domain', 'Domain', 'text')}
+              </div>
+            </div>
+
+            <div className="row">
+              <div className="col-sm-4">
+                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
+              </div>
+              <div className="col-sm-4">
                 {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+              </div>
+              <div className="col-sm-4">
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
               </div>
             </div>
 
-            <div className="mb-3 text-right">
+            <div className="mb-4 text-right">
               <Checkbox
                 className="mr-2"
                 checked={this.state.findIfExists}
@@ -119,7 +130,10 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
               &nbsp;
               {this.state.moreOptionsVisible ? 'Less' : 'More'} options
             </button>
-            <button className="btn btn-outline-primary float-right" disabled={shortUrlCreationResult.loading}>
+            <button
+              className="btn btn-outline-primary float-right"
+              disabled={shortUrlCreationResult.loading || isEmpty(this.state.longUrl)}
+            >
               {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
             </button>
           </div>
