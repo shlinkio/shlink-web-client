@@ -70,8 +70,9 @@ describe('tagsListReducer', () => {
     });
   });
 
-  describe('filterTags', () =>
-    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: FILTER_TAGS, searchTerm: 'foo' })));
+  describe('filterTags', () => {
+    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: FILTER_TAGS, searchTerm: 'foo' }));
+  });
 
   describe('listTags', () => {
     const dispatch = jest.fn();

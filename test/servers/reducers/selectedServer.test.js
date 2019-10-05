@@ -36,6 +36,12 @@ describe('selectedServerReducer', () => {
     const apiClientMock = {
       health: jest.fn().mockResolvedValue({ version }),
     };
+    const buildApiClient = jest.fn().mockResolvedValue(apiClientMock);
+
+    beforeEach(() => {
+      apiClientMock.health.mockClear();
+      buildApiClient.mockClear();
+    });
 
     afterEach(() => {
       ServersServiceMock.findServerById.mockClear();
@@ -48,17 +54,18 @@ describe('selectedServerReducer', () => {
         version,
       };
 
-      await selectServer(ServersServiceMock, async () => apiClientMock)(serverId)(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SHORT_URL_PARAMS });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
     });
 
-    it('invokes dependencies', () => {
-      selectServer(ServersServiceMock)(serverId)(() => {});
+    it('invokes dependencies', async () => {
+      await selectServer(ServersServiceMock, buildApiClient)(serverId)(() => {});
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
+      expect(buildApiClient).toHaveBeenCalledTimes(1);
     });
   });
 });

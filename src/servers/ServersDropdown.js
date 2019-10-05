@@ -1,6 +1,5 @@
 import { isEmpty, values } from 'ramda';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { serverType } from './prop-types';
@@ -11,11 +10,20 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
     selectedServer: serverType,
     selectServer: PropTypes.func,
     listServers: PropTypes.func,
+    history: PropTypes.shape({
+      push: PropTypes.func,
+    }),
   };
 
   renderServers = () => {
     const { servers: { list, loading }, selectedServer, selectServer } = this.props;
     const servers = values(list);
+    const { push } = this.props.history;
+    const loadServer = (id) => {
+      selectServer(id)
+        .then(() => push(`/server/${id}/list-short-urls/1`))
+        .catch(() => {});
+    };
 
     if (loading) {
       return <DropdownItem disabled><i>Trying to load servers...</i></DropdownItem>;
@@ -28,15 +36,7 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
     return (
       <React.Fragment>
         {servers.map(({ name, id }) => (
-          <DropdownItem
-            key={id}
-            tag={Link}
-            to={`/server/${id}/list-short-urls/1`}
-            active={selectedServer && selectedServer.id === id}
-
-            // FIXME This should be implicit
-            onClick={() => selectServer(id)}
-          >
+          <DropdownItem key={id} active={selectedServer && selectedServer.id === id} onClick={() => loadServer(id)}>
             {name}
           </DropdownItem>
         ))}
