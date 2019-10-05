@@ -165,4 +165,20 @@ describe('ShlinkApiClient', () => {
       }));
     });
   });
+
+  describe('health', () => {
+    it('returns health data', async () => {
+      const expectedData = {
+        status: 'pass',
+        version: '1.19.0',
+      };
+      const axiosSpy = jest.fn(createAxiosMock({ data: expectedData }));
+      const { health } = new ShlinkApiClient(axiosSpy);
+
+      const result = await health();
+
+      expect(axiosSpy).toHaveBeenCalled();
+      expect(result).toEqual(expectedData);
+    });
+  });
 });

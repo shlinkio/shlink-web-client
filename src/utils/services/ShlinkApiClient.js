@@ -2,12 +2,13 @@ import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 
 const API_VERSION = '1';
-const buildRestUrl = (url) => url ? `${url}/rest/v${API_VERSION}` : '';
+
+export const buildShlinkBaseUrl = (url) => url ? `${url}/rest/v${API_VERSION}` : '';
 
 export default class ShlinkApiClient {
   constructor(axios, baseUrl, apiKey) {
     this.axios = axios;
-    this._baseUrl = buildRestUrl(baseUrl);
+    this._baseUrl = buildShlinkBaseUrl(baseUrl);
     this._apiKey = apiKey || '';
   }
 
