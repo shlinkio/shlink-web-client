@@ -4,6 +4,7 @@ import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { range } from 'ramda';
 import { useState } from 'react';
+import { compare } from 'compare-versions';
 
 const TEN_ROUNDING_NUMBER = 10;
 const DEFAULT_TIMEOUT_DELAY = 2000;
@@ -53,3 +54,9 @@ export const useToggle = (initialValue = false) => {
 };
 
 export const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+export const compareVersions = (firstVersion, operator, secondVersion) => compare(
+  firstVersion,
+  secondVersion,
+  operator
+);

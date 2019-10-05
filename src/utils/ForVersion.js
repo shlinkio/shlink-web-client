@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compare } from 'compare-versions';
 import { isEmpty } from 'ramda';
+import { compareVersions } from './utils';
 
 const propTypes = {
   minVersion: PropTypes.string.isRequired,
@@ -10,7 +10,7 @@ const propTypes = {
 };
 
 const ForVersion = ({ minVersion, currentServerVersion, children }) =>
-  isEmpty(currentServerVersion) || compare(minVersion, currentServerVersion, '>')
+  isEmpty(currentServerVersion) || compareVersions(currentServerVersion, '<', minVersion)
     ? null
     : <React.Fragment>{children}</React.Fragment>;
 

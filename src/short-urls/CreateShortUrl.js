@@ -4,11 +4,11 @@ import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
-import { compare } from 'compare-versions';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import ForVersion from '../utils/ForVersion';
 import { serverType } from '../servers/prop-types';
+import { compareVersions } from '../utils/utils';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
@@ -71,8 +71,8 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
     };
-    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '9999';
-    const disableDomain = compare('1.19.0-beta.1', currentServerVersion, '>');
+    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '';
+    const disableDomain = isEmpty(currentServerVersion) || compareVersions(currentServerVersion, '<', '1.19.0-beta.1');
 
     return (
       <div className="shlink-container">
