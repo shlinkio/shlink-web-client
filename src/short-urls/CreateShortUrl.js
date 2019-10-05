@@ -4,6 +4,7 @@ import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
 import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
+import { compare } from 'compare-versions';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import ForVersion from '../utils/ForVersion';
@@ -70,6 +71,8 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
     };
+    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '9999';
+    const disableDomain = compare('1.19.0-beta.1', currentServerVersion, '>');
 
     return (
       <div className="shlink-container">
@@ -95,26 +98,26 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
                 {renderOptionalInput('customSlug', 'Custom slug')}
               </div>
               <div className="col-sm-6">
-                {renderOptionalInput('domain', 'Domain', 'text')}
+                {renderOptionalInput('domain', 'Domain', 'text', {
+                  disabled: disableDomain,
+                  ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
+                })}
               </div>
             </div>
 
             <div className="row">
-              <div className="col-sm-4">
+              <div className="col-sm-6">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
               </div>
-              <div className="col-sm-4">
+              <div className="col-sm-3">
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
               </div>
             </div>
 
-            <ForVersion
-              minVersion="1.16.0"
-              currentServerVersion={this.props.selectedServer ? this.props.selectedServer.version : ''}
-            >
+            <ForVersion minVersion="1.16.0" currentServerVersion={currentServerVersion}>
               <div className="mb-4 text-right">
                 <Checkbox
                   className="mr-2"
