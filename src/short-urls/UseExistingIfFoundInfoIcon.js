@@ -23,8 +23,8 @@ const renderInfoModal = (isOpen, toggle) => (
           if none is found.
         </li>
         <li>
-          When long URL and custom slug are provided: Same as in previous case, but it will try to match the short URL
-          using both the long URL and the slug.
+          When long URL and custom slug and/or domain are provided: Same as in previous case, but it will try to match
+          the short URL using both the long URL and the slug, the long URL and the domain, or the three of them.
           <br />
           If the slug is being used by another long URL, an error will be returned.
         </li>

@@ -6,6 +6,8 @@ import { Collapse } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
+import ForVersion from '../utils/ForVersion';
+import { serverType } from '../servers/prop-types';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
@@ -17,6 +19,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
     createShortUrl: PropTypes.func,
     shortUrlCreationResult: createShortUrlResultType,
     resetCreateShortUrl: PropTypes.func,
+    selectedServer: serverType,
   };
 
   state = {
@@ -108,16 +111,21 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
               </div>
             </div>
 
-            <div className="mb-4 text-right">
-              <Checkbox
-                className="mr-2"
-                checked={this.state.findIfExists}
-                onChange={(findIfExists) => this.setState({ findIfExists })}
-              >
-                Use existing URL if found
-              </Checkbox>
-              <UseExistingIfFoundInfoIcon />
-            </div>
+            <ForVersion
+              minVersion="1.16.0"
+              currentServerVersion={this.props.selectedServer ? this.props.selectedServer.version : ''}
+            >
+              <div className="mb-4 text-right">
+                <Checkbox
+                  className="mr-2"
+                  checked={this.state.findIfExists}
+                  onChange={(findIfExists) => this.setState({ findIfExists })}
+                >
+                  Use existing URL if found
+                </Checkbox>
+                <UseExistingIfFoundInfoIcon />
+              </div>
+            </ForVersion>
           </Collapse>
 
           <div>

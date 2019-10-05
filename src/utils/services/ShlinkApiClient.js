@@ -50,6 +50,8 @@ export default class ShlinkApiClient {
     this._performRequest('/tags', 'PUT', {}, { oldName, newName })
       .then(() => ({ oldName, newName }));
 
+  health = () => this._performRequest('/health', 'GET').then((resp) => resp.data);
+
   _performRequest = async (url, method = 'GET', query = {}, body = {}) =>
     await this.axios({
       method,

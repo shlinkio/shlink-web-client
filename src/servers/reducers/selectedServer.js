@@ -10,14 +10,19 @@ const initialState = null;
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
-export const selectServer = ({ findServerById }) => (serverId) => (dispatch) => {
+export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serverId) => async (dispatch) => {
   dispatch(resetShortUrlParams());
 
   const selectedServer = findServerById(serverId);
+  const { health } = await buildShlinkApiClient(selectedServer);
+  const { version } = await health();
 
   dispatch({
     type: SELECT_SERVER,
-    selectedServer,
+    selectedServer: {
+      ...selectedServer,
+      version,
+    },
   });
 };
 
