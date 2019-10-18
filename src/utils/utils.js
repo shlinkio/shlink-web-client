@@ -60,3 +60,11 @@ export const compareVersions = (firstVersion, operator, secondVersion) => compar
   secondVersion,
   operator
 );
+
+export const versionIsValidSemVer = (version) => {
+  try {
+    return compareVersions(version, '=', version);
+  } catch (e) {
+    return false;
+  }
+};
