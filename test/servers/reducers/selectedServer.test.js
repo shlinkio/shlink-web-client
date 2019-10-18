@@ -1,8 +1,11 @@
+import each from 'jest-each';
 import reducer, {
   selectServer,
   resetSelectedServer,
   RESET_SELECTED_SERVER,
   SELECT_SERVER,
+  MAX_FALLBACK_VERSION,
+  MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
 import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
 
@@ -34,25 +37,24 @@ describe('selectedServerReducer', () => {
       findServerById: jest.fn(() => selectedServer),
     };
     const apiClientMock = {
-      health: jest.fn().mockResolvedValue({ version }),
+      health: jest.fn(),
     };
     const buildApiClient = jest.fn().mockResolvedValue(apiClientMock);
+    const dispatch = jest.fn();
 
-    beforeEach(() => {
-      apiClientMock.health.mockClear();
-      buildApiClient.mockClear();
-    });
+    afterEach(jest.clearAllMocks);
 
-    afterEach(() => {
-      ServersServiceMock.findServerById.mockClear();
-    });
-
-    it('dispatches proper actions', async () => {
-      const dispatch = jest.fn();
+    each([
+      [ version, version ],
+      [ 'latest', MAX_FALLBACK_VERSION ],
+      [ '%invalid_semver%', MIN_FALLBACK_VERSION ],
+    ]).it('dispatches proper actions', async (serverVersion, expectedVersion) => {
       const expectedSelectedServer = {
         ...selectedServer,
-        version,
+        version: expectedVersion,
       };
+
+      apiClientMock.health.mockResolvedValue({ version: serverVersion });
 
       await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
 
@@ -66,6 +68,19 @@ describe('selectedServerReducer', () => {
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
+    });
+
+    it('falls back to min version when health endpoint fails', async () => {
+      const expectedSelectedServer = {
+        ...selectedServer,
+        version: MIN_FALLBACK_VERSION,
+      };
+
+      apiClientMock.health.mockRejectedValue({});
+
+      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
     });
   });
 });

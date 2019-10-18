@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## 2.2.1 - 2019-10-18
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#165](https://github.com/shlinkio/shlink-web-client/issues/165) Fixed error thrown when opening "create" page while using a Shlink version which does not return a valid SemVer version (like `latest` docker image, or any development instance).
+
+
 ## 2.2.0 - 2019-10-05
 
 #### Added
