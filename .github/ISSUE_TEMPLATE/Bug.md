@@ -16,6 +16,7 @@ With that said, please fill in the information requested next. More information 
 #### Shlink web client version
 
 * Version: x.y.z
+* How do you use shlink-web-client: app.shlink.io|Docker image|self-hosted
 
 #### Summary
 
