@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## 2.2.2 - 2019-10-21
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#167](https://github.com/shlinkio/shlink-web-client/issues/167) Fixed `/servers.json` path not being ignored when returning something other than an array.
+
+
 ## 2.2.1 - 2019-10-18
 
 #### Added
