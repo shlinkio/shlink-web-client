@@ -32,9 +32,19 @@ export const listServers = ({ listServers, createServers }, { get }) => () => as
 
   // If local list is empty, try to fetch it remotely and calculate IDs for every server
   // It's important to parse the content to json, so that it is ignored for other formats (because it will catch)
-  const getDataAsJsonWithIds = pipe(prop('data'), JSON.parse, map(assocId));
+  const getDataAsArrayWithIds = pipe(
+    prop('data'),
+    (value) => {
+      if (!Array.isArray(value)) {
+        throw new Error('Value is not an array');
+      }
+
+      return value;
+    },
+    map(assocId),
+  );
   const remoteList = await get(`${homepage}/servers.json`)
-    .then(getDataAsJsonWithIds)
+    .then(getDataAsArrayWithIds)
     .catch(() => []);
 
   createServers(remoteList);

@@ -50,20 +50,20 @@ describe('serverReducer', () => {
       each([
         [
           Promise.resolve({
-            data: `[
-  {
-    "id": "111",
-    "name": "acel.me from servers.json",
-    "url": "https://acel.me",
-    "apiKey": "07fb8a96-8059-4094-a24c-80a7d5e7e9b0"
-  },
-  {
-    "id": "222",
-    "name": "Local from servers.json",
-    "url": "http://localhost:8000",
-    "apiKey": "7a531c75-134e-4d5c-86e0-a71b7167b57a"
-  }
-]`,
+            data: [
+              {
+                id: '111',
+                name: 'acel.me from servers.json',
+                url: 'https://acel.me',
+                apiKey: '07fb8a96-8059-4094-a24c-80a7d5e7e9b0',
+              },
+              {
+                id: '222',
+                name: 'Local from servers.json',
+                url: 'http://localhost:8000',
+                apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
+              },
+            ],
           }),
           {
             111: {
