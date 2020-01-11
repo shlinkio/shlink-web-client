@@ -12,7 +12,9 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Link } from 'react-router-dom';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { isEmpty } from 'ramda';
 import { serverType } from '../../servers/prop-types';
+import { compareVersions } from '../../utils/utils';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
@@ -37,6 +39,8 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
   render() {
     const { onCopyToClipboard, shortUrl, selectedServer } = this.props;
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
+    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '';
+    const showPreviewBtn = !isEmpty(currentServerVersion) && compareVersions(currentServerVersion, '<', '2.0.0');
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
     const togglePreview = toggleModal('isPreviewModalOpen');
@@ -70,17 +74,21 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
 
           <DropdownItem divider />
 
-          <DropdownItem onClick={togglePreview}>
-            <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
-          </DropdownItem>
-          <PreviewModal url={completeShortUrl} isOpen={this.state.isPreviewModalOpen} toggle={togglePreview} />
+          {showPreviewBtn && (
+            <React.Fragment>
+              <DropdownItem onClick={togglePreview}>
+                <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
+              </DropdownItem>
+              <PreviewModal url={completeShortUrl} isOpen={this.state.isPreviewModalOpen} toggle={togglePreview} />
+            </React.Fragment>
+          )}
 
           <DropdownItem onClick={toggleQrCode}>
             <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
           </DropdownItem>
           <QrCodeModal url={completeShortUrl} isOpen={this.state.isQrModalOpen} toggle={toggleQrCode} />
 
-          <DropdownItem divider />
+          {showPreviewBtn && <DropdownItem divider />}
 
           <CopyToClipboard text={completeShortUrl} onCopy={onCopyToClipboard}>
             <DropdownItem>
