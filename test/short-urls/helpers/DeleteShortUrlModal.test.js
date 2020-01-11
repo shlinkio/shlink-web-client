@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
+import each from 'jest-each';
 import DeleteShortUrlModal from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 
 describe('<DeleteShortUrlModal />', () => {
@@ -32,17 +33,34 @@ describe('<DeleteShortUrlModal />', () => {
     deleteShortUrl.mockClear();
   });
 
-  it('shows threshold error message when threshold error occurs', () => {
+  each([
+    [
+      { error: 'INVALID_SHORTCODE_DELETION' },
+      'This short URL has received too many visits, and therefore, it cannot be deleted.',
+    ],
+    [
+      { type: 'INVALID_SHORTCODE_DELETION' },
+      'This short URL has received too many visits, and therefore, it cannot be deleted.',
+    ],
+    [
+      { error: 'INVALID_SHORTCODE_DELETION', threshold: 35 },
+      'This short URL has received more than 35 visits, and therefore, it cannot be deleted.',
+    ],
+    [
+      { type: 'INVALID_SHORTCODE_DELETION', threshold: 8 },
+      'This short URL has received more than 8 visits, and therefore, it cannot be deleted.',
+    ],
+  ]).it('shows threshold error message when threshold error occurs', (errorData, expectedMessage) => {
     const wrapper = createWrapper({
       loading: false,
       error: true,
       shortCode: 'abc123',
-      errorData: { error: 'INVALID_SHORTCODE_DELETION' },
+      errorData,
     });
     const warning = wrapper.find('.bg-warning');
 
     expect(warning).toHaveLength(1);
-    expect(warning.html()).toContain('This short URL has received too many visits and therefore, it cannot be deleted');
+    expect(warning.html()).toContain(expectedMessage);
   });
 
   it('shows generic error when non-threshold error occurs', () => {

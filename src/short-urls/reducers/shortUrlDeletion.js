@@ -1,5 +1,6 @@
 import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
+import { apiErrorType } from '../../utils/services/ShlinkApiClient';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
@@ -13,10 +14,7 @@ export const shortUrlDeletionType = PropTypes.shape({
   shortCode: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   error: PropTypes.bool.isRequired,
-  errorData: PropTypes.shape({
-    error: PropTypes.string,
-    message: PropTypes.string,
-  }).isRequired,
+  errorData: apiErrorType.isRequired,
 });
 
 const initialState = {

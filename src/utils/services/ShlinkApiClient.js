@@ -1,7 +1,17 @@
 import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
+import PropTypes from 'prop-types';
 
 const API_VERSION = '1';
+
+export const apiErrorType = PropTypes.shape({
+  type: PropTypes.string,
+  detail: PropTypes.string,
+  title: PropTypes.string,
+  status: PropTypes.number,
+  error: PropTypes.string, // Deprecated
+  message: PropTypes.string, // Deprecated
+});
 
 export const buildShlinkBaseUrl = (url) => url ? `${url}/rest/v${API_VERSION}` : '';
 

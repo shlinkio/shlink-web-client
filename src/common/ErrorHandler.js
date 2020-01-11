@@ -3,6 +3,7 @@ import * as PropTypes from 'prop-types';
 import './ErrorHandler.scss';
 import { Button } from 'reactstrap';
 
+// FIXME Replace with typescript: (window, console)
 const ErrorHandler = ({ location }, { error }) => class ErrorHandler extends React.Component {
   static propTypes = {
     children: PropTypes.node.isRequired,

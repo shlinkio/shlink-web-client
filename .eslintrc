@@ -28,6 +28,7 @@
     "no-warning-comments": "off",
     "no-magic-numbers": "off",
     "no-undefined": "off",
+    "no-inline-comments": "off",
     "indent": ["error", 2, {
       "SwitchCase": 1
     }

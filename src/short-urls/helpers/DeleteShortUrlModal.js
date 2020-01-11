@@ -5,6 +5,8 @@ import { identity } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlDeletionType } from '../reducers/shortUrlDeletion';
 
+const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
+
 export default class DeleteShortUrlModal extends React.Component {
   static propTypes = {
     shortUrl: shortUrlType,
@@ -39,9 +41,10 @@ export default class DeleteShortUrlModal extends React.Component {
 
   render() {
     const { shortUrl, toggle, isOpen, shortUrlDeletion } = this.props;
-    const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
-    const hasThresholdError = shortUrlDeletion.error && shortUrlDeletion.errorData.error === THRESHOLD_REACHED;
-    const hasErrorOtherThanThreshold = shortUrlDeletion.error && shortUrlDeletion.errorData.error !== THRESHOLD_REACHED;
+    const { error, errorData } = shortUrlDeletion;
+    const errorCode = error && (errorData.type || errorData.error);
+    const hasThresholdError = errorCode === THRESHOLD_REACHED;
+    const hasErrorOtherThanThreshold = error && errorCode !== THRESHOLD_REACHED;
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered>
@@ -63,7 +66,8 @@ export default class DeleteShortUrlModal extends React.Component {
 
             {hasThresholdError && (
               <div className="p-2 mt-2 bg-warning text-center">
-                This short URL has received too many visits and therefore, it cannot be deleted
+                {errorData.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
+                {!errorData.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
               </div>
             )}
             {hasErrorOtherThanThreshold && (
