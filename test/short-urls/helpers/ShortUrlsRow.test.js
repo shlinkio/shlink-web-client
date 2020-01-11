@@ -83,7 +83,7 @@ describe('<ShortUrlsRow />', () => {
   it('renders visits count in fifth row', () => {
     const col = wrapper.find('td').at(4);
 
-    expect(col.text()).toEqual(toString(shortUrl.visitsCount));
+    expect(col.html()).toContain(toString(shortUrl.visitsCount));
   });
 
   it('updates state when copied to clipboard', () => {

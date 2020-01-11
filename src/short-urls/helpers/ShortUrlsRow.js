@@ -7,6 +7,7 @@ import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import Tag from '../../tags/helpers/Tag';
+import ShortUrlVisitsCount from './ShortUrlVisitsCount';
 import './ShortUrlsRow.scss';
 
 const ShortUrlsRow = (
@@ -56,7 +57,9 @@ const ShortUrlsRow = (
           <ExternalLink href={shortUrl.longUrl} />
         </td>
         <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
-        <td className="short-urls-row__cell text-md-right" data-th="Visits: ">{shortUrl.visitsCount}</td>
+        <td className="short-urls-row__cell text-md-right" data-th="Visits: ">
+          <ShortUrlVisitsCount shortUrl={shortUrl} />
+        </td>
         <td className="short-urls-row__cell short-urls-row__cell--relative">
           <small
             className="badge badge-warning short-urls-row__copy-hint"

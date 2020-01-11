@@ -18,6 +18,7 @@ export const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
+// FIXME Replace with typescript: (ShortUrlsRow component)
 const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Component {
   static propTypes = {
     listShortUrls: PropTypes.func,
