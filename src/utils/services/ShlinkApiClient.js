@@ -2,8 +2,6 @@ import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 import PropTypes from 'prop-types';
 
-const API_VERSION = '1';
-
 export const apiErrorType = PropTypes.shape({
   type: PropTypes.string,
   detail: PropTypes.string,
@@ -13,12 +11,13 @@ export const apiErrorType = PropTypes.shape({
   message: PropTypes.string, // Deprecated
 });
 
-export const buildShlinkBaseUrl = (url) => url ? `${url}/rest/v${API_VERSION}` : '';
+const buildShlinkBaseUrl = (url, apiVersion) => url ? `${url}/rest/v${apiVersion}` : '';
 
 export default class ShlinkApiClient {
   constructor(axios, baseUrl, apiKey) {
     this.axios = axios;
-    this._baseUrl = buildShlinkBaseUrl(baseUrl);
+    this._apiVersion = 2;
+    this._baseUrl = baseUrl;
     this._apiKey = apiKey || '';
   }
 
@@ -63,13 +62,35 @@ export default class ShlinkApiClient {
 
   health = () => this._performRequest('/health', 'GET').then((resp) => resp.data);
 
-  _performRequest = async (url, method = 'GET', query = {}, body = {}) =>
-    await this.axios({
-      method,
-      url: `${this._baseUrl}${url}`,
-      headers: { 'X-Api-Key': this._apiKey },
-      params: query,
-      data: body,
-      paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
-    });
+  _performRequest = async (url, method = 'GET', query = {}, body = {}) => {
+    try {
+      return await this.axios({
+        method,
+        url: `${buildShlinkBaseUrl(this._baseUrl, this._apiVersion)}${url}`,
+        headers: { 'X-Api-Key': this._apiKey },
+        params: query,
+        data: body,
+        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
+      });
+    } catch (e) {
+      const { response } = e;
+
+      // Due to a bug on all previous Shlink versions, requests to non-matching URLs will always result on a CORS error
+      // when performed from the browser (due to the preflight request not returning a 2xx status.
+      // See https://github.com/shlinkio/shlink/issues/614), which will make the "response" prop not to be set here.
+      // The bug will be fixed on upcoming Shlink patches, but for other versions, we can consider this situation as
+      // if a request has been performed to a not supported API version.
+      const apiVersionIsNotSupported = !response;
+
+      // When the request is not invalid or we have already tried both API versions, throw the error and let the
+      // caller handle it
+      if (!apiVersionIsNotSupported || this._apiVersion === 1) {
+        throw e;
+      }
+
+      this._apiVersion = 1;
+
+      return await this._performRequest(url, method, query, body);
+    }
+  }
 }

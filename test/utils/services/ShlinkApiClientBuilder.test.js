@@ -1,5 +1,4 @@
 import buildShlinkApiClient from '../../../src/utils/services/ShlinkApiClientBuilder';
-import { buildShlinkBaseUrl } from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClientBuilder', () => {
   const createBuilder = () => {
@@ -40,7 +39,7 @@ describe('ShlinkApiClientBuilder', () => {
     const apiKey = 'apiKey';
     const apiClient = await buildShlinkApiClient({})({ url, apiKey });
 
-    expect(apiClient._baseUrl).toEqual(buildShlinkBaseUrl(url));
+    expect(apiClient._baseUrl).toEqual(url);
     expect(apiClient._apiKey).toEqual(apiKey);
   });
 });
