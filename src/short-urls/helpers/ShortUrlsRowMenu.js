@@ -39,7 +39,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
   render() {
     const { onCopyToClipboard, shortUrl, selectedServer } = this.props;
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
-    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '';
+    const currentServerVersion = selectedServer ? selectedServer.version : '';
     const showPreviewBtn = !isEmpty(currentServerVersion) && compareVersions(currentServerVersion, '<', '2.0.0');
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
