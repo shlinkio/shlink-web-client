@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
-import { UncontrolledTooltip } from 'reactstrap';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import ExternalLink from '../../../src/utils/ExternalLink';
 import Tag from '../../../src/tags/helpers/Tag';
@@ -28,24 +27,17 @@ describe('<ShortUrlsRow />', () => {
     tags: [ 'nodejs', 'reactjs' ],
     visitsCount: 45,
   };
-  const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, stateFlagTimeout);
-  const createWrapper = (meta) => {
+
+  beforeEach(() => {
+    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, stateFlagTimeout);
+
     wrapper = shallow(
-      <ShortUrlsRow
-        shortUrlsListParams={{}}
-        refreshList={mockFunction}
-        selecrtedServer={server}
-        shortUrl={{ ...shortUrl, meta }}
-      />
+      <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selecrtedServer={server} shortUrl={shortUrl} />
     );
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper && wrapper.unmount());
+  });
+  afterEach(() => wrapper.unmount());
 
   it('renders date in first column', () => {
-    const wrapper = createWrapper();
     const col = wrapper.find('td').first();
     const moment = col.find(Moment);
 
@@ -53,7 +45,6 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('renders short URL in second row', () => {
-    const wrapper = createWrapper();
     const col = wrapper.find('td').at(1);
     const link = col.find(ExternalLink);
 
@@ -61,7 +52,6 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('renders long URL in third row', () => {
-    const wrapper = createWrapper();
     const col = wrapper.find('td').at(2);
     const link = col.find(ExternalLink);
 
@@ -70,7 +60,6 @@ describe('<ShortUrlsRow />', () => {
 
   describe('renders list of tags in fourth row', () => {
     it('with tags', () => {
-      const wrapper = createWrapper();
       const col = wrapper.find('td').at(3);
       const tags = col.find(Tag);
 
@@ -83,8 +72,6 @@ describe('<ShortUrlsRow />', () => {
     });
 
     it('without tags', () => {
-      const wrapper = createWrapper();
-
       wrapper.setProps({ shortUrl: assoc('tags', [], shortUrl) });
 
       const col = wrapper.find('td').at(3);
@@ -94,26 +81,12 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('renders visits count in fifth row', () => {
-    const wrapper = createWrapper();
     const col = wrapper.find('td').at(4);
-    const maxVisitsHelper = wrapper.find('.short-urls-row__max-visits-control');
 
-    expect(col.text()).toEqual(toString(shortUrl.visitsCount));
-    expect(maxVisitsHelper).toHaveLength(0);
-  });
-
-  it('renders visits count with helper control displaying the maximum amount of visits', () => {
-    const maxVisits = 40;
-    const wrapper = createWrapper({ maxVisits });
-    const maxVisitsHelper = wrapper.find('.short-urls-row__max-visits-control');
-    const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
-
-    expect(maxVisitsHelper).toHaveLength(1);
-    expect(maxVisitsTooltip).toHaveLength(1);
+    expect(col.html()).toContain(toString(shortUrl.visitsCount));
   });
 
   it('updates state when copied to clipboard', () => {
-    const wrapper = createWrapper();
     const col = wrapper.find('td').at(5);
     const menu = col.find(ShortUrlsRowMenu);
 
@@ -124,7 +97,6 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('shows copy hint when state prop is true', () => {
-    const wrapper = createWrapper();
     const isHidden = () => wrapper.find('td').at(5).find('.short-urls-row__copy-hint').prop('hidden');
 
     expect(isHidden()).toEqual(true);

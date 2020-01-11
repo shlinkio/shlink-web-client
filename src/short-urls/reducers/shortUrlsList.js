@@ -14,6 +14,12 @@ export const shortUrlType = PropTypes.shape({
   shortCode: PropTypes.string,
   shortUrl: PropTypes.string,
   longUrl: PropTypes.string,
+  visitsCount: PropTypes.number,
+  meta: PropTypes.shape({
+    validSince: PropTypes.string,
+    validUntil: PropTypes.string,
+    maxVisits: PropTypes.number,
+  }),
   tags: PropTypes.arrayOf(PropTypes.string),
 });
 

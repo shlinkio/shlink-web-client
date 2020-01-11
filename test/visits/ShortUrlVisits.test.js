@@ -8,7 +8,7 @@ import GraphCard from '../../src/visits/GraphCard';
 import DateInput from '../../src/utils/DateInput';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
 
-describe('<ShortUrlVisits />', () => {
+describe('<ShortUrlVisitsCount />', () => {
   let wrapper;
   const processStatsFromVisits = () => (
     { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }

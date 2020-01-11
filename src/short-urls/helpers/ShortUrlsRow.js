@@ -2,41 +2,13 @@ import { isEmpty } from 'ramda';
 import React from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
-import { UncontrolledTooltip } from 'reactstrap';
-import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
 import { serverType } from '../../servers/prop-types';
 import ExternalLink from '../../utils/ExternalLink';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import Tag from '../../tags/helpers/Tag';
+import ShortUrlVisitsCount from './ShortUrlVisitsCount';
 import './ShortUrlsRow.scss';
-
-const renderVisitsCount = (shortUrl) => {
-  const { visitsCount, meta } = shortUrl;
-  const maxVisits = meta && meta.maxVisits;
-
-  if (!maxVisits) {
-    return <span>{visitsCount}</span>;
-  }
-
-  return (
-    <React.Fragment>
-      <span>
-        {visitsCount}
-        <small id="maxVisitsControl" className="short-urls-row__max-visits-control">
-          {' '}/ {maxVisits}{' '}
-          <sup>
-            <FontAwesomeIcon icon={infoIcon} />
-          </sup>
-        </small>
-      </span>
-      <UncontrolledTooltip target="maxVisitsControl" placement="bottom">
-        This short URL will not accept more than <b>{maxVisits}</b> visits.
-      </UncontrolledTooltip>
-    </React.Fragment>
-  );
-};
 
 const ShortUrlsRow = (
   ShortUrlsRowMenu,
@@ -86,7 +58,7 @@ const ShortUrlsRow = (
         </td>
         <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-row__cell text-md-right" data-th="Visits: ">
-          {renderVisitsCount(shortUrl)}
+          <ShortUrlVisitsCount shortUrl={shortUrl} />
         </td>
         <td className="short-urls-row__cell short-urls-row__cell--relative">
           <small
