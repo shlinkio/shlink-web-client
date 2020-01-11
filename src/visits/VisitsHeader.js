@@ -2,18 +2,16 @@ import { Card, UncontrolledTooltip } from 'reactstrap';
 import Moment from 'react-moment';
 import React from 'react';
 import ExternalLink from '../utils/ExternalLink';
-import './VisitsHeader.scss';
+import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
-import { shortUrlVisitsType } from './reducers/shortUrlVisits';
+import './VisitsHeader.scss';
 
 const propTypes = {
   shortUrlDetail: shortUrlDetailType.isRequired,
-  shortUrlVisits: shortUrlVisitsType.isRequired,
 };
 
-export default function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
+export default function VisitsHeader({ shortUrlDetail }) {
   const { shortUrl, loading } = shortUrlDetail;
-  const { visits } = shortUrlVisits;
   const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
   const longLink = shortUrl && shortUrl.longUrl ? shortUrl.longUrl : '';
 
@@ -30,14 +28,16 @@ export default function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
     <header>
       <Card className="bg-light" body>
         <h2>
-          <span className="badge badge-main float-right">Visits: {visits.length}</span>
+          <span className="badge badge-main float-right">
+            Visits:{' '}
+            <ShortUrlVisitsCount shortUrl={shortUrl} />
+          </span>
           Visit stats for <ExternalLink href={shortLink} />
         </h2>
         <hr />
         <div>Created: {renderDate()}</div>
         <div>
-          Long URL:
-          &nbsp;
+          Long URL:{' '}
           {loading && <small>Loading...</small>}
           {!loading && <ExternalLink href={longLink} />}
         </div>

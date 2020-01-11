@@ -134,7 +134,7 @@ const ShortUrlVisits = (
 
     return (
       <div className="shlink-container">
-        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} />
 
         <section className="mt-4">
           <div className="row">
