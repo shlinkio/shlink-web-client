@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import { shortUrlType } from '../reducers/shortUrlsList';
+import './ShortUrlVisitsCount.scss';
 
 const propTypes = {
   shortUrl: shortUrlType,
@@ -18,9 +19,9 @@ const ShortUrlVisitsCount = ({ shortUrl }) => {
 
   return (
     <React.Fragment>
-      <span>
+      <span className="indivisible">
         {visitsCount}
-        <small id="maxVisitsControl" className="short-urls-row__max-visits-control">
+        <small id="maxVisitsControl" className="short-urls-visits-count__max-visits-control">
           {' '}/ {maxVisits}{' '}
           <sup>
             <FontAwesomeIcon icon={infoIcon} />

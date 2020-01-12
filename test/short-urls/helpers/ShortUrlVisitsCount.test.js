@@ -17,7 +17,7 @@ describe('<ShortUrlVisitsCount />', () => {
   it('just returns visits when no maxVisits is provided', () => {
     const visitsCount = 45;
     const wrapper = createWrapper({ visitsCount });
-    const maxVisitsHelper = wrapper.find('.short-urls-row__max-visits-control');
+    const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
     expect(wrapper.html()).toEqual(`<span>${visitsCount}</span>`);
@@ -30,7 +30,7 @@ describe('<ShortUrlVisitsCount />', () => {
     const maxVisits = 500;
     const meta = { maxVisits };
     const wrapper = createWrapper({ visitsCount, meta });
-    const maxVisitsHelper = wrapper.find('.short-urls-row__max-visits-control');
+    const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
     expect(wrapper.html()).toContain(`/ ${maxVisits}`);
