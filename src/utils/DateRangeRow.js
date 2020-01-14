@@ -7,11 +7,11 @@ const dateType = PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]);
 const propTypes = {
   startDate: dateType,
   endDate: dateType,
-  onStartDateChane: PropTypes.func.isRequired,
+  onStartDateChange: PropTypes.func.isRequired,
   onEndDateChange: PropTypes.func.isRequired,
 };
 
-const DateRangeRow = ({ startDate, endDate, onStartDateChane, onEndDateChange }) => (
+const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }) => (
   <div className="row">
     <div className="col-xl-3 col-lg-4 col-md-6 offset-xl-6 offset-lg-4">
       <DateInput
@@ -19,7 +19,7 @@ const DateRangeRow = ({ startDate, endDate, onStartDateChane, onEndDateChange })
         placeholderText="Since"
         isClearable
         maxDate={endDate}
-        onChange={onStartDateChane}
+        onChange={onStartDateChange}
       />
     </div>
     <div className="col-xl-3 col-lg-4 col-md-6">

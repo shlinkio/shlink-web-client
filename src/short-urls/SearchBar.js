@@ -38,7 +38,7 @@ const SearchBar = (colorGenerator) => {
           <DateRangeRow
             startDate={dateOrUndefined(shortUrlsListParams.startDate)}
             endDate={dateOrUndefined(shortUrlsListParams.endDate)}
-            onStartDateChane={setDate('startDate')}
+            onStartDateChange={setDate('startDate')}
             onEndDateChange={setDate('endDate')}
           />
         </div>

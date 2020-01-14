@@ -138,7 +138,7 @@ const ShortUrlVisits = (
           <DateRangeRow
             startDate={this.state.startDate}
             endDate={this.state.endDate}
-            onStartDateChane={setDate('startDate')}
+            onStartDateChange={setDate('startDate')}
             onEndDateChange={setDate('endDate')}
           />
         </section>

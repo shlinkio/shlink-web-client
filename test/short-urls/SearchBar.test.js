@@ -1,8 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import each from 'jest-each';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
+import DateRangeRow from '../../src/utils/DateRangeRow';
 
 describe('<SearchBar />', () => {
   let wrapper;
@@ -18,6 +20,12 @@ describe('<SearchBar />', () => {
     wrapper = shallow(<SearchBar shortUrlsListParams={{}} />);
 
     expect(wrapper.find(SearchField)).toHaveLength(1);
+  });
+
+  it('renders a DateRangeRow', () => {
+    wrapper = shallow(<SearchBar shortUrlsListParams={{}} />);
+
+    expect(wrapper.find(DateRangeRow)).toHaveLength(1);
   });
 
   it('renders no tags when the list of tags is empty', () => {
@@ -51,6 +59,15 @@ describe('<SearchBar />', () => {
 
     expect(listShortUrlsMock).not.toHaveBeenCalled();
     tag.simulate('close');
+    expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
+  });
+
+  each([ 'startDateChange', 'endDateChange' ]).it('updates short URLs list when date range changes', (event) => {
+    wrapper = shallow(<SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />);
+    const dateRange = wrapper.find(DateRangeRow);
+
+    expect(listShortUrlsMock).not.toHaveBeenCalled();
+    dateRange.simulate(event);
     expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 });
