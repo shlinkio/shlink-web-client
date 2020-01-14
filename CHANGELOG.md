@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#174](https://github.com/shlinkio/shlink-web-client/issues/174) Added complete support for Shlink v2.x together with currently supported Shlink versions.
 * [#164](https://github.com/shlinkio/shlink-web-client/issues/164) Added max visits control on those URLs which have `maxVisits`.
+* [#178](https://github.com/shlinkio/shlink-web-client/issues/178) Short URLs list can now be filtered by date range.
 
 #### Changed
 
