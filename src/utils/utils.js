@@ -68,3 +68,5 @@ export const versionIsValidSemVer = (version) => {
     return false;
   }
 };
+
+export const formatDate = (format = 'YYYY-MM-DD') => (date) => date && date.format ? date.format(format) : date;

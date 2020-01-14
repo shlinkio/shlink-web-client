@@ -4,14 +4,14 @@ import { isEmpty, mapObjIndexed, values } from 'ramda';
 import React from 'react';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
-import DateInput from '../utils/DateInput';
+import DateRangeRow from '../utils/DateRangeRow';
 import MutedMessage from '../utils/MuttedMessage';
+import { formatDate } from '../utils/utils';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
-import './ShortUrlVisits.scss';
 
 const ShortUrlVisits = (
   { processStatsFromVisits },
@@ -32,10 +32,7 @@ const ShortUrlVisits = (
   loadVisits = () => {
     const { match: { params }, getShortUrlVisits } = this.props;
     const { shortCode } = params;
-    const dates = mapObjIndexed(
-      (value) => value && value.format ? value.format('YYYY-MM-DD') : value,
-      this.state
-    );
+    const dates = mapObjIndexed(formatDate(), this.state);
     const { startDate, endDate } = dates;
 
     // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calcs
@@ -131,33 +128,19 @@ const ShortUrlVisits = (
         </div>
       );
     };
+    const setDate = (dateField) => (date) => this.setState({ [dateField]: date }, this.loadVisits);
 
     return (
       <div className="shlink-container">
         <VisitsHeader shortUrlDetail={shortUrlDetail} />
 
         <section className="mt-4">
-          <div className="row">
-            <div className="col-xl-3 col-lg-4 col-md-6 offset-xl-6 offset-lg-4">
-              <DateInput
-                selected={this.state.startDate}
-                placeholderText="Since"
-                isClearable
-                maxDate={this.state.endDate}
-                onChange={(date) => this.setState({ startDate: date }, this.loadVisits)}
-              />
-            </div>
-            <div className="col-xl-3 col-lg-4 col-md-6">
-              <DateInput
-                className="short-url-visits__date-input"
-                selected={this.state.endDate}
-                placeholderText="Until"
-                isClearable
-                minDate={this.state.startDate}
-                onChange={(date) => this.setState({ endDate: date }, this.loadVisits)}
-              />
-            </div>
-          </div>
+          <DateRangeRow
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onStartDateChange={setDate('startDate')}
+            onEndDateChange={setDate('endDate')}
+          />
         </section>
 
         <section>

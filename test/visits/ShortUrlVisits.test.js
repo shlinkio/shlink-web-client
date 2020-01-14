@@ -5,8 +5,8 @@ import { Card } from 'reactstrap';
 import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
 import MutedMessage from '../../src/utils/MuttedMessage';
 import GraphCard from '../../src/visits/GraphCard';
-import DateInput from '../../src/utils/DateInput';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
+import DateRangeRow from '../../src/utils/DateRangeRow';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper;
@@ -82,14 +82,15 @@ describe('<ShortUrlVisits />', () => {
 
   it('reloads visits when selected dates change', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
-    const dateInput = wrapper.find(DateInput).first();
+    const dateRange = wrapper.find(DateRangeRow);
 
-    dateInput.simulate('change', '2016-01-01T00:00:00+01:00');
-    dateInput.simulate('change', '2016-01-02T00:00:00+01:00');
-    dateInput.simulate('change', '2016-01-03T00:00:00+01:00');
+    dateRange.simulate('startDateChange', '2016-01-01T00:00:00+01:00');
+    dateRange.simulate('endDateChange', '2016-01-02T00:00:00+01:00');
+    dateRange.simulate('endDateChange', '2016-01-03T00:00:00+01:00');
 
     expect(getShortUrlVisitsMock).toHaveBeenCalledTimes(4);
-    expect(wrapper.state('startDate')).toEqual('2016-01-03T00:00:00+01:00');
+    expect(wrapper.state('startDate')).toEqual('2016-01-01T00:00:00+01:00');
+    expect(wrapper.state('endDate')).toEqual('2016-01-03T00:00:00+01:00');
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
