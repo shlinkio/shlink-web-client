@@ -8,6 +8,9 @@ export const shortUrlsListParamsType = PropTypes.shape({
   page: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string),
   searchTerm: PropTypes.string,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  orderBy: PropTypes.object,
 });
 
 const initialState = { page: '1' };

@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import './SearchField.scss';
 
 const DEFAULT_SEARCH_INTERVAL = 500;
@@ -44,7 +44,7 @@ export default class SearchField extends React.Component {
     const { className, placeholder } = this.props;
 
     return (
-      <div className={classnames('search-field', className)}>
+      <div className={classNames('search-field', className)}>
         <input
           type="text"
           className="form-control form-control-lg search-field__input"

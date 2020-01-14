@@ -40,12 +40,15 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
       ...extraParams,
     });
   };
+
   handleOrderBy = (orderField, orderDir) => {
     this.setState({ orderField, orderDir });
     this.refreshList({ orderBy: { [orderField]: orderDir } });
   };
+
   orderByColumn = (columnName) => () =>
     this.handleOrderBy(columnName, determineOrderDir(columnName, this.state.orderField, this.state.orderDir));
+
   renderOrderIcon = (field) => {
     if (this.state.orderField !== field) {
       return null;
@@ -77,8 +80,9 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
   componentDidMount() {
     const { match: { params }, location, shortUrlsListParams } = this.props;
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+    const tags = query.tag ? [ query.tag ] : shortUrlsListParams.tags;
 
-    this.refreshList({ page: params.page, tags: query.tag ? [ query.tag ] : shortUrlsListParams.tags });
+    this.refreshList({ page: params.page, tags });
   }
 
   componentWillUnmount() {

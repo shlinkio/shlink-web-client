@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import * as PropTypes from 'prop-types';
+import classNames from 'classnames';
 import './DateInput.scss';
 
 const propTypes = {
@@ -21,7 +22,7 @@ const DateInput = (props) => {
     <div className="date-input-container">
       <DatePicker
         {...props}
-        className={`date-input-container__input form-control ${className || ''}`}
+        className={classNames('date-input-container__input form-control', className)}
         dateFormat="YYYY-MM-DD"
         readOnly
         ref={ref}
