@@ -1,16 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
-import { shortUrlType } from '../reducers/shortUrlsList';
+import { shortUrlMetaType } from '../reducers/shortUrlsList';
 import './ShortUrlVisitsCount.scss';
 
 const propTypes = {
-  shortUrl: shortUrlType,
+  visitsCount: PropTypes.number.isRequired,
+  meta: shortUrlMetaType,
 };
 
-const ShortUrlVisitsCount = ({ shortUrl }) => {
-  const { visitsCount, meta } = shortUrl;
+const ShortUrlVisitsCount = ({ visitsCount, meta }) => {
   const maxVisits = meta && meta.maxVisits;
 
   if (!maxVisits) {

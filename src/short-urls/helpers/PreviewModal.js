@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { ExternalLink } from 'react-external-link';
 import './PreviewModal.scss';
-import ExternalLink from '../../utils/ExternalLink';
 
 const propTypes = {
   url: PropTypes.string,

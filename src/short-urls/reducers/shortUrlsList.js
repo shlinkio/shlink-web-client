@@ -10,16 +10,18 @@ export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements */
 
+export const shortUrlMetaType = PropTypes.shape({
+  validSince: PropTypes.string,
+  validUntil: PropTypes.string,
+  maxVisits: PropTypes.number,
+});
+
 export const shortUrlType = PropTypes.shape({
   shortCode: PropTypes.string,
   shortUrl: PropTypes.string,
   longUrl: PropTypes.string,
   visitsCount: PropTypes.number,
-  meta: PropTypes.shape({
-    validSince: PropTypes.string,
-    validUntil: PropTypes.string,
-    maxVisits: PropTypes.number,
-  }),
+  meta: shortUrlMetaType,
   tags: PropTypes.arrayOf(PropTypes.string),
 });
 

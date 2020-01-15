@@ -132,7 +132,7 @@ const ShortUrlVisits = (
 
     return (
       <div className="shlink-container">
-        <VisitsHeader shortUrlDetail={shortUrlDetail} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
 
         <section className="mt-4">
           <DateRangeRow

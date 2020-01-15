@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
-import ExternalLink from '../../utils/ExternalLink';
+import { ExternalLink } from 'react-external-link';
 import { shortUrlTagsType } from '../reducers/shortUrlTags';
 import { shortUrlType } from '../reducers/shortUrlsList';
 
