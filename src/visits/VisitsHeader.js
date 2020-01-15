@@ -1,7 +1,7 @@
 import { Card, UncontrolledTooltip } from 'reactstrap';
 import Moment from 'react-moment';
 import React from 'react';
-import ExternalLink from '../utils/ExternalLink';
+import { ExternalLink } from 'react-external-link';
 import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import './VisitsHeader.scss';

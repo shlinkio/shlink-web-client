@@ -3,8 +3,8 @@ import { shallow } from 'enzyme';
 import moment from 'moment';
 import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
+import { ExternalLink } from 'react-external-link';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
-import ExternalLink from '../../../src/utils/ExternalLink';
 import Tag from '../../../src/tags/helpers/Tag';
 
 describe('<ShortUrlsRow />', () => {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Moment from 'react-moment';
+import { ExternalLink } from 'react-external-link';
 import VisitsHeader from '../../src/visits/VisitsHeader';
-import ExternalLink from '../../src/utils/ExternalLink';
 
 describe('<VisitsHeader />', () => {
   let wrapper;

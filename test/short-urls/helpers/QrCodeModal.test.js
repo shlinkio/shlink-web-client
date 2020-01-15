@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { ExternalLink } from 'react-external-link';
 import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
-import ExternalLink from '../../../src/utils/ExternalLink';
 
 describe('<QrCodeModal />', () => {
   let wrapper;

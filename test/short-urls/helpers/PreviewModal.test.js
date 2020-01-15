@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { ExternalLink } from 'react-external-link';
 import PreviewModal from '../../../src/short-urls/helpers/PreviewModal';
-import ExternalLink from '../../../src/utils/ExternalLink';
 
 describe('<PreviewModal />', () => {
   let wrapper;
