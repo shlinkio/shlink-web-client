@@ -1,22 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
+import each from 'jest-each';
 import ShortUrlVisitsCount from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
 
 describe('<ShortUrlVisitsCount />', () => {
   let wrapper;
 
-  const createWrapper = (shortUrl) => {
-    wrapper = shallow(<ShortUrlVisitsCount shortUrl={shortUrl} />);
+  const createWrapper = (visitsCount, meta) => {
+    wrapper = shallow(<ShortUrlVisitsCount visitsCount={visitsCount} meta={meta} />);
 
     return wrapper;
   };
 
   afterEach(() => wrapper && wrapper.unmount());
 
-  it('just returns visits when no maxVisits is provided', () => {
+  each([ undefined, {}]).it('just returns visits when no maxVisits is provided', (meta) => {
     const visitsCount = 45;
-    const wrapper = createWrapper({ visitsCount });
+    const wrapper = createWrapper(visitsCount, meta);
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
@@ -29,7 +30,7 @@ describe('<ShortUrlVisitsCount />', () => {
     const visitsCount = 45;
     const maxVisits = 500;
     const meta = { maxVisits };
-    const wrapper = createWrapper({ visitsCount, meta });
+    const wrapper = createWrapper(visitsCount, meta);
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 

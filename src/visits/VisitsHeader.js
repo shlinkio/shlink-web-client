@@ -4,14 +4,17 @@ import React from 'react';
 import { ExternalLink } from 'react-external-link';
 import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
+import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import './VisitsHeader.scss';
 
 const propTypes = {
   shortUrlDetail: shortUrlDetailType.isRequired,
+  shortUrlVisits: shortUrlVisitsType.isRequired,
 };
 
-export default function VisitsHeader({ shortUrlDetail }) {
+export default function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
   const { shortUrl, loading } = shortUrlDetail;
+  const { visits } = shortUrlVisits;
   const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
   const longLink = shortUrl && shortUrl.longUrl ? shortUrl.longUrl : '';
 
@@ -30,7 +33,7 @@ export default function VisitsHeader({ shortUrlDetail }) {
         <h2>
           <span className="badge badge-main float-right">
             Visits:{' '}
-            <ShortUrlVisitsCount shortUrl={shortUrl} />
+            <ShortUrlVisitsCount visitsCount={visits.length} meta={shortUrl.meta} />
           </span>
           Visit stats for <ExternalLink href={shortLink} />
         </h2>

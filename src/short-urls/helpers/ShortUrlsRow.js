@@ -58,7 +58,7 @@ const ShortUrlsRow = (
         </td>
         <td className="short-urls-row__cell" data-th="Tags: ">{this.renderTags(shortUrl.tags)}</td>
         <td className="short-urls-row__cell text-md-right" data-th="Visits: ">
-          <ShortUrlVisitsCount shortUrl={shortUrl} />
+          <ShortUrlVisitsCount visitsCount={shortUrl.visitsCount} meta={shortUrl.meta} />
         </td>
         <td className="short-urls-row__cell short-urls-row__cell--relative">
           <small
