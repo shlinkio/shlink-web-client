@@ -21,8 +21,11 @@ import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
 import './ShortUrlsRowMenu.scss';
 
-// FIXME Replace with typescript: (DeleteShortUrlModal component, EditTagsModal component)
-const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrlsRowMenu extends React.Component {
+const ShortUrlsRowMenu = (
+  DeleteShortUrlModal,
+  EditTagsModal,
+  EditMetaModal
+) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
     onCopyToClipboard: PropTypes.func,
     selectedServer: serverType,
@@ -64,16 +67,12 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
           <DropdownItem onClick={toggleTags}>
             <FontAwesomeIcon icon={tagsIcon} fixedWidth /> Edit tags
           </DropdownItem>
-          <EditTagsModal
-            url={completeShortUrl}
-            shortUrl={shortUrl}
-            isOpen={this.state.isTagsModalOpen}
-            toggle={toggleTags}
-          />
+          <EditTagsModal shortUrl={shortUrl} isOpen={this.state.isTagsModalOpen} toggle={toggleTags} />
 
           <DropdownItem onClick={toggleMeta}>
             <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
           </DropdownItem>
+          <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
 
           <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL

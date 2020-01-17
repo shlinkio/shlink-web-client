@@ -9,7 +9,6 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
   static propTypes = {
     isOpen: PropTypes.bool.isRequired,
     toggle: PropTypes.func.isRequired,
-    url: PropTypes.string.isRequired,
     shortUrl: shortUrlType.isRequired,
     shortUrlTags: shortUrlTagsType,
     editShortUrlTags: PropTypes.func,
@@ -51,12 +50,13 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
   }
 
   render() {
-    const { isOpen, toggle, url, shortUrlTags } = this.props;
+    const { isOpen, toggle, shortUrl, shortUrlTags } = this.props;
+    const url = shortUrl && (shortUrl.shortUrl || '');
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered onClosed={() => this.refreshShortUrls()}>
         <ModalHeader toggle={toggle}>
-          Edit tags for <ExternalLink href={url}>{url}</ExternalLink>
+          Edit tags for <ExternalLink href={url} />
         </ModalHeader>
         <ModalBody>
           <TagsSelector tags={this.state.tags} onChange={(tags) => this.setState({ tags })} />

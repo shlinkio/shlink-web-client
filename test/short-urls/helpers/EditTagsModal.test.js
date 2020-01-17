@@ -17,7 +17,6 @@ describe('<EditTagsModal />', () => {
     wrapper = shallow(
       <EditTagsModal
         isOpen={true}
-        url={''}
         shortUrl={{
           tags: [],
           shortCode,

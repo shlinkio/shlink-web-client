@@ -14,6 +14,7 @@ import { createShortUrl, resetCreateShortUrl } from '../reducers/shortUrlCreatio
 import { deleteShortUrl, resetDeleteShortUrl, shortUrlDeleted } from '../reducers/shortUrlDeletion';
 import { editShortUrlTags, resetShortUrlsTags, shortUrlTagsEdited } from '../reducers/shortUrlTags';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
+import EditMetaModal from '../helpers/EditMetaModal';
 
 const provideServices = (bottle, connect) => {
   // Components
@@ -33,7 +34,7 @@ const provideServices = (bottle, connect) => {
 
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'stateFlagTimeout');
 
-  bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'EditTagsModal');
+  bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'EditTagsModal', 'EditMetaModal');
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'stateFlagTimeout');
 
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult');
@@ -52,6 +53,12 @@ const provideServices = (bottle, connect) => {
   bottle.decorator('EditTagsModal', connect(
     [ 'shortUrlTags' ],
     [ 'editShortUrlTags', 'resetShortUrlsTags', 'shortUrlTagsEdited' ]
+  ));
+
+  bottle.serviceFactory('EditMetaModal', () => EditMetaModal);
+  bottle.decorator('EditMetaModal', connect(
+    [ 'shortUrlMeta' ],
+    [ 'editShortUrlMeta', 'shortUrlMetaEdited', 'resetShortUrlMeta' ]
   ));
 
   // Actions

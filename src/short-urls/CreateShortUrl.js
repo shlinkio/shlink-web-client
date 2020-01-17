@@ -2,7 +2,7 @@ import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@forta
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
 import React from 'react';
-import { Collapse } from 'reactstrap';
+import { Collapse, FormGroup, Input } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
@@ -40,9 +40,8 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
 
     const changeTags = (tags) => this.setState({ tags: tags.map(normalizeTag) });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
-      <div className="form-group">
-        <input
-          className="form-control"
+      <FormGroup>
+        <Input
           id={id}
           type={type}
           placeholder={placeholder}
@@ -50,7 +49,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
           onChange={(e) => this.setState({ [id]: e.target.value })}
           {...props}
         />
-      </div>
+      </FormGroup>
     );
     const renderDateInput = (id, placeholder, props = {}) => (
       <div className="form-group">

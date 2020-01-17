@@ -23,7 +23,7 @@ export default class ShlinkApiClient {
 
   listShortUrls = pipe(
     (options = {}) => reject(isNil, options),
-    (options = {}) => this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls)
+    (options) => this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls)
   );
 
   createShortUrl = (options) => {
@@ -48,6 +48,10 @@ export default class ShlinkApiClient {
   updateShortUrlTags = (shortCode, tags) =>
     this._performRequest(`/short-urls/${shortCode}/tags`, 'PUT', {}, { tags })
       .then((resp) => resp.data.tags);
+
+  updateShortUrlMeta = (shortCode, meta) =>
+    this._performRequest(`/short-urls/${shortCode}`, 'PATCH', {}, meta)
+      .then(() => ({ meta }));
 
   listTags = () =>
     this._performRequest('/tags', 'GET')
