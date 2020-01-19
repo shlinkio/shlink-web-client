@@ -6,6 +6,7 @@ import reducer, {
 } from '../../../src/short-urls/reducers/shortUrlsList';
 import { SHORT_URL_TAGS_EDITED } from '../../../src/short-urls/reducers/shortUrlTags';
 import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrlMeta';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
@@ -47,6 +48,31 @@ describe('shortUrlsListReducer', () => {
           data: [
             { shortCode, tags },
             { shortCode: 'foo', tags: [] },
+          ],
+        },
+      });
+    });
+
+    it('Updates meta on matching URL on SHORT_URL_META_EDITED', () => {
+      const shortCode = 'abc123';
+      const meta = {
+        maxVisits: 5,
+        validSince: '2020-05-05',
+      };
+      const state = {
+        shortUrls: {
+          data: [
+            { shortCode, meta: { maxVisits: 10 } },
+            { shortCode: 'foo', meta: null },
+          ],
+        },
+      };
+
+      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta })).toEqual({
+        shortUrls: {
+          data: [
+            { shortCode, meta },
+            { shortCode: 'foo', meta: null },
           ],
         },
       });

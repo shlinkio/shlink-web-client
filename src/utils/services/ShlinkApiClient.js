@@ -51,7 +51,7 @@ export default class ShlinkApiClient {
 
   updateShortUrlMeta = (shortCode, meta) =>
     this._performRequest(`/short-urls/${shortCode}`, 'PATCH', {}, meta)
-      .then(() => ({ meta }));
+      .then(() => meta);
 
   listTags = () =>
     this._performRequest('/tags', 'GET')

@@ -102,6 +102,25 @@ describe('ShlinkApiClient', () => {
     });
   });
 
+  describe('updateShortUrlMeta', () => {
+    it('properly updates short URL meta', async () => {
+      const expectedMeta = {
+        maxVisits: 50,
+        validSince: '2025-01-01T10:00:00+01:00',
+      };
+      const axiosSpy = jest.fn(createAxiosMock());
+      const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy);
+
+      const result = await updateShortUrlMeta('abc123', expectedMeta);
+
+      expect(expectedMeta).toEqual(result);
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/short-urls/abc123',
+        method: 'PATCH',
+      }));
+    });
+  });
+
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
       const expectedTags = [ 'foo', 'bar' ];
