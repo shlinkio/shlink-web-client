@@ -4,13 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.3.0 - 2020-01-19
 
 #### Added
 
 * [#174](https://github.com/shlinkio/shlink-web-client/issues/174) Added complete support for Shlink v2.x together with currently supported Shlink versions.
 * [#164](https://github.com/shlinkio/shlink-web-client/issues/164) Added max visits control on those URLs which have `maxVisits`.
 * [#178](https://github.com/shlinkio/shlink-web-client/issues/178) Short URLs list can now be filtered by date range.
+* [#46](https://github.com/shlinkio/shlink-web-client/issues/46) Allowed short URL's metadata to be edited (`maxVisits`, `validSince` and `validUntil`).
 
 #### Changed
 

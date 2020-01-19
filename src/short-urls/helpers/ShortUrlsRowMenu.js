@@ -5,6 +5,7 @@ import {
   faEllipsisV as menuIcon,
   faQrcode as qrIcon,
   faMinusCircle as deleteIcon,
+  faEdit as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
@@ -20,7 +21,11 @@ import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
 import './ShortUrlsRowMenu.scss';
 
-const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrlsRowMenu extends React.Component {
+const ShortUrlsRowMenu = (
+  DeleteShortUrlModal,
+  EditTagsModal,
+  EditMetaModal
+) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
     onCopyToClipboard: PropTypes.func,
     selectedServer: serverType,
@@ -32,6 +37,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
     isQrModalOpen: false,
     isPreviewModalOpen: false,
     isTagsModalOpen: false,
+    isMetaModalOpen: false,
     isDeleteModalOpen: false,
   };
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
@@ -45,6 +51,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
     const toggleQrCode = toggleModal('isQrModalOpen');
     const togglePreview = toggleModal('isPreviewModalOpen');
     const toggleTags = toggleModal('isTagsModalOpen');
+    const toggleMeta = toggleModal('isMetaModalOpen');
     const toggleDelete = toggleModal('isDeleteModalOpen');
 
     return (
@@ -54,21 +61,21 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem tag={Link} to={`/server/${selectedServer ? selectedServer.id : ''}/short-code/${shortUrl.shortCode}/visits`}>
-            <FontAwesomeIcon icon={pieChartIcon} /> &nbsp;Visit stats
+            <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
           </DropdownItem>
 
           <DropdownItem onClick={toggleTags}>
-            <FontAwesomeIcon icon={tagsIcon} /> &nbsp;Edit tags
+            <FontAwesomeIcon icon={tagsIcon} fixedWidth /> Edit tags
           </DropdownItem>
-          <EditTagsModal
-            url={completeShortUrl}
-            shortUrl={shortUrl}
-            isOpen={this.state.isTagsModalOpen}
-            toggle={toggleTags}
-          />
+          <EditTagsModal shortUrl={shortUrl} isOpen={this.state.isTagsModalOpen} toggle={toggleTags} />
+
+          <DropdownItem onClick={toggleMeta}>
+            <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
+          </DropdownItem>
+          <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
 
           <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
-            <FontAwesomeIcon icon={deleteIcon} /> &nbsp;Delete short URL
+            <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL
           </DropdownItem>
           <DeleteShortUrlModal shortUrl={shortUrl} isOpen={this.state.isDeleteModalOpen} toggle={toggleDelete} />
 
@@ -77,14 +84,14 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
           {showPreviewBtn && (
             <React.Fragment>
               <DropdownItem onClick={togglePreview}>
-                <FontAwesomeIcon icon={pictureIcon} /> &nbsp;Preview
+                <FontAwesomeIcon icon={pictureIcon} fixedWidth /> Preview
               </DropdownItem>
               <PreviewModal url={completeShortUrl} isOpen={this.state.isPreviewModalOpen} toggle={togglePreview} />
             </React.Fragment>
           )}
 
           <DropdownItem onClick={toggleQrCode}>
-            <FontAwesomeIcon icon={qrIcon} /> &nbsp;QR code
+            <FontAwesomeIcon icon={qrIcon} fixedWidth /> QR code
           </DropdownItem>
           <QrCodeModal url={completeShortUrl} isOpen={this.state.isQrModalOpen} toggle={toggleQrCode} />
 
@@ -92,7 +99,7 @@ const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal) => class ShortUrls
 
           <CopyToClipboard text={completeShortUrl} onCopy={onCopyToClipboard}>
             <DropdownItem>
-              <FontAwesomeIcon icon={copyIcon} /> &nbsp;Copy to clipboard
+              <FontAwesomeIcon icon={copyIcon} fixedWidth /> Copy to clipboard
             </DropdownItem>
           </CopyToClipboard>
         </DropdownMenu>

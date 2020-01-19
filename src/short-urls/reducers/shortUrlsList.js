@@ -3,18 +3,13 @@ import { assoc, assocPath, propEq, reject } from 'ramda';
 import PropTypes from 'prop-types';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
+import { SHORT_URL_META_EDITED, shortUrlMetaType } from './shortUrlMeta';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements */
-
-export const shortUrlMetaType = PropTypes.shape({
-  validSince: PropTypes.string,
-  validUntil: PropTypes.string,
-  maxVisits: PropTypes.number,
-});
 
 export const shortUrlType = PropTypes.shape({
   shortCode: PropTypes.string,
@@ -31,23 +26,25 @@ const initialState = {
   error: false,
 };
 
+const setPropFromActionOnMatchingShortUrl = (prop) => (state, { shortCode, [prop]: propValue }) => assocPath(
+  [ 'shortUrls', 'data' ],
+  state.shortUrls.data.map(
+    (shortUrl) => shortUrl.shortCode === shortCode ? assoc(prop, propValue, shortUrl) : shortUrl
+  ),
+  state
+);
+
 export default handleActions({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS]: (state, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true, shortUrls: {} }),
-  [SHORT_URL_TAGS_EDITED]: (state, action) => { // eslint-disable-line object-shorthand
-    const { data } = state.shortUrls;
-
-    return assocPath([ 'shortUrls', 'data' ], data.map((shortUrl) =>
-      shortUrl.shortCode === action.shortCode
-        ? assoc('tags', action.tags, shortUrl)
-        : shortUrl), state);
-  },
-  [SHORT_URL_DELETED]: (state, action) => assocPath(
+  [SHORT_URL_DELETED]: (state, { shortCode }) => assocPath(
     [ 'shortUrls', 'data' ],
-    reject(propEq('shortCode', action.shortCode), state.shortUrls.data),
+    reject(propEq('shortCode', shortCode), state.shortUrls.data),
     state,
   ),
+  [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl('tags'),
+  [SHORT_URL_META_EDITED]: setPropFromActionOnMatchingShortUrl('meta'),
 }, initialState);
 
 export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (dispatch, getState) => {

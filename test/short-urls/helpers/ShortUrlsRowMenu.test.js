@@ -10,6 +10,7 @@ describe('<ShortUrlsRowMenu />', () => {
   let wrapper;
   const DeleteShortUrlModal = () => '';
   const EditTagsModal = () => '';
+  const EditMetaModal = () => '';
   const onCopyToClipboard = jest.fn();
   const selectedServer = { id: 'abc123' };
   const shortUrl = {
@@ -17,7 +18,7 @@ describe('<ShortUrlsRowMenu />', () => {
     shortUrl: 'https://doma.in/abc123',
   };
   const createWrapper = (serverVersion = '1.21.1') => {
-    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal);
+    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal, EditMetaModal);
 
     wrapper = shallow(
       <ShortUrlsRowMenu
@@ -46,12 +47,12 @@ describe('<ShortUrlsRowMenu />', () => {
   });
 
   each([
-    [ '1.20.3', 6, 2 ],
-    [ '1.21.0', 6, 2 ],
-    [ '1.21.1', 6, 2 ],
-    [ '2.0.0', 5, 1 ],
-    [ '2.0.1', 5, 1 ],
-    [ '2.1.0', 5, 1 ],
+    [ '1.20.3', 7, 2 ],
+    [ '1.21.0', 7, 2 ],
+    [ '1.21.1', 7, 2 ],
+    [ '2.0.0', 6, 1 ],
+    [ '2.0.1', 6, 1 ],
+    [ '2.1.0', 6, 1 ],
   ]).it('renders correct amount of menu items depending on the version', (version, expectedNonDividerItems, expectedDividerItems) => {
     const wrapper = createWrapper(version);
     const items = wrapper.find(DropdownItem);

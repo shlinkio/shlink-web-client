@@ -1,10 +1,11 @@
 import reducer, {
   EDIT_SHORT_URL_TAGS,
   EDIT_SHORT_URL_TAGS_ERROR,
-  EDIT_SHORT_URL_TAGS_START, editShortUrlTags,
+  EDIT_SHORT_URL_TAGS_START,
   RESET_EDIT_SHORT_URL_TAGS,
   resetShortUrlsTags,
   SHORT_URL_TAGS_EDITED,
+  editShortUrlTags,
   shortUrlTagsEdited,
 } from '../../../src/short-urls/reducers/shortUrlTags';
 
