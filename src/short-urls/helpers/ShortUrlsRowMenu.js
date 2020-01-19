@@ -46,6 +46,7 @@ const ShortUrlsRowMenu = (
     const { onCopyToClipboard, shortUrl, selectedServer } = this.props;
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
     const currentServerVersion = selectedServer ? selectedServer.version : '';
+    const showEditMetaBtn = !isEmpty(currentServerVersion) && compareVersions(currentServerVersion, '>=', '1.18.0');
     const showPreviewBtn = !isEmpty(currentServerVersion) && compareVersions(currentServerVersion, '<', '2.0.0');
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
@@ -69,10 +70,14 @@ const ShortUrlsRowMenu = (
           </DropdownItem>
           <EditTagsModal shortUrl={shortUrl} isOpen={this.state.isTagsModalOpen} toggle={toggleTags} />
 
-          <DropdownItem onClick={toggleMeta}>
-            <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
-          </DropdownItem>
-          <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
+          {showEditMetaBtn && (
+            <React.Fragment>
+              <DropdownItem onClick={toggleMeta}>
+                <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
+              </DropdownItem>
+              <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
+            </React.Fragment>
+          )}
 
           <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL

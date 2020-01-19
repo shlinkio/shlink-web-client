@@ -22,10 +22,15 @@ describe('<SearchBar />', () => {
     expect(wrapper.find(SearchField)).toHaveLength(1);
   });
 
-  it('renders a DateRangeRow', () => {
-    wrapper = shallow(<SearchBar shortUrlsListParams={{}} />);
+  each([
+    [ '2.0.0', 1 ],
+    [ '1.21.2', 1 ],
+    [ '1.21.0', 1 ],
+    [ '1.20.0', 0 ],
+  ]).it('renders a DateRangeRow when proper version is run', (version, expectedLength) => {
+    wrapper = shallow(<SearchBar shortUrlsListParams={{}} selectedServer={{ version }} />);
 
-    expect(wrapper.find(DateRangeRow)).toHaveLength(1);
+    expect(wrapper.find(DateRangeRow)).toHaveLength(expectedLength);
   });
 
   it('renders no tags when the list of tags is empty', () => {
@@ -63,7 +68,9 @@ describe('<SearchBar />', () => {
   });
 
   each([ 'startDateChange', 'endDateChange' ]).it('updates short URLs list when date range changes', (event) => {
-    wrapper = shallow(<SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />);
+    wrapper = shallow(
+      <SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} selectedServer={{ version: '2.0.0' }} />
+    );
     const dateRange = wrapper.find(DateRangeRow);
 
     expect(listShortUrlsMock).not.toHaveBeenCalled();
