@@ -25,7 +25,7 @@ const provideServices = (bottle, connect) => {
   ));
 
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
+  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams', 'selectedServer' ], [ 'listShortUrls' ]));
 
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
   bottle.decorator('ShortUrlsList', connect(
