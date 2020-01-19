@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import moment from 'moment';
+import { pipe } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlEditMetaType } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
@@ -16,6 +17,7 @@ const propTypes = {
   shortUrl: shortUrlType.isRequired,
   shortUrlMeta: shortUrlEditMetaType,
   editShortUrlMeta: PropTypes.func,
+  resetShortUrlMeta: PropTypes.func,
 };
 
 const dateOrUndefined = (shortUrl, dateName) => {
@@ -25,22 +27,24 @@ const dateOrUndefined = (shortUrl, dateName) => {
 };
 
 const EditMetaModal = (
-  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta }
+  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }
 ) => {
   const { saving, error } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
   const [ validSince, setValidSince ] = useState(dateOrUndefined(shortUrl, 'validSince'));
   const [ validUntil, setValidUntil ] = useState(dateOrUndefined(shortUrl, 'validUntil'));
   const [ maxVisits, setMaxVisits ] = useState(shortUrl && shortUrl.meta && shortUrl.meta.maxVisits);
+
+  const close = pipe(resetShortUrlMeta, toggle);
   const doEdit = () => editShortUrlMeta(shortUrl.shortCode, {
     maxVisits: maxVisits && parseInt(maxVisits),
     validSince: validSince && formatIsoDate(validSince),
     validUntil: validUntil && formatIsoDate(validUntil),
-  }).then(toggle);
+  }).then(close);
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
-      <ModalHeader toggle={toggle}>
+    <Modal isOpen={isOpen} toggle={close} centered>
+      <ModalHeader toggle={close}>
         <FontAwesomeIcon icon={infoIcon} id="metaTitleInfo" /> Edit metadata for <ExternalLink href={url} />
         <UncontrolledTooltip target="metaTitleInfo" placement="bottom">
           <p>Using these metadata properties, you can limit when and how many times your short URL can be visited.</p>
@@ -83,7 +87,7 @@ const EditMetaModal = (
           )}
         </ModalBody>
         <ModalFooter>
-          <button className="btn btn-link" type="button" onClick={toggle}>Cancel</button>
+          <button className="btn btn-link" type="button" onClick={close}>Cancel</button>
           <button className="btn btn-primary" type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
         </ModalFooter>
       </form>

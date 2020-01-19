@@ -35,10 +35,7 @@ describe('<EditTagsModal />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    editShortUrlTags.mockClear();
-    shortUrlTagsEdited.mockReset();
-    resetShortUrlsTags.mockReset();
-    toggle.mockReset();
+    jest.clearAllMocks();
   });
 
   it('resets tags when component is mounted', () => {

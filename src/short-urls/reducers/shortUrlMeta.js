@@ -1,10 +1,11 @@
-import { handleActions } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_META_START = 'shlink/shortUrlMeta/EDIT_SHORT_URL_META_START';
 export const EDIT_SHORT_URL_META_ERROR = 'shlink/shortUrlMeta/EDIT_SHORT_URL_META_ERROR';
 export const SHORT_URL_META_EDITED = 'shlink/shortUrlMeta/SHORT_URL_META_EDITED';
+export const RESET_EDIT_SHORT_URL_META = 'shlink/shortUrlMeta/RESET_EDIT_SHORT_URL_META';
 /* eslint-enable padding-line-between-statements */
 
 export const shortUrlMetaType = PropTypes.shape({
@@ -31,6 +32,7 @@ export default handleActions({
   [EDIT_SHORT_URL_META_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_META_ERROR]: (state) => ({ ...state, saving: false, error: true }),
   [SHORT_URL_META_EDITED]: (state, { shortCode, meta }) => ({ shortCode, meta, saving: false, error: false }),
+  [RESET_EDIT_SHORT_URL_META]: () => initialState,
 }, initialState);
 
 export const editShortUrlMeta = (buildShlinkApiClient) => (shortCode, meta) => async (dispatch, getState) => {
@@ -46,3 +48,5 @@ export const editShortUrlMeta = (buildShlinkApiClient) => (shortCode, meta) => a
     throw e;
   }
 };
+
+export const resetShortUrlMeta = createAction(RESET_EDIT_SHORT_URL_META);

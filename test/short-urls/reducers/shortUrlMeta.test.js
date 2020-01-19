@@ -3,7 +3,9 @@ import reducer, {
   EDIT_SHORT_URL_META_START,
   EDIT_SHORT_URL_META_ERROR,
   SHORT_URL_META_EDITED,
+  RESET_EDIT_SHORT_URL_META,
   editShortUrlMeta,
+  resetShortUrlMeta,
 } from '../../../src/short-urls/reducers/shortUrlMeta';
 
 describe('shortUrlMetaReducer', () => {
@@ -32,6 +34,15 @@ describe('shortUrlMetaReducer', () => {
       expect(reducer({}, { type: SHORT_URL_META_EDITED, meta, shortCode })).toEqual({
         meta,
         shortCode,
+        saving: false,
+        error: false,
+      });
+    });
+
+    it('goes back to initial state on RESET_EDIT_SHORT_URL_META', () => {
+      expect(reducer({}, { type: RESET_EDIT_SHORT_URL_META })).toEqual({
+        meta: {},
+        shortCode: null,
         saving: false,
         error: false,
       });
@@ -74,5 +85,9 @@ describe('shortUrlMetaReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_META_ERROR });
     });
+  });
+
+  describe('resetShortUrlMeta', () => {
+    it('creates expected action', () => expect(resetShortUrlMeta()).toEqual({ type: RESET_EDIT_SHORT_URL_META }));
   });
 });
