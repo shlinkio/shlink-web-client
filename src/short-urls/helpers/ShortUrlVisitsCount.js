@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
-import { shortUrlMetaType } from '../reducers/shortUrlsList';
+import { shortUrlMetaType } from '../reducers/shortUrlMeta';
 import './ShortUrlVisitsCount.scss';
 
 const propTypes = {

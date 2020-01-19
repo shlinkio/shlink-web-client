@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import moment from 'moment';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlEditMetaType } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
+import { formatIsoDate } from '../../utils/utils';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -13,8 +16,6 @@ const propTypes = {
   shortUrl: shortUrlType.isRequired,
   shortUrlMeta: shortUrlEditMetaType,
   editShortUrlMeta: PropTypes.func,
-  shortUrlMetaEdited: PropTypes.func,
-  resetShortUrlMeta: PropTypes.func,
 };
 
 const dateOrUndefined = (shortUrl, dateName) => {
@@ -24,21 +25,29 @@ const dateOrUndefined = (shortUrl, dateName) => {
 };
 
 const EditMetaModal = (
-  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, shortUrlMetaEdited, resetShortUrlMeta }
+  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta }
 ) => {
-  const { saving, error } = editShortUrlMeta;
+  const { saving, error } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
-  const validSince = dateOrUndefined(shortUrl, 'validSince');
-  const validUntil = dateOrUndefined(shortUrl, 'validUntil');
-
-  console.log(shortUrlMeta, shortUrlMetaEdited, resetShortUrlMeta, useEffect, useState);
+  const [ validSince, setValidSince ] = useState(dateOrUndefined(shortUrl, 'validSince'));
+  const [ validUntil, setValidUntil ] = useState(dateOrUndefined(shortUrl, 'validUntil'));
+  const [ maxVisits, setMaxVisits ] = useState(shortUrl && shortUrl.meta && shortUrl.meta.maxVisits);
+  const doEdit = () => editShortUrlMeta(shortUrl.shortCode, {
+    maxVisits: maxVisits && parseInt(maxVisits),
+    validSince: validSince && formatIsoDate(validSince),
+    validUntil: validUntil && formatIsoDate(validUntil),
+  }).then(toggle);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}>
-        Edit metadata for <ExternalLink href={url} />
+        <FontAwesomeIcon icon={infoIcon} id="metaTitleInfo" /> Edit metadata for <ExternalLink href={url} />
+        <UncontrolledTooltip target="metaTitleInfo" placement="bottom">
+          <p>Using these metadata properties, you can limit when and how many times your short URL can be visited.</p>
+          <p>If any of the params is not met, the URL will behave as if it was an invalid short URL.</p>
+        </UncontrolledTooltip>
       </ModalHeader>
-      <form>
+      <form onSubmit={(e) => e.preventDefault() || doEdit()}>
         <ModalBody>
           <FormGroup>
             <DateInput
@@ -46,6 +55,7 @@ const EditMetaModal = (
               selected={validSince}
               maxDate={validUntil}
               isClearable
+              onChange={setValidSince}
             />
           </FormGroup>
           <FormGroup>
@@ -54,10 +64,17 @@ const EditMetaModal = (
               selected={validUntil}
               minDate={validSince}
               isClearable
+              onChange={setValidUntil}
             />
           </FormGroup>
           <FormGroup className="mb-0">
-            <Input type="number" placeholder="Maximum number of visits allowed" />
+            <Input
+              type="number"
+              placeholder="Maximum number of visits allowed"
+              min={1}
+              value={maxVisits || ''}
+              onChange={(e) => setMaxVisits(e.target.value)}
+            />
           </FormGroup>
           {error && (
             <div className="p-2 mt-2 bg-danger text-white text-center">
