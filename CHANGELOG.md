@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+
+#### Added
+
+* *Nothing*
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* [#193](https://github.com/shlinkio/shlink-web-client/issues/193) Fixed `maxVisits` being set to 0 when trying to reset it from having a value to `null`.
+
+
 ## 2.3.0 - 2020-01-19
 
 #### Added

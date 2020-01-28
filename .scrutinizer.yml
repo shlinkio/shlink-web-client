@@ -1,6 +1,6 @@
 build:
   environment:
-    node: v12.11.0
+    node: v12.14.1
 tools:
   external_code_coverage:
     timeout: 1200

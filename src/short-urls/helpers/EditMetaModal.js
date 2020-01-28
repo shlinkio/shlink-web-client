@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import moment from 'moment';
-import { pipe } from 'ramda';
+import { isEmpty, pipe } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlEditMetaType } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
@@ -37,7 +37,7 @@ const EditMetaModal = (
 
   const close = pipe(resetShortUrlMeta, toggle);
   const doEdit = () => editShortUrlMeta(shortUrl.shortCode, {
-    maxVisits: maxVisits && parseInt(maxVisits),
+    maxVisits: maxVisits && !isEmpty(maxVisits) ? parseInt(maxVisits) : null,
     validSince: validSince && formatIsoDate(validSince),
     validUntil: validUntil && formatIsoDate(validUntil),
   }).then(close);
