@@ -5,4 +5,5 @@ export const serverType = PropTypes.shape({
   name: PropTypes.string,
   url: PropTypes.string,
   apiKey: PropTypes.string,
+  version: PropTypes.string,
 });

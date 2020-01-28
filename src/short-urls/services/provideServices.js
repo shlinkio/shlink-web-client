@@ -24,8 +24,8 @@ const provideServices = (bottle, connect) => {
     (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList)
   ));
 
-  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams', 'selectedServer' ], [ 'listShortUrls' ]));
+  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
+  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
 
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
   bottle.decorator('ShortUrlsList', connect(
@@ -35,10 +35,17 @@ const provideServices = (bottle, connect) => {
 
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'stateFlagTimeout');
 
-  bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'EditTagsModal', 'EditMetaModal');
+  bottle.serviceFactory(
+    'ShortUrlsRowMenu',
+    ShortUrlsRowMenu,
+    'DeleteShortUrlModal',
+    'EditTagsModal',
+    'EditMetaModal',
+    'ForServerVersion'
+  );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'stateFlagTimeout');
 
-  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult');
+  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult', 'ForServerVersion');
   bottle.decorator(
     'CreateShortUrl',
     connect([ 'shortUrlCreationResult', 'selectedServer' ], [ 'createShortUrl', 'resetCreateShortUrl' ])
