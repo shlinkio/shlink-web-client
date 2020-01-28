@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* *Nothing*
+* [#191](https://github.com/shlinkio/shlink-web-client/issues/191) Created `ForServerVersion` helper component which dynamically renders children if current server conditions are met.
 
 #### Deprecated
 

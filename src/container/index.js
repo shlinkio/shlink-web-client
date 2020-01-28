@@ -20,7 +20,7 @@ const mapActionService = (map, actionName) => ({
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: lazyService(container, actionName),
 });
-const connect = (propsFromState, actionServiceNames) =>
+const connect = (propsFromState, actionServiceNames = []) =>
   reduxConnect(
     propsFromState ? pick(propsFromState) : null,
     actionServiceNames.reduce(mapActionService, {})

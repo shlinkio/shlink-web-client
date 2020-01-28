@@ -6,7 +6,6 @@ import { Collapse, FormGroup, Input } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
-import ForVersion from '../utils/ForVersion';
 import { serverType } from '../servers/prop-types';
 import { compareVersions } from '../utils/utils';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
@@ -15,7 +14,11 @@ import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const formatDate = (date) => isNil(date) ? date : date.format();
 
-const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShortUrl extends React.Component {
+const CreateShortUrl = (
+  TagsSelector,
+  CreateShortUrlResult,
+  ForServerVersion
+) => class CreateShortUrl extends React.Component {
   static propTypes = {
     createShortUrl: PropTypes.func,
     shortUrlCreationResult: createShortUrlResultType,
@@ -116,7 +119,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
               </div>
             </div>
 
-            <ForVersion minVersion="1.16.0" currentServerVersion={currentServerVersion}>
+            <ForServerVersion minVersion="1.16.0">
               <div className="mb-4 text-right">
                 <Checkbox
                   className="mr-2"
@@ -127,7 +130,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult) => class CreateShort
                 </Checkbox>
                 <UseExistingIfFoundInfoIcon />
               </div>
-            </ForVersion>
+            </ForServerVersion>
           </Collapse>
 
           <div>
