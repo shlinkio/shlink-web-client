@@ -10,5 +10,5 @@ RewriteRule .+ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # if static asset do not do anything
-RewriteRule (.*)(css|js|html|png|jpg|jpeg|json|gif|bmp|ico|json|csv|otf|eot|svg|svgz|ttf|woff|woff2|ijmap|pdf|tif|map)$ - [L]
+RewriteRule (.*)(css|js|html|png|jpg|json|jpeg|gif|bmp|ico|json|csv|otf|eot|svg|svgz|ttf|woff|woff2|ijmap|pdf|tif|map)$ - [L,R=404]
 RewriteRule (.*) /index.html [L]
