@@ -1,3 +1,14 @@
 RewriteEngine on
+RewriteBase /
+
+# do not do anything for already existing files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule .+ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule /[^/.]+$ /index.html [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+# if static asset do not do anything
+RewriteRule (.*)(css|js|html|png|jpg|jpeg|json|gif|bmp|ico|json|csv|otf|eot|svg|svgz|ttf|woff|woff2|ijmap|pdf|tif|map)$ - [L]
+RewriteRule (.*) /index.html [L]
