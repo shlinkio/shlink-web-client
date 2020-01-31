@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { ExternalLink } from 'react-external-link';
+import { pipe } from 'ramda';
 import { shortUrlTagsType } from '../reducers/shortUrlTags';
 import { shortUrlType } from '../reducers/shortUrlsList';
 
@@ -12,7 +13,6 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
     shortUrl: shortUrlType.isRequired,
     shortUrlTags: shortUrlTagsType,
     editShortUrlTags: PropTypes.func,
-    shortUrlTagsEdited: PropTypes.func,
     resetShortUrlsTags: PropTypes.func,
   };
 
@@ -20,28 +20,14 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
     const { editShortUrlTags, shortUrl, toggle } = this.props;
 
     editShortUrlTags(shortUrl.shortCode, this.state.tags)
-      .then(() => {
-        this.tagsSaved = true;
-        toggle();
-      })
+      .then(toggle)
       .catch(() => {});
-  };
-  refreshShortUrls = () => {
-    if (!this.tagsSaved) {
-      return;
-    }
-
-    const { shortUrlTagsEdited, shortUrl, shortUrlTags } = this.props;
-    const { tags } = shortUrlTags;
-
-    shortUrlTagsEdited(shortUrl.shortCode, tags);
   };
 
   componentDidMount() {
     const { resetShortUrlsTags } = this.props;
 
     resetShortUrlsTags();
-    this.tagsSaved = false;
   }
 
   constructor(props) {
@@ -50,12 +36,13 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
   }
 
   render() {
-    const { isOpen, toggle, shortUrl, shortUrlTags } = this.props;
+    const { isOpen, toggle, shortUrl, shortUrlTags, resetShortUrlsTags } = this.props;
     const url = shortUrl && (shortUrl.shortUrl || '');
+    const close = pipe(resetShortUrlsTags, toggle);
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={() => this.refreshShortUrls()}>
-        <ModalHeader toggle={toggle}>
+      <Modal isOpen={isOpen} toggle={close} centered>
+        <ModalHeader toggle={close}>
           Edit tags for <ExternalLink href={url} />
         </ModalHeader>
         <ModalBody>
@@ -67,7 +54,7 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
           )}
         </ModalBody>
         <ModalFooter>
-          <button className="btn btn-link" onClick={toggle}>Cancel</button>
+          <button className="btn btn-link" onClick={close}>Cancel</button>
           <button
             className="btn btn-primary"
             type="button"
