@@ -14,7 +14,7 @@ describe('<CreateShortUrl />', () => {
   const createShortUrl = jest.fn();
 
   beforeEach(() => {
-    const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '');
+    const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '', () => '');
 
     wrapper = shallow(
       <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />

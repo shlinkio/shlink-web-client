@@ -9,7 +9,7 @@ import DateRangeRow from '../../src/utils/DateRangeRow';
 describe('<SearchBar />', () => {
   let wrapper;
   const listShortUrlsMock = jest.fn();
-  const SearchBar = searchBarCreator({});
+  const SearchBar = searchBarCreator({}, () => '');
 
   afterEach(() => {
     listShortUrlsMock.mockReset();
