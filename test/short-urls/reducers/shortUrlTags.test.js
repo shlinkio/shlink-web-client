@@ -1,12 +1,10 @@
 import reducer, {
-  EDIT_SHORT_URL_TAGS,
   EDIT_SHORT_URL_TAGS_ERROR,
   EDIT_SHORT_URL_TAGS_START,
   RESET_EDIT_SHORT_URL_TAGS,
   resetShortUrlsTags,
   SHORT_URL_TAGS_EDITED,
   editShortUrlTags,
-  shortUrlTagsEdited,
 } from '../../../src/short-urls/reducers/shortUrlTags';
 
 describe('shortUrlTagsReducer', () => {
@@ -28,8 +26,8 @@ describe('shortUrlTagsReducer', () => {
       });
     });
 
-    it('returns provided tags and shortCode on EDIT_SHORT_URL_TAGS', () => {
-      expect(reducer({}, { type: EDIT_SHORT_URL_TAGS, tags, shortCode })).toEqual({
+    it('returns provided tags and shortCode on SHORT_URL_TAGS_EDITED', () => {
+      expect(reducer({}, { type: SHORT_URL_TAGS_EDITED, tags, shortCode })).toEqual({
         tags,
         shortCode,
         saving: false,
@@ -49,14 +47,6 @@ describe('shortUrlTagsReducer', () => {
 
   describe('resetShortUrlsTags', () => {
     it('creates expected action', () => expect(resetShortUrlsTags()).toEqual({ type: RESET_EDIT_SHORT_URL_TAGS }));
-  });
-
-  describe('shortUrlTagsEdited', () => {
-    it('creates expected action', () => expect(shortUrlTagsEdited(shortCode, tags)).toEqual({
-      tags,
-      shortCode,
-      type: SHORT_URL_TAGS_EDITED,
-    }));
   });
 
   describe('editShortUrlTags', () => {
@@ -82,7 +72,7 @@ describe('shortUrlTagsReducer', () => {
       expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, tags);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_TAGS, tags: normalizedTags, shortCode });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode });
     });
 
     it('dispatches error on failure', async () => {

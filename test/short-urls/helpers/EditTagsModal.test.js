@@ -8,7 +8,6 @@ describe('<EditTagsModal />', () => {
   const shortCode = 'abc123';
   const TagsSelector = () => '';
   const editShortUrlTags = jest.fn(() => Promise.resolve());
-  const shortUrlTagsEdited = jest.fn();
   const resetShortUrlsTags = jest.fn();
   const toggle = jest.fn();
   const createWrapper = (shortUrlTags) => {
@@ -25,7 +24,6 @@ describe('<EditTagsModal />', () => {
         shortUrlTags={shortUrlTags}
         toggle={toggle}
         editShortUrlTags={editShortUrlTags}
-        shortUrlTagsEdited={shortUrlTagsEdited}
         resetShortUrlsTags={resetShortUrlsTags}
       />
     );
@@ -107,28 +105,7 @@ describe('<EditTagsModal />', () => {
     const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
-    expect(shortUrlTagsEdited).not.toHaveBeenCalled();
-  });
-
-  it('notifies tags have been edited when window is closed after saving', (done) => {
-    const wrapper = createWrapper({
-      shortCode,
-      tags: [],
-      saving: true,
-      error: false,
-    });
-    const saveBtn = wrapper.find('.btn-primary');
-    const modal = wrapper.find(Modal);
-
-    saveBtn.simulate('click');
-
-    // Wrap this expect in a setImmediate since it is called as a result of an inner promise
-    setImmediate(() => {
-      modal.simulate('closed');
-      expect(shortUrlTagsEdited).toHaveBeenCalledTimes(1);
-      expect(shortUrlTagsEdited).toHaveBeenCalledWith(shortCode, []);
-      done();
-    });
+    expect(editShortUrlTags).not.toHaveBeenCalled();
   });
 
   it('toggles modal when cancel button is clicked', () => {

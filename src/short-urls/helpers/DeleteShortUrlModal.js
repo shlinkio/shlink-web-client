@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { identity } from 'ramda';
+import { identity, pipe } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlDeletionType } from '../reducers/shortUrlDeletion';
 
@@ -15,21 +15,17 @@ export default class DeleteShortUrlModal extends React.Component {
     shortUrlDeletion: shortUrlDeletionType,
     deleteShortUrl: PropTypes.func,
     resetDeleteShortUrl: PropTypes.func,
-    shortUrlDeleted: PropTypes.func,
   };
 
   state = { inputValue: '' };
   handleDeleteUrl = (e) => {
     e.preventDefault();
 
-    const { deleteShortUrl, shortUrl, toggle, shortUrlDeleted } = this.props;
+    const { deleteShortUrl, shortUrl, toggle } = this.props;
     const { shortCode } = shortUrl;
 
     deleteShortUrl(shortCode)
-      .then(() => {
-        shortUrlDeleted(shortCode);
-        toggle();
-      })
+      .then(toggle)
       .catch(identity);
   };
 
@@ -40,16 +36,17 @@ export default class DeleteShortUrlModal extends React.Component {
   }
 
   render() {
-    const { shortUrl, toggle, isOpen, shortUrlDeletion } = this.props;
+    const { shortUrl, toggle, isOpen, shortUrlDeletion, resetDeleteShortUrl } = this.props;
     const { error, errorData } = shortUrlDeletion;
     const errorCode = error && (errorData.type || errorData.error);
     const hasThresholdError = errorCode === THRESHOLD_REACHED;
     const hasErrorOtherThanThreshold = error && errorCode !== THRESHOLD_REACHED;
+    const close = pipe(resetDeleteShortUrl, toggle);
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered>
+      <Modal isOpen={isOpen} toggle={close} centered>
         <form onSubmit={this.handleDeleteUrl}>
-          <ModalHeader toggle={toggle}>
+          <ModalHeader toggle={close}>
             <span className="text-danger">Delete short URL</span>
           </ModalHeader>
           <ModalBody>
@@ -77,7 +74,7 @@ export default class DeleteShortUrlModal extends React.Component {
             )}
           </ModalBody>
           <ModalFooter>
-            <button type="button" className="btn btn-link" onClick={toggle}>Cancel</button>
+            <button type="button" className="btn btn-link" onClick={close}>Cancel</button>
             <button
               type="submit"
               className="btn btn-danger"

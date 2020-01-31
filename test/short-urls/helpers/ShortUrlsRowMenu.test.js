@@ -17,7 +17,7 @@ describe('<ShortUrlsRowMenu />', () => {
     shortUrl: 'https://doma.in/abc123',
   };
   const createWrapper = () => {
-    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal, EditMetaModal);
+    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal, EditMetaModal, () => '');
 
     wrapper = shallow(
       <ShortUrlsRowMenu
