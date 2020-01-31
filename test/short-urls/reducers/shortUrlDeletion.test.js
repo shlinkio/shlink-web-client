@@ -1,10 +1,9 @@
 import reducer, {
-  DELETE_SHORT_URL, DELETE_SHORT_URL_ERROR,
+  DELETE_SHORT_URL_ERROR,
   DELETE_SHORT_URL_START,
   RESET_DELETE_SHORT_URL,
   SHORT_URL_DELETED,
   resetDeleteShortUrl,
-  shortUrlDeleted,
   deleteShortUrl,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
 
@@ -26,8 +25,8 @@ describe('shortUrlDeletionReducer', () => {
         errorData: {},
       }));
 
-    it('returns shortCode on DELETE_SHORT_URL', () =>
-      expect(reducer(undefined, { type: DELETE_SHORT_URL, shortCode: 'foo' })).toEqual({
+    it('returns shortCode on SHORT_URL_DELETED', () =>
+      expect(reducer(undefined, { type: SHORT_URL_DELETED, shortCode: 'foo' })).toEqual({
         shortCode: 'foo',
         loading: false,
         error: false,
@@ -51,11 +50,6 @@ describe('shortUrlDeletionReducer', () => {
       expect(resetDeleteShortUrl()).toEqual({ type: RESET_DELETE_SHORT_URL }));
   });
 
-  describe('shortUrlDeleted', () => {
-    it('returns expected action', () =>
-      expect(shortUrlDeleted('abc123')).toEqual({ type: SHORT_URL_DELETED, shortCode: 'abc123' }));
-  });
-
   describe('deleteShortUrl', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValue({ selectedServer: {} });
@@ -75,7 +69,7 @@ describe('shortUrlDeletionReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_SHORT_URL, shortCode });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode);
