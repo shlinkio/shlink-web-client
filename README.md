@@ -14,23 +14,30 @@ A ReactJS-based progressive web application for [Shlink](https://shlink.io).
 
 There are three ways in which you can use this application.
 
-* The easiest way to use shlink-web-client is by just going to <https://app.shlink.io>.
+### From app.shlink.io
 
-    The application runs 100% in the browser, so you can safely access any shlink instance from there.
+The easiest way to use shlink-web-client is by just going to <https://app.shlink.io>.
 
-* Self hosting the application yourself.
+The application runs 100% in the browser, so you can safely access any shlink instance from there.
 
-    Get the [latest release](https://github.com/shlinkio/shlink-web-client/releases/latest) and download the distributable zip file attached to it (`shlink-web-client_X.X.X_dist.zip`).
+### Docker image
 
-    The package contains static files only, so just put it in a folder and serve it with the web server of your choice.
+If you want to deploy shlink-web-client in a container-based cluster (kubernetes, docker swarm, etc), just pick the [shlinkio/shlink-web-client](https://hub.docker.com/r/shlinkio/shlink-web-client/) image and do it.
 
-    Provided dist files are configured to be served from the root of your domain. If you need to serve shlink-web-client from a subpath, you will have to build it yourself following [these steps](#serve-shlink-in-subpath).
+It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the static app on port 80.
 
-* Using the official [docker image](https://hub.docker.com/r/shlinkio/shlink-web-client/)
+### Self-hosted
 
-    If you want to deploy shlink-web-client in a container-based cluster (kubernetes, docker swarm, etc), just pick the `shlinkio/shlink-web-client` image and do it.
+If you want to self-host it yourself, get the [latest release](https://github.com/shlinkio/shlink-web-client/releases/latest) and download the distributable zip file attached to it (`shlink-web-client_X.X.X_dist.zip`).
 
-    It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the static app on port 80.
+The package contains static files only, so just put it in a folder and serve it with the web server of your choice.
+
+**Considerations**:
+
+* Provided dist files are configured to be served from the root of your domain. If you need to serve shlink-web-client from a subpath, you will have to build it yourself following [these steps](#serve-shlink-in-subpath).
+* The app has a client-side router that handles dynamic paths. Because of that, you need to configure your web server to fall-back to the `index.html` file when requested files do not exist.
+    * If you use Apache, you are covered, since the project includes an `.htaccess` file which already does this.
+    * If you use nginx, you can [see how it's done](config/docker/nginx.conf) for the docker image and do the same.
 
 ## Pre-configuring servers
 
