@@ -63,3 +63,11 @@ body,
 .indivisible {
   white-space: nowrap;
 }
+
+.react-datepicker__day--keyboard-selected {
+  background-color: $mainColor;
+
+  &:hover {
+    background-color: darken($mainColor, 12%);
+  }
+}
