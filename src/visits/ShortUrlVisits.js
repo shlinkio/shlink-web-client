@@ -4,6 +4,7 @@ import { isEmpty, mapObjIndexed, values } from 'ramda';
 import React from 'react';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 import DateRangeRow from '../utils/DateRangeRow';
 import MutedMessage from '../utils/MuttedMessage';
 import { formatDate } from '../utils/utils';
@@ -21,6 +22,9 @@ const ShortUrlVisits = (
     match: PropTypes.shape({
       params: PropTypes.object,
     }),
+    location: PropTypes.shape({
+      search: PropTypes.string,
+    }),
     getShortUrlVisits: PropTypes.func,
     shortUrlVisits: shortUrlVisitsType,
     getShortUrlDetail: PropTypes.func,
@@ -29,24 +33,24 @@ const ShortUrlVisits = (
   };
 
   state = { startDate: undefined, endDate: undefined };
-  loadVisits = () => {
-    const { match: { params }, getShortUrlVisits } = this.props;
+  loadVisits = (loadDetail = false) => {
+    const { match: { params }, location: { search }, getShortUrlVisits, getShortUrlDetail } = this.props;
     const { shortCode } = params;
-    const dates = mapObjIndexed(formatDate(), this.state);
-    const { startDate, endDate } = dates;
+    const { startDate, endDate } = mapObjIndexed(formatDate(), this.state);
+    const { domain } = qs.parse(search, { ignoreQueryPrefix: true });
 
-    // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calcs
+    // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calculations
     this.memoizationId = `${this.timeWhenMounted}_${shortCode}_${startDate}_${endDate}`;
-    getShortUrlVisits(shortCode, dates);
+    getShortUrlVisits(shortCode, { startDate, endDate, domain });
+
+    if (loadDetail) {
+      getShortUrlDetail(shortCode, domain);
+    }
   };
 
   componentDidMount() {
-    const { match: { params }, getShortUrlDetail } = this.props;
-    const { shortCode } = params;
-
     this.timeWhenMounted = new Date().getTime();
-    this.loadVisits();
-    getShortUrlDetail(shortCode);
+    this.loadVisits(true);
   }
 
   componentWillUnmount() {

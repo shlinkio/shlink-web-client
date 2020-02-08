@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { isEmpty, isNil, pipe, reject } from 'ramda';
+import { isEmpty, isNil, reject } from 'ramda';
 import PropTypes from 'prop-types';
 
 export const apiErrorType = PropTypes.shape({
@@ -12,6 +12,7 @@ export const apiErrorType = PropTypes.shape({
 });
 
 const buildShlinkBaseUrl = (url, apiVersion) => url ? `${url}/rest/v${apiVersion}` : '';
+const rejectNilProps = reject(isNil);
 
 export default class ShlinkApiClient {
   constructor(axios, baseUrl, apiKey) {
@@ -21,10 +22,8 @@ export default class ShlinkApiClient {
     this._apiKey = apiKey || '';
   }
 
-  listShortUrls = pipe(
-    (options = {}) => reject(isNil, options),
-    (options) => this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls)
-  );
+  listShortUrls = (options = {}) =>
+    this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls);
 
   createShortUrl = (options) => {
     const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options);
@@ -37,20 +36,20 @@ export default class ShlinkApiClient {
     this._performRequest(`/short-urls/${shortCode}/visits`, 'GET', query)
       .then((resp) => resp.data.visits);
 
-  getShortUrl = (shortCode) =>
-    this._performRequest(`/short-urls/${shortCode}`, 'GET')
+  getShortUrl = (shortCode, domain) =>
+    this._performRequest(`/short-urls/${shortCode}`, 'GET', { domain })
       .then((resp) => resp.data);
 
-  deleteShortUrl = (shortCode) =>
-    this._performRequest(`/short-urls/${shortCode}`, 'DELETE')
+  deleteShortUrl = (shortCode, domain) =>
+    this._performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => ({}));
 
-  updateShortUrlTags = (shortCode, tags) =>
-    this._performRequest(`/short-urls/${shortCode}/tags`, 'PUT', {}, { tags })
+  updateShortUrlTags = (shortCode, domain, tags) =>
+    this._performRequest(`/short-urls/${shortCode}/tags`, 'PUT', { domain }, { tags })
       .then((resp) => resp.data.tags);
 
-  updateShortUrlMeta = (shortCode, meta) =>
-    this._performRequest(`/short-urls/${shortCode}`, 'PATCH', {}, meta)
+  updateShortUrlMeta = (shortCode, domain, meta) =>
+    this._performRequest(`/short-urls/${shortCode}`, 'PATCH', { domain }, meta)
       .then(() => meta);
 
   listTags = () =>
@@ -73,7 +72,7 @@ export default class ShlinkApiClient {
         method,
         url: `${buildShlinkBaseUrl(this._baseUrl, this._apiVersion)}${url}`,
         headers: { 'X-Api-Key': this._apiKey },
-        params: query,
+        params: rejectNilProps(query),
         data: body,
         paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
       });

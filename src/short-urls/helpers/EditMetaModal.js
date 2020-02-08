@@ -36,7 +36,7 @@ const EditMetaModal = (
   const [ maxVisits, setMaxVisits ] = useState(shortUrl && shortUrl.meta && shortUrl.meta.maxVisits);
 
   const close = pipe(resetShortUrlMeta, toggle);
-  const doEdit = () => editShortUrlMeta(shortUrl.shortCode, {
+  const doEdit = () => editShortUrlMeta(shortUrl.shortCode, shortUrl.domain, {
     maxVisits: maxVisits && !isEmpty(maxVisits) ? parseInt(maxVisits) : null,
     validSince: validSince && formatIsoDate(validSince),
     validUntil: validUntil && formatIsoDate(validUntil),

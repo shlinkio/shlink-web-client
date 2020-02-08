@@ -1,8 +1,14 @@
+import each from 'jest-each';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
   const createAxiosMock = (data) => () => Promise.resolve(data);
   const createApiClient = (data) => new ShlinkApiClient(createAxiosMock(data));
+  const shortCodesWithDomainCombinations = [
+    [ 'abc123', null ],
+    [ 'abc123', undefined ],
+    [ 'abc123', 'example.com' ],
+  ];
 
   describe('listShortUrls', () => {
     it('properly returns short URLs list', async () => {
@@ -67,43 +73,45 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('getShortUrl', () => {
-    it('properly returns short URL', async () => {
+    each(shortCodesWithDomainCombinations).it('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };
       const axiosSpy = jest.fn(createAxiosMock({
         data: expectedShortUrl,
       }));
       const { getShortUrl } = new ShlinkApiClient(axiosSpy);
 
-      const result = await getShortUrl('abc123');
+      const result = await getShortUrl(shortCode, domain);
 
       expect(expectedShortUrl).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/short-urls/abc123',
+        url: `/short-urls/${shortCode}`,
         method: 'GET',
+        params: domain ? { domain } : {},
       }));
     });
   });
 
   describe('updateShortUrlTags', () => {
-    it('properly updates short URL tags', async () => {
+    each(shortCodesWithDomainCombinations).it('properly updates short URL tags', async (shortCode, domain) => {
       const expectedTags = [ 'foo', 'bar' ];
       const axiosSpy = jest.fn(createAxiosMock({
         data: { tags: expectedTags },
       }));
       const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy);
 
-      const result = await updateShortUrlTags('abc123', expectedTags);
+      const result = await updateShortUrlTags(shortCode, domain, expectedTags);
 
       expect(expectedTags).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/short-urls/abc123/tags',
+        url: `/short-urls/${shortCode}/tags`,
         method: 'PUT',
+        params: domain ? { domain } : {},
       }));
     });
   });
 
   describe('updateShortUrlMeta', () => {
-    it('properly updates short URL meta', async () => {
+    each(shortCodesWithDomainCombinations).it('properly updates short URL meta', async (shortCode, domain) => {
       const expectedMeta = {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
@@ -111,12 +119,13 @@ describe('ShlinkApiClient', () => {
       const axiosSpy = jest.fn(createAxiosMock());
       const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy);
 
-      const result = await updateShortUrlMeta('abc123', expectedMeta);
+      const result = await updateShortUrlMeta(shortCode, domain, expectedMeta);
 
       expect(expectedMeta).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/short-urls/abc123',
+        url: `/short-urls/${shortCode}`,
         method: 'PATCH',
+        params: domain ? { domain } : {},
       }));
     });
   });
@@ -172,15 +181,16 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('deleteShortUrl', () => {
-    it('properly deletes provided short URL', async () => {
+    each(shortCodesWithDomainCombinations).it('properly deletes provided short URL', async (shortCode, domain) => {
       const axiosSpy = jest.fn(createAxiosMock({}));
       const { deleteShortUrl } = new ShlinkApiClient(axiosSpy);
 
-      await deleteShortUrl('abc123');
+      await deleteShortUrl(shortCode, domain);
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/short-urls/abc123',
+        url: `/short-urls/${shortCode}`,
         method: 'DELETE',
+        params: domain ? { domain } : {},
       }));
     });
   });

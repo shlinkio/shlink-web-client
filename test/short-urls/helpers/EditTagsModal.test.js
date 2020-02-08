@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Modal } from 'reactstrap';
+import each from 'jest-each';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 
 describe('<EditTagsModal />', () => {
@@ -10,7 +11,7 @@ describe('<EditTagsModal />', () => {
   const editShortUrlTags = jest.fn(() => Promise.resolve());
   const resetShortUrlsTags = jest.fn();
   const toggle = jest.fn();
-  const createWrapper = (shortUrlTags) => {
+  const createWrapper = (shortUrlTags, domain) => {
     const EditTagsModal = createEditTagsModal(TagsSelector);
 
     wrapper = shallow(
@@ -19,6 +20,7 @@ describe('<EditTagsModal />', () => {
         shortUrl={{
           tags: [],
           shortCode,
+          domain,
           originalUrl: 'https://long-domain.com/foo/bar',
         }}
         shortUrlTags={shortUrlTags}
@@ -74,19 +76,19 @@ describe('<EditTagsModal />', () => {
     expect(saveBtn.text()).toEqual('Saving tags...');
   });
 
-  it('saves tags when save button is clicked', (done) => {
+  each([[ undefined ], [ null ], [ 'example.com' ]]).it('saves tags when save button is clicked', (domain, done) => {
     const wrapper = createWrapper({
       shortCode,
       tags: [],
       saving: true,
       error: false,
-    });
+    }, domain);
     const saveBtn = wrapper.find('.btn-primary');
 
     saveBtn.simulate('click');
 
     expect(editShortUrlTags).toHaveBeenCalledTimes(1);
-    expect(editShortUrlTags).toHaveBeenCalledWith(shortCode, []);
+    expect(editShortUrlTags).toHaveBeenCalledWith(shortCode, domain, []);
 
     // Wrap this expect in a setImmediate since it is called as a result of an inner promise
     setImmediate(() => {

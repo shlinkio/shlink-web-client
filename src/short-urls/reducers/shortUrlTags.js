@@ -29,12 +29,12 @@ export default handleActions({
   [RESET_EDIT_SHORT_URL_TAGS]: () => initialState,
 }, initialState);
 
-export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, tags) => async (dispatch, getState) => {
+export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, domain, tags) => async (dispatch, getState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
   const { updateShortUrlTags } = await buildShlinkApiClient(getState);
 
   try {
-    const normalizedTags = await updateShortUrlTags(shortCode, tags);
+    const normalizedTags = await updateShortUrlTags(shortCode, domain, tags);
 
     dispatch({ tags: normalizedTags, shortCode, type: SHORT_URL_TAGS_EDITED });
   } catch (e) {

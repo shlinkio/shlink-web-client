@@ -10,13 +10,13 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { Link } from 'react-router-dom';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
+import VisitStatsLink from './VisitStatsLink';
 import './ShortUrlsRowMenu.scss';
 
 const ShortUrlsRowMenu = (
@@ -57,7 +57,7 @@ const ShortUrlsRowMenu = (
           &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem tag={Link} to={`/server/${selectedServer ? selectedServer.id : ''}/short-code/${shortUrl.shortCode}/visits`}>
+          <DropdownItem tag={VisitStatsLink} selectedServer={selectedServer} shortUrl={shortUrl}>
             <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
           </DropdownItem>
 

@@ -33,7 +33,7 @@ export default function VisitsHeader({ shortUrlDetail, shortUrlVisits }) {
         <h2>
           <span className="badge badge-main float-right">
             Visits:{' '}
-            <ShortUrlVisitsCount visitsCount={visits.length} meta={shortUrl.meta} />
+            <ShortUrlVisitsCount visitsCount={visits.length} shortUrl={shortUrl} />
           </span>
           Visit stats for <ExternalLink href={shortLink} />
         </h2>

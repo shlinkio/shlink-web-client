@@ -1,3 +1,4 @@
+import each from 'jest-each';
 import reducer, {
   EDIT_SHORT_URL_TAGS_ERROR,
   EDIT_SHORT_URL_TAGS_START,
@@ -60,16 +61,16 @@ describe('shortUrlTagsReducer', () => {
       dispatch.mockReset();
     });
 
-    it('dispatches normalized tags on success', async () => {
+    each([[ undefined ], [ null ], [ 'example.com' ]]).it('dispatches normalized tags on success', async (domain) => {
       const normalizedTags = [ 'bar', 'foo' ];
 
       updateShortUrlTags.mockResolvedValue(normalizedTags);
 
-      await editShortUrlTags(buildShlinkApiClient)(shortCode, tags)(dispatch);
+      await editShortUrlTags(buildShlinkApiClient)(shortCode, domain, tags)(dispatch);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, tags);
+      expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, domain, tags);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode });
@@ -81,14 +82,14 @@ describe('shortUrlTagsReducer', () => {
       updateShortUrlTags.mockRejectedValue(error);
 
       try {
-        await editShortUrlTags(buildShlinkApiClient)(shortCode, tags)(dispatch);
+        await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(dispatch);
       } catch (e) {
         expect(e).toBe(error);
       }
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, tags);
+      expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, undefined, tags);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_TAGS_ERROR });
