@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Modal } from 'reactstrap';
-import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 import each from 'jest-each';
+import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 
 describe('<EditTagsModal />', () => {
   let wrapper;

@@ -36,10 +36,8 @@ const ShortUrlVisits = (
   loadVisits = (loadDetail = false) => {
     const { match: { params }, location: { search }, getShortUrlVisits, getShortUrlDetail } = this.props;
     const { shortCode } = params;
-    const dates = mapObjIndexed(formatDate(), this.state);
-    const { startDate, endDate } = dates;
-    const queryParams = qs.parse(search, { ignoreQueryPrefix: true });
-    const { domain } = queryParams;
+    const { startDate, endDate } = mapObjIndexed(formatDate(), this.state);
+    const { domain } = qs.parse(search, { ignoreQueryPrefix: true });
 
     // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calculations
     this.memoizationId = `${this.timeWhenMounted}_${shortCode}_${startDate}_${endDate}`;
