@@ -1,4 +1,5 @@
 import moment from 'moment';
+import each from 'jest-each';
 import reducer, {
   EDIT_SHORT_URL_META_START,
   EDIT_SHORT_URL_META_ERROR,
@@ -56,12 +57,12 @@ describe('shortUrlMetaReducer', () => {
 
     afterEach(jest.clearAllMocks);
 
-    it('dispatches metadata on success', async () => {
-      await editShortUrlMeta(buildShlinkApiClient)(shortCode, meta)(dispatch);
+    each([[ undefined ], [ null ], [ 'example.com' ]]).it('dispatches metadata on success', async (domain) => {
+      await editShortUrlMeta(buildShlinkApiClient)(shortCode, domain, meta)(dispatch);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, meta);
+      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, domain, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_META_EDITED, meta, shortCode });
@@ -73,7 +74,7 @@ describe('shortUrlMetaReducer', () => {
       updateShortUrlMeta.mockRejectedValue(error);
 
       try {
-        await editShortUrlMeta(buildShlinkApiClient)(shortCode, meta)(dispatch);
+        await editShortUrlMeta(buildShlinkApiClient)(shortCode, undefined, meta)(dispatch);
       } catch (e) {
         expect(e).toBe(error);
       }
