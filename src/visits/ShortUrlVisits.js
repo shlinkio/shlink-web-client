@@ -33,8 +33,8 @@ const ShortUrlVisits = (
   };
 
   state = { startDate: undefined, endDate: undefined };
-  loadVisits = () => {
-    const { match: { params }, location: { search }, getShortUrlVisits } = this.props;
+  loadVisits = (loadDetail = false) => {
+    const { match: { params }, location: { search }, getShortUrlVisits, getShortUrlDetail } = this.props;
     const { shortCode } = params;
     const dates = mapObjIndexed(formatDate(), this.state);
     const { startDate, endDate } = dates;
@@ -44,15 +44,15 @@ const ShortUrlVisits = (
     // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calculations
     this.memoizationId = `${this.timeWhenMounted}_${shortCode}_${startDate}_${endDate}`;
     getShortUrlVisits(shortCode, { startDate, endDate, domain });
+
+    if (loadDetail) {
+      getShortUrlDetail(shortCode, domain);
+    }
   };
 
   componentDidMount() {
-    const { match: { params }, getShortUrlDetail } = this.props;
-    const { shortCode } = params;
-
     this.timeWhenMounted = new Date().getTime();
-    this.loadVisits();
-    getShortUrlDetail(shortCode);
+    this.loadVisits(true);
   }
 
   componentWillUnmount() {
