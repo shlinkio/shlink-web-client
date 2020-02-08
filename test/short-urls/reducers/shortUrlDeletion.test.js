@@ -72,7 +72,7 @@ describe('shortUrlDeletionReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode, domain });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, domain);

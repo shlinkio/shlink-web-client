@@ -38,15 +38,17 @@ describe('shortUrlsListReducer', () => {
         shortUrls: {
           data: [
             { shortCode, tags: [] },
+            { shortCode, tags: [], domain: 'example.com' },
             { shortCode: 'foo', tags: [] },
           ],
         },
       };
 
-      expect(reducer(state, { type: SHORT_URL_TAGS_EDITED, shortCode, tags })).toEqual({
+      expect(reducer(state, { type: SHORT_URL_TAGS_EDITED, shortCode, tags, domain: null })).toEqual({
         shortUrls: {
           data: [
             { shortCode, tags },
+            { shortCode, tags: [], domain: 'example.com' },
             { shortCode: 'foo', tags: [] },
           ],
         },
@@ -55,6 +57,7 @@ describe('shortUrlsListReducer', () => {
 
     it('Updates meta on matching URL on SHORT_URL_META_EDITED', () => {
       const shortCode = 'abc123';
+      const domain = 'example.com';
       const meta = {
         maxVisits: 5,
         validSince: '2020-05-05',
@@ -62,16 +65,18 @@ describe('shortUrlsListReducer', () => {
       const state = {
         shortUrls: {
           data: [
-            { shortCode, meta: { maxVisits: 10 } },
+            { shortCode, meta: { maxVisits: 10 }, domain },
+            { shortCode, meta: { maxVisits: 50 } },
             { shortCode: 'foo', meta: null },
           ],
         },
       };
 
-      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta })).toEqual({
+      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta, domain })).toEqual({
         shortUrls: {
           data: [
-            { shortCode, meta },
+            { shortCode, meta, domain: 'example.com' },
+            { shortCode, meta: { maxVisits: 50 } },
             { shortCode: 'foo', meta: null },
           ],
         },
@@ -84,6 +89,7 @@ describe('shortUrlsListReducer', () => {
         shortUrls: {
           data: [
             { shortCode },
+            { shortCode, domain: 'example.com' },
             { shortCode: 'foo' },
           ],
         },
@@ -91,7 +97,7 @@ describe('shortUrlsListReducer', () => {
 
       expect(reducer(state, { type: SHORT_URL_DELETED, shortCode })).toEqual({
         shortUrls: {
-          data: [{ shortCode: 'foo' }],
+          data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
         },
       });
     });

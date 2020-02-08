@@ -36,7 +36,7 @@ export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, domain, ta
   try {
     const normalizedTags = await updateShortUrlTags(shortCode, domain, tags);
 
-    dispatch({ tags: normalizedTags, shortCode, type: SHORT_URL_TAGS_EDITED });
+    dispatch({ tags: normalizedTags, shortCode, domain, type: SHORT_URL_TAGS_EDITED });
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_TAGS_ERROR });
 
