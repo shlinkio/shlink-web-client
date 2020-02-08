@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { assoc, assocPath, propEq, reject } from 'ramda';
+import { assoc, assocPath, isNil, reject } from 'ramda';
 import PropTypes from 'prop-types';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
@@ -27,10 +27,18 @@ const initialState = {
   error: false,
 };
 
-const setPropFromActionOnMatchingShortUrl = (prop) => (state, { shortCode, [prop]: propValue }) => assocPath(
+const shortUrlMatches = (shortUrl, shortCode, domain) => {
+  if (isNil(domain)) {
+    return shortUrl.shortCode === shortCode && !shortUrl.domain;
+  }
+
+  return shortUrl.shortCode === shortCode && shortUrl.domain === domain;
+};
+
+const setPropFromActionOnMatchingShortUrl = (prop) => (state, { shortCode, domain, [prop]: propValue }) => assocPath(
   [ 'shortUrls', 'data' ],
   state.shortUrls.data.map(
-    (shortUrl) => shortUrl.shortCode === shortCode ? assoc(prop, propValue, shortUrl) : shortUrl
+    (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain) ? assoc(prop, propValue, shortUrl) : shortUrl
   ),
   state
 );
@@ -39,9 +47,9 @@ export default handleActions({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS]: (state, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true, shortUrls: {} }),
-  [SHORT_URL_DELETED]: (state, { shortCode }) => assocPath(
+  [SHORT_URL_DELETED]: (state, { shortCode, domain }) => assocPath(
     [ 'shortUrls', 'data' ],
-    reject(propEq('shortCode', shortCode), state.shortUrls.data),
+    reject((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
     state,
   ),
   [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl('tags'),

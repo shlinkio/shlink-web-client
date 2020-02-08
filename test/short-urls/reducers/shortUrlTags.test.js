@@ -73,7 +73,10 @@ describe('shortUrlTagsReducer', () => {
       expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, domain, tags);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode });
+      expect(dispatch).toHaveBeenNthCalledWith(
+        2,
+        { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode, domain }
+      );
     });
 
     it('dispatches error on failure', async () => {
