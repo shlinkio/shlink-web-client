@@ -40,7 +40,7 @@ export const editShortUrlMeta = (buildShlinkApiClient) => (shortCode, meta) => a
   const { updateShortUrlMeta } = await buildShlinkApiClient(getState);
 
   try {
-    await updateShortUrlMeta(shortCode, meta);
+    await updateShortUrlMeta(shortCode, undefined, meta);
     dispatch({ shortCode, meta, type: SHORT_URL_META_EDITED });
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_META_ERROR });

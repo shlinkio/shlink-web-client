@@ -61,7 +61,7 @@ describe('shortUrlMetaReducer', () => {
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, meta);
+      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_META_EDITED, meta, shortCode });
@@ -80,7 +80,7 @@ describe('shortUrlMetaReducer', () => {
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, meta);
+      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_META_ERROR });

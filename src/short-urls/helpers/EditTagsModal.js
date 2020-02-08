@@ -19,7 +19,7 @@ const EditTagsModal = (TagsSelector) => class EditTagsModal extends React.Compon
   saveTags = () => {
     const { editShortUrlTags, shortUrl, toggle } = this.props;
 
-    editShortUrlTags(shortUrl.shortCode, this.state.tags)
+    editShortUrlTags(shortUrl.shortCode, shortUrl.domain, this.state.tags)
       .then(toggle)
       .catch(() => {});
   };
