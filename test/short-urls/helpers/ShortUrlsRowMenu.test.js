@@ -83,6 +83,4 @@ describe('<ShortUrlsRowMenu />', () => {
       done();
     });
   });
-
-  it('generates expected visits page link', () => {})
 });
