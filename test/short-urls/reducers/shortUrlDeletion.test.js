@@ -1,3 +1,4 @@
+import each from 'jest-each';
 import reducer, {
   DELETE_SHORT_URL_ERROR,
   DELETE_SHORT_URL_START,
@@ -59,20 +60,22 @@ describe('shortUrlDeletionReducer', () => {
       getState.mockClear();
     });
 
-    it('dispatches proper actions if API client request succeeds', async () => {
+    each(
+      [[ undefined ], [ null ], [ 'example.com' ]]
+    ).it('dispatches proper actions if API client request succeeds', async (domain) => {
       const apiClientMock = {
         deleteShortUrl: jest.fn(() => ''),
       };
       const shortCode = 'abc123';
 
-      await deleteShortUrl(() => apiClientMock)(shortCode)(dispatch, getState);
+      await deleteShortUrl(() => apiClientMock)(shortCode, domain)(dispatch, getState);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode);
+      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, domain);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
@@ -94,7 +97,7 @@ describe('shortUrlDeletionReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_SHORT_URL_ERROR, errorData: data });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode);
+      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, undefined);
     });
   });
 });

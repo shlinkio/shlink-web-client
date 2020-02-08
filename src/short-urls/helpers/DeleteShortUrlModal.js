@@ -22,9 +22,9 @@ export default class DeleteShortUrlModal extends React.Component {
     e.preventDefault();
 
     const { deleteShortUrl, shortUrl, toggle } = this.props;
-    const { shortCode } = shortUrl;
+    const { shortCode, domain } = shortUrl;
 
-    deleteShortUrl(shortCode)
+    deleteShortUrl(shortCode, domain)
       .then(toggle)
       .catch(identity);
   };
