@@ -1,5 +1,5 @@
 import qs from 'qs';
-import { isEmpty, isNil, pipe, reject } from 'ramda';
+import { isEmpty, isNil, reject } from 'ramda';
 import PropTypes from 'prop-types';
 
 export const apiErrorType = PropTypes.shape({
@@ -12,7 +12,7 @@ export const apiErrorType = PropTypes.shape({
 });
 
 const buildShlinkBaseUrl = (url, apiVersion) => url ? `${url}/rest/v${apiVersion}` : '';
-const rejectNilProps = (options = {}) => reject(isNil, options);
+const rejectNilProps = reject(isNil);
 
 export default class ShlinkApiClient {
   constructor(axios, baseUrl, apiKey) {
@@ -22,10 +22,8 @@ export default class ShlinkApiClient {
     this._apiKey = apiKey || '';
   }
 
-  listShortUrls = pipe(
-    rejectNilProps,
-    (options) => this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls)
-  );
+  listShortUrls = (options = {}) =>
+    this._performRequest('/short-urls', 'GET', options).then((resp) => resp.data.shortUrls);
 
   createShortUrl = (options) => {
     const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options);
