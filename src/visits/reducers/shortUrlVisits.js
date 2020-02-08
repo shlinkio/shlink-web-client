@@ -49,7 +49,7 @@ export default handleActions({
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
 }, initialState);
 
-export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) => async (dispatch, getState) => {
+export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
 
   const { getShortUrlVisits } = await buildShlinkApiClient(getState);
@@ -57,7 +57,7 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   const isLastPage = ({ currentPage, pagesCount }) => currentPage >= pagesCount;
 
   const loadVisits = async (page = 1) => {
-    const { pagination, data } = await getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage });
+    const { pagination, data } = await getShortUrlVisits(shortCode, { ...query, page, itemsPerPage });
 
     // If pagination was not returned, then this is an older shlink version. Just return data
     if (!pagination || isLastPage(pagination)) {
@@ -96,7 +96,7 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, dates) =>
   const loadVisitsInParallel = (pages) =>
     Promise.all(pages.map(
       (page) =>
-        getShortUrlVisits(shortCode, { ...dates, page, itemsPerPage })
+        getShortUrlVisits(shortCode, { ...query, page, itemsPerPage })
           .then(prop('data'))
     )).then(flatten);
 

@@ -18,6 +18,7 @@ export const shortUrlType = PropTypes.shape({
   visitsCount: PropTypes.number,
   meta: shortUrlMetaType,
   tags: PropTypes.arrayOf(PropTypes.string),
+  domain: PropTypes.string,
 });
 
 const initialState = {

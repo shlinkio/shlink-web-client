@@ -26,7 +26,7 @@ describe('<VisitsHeader />', () => {
   it('shows the amount of visits', () => {
     const visitsBadge = wrapper.find('.badge');
 
-    expect(visitsBadge.html()).toContain(`Visits: <span>${shortUrlVisits.visits.length}</span>`);
+    expect(visitsBadge.html()).toContain(`Visits: <span><strong>${shortUrlVisits.visits.length}</strong></span>`);
   });
 
   it('shows when the URL was created', () => {

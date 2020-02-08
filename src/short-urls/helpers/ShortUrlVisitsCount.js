@@ -3,25 +3,33 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
-import { shortUrlMetaType } from '../reducers/shortUrlMeta';
+import { serverType } from '../../servers/prop-types';
+import { shortUrlType } from '../reducers/shortUrlsList';
 import './ShortUrlVisitsCount.scss';
+import VisitStatsLink from './VisitStatsLink';
 
 const propTypes = {
   visitsCount: PropTypes.number.isRequired,
-  meta: shortUrlMetaType,
+  shortUrl: shortUrlType,
+  selectedServer: serverType,
 };
 
-const ShortUrlVisitsCount = ({ visitsCount, meta }) => {
-  const maxVisits = meta && meta.maxVisits;
+const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer }) => {
+  const maxVisits = shortUrl && shortUrl.meta && shortUrl.meta.maxVisits;
+  const visitsLink = (
+    <VisitStatsLink selectedServer={selectedServer} shortUrl={shortUrl}>
+      <strong>{visitsCount}</strong>
+    </VisitStatsLink>
+  );
 
   if (!maxVisits) {
-    return <span>{visitsCount}</span>;
+    return visitsLink;
   }
 
   return (
     <React.Fragment>
       <span className="indivisible">
-        {visitsCount}
+        {visitsLink}
         <small id="maxVisitsControl" className="short-urls-visits-count__max-visits-control">
           {' '}/ {maxVisits}{' '}
           <sup>

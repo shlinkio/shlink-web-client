@@ -17,15 +17,17 @@ describe('<ShortUrlVisits />', () => {
   const match = {
     params: { shortCode: 'abc123' },
   };
+  const location = { search: '' };
 
   const createComponent = (shortUrlVisits) => {
-    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits });
+    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits }, () => '');
 
     wrapper = shallow(
       <ShortUrlVisits
         getShortUrlDetail={identity}
         getShortUrlVisits={getShortUrlVisitsMock}
         match={match}
+        location={location}
         shortUrlVisits={shortUrlVisits}
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}

@@ -7,8 +7,8 @@ import ShortUrlVisitsCount from '../../../src/short-urls/helpers/ShortUrlVisitsC
 describe('<ShortUrlVisitsCount />', () => {
   let wrapper;
 
-  const createWrapper = (visitsCount, meta) => {
-    wrapper = shallow(<ShortUrlVisitsCount visitsCount={visitsCount} meta={meta} />);
+  const createWrapper = (visitsCount, shortUrl) => {
+    wrapper = shallow(<ShortUrlVisitsCount visitsCount={visitsCount} shortUrl={shortUrl} />);
 
     return wrapper;
   };
@@ -17,11 +17,11 @@ describe('<ShortUrlVisitsCount />', () => {
 
   each([ undefined, {}]).it('just returns visits when no maxVisits is provided', (meta) => {
     const visitsCount = 45;
-    const wrapper = createWrapper(visitsCount, meta);
+    const wrapper = createWrapper(visitsCount, { meta });
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
-    expect(wrapper.html()).toEqual(`<span>${visitsCount}</span>`);
+    expect(wrapper.html()).toEqual(`<span><strong>${visitsCount}</strong></span>`);
     expect(maxVisitsHelper).toHaveLength(0);
     expect(maxVisitsTooltip).toHaveLength(0);
   });
@@ -30,7 +30,7 @@ describe('<ShortUrlVisitsCount />', () => {
     const visitsCount = 45;
     const maxVisits = 500;
     const meta = { maxVisits };
-    const wrapper = createWrapper(visitsCount, meta);
+    const wrapper = createWrapper(visitsCount, { meta });
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
