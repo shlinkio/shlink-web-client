@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#193](https://github.com/shlinkio/shlink-web-client/issues/193) Fixed `maxVisits` being set to 0 when trying to reset it from having a value to `null`.
 * [#196](https://github.com/shlinkio/shlink-web-client/issues/196) Included apache `.htaccess` file which takes care of falling back to index.html when reloading the page on a client-side handled route.
+* [#179](https://github.com/shlinkio/shlink-web-client/issues/179) Ensured domain is provided to Shlink server when editing, deleting or fetching short URLs which do not belong to default domain.
 
 
 ## 2.3.0 - 2020-01-19
