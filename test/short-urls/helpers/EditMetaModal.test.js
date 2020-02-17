@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { FormGroup, Modal, ModalHeader } from 'reactstrap';
-import each from 'jest-each';
 import EditMetaModal from '../../../src/short-urls/helpers/EditMetaModal';
 
 describe('<EditMetaModal />', () => {
@@ -40,10 +39,10 @@ describe('<EditMetaModal />', () => {
     expect(error).toHaveLength(0);
   });
 
-  each([
+  it.each([
     [ true, 'Saving...' ],
     [ false, 'Save' ],
-  ]).it('renders submit button on expected state', (saving, expectedText) => {
+  ])('renders submit button on expected state', (saving, expectedText) => {
     const wrapper = createWrapper({}, { saving, error: false, meta: {} });
     const button = wrapper.find('[type="submit"]');
 
@@ -69,11 +68,11 @@ describe('<EditMetaModal />', () => {
     expect(editShortUrlMeta).toHaveBeenCalled();
   });
 
-  each([
+  it.each([
     [ '.btn-link', 'onClick' ],
     [ Modal, 'toggle' ],
     [ ModalHeader, 'toggle' ],
-  ]).it('resets meta when modal is toggled in any way', (componentToFind, propToCall) => {
+  ])('resets meta when modal is toggled in any way', (componentToFind, propToCall) => {
     const wrapper = createWrapper({}, { saving: false, error: false, meta: {} });
     const component = wrapper.find(componentToFind);
 

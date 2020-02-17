@@ -1,4 +1,3 @@
-import each from 'jest-each';
 import reducer, {
   DELETE_SHORT_URL_ERROR,
   DELETE_SHORT_URL_START,
@@ -60,9 +59,9 @@ describe('shortUrlDeletionReducer', () => {
       getState.mockClear();
     });
 
-    each(
+    it.each(
       [[ undefined ], [ null ], [ 'example.com' ]]
-    ).it('dispatches proper actions if API client request succeeds', async (domain) => {
+    )('dispatches proper actions if API client request succeeds', async (domain) => {
       const apiClientMock = {
         deleteShortUrl: jest.fn(() => ''),
       };

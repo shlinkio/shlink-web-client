@@ -1,4 +1,3 @@
-import each from 'jest-each';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('ShlinkApiClient', () => {
@@ -73,7 +72,7 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('getShortUrl', () => {
-    each(shortCodesWithDomainCombinations).it('properly returns short URL', async (shortCode, domain) => {
+    it.each(shortCodesWithDomainCombinations)('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };
       const axiosSpy = jest.fn(createAxiosMock({
         data: expectedShortUrl,
@@ -92,7 +91,7 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('updateShortUrlTags', () => {
-    each(shortCodesWithDomainCombinations).it('properly updates short URL tags', async (shortCode, domain) => {
+    it.each(shortCodesWithDomainCombinations)('properly updates short URL tags', async (shortCode, domain) => {
       const expectedTags = [ 'foo', 'bar' ];
       const axiosSpy = jest.fn(createAxiosMock({
         data: { tags: expectedTags },
@@ -111,7 +110,7 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('updateShortUrlMeta', () => {
-    each(shortCodesWithDomainCombinations).it('properly updates short URL meta', async (shortCode, domain) => {
+    it.each(shortCodesWithDomainCombinations)('properly updates short URL meta', async (shortCode, domain) => {
       const expectedMeta = {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
@@ -181,7 +180,7 @@ describe('ShlinkApiClient', () => {
   });
 
   describe('deleteShortUrl', () => {
-    each(shortCodesWithDomainCombinations).it('properly deletes provided short URL', async (shortCode, domain) => {
+    it.each(shortCodesWithDomainCombinations)('properly deletes provided short URL', async (shortCode, domain) => {
       const axiosSpy = jest.fn(createAxiosMock({}));
       const { deleteShortUrl } = new ShlinkApiClient(axiosSpy);
 
