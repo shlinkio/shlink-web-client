@@ -1,4 +1,3 @@
-import each from 'jest-each';
 import reducer, {
   EDIT_SHORT_URL_TAGS_ERROR,
   EDIT_SHORT_URL_TAGS_START,
@@ -61,7 +60,7 @@ describe('shortUrlTagsReducer', () => {
       dispatch.mockReset();
     });
 
-    each([[ undefined ], [ null ], [ 'example.com' ]]).it('dispatches normalized tags on success', async (domain) => {
+    it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches normalized tags on success', async (domain) => {
       const normalizedTags = [ 'bar', 'foo' ];
 
       updateShortUrlTags.mockResolvedValue(normalizedTags);

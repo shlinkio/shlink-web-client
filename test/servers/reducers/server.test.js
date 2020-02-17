@@ -1,5 +1,4 @@
 import { values } from 'ramda';
-import each from 'jest-each';
 import reducer, {
   createServer,
   deleteServer,
@@ -47,7 +46,7 @@ describe('serverReducer', () => {
         expect(axios.get).not.toHaveBeenCalled();
       });
 
-      each([
+      it.each([
         [
           Promise.resolve({
             data: [
@@ -82,7 +81,7 @@ describe('serverReducer', () => {
         ],
         [ Promise.resolve('<html></html>'), {}],
         [ Promise.reject({}), {}],
-      ]).it('tries to fetch servers from remote when not found locally', async (mockedValue, expectedList) => {
+      ])('tries to fetch servers from remote when not found locally', async (mockedValue, expectedList) => {
         axios.get.mockReturnValue(mockedValue);
 
         await listServers(NoListServersServiceMock, axios)()(dispatch);

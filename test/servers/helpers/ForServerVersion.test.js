@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import each from 'jest-each';
 import ForServerVersion from '../../../src/servers/helpers/ForServerVersion';
 
 describe('<ForServerVersion />', () => {
@@ -24,23 +23,23 @@ describe('<ForServerVersion />', () => {
     expect(wrapped.html()).toBeNull();
   });
 
-  each([
+  it.each([
     [ '2.0.0', undefined, '1.8.3' ],
     [ undefined, '1.8.0', '1.8.3' ],
     [ '1.7.0', '1.8.0', '1.8.3' ],
-  ]).it('does not render children when current version does not match requirements', (min, max, version) => {
+  ])('does not render children when current version does not match requirements', (min, max, version) => {
     const wrapped = renderComponent(min, max, { version });
 
     expect(wrapped.html()).toBeNull();
   });
 
-  each([
+  it.each([
     [ '2.0.0', undefined, '2.8.3' ],
     [ '2.0.0', undefined, '2.0.0' ],
     [ undefined, '1.8.0', '1.8.0' ],
     [ undefined, '1.8.0', '1.7.1' ],
     [ '1.7.0', '1.8.0', '1.7.3' ],
-  ]).it('renders children when current version matches requirements', (min, max, version) => {
+  ])('renders children when current version matches requirements', (min, max, version) => {
     const wrapped = renderComponent(min, max, { version });
 
     expect(wrapped.html()).toContain('<span>Hello</span>');

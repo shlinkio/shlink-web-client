@@ -1,4 +1,3 @@
-import each from 'jest-each';
 import reducer, {
   selectServer,
   resetSelectedServer,
@@ -44,11 +43,11 @@ describe('selectedServerReducer', () => {
 
     afterEach(jest.clearAllMocks);
 
-    each([
+    it.each([
       [ version, version ],
       [ 'latest', MAX_FALLBACK_VERSION ],
       [ '%invalid_semver%', MIN_FALLBACK_VERSION ],
-    ]).it('dispatches proper actions', async (serverVersion, expectedVersion) => {
+    ])('dispatches proper actions', async (serverVersion, expectedVersion) => {
       const expectedSelectedServer = {
         ...selectedServer,
         version: expectedVersion,

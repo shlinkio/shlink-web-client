@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Modal } from 'reactstrap';
-import each from 'jest-each';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 
 describe('<EditTagsModal />', () => {
@@ -76,7 +75,7 @@ describe('<EditTagsModal />', () => {
     expect(saveBtn.text()).toEqual('Saving tags...');
   });
 
-  each([[ undefined ], [ null ], [ 'example.com' ]]).it('saves tags when save button is clicked', (domain, done) => {
+  it.each([[ undefined ], [ null ], [ 'example.com' ]])('saves tags when save button is clicked', (domain, done) => {
     const wrapper = createWrapper({
       shortCode,
       tags: [],

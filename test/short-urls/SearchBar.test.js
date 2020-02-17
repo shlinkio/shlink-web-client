@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import each from 'jest-each';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
@@ -62,7 +61,7 @@ describe('<SearchBar />', () => {
     expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 
-  each([ 'startDateChange', 'endDateChange' ]).it('updates short URLs list when date range changes', (event) => {
+  it.each([ 'startDateChange', 'endDateChange' ])('updates short URLs list when date range changes', (event) => {
     wrapper = shallow(
       <SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />
     );

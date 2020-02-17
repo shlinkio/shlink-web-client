@@ -1,5 +1,4 @@
 import moment from 'moment';
-import each from 'jest-each';
 import reducer, {
   EDIT_SHORT_URL_META_START,
   EDIT_SHORT_URL_META_ERROR,
@@ -57,7 +56,7 @@ describe('shortUrlMetaReducer', () => {
 
     afterEach(jest.clearAllMocks);
 
-    each([[ undefined ], [ null ], [ 'example.com' ]]).it('dispatches metadata on success', async (domain) => {
+    it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches metadata on success', async (domain) => {
       await editShortUrlMeta(buildShlinkApiClient)(shortCode, domain, meta)(dispatch);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);

@@ -1,7 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
-import each from 'jest-each';
 import { PaginationItem } from 'reactstrap';
 import SimplePaginator, { ellipsis } from '../../src/common/SimplePaginator';
 
@@ -15,7 +14,7 @@ describe('<SimplePaginator />', () => {
 
   afterEach(() => wrapper && wrapper.unmount());
 
-  each([ -3, -2, 0, 1 ]).it('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
+  it.each([ -3, -2, 0, 1 ])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
     expect(createWrapper(pagesCount).text()).toEqual('');
   });
 
