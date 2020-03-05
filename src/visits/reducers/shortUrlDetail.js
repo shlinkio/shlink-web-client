@@ -28,7 +28,6 @@ export default handleActions({
 
 export const getShortUrlDetail = (buildShlinkApiClient) => (shortCode, domain) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_DETAIL_START });
-
   const { getShortUrl } = await buildShlinkApiClient(getState);
 
   try {

@@ -51,7 +51,6 @@ export default handleActions({
 
 export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
-
   const { getShortUrlVisits } = await buildShlinkApiClient(getState);
   const itemsPerPage = 5000;
   const isLastPage = ({ currentPage, pagesCount }) => currentPage >= pagesCount;
