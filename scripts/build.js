@@ -47,6 +47,7 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 const argvSliceStart = 2;
 const argv = process.argv.slice(argvSliceStart);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
+const { version, hasVersion } = getVersionFromArgs(argv);
 
 // Generate configuration
 const config = configFactory('production');
@@ -117,7 +118,7 @@ checkBrowsers(paths.appPath, isInteractive)
       process.exit(1);
     }
   )
-  .then(zipDist)
+  .then(() => hasVersion && zipDist(version))
   .catch((err) => {
     if (err && err.message) {
       console.log(err.message);
@@ -200,15 +201,7 @@ function copyPublicFolder() {
   });
 }
 
-function zipDist() {
-  const minArgsToContainVersion = 3;
-
-  // If no version was provided, do nothing
-  if (process.argv.length < minArgsToContainVersion) {
-    return;
-  }
-
-  const [ , , version ] = process.argv;
+function zipDist(version) {
   const versionFileName = `./dist/shlink-web-client_${version}_dist.zip`;
 
   console.log(chalk.cyan(`Generating dist file for version ${chalk.bold(version)}...`));
@@ -226,4 +219,10 @@ function zipDist() {
     console.log(chalk.red('An error occurred while generating dist file'));
     console.log(e);
   }
+}
+
+function getVersionFromArgs(argv) {
+  const [ version ] = argv;
+
+  return { version, hasVersion: !!version };
 }
