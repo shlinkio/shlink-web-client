@@ -22,12 +22,14 @@ const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) =>
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered>
-      <ModalHeader toggle={toggle}><span className="text-danger">Delete server</span></ModalHeader>
+      <ModalHeader toggle={toggle}><span className="text-danger">Remove server</span></ModalHeader>
       <ModalBody>
-        <p>Are you sure you want to delete server <b>{server ? server.name : ''}</b>?</p>
+        <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
         <p>
-          No data will be deleted, only the access to that server will be removed from this host.
-          You can create it again at any moment.
+          <i>
+            No data will be deleted, only the access to this server will be removed from this host.
+            You can create it again at any moment.
+          </i>
         </p>
       </ModalBody>
       <ModalFooter>

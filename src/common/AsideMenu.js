@@ -24,7 +24,7 @@ const propTypes = {
   showOnMobile: PropTypes.bool,
 };
 
-const AsideMenu = (DeleteServerButton) => {
+const AsideMenu = (DeleteServerButton, ShlinkVersions) => {
   const AsideMenu = ({ selectedServer, className, showOnMobile }) => {
     const serverId = selectedServer ? selectedServer.id : '';
     const asideClass = classNames('aside-menu', className, {
@@ -49,6 +49,7 @@ const AsideMenu = (DeleteServerButton) => {
             <span className="aside-menu__item-text">Manage tags</span>
           </AsideMenuItem>
 
+          <ShlinkVersions />
           <DeleteServerButton className="aside-menu__item aside-menu__item--danger" server={selectedServer} />
         </nav>
       </aside>
