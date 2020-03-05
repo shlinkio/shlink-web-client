@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { Card } from 'reactstrap';
 import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
-import MutedMessage from '../../src/utils/MuttedMessage';
+import MutedMessage from '../../src/utils/MutedMessage';
 import GraphCard from '../../src/visits/GraphCard';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
 import DateRangeRow from '../../src/utils/DateRangeRow';

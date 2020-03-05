@@ -1,21 +1,16 @@
-import { wait } from '../utils';
 import ShlinkApiClient from './ShlinkApiClient';
 
 const apiClients = {};
 
-const getSelectedServerFromState = async (getState) => {
+const getSelectedServerFromState = (getState) => {
   const { selectedServer } = getState();
-
-  if (!selectedServer) {
-    return wait(250).then(() => getSelectedServerFromState(getState));
-  }
 
   return selectedServer;
 };
 
-const buildShlinkApiClient = (axios) => async (getStateOrSelectedServer) => {
+const buildShlinkApiClient = (axios) => (getStateOrSelectedServer) => {
   const { url, apiKey } = typeof getStateOrSelectedServer === 'function'
-    ? await getSelectedServerFromState(getStateOrSelectedServer)
+    ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;
   const clientKey = `${url}_${apiKey}`;
 

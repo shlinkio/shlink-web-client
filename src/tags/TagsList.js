@@ -1,7 +1,7 @@
 import React from 'react';
 import { splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
-import MuttedMessage from '../utils/MuttedMessage';
+import MutedMessage from '../utils/MutedMessage';
 import SearchField from '../utils/SearchField';
 
 const { ceil } = Math;
@@ -29,7 +29,7 @@ const TagsList = (TagCard) => class TagsList extends React.Component {
     const { tagsList, match } = this.props;
 
     if (tagsList.loading) {
-      return <MuttedMessage marginSize={0}>Loading...</MuttedMessage>;
+      return <MutedMessage noMargin loading />;
     }
 
     if (tagsList.error) {
@@ -43,7 +43,7 @@ const TagsList = (TagCard) => class TagsList extends React.Component {
     const tagsCount = tagsList.filteredTags.length;
 
     if (tagsCount < 1) {
-      return <MuttedMessage>No tags found</MuttedMessage>;
+      return <MutedMessage>No tags found</MutedMessage>;
     }
 
     const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);

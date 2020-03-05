@@ -53,8 +53,6 @@ export const useToggle = (initialValue = false) => {
   return [ flag, () => setFlag(!flag) ];
 };
 
-export const wait = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-
 export const compareVersions = (firstVersion, operator, secondVersion) => compare(
   firstVersion,
   secondVersion,

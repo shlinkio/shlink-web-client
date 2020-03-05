@@ -1,12 +1,10 @@
-import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, mapObjIndexed, values } from 'ramda';
 import React from 'react';
 import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import DateRangeRow from '../utils/DateRangeRow';
-import MutedMessage from '../utils/MuttedMessage';
+import MutedMessage from '../utils/MutedMessage';
 import { formatDate } from '../utils/utils';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
@@ -66,7 +64,7 @@ const ShortUrlVisits = (
       if (loading) {
         const message = loadingLarge ? 'This is going to take a while... :S' : 'Loading...';
 
-        return <MutedMessage><FontAwesomeIcon icon={preloader} spin /> {message}</MutedMessage>;
+        return <MutedMessage loading>{message}</MutedMessage>;
       }
 
       if (error) {

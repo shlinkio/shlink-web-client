@@ -104,7 +104,7 @@ describe('tagsListReducer', () => {
       const tags = [ 'foo', 'bar', 'baz' ];
 
       listTagsMock.mockResolvedValue(tags);
-      buildShlinkApiClient.mockResolvedValue({ listTags: listTagsMock });
+      buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
       await listTags(buildShlinkApiClient, true)()(dispatch, getState);
 
@@ -127,7 +127,7 @@ describe('tagsListReducer', () => {
 
     it('dispatches error when error occurs on list call', async () => {
       listTagsMock.mockRejectedValue(new Error());
-      buildShlinkApiClient.mockResolvedValue({ listTags: listTagsMock });
+      buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
       await assertErrorResult();
 
@@ -135,7 +135,9 @@ describe('tagsListReducer', () => {
     });
 
     it('dispatches error when error occurs on build call', async () => {
-      buildShlinkApiClient.mockRejectedValue(new Error());
+      buildShlinkApiClient.mockImplementation(() => {
+        throw new Error();
+      });
 
       await assertErrorResult();
 

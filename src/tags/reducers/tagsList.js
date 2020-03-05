@@ -50,7 +50,7 @@ export const listTags = (buildShlinkApiClient, force = true) => () => async (dis
   dispatch({ type: LIST_TAGS_START });
 
   try {
-    const { listTags } = await buildShlinkApiClient(getState);
+    const { listTags } = buildShlinkApiClient(getState);
     const tags = await listTags();
 
     dispatch({ tags, type: LIST_TAGS });

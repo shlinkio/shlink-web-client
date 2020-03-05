@@ -31,8 +31,7 @@ export const editTag = (buildShlinkApiClient, colorGenerator) => (oldName, newNa
   getState
 ) => {
   dispatch({ type: EDIT_TAG_START });
-
-  const { editTag } = await buildShlinkApiClient(getState);
+  const { editTag } = buildShlinkApiClient(getState);
 
   try {
     await editTag(oldName, newName);
