@@ -21,16 +21,8 @@ describe('<DeleteServerButton />', () => {
   it('displays modal when button is clicked', () => {
     const btn = wrapper.find('.button');
 
-    expect(wrapper.state('isModalOpen')).toEqual(false);
+    expect(wrapper.find(DeleteServerModal).prop('isOpen')).toEqual(false);
     btn.simulate('click');
-    expect(wrapper.state('isModalOpen')).toEqual(true);
-  });
-
-  it('changes modal open state when toggled', () => {
-    const modal = wrapper.find(DeleteServerModal);
-
-    expect(wrapper.state('isModalOpen')).toEqual(false);
-    modal.prop('toggle')();
-    expect(wrapper.state('isModalOpen')).toEqual(true);
+    expect(wrapper.find(DeleteServerModal).prop('isOpen')).toEqual(true);
   });
 });

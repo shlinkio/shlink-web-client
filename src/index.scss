@@ -28,14 +28,6 @@ body,
   color: inherit !important;
 }
 
-.shlink-container {
-  padding: 20px 0;
-
-  @media (min-width: $mdMin) {
-    padding: 30px 15px;
-  }
-}
-
 .badge-main {
   color: #fff;
   background-color: $mainColor;

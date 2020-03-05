@@ -14,7 +14,6 @@ process.on('unhandledRejection', (err) => {
 // Ensure environment variables are read.
 require('../config/env');
 
-const path = require('path');
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
@@ -22,7 +21,6 @@ const bfj = require('bfj');
 const AdmZip = require('adm-zip');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 const { checkBrowsers } = require('react-dev-utils/browsersHelper');
@@ -30,7 +28,6 @@ const paths = require('../config/paths');
 const configFactory = require('../config/webpack.config');
 
 const { measureFileSizesBeforeBuild, printFileSizesAfterBuild } = FileSizeReporter;
-const useYarn = fs.existsSync(paths.yarnLockFile);
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024; // eslint-disable-line
@@ -47,6 +44,8 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 const argvSliceStart = 2;
 const argv = process.argv.slice(argvSliceStart);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
+const withoutDist = argv.indexOf('--no-dist') !== -1;
+const { version, hasVersion } = getVersionFromArgs(argv);
 
 // Generate configuration
 const config = configFactory('production');
@@ -85,6 +84,7 @@ checkBrowsers(paths.appPath, isInteractive)
         );
       } else {
         console.log(chalk.green('Compiled successfully.\n'));
+        hasVersion && replaceVersionPlaceholder(version);
       }
 
       console.log('File sizes after gzip:\n');
@@ -96,20 +96,6 @@ checkBrowsers(paths.appPath, isInteractive)
         WARN_AFTER_CHUNK_GZIP_SIZE
       );
       console.log();
-
-      const appPackage = require(paths.appPackageJson);
-
-      const { publicUrl } = paths;
-      const { output: { publicPath } } = config;
-      const buildFolder = path.relative(process.cwd(), paths.appBuild);
-
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-        useYarn
-      );
     },
     (err) => {
       console.log(chalk.red('Failed to compile.\n'));
@@ -117,7 +103,7 @@ checkBrowsers(paths.appPath, isInteractive)
       process.exit(1);
     }
   )
-  .then(zipDist)
+  .then(() => hasVersion && !withoutDist && zipDist(version))
   .catch((err) => {
     if (err && err.message) {
       console.log(err.message);
@@ -200,15 +186,7 @@ function copyPublicFolder() {
   });
 }
 
-function zipDist() {
-  const minArgsToContainVersion = 3;
-
-  // If no version was provided, do nothing
-  if (process.argv.length < minArgsToContainVersion) {
-    return;
-  }
-
-  const [ , , version ] = process.argv;
+function zipDist(version) {
   const versionFileName = `./dist/shlink-web-client_${version}_dist.zip`;
 
   console.log(chalk.cyan(`Generating dist file for version ${chalk.bold(version)}...`));
@@ -226,4 +204,24 @@ function zipDist() {
     console.log(chalk.red('An error occurred while generating dist file'));
     console.log(e);
   }
+  console.log();
+}
+
+function getVersionFromArgs(argv) {
+  const [ version ] = argv;
+
+  return { version, hasVersion: !!version };
+}
+
+function replaceVersionPlaceholder(version) {
+  const staticJsFilesPath = './build/static/js';
+  const versionPlaceholder = '%_VERSION_%';
+
+  const isMainFile = (file) => file.startsWith('main.') && file.endsWith('.js');
+  const [ mainJsFile ] = fs.readdirSync(staticJsFilesPath).filter(isMainFile);
+  const filePath = `${staticJsFilesPath}/${mainJsFile}`;
+  const fileContent = fs.readFileSync(filePath, 'utf-8');
+  const replaced = fileContent.replace(versionPlaceholder, version);
+
+  fs.writeFileSync(filePath, replaced, 'utf-8');
 }

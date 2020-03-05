@@ -1,40 +1,38 @@
+import React, { useState } from 'react';
 import { faMinusCircle as deleteIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import PropTypes from 'prop-types';
 import { serverType } from './prop-types';
 
-const DeleteServerButton = (DeleteServerModal) => class DeleteServerButton extends React.Component {
-  static propTypes = {
-    server: serverType,
-    className: PropTypes.string,
-  };
+const propTypes = {
+  server: serverType,
+  className: PropTypes.string,
+};
 
-  state = { isModalOpen: false };
-
-  render() {
-    const { server, className } = this.props;
+const DeleteServerButton = (DeleteServerModal) => {
+  const DeleteServerButtonComp = ({ server, className }) => {
+    const [ isModalOpen, setModalOpen ] = useState(false);
 
     return (
       <React.Fragment>
-        <span
-          className={className}
-          key="deleteServerBtn"
-          onClick={() => this.setState({ isModalOpen: true })}
-        >
+        <span className={className} key="deleteServerBtn" onClick={() => setModalOpen(true)}>
           <FontAwesomeIcon icon={deleteIcon} />
-          <span className="aside-menu__item-text">Delete this server</span>
+          <span className="aside-menu__item-text">Remove this server</span>
         </span>
 
         <DeleteServerModal
-          isOpen={this.state.isModalOpen}
-          toggle={() => this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }))}
+          isOpen={isModalOpen}
+          toggle={() => setModalOpen(!isModalOpen)}
           server={server}
           key="deleteServerModal"
         />
       </React.Fragment>
     );
-  }
+  };
+
+  DeleteServerButtonComp.propTypes = propTypes;
+
+  return DeleteServerButtonComp;
 };
 
 export default DeleteServerButton;

@@ -19,11 +19,11 @@ const ShortUrls = (SearchBar, ShortUrlsList) => {
     const urlsListKey = `${serverId}_${page}`;
 
     return (
-      <div className="shlink-container">
+      <React.Fragment>
         <div className="form-group"><SearchBar /></div>
         <ShortUrlsList {...props} shortUrlsList={data} key={urlsListKey} />
         <Paginator paginator={pagination} serverId={serverId} />
-      </div>
+      </React.Fragment>
     );
   };
 

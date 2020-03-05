@@ -38,7 +38,7 @@ describe('<DeleteServerModal />', () => {
     const modalBody = wrapper.find(ModalBody);
 
     expect(modalBody.find('p').first().text()).toEqual(
-      `Are you sure you want to delete server ${serverName}?`
+      `Are you sure you want to remove ${serverName}?`
     );
   });
 

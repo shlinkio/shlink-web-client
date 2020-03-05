@@ -69,14 +69,14 @@ const TagsList = (TagCard) => class TagsList extends React.Component {
     const { filterTags } = this.props;
 
     return (
-      <div className="shlink-container">
+      <React.Fragment>
         {!this.props.tagsList.loading &&
           <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />
         }
         <div className="row">
           {this.renderContent()}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 };

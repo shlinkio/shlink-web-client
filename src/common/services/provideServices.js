@@ -4,6 +4,7 @@ import Home from '../Home';
 import MenuLayout from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
 import ErrorHandler from '../ErrorHandler';
+import ShlinkVersions from '../ShlinkVersions';
 
 const provideServices = (bottle, connect, withRouter) => {
   bottle.constant('window', global.window);
@@ -25,12 +26,16 @@ const provideServices = (bottle, connect, withRouter) => {
     'ShortUrls',
     'AsideMenu',
     'CreateShortUrl',
-    'ShortUrlVisits'
+    'ShortUrlVisits',
+    'ShlinkVersions'
   );
   bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));
   bottle.decorator('MenuLayout', withRouter);
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
+
+  bottle.serviceFactory('ShlinkVersions', () => ShlinkVersions);
+  bottle.decorator('ShlinkVersions', connect([ 'selectedServer' ]));
 
   bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
 };

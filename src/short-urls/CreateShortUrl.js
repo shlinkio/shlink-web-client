@@ -7,7 +7,7 @@ import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import { serverType } from '../servers/prop-types';
-import { compareVersions } from '../utils/utils';
+import { compareVersions } from '../utils/versionHelpers';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
@@ -77,83 +77,81 @@ const CreateShortUrl = (
     const disableDomain = isEmpty(currentServerVersion) || compareVersions(currentServerVersion, '<', '1.19.0-beta.1');
 
     return (
-      <div className="shlink-container">
-        <form onSubmit={save}>
+      <form onSubmit={save}>
+        <div className="form-group">
+          <input
+            className="form-control form-control-lg"
+            type="url"
+            placeholder="Insert the URL to be shortened"
+            required
+            value={this.state.longUrl}
+            onChange={(e) => this.setState({ longUrl: e.target.value })}
+          />
+        </div>
+
+        <Collapse isOpen={this.state.moreOptionsVisible}>
           <div className="form-group">
-            <input
-              className="form-control form-control-lg"
-              type="url"
-              placeholder="Insert the URL to be shortened"
-              required
-              value={this.state.longUrl}
-              onChange={(e) => this.setState({ longUrl: e.target.value })}
-            />
+            <TagsSelector tags={this.state.tags} onChange={changeTags} />
           </div>
 
-          <Collapse isOpen={this.state.moreOptionsVisible}>
-            <div className="form-group">
-              <TagsSelector tags={this.state.tags} onChange={changeTags} />
+          <div className="row">
+            <div className="col-sm-6">
+              {renderOptionalInput('customSlug', 'Custom slug')}
             </div>
-
-            <div className="row">
-              <div className="col-sm-6">
-                {renderOptionalInput('customSlug', 'Custom slug')}
-              </div>
-              <div className="col-sm-6">
-                {renderOptionalInput('domain', 'Domain', 'text', {
-                  disabled: disableDomain,
-                  ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
-                })}
-              </div>
+            <div className="col-sm-6">
+              {renderOptionalInput('domain', 'Domain', 'text', {
+                disabled: disableDomain,
+                ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
+              })}
             </div>
-
-            <div className="row">
-              <div className="col-sm-6">
-                {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-              </div>
-              <div className="col-sm-3">
-                {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
-              </div>
-              <div className="col-sm-3">
-                {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
-              </div>
-            </div>
-
-            <ForServerVersion minVersion="1.16.0">
-              <div className="mb-4 text-right">
-                <Checkbox
-                  className="mr-2"
-                  checked={this.state.findIfExists}
-                  onChange={(findIfExists) => this.setState({ findIfExists })}
-                >
-                  Use existing URL if found
-                </Checkbox>
-                <UseExistingIfFoundInfoIcon />
-              </div>
-            </ForServerVersion>
-          </Collapse>
-
-          <div>
-            <button
-              type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => this.setState(({ moreOptionsVisible }) => ({ moreOptionsVisible: !moreOptionsVisible }))}
-            >
-              <FontAwesomeIcon icon={this.state.moreOptionsVisible ? upIcon : downIcon} />
-              &nbsp;
-              {this.state.moreOptionsVisible ? 'Less' : 'More'} options
-            </button>
-            <button
-              className="btn btn-outline-primary float-right"
-              disabled={shortUrlCreationResult.loading || isEmpty(this.state.longUrl)}
-            >
-              {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
-            </button>
           </div>
 
-          <CreateShortUrlResult {...shortUrlCreationResult} resetCreateShortUrl={resetCreateShortUrl} />
-        </form>
-      </div>
+          <div className="row">
+            <div className="col-sm-6">
+              {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
+            </div>
+            <div className="col-sm-3">
+              {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+            </div>
+            <div className="col-sm-3">
+              {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
+            </div>
+          </div>
+
+          <ForServerVersion minVersion="1.16.0">
+            <div className="mb-4 text-right">
+              <Checkbox
+                className="mr-2"
+                checked={this.state.findIfExists}
+                onChange={(findIfExists) => this.setState({ findIfExists })}
+              >
+                Use existing URL if found
+              </Checkbox>
+              <UseExistingIfFoundInfoIcon />
+            </div>
+          </ForServerVersion>
+        </Collapse>
+
+        <div>
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={() => this.setState(({ moreOptionsVisible }) => ({ moreOptionsVisible: !moreOptionsVisible }))}
+          >
+            <FontAwesomeIcon icon={this.state.moreOptionsVisible ? upIcon : downIcon} />
+            &nbsp;
+            {this.state.moreOptionsVisible ? 'Less' : 'More'} options
+          </button>
+          <button
+            className="btn btn-outline-primary float-right"
+            disabled={shortUrlCreationResult.loading || isEmpty(this.state.longUrl)}
+          >
+            {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
+          </button>
+        </div>
+
+        <CreateShortUrlResult {...shortUrlCreationResult} resetCreateShortUrl={resetCreateShortUrl} />
+      </form>
     );
   }
 };

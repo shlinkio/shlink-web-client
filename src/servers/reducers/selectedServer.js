@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
+import { pipe } from 'ramda';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
-import { versionIsValidSemVer } from '../../utils/utils';
+import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/versionHelpers';
 
 /* eslint-disable padding-line-between-statements */
 export const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';
@@ -12,6 +13,10 @@ export const LATEST_VERSION_CONSTRAINT = 'latest';
 /* eslint-enable padding-line-between-statements */
 
 const initialState = null;
+const versionToSemVer = pipe(
+  (version) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
+  toSemVer(MIN_FALLBACK_VERSION)
+);
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
@@ -20,16 +25,14 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
 
   const selectedServer = findServerById(serverId);
   const { health } = buildShlinkApiClient(selectedServer);
-  const version = await health()
-    .then(({ version }) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version)
-    .then((version) => !versionIsValidSemVer(version) ? MIN_FALLBACK_VERSION : version)
-    .catch(() => MIN_FALLBACK_VERSION);
+  const { version } = await health().catch(() => MIN_FALLBACK_VERSION);
 
   dispatch({
     type: SELECT_SERVER,
     selectedServer: {
       ...selectedServer,
-      version,
+      version: versionToSemVer(version),
+      printableVersion: versionToPrintable(version),
     },
   });
 };
