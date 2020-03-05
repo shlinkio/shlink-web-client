@@ -44,13 +44,14 @@ describe('selectedServerReducer', () => {
     afterEach(jest.clearAllMocks);
 
     it.each([
-      [ version, version ],
-      [ 'latest', MAX_FALLBACK_VERSION ],
-      [ '%invalid_semver%', MIN_FALLBACK_VERSION ],
-    ])('dispatches proper actions', async (serverVersion, expectedVersion) => {
+      [ version, version, `v${version}` ],
+      [ 'latest', MAX_FALLBACK_VERSION, 'latest' ],
+      [ '%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%' ],
+    ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
       const expectedSelectedServer = {
         ...selectedServer,
         version: expectedVersion,
+        printableVersion: expectedPrintableVersion,
       };
 
       apiClientMock.health.mockResolvedValue({ version: serverVersion });

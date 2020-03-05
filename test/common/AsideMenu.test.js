@@ -1,6 +1,5 @@
 import { shallow } from 'enzyme';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import asideMenuCreator from '../../src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {
@@ -15,7 +14,7 @@ describe('<AsideMenu />', () => {
   afterEach(() => wrapped.unmount());
 
   it('contains links to different sections', () => {
-    const links = wrapped.find(NavLink);
+    const links = wrapped.find('[to]');
 
     expect(links).toHaveLength(3);
     links.forEach((link) => expect(link.prop('to')).toContain('abc123'));
