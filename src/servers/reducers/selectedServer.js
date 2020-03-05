@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { pipe } from 'ramda';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
-import { versionIsValidSemVer } from '../../utils/utils';
+import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/versionHelpers';
 
 /* eslint-disable padding-line-between-statements */
 export const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';
@@ -15,9 +15,8 @@ export const LATEST_VERSION_CONSTRAINT = 'latest';
 const initialState = null;
 const versionToSemVer = pipe(
   (version) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
-  (version) => !versionIsValidSemVer(version) ? MIN_FALLBACK_VERSION : version
+  toSemVer(MIN_FALLBACK_VERSION)
 );
-const versionToPrintable = (version) => !versionIsValidSemVer(version) ? version : `v${version}`;
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 

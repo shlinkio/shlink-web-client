@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { compareVersions } from '../../utils/utils';
 import { serverType } from '../prop-types';
+import { compareVersions } from '../../utils/versionHelpers';
 
 const propTypes = {
   minVersion: PropTypes.string,

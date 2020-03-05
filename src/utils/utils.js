@@ -2,9 +2,8 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { identity, memoizeWith, range } from 'ramda';
+import { range } from 'ramda';
 import { useState } from 'react';
-import { compare } from 'compare-versions';
 
 const TEN_ROUNDING_NUMBER = 10;
 const DEFAULT_TIMEOUT_DELAY = 2000;
@@ -52,20 +51,6 @@ export const useToggle = (initialValue = false) => {
 
   return [ flag, () => setFlag(!flag) ];
 };
-
-export const compareVersions = (firstVersion, operator, secondVersion) => compare(
-  firstVersion,
-  secondVersion,
-  operator
-);
-
-export const versionIsValidSemVer = memoizeWith(identity, (version) => {
-  try {
-    return compareVersions(version, '=', version);
-  } catch (e) {
-    return false;
-  }
-});
 
 export const formatDate = (format = 'YYYY-MM-DD') => (date) => date && date.format ? date.format(format) : date;
 
