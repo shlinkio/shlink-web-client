@@ -26,7 +26,8 @@ const provideServices = (bottle, connect, withRouter) => {
     'ShortUrls',
     'AsideMenu',
     'CreateShortUrl',
-    'ShortUrlVisits'
+    'ShortUrlVisits',
+    'ShlinkVersions'
   );
   bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));
   bottle.decorator('MenuLayout', withRouter);

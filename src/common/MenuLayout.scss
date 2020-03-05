@@ -32,3 +32,26 @@
 .menu-layout__burger-icon--active {
   color: white;
 }
+
+$footer-height: 2.3rem;
+$footer-margin: .8rem;
+
+.menu-layout__container {
+  padding: 20px 0 ($footer-height + $footer-margin);
+  min-height: 100%;
+  margin-bottom: -($footer-height + $footer-margin);
+
+  @media (min-width: $mdMin) {
+    padding: 30px 15px ($footer-height + $footer-margin);
+  }
+}
+
+.menu-layout__footer {
+  height: $footer-height;
+  margin-top: $footer-margin;
+  padding: 0;
+
+  @media (min-width: $mdMin) {
+    padding: 0 15px;
+  }
+}
