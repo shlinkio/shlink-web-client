@@ -51,14 +51,10 @@ describe('shortUrlTagsReducer', () => {
 
   describe('editShortUrlTags', () => {
     const updateShortUrlTags = jest.fn();
-    const buildShlinkApiClient = jest.fn().mockResolvedValue({ updateShortUrlTags });
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags });
     const dispatch = jest.fn();
 
-    afterEach(() => {
-      updateShortUrlTags.mockReset();
-      buildShlinkApiClient.mockClear();
-      dispatch.mockReset();
-    });
+    afterEach(jest.clearAllMocks);
 
     it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches normalized tags on success', async (domain) => {
       const normalizedTags = [ 'bar', 'foo' ];

@@ -8,7 +8,7 @@ const getSelectedServerFromState = (getState) => {
   return selectedServer;
 };
 
-const buildShlinkApiClient = (axios) => async (getStateOrSelectedServer) => {
+const buildShlinkApiClient = (axios) => (getStateOrSelectedServer) => {
   const { url, apiKey } = typeof getStateOrSelectedServer === 'function'
     ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;

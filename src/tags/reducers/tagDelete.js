@@ -26,7 +26,7 @@ export default handleActions({
 
 export const deleteTag = (buildShlinkApiClient) => (tag) => async (dispatch, getState) => {
   dispatch({ type: DELETE_TAG_START });
-  const { deleteTags } = await buildShlinkApiClient(getState);
+  const { deleteTags } = buildShlinkApiClient(getState);
 
   try {
     await deleteTags([ tag ]);

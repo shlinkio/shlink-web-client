@@ -19,7 +19,7 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
   dispatch(resetShortUrlParams());
 
   const selectedServer = findServerById(serverId);
-  const { health } = await buildShlinkApiClient(selectedServer);
+  const { health } = buildShlinkApiClient(selectedServer);
   const version = await health()
     .then(({ version }) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version)
     .then((version) => !versionIsValidSemVer(version) ? MIN_FALLBACK_VERSION : version)

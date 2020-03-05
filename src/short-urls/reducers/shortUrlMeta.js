@@ -37,7 +37,7 @@ export default handleActions({
 
 export const editShortUrlMeta = (buildShlinkApiClient) => (shortCode, domain, meta) => async (dispatch, getState) => {
   dispatch({ type: EDIT_SHORT_URL_META_START });
-  const { updateShortUrlMeta } = await buildShlinkApiClient(getState);
+  const { updateShortUrlMeta } = buildShlinkApiClient(getState);
 
   try {
     await updateShortUrlMeta(shortCode, domain, meta);

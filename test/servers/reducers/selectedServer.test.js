@@ -38,7 +38,7 @@ describe('selectedServerReducer', () => {
     const apiClientMock = {
       health: jest.fn(),
     };
-    const buildApiClient = jest.fn().mockResolvedValue(apiClientMock);
+    const buildApiClient = jest.fn().mockReturnValue(apiClientMock);
     const dispatch = jest.fn();
 
     afterEach(jest.clearAllMocks);

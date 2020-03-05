@@ -31,7 +31,7 @@ export default handleActions({
 
 export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, domain, tags) => async (dispatch, getState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
-  const { updateShortUrlTags } = await buildShlinkApiClient(getState);
+  const { updateShortUrlTags } = buildShlinkApiClient(getState);
 
   try {
     const normalizedTags = await updateShortUrlTags(shortCode, domain, tags);

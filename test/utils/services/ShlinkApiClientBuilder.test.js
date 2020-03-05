@@ -34,10 +34,10 @@ describe('ShlinkApiClientBuilder', () => {
     expect(secondApiClient).toBe(thirdApiClient);
   });
 
-  it('does not fetch from state when provided param is already selected server', async () => {
+  it('does not fetch from state when provided param is already selected server', () => {
     const url = 'url';
     const apiKey = 'apiKey';
-    const apiClient = await buildShlinkApiClient({})({ url, apiKey });
+    const apiClient = buildShlinkApiClient({})({ url, apiKey });
 
     expect(apiClient._baseUrl).toEqual(url);
     expect(apiClient._apiKey).toEqual(apiKey);

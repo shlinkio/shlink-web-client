@@ -51,7 +51,7 @@ describe('shortUrlMetaReducer', () => {
 
   describe('editShortUrlMeta', () => {
     const updateShortUrlMeta = jest.fn().mockResolvedValue({});
-    const buildShlinkApiClient = jest.fn().mockResolvedValue({ updateShortUrlMeta });
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlMeta });
     const dispatch = jest.fn();
 
     afterEach(jest.clearAllMocks);
