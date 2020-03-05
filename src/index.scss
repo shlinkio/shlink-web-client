@@ -63,3 +63,16 @@ body,
     background-color: darken($mainColor, 12%);
   }
 }
+
+a, .page-link {
+  color: $mainColor;
+
+  &:hover, &.active {
+    color: $mainColorActive;
+  }
+}
+
+.page-item.active .page-link {
+  background-color: $mainColorActive;
+  border-color: $mainColorActive;
+}
