@@ -133,7 +133,7 @@ const ShortUrlVisits = (
     const setDate = (dateField) => (date) => this.setState({ [dateField]: date }, this.loadVisits);
 
     return (
-      <div className="shlink-container">
+      <React.Fragment>
         <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
 
         <section className="mt-4">
@@ -148,7 +148,7 @@ const ShortUrlVisits = (
         <section>
           {renderVisitsContent()}
         </section>
-      </div>
+      </React.Fragment>
     );
   }
 };

@@ -61,15 +61,17 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
           <div className="row menu-layout__swipeable-inner">
             <AsideMenu className="col-lg-2 col-md-3" selectedServer={selectedServer} showOnMobile={showSideBar} />
             <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3" onClick={() => setShowSidebar(false)}>
-              <Switch>
-                <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
-                <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
-                <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
-                <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
-                <Route
-                  render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`} btnText="List short URLs" />}
-                />
-              </Switch>
+              <div className="shlink-container">
+                <Switch>
+                  <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
+                  <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
+                  <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
+                  <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
+                  <Route
+                    render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`} btnText="List short URLs" />}
+                  />
+                </Switch>
+              </div>
             </div>
           </div>
         </Swipeable>

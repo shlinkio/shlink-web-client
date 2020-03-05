@@ -2,7 +2,7 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { range } from 'ramda';
+import { identity, memoizeWith, range } from 'ramda';
 import { useState } from 'react';
 import { compare } from 'compare-versions';
 
@@ -59,13 +59,13 @@ export const compareVersions = (firstVersion, operator, secondVersion) => compar
   operator
 );
 
-export const versionIsValidSemVer = (version) => {
+export const versionIsValidSemVer = memoizeWith(identity, (version) => {
   try {
     return compareVersions(version, '=', version);
   } catch (e) {
     return false;
   }
-};
+});
 
 export const formatDate = (format = 'YYYY-MM-DD') => (date) => date && date.format ? date.format(format) : date;
 

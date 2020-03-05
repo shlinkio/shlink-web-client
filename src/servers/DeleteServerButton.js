@@ -9,7 +9,7 @@ const propTypes = {
   className: PropTypes.string,
 };
 
-const DeleteServerButton = (DeleteServerModal) => {
+const DeleteServerButton = (DeleteServerModal, ShlinkVersions) => {
   const DeleteServerButtonComp = ({ server, className }) => {
     const [ isModalOpen, setModalOpen ] = useState(false);
 
@@ -19,6 +19,8 @@ const DeleteServerButton = (DeleteServerModal) => {
           <FontAwesomeIcon icon={deleteIcon} />
           <span className="aside-menu__item-text">Remove this server</span>
         </span>
+
+        <ShlinkVersions className="mt-2 pl-2" />
 
         <DeleteServerModal
           isOpen={isModalOpen}

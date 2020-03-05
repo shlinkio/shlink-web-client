@@ -31,7 +31,7 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));
   bottle.decorator('MenuLayout', withRouter);
 
-  bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton', 'ShlinkVersions');
+  bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
   bottle.serviceFactory('ShlinkVersions', () => ShlinkVersions);
   bottle.decorator('ShlinkVersions', connect([ 'selectedServer' ]));

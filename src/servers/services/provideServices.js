@@ -24,7 +24,7 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.decorator('DeleteServerModal', withRouter);
   bottle.decorator('DeleteServerModal', connect(null, [ 'deleteServer' ]));
 
-  bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
+  bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal', 'ShlinkVersions');
 
   bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
   bottle.decorator('ImportServersBtn', connect(null, [ 'createServers' ]));
