@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import createTagsList from '../../src/tags/TagsList';
-import MuttedMessage from '../../src/utils/MuttedMessage';
+import MutedMessage from '../../src/utils/MutedMessage';
 import SearchField from '../../src/utils/SearchField';
 import { rangeOf } from '../../src/utils/utils';
 
@@ -28,7 +28,7 @@ describe('<TagsList />', () => {
 
   it('shows a loading message when tags are being loaded', () => {
     const wrapper = createWrapper({ loading: true });
-    const loadingMsg = wrapper.find(MuttedMessage);
+    const loadingMsg = wrapper.find(MutedMessage);
 
     expect(loadingMsg).toHaveLength(1);
     expect(loadingMsg.html()).toContain('Loading...');
@@ -44,7 +44,7 @@ describe('<TagsList />', () => {
 
   it('shows a message when the list of tags is empty', () => {
     const wrapper = createWrapper({ filteredTags: [] });
-    const msg = wrapper.find(MuttedMessage);
+    const msg = wrapper.find(MutedMessage);
 
     expect(msg).toHaveLength(1);
     expect(msg.html()).toContain('No tags found');

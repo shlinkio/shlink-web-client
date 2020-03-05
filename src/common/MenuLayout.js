@@ -3,9 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import { Swipeable } from 'react-swipeable';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
+import MutedMessage from '../utils/MutedMessage';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -38,8 +39,13 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
 
     render() {
       const { selectedServer, match } = this.props;
+
+      if (!selectedServer) {
+        return <MutedMessage loading />;
+      }
+
       const { params: { serverId } } = match;
-      const burgerClasses = classnames('menu-layout__burger-icon', {
+      const burgerClasses = classNames('menu-layout__burger-icon', {
         'menu-layout__burger-icon--active': this.state.showSideBar,
       });
       const swipeMenuIfNoModalExists = (showSideBar) => () => {
