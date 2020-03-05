@@ -1,6 +1,8 @@
 FROM node:12.14.1-alpine as node
 COPY . /shlink-web-client
-RUN cd /shlink-web-client && npm install && npm run build
+ARG VERSION="latest"
+ENV VERSION ${VERSION}
+RUN cd /shlink-web-client && npm install && npm run build -- ${VERSION} --no-dist
 
 FROM nginx:1.17.7-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"

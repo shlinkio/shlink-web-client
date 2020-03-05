@@ -44,6 +44,7 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 const argvSliceStart = 2;
 const argv = process.argv.slice(argvSliceStart);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
+const withoutDist = argv.indexOf('--no-dist') !== -1;
 const { version, hasVersion } = getVersionFromArgs(argv);
 
 // Generate configuration
@@ -102,7 +103,7 @@ checkBrowsers(paths.appPath, isInteractive)
       process.exit(1);
     }
   )
-  .then(() => hasVersion && zipDist(version))
+  .then(() => hasVersion && !withoutDist && zipDist(version))
   .catch((err) => {
     if (err && err.message) {
       console.log(err.message);
