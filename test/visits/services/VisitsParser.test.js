@@ -74,7 +74,7 @@ describe('VisitsParser', () => {
       const { referrers } = stats;
 
       expect(referrers).toEqual({
-        'Unknown': 2,
+        'Direct': 2,
         'google.com': 2,
         'm.facebook.com': 1,
       });

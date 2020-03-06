@@ -161,7 +161,7 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
                 onClick={this.orderByColumn('visits')}
               >
-                <span className="nowrap">{this.renderOrderIcon('visits')} Visits</span>
+                <span className="indivisible">{this.renderOrderIcon('visits')} Visits</span>
               </th>
               <th className="short-urls-list__header-cell">&nbsp;</th>
             </tr>

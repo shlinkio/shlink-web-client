@@ -33,7 +33,7 @@ const provideServices = (bottle, connect) => {
     [ 'listShortUrls', 'resetShortUrlParams' ]
   ));
 
-  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'stateFlagTimeout');
+  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');
 
   bottle.serviceFactory(
     'ShortUrlsRowMenu',

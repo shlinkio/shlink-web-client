@@ -4,6 +4,7 @@ import moment from 'moment';
 import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
 import { ExternalLink } from 'react-external-link';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import Tag from '../../../src/tags/helpers/Tag';
 
@@ -11,7 +12,8 @@ describe('<ShortUrlsRow />', () => {
   let wrapper;
   const mockFunction = () => '';
   const ShortUrlsRowMenu = mockFunction;
-  const stateFlagTimeout = jest.fn();
+  const stateFlagTimeout = jest.fn(() => true);
+  const useStateFlagTimeout = jest.fn(() => [ false, stateFlagTimeout ]);
   const colorGenerator = {
     getColorForKey: mockFunction,
     setColorForKey: mockFunction,
@@ -29,7 +31,7 @@ describe('<ShortUrlsRow />', () => {
   };
 
   beforeEach(() => {
-    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, stateFlagTimeout);
+    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
 
     wrapper = shallow(
       <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selecrtedServer={server} shortUrl={shortUrl} />
@@ -87,20 +89,12 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it('updates state when copied to clipboard', () => {
-    const col = wrapper.find('td').at(5);
-    const menu = col.find(ShortUrlsRowMenu);
+    const col = wrapper.find('td').at(1);
+    const menu = col.find(CopyToClipboard);
 
     expect(menu).toHaveLength(1);
     expect(stateFlagTimeout).not.toHaveBeenCalled();
-    menu.simulate('copyToClipboard');
+    menu.simulate('copy');
     expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
-  });
-
-  it('shows copy hint when state prop is true', () => {
-    const isHidden = () => wrapper.find('td').at(5).find('.short-urls-row__copy-hint').prop('hidden');
-
-    expect(isHidden()).toEqual(true);
-    wrapper.setState({ copiedToClipboard: true });
-    expect(isHidden()).toEqual(false);
   });
 });
