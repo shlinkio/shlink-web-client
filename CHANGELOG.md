@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#205](https://github.com/shlinkio/shlink-web-client/issues/205) Replaced `jest-each` package by jet's native `test.each` function.
 * [#209](https://github.com/shlinkio/shlink-web-client/issues/209) Replaced `Unknown` by `Direct` for visits from undetermined referrers.
+* [#212](https://github.com/shlinkio/shlink-web-client/issues/212) Moved copy-to-clipboard next to short URL.
 
 #### Deprecated
 
