@@ -19,6 +19,16 @@ export const stateFlagTimeout = (setTimeout) => (
   setTimeout(() => setState({ [flagName]: !initialValue }), delay);
 };
 
+export const useStateFlagTimeout = (setTimeout) => (initialValue = true, delay = DEFAULT_TIMEOUT_DELAY) => {
+  const [ flag, setFlag ] = useState(initialValue);
+  const callback = () => {
+    setFlag(!initialValue);
+    setTimeout(() => setFlag(initialValue), delay);
+  };
+
+  return [ flag, callback ];
+};
+
 export const determineOrderDir = (clickedField, currentOrderField, currentOrderDir) => {
   if (currentOrderField !== clickedField) {
     return 'ASC';

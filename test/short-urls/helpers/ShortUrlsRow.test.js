@@ -12,7 +12,8 @@ describe('<ShortUrlsRow />', () => {
   let wrapper;
   const mockFunction = () => '';
   const ShortUrlsRowMenu = mockFunction;
-  const stateFlagTimeout = jest.fn();
+  const stateFlagTimeout = jest.fn(() => true);
+  const useStateFlagTimeout = jest.fn(() => [ false, stateFlagTimeout ]);
   const colorGenerator = {
     getColorForKey: mockFunction,
     setColorForKey: mockFunction,
@@ -30,7 +31,7 @@ describe('<ShortUrlsRow />', () => {
   };
 
   beforeEach(() => {
-    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, stateFlagTimeout);
+    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
 
     wrapper = shallow(
       <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selecrtedServer={server} shortUrl={shortUrl} />
@@ -95,13 +96,5 @@ describe('<ShortUrlsRow />', () => {
     expect(stateFlagTimeout).not.toHaveBeenCalled();
     menu.simulate('copy');
     expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
-  });
-
-  it('shows copy hint when state prop is true', () => {
-    const isHidden = () => wrapper.find('td').at(1).find('.short-urls-row__copy-hint').prop('hidden');
-
-    expect(isHidden()).toEqual(true);
-    wrapper.setState({ copiedToClipboard: true });
-    expect(isHidden()).toEqual(false);
   });
 });
