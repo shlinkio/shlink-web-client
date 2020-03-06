@@ -61,7 +61,7 @@ const updateBrowsersStatsForVisit = (browsersStats, { userAgent }) => {
 
 const updateReferrersStatsForVisit = (referrersStats, { referer }) => {
   const notHasDomain = isNil(referer) || isEmpty(referer);
-  const domain = notHasDomain ? 'Unknown' : extractDomain(referer);
+  const domain = notHasDomain ? 'Direct' : extractDomain(referer);
 
   referrersStats[domain] = (referrersStats[domain] || 0) + 1;
 };
