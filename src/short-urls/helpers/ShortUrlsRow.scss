@@ -43,11 +43,16 @@
   position: relative;
 }
 
+.short-urls-row__copy-btn {
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
 .short-urls-row__copy-hint {
-  @include vertical-align();
-  right: 100%;
+  @include vertical-align(translateX(10px));
+  box-shadow: 0 3px 15px rgba(0, 0, 0, .25);
 
   @media (max-width: $smMax) {
-    right: calc(100% + 10px);
+    @include vertical-align(translateX(calc(-100% - 20px)));
   }
 }

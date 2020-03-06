@@ -3,6 +3,9 @@ import React from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import { ExternalLink } from 'react-external-link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { shortUrlsListParamsType } from '../reducers/shortUrlsListParams';
 import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
@@ -26,7 +29,7 @@ const ShortUrlsRow = (
 
   renderTags(tags) {
     if (isEmpty(tags)) {
-      return <i className="nowrap"><small>No tags</small></i>;
+      return <i className="indivisible"><small>No tags</small></i>;
     }
 
     const { refreshList, shortUrlsListParams } = this.props;
@@ -47,11 +50,25 @@ const ShortUrlsRow = (
 
     return (
       <tr className="short-urls-row">
-        <td className="nowrap short-urls-row__cell" data-th="Created at: ">
+        <td className="indivisible short-urls-row__cell" data-th="Created at: ">
           <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
         </td>
         <td className="short-urls-row__cell" data-th="Short URL: ">
-          <ExternalLink href={shortUrl.shortUrl} />
+          <span className="indivisible short-urls-row__cell--relative">
+            <ExternalLink href={shortUrl.shortUrl} />
+            <CopyToClipboard
+              text={shortUrl.shortUrl}
+              onCopy={() => stateFlagTimeout(this.setState.bind(this), 'copiedToClipboard')}
+            >
+              <FontAwesomeIcon icon={copyIcon} className="ml-2 short-urls-row__copy-btn" />
+            </CopyToClipboard>
+            <span
+              className="badge badge-warning short-urls-row__copy-hint"
+              hidden={!this.state.copiedToClipboard}
+            >
+              Copied short URL!
+            </span>
+          </span>
         </td>
         <td className="short-urls-row__cell short-urls-row__cell--break" data-th="Long URL: ">
           <ExternalLink href={shortUrl.longUrl} />
@@ -64,18 +81,8 @@ const ShortUrlsRow = (
             selectedServer={selectedServer}
           />
         </td>
-        <td className="short-urls-row__cell short-urls-row__cell--relative">
-          <small
-            className="badge badge-warning short-urls-row__copy-hint"
-            hidden={!this.state.copiedToClipboard}
-          >
-            Copied short URL!
-          </small>
-          <ShortUrlsRowMenu
-            selectedServer={selectedServer}
-            shortUrl={shortUrl}
-            onCopyToClipboard={() => stateFlagTimeout(this.setState.bind(this), 'copiedToClipboard')}
-          />
+        <td className="short-urls-row__cell">
+          <ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />
         </td>
       </tr>
     );

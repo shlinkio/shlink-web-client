@@ -49,8 +49,8 @@ describe('<ShortUrlsRowMenu />', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(9);
-    expect(items.find('[divider]')).toHaveLength(2);
+    expect(items).toHaveLength(7);
+    expect(items.find('[divider]')).toHaveLength(1);
   });
 
   describe('toggles state when toggling modal windows', () => {

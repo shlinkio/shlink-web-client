@@ -1,5 +1,5 @@
-@mixin vertical-align {
+@mixin vertical-align($extraTransforms: '') {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%) $extraTransforms;
 }

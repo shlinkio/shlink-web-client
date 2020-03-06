@@ -1,4 +1,4 @@
-import { faCopy as copyIcon, faImage as pictureIcon } from '@fortawesome/free-regular-svg-icons';
+import { faImage as pictureIcon } from '@fortawesome/free-regular-svg-icons';
 import {
   faTags as tagsIcon,
   faChartPie as pieChartIcon,
@@ -9,9 +9,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import PreviewModal from './PreviewModal';
@@ -26,7 +24,6 @@ const ShortUrlsRowMenu = (
   ForServerVersion
 ) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
-    onCopyToClipboard: PropTypes.func,
     selectedServer: serverType,
     shortUrl: shortUrlType,
   };
@@ -42,7 +39,7 @@ const ShortUrlsRowMenu = (
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
   render() {
-    const { onCopyToClipboard, shortUrl, selectedServer } = this.props;
+    const { shortUrl, selectedServer } = this.props;
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
     const toggleModal = (prop) => () => this.setState((prevState) => ({ [prop]: !prevState[prop] }));
     const toggleQrCode = toggleModal('isQrModalOpen');
@@ -73,12 +70,10 @@ const ShortUrlsRowMenu = (
             <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
           </ForServerVersion>
 
-          <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
-            <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL
+          <DropdownItem onClick={toggleQrCode}>
+            <FontAwesomeIcon icon={qrIcon} fixedWidth /> QR code
           </DropdownItem>
-          <DeleteShortUrlModal shortUrl={shortUrl} isOpen={this.state.isDeleteModalOpen} toggle={toggleDelete} />
-
-          <DropdownItem divider />
+          <QrCodeModal url={completeShortUrl} isOpen={this.state.isQrModalOpen} toggle={toggleQrCode} />
 
           <ForServerVersion maxVersion="1.x">
             <DropdownItem onClick={togglePreview}>
@@ -87,20 +82,12 @@ const ShortUrlsRowMenu = (
             <PreviewModal url={completeShortUrl} isOpen={this.state.isPreviewModalOpen} toggle={togglePreview} />
           </ForServerVersion>
 
-          <DropdownItem onClick={toggleQrCode}>
-            <FontAwesomeIcon icon={qrIcon} fixedWidth /> QR code
+          <DropdownItem divider />
+
+          <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
+            <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL
           </DropdownItem>
-          <QrCodeModal url={completeShortUrl} isOpen={this.state.isQrModalOpen} toggle={toggleQrCode} />
-
-          <ForServerVersion maxVersion="1.x">
-            <DropdownItem divider />
-          </ForServerVersion>
-
-          <CopyToClipboard text={completeShortUrl} onCopy={onCopyToClipboard}>
-            <DropdownItem>
-              <FontAwesomeIcon icon={copyIcon} fixedWidth /> Copy to clipboard
-            </DropdownItem>
-          </CopyToClipboard>
+          <DeleteShortUrlModal shortUrl={shortUrl} isOpen={this.state.isDeleteModalOpen} toggle={toggleDelete} />
         </DropdownMenu>
       </ButtonDropdown>
     );
