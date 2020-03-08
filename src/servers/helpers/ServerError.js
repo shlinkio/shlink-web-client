@@ -6,12 +6,13 @@ import ServersListGroup from '../ServersListGroup';
 import './ServerError.scss';
 
 const propTypes = {
+  servers: PropTypes.object,
   type: PropTypes.oneOf([ 'not-found', 'not-reachable' ]).isRequired,
 };
 
-export const ServerError = ({ type }) => (
+export const ServerError = ({ type, servers: { list } }) => (
   <div className="server-error-container flex-column">
-    <div className="row w-100">
+    <div className="row w-100 mb-3 mb-md-5">
       <Message type="error">
         {type === 'not-found' && 'Could not find this Shlink server.'}
         {type === 'not-reachable' && (
@@ -22,8 +23,8 @@ export const ServerError = ({ type }) => (
         )}
       </Message>
     </div>
-    <ServersListGroup servers={[]} className="mt-3 mt-md-5">
-      These are the {type === 'not-reachable' ? 'other' : ''} servers currently configured. Choose one of
+    <ServersListGroup servers={Object.values(list)}>
+      These are the {type === 'not-reachable' ? 'other' : ''} Shlink servers currently configured. Choose one of
       them or <Link to="/server/create">add a new one</Link>.
     </ServersListGroup>
   </div>

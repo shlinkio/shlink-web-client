@@ -7,6 +7,7 @@ import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, listServers } from '../reducers/server';
 import ForServerVersion from '../helpers/ForServerVersion';
+import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
 import ServersService from './ServersService';
 import ServersExporter from './ServersExporter';
@@ -31,6 +32,9 @@ const provideServices = (bottle, connect, withRouter) => {
 
   bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
   bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));
+
+  bottle.serviceFactory('ServerError', () => ServerError);
+  bottle.decorator('ServerError', connect([ 'servers' ]));
 
   // Services
   bottle.constant('csvjson', csvjson);

@@ -1,7 +1,6 @@
 @import '../utils/mixins/vertical-align';
 
 .servers-list__list-group {
-  margin-top: 1rem;
   width: 100%;
   max-width: 400px;
 }
@@ -14,5 +13,6 @@
 
 .servers-list__server-item-icon {
   @include vertical-align();
+
   right: 1rem;
 }

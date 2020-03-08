@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
 import Message from '../utils/Message';
-import { ServerError } from '../servers/helpers/ServerError';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -18,7 +17,7 @@ const propTypes = {
   selectedServer: serverType,
 };
 
-const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions) => {
+const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions, ServerError) => {
   const MenuLayoutComp = ({ match, location, selectedServer, selectServer }) => {
     const [ showSideBar, setShowSidebar ] = useState(false);
     const { params: { serverId } } = match;

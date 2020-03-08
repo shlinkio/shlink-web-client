@@ -10,7 +10,6 @@ import './ServersListGroup.scss';
 const propTypes = {
   servers: PropTypes.arrayOf(serverType).isRequired,
   children: PropTypes.node.isRequired,
-  className: PropTypes.string,
 };
 
 const ServerListItem = ({ id, name }) => (
@@ -25,15 +24,15 @@ ServerListItem.propTypes = {
   name: PropTypes.string,
 };
 
-const ServersListGroup = ({ servers, children, className }) => (
-  <div className={className}>
+const ServersListGroup = ({ servers, children }) => (
+  <React.Fragment>
     <h5>{children}</h5>
     {servers.length > 0 && (
-      <ListGroup className="servers-list__list-group">
+      <ListGroup className="servers-list__list-group mt-md-3">
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
       </ListGroup>
     )}
-  </div>
+  </React.Fragment>
 );
 
 ServersListGroup.propTypes = propTypes;

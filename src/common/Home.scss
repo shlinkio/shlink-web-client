@@ -1,8 +1,8 @@
 @import '../utils/base';
 
 .home {
-  height: calc(100vh - #{$headerHeight});
   text-align: center;
+  height: calc(100vh - #{$headerHeight});
   display: flex;
   align-items: center;
   justify-content: center;
