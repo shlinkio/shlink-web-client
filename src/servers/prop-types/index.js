@@ -1,12 +1,24 @@
 import PropTypes from 'prop-types';
 
-export const serverType = PropTypes.shape({
+const regularServerType = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string,
   url: PropTypes.string,
   apiKey: PropTypes.string,
   version: PropTypes.string,
   printableVersion: PropTypes.string,
-  serverNotFound: PropTypes.bool,
-  serverNotReachable: PropTypes.bool,
 });
+
+const notFoundServerType = PropTypes.shape({
+  serverNotFound: PropTypes.bool.isRequired,
+});
+
+const notReachableServerType = PropTypes.shape({
+  serverNotReachable: PropTypes.bool.isRequired,
+});
+
+export const serverType = PropTypes.oneOfType([
+  regularServerType,
+  notFoundServerType,
+  notReachableServerType,
+]);

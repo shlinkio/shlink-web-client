@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
 import Message from '../utils/Message';
+import { ServerError } from '../servers/helpers/ServerError';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -32,16 +33,11 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
     }
 
     if (selectedServer.serverNotFound) {
-      return <Message type="error">Could not find this Shlink server in this host.</Message>;
+      return <ServerError type="not-found" />;
     }
 
     if (selectedServer.serverNotReachable) {
-      return (
-        <Message type="error">
-          <p>Oops! Could not connect to this Shlink server.</p>
-          Make sure you have internet connection, and the server is properly configured and on-line.
-        </Message>
-      );
+      return <ServerError type="not-reachable" />;
     }
 
     const burgerClasses = classNames('menu-layout__burger-icon', {
