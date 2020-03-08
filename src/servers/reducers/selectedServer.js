@@ -21,20 +21,37 @@ const versionToSemVer = pipe(
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
 export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serverId) => async (dispatch) => {
+  dispatch(resetSelectedServer());
   dispatch(resetShortUrlParams());
-
   const selectedServer = findServerById(serverId);
-  const { health } = buildShlinkApiClient(selectedServer);
-  const { version } = await health().catch(() => MIN_FALLBACK_VERSION);
 
-  dispatch({
-    type: SELECT_SERVER,
-    selectedServer: {
-      ...selectedServer,
-      version: versionToSemVer(version),
-      printableVersion: versionToPrintable(version),
-    },
-  });
+  if (!selectedServer) {
+    dispatch({
+      type: SELECT_SERVER,
+      selectedServer: { serverNotFound: true },
+    });
+
+    return;
+  }
+
+  try {
+    const { health } = buildShlinkApiClient(selectedServer);
+    const { version } = await health();
+
+    dispatch({
+      type: SELECT_SERVER,
+      selectedServer: {
+        ...selectedServer,
+        version: versionToSemVer(version),
+        printableVersion: versionToPrintable(version),
+      },
+    });
+  } catch (e) {
+    dispatch({
+      type: SELECT_SERVER,
+      selectedServer: { serverNotReachable: true },
+    });
+  }
 };
 
 export default handleActions({

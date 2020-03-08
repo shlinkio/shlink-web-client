@@ -18,7 +18,7 @@ const provideServices = (bottle, connect, withRouter) => {
 
   bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
   bottle.decorator('ServersDropdown', withRouter);
-  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ], [ 'listServers', 'selectServer' ]));
+  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ], [ 'listServers' ]));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
   bottle.decorator('DeleteServerModal', withRouter);

@@ -20,19 +20,30 @@ const propTypes = {
 const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions) => {
   const MenuLayoutComp = ({ match, location, selectedServer, selectServer }) => {
     const [ showSideBar, setShowSidebar ] = useState(false);
+    const { params: { serverId } } = match;
 
     useEffect(() => {
-      const { params: { serverId } } = match;
-
       selectServer(serverId);
-    }, []);
+    }, [ serverId ]);
     useEffect(() => setShowSidebar(false), [ location ]);
 
     if (!selectedServer) {
       return <MutedMessage loading />;
     }
 
-    const { params: { serverId } } = match;
+    if (selectedServer.serverNotFound) {
+      return <MutedMessage>Could not find a server with id <b>&quot;{serverId}&quot;</b> in this host.</MutedMessage>;
+    }
+
+    if (selectedServer.serverNotReachable) {
+      return (
+        <MutedMessage>
+          Oops! Could not connect to Shlink server with ID <b>&quot;{serverId}&quot;</b>. Make sure you have internet
+          connection, the server is properly configured and it is on-line.
+        </MutedMessage>
+      );
+    }
+
     const burgerClasses = classNames('menu-layout__burger-icon', {
       'menu-layout__burger-icon--active': showSideBar,
     });
