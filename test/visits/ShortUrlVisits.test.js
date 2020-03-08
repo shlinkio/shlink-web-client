@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { Card } from 'reactstrap';
 import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
-import MutedMessage from '../../src/utils/MutedMessage';
+import Message from '../../src/utils/Message';
 import GraphCard from '../../src/visits/GraphCard';
 import SortableBarGraph from '../../src/visits/SortableBarGraph';
 import DateRangeRow from '../../src/utils/DateRangeRow';
@@ -44,7 +44,7 @@ describe('<ShortUrlVisits />', () => {
 
   it('renders a preloader when visits are loading', () => {
     const wrapper = createComponent({ loading: true });
-    const loadingMessage = wrapper.find(MutedMessage);
+    const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
     expect(loadingMessage.html()).toContain('Loading...');
@@ -52,7 +52,7 @@ describe('<ShortUrlVisits />', () => {
 
   it('renders a warning when loading large amounts of visits', () => {
     const wrapper = createComponent({ loading: true, loadingLarge: true });
-    const loadingMessage = wrapper.find(MutedMessage);
+    const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
     expect(loadingMessage.html()).toContain('This is going to take a while... :S');
@@ -68,7 +68,7 @@ describe('<ShortUrlVisits />', () => {
 
   it('renders a message when visits are loaded but the list is empty', () => {
     const wrapper = createComponent({ loading: false, error: false, visits: [] });
-    const message = wrapper.find(MutedMessage);
+    const message = wrapper.find(Message);
 
     expect(message).toHaveLength(1);
     expect(message.html()).toContain('There are no visits matching current filter  :(');

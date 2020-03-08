@@ -8,7 +8,6 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
   static propTypes = {
     servers: PropTypes.object,
     selectedServer: serverType,
-    selectServer: PropTypes.func,
     listServers: PropTypes.func,
     history: PropTypes.shape({
       push: PropTypes.func,
@@ -16,14 +15,10 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
   };
 
   renderServers = () => {
-    const { servers: { list, loading }, selectedServer, selectServer } = this.props;
+    const { servers: { list, loading }, selectedServer } = this.props;
     const servers = values(list);
     const { push } = this.props.history;
-    const loadServer = (id) => {
-      selectServer(id)
-        .then(() => push(`/server/${id}/list-short-urls/1`))
-        .catch(() => {});
-    };
+    const loadServer = (id) => push(`/server/${id}/list-short-urls/1`);
 
     if (loading) {
       return <DropdownItem disabled><i>Trying to load servers...</i></DropdownItem>;
@@ -41,10 +36,7 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
           </DropdownItem>
         ))}
         <DropdownItem divider />
-        <DropdownItem
-          className="servers-dropdown__export-item"
-          onClick={() => serversExporter.exportServers()}
-        >
+        <DropdownItem className="servers-dropdown__export-item" onClick={() => serversExporter.exportServers()}>
           Export servers
         </DropdownItem>
       </React.Fragment>

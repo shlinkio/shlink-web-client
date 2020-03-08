@@ -4,7 +4,7 @@ import { Card } from 'reactstrap';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import DateRangeRow from '../utils/DateRangeRow';
-import MutedMessage from '../utils/MutedMessage';
+import Message from '../utils/Message';
 import { formatDate } from '../utils/utils';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
@@ -64,7 +64,7 @@ const ShortUrlVisits = (
       if (loading) {
         const message = loadingLarge ? 'This is going to take a while... :S' : 'Loading...';
 
-        return <MutedMessage loading>{message}</MutedMessage>;
+        return <Message loading>{message}</Message>;
       }
 
       if (error) {
@@ -76,7 +76,7 @@ const ShortUrlVisits = (
       }
 
       if (isEmpty(visits)) {
-        return <MutedMessage>There are no visits matching current filter  :(</MutedMessage>;
+        return <Message>There are no visits matching current filter  :(</Message>;
       }
 
       const { os, browsers, referrers, countries, cities, citiesForMap } = processStatsFromVisits(

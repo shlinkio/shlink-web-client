@@ -58,9 +58,10 @@ describe('selectedServerReducer', () => {
 
       await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
 
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SHORT_URL_PARAMS });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: RESET_SHORT_URL_PARAMS });
+      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
     });
 
     it('invokes dependencies', async () => {
@@ -70,17 +71,27 @@ describe('selectedServerReducer', () => {
       expect(buildApiClient).toHaveBeenCalledTimes(1);
     });
 
-    it('falls back to min version when health endpoint fails', async () => {
-      const expectedSelectedServer = {
-        ...selectedServer,
-        version: MIN_FALLBACK_VERSION,
-      };
+    it('dispatches error when health endpoint fails', async () => {
+      const expectedSelectedServer = { serverNotReachable: true };
 
       apiClientMock.health.mockRejectedValue({});
 
       await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
 
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(apiClientMock.health).toHaveBeenCalled();
+      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+    });
+
+    it('dispatches error when server is not found', async () => {
+      const expectedSelectedServer = { serverNotFound: true };
+
+      ServersServiceMock.findServerById.mockReturnValue(undefined);
+
+      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
+
+      expect(ServersServiceMock.findServerById).toHaveBeenCalled();
+      expect(apiClientMock.health).not.toHaveBeenCalled();
+      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
     });
   });
 });

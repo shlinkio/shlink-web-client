@@ -1,0 +1,18 @@
+@import '../utils/mixins/vertical-align';
+
+.servers-list__list-group {
+  width: 100%;
+  max-width: 400px;
+}
+
+.servers-list__server-item.servers-list__server-item {
+  text-align: left;
+  position: relative;
+  padding: .75rem 2.5rem .75rem 1rem;
+}
+
+.servers-list__server-item-icon {
+  @include vertical-align();
+
+  right: 1rem;
+}

@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
-import MutedMessage from '../utils/MutedMessage';
+import Message from '../utils/Message';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -17,22 +17,28 @@ const propTypes = {
   selectedServer: serverType,
 };
 
-const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions) => {
+const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions, ServerError) => {
   const MenuLayoutComp = ({ match, location, selectedServer, selectServer }) => {
     const [ showSideBar, setShowSidebar ] = useState(false);
+    const { params: { serverId } } = match;
 
     useEffect(() => {
-      const { params: { serverId } } = match;
-
       selectServer(serverId);
-    }, []);
+    }, [ serverId ]);
     useEffect(() => setShowSidebar(false), [ location ]);
 
     if (!selectedServer) {
-      return <MutedMessage loading />;
+      return <Message loading />;
     }
 
-    const { params: { serverId } } = match;
+    if (selectedServer.serverNotFound) {
+      return <ServerError type="not-found" />;
+    }
+
+    if (selectedServer.serverNotReachable) {
+      return <ServerError type="not-reachable" />;
+    }
+
     const burgerClasses = classNames('menu-layout__burger-icon', {
       'menu-layout__burger-icon--active': showSideBar,
     });
@@ -68,7 +74,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
                   <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
                   <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                   <Route
-                    render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`} btnText="List short URLs" />}
+                    render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`}>List short URLs</NotFound>}
                   />
                 </Switch>
               </div>
