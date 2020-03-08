@@ -18,14 +18,6 @@ describe('<Home />', () => {
 
   afterEach(() => wrapped && wrapped.unmount());
 
-  it('resets selected server when mounted', () => {
-    const resetSelectedServer = jest.fn();
-
-    expect(resetSelectedServer).not.toHaveBeenCalled();
-    createComponent({ resetSelectedServer });
-    expect(resetSelectedServer).toHaveBeenCalled();
-  });
-
   it('shows link to create server when no servers exist', () => {
     const wrapped = createComponent();
 
@@ -38,5 +30,17 @@ describe('<Home />', () => {
 
     expect(span).toHaveLength(1);
     expect(span.text()).toContain('Trying to load servers...');
+  });
+
+  it('Asks to select a server when not loadign and servers exist', () => {
+    const list = [
+      { name: 'foo', id: '1' },
+      { name: 'bar', id: '2' },
+    ];
+    const wrapped = createComponent({ servers: { list } });
+    const span = wrapped.find('span');
+
+    expect(span).toHaveLength(1);
+    expect(span.text()).toContain('Please, select a server.');
   });
 });

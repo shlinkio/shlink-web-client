@@ -7,14 +7,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const getClassForType = (type) => {
   const map = {
-    error: 'bg-danger',
+    error: 'border-danger',
   };
 
-  return map[type] || 'bg-light';
+  return map[type] || '';
 };
 const getTextClassForType = (type) => {
   const map = {
-    error: 'text-white',
+    error: 'text-danger',
   };
 
   return map[type] || 'text-muted';
@@ -28,7 +28,7 @@ const propTypes = {
 };
 
 const Message = ({ children, loading = false, noMargin = false, type = 'default' }) => {
-  const cardClasses = classNames(getClassForType(type), { 'mt-4': !noMargin });
+  const cardClasses = classNames('bg-light', getClassForType(type), { 'mt-4': !noMargin });
 
   return (
     <div className="col-md-10 offset-md-1">
