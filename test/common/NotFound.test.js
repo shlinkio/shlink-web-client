@@ -38,7 +38,7 @@ describe('<NotFound />', () => {
   });
 
   it('shows a link with provided props', () => {
-    const { wrapper } = createWrapper({ to: '/foo/bar', btnText: 'Hello' });
+    const { wrapper } = createWrapper({ to: '/foo/bar', children: 'Hello' });
     const link = wrapper.find(Link);
 
     expect(link.prop('to')).toEqual('/foo/bar');
