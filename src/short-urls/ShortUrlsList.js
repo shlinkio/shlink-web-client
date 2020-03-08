@@ -112,9 +112,9 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
 
     return shortUrlsList.map((shortUrl) => (
       <ShortUrlsRow
+        key={shortUrl.shortUrl}
         shortUrl={shortUrl}
         selectedServer={selectedServer}
-        key={shortUrl.shortCode}
         refreshList={this.refreshList}
         shortUrlsListParams={shortUrlsListParams}
       />

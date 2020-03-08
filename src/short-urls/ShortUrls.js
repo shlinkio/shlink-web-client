@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Paginator from './Paginator';
 
@@ -14,9 +14,13 @@ const ShortUrls = (SearchBar, ShortUrlsList) => {
     const { match: { params }, shortUrlsList } = props;
     const { page, serverId } = params;
     const { data = [], pagination } = shortUrlsList;
+    const [ urlsListKey, setUrlsListKey ] = useState(`${serverId}_${page}`);
 
     // Using a key on a component makes react to create a new instance every time the key changes
-    const urlsListKey = `${serverId}_${page}`;
+    // Without it, pagination on the URL will not make the component to be refreshed
+    useEffect(() => {
+      setUrlsListKey(`${serverId}_${page}`);
+    }, [ serverId, page ]);
 
     return (
       <React.Fragment>
