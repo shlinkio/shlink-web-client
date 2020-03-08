@@ -79,7 +79,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
                   <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
                   <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                   <Route
-                    render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`} btnText="List short URLs" />}
+                    render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`}>List short URLs</NotFound>}
                   />
                 </Switch>
               </div>
