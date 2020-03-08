@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
-import MutedMessage from '../utils/MutedMessage';
+import Message from '../utils/Message';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -28,19 +28,19 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
     useEffect(() => setShowSidebar(false), [ location ]);
 
     if (!selectedServer) {
-      return <MutedMessage loading />;
+      return <Message loading />;
     }
 
     if (selectedServer.serverNotFound) {
-      return <MutedMessage>Could not find a server with id <b>&quot;{serverId}&quot;</b> in this host.</MutedMessage>;
+      return <Message type="error">Could not find this Shlink server in this host.</Message>;
     }
 
     if (selectedServer.serverNotReachable) {
       return (
-        <MutedMessage>
-          Oops! Could not connect to Shlink server with ID <b>&quot;{serverId}&quot;</b>. Make sure you have internet
-          connection, the server is properly configured and it is on-line.
-        </MutedMessage>
+        <Message type="error">
+          <p>Oops! Could not connect to this Shlink server.</p>
+          Make sure you have internet connection, and the server is properly configured and on-line.
+        </Message>
       );
     }
 
