@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import createServerConstruct from '../../src/servers/CreateServer';
+import { HorizontalFormGroup } from '../../src/utils/HorizontalFormGroup';
 
 describe('<CreateServer />', () => {
   let wrapper;
@@ -28,9 +29,7 @@ describe('<CreateServer />', () => {
   it('renders components', () => {
     const wrapper = createWrapper();
 
-    expect(wrapper.find('#name')).toHaveLength(1);
-    expect(wrapper.find('#url')).toHaveLength(1);
-    expect(wrapper.find('#apiKey')).toHaveLength(1);
+    expect(wrapper.find(HorizontalFormGroup)).toHaveLength(3);
     expect(wrapper.find(ImportServersBtn)).toHaveLength(1);
     expect(wrapper.find('.create-server__import-success-msg')).toHaveLength(0);
   });
