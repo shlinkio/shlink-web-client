@@ -1,3 +1,5 @@
+@import '../../utils/base';
+
 .server-error__container {
   text-align: center;
   display: flex;
@@ -6,7 +8,7 @@
 }
 
 .server-error__delete-btn {
-  color: #dc3545;
+  color: $dangerColor;
   cursor: pointer;
 }
 
