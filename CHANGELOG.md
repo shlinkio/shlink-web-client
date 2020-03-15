@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#213](https://github.com/shlinkio/shlink-web-client/issues/213) The versions of both shlink-web-client and currently consumed Shlink server are now displayed in the footer.
 * [#221](https://github.com/shlinkio/shlink-web-client/issues/221) Improved how servers are handled, displaying meaningful errors when a not-found or a not-reachable server is tried to be loaded.
+* [#226](https://github.com/shlinkio/shlink-web-client/issues/226) Created servers can now be edited.
 
 #### Changed
 
