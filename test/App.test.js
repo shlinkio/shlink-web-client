@@ -9,7 +9,7 @@ describe('<App />', () => {
   const MainHeader = () => '';
 
   beforeEach(() => {
-    const App = appFactory(MainHeader, identity, identity, identity);
+    const App = appFactory(MainHeader, identity, identity, identity, identity);
 
     wrapper = shallow(<App />);
   });

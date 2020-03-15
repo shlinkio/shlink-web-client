@@ -52,6 +52,8 @@ export const listServers = ({ listServers, createServers }, { get }) => () => as
 
 export const createServer = ({ createServer }, listServersAction) => pipe(createServer, listServersAction);
 
+export const editServer = ({ editServer }, listServersAction) => pipe(editServer, listServersAction);
+
 export const deleteServer = ({ deleteServer }, listServersAction) => pipe(deleteServer, listServersAction);
 
 export const createServers = ({ createServers }, listServersAction) => pipe(
