@@ -1,46 +1,34 @@
-import { assoc, dissoc, pipe } from 'ramda';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
 import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
+const propTypes = {
+  createServer: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+  resetSelectedServer: PropTypes.func,
+};
 
-const CreateServer = (ImportServersBtn, stateFlagTimeout) => class CreateServer extends React.Component {
-  static propTypes = {
-    createServer: PropTypes.func,
-    history: PropTypes.shape({
-      push: PropTypes.func,
-    }),
-    resetSelectedServer: PropTypes.func,
-  };
+const CreateServer = (ImportServersBtn, useStateFlagTimeout) => {
+  const CreateServerComp = ({ createServer, history, resetSelectedServer }) => {
+    const [ name, setName ] = useState('');
+    const [ url, setUrl ] = useState('');
+    const [ apiKey, setApiKey ] = useState('');
+    const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+    const { push } = history;
+    const handleSubmit = (e) => {
+      e.preventDefault();
 
-  state = {
-    name: '',
-    url: '',
-    apiKey: '',
-    serversImported: false,
-  };
+      const id = uuid();
+      const server = { id, name, url, apiKey };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-
-    const { createServer, history: { push } } = this.props;
-    const server = pipe(
-      assoc('id', uuid()),
-      dissoc('serversImported')
-    )(this.state);
-
-    createServer(server);
-    push(`/server/${server.id}/list-short-urls/1`);
-  };
-
-  componentDidMount() {
-    this.props.resetSelectedServer();
-  }
-
-  render() {
-    const renderInputGroup = (id, placeholder, type = 'text') => (
+      createServer(server);
+      push(`/server/${id}/list-short-urls/1`);
+    };
+    const renderInputGroup = (id, placeholder, value, setState, type = 'text') => (
       <div className="form-group row">
         <label htmlFor={id} className="col-lg-1 col-md-2 col-form-label create-server__label">
           {placeholder}:
@@ -51,29 +39,31 @@ const CreateServer = (ImportServersBtn, stateFlagTimeout) => class CreateServer 
             className="form-control"
             id={id}
             placeholder={placeholder}
-            value={this.state[id]}
+            value={value}
             required
-            onChange={(e) => this.setState({ [id]: e.target.value })}
+            onChange={(e) => setState(e.target.value)}
           />
         </div>
       </div>
     );
 
+    useEffect(() => {
+      resetSelectedServer(); // FIXME Only when no serverId exists
+    }, []);
+
     return (
       <div className="create-server">
-        <form onSubmit={this.handleSubmit}>
-          {renderInputGroup('name', 'Name')}
-          {renderInputGroup('url', 'URL', 'url')}
-          {renderInputGroup('apiKey', 'API key')}
+        <form onSubmit={handleSubmit}>
+          {renderInputGroup('name', 'Name', name, setName)}
+          {renderInputGroup('url', 'URL', url, setUrl, 'url')}
+          {renderInputGroup('apiKey', 'API key', apiKey, setApiKey)}
 
           <div className="text-right">
-            <ImportServersBtn
-              onImport={() => stateFlagTimeout(this.setState.bind(this), 'serversImported', true, SHOW_IMPORT_MSG_TIME)}
-            />
+            <ImportServersBtn onImport={setServersImported} />
             <button className="btn btn-outline-primary">Create server</button>
           </div>
 
-          {this.state.serversImported && (
+          {serversImported && (
             <div className="row create-server__import-success-msg">
               <div className="col-md-10 offset-md-1">
                 <div className="p-2 mt-3 bg-main text-white text-center">
@@ -85,7 +75,11 @@ const CreateServer = (ImportServersBtn, stateFlagTimeout) => class CreateServer 
         </form>
       </div>
     );
-  }
+  };
+
+  CreateServerComp.propTypes = propTypes;
+
+  return CreateServerComp;
 };
 
 export default CreateServer;

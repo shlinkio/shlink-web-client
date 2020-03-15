@@ -14,7 +14,7 @@ import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle, connect, withRouter) => {
   // Components
-  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'stateFlagTimeout');
+  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', connect([ 'selectedServer' ], [ 'createServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
