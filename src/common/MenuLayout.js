@@ -6,34 +6,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
-import Message from '../utils/Message';
+import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
 const propTypes = {
   match: PropTypes.object,
-  selectServer: PropTypes.func,
   location: PropTypes.object,
   selectedServer: serverType,
 };
 
 const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions, ServerError) => {
-  const MenuLayoutComp = ({ match, location, selectedServer, selectServer }) => {
+  const MenuLayoutComp = ({ match, location, selectedServer }) => {
     const [ showSideBar, setShowSidebar ] = useState(false);
     const { params: { serverId } } = match;
 
-    useEffect(() => {
-      selectServer(serverId);
-    }, [ serverId ]);
     useEffect(() => setShowSidebar(false), [ location ]);
-
-    if (!selectedServer) {
-      return <Message loading />;
-    }
-
-    if (selectedServer.serverNotFound) {
-      return <ServerError type="not-found" />;
-    }
 
     if (selectedServer.serverNotReachable) {
       return <ServerError type="not-reachable" />;
@@ -91,7 +79,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
 
   MenuLayoutComp.propTypes = propTypes;
 
-  return MenuLayoutComp;
+  return withSelectedServer(MenuLayoutComp, ServerError);
 };
 
 export default MenuLayout;

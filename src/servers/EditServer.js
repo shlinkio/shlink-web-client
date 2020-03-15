@@ -1,38 +1,23 @@
-import React, { useEffect } from 'react';
-import PropTypes, { serverType } from 'prop-types';
-import './CreateServer.scss';
-import Message from '../utils/Message';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { ServerForm } from './helpers/ServerForm';
+import { withSelectedServer } from './helpers/withSelectedServer';
+import { serverType } from './prop-types';
 
 const propTypes = {
   editServer: PropTypes.func,
-  selectServer: PropTypes.func,
   selectedServer: serverType,
-  match: PropTypes.object,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
 };
 
 export const EditServer = (ServerError) => {
-  const EditServerComp = ({ editServer, selectServer, selectedServer, match, history: { push } }) => {
-    const { params: { serverId } } = match;
+  const EditServerComp = ({ editServer, selectedServer, history: { push } }) => {
     const handleSubmit = (serverData) => {
-      editServer(serverId, serverData);
-      push(`/server/${serverId}/list-short-urls/1`);
+      editServer(selectedServer.id, serverData);
+      push(`/server/${selectedServer.id}/list-short-urls/1`);
     };
-
-    useEffect(() => {
-      selectServer(serverId);
-    }, [ serverId ]);
-
-    if (!selectedServer) {
-      return <Message loading />;
-    }
-
-    if (selectedServer.serverNotFound) {
-      return <ServerError type="not-found" />;
-    }
 
     return (
       <div className="create-server">
@@ -45,5 +30,5 @@ export const EditServer = (ServerError) => {
 
   EditServerComp.propTypes = propTypes;
 
-  return EditServerComp;
+  return withSelectedServer(EditServerComp, ServerError);
 };
