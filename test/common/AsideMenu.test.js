@@ -16,7 +16,7 @@ describe('<AsideMenu />', () => {
   it('contains links to different sections', () => {
     const links = wrapped.find('[to]');
 
-    expect(links).toHaveLength(3);
+    expect(links).toHaveLength(4);
     links.forEach((link) => expect(link.prop('to')).toContain('abc123'));
   });
 
