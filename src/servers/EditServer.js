@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes, { serverType } from 'prop-types';
-import { HorizontalFormGroup } from '../utils/HorizontalFormGroup';
 import './CreateServer.scss';
 import Message from '../utils/Message';
+import { ServerForm } from './helpers/ServerForm';
 
 const propTypes = {
   editServer: PropTypes.func,
@@ -16,25 +16,15 @@ const propTypes = {
 
 export const EditServer = (ServerError) => {
   const EditServerComp = ({ editServer, selectServer, selectedServer, match, history: { push } }) => {
-    const [ name, setName ] = useState('');
-    const [ url, setUrl ] = useState('');
-    const [ apiKey, setApiKey ] = useState('');
     const { params: { serverId } } = match;
-    const handleSubmit = (e) => {
-      e.preventDefault();
-
-      editServer(serverId, { name, url, apiKey });
+    const handleSubmit = (serverData) => {
+      editServer(serverId, serverData);
       push(`/server/${serverId}/list-short-urls/1`);
     };
 
     useEffect(() => {
       selectServer(serverId);
     }, [ serverId ]);
-    useEffect(() => {
-      selectedServer && setName(selectedServer.name);
-      selectedServer && setUrl(selectedServer.url);
-      selectedServer && setApiKey(selectedServer.apiKey);
-    }, [ selectedServer ]);
 
     if (!selectedServer) {
       return <Message loading />;
@@ -46,15 +36,9 @@ export const EditServer = (ServerError) => {
 
     return (
       <div className="create-server">
-        <form onSubmit={handleSubmit}>
-          <HorizontalFormGroup value={name} onChange={setName}>Name</HorizontalFormGroup>
-          <HorizontalFormGroup type="url" value={url} onChange={setUrl}>URL</HorizontalFormGroup>
-          <HorizontalFormGroup value={apiKey} onChange={setApiKey}>API key</HorizontalFormGroup>
-
-          <div className="text-right">
-            <button className="btn btn-outline-primary">Save</button>
-          </div>
-        </form>
+        <ServerForm initialValues={selectedServer} onSubmit={handleSubmit}>
+          <button className="btn btn-outline-primary">Save</button>
+        </ServerForm>
       </div>
     );
   };
