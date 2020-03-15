@@ -25,4 +25,14 @@ export default class ServersService {
 
   deleteServer = ({ id }) =>
     this.storage.set(SERVERS_STORAGE_KEY, dissoc(id, this.listServers()));
+
+  editServer = (id, serverData) => {
+    const allServers = this.listServers();
+
+    if (!allServers[id]) {
+      return;
+    }
+
+    this.storage.set(SERVERS_STORAGE_KEY, assoc(id, { ...allServers[id], ...serverData }, allServers));
+  }
 }

@@ -1,35 +1,49 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { BrowserRouter } from 'react-router-dom';
-import { ServerError } from '../../../src/servers/helpers/ServerError';
+import { ServerError as createServerError } from '../../../src/servers/helpers/ServerError';
 
 describe('<ServerError />', () => {
   let wrapper;
+  const selectedServer = { id: '' };
+  const ServerError = createServerError(() => '');
 
   afterEach(() => wrapper && wrapper.unmount());
 
   it.each([
     [
       'not-found',
-      [ 'Could not find this Shlink server.' ],
-      'These are the Shlink servers',
+      {
+        'Could not find this Shlink server.': true,
+        'Oops! Could not connect to this Shlink server.': false,
+        'Make sure you have internet connection, and the server is properly configured and on-line.': false,
+        'Alternatively, if you think you may have miss-configured this server': false,
+      },
     ],
     [
       'not-reachable',
-      [
-        'Oops! Could not connect to this Shlink server.',
-        'Make sure you have internet connection, and the server is properly configured and on-line.',
-      ],
-      'These are the other Shlink servers',
+      {
+        'Could not find this Shlink server.': false,
+        'Oops! Could not connect to this Shlink server.': true,
+        'Make sure you have internet connection, and the server is properly configured and on-line.': true,
+        'Alternatively, if you think you may have miss-configured this server': true,
+      },
     ],
-  ])('renders expected information based on type', (type, expectedTitleParts, expectedBody) => {
-    wrapper = shallow(<BrowserRouter><ServerError type={type} servers={{ list: [] }} /></BrowserRouter>);
+  ])('renders expected information for type "%s"', (type, textsToFind) => {
+    wrapper = shallow(
+      <BrowserRouter>
+        <ServerError type={type} servers={{ list: [] }} selectedServer={selectedServer} />
+      </BrowserRouter>
+    );
     const wrapperText = wrapper.html();
-    const textsToFind = [ ...expectedTitleParts, ...expectedBody ];
+    const textPairs = Object.entries(textsToFind);
 
-    expect.assertions(textsToFind.length);
-    textsToFind.forEach((text) => {
-      expect(wrapperText).toContain(text);
+    textPairs.forEach(([ text, shouldBeFound ]) => {
+      if (shouldBeFound) {
+        expect(wrapperText).toContain(text);
+      } else {
+        expect(wrapperText).not.toContain(text);
+      }
     });
   });
 });

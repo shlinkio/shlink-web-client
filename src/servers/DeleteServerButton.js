@@ -7,25 +7,22 @@ import { serverType } from './prop-types';
 const propTypes = {
   server: serverType,
   className: PropTypes.string,
+  textClassName: PropTypes.string,
+  children: PropTypes.node,
 };
 
 const DeleteServerButton = (DeleteServerModal) => {
-  const DeleteServerButtonComp = ({ server, className }) => {
+  const DeleteServerButtonComp = ({ server, className, children, textClassName }) => {
     const [ isModalOpen, setModalOpen ] = useState(false);
 
     return (
       <React.Fragment>
-        <span className={className} key="deleteServerBtn" onClick={() => setModalOpen(true)}>
-          <FontAwesomeIcon icon={deleteIcon} />
-          <span className="aside-menu__item-text">Remove this server</span>
+        <span className={className} onClick={() => setModalOpen(true)}>
+          {!children && <FontAwesomeIcon icon={deleteIcon} />}
+          <span className={textClassName}>{children || 'Remove this server'}</span>
         </span>
 
-        <DeleteServerModal
-          isOpen={isModalOpen}
-          toggle={() => setModalOpen(!isModalOpen)}
-          server={server}
-          key="deleteServerModal"
-        />
+        <DeleteServerModal server={server} isOpen={isModalOpen} toggle={() => setModalOpen(!isModalOpen)} />
       </React.Fragment>
     );
   };

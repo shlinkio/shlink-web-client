@@ -7,18 +7,14 @@ const regularServerType = PropTypes.shape({
   apiKey: PropTypes.string,
   version: PropTypes.string,
   printableVersion: PropTypes.string,
+  serverNotReachable: PropTypes.bool,
 });
 
 const notFoundServerType = PropTypes.shape({
   serverNotFound: PropTypes.bool.isRequired,
 });
 
-const notReachableServerType = PropTypes.shape({
-  serverNotReachable: PropTypes.bool.isRequired,
-});
-
 export const serverType = PropTypes.oneOfType([
   regularServerType,
   notFoundServerType,
-  notReachableServerType,
 ]);

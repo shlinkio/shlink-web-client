@@ -72,7 +72,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when health endpoint fails', async () => {
-      const expectedSelectedServer = { serverNotReachable: true };
+      const expectedSelectedServer = { ...selectedServer, serverNotReachable: true };
 
       apiClientMock.health.mockRejectedValue({});
 

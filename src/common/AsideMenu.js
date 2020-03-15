@@ -1,4 +1,9 @@
-import { faList as listIcon, faLink as createIcon, faTags as tagsIcon } from '@fortawesome/free-solid-svg-icons';
+import {
+  faList as listIcon,
+  faLink as createIcon,
+  faTags as tagsIcon,
+  faPen as editIcon,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -7,8 +12,13 @@ import classNames from 'classnames';
 import { serverType } from '../servers/prop-types';
 import './AsideMenu.scss';
 
-const AsideMenuItem = ({ children, to, ...rest }) => (
-  <NavLink className="aside-menu__item" activeClassName="aside-menu__item--selected" to={to} {...rest}>
+const AsideMenuItem = ({ children, to, className, ...rest }) => (
+  <NavLink
+    className={classNames('aside-menu__item', className)}
+    activeClassName="aside-menu__item--selected"
+    to={to}
+    {...rest}
+  >
     {children}
   </NavLink>
 );
@@ -16,6 +26,7 @@ const AsideMenuItem = ({ children, to, ...rest }) => (
 AsideMenuItem.propTypes = {
   children: PropTypes.node.isRequired,
   to: PropTypes.string.isRequired,
+  className: PropTypes.string,
 };
 
 const propTypes = {
@@ -48,8 +59,15 @@ const AsideMenu = (DeleteServerButton) => {
             <FontAwesomeIcon icon={tagsIcon} />
             <span className="aside-menu__item-text">Manage tags</span>
           </AsideMenuItem>
-
-          <DeleteServerButton className="aside-menu__item aside-menu__item--danger" server={selectedServer} />
+          <AsideMenuItem to={buildPath('/edit')} className="aside-menu__item--push">
+            <FontAwesomeIcon icon={editIcon} />
+            <span className="aside-menu__item-text">Edit this server</span>
+          </AsideMenuItem>
+          <DeleteServerButton
+            className="aside-menu__item aside-menu__item--danger"
+            textClassName="aside-menu__item-text"
+            server={selectedServer}
+          />
         </nav>
       </aside>
     );

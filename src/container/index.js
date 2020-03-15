@@ -26,7 +26,7 @@ const connect = (propsFromState, actionServiceNames = []) =>
     actionServiceNames.reduce(mapActionService, {})
   );
 
-bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer');
+bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer');
 
 provideCommonServices(bottle, connect, withRouter);
 provideShortUrlsServices(bottle, connect);

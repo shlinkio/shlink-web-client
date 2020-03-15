@@ -1,6 +1,17 @@
-.server-error-container {
+@import '../../utils/base';
+
+.server-error__container {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.server-error__delete-btn {
+  color: $dangerColor;
+  cursor: pointer;
+}
+
+.server-error__delete-btn:hover {
+  text-decoration: underline;
 }

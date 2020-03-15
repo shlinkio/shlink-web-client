@@ -3,9 +3,10 @@ import CreateServer from '../CreateServer';
 import ServersDropdown from '../ServersDropdown';
 import DeleteServerModal from '../DeleteServerModal';
 import DeleteServerButton from '../DeleteServerButton';
+import { EditServer } from '../EditServer';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, listServers } from '../reducers/server';
+import { createServer, createServers, deleteServer, editServer, listServers } from '../reducers/server';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
@@ -14,8 +15,11 @@ import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle, connect, withRouter) => {
   // Components
-  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'stateFlagTimeout');
+  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', connect([ 'selectedServer' ], [ 'createServer', 'resetSelectedServer' ]));
+
+  bottle.serviceFactory('EditServer', EditServer, 'ServerError');
+  bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer' ]));
 
   bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
   bottle.decorator('ServersDropdown', withRouter);
@@ -33,8 +37,8 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
   bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));
 
-  bottle.serviceFactory('ServerError', () => ServerError);
-  bottle.decorator('ServerError', connect([ 'servers' ]));
+  bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
+  bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
 
   // Services
   bottle.constant('csvjson', csvjson);
@@ -47,6 +51,7 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.serviceFactory('createServer', createServer, 'ServersService', 'listServers');
   bottle.serviceFactory('createServers', createServers, 'ServersService', 'listServers');
   bottle.serviceFactory('deleteServer', deleteServer, 'ServersService', 'listServers');
+  bottle.serviceFactory('editServer', editServer, 'ServersService', 'listServers');
   bottle.serviceFactory('listServers', listServers, 'ServersService', 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);

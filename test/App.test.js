@@ -9,7 +9,7 @@ describe('<App />', () => {
   const MainHeader = () => '';
 
   beforeEach(() => {
-    const App = appFactory(MainHeader, identity, identity, identity);
+    const App = appFactory(MainHeader, identity, identity, identity, identity);
 
     wrapper = shallow(<App />);
   });
@@ -20,13 +20,14 @@ describe('<App />', () => {
   it('renders app main routes', () => {
     const routes = wrapper.find(Route);
     const expectedPaths = [
-      '/server/create',
       '/',
+      '/server/create',
+      '/server/:serverId/edit',
       '/server/:serverId',
     ];
 
     expect.assertions(expectedPaths.length + 1);
-    expect(routes).toHaveLength(4);
+    expect(routes).toHaveLength(expectedPaths.length + 1);
     expectedPaths.forEach((path, index) => {
       expect(routes.at(index).prop('path')).toEqual(path);
     });
