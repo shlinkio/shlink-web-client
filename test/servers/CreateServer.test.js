@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import createServerConstruct from '../../src/servers/CreateServer';
-import { HorizontalFormGroup } from '../../src/utils/HorizontalFormGroup';
+import { ServerForm } from '../../src/servers/helpers/ServerForm';
 
 describe('<CreateServer />', () => {
   let wrapper;
@@ -29,8 +29,7 @@ describe('<CreateServer />', () => {
   it('renders components', () => {
     const wrapper = createWrapper();
 
-    expect(wrapper.find(HorizontalFormGroup)).toHaveLength(3);
-    expect(wrapper.find(ImportServersBtn)).toHaveLength(1);
+    expect(wrapper.find(ServerForm)).toHaveLength(1);
     expect(wrapper.find('.create-server__import-success-msg')).toHaveLength(0);
   });
 
@@ -42,11 +41,9 @@ describe('<CreateServer />', () => {
 
   it('creates server and redirects to it when form is submitted', () => {
     const wrapper = createWrapper();
-    const form = wrapper.find('form');
+    const form = wrapper.find(ServerForm);
 
-    form.simulate('submit', { preventDefault() {
-      return '';
-    } });
+    form.simulate('submit', {});
 
     expect(createServerMock).toHaveBeenCalledTimes(1);
     expect(historyMock.push).toHaveBeenCalledTimes(1);
