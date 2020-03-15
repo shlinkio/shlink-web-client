@@ -33,8 +33,8 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
   bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));
 
-  bottle.serviceFactory('ServerError', () => ServerError);
-  bottle.decorator('ServerError', connect([ 'servers' ]));
+  bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
+  bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
 
   // Services
   bottle.constant('csvjson', csvjson);

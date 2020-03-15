@@ -49,7 +49,7 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
   } catch (e) {
     dispatch({
       type: SELECT_SERVER,
-      selectedServer: { serverNotReachable: true },
+      selectedServer: { ...selectedServer, serverNotReachable: true },
     });
   }
 };

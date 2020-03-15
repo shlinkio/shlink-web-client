@@ -49,7 +49,11 @@ const AsideMenu = (DeleteServerButton) => {
             <span className="aside-menu__item-text">Manage tags</span>
           </AsideMenuItem>
 
-          <DeleteServerButton className="aside-menu__item aside-menu__item--danger" server={selectedServer} />
+          <DeleteServerButton
+            className="aside-menu__item aside-menu__item--danger"
+            textClassName="aside-menu__item-text"
+            server={selectedServer}
+          />
         </nav>
       </aside>
     );

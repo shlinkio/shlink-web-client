@@ -1,6 +1,15 @@
-.server-error-container {
+.server-error__container {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.server-error__delete-btn {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.server-error__delete-btn:hover {
+  text-decoration: underline;
 }

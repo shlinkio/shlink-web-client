@@ -26,7 +26,9 @@ ServerListItem.propTypes = {
 
 const ServersListGroup = ({ servers, children }) => (
   <React.Fragment>
-    <h5>{children}</h5>
+    <div className="container">
+      <h5>{children}</h5>
+    </div>
     {servers.length > 0 && (
       <ListGroup className="servers-list__list-group mt-md-3">
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}

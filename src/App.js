@@ -9,8 +9,9 @@ const App = (MainHeader, Home, MenuLayout, CreateServer) => () => (
 
     <div className="app">
       <Switch>
-        <Route exact path="/server/create" component={CreateServer} />
         <Route exact path="/" component={Home} />
+        <Route exact path="/server/create" component={CreateServer} />
+        <Route exact path="/server/:serverId/edit" component={CreateServer} />
         <Route path="/server/:serverId" component={MenuLayout} />
         <Route component={NotFound} />
       </Switch>
