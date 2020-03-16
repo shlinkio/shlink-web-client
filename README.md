@@ -10,6 +10,8 @@
 
 A ReactJS-based progressive web application for [Shlink](https://shlink.io).
 
+![shlink-web-client](shlink-web-client.gif)
+
 ## Installation
 
 There are three ways in which you can use this application.
