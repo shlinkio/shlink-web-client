@@ -1,3 +1,4 @@
+import { v4 as uuid } from 'uuid';
 import reducer, {
   selectServer,
   resetSelectedServer,
@@ -27,9 +28,8 @@ describe('selectedServerReducer', () => {
   });
 
   describe('selectServer', () => {
-    const serverId = 'abc123';
     const selectedServer = {
-      id: serverId,
+      id: 'abc123',
     };
     const version = '1.19.0';
     const ServersServiceMock = {
@@ -56,7 +56,7 @@ describe('selectedServerReducer', () => {
 
       apiClientMock.health.mockResolvedValue({ version: serverVersion });
 
-      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
 
       expect(dispatch).toHaveBeenCalledTimes(3);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
@@ -65,7 +65,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('invokes dependencies', async () => {
-      await selectServer(ServersServiceMock, buildApiClient)(serverId)(() => {});
+      await selectServer(ServersServiceMock, buildApiClient)(uuid())(() => {});
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
@@ -76,7 +76,7 @@ describe('selectedServerReducer', () => {
 
       apiClientMock.health.mockRejectedValue({});
 
-      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
 
       expect(apiClientMock.health).toHaveBeenCalled();
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
@@ -87,7 +87,7 @@ describe('selectedServerReducer', () => {
 
       ServersServiceMock.findServerById.mockReturnValue(undefined);
 
-      await selectServer(ServersServiceMock, buildApiClient)(serverId)(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalled();
       expect(apiClientMock.health).not.toHaveBeenCalled();

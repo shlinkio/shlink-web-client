@@ -18,6 +18,11 @@ const versionToSemVer = pipe(
   toSemVer(MIN_FALLBACK_VERSION)
 );
 
+const getServerVersion = memoizeWith(identity, (serverId, health) => health().then(({ version }) => ({
+  version: versionToSemVer(version),
+  printableVersion: versionToPrintable(version),
+})));
+
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
 export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serverId) => async (dispatch) => {
@@ -53,11 +58,6 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
     });
   }
 };
-
-const getServerVersion = memoizeWith(identity, (serverId, health) => health().then(({ version }) => ({
-  version: versionToSemVer(version),
-  printableVersion: versionToPrintable(version),
-})));
 
 export default handleActions({
   [RESET_SELECTED_SERVER]: () => initialState,
