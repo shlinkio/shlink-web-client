@@ -1,5 +1,5 @@
 import { createAction, handleActions } from 'redux-actions';
-import { pipe } from 'ramda';
+import { identity, memoizeWith, pipe } from 'ramda';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/versionHelpers';
 
@@ -36,14 +36,14 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
 
   try {
     const { health } = buildShlinkApiClient(selectedServer);
-    const { version } = await health();
+    const { version, printableVersion } = await getServerVersion(serverId, health);
 
     dispatch({
       type: SELECT_SERVER,
       selectedServer: {
         ...selectedServer,
-        version: versionToSemVer(version),
-        printableVersion: versionToPrintable(version),
+        version,
+        printableVersion,
       },
     });
   } catch (e) {
@@ -53,6 +53,11 @@ export const selectServer = ({ findServerById }, buildShlinkApiClient) => (serve
     });
   }
 };
+
+const getServerVersion = memoizeWith(identity, (serverId, health) => health().then(({ version }) => ({
+  version: versionToSemVer(version),
+  printableVersion: versionToPrintable(version),
+})));
 
 export default handleActions({
   [RESET_SELECTED_SERVER]: () => initialState,
