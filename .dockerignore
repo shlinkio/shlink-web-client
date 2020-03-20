@@ -1,7 +1,6 @@
 ./.github
 ./build
 ./coverage
-./dist
 ./node_modules
 ./test
 ./shlink-web-client.gif
