@@ -3,12 +3,12 @@ set -e
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-# If a tag exists, build both that tag and stable
-if [[ ! -z $TRAVIS_TAG ]]; then
-  docker build --build-arg VERSION=${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:stable .
+if [[ -z $TRAVIS_TAG ]]; then
+  docker build -t shlinkio/shlink-web-client:latest .
+else
+  docker build --build-arg VERSION=${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:stable -t shlinkio/shlink-web-client:latest .
   docker push shlinkio/shlink-web-client:${TRAVIS_TAG#?}
   docker push shlinkio/shlink-web-client:stable
 fi
 
-docker build -t shlinkio/shlink-web-client:latest .
 docker push shlinkio/shlink-web-client:latest
