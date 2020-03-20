@@ -28,7 +28,7 @@ after_success:
 
 # Before deploying, build dist file for current travis tag
 before_deploy:
-  - npm run build ${TRAVIS_TAG#?}
+  - if [[ ! -z $TRAVIS_TAG ]]; then npm run build ${TRAVIS_TAG#?} ; fi
 
 deploy:
   - provider: script
