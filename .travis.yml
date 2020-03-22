@@ -34,6 +34,7 @@ deploy:
   - provider: script
     script: bash ./scripts/docker/build
     on:
+      all_branches: true
       condition: $TRAVIS_PULL_REQUEST == 'false'
   - provider: releases
     api_key:
