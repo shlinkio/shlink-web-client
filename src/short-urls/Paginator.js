@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { ELLIPSIS, progressivePagination } from '../common/SimplePaginator';
+import { ELLIPSIS, progressivePagination } from '../utils/utils';
 
 const propTypes = {
   serverId: PropTypes.string.isRequired,
@@ -36,7 +36,7 @@ const Paginator = ({ paginator = {}, serverId }) => {
     ));
 
   return (
-    <Pagination listClassName="flex-wrap">
+    <Pagination listClassName="flex-wrap justify-content-center">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink
           previous

@@ -2,7 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { PaginationItem } from 'reactstrap';
-import SimplePaginator, { ELLIPSIS } from '../../src/common/SimplePaginator';
+import SimplePaginator from '../../src/common/SimplePaginator';
+import { ELLIPSIS } from '../../src/utils/utils';
 
 describe('<SimplePaginator />', () => {
   let wrapper;

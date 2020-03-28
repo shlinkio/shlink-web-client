@@ -2,7 +2,7 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { range } from 'ramda';
+import { max, min, range } from 'ramda';
 import { useState } from 'react';
 
 const TEN_ROUNDING_NUMBER = 10;
@@ -65,3 +65,25 @@ export const useToggle = (initialValue = false) => {
 export const formatDate = (format = 'YYYY-MM-DD') => (date) => date && date.format ? date.format(format) : date;
 
 export const formatIsoDate = (date) => date && date.format ? date.format() : date;
+
+export const ELLIPSIS = '...';
+
+export const progressivePagination = (currentPage, pageCount) => {
+  const delta = 2;
+  const pages = range(
+    max(delta, currentPage - delta),
+    min(pageCount - 1, currentPage + delta) + 1,
+  );
+
+  if (currentPage - delta > delta) {
+    pages.unshift(ELLIPSIS);
+  }
+  if (currentPage + delta < pageCount - 1) {
+    pages.push(ELLIPSIS);
+  }
+
+  pages.unshift(1);
+  pages.push(pageCount);
+
+  return pages;
+};

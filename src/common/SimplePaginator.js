@@ -1,35 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { range, max, min } from 'ramda';
+import { ELLIPSIS, progressivePagination } from '../utils/utils';
 import './SimplePaginator.scss';
 
 const propTypes = {
   pagesCount: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
-};
-
-export const ELLIPSIS = '...';
-
-export const progressivePagination = (currentPage, pageCount) => {
-  const delta = 2;
-  const pages = range(
-    max(delta, currentPage - delta),
-    min(pageCount - 1, currentPage + delta) + 1
-  );
-
-  if (currentPage - delta > delta) {
-    pages.unshift(ELLIPSIS);
-  }
-  if (currentPage + delta < pageCount - 1) {
-    pages.push(ELLIPSIS);
-  }
-
-  pages.unshift(1);
-  pages.push(pageCount);
-
-  return pages;
 };
 
 const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
