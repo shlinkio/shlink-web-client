@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { identity, memoizeWith, pipe } from 'ramda';
 import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
-import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/versionHelpers';
+import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 
 /* eslint-disable padding-line-between-statements */
 export const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';

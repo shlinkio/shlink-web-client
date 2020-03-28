@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { PaginationItem } from 'reactstrap';
 import SimplePaginator from '../../src/common/SimplePaginator';
-import { ELLIPSIS } from '../../src/utils/utils';
+import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<SimplePaginator />', () => {
   let wrapper;

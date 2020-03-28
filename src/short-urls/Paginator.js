@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { ELLIPSIS, progressivePagination } from '../utils/utils';
+import { ELLIPSIS, progressivePagination } from '../utils/helpers/pagination';
 
 const propTypes = {
   serverId: PropTypes.string.isRequired,

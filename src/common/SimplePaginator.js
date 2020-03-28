@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { ELLIPSIS, progressivePagination } from '../utils/utils';
+import { ELLIPSIS, progressivePagination } from '../utils/helpers/pagination';
 import './SimplePaginator.scss';
 
 const propTypes = {

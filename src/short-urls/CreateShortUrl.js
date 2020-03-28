@@ -7,7 +7,7 @@ import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import { serverType } from '../servers/prop-types';
-import { compareVersions } from '../utils/versionHelpers';
+import { compareVersions } from '../utils/helpers/version';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 

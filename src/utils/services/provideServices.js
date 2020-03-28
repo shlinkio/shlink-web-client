@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { stateFlagTimeout, useStateFlagTimeout } from '../utils';
+import { stateFlagTimeout } from '../utils';
+import { useStateFlagTimeout } from '../helpers/hooks';
 import Storage from './Storage';
 import ColorGenerator from './ColorGenerator';
 import buildShlinkApiClient from './ShlinkApiClientBuilder';
