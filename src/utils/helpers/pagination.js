@@ -21,3 +21,7 @@ export const progressivePagination = (currentPage, pageCount) => {
 
   return pages;
 };
+
+export const keyForPage = (pageNumber, index) => pageNumber !== ELLIPSIS ? pageNumber : `${pageNumber}_${index}`;
+
+export const isPageDisabled = (pageNumber) => pageNumber === ELLIPSIS;

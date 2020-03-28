@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { ELLIPSIS, progressivePagination } from '../utils/helpers/pagination';
+import { isPageDisabled, keyForPage, progressivePagination } from '../utils/helpers/pagination';
 import './SimplePaginator.scss';
 
 const propTypes = {
@@ -22,13 +22,13 @@ const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
       <PaginationItem disabled={currentPage <= 1}>
         <PaginationLink previous tag="span" onClick={onClick(currentPage - 1)} />
       </PaginationItem>
-      {progressivePagination(currentPage, pagesCount).map((page, index) => (
+      {progressivePagination(currentPage, pagesCount).map((pageNumber, index) => (
         <PaginationItem
-          key={page !== ELLIPSIS ? page : `${page}_${index}`}
-          active={page === currentPage}
-          disabled={page === ELLIPSIS}
+          key={keyForPage(pageNumber, index)}
+          disabled={isPageDisabled(pageNumber)}
+          active={currentPage === pageNumber}
         >
-          <PaginationLink tag="span" onClick={onClick(page)}>{page}</PaginationLink>
+          <PaginationLink tag="span" onClick={onClick(pageNumber)}>{pageNumber}</PaginationLink>
         </PaginationItem>
       ))}
       <PaginationItem disabled={currentPage >= pagesCount}>
