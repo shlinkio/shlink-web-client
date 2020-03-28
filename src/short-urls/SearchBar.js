@@ -7,7 +7,7 @@ import moment from 'moment';
 import SearchField from '../utils/SearchField';
 import Tag from '../tags/helpers/Tag';
 import DateRangeRow from '../utils/DateRangeRow';
-import { formatDate } from '../utils/utils';
+import { formatDate } from '../utils/helpers/date';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './SearchBar.scss';
 

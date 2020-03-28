@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { pipe } from 'ramda';
 import { serverType } from '../servers/prop-types';
-import { versionToPrintable, versionToSemVer } from '../utils/versionHelpers';
+import { versionToPrintable, versionToSemVer } from '../utils/helpers/version';
 
 const SHLINK_WEB_CLIENT_VERSION = '%_VERSION_%';
 

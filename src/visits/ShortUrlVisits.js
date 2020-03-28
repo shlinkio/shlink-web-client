@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import qs from 'qs';
 import DateRangeRow from '../utils/DateRangeRow';
 import Message from '../utils/Message';
-import { formatDate } from '../utils/utils';
+import { formatDate } from '../utils/helpers/date';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';

@@ -9,7 +9,7 @@ import { isEmpty, pipe } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { shortUrlEditMetaType } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
-import { formatIsoDate } from '../../utils/utils';
+import { formatIsoDate } from '../../utils/helpers/date';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,

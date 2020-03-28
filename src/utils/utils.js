@@ -3,7 +3,6 @@ import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { range } from 'ramda';
-import { useState } from 'react';
 
 const TEN_ROUNDING_NUMBER = 10;
 const DEFAULT_TIMEOUT_DELAY = 2000;
@@ -17,16 +16,6 @@ export const stateFlagTimeout = (setTimeout) => (
 ) => {
   setState({ [flagName]: initialValue });
   setTimeout(() => setState({ [flagName]: !initialValue }), delay);
-};
-
-export const useStateFlagTimeout = (setTimeout) => (initialValue = true, delay = DEFAULT_TIMEOUT_DELAY) => {
-  const [ flag, setFlag ] = useState(initialValue);
-  const callback = () => {
-    setFlag(!initialValue);
-    setTimeout(() => setFlag(initialValue), delay);
-  };
-
-  return [ flag, callback ];
 };
 
 export const determineOrderDir = (clickedField, currentOrderField, currentOrderDir) => {
@@ -56,12 +45,3 @@ export const rangeOf = (size, mappingFn, startAt = 1) => range(startAt, size + 1
 
 export const roundTen = (number) => ceil(number / TEN_ROUNDING_NUMBER) * TEN_ROUNDING_NUMBER;
 
-export const useToggle = (initialValue = false) => {
-  const [ flag, setFlag ] = useState(initialValue);
-
-  return [ flag, () => setFlag(!flag) ];
-};
-
-export const formatDate = (format = 'YYYY-MM-DD') => (date) => date && date.format ? date.format(format) : date;
-
-export const formatIsoDate = (date) => date && date.format ? date.format() : date;
