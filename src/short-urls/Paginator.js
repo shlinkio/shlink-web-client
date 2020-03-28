@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { rangeOf } from '../utils/utils';
+import { ELLIPSIS, progressivePagination } from '../common/SimplePaginator';
 
 const propTypes = {
   serverId: PropTypes.string.isRequired,
@@ -12,7 +12,7 @@ const propTypes = {
   }),
 };
 
-export default function Paginator({ paginator = {}, serverId }) {
+const Paginator = ({ paginator = {}, serverId }) => {
   const { currentPage, pagesCount = 0 } = paginator;
 
   if (pagesCount <= 1) {
@@ -20,8 +20,12 @@ export default function Paginator({ paginator = {}, serverId }) {
   }
 
   const renderPages = () =>
-    rangeOf(pagesCount, (pageNumber) => (
-      <PaginationItem key={pageNumber} active={currentPage === pageNumber}>
+    progressivePagination(currentPage, pagesCount).map((pageNumber, index) => (
+      <PaginationItem
+        key={pageNumber !== ELLIPSIS ? pageNumber : `${pageNumber}_${index}`}
+        active={currentPage === pageNumber}
+        disabled={pageNumber === ELLIPSIS}
+      >
         <PaginationLink
           tag={Link}
           to={`/server/${serverId}/list-short-urls/${pageNumber}`}
@@ -50,6 +54,8 @@ export default function Paginator({ paginator = {}, serverId }) {
       </PaginationItem>
     </Pagination>
   );
-}
+};
 
 Paginator.propTypes = propTypes;
+
+export default Paginator;

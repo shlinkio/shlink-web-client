@@ -10,9 +10,9 @@ const propTypes = {
   setCurrentPage: PropTypes.func.isRequired,
 };
 
-export const ellipsis = '...';
+export const ELLIPSIS = '...';
 
-const pagination = (currentPage, pageCount) => {
+export const progressivePagination = (currentPage, pageCount) => {
   const delta = 2;
   const pages = range(
     max(delta, currentPage - delta),
@@ -20,10 +20,10 @@ const pagination = (currentPage, pageCount) => {
   );
 
   if (currentPage - delta > delta) {
-    pages.unshift(ellipsis);
+    pages.unshift(ELLIPSIS);
   }
   if (currentPage + delta < pageCount - 1) {
-    pages.push(ellipsis);
+    pages.push(ELLIPSIS);
   }
 
   pages.unshift(1);
@@ -44,11 +44,11 @@ const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
       <PaginationItem disabled={currentPage <= 1}>
         <PaginationLink previous tag="span" onClick={onClick(currentPage - 1)} />
       </PaginationItem>
-      {pagination(currentPage, pagesCount).map((page, index) => (
+      {progressivePagination(currentPage, pagesCount).map((page, index) => (
         <PaginationItem
-          key={page !== ellipsis ? page : `${page}_${index}`}
+          key={page !== ELLIPSIS ? page : `${page}_${index}`}
           active={page === currentPage}
-          disabled={page === ellipsis}
+          disabled={page === ELLIPSIS}
         >
           <PaginationLink tag="span" onClick={onClick(page)}>{page}</PaginationLink>
         </PaginationItem>

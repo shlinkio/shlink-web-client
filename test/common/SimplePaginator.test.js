@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import { PaginationItem } from 'reactstrap';
-import SimplePaginator, { ellipsis } from '../../src/common/SimplePaginator';
+import SimplePaginator, { ELLIPSIS } from '../../src/common/SimplePaginator';
 
 describe('<SimplePaginator />', () => {
   let wrapper;
@@ -18,34 +18,34 @@ describe('<SimplePaginator />', () => {
     expect(createWrapper(pagesCount).text()).toEqual('');
   });
 
-  describe('ellipsis are rendered where expected', () => {
+  describe('ELLIPSIS are rendered where expected', () => {
     const getItemsForPages = (pagesCount, currentPage) => {
       const paginator = createWrapper(pagesCount, currentPage);
       const items = paginator.find(PaginationItem);
-      const itemsWithEllipsis = items.filterWhere((item) => item.key() && item.key().includes(ellipsis));
+      const itemsWithEllipsis = items.filterWhere((item) => item.key() && item.key().includes(ELLIPSIS));
 
       return { items, itemsWithEllipsis };
     };
 
-    it('renders first ellipsis', () => {
+    it('renders first ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(9, 7);
 
-      expect(items.at(2).html()).toContain(ellipsis);
+      expect(items.at(2).html()).toContain(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(1);
     });
 
-    it('renders last ellipsis', () => {
+    it('renders last ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(9, 2);
 
-      expect(items.at(items.length - 3).html()).toContain(ellipsis);
+      expect(items.at(items.length - 3).html()).toContain(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(1);
     });
 
-    it('renders both ellipsis', () => {
+    it('renders both ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(20, 9);
 
-      expect(items.at(2).html()).toContain(ellipsis);
-      expect(items.at(items.length - 3).html()).toContain(ellipsis);
+      expect(items.at(2).html()).toContain(ELLIPSIS);
+      expect(items.at(items.length - 3).html()).toContain(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(2);
     });
   });
