@@ -1,7 +1,7 @@
 import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { assoc, dissoc, isEmpty, isNil, pipe, replace, trim } from 'ramda';
-import React from 'react';
+import { isEmpty, isNil, pipe, replace, trim } from 'ramda';
+import React, { useState } from 'react';
 import { Collapse, FormGroup, Input } from 'reactstrap';
 import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
@@ -9,49 +9,44 @@ import Checkbox from '../utils/Checkbox';
 import { serverType } from '../servers/prop-types';
 import { versionMatch } from '../utils/helpers/version';
 import { hasValue } from '../utils/utils';
+import { useToggle } from '../utils/helpers/hooks';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const formatDate = (date) => isNil(date) ? date : date.format();
 
-const CreateShortUrl = (
-  TagsSelector,
-  CreateShortUrlResult,
-  ForServerVersion
-) => class CreateShortUrl extends React.Component {
-  static propTypes = {
-    createShortUrl: PropTypes.func,
-    shortUrlCreationResult: createShortUrlResultType,
-    resetCreateShortUrl: PropTypes.func,
-    selectedServer: serverType,
-  };
+const propTypes = {
+  createShortUrl: PropTypes.func,
+  shortUrlCreationResult: createShortUrlResultType,
+  resetCreateShortUrl: PropTypes.func,
+  selectedServer: serverType,
+};
 
-  state = {
-    longUrl: '',
-    tags: [],
-    customSlug: undefined,
-    shortCodeLength: undefined,
-    domain: undefined,
-    validSince: undefined,
-    validUntil: undefined,
-    maxVisits: undefined,
-    findIfExists: false,
-    moreOptionsVisible: false,
-  };
+const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) => {
+  const CreateShortUrlComp = ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }) => {
+    const [ shortUrlCreation, setShortUrlCreation ] = useState({
+      longUrl: '',
+      tags: [],
+      customSlug: undefined,
+      shortCodeLength: undefined,
+      domain: undefined,
+      validSince: undefined,
+      validUntil: undefined,
+      maxVisits: undefined,
+      findIfExists: false,
+    });
+    const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle(false);
 
-  render() {
-    const { createShortUrl, shortUrlCreationResult, resetCreateShortUrl } = this.props;
-
-    const changeTags = (tags) => this.setState({ tags: tags.map(normalizeTag) });
+    const changeTags = (tags) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
       <FormGroup>
         <Input
           id={id}
           type={type}
           placeholder={placeholder}
-          value={this.state[id]}
-          onChange={(e) => this.setState({ [id]: e.target.value })}
+          value={shortUrlCreation[id]}
+          onChange={(e) => setShortUrlCreation({ ...shortUrlCreation, [id]: e.target.value })}
           {...props}
         />
       </FormGroup>
@@ -59,23 +54,23 @@ const CreateShortUrl = (
     const renderDateInput = (id, placeholder, props = {}) => (
       <div className="form-group">
         <DateInput
-          selected={this.state[id]}
+          selected={shortUrlCreation[id]}
           placeholderText={placeholder}
           isClearable
-          onChange={(date) => this.setState({ [id]: date })}
+          onChange={(date) => setShortUrlCreation({ ...shortUrlCreation, [id]: date })}
           {...props}
         />
       </div>
     );
     const save = (e) => {
       e.preventDefault();
-      createShortUrl(pipe(
-        dissoc('moreOptionsVisible'),
-        assoc('validSince', formatDate(this.state.validSince)),
-        assoc('validUntil', formatDate(this.state.validUntil))
-      )(this.state));
+      createShortUrl({
+        ...shortUrlCreation,
+        validSince: formatDate(shortUrlCreation.validSince),
+        validUntil: formatDate(shortUrlCreation.validUntil),
+      });
     };
-    const currentServerVersion = this.props.selectedServer && this.props.selectedServer.version;
+    const currentServerVersion = selectedServer && selectedServer.version;
     const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
     const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
@@ -87,14 +82,14 @@ const CreateShortUrl = (
             type="url"
             placeholder="Insert the URL to be shortened"
             required
-            value={this.state.longUrl}
-            onChange={(e) => this.setState({ longUrl: e.target.value })}
+            value={shortUrlCreation.longUrl}
+            onChange={(e) => setShortUrlCreation({ ...shortUrlCreation, longUrl: e.target.value })}
           />
         </div>
 
-        <Collapse isOpen={this.state.moreOptionsVisible}>
+        <Collapse isOpen={moreOptionsVisible}>
           <div className="form-group">
-            <TagsSelector tags={this.state.tags} onChange={changeTags} />
+            <TagsSelector tags={shortUrlCreation.tags} onChange={changeTags} />
           </div>
 
           <div className="row">
@@ -104,7 +99,7 @@ const CreateShortUrl = (
             <div className="col-sm-4">
               {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
                 min: 4,
-                disabled: disableShortCodeLength || hasValue(this.state.customSlug),
+                disabled: disableShortCodeLength || hasValue(shortUrlCreation.customSlug),
                 ...disableShortCodeLength && {
                   title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
                 },
@@ -123,10 +118,10 @@ const CreateShortUrl = (
               {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
             </div>
             <div className="col-sm-4">
-              {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
+              {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil })}
             </div>
             <div className="col-sm-4">
-              {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
+              {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince })}
             </div>
           </div>
 
@@ -134,8 +129,8 @@ const CreateShortUrl = (
             <div className="mb-4 text-right">
               <Checkbox
                 className="mr-2"
-                checked={this.state.findIfExists}
-                onChange={(findIfExists) => this.setState({ findIfExists })}
+                checked={shortUrlCreation.findIfExists}
+                onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
               >
                 Use existing URL if found
               </Checkbox>
@@ -145,18 +140,14 @@ const CreateShortUrl = (
         </Collapse>
 
         <div>
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => this.setState(({ moreOptionsVisible }) => ({ moreOptionsVisible: !moreOptionsVisible }))}
-          >
-            <FontAwesomeIcon icon={this.state.moreOptionsVisible ? upIcon : downIcon} />
+          <button type="button" className="btn btn-outline-secondary" onClick={toggleMoreOptionsVisible}>
+            <FontAwesomeIcon icon={moreOptionsVisible ? upIcon : downIcon} />
             &nbsp;
-            {this.state.moreOptionsVisible ? 'Less' : 'More'} options
+            {moreOptionsVisible ? 'Less' : 'More'} options
           </button>
           <button
             className="btn btn-outline-primary float-right"
-            disabled={shortUrlCreationResult.loading || isEmpty(this.state.longUrl)}
+            disabled={shortUrlCreationResult.loading || isEmpty(shortUrlCreation.longUrl)}
           >
             {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
           </button>
@@ -165,7 +156,11 @@ const CreateShortUrl = (
         <CreateShortUrlResult {...shortUrlCreationResult} resetCreateShortUrl={resetCreateShortUrl} />
       </form>
     );
-  }
+  };
+
+  CreateShortUrlComp.propTypes = propTypes;
+
+  return CreateShortUrlComp;
 };
 
 export default CreateShortUrl;
