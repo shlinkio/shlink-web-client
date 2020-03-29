@@ -1,15 +1,21 @@
 import { compare } from 'compare-versions';
 import { identity, memoizeWith } from 'ramda';
+import { hasValue } from '../utils';
 
-export const compareVersions = (firstVersion, operator, secondVersion) => compare(
-  firstVersion,
-  secondVersion,
-  operator,
-);
+export const versionMatch = (versionToMatch, { maxVersion, minVersion }) => {
+  if (!hasValue(versionToMatch)) {
+    return false;
+  }
+
+  const matchesMinVersion = !minVersion || compare(versionToMatch, minVersion, '>=');
+  const matchesMaxVersion = !maxVersion || compare(versionToMatch, maxVersion, '<=');
+
+  return !!(matchesMaxVersion && matchesMinVersion);
+};
 
 const versionIsValidSemVer = memoizeWith(identity, (version) => {
   try {
-    return compareVersions(version, '=', version);
+    return compare(version, version, '=');
   } catch (e) {
     return false;
   }

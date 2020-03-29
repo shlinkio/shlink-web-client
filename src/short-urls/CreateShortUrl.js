@@ -7,7 +7,8 @@ import * as PropTypes from 'prop-types';
 import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import { serverType } from '../servers/prop-types';
-import { compareVersions } from '../utils/helpers/version';
+import { versionMatch } from '../utils/helpers/version';
+import { hasValue } from '../utils/utils';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 
@@ -30,6 +31,7 @@ const CreateShortUrl = (
     longUrl: '',
     tags: [],
     customSlug: undefined,
+    shortCodeLength: undefined,
     domain: undefined,
     validSince: undefined,
     validUntil: undefined,
@@ -73,8 +75,9 @@ const CreateShortUrl = (
         assoc('validUntil', formatDate(this.state.validUntil))
       )(this.state));
     };
-    const currentServerVersion = this.props.selectedServer ? this.props.selectedServer.version : '';
-    const disableDomain = isEmpty(currentServerVersion) || compareVersions(currentServerVersion, '<', '1.19.0-beta.1');
+    const currentServerVersion = this.props.selectedServer && this.props.selectedServer.version;
+    const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
+    const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
     return (
       <form onSubmit={save}>
@@ -95,10 +98,19 @@ const CreateShortUrl = (
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               {renderOptionalInput('customSlug', 'Custom slug')}
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-4">
+              {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                min: 4,
+                disabled: disableShortCodeLength || hasValue(this.state.customSlug),
+                ...disableShortCodeLength && {
+                  title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
+                },
+              })}
+            </div>
+            <div className="col-sm-4">
               {renderOptionalInput('domain', 'Domain', 'text', {
                 disabled: disableDomain,
                 ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
@@ -107,13 +119,13 @@ const CreateShortUrl = (
           </div>
 
           <div className="row">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
             </div>
-            <div className="col-sm-3">
+            <div className="col-sm-4">
               {renderDateInput('validSince', 'Enabled since...', { maxDate: this.state.validUntil })}
             </div>
-            <div className="col-sm-3">
+            <div className="col-sm-4">
               {renderDateInput('validUntil', 'Enabled until...', { minDate: this.state.validSince })}
             </div>
           </div>
