@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { serverType } from '../prop-types';
-import { compareVersions } from '../../utils/helpers/version';
+import { versionMatch } from '../../utils/helpers/version';
 
 const propTypes = {
   minVersion: PropTypes.string,
@@ -16,10 +16,9 @@ const ForServerVersion = ({ minVersion, maxVersion, selectedServer, children }) 
   }
 
   const { version } = selectedServer;
-  const matchesMinVersion = !minVersion || compareVersions(version, '>=', minVersion);
-  const matchesMaxVersion = !maxVersion || compareVersions(version, '<=', maxVersion);
+  const matchesVersion = versionMatch(version, { maxVersion, minVersion });
 
-  if (!matchesMinVersion || !matchesMaxVersion) {
+  if (!matchesVersion) {
     return null;
   }
 
