@@ -10,6 +10,7 @@ describe('<ShortUrlsRowMenu />', () => {
   const DeleteShortUrlModal = () => '';
   const EditTagsModal = () => '';
   const EditMetaModal = () => '';
+  const EditShortUrlModal = () => '';
   const onCopyToClipboard = jest.fn();
   const selectedServer = { id: 'abc123' };
   const shortUrl = {
@@ -17,7 +18,13 @@ describe('<ShortUrlsRowMenu />', () => {
     shortUrl: 'https://doma.in/abc123',
   };
   const createWrapper = () => {
-    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal, EditMetaModal, () => '');
+    const ShortUrlsRowMenu = createShortUrlsRowMenu(
+      DeleteShortUrlModal,
+      EditTagsModal,
+      EditMetaModal,
+      EditShortUrlModal,
+      () => ''
+    );
 
     wrapper = shallow(
       <ShortUrlsRowMenu
@@ -38,18 +45,20 @@ describe('<ShortUrlsRowMenu />', () => {
     const editTagsModal = wrapper.find(EditTagsModal);
     const previewModal = wrapper.find(PreviewModal);
     const qrCodeModal = wrapper.find(QrCodeModal);
+    const editModal = wrapper.find(EditShortUrlModal);
 
     expect(deleteShortUrlModal).toHaveLength(1);
     expect(editTagsModal).toHaveLength(1);
     expect(previewModal).toHaveLength(1);
     expect(qrCodeModal).toHaveLength(1);
+    expect(editModal).toHaveLength(1);
   });
 
   it('renders correct amount of menu items', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(7);
+    expect(items).toHaveLength(8);
     expect(items.find('[divider]')).toHaveLength(1);
   });
 
@@ -70,6 +79,7 @@ describe('<ShortUrlsRowMenu />', () => {
     it('EditTagsModal', (done) => assert(EditTagsModal, 'isTagsModalOpen', done));
     it('PreviewModal', (done) => assert(PreviewModal, 'isPreviewModalOpen', done));
     it('QrCodeModal', (done) => assert(QrCodeModal, 'isQrModalOpen', done));
+    it('EditShortUrlModal', (done) => assert(EditShortUrlModal, 'isEditModalOpen', done));
   });
 
   it('toggles dropdown state when toggling dropdown', (done) => {
