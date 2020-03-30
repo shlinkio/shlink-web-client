@@ -63,34 +63,26 @@ describe('<ShortUrlsRowMenu />', () => {
   });
 
   describe('toggles state when toggling modal windows', () => {
-    const assert = (modalComponent, stateProp, done) => {
+    const assert = (modalComponent) => {
       const wrapper = createWrapper();
-      const modal = wrapper.find(modalComponent);
 
-      expect(wrapper.state(stateProp)).toEqual(false);
-      modal.prop('toggle')();
-      setImmediate(() => {
-        expect(wrapper.state(stateProp)).toEqual(true);
-        done();
-      });
+      expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(false);
+      wrapper.find(modalComponent).prop('toggle')();
+      expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(true);
     };
 
-    it('DeleteShortUrlModal', (done) => assert(DeleteShortUrlModal, 'isDeleteModalOpen', done));
-    it('EditTagsModal', (done) => assert(EditTagsModal, 'isTagsModalOpen', done));
-    it('PreviewModal', (done) => assert(PreviewModal, 'isPreviewModalOpen', done));
-    it('QrCodeModal', (done) => assert(QrCodeModal, 'isQrModalOpen', done));
-    it('EditShortUrlModal', (done) => assert(EditShortUrlModal, 'isEditModalOpen', done));
+    it('DeleteShortUrlModal', () => assert(DeleteShortUrlModal));
+    it('EditTagsModal', () => assert(EditTagsModal));
+    it('PreviewModal', () => assert(PreviewModal));
+    it('QrCodeModal', () => assert(QrCodeModal));
+    it('EditShortUrlModal', () => assert(EditShortUrlModal));
   });
 
-  it('toggles dropdown state when toggling dropdown', (done) => {
+  it('toggles dropdown state when toggling dropdown', () => {
     const wrapper = createWrapper();
-    const dropdown = wrapper.find(ButtonDropdown);
 
-    expect(wrapper.state('isOpen')).toEqual(false);
-    dropdown.prop('toggle')();
-    setImmediate(() => {
-      expect(wrapper.state('isOpen')).toEqual(true);
-      done();
-    });
+    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(false);
+    wrapper.find(ButtonDropdown).prop('toggle')();
+    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(true);
   });
 });
