@@ -6,6 +6,7 @@ import {
   faQrcode as qrIcon,
   faMinusCircle as deleteIcon,
   faEdit as editIcon,
+  faLink as linkIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
@@ -21,6 +22,7 @@ const ShortUrlsRowMenu = (
   DeleteShortUrlModal,
   EditTagsModal,
   EditMetaModal,
+  EditShortUrlModal,
   ForServerVersion
 ) => class ShortUrlsRowMenu extends React.Component {
   static propTypes = {
@@ -35,6 +37,7 @@ const ShortUrlsRowMenu = (
     isTagsModalOpen: false,
     isMetaModalOpen: false,
     isDeleteModalOpen: false,
+    isEditModalOpen: false,
   };
   toggle = () => this.setState(({ isOpen }) => ({ isOpen: !isOpen }));
 
@@ -47,6 +50,7 @@ const ShortUrlsRowMenu = (
     const toggleTags = toggleModal('isTagsModalOpen');
     const toggleMeta = toggleModal('isMetaModalOpen');
     const toggleDelete = toggleModal('isDeleteModalOpen');
+    const toggleEdit = toggleModal('isEditModalOpen');
 
     return (
       <ButtonDropdown toggle={this.toggle} isOpen={this.state.isOpen}>
@@ -68,6 +72,13 @@ const ShortUrlsRowMenu = (
               <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
             </DropdownItem>
             <EditMetaModal shortUrl={shortUrl} isOpen={this.state.isMetaModalOpen} toggle={toggleMeta} />
+          </ForServerVersion>
+
+          <ForServerVersion minVersion="2.1.0">
+            <DropdownItem onClick={toggleEdit}>
+              <FontAwesomeIcon icon={linkIcon} fixedWidth /> Edit long URL
+            </DropdownItem>
+            <EditShortUrlModal shortUrl={shortUrl} isOpen={this.state.isEditModalOpen} toggle={toggleEdit} />
           </ForServerVersion>
 
           <DropdownItem onClick={toggleQrCode}>

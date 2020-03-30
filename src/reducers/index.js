@@ -7,6 +7,7 @@ import shortUrlCreationReducer from '../short-urls/reducers/shortUrlCreation';
 import shortUrlDeletionReducer from '../short-urls/reducers/shortUrlDeletion';
 import shortUrlTagsReducer from '../short-urls/reducers/shortUrlTags';
 import shortUrlMetaReducer from '../short-urls/reducers/shortUrlMeta';
+import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import shortUrlDetailReducer from '../visits/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
@@ -22,6 +23,7 @@ export default combineReducers({
   shortUrlDeletion: shortUrlDeletionReducer,
   shortUrlTags: shortUrlTagsReducer,
   shortUrlMeta: shortUrlMetaReducer,
+  shortUrlEdition: shortUrlEditionReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   shortUrlDetail: shortUrlDetailReducer,
   tagsList: tagsListReducer,
