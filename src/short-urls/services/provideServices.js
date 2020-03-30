@@ -17,7 +17,7 @@ import { deleteShortUrl, resetDeleteShortUrl } from '../reducers/shortUrlDeletio
 import { editShortUrlTags, resetShortUrlsTags } from '../reducers/shortUrlTags';
 import { editShortUrlMeta, resetShortUrlMeta } from '../reducers/shortUrlMeta';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
-import { editShortUrl, resetShortUrlEdition } from '../reducers/shortUrlEdition';
+import { editShortUrl } from '../reducers/shortUrlEdition';
 
 const provideServices = (bottle, connect) => {
   // Components
@@ -64,7 +64,7 @@ const provideServices = (bottle, connect) => {
   bottle.decorator('EditMetaModal', connect([ 'shortUrlMeta' ], [ 'editShortUrlMeta', 'resetShortUrlMeta' ]));
 
   bottle.serviceFactory('EditShortUrlModal', () => EditShortUrlModal);
-  bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl', 'resetShortUrlEdition' ]));
+  bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
 
   // Actions
   bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'buildShlinkApiClient');
@@ -83,7 +83,6 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('resetShortUrlMeta', () => resetShortUrlMeta);
 
   bottle.serviceFactory('editShortUrl', editShortUrl, 'buildShlinkApiClient');
-  bottle.serviceFactory('resetShortUrlEdition', () => resetShortUrlEdition);
 };
 
 export default provideServices;

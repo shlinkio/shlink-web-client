@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
-import { pipe } from 'ramda';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import { ShortUrlEditionType } from '../reducers/shortUrlEdition';
 import { hasValue } from '../../utils/utils';
@@ -13,20 +12,18 @@ const propTypes = {
   shortUrl: shortUrlType.isRequired,
   shortUrlEdition: ShortUrlEditionType,
   editShortUrl: PropTypes.func,
-  resetShortUrlEdition: PropTypes.func,
 };
 
-const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl, resetShortUrlEdition }) => {
+const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl }) => {
   const { saving, error } = shortUrlEdition;
   const url = shortUrl && (shortUrl.shortUrl || '');
   const [ longUrl, setLongUrl ] = useState(shortUrl.longUrl);
 
-  const close = pipe(resetShortUrlEdition, toggle);
-  const doEdit = () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(close);
+  const doEdit = () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
 
   return (
-    <Modal isOpen={isOpen} toggle={close} centered>
-      <ModalHeader toggle={close}>
+    <Modal isOpen={isOpen} toggle={toggle} centered>
+      <ModalHeader toggle={toggle}>
         Edit long URL for <ExternalLink href={url} />
       </ModalHeader>
       <form onSubmit={(e) => e.preventDefault() || doEdit()}>
@@ -47,7 +44,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
           )}
         </ModalBody>
         <ModalFooter>
-          <Button color="link" onClick={close}>Cancel</Button>
+          <Button color="link" onClick={toggle}>Cancel</Button>
           <Button color="primary" disabled={saving || !hasValue(longUrl)}>{saving ? 'Saving...' : 'Save'}</Button>
         </ModalFooter>
       </form>
