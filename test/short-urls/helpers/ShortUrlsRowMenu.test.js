@@ -10,6 +10,7 @@ describe('<ShortUrlsRowMenu />', () => {
   const DeleteShortUrlModal = () => '';
   const EditTagsModal = () => '';
   const EditMetaModal = () => '';
+  const EditShortUrlModal = () => '';
   const onCopyToClipboard = jest.fn();
   const selectedServer = { id: 'abc123' };
   const shortUrl = {
@@ -17,7 +18,13 @@ describe('<ShortUrlsRowMenu />', () => {
     shortUrl: 'https://doma.in/abc123',
   };
   const createWrapper = () => {
-    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, EditTagsModal, EditMetaModal, () => '');
+    const ShortUrlsRowMenu = createShortUrlsRowMenu(
+      DeleteShortUrlModal,
+      EditTagsModal,
+      EditMetaModal,
+      EditShortUrlModal,
+      () => ''
+    );
 
     wrapper = shallow(
       <ShortUrlsRowMenu
@@ -38,49 +45,44 @@ describe('<ShortUrlsRowMenu />', () => {
     const editTagsModal = wrapper.find(EditTagsModal);
     const previewModal = wrapper.find(PreviewModal);
     const qrCodeModal = wrapper.find(QrCodeModal);
+    const editModal = wrapper.find(EditShortUrlModal);
 
     expect(deleteShortUrlModal).toHaveLength(1);
     expect(editTagsModal).toHaveLength(1);
     expect(previewModal).toHaveLength(1);
     expect(qrCodeModal).toHaveLength(1);
+    expect(editModal).toHaveLength(1);
   });
 
   it('renders correct amount of menu items', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(7);
+    expect(items).toHaveLength(8);
     expect(items.find('[divider]')).toHaveLength(1);
   });
 
   describe('toggles state when toggling modal windows', () => {
-    const assert = (modalComponent, stateProp, done) => {
+    const assert = (modalComponent) => {
       const wrapper = createWrapper();
-      const modal = wrapper.find(modalComponent);
 
-      expect(wrapper.state(stateProp)).toEqual(false);
-      modal.prop('toggle')();
-      setImmediate(() => {
-        expect(wrapper.state(stateProp)).toEqual(true);
-        done();
-      });
+      expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(false);
+      wrapper.find(modalComponent).prop('toggle')();
+      expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(true);
     };
 
-    it('DeleteShortUrlModal', (done) => assert(DeleteShortUrlModal, 'isDeleteModalOpen', done));
-    it('EditTagsModal', (done) => assert(EditTagsModal, 'isTagsModalOpen', done));
-    it('PreviewModal', (done) => assert(PreviewModal, 'isPreviewModalOpen', done));
-    it('QrCodeModal', (done) => assert(QrCodeModal, 'isQrModalOpen', done));
+    it('DeleteShortUrlModal', () => assert(DeleteShortUrlModal));
+    it('EditTagsModal', () => assert(EditTagsModal));
+    it('PreviewModal', () => assert(PreviewModal));
+    it('QrCodeModal', () => assert(QrCodeModal));
+    it('EditShortUrlModal', () => assert(EditShortUrlModal));
   });
 
-  it('toggles dropdown state when toggling dropdown', (done) => {
+  it('toggles dropdown state when toggling dropdown', () => {
     const wrapper = createWrapper();
-    const dropdown = wrapper.find(ButtonDropdown);
 
-    expect(wrapper.state('isOpen')).toEqual(false);
-    dropdown.prop('toggle')();
-    setImmediate(() => {
-      expect(wrapper.state('isOpen')).toEqual(true);
-      done();
-    });
+    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(false);
+    wrapper.find(ButtonDropdown).prop('toggle')();
+    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(true);
   });
 });

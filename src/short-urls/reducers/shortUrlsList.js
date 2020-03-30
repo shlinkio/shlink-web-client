@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 import { SHORT_URL_META_EDITED, shortUrlMetaType } from './shortUrlMeta';
+import { SHORT_URL_EDITED } from './shortUrlEdition';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
@@ -54,6 +55,7 @@ export default handleActions({
   ),
   [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl('tags'),
   [SHORT_URL_META_EDITED]: setPropFromActionOnMatchingShortUrl('meta'),
+  [SHORT_URL_EDITED]: setPropFromActionOnMatchingShortUrl('longUrl'),
 }, initialState);
 
 export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (dispatch, getState) => {

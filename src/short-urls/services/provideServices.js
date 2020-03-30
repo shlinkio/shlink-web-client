@@ -9,6 +9,7 @@ import CreateShortUrl from '../CreateShortUrl';
 import DeleteShortUrlModal from '../helpers/DeleteShortUrlModal';
 import EditTagsModal from '../helpers/EditTagsModal';
 import EditMetaModal from '../helpers/EditMetaModal';
+import EditShortUrlModal from '../helpers/EditShortUrlModal';
 import CreateShortUrlResult from '../helpers/CreateShortUrlResult';
 import { listShortUrls } from '../reducers/shortUrlsList';
 import { createShortUrl, resetCreateShortUrl } from '../reducers/shortUrlCreation';
@@ -16,6 +17,7 @@ import { deleteShortUrl, resetDeleteShortUrl } from '../reducers/shortUrlDeletio
 import { editShortUrlTags, resetShortUrlsTags } from '../reducers/shortUrlTags';
 import { editShortUrlMeta, resetShortUrlMeta } from '../reducers/shortUrlMeta';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
+import { editShortUrl } from '../reducers/shortUrlEdition';
 
 const provideServices = (bottle, connect) => {
   // Components
@@ -41,6 +43,7 @@ const provideServices = (bottle, connect) => {
     'DeleteShortUrlModal',
     'EditTagsModal',
     'EditMetaModal',
+    'EditShortUrlModal',
     'ForServerVersion'
   );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'stateFlagTimeout');
@@ -60,6 +63,9 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('EditMetaModal', () => EditMetaModal);
   bottle.decorator('EditMetaModal', connect([ 'shortUrlMeta' ], [ 'editShortUrlMeta', 'resetShortUrlMeta' ]));
 
+  bottle.serviceFactory('EditShortUrlModal', () => EditShortUrlModal);
+  bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
+
   // Actions
   bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'buildShlinkApiClient');
   bottle.serviceFactory('resetShortUrlsTags', () => resetShortUrlsTags);
@@ -75,6 +81,8 @@ const provideServices = (bottle, connect) => {
 
   bottle.serviceFactory('editShortUrlMeta', editShortUrlMeta, 'buildShlinkApiClient');
   bottle.serviceFactory('resetShortUrlMeta', () => resetShortUrlMeta);
+
+  bottle.serviceFactory('editShortUrl', editShortUrl, 'buildShlinkApiClient');
 };
 
 export default provideServices;

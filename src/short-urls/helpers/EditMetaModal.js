@@ -26,9 +26,7 @@ const dateOrUndefined = (shortUrl, dateName) => {
   return date && moment(date);
 };
 
-const EditMetaModal = (
-  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }
-) => {
+const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }) => {
   const { saving, error } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
   const [ validSince, setValidSince ] = useState(dateOrUndefined(shortUrl, 'validSince'));
