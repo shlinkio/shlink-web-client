@@ -9,6 +9,11 @@
   padding-right: 40px;
 }
 
+.search-field__input--no-border.search-field__input--no-border {
+  border: none;
+  border-radius: 0;
+}
+
 .search-field__icon {
   @include vertical-align();
 

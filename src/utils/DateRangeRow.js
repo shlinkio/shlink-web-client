@@ -13,7 +13,7 @@ const propTypes = {
 
 const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }) => (
   <div className="row">
-    <div className="col-xl-3 col-lg-4 col-md-6 offset-xl-6 offset-lg-4">
+    <div className="col-md-6">
       <DateInput
         selected={startDate}
         placeholderText="Since"
@@ -22,7 +22,7 @@ const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }
         onChange={onStartDateChange}
       />
     </div>
-    <div className="col-xl-3 col-lg-4 col-md-6">
+    <div className="col-md-6">
       <DateInput
         className="date-range-row__date-input"
         selected={endDate}

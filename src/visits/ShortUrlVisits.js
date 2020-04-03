@@ -1,8 +1,10 @@
 import { isEmpty, mapObjIndexed, values } from 'ramda';
 import React from 'react';
-import { Card } from 'reactstrap';
+import { Button, Card, Collapse } from 'reactstrap';
 import PropTypes from 'prop-types';
 import qs from 'qs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronDown as chevronDown } from '@fortawesome/free-solid-svg-icons';
 import DateRangeRow from '../utils/DateRangeRow';
 import Message from '../utils/Message';
 import { formatDate } from '../utils/helpers/date';
@@ -11,6 +13,7 @@ import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
 import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
+import VisitsTable from './VisitsTable';
 
 const ShortUrlVisits = (
   { processStatsFromVisits },
@@ -30,7 +33,12 @@ const ShortUrlVisits = (
     cancelGetShortUrlVisits: PropTypes.func,
   };
 
-  state = { startDate: undefined, endDate: undefined };
+  state = {
+    startDate: undefined,
+    endDate: undefined,
+    showTable: false,
+  };
+
   loadVisits = (loadDetail = false) => {
     const { match: { params }, location: { search }, getShortUrlVisits, getShortUrlDetail } = this.props;
     const { shortCode } = params;
@@ -57,10 +65,9 @@ const ShortUrlVisits = (
 
   render() {
     const { shortUrlVisits, shortUrlDetail } = this.props;
+    const { visits, loading, loadingLarge, error } = shortUrlVisits;
 
     const renderVisitsContent = () => {
-      const { visits, loading, loadingLarge, error } = shortUrlVisits;
-
       if (loading) {
         const message = loadingLarge ? 'This is going to take a while... :S' : 'Loading...';
 
@@ -137,13 +144,30 @@ const ShortUrlVisits = (
         <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
 
         <section className="mt-4">
-          <DateRangeRow
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onStartDateChange={setDate('startDate')}
-            onEndDateChange={setDate('endDate')}
-          />
+          <div className="row flex-md-row-reverse">
+            <div className="col-lg-8 col-xl-6">
+              <DateRangeRow
+                startDate={this.state.startDate}
+                endDate={this.state.endDate}
+                onStartDateChange={setDate('startDate')}
+                onEndDateChange={setDate('endDate')}
+              />
+            </div>
+            <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
+              {visits.length > 0 && (
+                <Button outline onClick={() => this.setState(({ showTable }) => ({ showTable: !showTable }))}>
+                  Show table <FontAwesomeIcon icon={chevronDown} rotation={this.state.showTable ? 180 : undefined} />
+                </Button>
+              )}
+            </div>
+          </div>
         </section>
+
+        {!loading && visits.length > 0 && (
+          <Collapse isOpen={this.state.showTable}>
+            <VisitsTable visits={visits} />
+          </Collapse>
+        )}
 
         <section>
           {renderVisitsContent()}

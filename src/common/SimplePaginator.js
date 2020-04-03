@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { isPageDisabled, keyForPage, progressivePagination } from '../utils/helpers/pagination';
 import './SimplePaginator.scss';
@@ -8,9 +9,10 @@ const propTypes = {
   pagesCount: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
+  centered: PropTypes.bool,
 };
 
-const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
+const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage, centered = true }) => {
   if (pagesCount < 2) {
     return null;
   }
@@ -18,7 +20,7 @@ const SimplePaginator = ({ pagesCount, currentPage, setCurrentPage }) => {
   const onClick = (page) => () => setCurrentPage(page);
 
   return (
-    <Pagination listClassName="flex-wrap justify-content-center mb-0 simple-paginator">
+    <Pagination listClassName={classNames('flex-wrap mb-0 simple-paginator', { 'justify-content-center': centered })}>
       <PaginationItem disabled={currentPage <= 1}>
         <PaginationLink previous tag="span" onClick={onClick(currentPage - 1)} />
       </PaginationItem>
