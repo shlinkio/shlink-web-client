@@ -59,8 +59,10 @@ describe('<GraphCard />', () => {
       xAxes: [
         {
           ticks: { beginAtZero: true },
+          stacked: true,
         },
       ],
+      yAxes: [{ stacked: true }],
     });
   });
 });

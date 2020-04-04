@@ -98,7 +98,7 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
               'visits-table__sticky': isSticky,
             })}
           >
-            <FontAwesomeIcon icon={checkIcon} />
+            <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisit !== undefined })} />
           </th>
           <th className={headerCellsClass} onClick={orderByColumn('date')}>
             Date

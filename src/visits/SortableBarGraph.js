@@ -15,6 +15,7 @@ const pickValueFromPair = ([ , value ]) => value;
 export default class SortableBarGraph extends React.Component {
   static propTypes = {
     stats: PropTypes.object.isRequired,
+    highlightedStats: PropTypes.object,
     title: PropTypes.string.isRequired,
     sortingItems: PropTypes.object.isRequired,
     extraHeaderContent: PropTypes.func,
@@ -73,7 +74,7 @@ export default class SortableBarGraph extends React.Component {
   }
 
   render() {
-    const { stats, sortingItems, title, extraHeaderContent, withPagination = true } = this.props;
+    const { stats, sortingItems, title, extraHeaderContent, highlightedStats, withPagination = true } = this.props;
     const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
     const activeCities = keys(currentPageStats);
     const computeTitle = () => (
@@ -107,6 +108,15 @@ export default class SortableBarGraph extends React.Component {
       </React.Fragment>
     );
 
-    return <GraphCard isBarChart title={computeTitle} stats={currentPageStats} footer={pagination} max={max} />;
+    return (
+      <GraphCard
+        isBarChart
+        title={computeTitle}
+        stats={currentPageStats}
+        footer={pagination}
+        max={max}
+        highlightedStats={highlightedStats}
+      />
+    );
   }
 }

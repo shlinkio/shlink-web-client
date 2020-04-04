@@ -15,6 +15,8 @@ import GraphCard from './GraphCard';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import VisitsTable from './VisitsTable';
 
+const highlightedVisitToStats = (highlightedVisit, prop) => highlightedVisit && { [highlightedVisit[prop]]: 1 };
+
 const ShortUrlVisits = (
   { processStatsFromVisits },
   OpenMapModalBtn
@@ -40,6 +42,7 @@ const ShortUrlVisits = (
     showTable: false,
     tableIsSticky: false,
     isMobileDevice: false,
+    highlightedVisit: undefined,
   };
 
   loadVisits = (loadDetail = false) => {
@@ -114,9 +117,10 @@ const ShortUrlVisits = (
           </div>
           <div className="col-xl-4">
             <SortableBarGraph
+              title="Referrers"
               stats={referrers}
               withPagination={false}
-              title="Referrers"
+              highlightedStats={highlightedVisitToStats(this.state.highlightedVisit, 'referer')}
               sortingItems={{
                 name: 'Referrer name',
                 amount: 'Visits amount',
@@ -125,8 +129,9 @@ const ShortUrlVisits = (
           </div>
           <div className="col-lg-6">
             <SortableBarGraph
-              stats={countries}
               title="Countries"
+              stats={countries}
+              highlightedStats={highlightedVisitToStats(this.state.highlightedVisit, 'country')}
               sortingItems={{
                 name: 'Country name',
                 amount: 'Visits amount',
@@ -135,8 +140,9 @@ const ShortUrlVisits = (
           </div>
           <div className="col-lg-6">
             <SortableBarGraph
-              stats={cities}
               title="Cities"
+              stats={cities}
+              highlightedStats={highlightedVisitToStats(this.state.highlightedVisit, 'city')}
               extraHeaderContent={(activeCities) =>
                 mapLocations.length > 0 &&
                   <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
@@ -188,7 +194,11 @@ const ShortUrlVisits = (
             onEntered={() => this.setState({ tableIsSticky: true })}
             onExiting={() => this.setState({ tableIsSticky: false })}
           >
-            <VisitsTable visits={visits} isSticky={this.state.tableIsSticky} />
+            <VisitsTable
+              visits={visits}
+              isSticky={this.state.tableIsSticky}
+              onVisitSelected={(highlightedVisit) => this.setState({ highlightedVisit })}
+            />
           </Collapse>
         )}
 
