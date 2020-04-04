@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type } from 'ramda';
 import SortingDropdown from '../utils/SortingDropdown';
 import PaginationDropdown from '../utils/PaginationDropdown';
-import { rangeOf, roundTen } from '../utils/utils';
+import { rangeOf } from '../utils/utils';
+import { roundTen } from '../utils/helpers/numbers';
 import SimplePaginator from '../common/SimplePaginator';
 import GraphCard from './GraphCard';
 

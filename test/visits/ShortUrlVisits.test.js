@@ -43,7 +43,7 @@ describe('<ShortUrlVisits />', () => {
   });
 
   it('renders a preloader when visits are loading', () => {
-    const wrapper = createComponent({ loading: true });
+    const wrapper = createComponent({ loading: true, visits: [] });
     const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
@@ -51,7 +51,7 @@ describe('<ShortUrlVisits />', () => {
   });
 
   it('renders a warning when loading large amounts of visits', () => {
-    const wrapper = createComponent({ loading: true, loadingLarge: true });
+    const wrapper = createComponent({ loading: true, loadingLarge: true, visits: [] });
     const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
@@ -59,7 +59,7 @@ describe('<ShortUrlVisits />', () => {
   });
 
   it('renders an error message when visits could not be loaded', () => {
-    const wrapper = createComponent({ loading: false, error: true });
+    const wrapper = createComponent({ loading: false, error: true, visits: [] });
     const errorMessage = wrapper.find(Card);
 
     expect(errorMessage).toHaveLength(1);

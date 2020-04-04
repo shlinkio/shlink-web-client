@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
-import { map } from 'ramda';
+import { map, min } from 'ramda';
 import {
   faCaretDown as caretDownIcon,
   faCaretUp as caretUpIcon,
@@ -90,24 +90,24 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
             <FontAwesomeIcon icon={checkIcon} />
           </th>
           <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('date')}>
-            {renderOrderIcon('date')}
             Date
+            {renderOrderIcon('date')}
           </th>
           <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('location')}>
-            {renderOrderIcon('location')}
             Location
+            {renderOrderIcon('location')}
           </th>
           <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('browser')}>
-            {renderOrderIcon('browser')}
             Browser
+            {renderOrderIcon('browser')}
           </th>
           <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('os')}>
-            {renderOrderIcon('os')}
             OS
+            {renderOrderIcon('os')}
           </th>
           <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('referer')}>
-            {renderOrderIcon('referer')}
             Referrer
+            {renderOrderIcon('referer')}
           </th>
         </tr>
         <tr>
@@ -159,7 +159,9 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
                 </div>
                 <div className="col-6 d-flex align-items-center flex-row-reverse">
                   <div>
-                    Visits <b>{currentPage.start + 1}</b> to <b>{currentPage.end}</b> of <b>{currentPage.total}</b>
+                    Visits <b>{currentPage.start + 1}</b> to{' '}
+                    <b>{min(currentPage.end, currentPage.total)}</b> of{' '}
+                    <b>{currentPage.total}</b>
                   </div>
                 </div>
               </div>
