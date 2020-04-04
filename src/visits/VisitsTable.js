@@ -19,11 +19,13 @@ import './VisitsTable.scss';
 const propTypes = {
   visits: PropTypes.arrayOf(visitType).isRequired,
   onVisitSelected: PropTypes.func,
+  isSticky: PropTypes.bool,
+  matchMedia: PropTypes.func,
 };
 
 const PAGE_SIZE = 20;
-const visitMatchesSearch = ({ browser, os, referer, location }, searchTerm) =>
-  `${browser} ${os} ${referer} ${location}`.toLowerCase().includes(searchTerm.toLowerCase());
+const visitMatchesSearch = ({ browser, os, referer, country, city }, searchTerm) =>
+  `${browser} ${os} ${referer} ${country} ${city}`.toLowerCase().includes(searchTerm.toLowerCase());
 const calculateVisits = (allVisits, page, searchTerm, { field, dir }) => {
   const end = page * PAGE_SIZE;
   const start = end - PAGE_SIZE;
@@ -49,17 +51,23 @@ const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
   browser: browserFromUserAgent(userAgent),
   os: osFromUserAgent(userAgent),
   referer: extractDomain(referer),
-  location: visitLocation ? `${visitLocation.countryName} - ${visitLocation.cityName}` : '',
+  country: (visitLocation && visitLocation.countryName) || 'Unknown',
+  city: (visitLocation && visitLocation.cityName) || 'Unknown',
 }));
 
-const VisitsTable = ({ visits, onVisitSelected }) => {
+const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = window.matchMedia }) => {
   const allVisits = normalizeVisits(visits);
+  const headerCellsClass = classNames('visits-table__header-cell', {
+    'visits-table__sticky': isSticky,
+  });
+  const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
   const [ selectedVisit, setSelectedVisit ] = useState(undefined);
   const [ page, setPage ] = useState(1);
   const [ searchTerm, setSearchTerm ] = useState(undefined);
   const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
   const [ currentPage, setCurrentPageVisits ] = useState(calculateVisits(allVisits, page, searchTerm, order));
+  const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
 
   const orderByColumn = (field) => () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
   const renderOrderIcon = (field) => {
@@ -81,37 +89,52 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
   useEffect(() => {
     setCurrentPageVisits(calculateVisits(allVisits, page, searchTerm, order));
   }, [ page, searchTerm, order ]);
+  useEffect(() => {
+    const listener = () => setIsMobileDevice(matchMobile());
+
+    window.addEventListener('resize', listener);
+
+    return () => window.removeEventListener('resize', listener);
+  }, []);
 
   return (
-    <table className="table table-striped table-bordered table-hover table-sm table-responsive-sm mt-4 mb-0">
-      <thead className="short-urls-list__header">
+    <table className="table table-striped table-bordered table-hover table-sm visits-table">
+      <thead className="visits-table__header">
         <tr>
-          <th className="text-center">
+          <th
+            className={classNames('visits-table__header-cell visits-table__header-cell--no-action', {
+              'visits-table__sticky': isSticky,
+            })}
+          >
             <FontAwesomeIcon icon={checkIcon} />
           </th>
-          <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('date')}>
+          <th className={headerCellsClass} onClick={orderByColumn('date')}>
             Date
             {renderOrderIcon('date')}
           </th>
-          <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('location')}>
-            Location
-            {renderOrderIcon('location')}
+          <th className={headerCellsClass} onClick={orderByColumn('country')}>
+            Country
+            {renderOrderIcon('country')}
           </th>
-          <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('browser')}>
+          <th className={headerCellsClass} onClick={orderByColumn('city')}>
+            City
+            {renderOrderIcon('city')}
+          </th>
+          <th className={headerCellsClass} onClick={orderByColumn('browser')}>
             Browser
             {renderOrderIcon('browser')}
           </th>
-          <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('os')}>
+          <th className={headerCellsClass} onClick={orderByColumn('os')}>
             OS
             {renderOrderIcon('os')}
           </th>
-          <th className="short-urls-list__header-cell--with-action" onClick={orderByColumn('referer')}>
+          <th className={headerCellsClass} onClick={orderByColumn('referer')}>
             Referrer
             {renderOrderIcon('referer')}
           </th>
         </tr>
         <tr>
-          <td colSpan={6} className="p-0">
+          <td colSpan={7} className="p-0">
             <SearchField noBorder large={false} onChange={setSearchTerm} />
           </td>
         </tr>
@@ -119,7 +142,7 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
       <tbody>
         {currentPage.visits.length === 0 && (
           <tr>
-            <td colSpan={6} className="text-center">
+            <td colSpan={7} className="text-center">
               No visits found with current filtering
             </td>
           </tr>
@@ -137,7 +160,8 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
             <td>
               <Moment format="YYYY-MM-DD HH:mm">{visit.date}</Moment>
             </td>
-            <td>{visit.location}</td>
+            <td>{visit.country}</td>
+            <td>{visit.city}</td>
             <td>{visit.browser}</td>
             <td>{visit.os}</td>
             <td>{visit.referer}</td>
@@ -147,17 +171,22 @@ const VisitsTable = ({ visits, onVisitSelected }) => {
       {currentPage.total >= PAGE_SIZE && (
         <tfoot>
           <tr>
-            <td colSpan={6} className="p-2">
+            <td colSpan={7} className={classNames('visits-table__footer-cell', { 'visits-table__sticky': isSticky })}>
               <div className="row">
-                <div className="col-6">
+                <div className="col-md-6">
                   <SimplePaginator
                     pagesCount={Math.ceil(currentPage.total / PAGE_SIZE)}
                     currentPage={page}
                     setCurrentPage={setPage}
-                    centered={false}
+                    centered={isMobileDevice}
                   />
                 </div>
-                <div className="col-6 d-flex align-items-center flex-row-reverse">
+                <div
+                  className={classNames('col-md-6', {
+                    'd-flex align-items-center flex-row-reverse': !isMobileDevice,
+                    'text-center mt-3': isMobileDevice,
+                  })}
+                >
                   <div>
                     Visits <b>{currentPage.start + 1}</b> to{' '}
                     <b>{min(currentPage.end, currentPage.total)}</b> of{' '}

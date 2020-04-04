@@ -1,4 +1,36 @@
+@import '../utils/base';
+
+.visits-table {
+  margin: 1.5rem 0 0;
+  position: relative;
+}
+
+.visits-table__sticky {
+  position: sticky;
+}
+
+.visits-table__header-cell {
+  cursor: pointer;
+  top: $headerHeight - 2px;
+  margin-bottom: 55px;
+  background-color: white;
+  z-index: 1;
+  border: 1px solid #dee2e6;
+}
+
+.visits-table__header-cell--no-action {
+  cursor: auto;
+  text-align: center;
+}
+
 .visits-table__header-icon {
   float: right;
   margin-top: 3px;
+}
+
+.visits-table__footer-cell.visits-table__footer-cell {
+  bottom: 0;
+  margin-top: 34px;
+  background-color: white;
+  padding: .5rem;
 }

@@ -31,12 +31,15 @@ const ShortUrlVisits = (
     getShortUrlDetail: PropTypes.func,
     shortUrlDetail: shortUrlDetailType,
     cancelGetShortUrlVisits: PropTypes.func,
+    matchMedia: PropTypes.func,
   };
 
   state = {
     startDate: undefined,
     endDate: undefined,
     showTable: false,
+    tableIsSticky: false,
+    isMobileDevice: false,
   };
 
   loadVisits = (loadDetail = false) => {
@@ -54,13 +57,22 @@ const ShortUrlVisits = (
     }
   };
 
+  setIsMobileDevice = () => {
+    const { matchMedia = window.matchMedia } = this.props;
+
+    this.setState({ isMobileDevice: matchMedia('(max-width: 991px)').matches });
+  };
+
   componentDidMount() {
     this.timeWhenMounted = new Date().getTime();
     this.loadVisits(true);
+    this.setIsMobileDevice();
+    window.addEventListener('resize', this.setIsMobileDevice);
   }
 
   componentWillUnmount() {
     this.props.cancelGetShortUrlVisits();
+    window.removeEventListener('resize', this.setIsMobileDevice);
   }
 
   render() {
@@ -155,7 +167,11 @@ const ShortUrlVisits = (
             </div>
             <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
               {visits.length > 0 && (
-                <Button outline onClick={() => this.setState(({ showTable }) => ({ showTable: !showTable }))}>
+                <Button
+                  outline
+                  block={this.state.isMobileDevice}
+                  onClick={() => this.setState(({ showTable }) => ({ showTable: !showTable }))}
+                >
                   Show table <FontAwesomeIcon icon={chevronDown} rotation={this.state.showTable ? 180 : undefined} />
                 </Button>
               )}
@@ -164,8 +180,14 @@ const ShortUrlVisits = (
         </section>
 
         {!loading && visits.length > 0 && (
-          <Collapse isOpen={this.state.showTable}>
-            <VisitsTable visits={visits} />
+          <Collapse
+            isOpen={this.state.showTable}
+
+            // Enable stickiness only when there's no CSS animation, to avoid weird rendering effects
+            onEntered={() => this.setState({ tableIsSticky: true })}
+            onExiting={() => this.setState({ tableIsSticky: false })}
+          >
+            <VisitsTable visits={visits} isSticky={this.state.tableIsSticky} />
           </Collapse>
         )}
 
