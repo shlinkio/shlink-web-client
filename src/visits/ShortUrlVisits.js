@@ -78,6 +78,7 @@ const ShortUrlVisits = (
   render() {
     const { shortUrlVisits, shortUrlDetail } = this.props;
     const { visits, loading, loadingLarge, error } = shortUrlVisits;
+    const showTableControls = !loading && visits.length > 0;
 
     const renderVisitsContent = () => {
       if (loading) {
@@ -166,7 +167,7 @@ const ShortUrlVisits = (
               />
             </div>
             <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
-              {visits.length > 0 && (
+              {showTableControls && (
                 <Button
                   outline
                   block={this.state.isMobileDevice}
@@ -179,7 +180,7 @@ const ShortUrlVisits = (
           </div>
         </section>
 
-        {!loading && visits.length > 0 && (
+        {showTableControls && (
           <Collapse
             isOpen={this.state.showTable}
 

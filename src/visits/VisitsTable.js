@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
@@ -13,6 +13,7 @@ import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
 import { browserFromUserAgent, extractDomain, osFromUserAgent } from '../utils/helpers/visits';
 import { determineOrderDir } from '../utils/utils';
+import { prettify } from '../utils/helpers/numbers';
 import { visitType } from './reducers/shortUrlVisits';
 import './VisitsTable.scss';
 
@@ -56,39 +57,30 @@ const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
 }));
 
 const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = window.matchMedia }) => {
-  const allVisits = normalizeVisits(visits);
   const headerCellsClass = classNames('visits-table__header-cell', {
     'visits-table__sticky': isSticky,
   });
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
   const [ selectedVisit, setSelectedVisit ] = useState(undefined);
+  const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
   const [ page, setPage ] = useState(1);
   const [ searchTerm, setSearchTerm ] = useState(undefined);
   const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
-  const [ currentPage, setCurrentPageVisits ] = useState(calculateVisits(allVisits, page, searchTerm, order));
-  const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
+  const allVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
+  const currentPage = useMemo(() => calculateVisits(allVisits, page, searchTerm, order), [ page, searchTerm, order ]);
 
   const orderByColumn = (field) => () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field) => {
-    if (!order.dir || order.field !== field) {
-      return null;
-    }
-
-    return (
-      <FontAwesomeIcon
-        icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon}
-        className="visits-table__header-icon"
-      />
-    );
-  };
+  const renderOrderIcon = (field) => order.dir && order.field === field && (
+    <FontAwesomeIcon
+      icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon}
+      className="visits-table__header-icon"
+    />
+  );
 
   useEffect(() => {
     onVisitSelected && onVisitSelected(selectedVisit);
   }, [ selectedVisit ]);
-  useEffect(() => {
-    setCurrentPageVisits(calculateVisits(allVisits, page, searchTerm, order));
-  }, [ page, searchTerm, order ]);
   useEffect(() => {
     const listener = () => setIsMobileDevice(matchMobile());
 
@@ -188,9 +180,9 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
                   })}
                 >
                   <div>
-                    Visits <b>{currentPage.start + 1}</b> to{' '}
-                    <b>{min(currentPage.end, currentPage.total)}</b> of{' '}
-                    <b>{currentPage.total}</b>
+                    Visits <b>{prettify(currentPage.start + 1)}</b> to{' '}
+                    <b>{prettify(min(currentPage.end, currentPage.total))}</b> of{' '}
+                    <b>{prettify(currentPage.total)}</b>
                   </div>
                 </div>
               </div>

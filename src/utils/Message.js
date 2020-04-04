@@ -35,8 +35,8 @@ const Message = ({ children, loading = false, noMargin = false, type = 'default'
       <Card className={cardClasses} body>
         <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>
           {loading && <FontAwesomeIcon icon={preloader} spin />}
-          {loading && !children && <span className="ml-2">Loading...</span>}
-          {children}
+          {loading && <span className="ml-2">{children || 'Loading...'}</span>}
+          {!loading && children}
         </h3>
       </Card>
     </div>
