@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
-import { map, min } from 'ramda';
+import { map, min, splitEvery } from 'ramda';
 import {
   faCaretDown as caretDownIcon,
   faCaretUp as caretUpIcon,
@@ -27,25 +27,20 @@ const propTypes = {
 const PAGE_SIZE = 20;
 const visitMatchesSearch = ({ browser, os, referer, country, city }, searchTerm) =>
   `${browser} ${os} ${referer} ${country} ${city}`.toLowerCase().includes(searchTerm.toLowerCase());
-const calculateVisits = (allVisits, page, searchTerm, { field, dir }) => {
-  const end = page * PAGE_SIZE;
-  const start = end - PAGE_SIZE;
-  const filteredVisits = searchTerm ? allVisits.filter((visit) => visitMatchesSearch(visit, searchTerm)) : allVisits;
-  const total = filteredVisits.length;
-  const visits = filteredVisits
-    .sort((a, b) => {
-      if (!dir) {
-        return 0;
-      }
+const searchVisits = (searchTerm, visits) => visits.filter((visit) => visitMatchesSearch(visit, searchTerm));
+const sortVisits = ({ field, dir }, visits) => visits.sort((a, b) => {
+  const greaterThan = dir === 'ASC' ? 1 : -1;
+  const smallerThan = dir === 'ASC' ? -1 : 1;
 
-      const greaterThan = dir === 'ASC' ? 1 : -1;
-      const smallerThan = dir === 'ASC' ? -1 : 1;
+  return a[field] > b[field] ? greaterThan : smallerThan;
+});
+const calculateVisits = (allVisits, searchTerm, order) => {
+  const filteredVisits = searchTerm ? searchVisits(searchTerm, allVisits) : allVisits;
+  const sortedVisits = order.dir ? sortVisits(order, filteredVisits) : filteredVisits;
+  const total = sortedVisits.length;
+  const visitsGroups = splitEvery(PAGE_SIZE, sortedVisits);
 
-      return a[field] > b[field] ? greaterThan : smallerThan;
-    })
-    .slice(start, end);
-
-  return { visits, start, end, total };
+  return { visitsGroups, total };
 };
 const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
   date,
@@ -57,6 +52,7 @@ const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
 }));
 
 const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = window.matchMedia }) => {
+  const allVisits = normalizeVisits(visits);
   const headerCellsClass = classNames('visits-table__header-cell', {
     'visits-table__sticky': isSticky,
   });
@@ -64,11 +60,13 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
 
   const [ selectedVisit, setSelectedVisit ] = useState(undefined);
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
-  const [ page, setPage ] = useState(1);
   const [ searchTerm, setSearchTerm ] = useState(undefined);
   const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
-  const allVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
-  const currentPage = useMemo(() => calculateVisits(allVisits, page, searchTerm, order), [ page, searchTerm, order ]);
+  const resultSet = useMemo(() => calculateVisits(allVisits, searchTerm, order), [ searchTerm, order ]);
+
+  const [ page, setPage ] = useState(1);
+  const end = page * PAGE_SIZE;
+  const start = end - PAGE_SIZE;
 
   const orderByColumn = (field) => () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
   const renderOrderIcon = (field) => order.dir && order.field === field && (
@@ -88,6 +86,9 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
 
     return () => window.removeEventListener('resize', listener);
   }, []);
+  useEffect(() => {
+    setPage(1);
+  }, [ searchTerm ]);
 
   return (
     <table className="table table-striped table-bordered table-hover table-sm visits-table">
@@ -132,14 +133,14 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
         </tr>
       </thead>
       <tbody>
-        {currentPage.visits.length === 0 && (
+        {(!resultSet.visitsGroups[page - 1] || resultSet.visitsGroups[page - 1].length === 0) && (
           <tr>
             <td colSpan={7} className="text-center">
               No visits found with current filtering
             </td>
           </tr>
         )}
-        {currentPage.visits.map((visit, index) => (
+        {resultSet.visitsGroups[page - 1] && resultSet.visitsGroups[page - 1].map((visit, index) => (
           <tr
             key={index}
             style={{ cursor: 'pointer' }}
@@ -160,14 +161,14 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
           </tr>
         ))}
       </tbody>
-      {currentPage.total >= PAGE_SIZE && (
+      {resultSet.total >= PAGE_SIZE && (
         <tfoot>
           <tr>
             <td colSpan={7} className={classNames('visits-table__footer-cell', { 'visits-table__sticky': isSticky })}>
               <div className="row">
                 <div className="col-md-6">
                   <SimplePaginator
-                    pagesCount={Math.ceil(currentPage.total / PAGE_SIZE)}
+                    pagesCount={Math.ceil(resultSet.total / PAGE_SIZE)}
                     currentPage={page}
                     setCurrentPage={setPage}
                     centered={isMobileDevice}
@@ -180,9 +181,9 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
                   })}
                 >
                   <div>
-                    Visits <b>{prettify(currentPage.start + 1)}</b> to{' '}
-                    <b>{prettify(min(currentPage.end, currentPage.total))}</b> of{' '}
-                    <b>{prettify(currentPage.total)}</b>
+                    Visits <b>{prettify(start + 1)}</b> to{' '}
+                    <b>{prettify(min(end, resultSet.total))}</b> of{' '}
+                    <b>{prettify(resultSet.total)}</b>
                   </div>
                 </div>
               </div>
