@@ -38,7 +38,7 @@ const renderInfoModal = (isOpen, toggle) => (
 );
 
 const UseExistingIfFoundInfoIcon = () => {
-  const [ isModalOpen, toggleModal ] = useToggle(false);
+  const [ isModalOpen, toggleModal ] = useToggle();
 
   return (
     <React.Fragment>

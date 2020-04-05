@@ -36,7 +36,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) =>
       maxVisits: undefined,
       findIfExists: false,
     });
-    const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle(false);
+    const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle();
 
     const changeTags = (tags) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (

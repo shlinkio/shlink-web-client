@@ -12,8 +12,9 @@ export const useStateFlagTimeout = (setTimeout) => (initialValue = true, delay =
   return [ flag, callback ];
 };
 
+// Return [ flag, toggle, enable, disable ]
 export const useToggle = (initialValue = false) => {
   const [ flag, setFlag ] = useState(initialValue);
 
-  return [ flag, () => setFlag(!flag) ];
+  return [ flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false) ];
 };

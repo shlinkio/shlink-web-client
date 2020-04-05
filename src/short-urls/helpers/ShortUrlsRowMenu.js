@@ -26,13 +26,13 @@ const propTypes = {
 
 const ShortUrlsRowMenu = (DeleteShortUrlModal, EditTagsModal, EditMetaModal, EditShortUrlModal, ForServerVersion) => {
   const ShortUrlsRowMenuComp = ({ shortUrl, selectedServer }) => {
-    const [ isOpen, toggle ] = useToggle(false);
-    const [ isQrModalOpen, toggleQrCode ] = useToggle(false);
-    const [ isPreviewModalOpen, togglePreview ] = useToggle(false);
-    const [ isTagsModalOpen, toggleTags ] = useToggle(false);
-    const [ isMetaModalOpen, toggleMeta ] = useToggle(false);
-    const [ isDeleteModalOpen, toggleDelete ] = useToggle(false);
-    const [ isEditModalOpen, toggleEdit ] = useToggle(false);
+    const [ isOpen, toggle ] = useToggle();
+    const [ isQrModalOpen, toggleQrCode ] = useToggle();
+    const [ isPreviewModalOpen, togglePreview ] = useToggle();
+    const [ isTagsModalOpen, toggleTags ] = useToggle();
+    const [ isMetaModalOpen, toggleMeta ] = useToggle();
+    const [ isDeleteModalOpen, toggleDelete ] = useToggle();
+    const [ isEditModalOpen, toggleEdit ] = useToggle();
     const completeShortUrl = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
 
     return (
