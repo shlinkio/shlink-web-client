@@ -50,7 +50,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats) => {
   const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(!highlightedStats ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
     if (acc[highlightedKey]) {
-      acc[highlightedKey] -= 1;
+      acc[highlightedKey] -= highlightedStats[highlightedKey];
     }
 
     return acc;
