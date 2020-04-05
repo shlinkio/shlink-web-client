@@ -2,6 +2,10 @@
 
 .search-field {
   position: relative;
+
+  &:focus-within {
+    z-index: 1;
+  }
 }
 
 .search-field__input.search-field__input {
