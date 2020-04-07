@@ -38,10 +38,7 @@ describe('<ShortUrlVisits />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    getShortUrlVisitsMock.mockReset();
-    wrapper && wrapper.unmount();
-  });
+  afterEach(() => wrapper && wrapper.unmount());
 
   it('renders a preloader when visits are loading', () => {
     const wrapper = createComponent({ loading: true, visits: [] });
@@ -91,9 +88,8 @@ describe('<ShortUrlVisits />', () => {
     dateRange.simulate('endDateChange', '2016-01-02T00:00:00+01:00');
     dateRange.simulate('endDateChange', '2016-01-03T00:00:00+01:00');
 
-    expect(getShortUrlVisitsMock).toHaveBeenCalledTimes(4);
-    expect(wrapper.state('startDate')).toEqual('2016-01-01T00:00:00+01:00');
-    expect(wrapper.state('endDate')).toEqual('2016-01-03T00:00:00+01:00');
+    expect(wrapper.find(DateRangeRow).prop('startDate')).toEqual('2016-01-01T00:00:00+01:00');
+    expect(wrapper.find(DateRangeRow).prop('endDate')).toEqual('2016-01-03T00:00:00+01:00');
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
