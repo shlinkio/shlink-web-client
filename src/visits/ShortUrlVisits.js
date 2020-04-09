@@ -31,7 +31,15 @@ const propTypes = {
   matchMedia: PropTypes.func,
 };
 
-const highlightedVisitToStats = (highlightedVisit, prop) => highlightedVisit && { [highlightedVisit[prop]]: 1 };
+const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.reduce((acc, highlightedVisit) => {
+  if (!acc[highlightedVisit[prop]]) {
+    acc[highlightedVisit[prop]] = 0;
+  }
+
+  acc[highlightedVisit[prop]] += 1;
+
+  return acc;
+}, {});
 const format = formatDate();
 let memoizationId;
 let timeWhenMounted;
@@ -51,7 +59,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
     const [ endDate, setEndDate ] = useState(undefined);
     const [ showTable, toggleTable ] = useToggle();
     const [ tableIsSticky, , setSticky, unsetSticky ] = useToggle();
-    const [ highlightedVisit, setHighlightedVisit ] = useState(undefined);
+    const [ highlightedVisits, setHighlightedVisits ] = useState([]);
     const [ isMobileDevice, setIsMobileDevice ] = useState(false);
     const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
 
@@ -124,7 +132,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
               title="Referrers"
               stats={referrers}
               withPagination={false}
-              highlightedStats={highlightedVisitToStats(highlightedVisit, 'referer')}
+              highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
               sortingItems={{
                 name: 'Referrer name',
                 amount: 'Visits amount',
@@ -135,7 +143,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
             <SortableBarGraph
               title="Countries"
               stats={countries}
-              highlightedStats={highlightedVisitToStats(highlightedVisit, 'country')}
+              highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
               sortingItems={{
                 name: 'Country name',
                 amount: 'Visits amount',
@@ -146,7 +154,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
             <SortableBarGraph
               title="Cities"
               stats={cities}
-              highlightedStats={highlightedVisitToStats(highlightedVisit, 'city')}
+              highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
               extraHeaderContent={(activeCities) =>
                 mapLocations.length > 0 &&
                 <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
@@ -198,7 +206,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
             onEntered={setSticky}
             onExiting={unsetSticky}
           >
-            <VisitsTable visits={visits} isSticky={tableIsSticky} onVisitSelected={setHighlightedVisit} />
+            <VisitsTable visits={visits} isSticky={tableIsSticky} onVisitsSelected={setHighlightedVisits} />
           </Collapse>
         )}
 

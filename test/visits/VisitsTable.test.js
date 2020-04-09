@@ -63,7 +63,7 @@ describe('<VisitsTable />', () => {
     expect(paginator).toHaveLength(0);
   });
 
-  it('selects a row when clicked', () => {
+  it('selected rows are highlighted', () => {
     const wrapper = createWrapper(rangeOf(10, () => ({ userAgent: '', date: '', referer: '' })));
 
     expect(wrapper.find('.text-primary')).toHaveLength(0);
@@ -72,9 +72,19 @@ describe('<VisitsTable />', () => {
     expect(wrapper.find('.text-primary')).toHaveLength(2);
     expect(wrapper.find('.table-primary')).toHaveLength(1);
     wrapper.find('tr').at(3).simulate('click');
+    expect(wrapper.find('.text-primary')).toHaveLength(3);
+    expect(wrapper.find('.table-primary')).toHaveLength(2);
+    wrapper.find('tr').at(3).simulate('click');
     expect(wrapper.find('.text-primary')).toHaveLength(2);
     expect(wrapper.find('.table-primary')).toHaveLength(1);
-    wrapper.find('tr').at(3).simulate('click');
+
+    // Select all
+    wrapper.find('thead').find('th').at(0).simulate('click');
+    expect(wrapper.find('.text-primary')).toHaveLength(11);
+    expect(wrapper.find('.table-primary')).toHaveLength(10);
+
+    // Select none
+    wrapper.find('thead').find('th').at(0).simulate('click');
     expect(wrapper.find('.text-primary')).toHaveLength(0);
     expect(wrapper.find('.table-primary')).toHaveLength(0);
   });

@@ -19,7 +19,7 @@ import './VisitsTable.scss';
 
 const propTypes = {
   visits: PropTypes.arrayOf(visitType).isRequired,
-  onVisitSelected: PropTypes.func,
+  onVisitsSelected: PropTypes.func,
   isSticky: PropTypes.bool,
   matchMedia: PropTypes.func,
 };
@@ -51,14 +51,14 @@ const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
   city: (visitLocation && visitLocation.cityName) || 'Unknown',
 }));
 
-const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = window.matchMedia }) => {
+const VisitsTable = ({ visits, onVisitsSelected, isSticky = false, matchMedia = window.matchMedia }) => {
   const allVisits = normalizeVisits(visits);
   const headerCellsClass = classNames('visits-table__header-cell', {
     'visits-table__sticky': isSticky,
   });
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
-  const [ selectedVisit, setSelectedVisit ] = useState(undefined);
+  const [ selectedVisits, setSelectedVisits ] = useState([]);
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
   const [ searchTerm, setSearchTerm ] = useState(undefined);
   const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
@@ -77,8 +77,8 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
   );
 
   useEffect(() => {
-    onVisitSelected && onVisitSelected(selectedVisit);
-  }, [ selectedVisit ]);
+    onVisitsSelected && onVisitsSelected(selectedVisits);
+  }, [ selectedVisits ]);
   useEffect(() => {
     const listener = () => setIsMobileDevice(matchMobile());
 
@@ -88,6 +88,7 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
   }, []);
   useEffect(() => {
     setPage(1);
+    setSelectedVisits([]);
   }, [ searchTerm ]);
 
   return (
@@ -95,11 +96,14 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
       <thead className="visits-table__header">
         <tr>
           <th
-            className={classNames('visits-table__header-cell visits-table__header-cell--no-action', {
+            className={classNames('visits-table__header-cell text-center', {
               'visits-table__sticky': isSticky,
             })}
+            onClick={() => setSelectedVisits(
+              selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : []
+            )}
           >
-            <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisit !== undefined })} />
+            <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
           </th>
           <th className={headerCellsClass} onClick={orderByColumn('date')}>
             Date
@@ -140,26 +144,32 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
             </td>
           </tr>
         )}
-        {resultSet.visitsGroups[page - 1] && resultSet.visitsGroups[page - 1].map((visit, index) => (
-          <tr
-            key={index}
-            style={{ cursor: 'pointer' }}
-            className={classNames({ 'table-primary': selectedVisit === visit })}
-            onClick={() => setSelectedVisit(selectedVisit === visit ? undefined : visit)}
-          >
-            <td className="text-center">
-              {selectedVisit === visit && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
-            </td>
-            <td>
-              <Moment format="YYYY-MM-DD HH:mm">{visit.date}</Moment>
-            </td>
-            <td>{visit.country}</td>
-            <td>{visit.city}</td>
-            <td>{visit.browser}</td>
-            <td>{visit.os}</td>
-            <td>{visit.referer}</td>
-          </tr>
-        ))}
+        {resultSet.visitsGroups[page - 1] && resultSet.visitsGroups[page - 1].map((visit, index) => {
+          const isSelected = selectedVisits.includes(visit);
+
+          return (
+            <tr
+              key={index}
+              style={{ cursor: 'pointer' }}
+              className={classNames({ 'table-primary': isSelected })}
+              onClick={() => setSelectedVisits(
+                isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ]
+              )}
+            >
+              <td className="text-center">
+                {isSelected && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
+              </td>
+              <td>
+                <Moment format="YYYY-MM-DD HH:mm">{visit.date}</Moment>
+              </td>
+              <td>{visit.country}</td>
+              <td>{visit.city}</td>
+              <td>{visit.browser}</td>
+              <td>{visit.os}</td>
+              <td>{visit.referer}</td>
+            </tr>
+          );
+        })}
       </tbody>
       {resultSet.total > PAGE_SIZE && (
         <tfoot>
