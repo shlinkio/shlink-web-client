@@ -2,11 +2,20 @@
 
 .search-field {
   position: relative;
+
+  &:focus-within {
+    z-index: 1;
+  }
 }
 
 .search-field__input.search-field__input {
   padding-left: 40px;
   padding-right: 40px;
+}
+
+.search-field__input--no-border.search-field__input--no-border {
+  border: none;
+  border-radius: 0;
 }
 
 .search-field__icon {

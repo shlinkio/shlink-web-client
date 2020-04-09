@@ -10,8 +10,24 @@ export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_V
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
 /* eslint-enable padding-line-between-statements */
 
+export const visitType = PropTypes.shape({
+  referer: PropTypes.string,
+  date: PropTypes.string,
+  userAgent: PropTypes.string,
+  visitLocations: PropTypes.shape({
+    countryCode: PropTypes.string,
+    countryName: PropTypes.string,
+    regionName: PropTypes.string,
+    cityName: PropTypes.string,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+    timezone: PropTypes.string,
+    isEmpty: PropTypes.bool,
+  }),
+});
+
 export const shortUrlVisitsType = PropTypes.shape({
-  visits: PropTypes.array,
+  visits: PropTypes.arrayOf(visitType),
   loading: PropTypes.bool,
   error: PropTypes.bool,
 });

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type } from 'ramda';
 import SortingDropdown from '../utils/SortingDropdown';
 import PaginationDropdown from '../utils/PaginationDropdown';
-import { rangeOf, roundTen } from '../utils/utils';
+import { rangeOf } from '../utils/utils';
+import { roundTen } from '../utils/helpers/numbers';
 import SimplePaginator from '../common/SimplePaginator';
 import GraphCard from './GraphCard';
 
@@ -14,6 +15,7 @@ const pickValueFromPair = ([ , value ]) => value;
 export default class SortableBarGraph extends React.Component {
   static propTypes = {
     stats: PropTypes.object.isRequired,
+    highlightedStats: PropTypes.object,
     title: PropTypes.string.isRequired,
     sortingItems: PropTypes.object.isRequired,
     extraHeaderContent: PropTypes.func,
@@ -72,7 +74,7 @@ export default class SortableBarGraph extends React.Component {
   }
 
   render() {
-    const { stats, sortingItems, title, extraHeaderContent, withPagination = true } = this.props;
+    const { stats, sortingItems, title, extraHeaderContent, highlightedStats, withPagination = true } = this.props;
     const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
     const activeCities = keys(currentPageStats);
     const computeTitle = () => (
@@ -106,6 +108,15 @@ export default class SortableBarGraph extends React.Component {
       </React.Fragment>
     );
 
-    return <GraphCard isBarChart title={computeTitle} stats={currentPageStats} footer={pagination} max={max} />;
+    return (
+      <GraphCard
+        isBarChart
+        title={computeTitle}
+        stats={currentPageStats}
+        footer={pagination}
+        max={max}
+        highlightedStats={highlightedStats}
+      />
+    );
   }
 }

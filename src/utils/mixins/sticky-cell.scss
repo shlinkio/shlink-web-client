@@ -1,0 +1,37 @@
+@import "../base";
+
+@mixin sticky-cell() {
+  z-index: 1;
+  border: none !important;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 0;
+    bottom: -1px;
+    right: -1px;
+    background: $mediumGrey;
+    z-index: -2;
+  }
+
+  &:first-child:before {
+    left: -1px;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 1px;
+    bottom: 0;
+    right: 0;
+    background: white;
+    z-index: -1;
+  }
+
+  &:first-child:after {
+    left: 0;
+  }
+}

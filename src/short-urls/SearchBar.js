@@ -36,12 +36,16 @@ const SearchBar = (colorGenerator, ForServerVersion) => {
 
         <ForServerVersion minVersion="1.21.0">
           <div className="mt-3">
-            <DateRangeRow
-              startDate={dateOrUndefined(shortUrlsListParams.startDate)}
-              endDate={dateOrUndefined(shortUrlsListParams.endDate)}
-              onStartDateChange={setDate('startDate')}
-              onEndDateChange={setDate('endDate')}
-            />
+            <div className="row">
+              <div className="col-lg-8 offset-lg-4 col-xl-6 offset-xl-6">
+                <DateRangeRow
+                  startDate={dateOrUndefined(shortUrlsListParams.startDate)}
+                  endDate={dateOrUndefined(shortUrlsListParams.endDate)}
+                  onStartDateChange={setDate('startDate')}
+                  onEndDateChange={setDate('endDate')}
+                />
+              </div>
+            </div>
           </div>
         </ForServerVersion>
 

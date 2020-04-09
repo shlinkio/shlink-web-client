@@ -31,19 +31,17 @@ describe('<ShortUrlVisits />', () => {
         shortUrlVisits={shortUrlVisits}
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}
+        matchMedia={() => ({ matches: false })}
       />
     );
 
     return wrapper;
   };
 
-  afterEach(() => {
-    getShortUrlVisitsMock.mockReset();
-    wrapper && wrapper.unmount();
-  });
+  afterEach(() => wrapper && wrapper.unmount());
 
   it('renders a preloader when visits are loading', () => {
-    const wrapper = createComponent({ loading: true });
+    const wrapper = createComponent({ loading: true, visits: [] });
     const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
@@ -51,7 +49,7 @@ describe('<ShortUrlVisits />', () => {
   });
 
   it('renders a warning when loading large amounts of visits', () => {
-    const wrapper = createComponent({ loading: true, loadingLarge: true });
+    const wrapper = createComponent({ loading: true, loadingLarge: true, visits: [] });
     const loadingMessage = wrapper.find(Message);
 
     expect(loadingMessage).toHaveLength(1);
@@ -59,7 +57,7 @@ describe('<ShortUrlVisits />', () => {
   });
 
   it('renders an error message when visits could not be loaded', () => {
-    const wrapper = createComponent({ loading: false, error: true });
+    const wrapper = createComponent({ loading: false, error: true, visits: [] });
     const errorMessage = wrapper.find(Card);
 
     expect(errorMessage).toHaveLength(1);
@@ -90,9 +88,8 @@ describe('<ShortUrlVisits />', () => {
     dateRange.simulate('endDateChange', '2016-01-02T00:00:00+01:00');
     dateRange.simulate('endDateChange', '2016-01-03T00:00:00+01:00');
 
-    expect(getShortUrlVisitsMock).toHaveBeenCalledTimes(4);
-    expect(wrapper.state('startDate')).toEqual('2016-01-01T00:00:00+01:00');
-    expect(wrapper.state('endDate')).toEqual('2016-01-03T00:00:00+01:00');
+    expect(wrapper.find(DateRangeRow).prop('startDate')).toEqual('2016-01-01T00:00:00+01:00');
+    expect(wrapper.find(DateRangeRow).prop('endDate')).toEqual('2016-01-03T00:00:00+01:00');
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
