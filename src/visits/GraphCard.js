@@ -54,7 +54,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats) => {
     }
 
     return acc;
-  }, stats));
+  }, { ...stats }));
   const highlightedData = highlightedStats && values({ ...zipObj(labels, labels.map(() => 0)), ...highlightedStats });
 
   const options = {

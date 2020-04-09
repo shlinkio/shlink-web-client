@@ -21,12 +21,14 @@ describe('<GraphCard />', () => {
     expect(doughnut).toHaveLength(1);
     expect(horizontal).toHaveLength(0);
 
-    const { labels, datasets: [{ title, data, backgroundColor, borderColor }] } = doughnut.prop('data');
+    const { labels, datasets } = doughnut.prop('data');
+    const [{ title, data, backgroundColor, borderColor }] = datasets;
     const { legend, scales } = doughnut.prop('options');
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
     expect(data).toEqual(values(stats));
+    expect(datasets).toHaveLength(1);
     expect(backgroundColor).toEqual([
       '#97BBCD',
       '#DCDCDC',
@@ -64,5 +66,22 @@ describe('<GraphCard />', () => {
       ],
       yAxes: [{ stacked: true }],
     });
+  });
+
+  it.each([
+    [{ foo: 23 }, [ 100, 456 ], [ 23, 0 ]],
+    [{ foo: 50 }, [ 73, 456 ], [ 50, 0 ]],
+    [{ bar: 45 }, [ 123, 411 ], [ 0, 45 ]],
+    [{ bar: 20, foo: 13 }, [ 110, 436 ], [ 13, 20 ]],
+    [ undefined, [ 123, 456 ], undefined ],
+  ])('splits highlighted data from regular data', (highlightedStats, expectedData, expectedHighlightedData) => {
+    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
+    const horizontal = wrapper.find(HorizontalBar);
+
+    const { datasets: [{ data }, highlightedData ] } = horizontal.prop('data');
+
+    expect(data).toEqual(expectedData);
+    expectedHighlightedData && expect(highlightedData.data).toEqual(expectedHighlightedData);
+    !expectedHighlightedData && expect(highlightedData).toBeUndefined();
   });
 });
