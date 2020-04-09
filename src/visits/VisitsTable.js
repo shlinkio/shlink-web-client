@@ -161,7 +161,7 @@ const VisitsTable = ({ visits, onVisitSelected, isSticky = false, matchMedia = w
           </tr>
         ))}
       </tbody>
-      {resultSet.total >= PAGE_SIZE && (
+      {resultSet.total > PAGE_SIZE && (
         <tfoot>
           <tr>
             <td colSpan={7} className={classNames('visits-table__footer-cell', { 'visits-table__sticky': isSticky })}>
