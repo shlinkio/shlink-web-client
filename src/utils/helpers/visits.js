@@ -1,26 +1,27 @@
+import bowser from 'bowser';
 import { hasValue } from '../utils';
 
 const DEFAULT = 'Others';
+const BROWSERS_WHITELIST = [
+  'Android Browser',
+  'Chrome',
+  'Chromium',
+  'Firefox',
+  'Internet Explorer',
+  'Microsoft Edge',
+  'Opera',
+  'Safari',
+  'Samsung Internet for Android',
+  'Vivaldi',
+  'WeChat',
+];
 
 export const osFromUserAgent = (userAgent) => {
   if (!hasValue(userAgent)) {
     return DEFAULT;
   }
 
-  const lowerUserAgent = userAgent.toLowerCase();
-
-  switch (true) {
-    case lowerUserAgent.includes('linux'):
-      return 'Linux';
-    case lowerUserAgent.includes('windows'):
-      return 'Windows';
-    case lowerUserAgent.includes('mac'):
-      return 'MacOS';
-    case lowerUserAgent.includes('mobi'):
-      return 'Mobile';
-    default:
-      return DEFAULT;
-  }
+  return bowser.parse(userAgent).os.name || DEFAULT;
 };
 
 export const browserFromUserAgent = (userAgent) => {
@@ -28,24 +29,9 @@ export const browserFromUserAgent = (userAgent) => {
     return DEFAULT;
   }
 
-  const lowerUserAgent = userAgent.toLowerCase();
+  const { name: browser } = bowser.parse(userAgent).browser;
 
-  switch (true) {
-    case lowerUserAgent.includes('opera') || lowerUserAgent.includes('opr'):
-      return 'Opera';
-    case lowerUserAgent.includes('firefox'):
-      return 'Firefox';
-    case lowerUserAgent.includes('chrome'):
-      return 'Chrome';
-    case lowerUserAgent.includes('safari'):
-      return 'Safari';
-    case lowerUserAgent.includes('edg'):
-      return 'Microsoft Edge';
-    case lowerUserAgent.includes('msie'):
-      return 'Internet Explorer';
-    default:
-      return DEFAULT;
-  }
+  return browser && BROWSERS_WHITELIST.includes(browser) ? browser : DEFAULT;
 };
 
 export const extractDomain = (url) => {
