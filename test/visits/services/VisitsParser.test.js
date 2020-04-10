@@ -56,7 +56,7 @@ describe('VisitsParser', () => {
       expect(os).toEqual({
         Linux: 3,
         Windows: 1,
-        MacOS: 1,
+        macOS: 1,
       });
     });
 
@@ -137,7 +137,7 @@ describe('VisitsParser', () => {
         },
         {
           browser: 'Firefox',
-          os: 'MacOS',
+          os: 'macOS',
           referer: 'google.com',
           country: 'United States',
           city: 'New York',

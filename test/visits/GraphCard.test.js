@@ -31,12 +31,16 @@ describe('<GraphCard />', () => {
     expect(datasets).toHaveLength(1);
     expect(backgroundColor).toEqual([
       '#97BBCD',
-      '#DCDCDC',
       '#F7464A',
       '#46BFBD',
       '#FDB45C',
       '#949FB1',
-      '#4D5360',
+      '#57A773',
+      '#414066',
+      '#08B2E3',
+      '#B6C454',
+      '#DCDCDC',
+      '#463730',
     ]);
     expect(borderColor).toEqual('white');
     expect(legend).toEqual({ position: 'right' });

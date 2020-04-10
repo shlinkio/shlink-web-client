@@ -24,12 +24,16 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
       data,
       backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
         '#97BBCD',
-        '#DCDCDC',
         '#F7464A',
         '#46BFBD',
         '#FDB45C',
         '#949FB1',
-        '#4D5360',
+        '#57A773',
+        '#414066',
+        '#08B2E3',
+        '#B6C454',
+        '#DCDCDC',
+        '#463730',
       ],
       borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
       borderWidth: 2,
@@ -46,6 +50,14 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
 });
 
 const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
+
+const determineHeight = (isBarChart, labels) => {
+  if (!isBarChart && labels.length > 8) {
+    return 200;
+  }
+
+  return isBarChart && labels.length > 20 ? labels.length * 8 : null;
+};
 
 const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) => {
   const hasHighlightedStats = highlightedStats && Object.keys(highlightedStats).length > 0;
@@ -84,7 +96,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
     }),
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData);
-  const height = isBarChart && labels.length > 20 ? labels.length * 8 : null;
+  const height = determineHeight(isBarChart, labels);
 
   // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
   return (

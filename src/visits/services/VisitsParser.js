@@ -1,5 +1,5 @@
 import { isNil, map } from 'ramda';
-import { browserFromUserAgent, extractDomain, osFromUserAgent } from '../../utils/helpers/visits';
+import { extractDomain, parseUserAgent } from '../../utils/helpers/visits';
 import { hasValue } from '../../utils/utils';
 
 const visitHasProperty = (visit, propertyName) => !isNil(visit) && hasValue(visit[propertyName]);
@@ -59,13 +59,17 @@ export const processStatsFromVisits = (normalizedVisits) =>
     { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
   );
 
-export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
-  date,
-  browser: browserFromUserAgent(userAgent),
-  os: osFromUserAgent(userAgent),
-  referer: extractDomain(referer),
-  country: (visitLocation && visitLocation.countryName) || 'Unknown',
-  city: (visitLocation && visitLocation.cityName) || 'Unknown',
-  latitude: visitLocation && visitLocation.latitude,
-  longitude: visitLocation && visitLocation.longitude,
-}));
+export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => {
+  const { browser, os } = parseUserAgent(userAgent);
+
+  return {
+    date,
+    browser,
+    os,
+    referer: extractDomain(referer),
+    country: (visitLocation && visitLocation.countryName) || 'Unknown',
+    city: (visitLocation && visitLocation.cityName) || 'Unknown',
+    latitude: visitLocation && visitLocation.latitude,
+    longitude: visitLocation && visitLocation.longitude,
+  };
+});

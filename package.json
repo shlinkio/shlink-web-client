@@ -33,6 +33,7 @@
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "bottlejs": "^1.7.2",
+    "bowser": "^2.9.0",
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
     "compare-versions": "^3.5.1",
