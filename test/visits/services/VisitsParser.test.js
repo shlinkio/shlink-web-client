@@ -8,8 +8,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
-        latitude: '123.45',
-        longitude: '-543.21',
+        latitude: 123.45,
+        longitude: -543.21,
       },
     },
     {
@@ -18,8 +18,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'United States',
         cityName: 'New York',
-        latitude: '1029',
-        longitude: '6758',
+        latitude: 1029,
+        longitude: 6758,
       },
     },
     {
@@ -34,8 +34,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
-        latitude: '123.45',
-        longitude: '-543.21',
+        latitude: 123.45,
+        longitude: -543.21,
       },
     },
     {
@@ -47,7 +47,7 @@ describe('VisitsParser', () => {
     let stats;
 
     beforeAll(() => {
-      stats = processStatsFromVisits(visits);
+      stats = processStatsFromVisits(normalizeVisits(visits));
     });
 
     it('properly parses OS stats', () => {
@@ -132,6 +132,8 @@ describe('VisitsParser', () => {
           country: 'Spain',
           city: 'Zaragoza',
           date: undefined,
+          latitude: 123.45,
+          longitude: -543.21,
         },
         {
           browser: 'Firefox',
@@ -140,6 +142,8 @@ describe('VisitsParser', () => {
           country: 'United States',
           city: 'New York',
           date: undefined,
+          latitude: 1029,
+          longitude: 6758,
         },
         {
           browser: 'Chrome',
@@ -148,6 +152,8 @@ describe('VisitsParser', () => {
           country: 'Spain',
           city: 'Unknown',
           date: undefined,
+          latitude: undefined,
+          longitude: undefined,
         },
         {
           browser: 'Chrome',
@@ -156,6 +162,8 @@ describe('VisitsParser', () => {
           country: 'Spain',
           city: 'Zaragoza',
           date: undefined,
+          latitude: 123.45,
+          longitude: -543.21,
         },
         {
           browser: 'Opera',
@@ -164,6 +172,8 @@ describe('VisitsParser', () => {
           country: 'Unknown',
           city: 'Unknown',
           date: undefined,
+          latitude: undefined,
+          longitude: undefined,
         },
       ]);
     });

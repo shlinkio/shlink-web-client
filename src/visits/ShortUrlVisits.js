@@ -87,8 +87,8 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     const showTableControls = !loading && visits.length > 0;
     const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
     const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
-      () => processStatsFromVisits(visits),
-      [ visits ]
+      () => processStatsFromVisits(normalizedVisits),
+      [ normalizedVisits ]
     );
     const mapLocations = values(citiesForMap);
 
