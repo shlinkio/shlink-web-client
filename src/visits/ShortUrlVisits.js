@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Button, Card, Collapse } from 'reactstrap';
 import PropTypes from 'prop-types';
 import qs from 'qs';
+import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown as chevronDown } from '@fortawesome/free-solid-svg-icons';
 import DateRangeRow from '../utils/DateRangeRow';
@@ -61,6 +62,10 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     const [ highlightedVisits, setHighlightedVisits ] = useState([]);
     const [ isMobileDevice, setIsMobileDevice ] = useState(false);
     const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
+    const setSelectedVisits = (selectedVisits) => {
+      selectedBar = undefined;
+      setHighlightedVisits(selectedVisits);
+    };
     const highlightVisitsForProp = (prop) => (value) => {
       const newSelectedBar = `${prop}_${value}`;
 
@@ -182,7 +187,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
 
         <section className="mt-4">
           <div className="row flex-md-row-reverse">
-            <div className="col-lg-8 col-xl-6">
+            <div className="col-lg-7 col-xl-6">
               <DateRangeRow
                 disabled={loading}
                 startDate={startDate}
@@ -191,12 +196,26 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
                 onEndDateChange={setEndDate}
               />
             </div>
-            <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
+            <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
               {showTableControls && (
-                <Button outline block={isMobileDevice} onClick={toggleTable}>
-                  {showTable ? 'Hide' : 'Show'} table
-                  <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} className="ml-2" />
-                </Button>
+                <span className={classNames({ 'row flex-row-reverse': isMobileDevice })}>
+                  <span className={classNames({ 'col-6': isMobileDevice })}>
+                    <Button outline color="primary" block={isMobileDevice} onClick={toggleTable}>
+                      {showTable ? 'Hide' : 'Show'} table
+                      <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} className="ml-2" />
+                    </Button>
+                  </span>
+                  <span className={classNames({ 'col-6': isMobileDevice, 'ml-2': !isMobileDevice })}>
+                    <Button
+                      outline
+                      disabled={highlightedVisits.length === 0}
+                      block={isMobileDevice}
+                      onClick={() => setSelectedVisits([])}
+                    >
+                      Reset selection
+                    </Button>
+                  </span>
+                </span>
               )}
             </div>
           </div>
@@ -212,10 +231,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
             <VisitsTable
               visits={normalizedVisits}
               selectedVisits={highlightedVisits}
-              setSelectedVisits={(selectedVisits) => {
-                selectedBar = undefined;
-                setHighlightedVisits(selectedVisits);
-              }}
+              setSelectedVisits={setSelectedVisits}
               isSticky={tableIsSticky}
             />
           </Collapse>
