@@ -20,7 +20,7 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
   datasets: [
     {
       title,
-      label: '',
+      label: highlightedData && 'Non-selected',
       data,
       backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
         '#97BBCD',
