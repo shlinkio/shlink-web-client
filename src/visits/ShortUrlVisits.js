@@ -198,7 +198,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
             </div>
             <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
               {showTableControls && (
-                <span className={classNames({ 'row flex-row-reverse': isMobileDevice })}>
+                <span className={classNames({ row: isMobileDevice })}>
                   <span className={classNames({ 'col-6': isMobileDevice })}>
                     <Button outline color="primary" block={isMobileDevice} onClick={toggleTable}>
                       {showTable ? 'Hide' : 'Show'} table

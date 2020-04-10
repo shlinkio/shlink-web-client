@@ -88,7 +88,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
     }),
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData);
-  const height = isBarChart && labels.length > 20 ? labels.length * 8 : null;
+  const height = isBarChart && labels.length > 20 ? labels.length * 8 : 200;
 
   // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
   return (
