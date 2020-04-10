@@ -41,6 +41,7 @@ const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.
   return acc;
 }, {});
 const format = formatDate();
+let selectedBar;
 
 const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBtn) => {
   const ShortUrlVisitsComp = ({
@@ -60,9 +61,17 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     const [ highlightedVisits, setHighlightedVisits ] = useState([]);
     const [ isMobileDevice, setIsMobileDevice ] = useState(false);
     const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
-    const highlightVisitsForProp = (prop) => (value) => setHighlightedVisits(
-      highlightedVisits.length === 0 ? normalizedVisits.filter(propEq(prop, value)) : []
-    );
+    const highlightVisitsForProp = (prop) => (value) => {
+      const newSelectedBar = `${prop}_${value}`;
+
+      if (selectedBar === newSelectedBar) {
+        setHighlightedVisits([]);
+        selectedBar = undefined;
+      } else {
+        setHighlightedVisits(normalizedVisits.filter(propEq(prop, value)));
+        selectedBar = newSelectedBar;
+      }
+    };
 
     const { params } = match;
     const { shortCode } = params;
@@ -203,7 +212,10 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
             <VisitsTable
               visits={normalizedVisits}
               selectedVisits={highlightedVisits}
-              setSelectedVisits={setHighlightedVisits}
+              setSelectedVisits={(selectedVisits) => {
+                selectedBar = undefined;
+                setHighlightedVisits(selectedVisits);
+              }}
               isSticky={tableIsSticky}
             />
           </Collapse>
