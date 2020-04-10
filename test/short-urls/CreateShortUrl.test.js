@@ -11,7 +11,7 @@ describe('<CreateShortUrl />', () => {
   const shortUrlCreationResult = {
     loading: false,
   };
-  const createShortUrl = jest.fn();
+  const createShortUrl = jest.fn(() => Promise.resolve());
 
   beforeEach(() => {
     const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '', () => '');
@@ -22,7 +22,7 @@ describe('<CreateShortUrl />', () => {
   });
   afterEach(() => {
     wrapper.unmount();
-    createShortUrl.mockReset();
+    createShortUrl.mockClear();
   });
 
   it('saves short URL with data set in form controls', () => {
