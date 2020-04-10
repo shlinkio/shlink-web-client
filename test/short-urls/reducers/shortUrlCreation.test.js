@@ -72,6 +72,8 @@ describe('shortUrlCreationReducer', () => {
       const apiClientMock = createApiClientMock(Promise.reject(error));
       const dispatchable = createShortUrl(() => apiClientMock)({});
 
+      expect.assertions(5);
+
       try {
         await dispatchable(dispatch, getState);
       } catch (e) {

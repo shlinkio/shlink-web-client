@@ -23,22 +23,36 @@ const propTypes = {
   selectedServer: serverType,
 };
 
+const initialState = {
+  longUrl: '',
+  tags: [],
+  customSlug: '',
+  shortCodeLength: '',
+  domain: '',
+  validSince: undefined,
+  validUntil: undefined,
+  maxVisits: '',
+  findIfExists: false,
+};
+
 const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) => {
   const CreateShortUrlComp = ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }) => {
-    const [ shortUrlCreation, setShortUrlCreation ] = useState({
-      longUrl: '',
-      tags: [],
-      customSlug: undefined,
-      shortCodeLength: undefined,
-      domain: undefined,
-      validSince: undefined,
-      validUntil: undefined,
-      maxVisits: undefined,
-      findIfExists: false,
-    });
+    const [ shortUrlCreation, setShortUrlCreation ] = useState(initialState);
     const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle();
 
     const changeTags = (tags) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
+    const reset = () => setShortUrlCreation(initialState);
+    const save = (e) => {
+      e.preventDefault();
+
+      const shortUrlData = {
+        ...shortUrlCreation,
+        validSince: formatDate(shortUrlCreation.validSince),
+        validUntil: formatDate(shortUrlCreation.validUntil),
+      };
+
+      createShortUrl(shortUrlData).then(reset).catch(() => {});
+    };
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
       <FormGroup>
         <Input
@@ -62,14 +76,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) =>
         />
       </div>
     );
-    const save = (e) => {
-      e.preventDefault();
-      createShortUrl({
-        ...shortUrlCreation,
-        validSince: formatDate(shortUrlCreation.validSince),
-        validUntil: formatDate(shortUrlCreation.validUntil),
-      });
-    };
+
     const currentServerVersion = selectedServer && selectedServer.version;
     const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
     const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
@@ -147,9 +154,9 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) =>
           </button>
           <button
             className="btn btn-outline-primary float-right"
-            disabled={shortUrlCreationResult.loading || isEmpty(shortUrlCreation.longUrl)}
+            disabled={shortUrlCreationResult.saving || isEmpty(shortUrlCreation.longUrl)}
           >
-            {shortUrlCreationResult.loading ? 'Creating...' : 'Create'}
+            {shortUrlCreationResult.saving ? 'Creating...' : 'Create'}
           </button>
         </div>
 

@@ -39,6 +39,8 @@ export const createShortUrl = (buildShlinkApiClient) => (data) => async (dispatc
     dispatch({ type: CREATE_SHORT_URL, result });
   } catch (e) {
     dispatch({ type: CREATE_SHORT_URL_ERROR });
+
+    throw e;
   }
 };
 
