@@ -40,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Fixed
 
 * [#243](https://github.com/shlinkio/shlink-web-client/issues/243) Fixed loading state and resetting on short URL creation form.
+* [#239](https://github.com/shlinkio/shlink-web-client/issues/239) Fixed how user agents are parsed, reducing false results.
 
 
 ## 2.3.1 - 2020-02-08
