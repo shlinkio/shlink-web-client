@@ -16,22 +16,14 @@ const BROWSERS_WHITELIST = [
   'WeChat',
 ];
 
-export const osFromUserAgent = (userAgent) => {
+export const parseUserAgent = (userAgent) => {
   if (!hasValue(userAgent)) {
-    return DEFAULT;
+    return { browser: DEFAULT, os: DEFAULT };
   }
 
-  return bowser.parse(userAgent).os.name || DEFAULT;
-};
+  const { browser: { name: browser }, os: { name: os } } = bowser.parse(userAgent);
 
-export const browserFromUserAgent = (userAgent) => {
-  if (!hasValue(userAgent)) {
-    return DEFAULT;
-  }
-
-  const { name: browser } = bowser.parse(userAgent).browser;
-
-  return browser && BROWSERS_WHITELIST.includes(browser) ? browser : DEFAULT;
+  return { os: os || DEFAULT, browser: browser && BROWSERS_WHITELIST.includes(browser) ? browser : DEFAULT };
 };
 
 export const extractDomain = (url) => {
