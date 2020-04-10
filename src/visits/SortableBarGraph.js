@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type } from 'ramda';
+import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import SortingDropdown from '../utils/SortingDropdown';
 import PaginationDropdown from '../utils/PaginationDropdown';
 import { rangeOf } from '../utils/utils';
@@ -10,6 +10,7 @@ import GraphCard from './GraphCard';
 
 const { max } = Math;
 const toLowerIfString = (value) => type(value) === 'String' ? toLower(value) : value;
+const pickKeyFromPair = ([ key ]) => key;
 const pickValueFromPair = ([ , value ]) => value;
 
 export default class SortableBarGraph extends React.Component {
@@ -30,7 +31,7 @@ export default class SortableBarGraph extends React.Component {
     itemsPerPage: Infinity,
   };
 
-  determineStats(stats, sortingItems) {
+  getSortedPairsForStats(stats, sortingItems) {
     const pairs = toPairs(stats);
     const sortedPairs = !this.state.orderField ? pairs : sortBy(
       pipe(
@@ -39,18 +40,33 @@ export default class SortableBarGraph extends React.Component {
       ),
       pairs
     );
-    const directionalPairs = !this.state.orderDir || this.state.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs);
 
-    if (directionalPairs.length <= this.state.itemsPerPage) {
-      return { currentPageStats: fromPairs(directionalPairs) };
+    return !this.state.orderDir || this.state.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs);
+  }
+
+  determineStats(stats, highlightedStats, sortingItems) {
+    const sortedPairs = this.getSortedPairsForStats(stats, sortingItems);
+    const sortedKeys = sortedPairs.map(pickKeyFromPair);
+    // The highlighted stats have to be ordered based on the regular stats, not on its own values
+    const sortedHighlightedPairs = highlightedStats && toPairs(
+      { ...zipObj(sortedKeys, sortedKeys.map(() => 0)), ...highlightedStats }
+    );
+
+    if (sortedPairs.length <= this.state.itemsPerPage) {
+      return {
+        currentPageStats: fromPairs(sortedPairs),
+        currentPageHighlightedStats: sortedHighlightedPairs && fromPairs(sortedHighlightedPairs),
+      };
     }
 
-    const pages = splitEvery(this.state.itemsPerPage, directionalPairs);
+    const pages = splitEvery(this.state.itemsPerPage, sortedPairs);
+    const highlightedPages = sortedHighlightedPairs && splitEvery(this.state.itemsPerPage, sortedHighlightedPairs);
 
     return {
       currentPageStats: fromPairs(this.determineCurrentPagePairs(pages)),
+      currentPageHighlightedStats: highlightedPages && fromPairs(this.determineCurrentPagePairs(highlightedPages)),
       pagination: this.renderPagination(pages.length),
-      max: roundTen(max(...directionalPairs.map(pickValueFromPair))),
+      max: roundTen(max(...sortedPairs.map(pickValueFromPair))),
     };
   }
 
@@ -75,8 +91,20 @@ export default class SortableBarGraph extends React.Component {
   }
 
   render() {
-    const { stats, sortingItems, title, extraHeaderContent, withPagination = true, ...rest } = this.props;
-    const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
+    const {
+      stats,
+      highlightedStats,
+      sortingItems,
+      title,
+      extraHeaderContent,
+      withPagination = true,
+      ...rest
+    } = this.props;
+    const { currentPageStats, currentPageHighlightedStats, pagination, max } = this.determineStats(
+      stats,
+      highlightedStats && keys(highlightedStats).length > 0 ? highlightedStats : undefined,
+      sortingItems
+    );
     const activeCities = keys(currentPageStats);
     const computeTitle = () => (
       <React.Fragment>
@@ -114,6 +142,7 @@ export default class SortableBarGraph extends React.Component {
         isBarChart
         title={computeTitle}
         stats={currentPageStats}
+        highlightedStats={currentPageHighlightedStats}
         footer={pagination}
         max={max}
         {...rest}
