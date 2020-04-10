@@ -51,6 +51,14 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
 
 const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
 
+const determineHeight = (isBarChart, labels) => {
+  if (!isBarChart && labels.length > 8) {
+    return 200;
+  }
+
+  return isBarChart && labels.length > 20 ? labels.length * 8 : null;
+};
+
 const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) => {
   const hasHighlightedStats = highlightedStats && Object.keys(highlightedStats).length > 0;
   const Component = isBarChart ? HorizontalBar : Doughnut;
@@ -88,7 +96,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
     }),
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData);
-  const height = isBarChart && labels.length > 20 ? labels.length * 8 : 200;
+  const height = determineHeight(isBarChart, labels);
 
   // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
   return (
