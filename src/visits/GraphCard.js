@@ -79,6 +79,9 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
       // Do not show tooltip on items with empty label when in a bar chart
       filter: ({ yLabel }) => !isBarChart || yLabel !== '',
     },
+    onHover: isBarChart && (({ target }, chartElement) => {
+      target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+    }),
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData);
   const height = isBarChart && labels.length > 20 ? labels.length * 8 : null;
