@@ -12,6 +12,7 @@ const propTypes = {
   isClearable: PropTypes.bool,
   selected: PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]),
   ref: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 const DateInput = (props) => {

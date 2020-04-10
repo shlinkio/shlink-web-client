@@ -9,9 +9,10 @@ const propTypes = {
   endDate: dateType,
   onStartDateChange: PropTypes.func.isRequired,
   onEndDateChange: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
 };
 
-const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }) => (
+const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange, disabled = false }) => (
   <div className="row">
     <div className="col-md-6">
       <DateInput
@@ -19,6 +20,7 @@ const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }
         placeholderText="Since"
         isClearable
         maxDate={endDate}
+        disabled={disabled}
         onChange={onStartDateChange}
       />
     </div>
@@ -29,6 +31,7 @@ const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange }
         placeholderText="Until"
         isClearable
         minDate={startDate}
+        disabled={disabled}
         onChange={onEndDateChange}
       />
     </div>

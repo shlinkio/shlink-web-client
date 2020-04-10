@@ -175,6 +175,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
           <div className="row flex-md-row-reverse">
             <div className="col-lg-8 col-xl-6">
               <DateRangeRow
+                disabled={loading}
                 startDate={startDate}
                 endDate={endDate}
                 onStartDateChange={setStartDate}
@@ -184,8 +185,8 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
             <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
               {showTableControls && (
                 <Button outline block={isMobileDevice} onClick={toggleTable}>
-                  {showTable ? 'Hide' : 'Show'} table{' '}
-                  <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} />
+                  {showTable ? 'Hide' : 'Show'} table
+                  <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} className="ml-2" />
                 </Button>
               )}
             </div>
