@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { isPageDisabled, keyForPage, progressivePagination } from '../utils/helpers/pagination';
+import './Paginator.scss';
 
 const propTypes = {
   serverId: PropTypes.string.isRequired,
@@ -36,7 +37,7 @@ const Paginator = ({ paginator = {}, serverId }) => {
     ));
 
   return (
-    <Pagination listClassName="flex-wrap justify-content-center">
+    <Pagination className="short-urls-paginator" listClassName="flex-wrap justify-content-center mb-0">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink
           previous

@@ -7,14 +7,25 @@ import SearchField from '../../src/utils/SearchField';
 
 describe('<VisitsTable />', () => {
   const matchMedia = () => ({ matches: false });
+  const setSelectedVisits = jest.fn();
   let wrapper;
-  const createWrapper = (visits) => {
-    wrapper = shallow(<VisitsTable visits={visits} matchMedia={matchMedia} />);
+  const createWrapper = (visits, selectedVisits = []) => {
+    wrapper = shallow(
+      <VisitsTable
+        visits={visits}
+        selectedVisits={selectedVisits}
+        setSelectedVisits={setSelectedVisits}
+        matchMedia={matchMedia}
+      />
+    );
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => {
+    jest.resetAllMocks();
+    wrapper && wrapper.unmount();
+  });
 
   it('renders columns as expected', () => {
     const wrapper = createWrapper([]);
@@ -44,7 +55,7 @@ describe('<VisitsTable />', () => {
     [ 60, 3 ],
     [ 115, 6 ],
   ])('renders the expected amount of pages', (visitsCount, expectedAmountOfPages) => {
-    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ userAgent: '', date: '', referer: '' })));
+    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ browser: '', date: '', referer: '' })));
     const tr = wrapper.find('tbody').find('tr');
     const paginator = wrapper.find(SimplePaginator);
 
@@ -55,7 +66,7 @@ describe('<VisitsTable />', () => {
   it.each(
     rangeOf(20, (value) => [ value ])
   )('does not render footer when there is only one page to render', (visitsCount) => {
-    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ userAgent: '', date: '', referer: '' })));
+    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ browser: '', date: '', referer: '' })));
     const tr = wrapper.find('tbody').find('tr');
     const paginator = wrapper.find(SimplePaginator);
 
@@ -64,39 +75,34 @@ describe('<VisitsTable />', () => {
   });
 
   it('selected rows are highlighted', () => {
-    const wrapper = createWrapper(rangeOf(10, () => ({ userAgent: '', date: '', referer: '' })));
+    const visits = rangeOf(10, () => ({ browser: '', date: '', referer: '' }));
+    const wrapper = createWrapper(
+      visits,
+      [ visits[1], visits[2] ],
+    );
 
-    expect(wrapper.find('.text-primary')).toHaveLength(0);
-    expect(wrapper.find('.table-primary')).toHaveLength(0);
-    wrapper.find('tr').at(5).simulate('click');
-    expect(wrapper.find('.text-primary')).toHaveLength(2);
-    expect(wrapper.find('.table-primary')).toHaveLength(1);
-    wrapper.find('tr').at(3).simulate('click');
     expect(wrapper.find('.text-primary')).toHaveLength(3);
     expect(wrapper.find('.table-primary')).toHaveLength(2);
+
+    // Select one extra
+    wrapper.find('tr').at(5).simulate('click');
+    expect(setSelectedVisits).toHaveBeenCalledWith([ visits[1], visits[2], visits[4] ]);
+
+    // Deselect one
     wrapper.find('tr').at(3).simulate('click');
-    expect(wrapper.find('.text-primary')).toHaveLength(2);
-    expect(wrapper.find('.table-primary')).toHaveLength(1);
+    expect(setSelectedVisits).toHaveBeenCalledWith([ visits[1] ]);
 
     // Select all
     wrapper.find('thead').find('th').at(0).simulate('click');
-    expect(wrapper.find('.text-primary')).toHaveLength(11);
-    expect(wrapper.find('.table-primary')).toHaveLength(10);
-
-    // Select none
-    wrapper.find('thead').find('th').at(0).simulate('click');
-    expect(wrapper.find('.text-primary')).toHaveLength(0);
-    expect(wrapper.find('.table-primary')).toHaveLength(0);
+    expect(setSelectedVisits).toHaveBeenCalledWith(visits);
   });
 
   it('orders visits when column is clicked', () => {
     const wrapper = createWrapper(rangeOf(9, (index) => ({
-      userAgent: '',
+      browser: '',
       date: `${9 - index}`,
       referer: `${index}`,
-      visitLocation: {
-        countryName: `Country_${index}`,
-      },
+      country: `Country_${index}`,
     })));
 
     expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_1');
@@ -112,8 +118,8 @@ describe('<VisitsTable />', () => {
 
   it('filters list when writing in search box', () => {
     const wrapper = createWrapper([
-      ...rangeOf(7, () => ({ userAgent: 'aaa', date: 'aaa', referer: 'aaa' })),
-      ...rangeOf(2, () => ({ userAgent: 'bbb', date: 'bbb', referer: 'bbb' })),
+      ...rangeOf(7, () => ({ browser: 'aaa', date: 'aaa', referer: 'aaa' })),
+      ...rangeOf(2, () => ({ browser: 'bbb', date: 'bbb', referer: 'bbb' })),
     ]);
     const searchField = wrapper.find(SearchField);
 

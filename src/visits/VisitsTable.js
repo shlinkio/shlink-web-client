@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
-import { map, min, splitEvery } from 'ramda';
+import { min, splitEvery } from 'ramda';
 import {
   faCaretDown as caretDownIcon,
   faCaretUp as caretUpIcon,
@@ -11,15 +11,18 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
-import { browserFromUserAgent, extractDomain, osFromUserAgent } from '../utils/helpers/visits';
 import { determineOrderDir } from '../utils/utils';
 import { prettify } from '../utils/helpers/numbers';
-import { visitType } from './reducers/shortUrlVisits';
 import './VisitsTable.scss';
 
+const NormalizedVisitType = PropTypes.shape({
+
+});
+
 const propTypes = {
-  visits: PropTypes.arrayOf(visitType).isRequired,
-  onVisitsSelected: PropTypes.func,
+  visits: PropTypes.arrayOf(NormalizedVisitType).isRequired,
+  selectedVisits: PropTypes.arrayOf(NormalizedVisitType),
+  setSelectedVisits: PropTypes.func.isRequired,
   isSticky: PropTypes.bool,
   matchMedia: PropTypes.func,
 };
@@ -35,34 +38,30 @@ const sortVisits = ({ field, dir }, visits) => visits.sort((a, b) => {
   return a[field] > b[field] ? greaterThan : smallerThan;
 });
 const calculateVisits = (allVisits, searchTerm, order) => {
-  const filteredVisits = searchTerm ? searchVisits(searchTerm, allVisits) : allVisits;
+  const filteredVisits = searchTerm ? searchVisits(searchTerm, allVisits) : [ ...allVisits ];
   const sortedVisits = order.dir ? sortVisits(order, filteredVisits) : filteredVisits;
   const total = sortedVisits.length;
   const visitsGroups = splitEvery(PAGE_SIZE, sortedVisits);
 
   return { visitsGroups, total };
 };
-const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
-  date,
-  browser: browserFromUserAgent(userAgent),
-  os: osFromUserAgent(userAgent),
-  referer: extractDomain(referer),
-  country: (visitLocation && visitLocation.countryName) || 'Unknown',
-  city: (visitLocation && visitLocation.cityName) || 'Unknown',
-}));
 
-const VisitsTable = ({ visits, onVisitsSelected, isSticky = false, matchMedia = window.matchMedia }) => {
-  const allVisits = normalizeVisits(visits);
+const VisitsTable = ({
+  visits,
+  selectedVisits = [],
+  setSelectedVisits,
+  isSticky = false,
+  matchMedia = window.matchMedia,
+}) => {
   const headerCellsClass = classNames('visits-table__header-cell', {
     'visits-table__sticky': isSticky,
   });
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
-  const [ selectedVisits, setSelectedVisits ] = useState([]);
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
   const [ searchTerm, setSearchTerm ] = useState(undefined);
   const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
-  const resultSet = useMemo(() => calculateVisits(allVisits, searchTerm, order), [ searchTerm, order ]);
+  const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
 
   const [ page, setPage ] = useState(1);
   const end = page * PAGE_SIZE;
@@ -76,9 +75,6 @@ const VisitsTable = ({ visits, onVisitsSelected, isSticky = false, matchMedia = 
     />
   );
 
-  useEffect(() => {
-    onVisitsSelected && onVisitsSelected(selectedVisits);
-  }, [ selectedVisits ]);
   useEffect(() => {
     const listener = () => setIsMobileDevice(matchMobile());
 

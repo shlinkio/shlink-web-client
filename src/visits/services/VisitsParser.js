@@ -1,60 +1,52 @@
-import { isEmpty, isNil, memoizeWith, prop } from 'ramda';
+import { isNil, map } from 'ramda';
 import { browserFromUserAgent, extractDomain, osFromUserAgent } from '../../utils/helpers/visits';
+import { hasValue } from '../../utils/utils';
 
-const visitLocationHasProperty = (visitLocation, propertyName) =>
-  !isNil(visitLocation)
-  && !isNil(visitLocation[propertyName])
-  && !isEmpty(visitLocation[propertyName]);
+const visitHasProperty = (visit, propertyName) => !isNil(visit) && hasValue(visit[propertyName]);
 
-const updateOsStatsForVisit = (osStats, { userAgent }) => {
-  const os = osFromUserAgent(userAgent);
-
+const updateOsStatsForVisit = (osStats, { os }) => {
   osStats[os] = (osStats[os] || 0) + 1;
 };
 
-const updateBrowsersStatsForVisit = (browsersStats, { userAgent }) => {
-  const browser = browserFromUserAgent(userAgent);
-
+const updateBrowsersStatsForVisit = (browsersStats, { browser }) => {
   browsersStats[browser] = (browsersStats[browser] || 0) + 1;
 };
 
-const updateReferrersStatsForVisit = (referrersStats, { referer }) => {
-  const domain = extractDomain(referer);
-
+const updateReferrersStatsForVisit = (referrersStats, { referer: domain }) => {
   referrersStats[domain] = (referrersStats[domain] || 0) + 1;
 };
 
-const updateLocationsStatsForVisit = (propertyName) => (stats, { visitLocation }) => {
-  const hasLocationProperty = visitLocationHasProperty(visitLocation, propertyName);
-  const value = hasLocationProperty ? visitLocation[propertyName] : 'Unknown';
+const updateLocationsStatsForVisit = (propertyName) => (stats, visit) => {
+  const hasLocationProperty = visitHasProperty(visit, propertyName);
+  const value = hasLocationProperty ? visit[propertyName] : 'Unknown';
 
   stats[value] = (stats[value] || 0) + 1;
 };
 
-const updateCountriesStatsForVisit = updateLocationsStatsForVisit('countryName');
-const updateCitiesStatsForVisit = updateLocationsStatsForVisit('cityName');
+const updateCountriesStatsForVisit = updateLocationsStatsForVisit('country');
+const updateCitiesStatsForVisit = updateLocationsStatsForVisit('city');
 
-const updateCitiesForMapForVisit = (citiesForMapStats, { visitLocation }) => {
-  if (!visitLocationHasProperty(visitLocation, 'cityName')) {
+const updateCitiesForMapForVisit = (citiesForMapStats, visit) => {
+  if (!visitHasProperty(visit, 'city') || visit.city === 'Unknown') {
     return;
   }
 
-  const { cityName, latitude, longitude } = visitLocation;
-  const currentCity = citiesForMapStats[cityName] || {
-    cityName,
+  const { city, latitude, longitude } = visit;
+  const currentCity = citiesForMapStats[city] || {
+    cityName: city,
     count: 0,
     latLong: [ parseFloat(latitude), parseFloat(longitude) ],
   };
 
   currentCity.count++;
 
-  citiesForMapStats[cityName] = currentCity;
+  citiesForMapStats[city] = currentCity;
 };
 
-export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
-  visits.reduce(
+export const processStatsFromVisits = (normalizedVisits) =>
+  normalizedVisits.reduce(
     (stats, visit) => {
-      // We mutate the original object because it has a big side effect when large data sets are processed
+      // We mutate the original object because it has a big performance impact when large data sets are processed
       updateOsStatsForVisit(stats.os, visit);
       updateBrowsersStatsForVisit(stats.browsers, visit);
       updateReferrersStatsForVisit(stats.referrers, visit);
@@ -65,4 +57,15 @@ export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
       return stats;
     },
     { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
-  ));
+  );
+
+export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
+  date,
+  browser: browserFromUserAgent(userAgent),
+  os: osFromUserAgent(userAgent),
+  referer: extractDomain(referer),
+  country: (visitLocation && visitLocation.countryName) || 'Unknown',
+  city: (visitLocation && visitLocation.cityName) || 'Unknown',
+  latitude: visitLocation && visitLocation.latitude,
+  longitude: visitLocation && visitLocation.longitude,
+}));

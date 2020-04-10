@@ -8,9 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Added
 
-* [#199](https://github.com/shlinkio/shlink-web-client/issues/199) Added table to visits page which displays the information in a pagintaed, sortable and filterable list.
+* [#199](https://github.com/shlinkio/shlink-web-client/issues/199) Added table to visits page which displays the information in a paginated, sortable and filterable list.
 
     It also supports selecting multiple visits in the table which makes the corresponding data to be highlighted in the visits charts.
+
+* [#241](https://github.com/shlinkio/shlink-web-client/issues/241) Added support to select charts bars in order to highlight related stats in other charts.
+
+    It also selects the visits in the new table, and you can even combine a selection in the chart and in the table.
 
 * [#213](https://github.com/shlinkio/shlink-web-client/issues/213) The versions of both shlink-web-client and currently consumed Shlink server are now displayed in the footer.
 * [#221](https://github.com/shlinkio/shlink-web-client/issues/221) Improved how servers are handled, displaying meaningful errors when a not-found or a not-reachable server is tried to be loaded.

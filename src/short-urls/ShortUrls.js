@@ -25,8 +25,10 @@ const ShortUrls = (SearchBar, ShortUrlsList) => {
     return (
       <React.Fragment>
         <div className="form-group"><SearchBar /></div>
-        <ShortUrlsList {...props} shortUrlsList={data} key={urlsListKey} />
-        <Paginator paginator={pagination} serverId={serverId} />
+        <div>
+          <ShortUrlsList {...props} shortUrlsList={data} key={urlsListKey} />
+          <Paginator paginator={pagination} serverId={serverId} />
+        </div>
       </React.Fragment>
     );
   };

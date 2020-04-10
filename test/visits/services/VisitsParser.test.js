@@ -1,4 +1,4 @@
-import { processStatsFromVisits } from '../../../src/visits/services/VisitsParser';
+import { processStatsFromVisits, normalizeVisits } from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
   const visits = [
@@ -8,8 +8,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
-        latitude: '123.45',
-        longitude: '-543.21',
+        latitude: 123.45,
+        longitude: -543.21,
       },
     },
     {
@@ -18,8 +18,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'United States',
         cityName: 'New York',
-        latitude: '1029',
-        longitude: '6758',
+        latitude: 1029,
+        longitude: 6758,
       },
     },
     {
@@ -34,8 +34,8 @@ describe('VisitsParser', () => {
       visitLocation: {
         countryName: 'Spain',
         cityName: 'Zaragoza',
-        latitude: '123.45',
-        longitude: '-543.21',
+        latitude: 123.45,
+        longitude: -543.21,
       },
     },
     {
@@ -47,7 +47,7 @@ describe('VisitsParser', () => {
     let stats;
 
     beforeAll(() => {
-      stats = processStatsFromVisits({ id: 'id', visits });
+      stats = processStatsFromVisits(normalizeVisits(visits));
     });
 
     it('properly parses OS stats', () => {
@@ -119,6 +119,63 @@ describe('VisitsParser', () => {
           latLong: [ newYorkLat, newYorkLong ],
         },
       });
+    });
+  });
+
+  describe('normalizeVisits', () => {
+    it('properly parses the list of visits', () => {
+      expect(normalizeVisits(visits)).toEqual([
+        {
+          browser: 'Firefox',
+          os: 'Windows',
+          referer: 'google.com',
+          country: 'Spain',
+          city: 'Zaragoza',
+          date: undefined,
+          latitude: 123.45,
+          longitude: -543.21,
+        },
+        {
+          browser: 'Firefox',
+          os: 'MacOS',
+          referer: 'google.com',
+          country: 'United States',
+          city: 'New York',
+          date: undefined,
+          latitude: 1029,
+          longitude: 6758,
+        },
+        {
+          browser: 'Chrome',
+          os: 'Linux',
+          referer: 'Direct',
+          country: 'Spain',
+          city: 'Unknown',
+          date: undefined,
+          latitude: undefined,
+          longitude: undefined,
+        },
+        {
+          browser: 'Chrome',
+          os: 'Linux',
+          referer: 'm.facebook.com',
+          country: 'Spain',
+          city: 'Zaragoza',
+          date: undefined,
+          latitude: 123.45,
+          longitude: -543.21,
+        },
+        {
+          browser: 'Opera',
+          os: 'Linux',
+          referer: 'Direct',
+          country: 'Unknown',
+          city: 'Unknown',
+          date: undefined,
+          latitude: undefined,
+          longitude: undefined,
+        },
+      ]);
     });
   });
 });
