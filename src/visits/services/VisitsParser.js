@@ -1,4 +1,4 @@
-import { isEmpty, isNil, memoizeWith, prop } from 'ramda';
+import { isEmpty, isNil, map } from 'ramda';
 import { browserFromUserAgent, extractDomain, osFromUserAgent } from '../../utils/helpers/visits';
 
 const visitLocationHasProperty = (visitLocation, propertyName) =>
@@ -51,7 +51,7 @@ const updateCitiesForMapForVisit = (citiesForMapStats, { visitLocation }) => {
   citiesForMapStats[cityName] = currentCity;
 };
 
-export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
+export const processStatsFromVisits = (visits) =>
   visits.reduce(
     (stats, visit) => {
       // We mutate the original object because it has a big side effect when large data sets are processed
@@ -65,4 +65,13 @@ export const processStatsFromVisits = memoizeWith(prop('id'), ({ visits }) =>
       return stats;
     },
     { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
-  ));
+  );
+
+export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => ({
+  date,
+  browser: browserFromUserAgent(userAgent),
+  os: osFromUserAgent(userAgent),
+  referer: extractDomain(referer),
+  country: (visitLocation && visitLocation.countryName) || 'Unknown',
+  city: (visitLocation && visitLocation.cityName) || 'Unknown',
+}));

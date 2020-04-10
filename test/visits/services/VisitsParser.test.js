@@ -1,4 +1,4 @@
-import { processStatsFromVisits } from '../../../src/visits/services/VisitsParser';
+import { processStatsFromVisits, normalizeVisits } from '../../../src/visits/services/VisitsParser';
 
 describe('VisitsParser', () => {
   const visits = [
@@ -47,7 +47,7 @@ describe('VisitsParser', () => {
     let stats;
 
     beforeAll(() => {
-      stats = processStatsFromVisits({ id: 'id', visits });
+      stats = processStatsFromVisits(visits);
     });
 
     it('properly parses OS stats', () => {
@@ -119,6 +119,53 @@ describe('VisitsParser', () => {
           latLong: [ newYorkLat, newYorkLong ],
         },
       });
+    });
+  });
+
+  describe('normalizeVisits', () => {
+    it('properly parses the list of visits', () => {
+      expect(normalizeVisits(visits)).toEqual([
+        {
+          browser: 'Firefox',
+          os: 'Windows',
+          referer: 'google.com',
+          country: 'Spain',
+          city: 'Zaragoza',
+          date: undefined,
+        },
+        {
+          browser: 'Firefox',
+          os: 'MacOS',
+          referer: 'google.com',
+          country: 'United States',
+          city: 'New York',
+          date: undefined,
+        },
+        {
+          browser: 'Chrome',
+          os: 'Linux',
+          referer: 'Direct',
+          country: 'Spain',
+          city: 'Unknown',
+          date: undefined,
+        },
+        {
+          browser: 'Chrome',
+          os: 'Linux',
+          referer: 'm.facebook.com',
+          country: 'Spain',
+          city: 'Zaragoza',
+          date: undefined,
+        },
+        {
+          browser: 'Opera',
+          os: 'Linux',
+          referer: 'Direct',
+          country: 'Unknown',
+          city: 'Unknown',
+          date: undefined,
+        },
+      ]);
     });
   });
 });

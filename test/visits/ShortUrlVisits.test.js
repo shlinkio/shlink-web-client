@@ -20,7 +20,7 @@ describe('<ShortUrlVisits />', () => {
   const location = { search: '' };
 
   const createComponent = (shortUrlVisits) => {
-    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits }, () => '');
+    const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits, normalizeVisits: identity }, () => '');
 
     wrapper = shallow(
       <ShortUrlVisits

@@ -20,6 +20,7 @@ export default class SortableBarGraph extends React.Component {
     sortingItems: PropTypes.object.isRequired,
     extraHeaderContent: PropTypes.func,
     withPagination: PropTypes.bool,
+    onClick: PropTypes.func,
   };
 
   state = {
@@ -74,7 +75,7 @@ export default class SortableBarGraph extends React.Component {
   }
 
   render() {
-    const { stats, sortingItems, title, extraHeaderContent, highlightedStats, withPagination = true } = this.props;
+    const { stats, sortingItems, title, extraHeaderContent, withPagination = true, ...rest } = this.props;
     const { currentPageStats, pagination, max } = this.determineStats(stats, sortingItems);
     const activeCities = keys(currentPageStats);
     const computeTitle = () => (
@@ -115,7 +116,7 @@ export default class SortableBarGraph extends React.Component {
         stats={currentPageStats}
         footer={pagination}
         max={max}
-        highlightedStats={highlightedStats}
+        {...rest}
       />
     );
   }

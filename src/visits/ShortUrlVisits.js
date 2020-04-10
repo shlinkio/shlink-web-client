@@ -1,5 +1,5 @@
-import { isEmpty, values } from 'ramda';
-import React, { useState, useEffect } from 'react';
+import { isEmpty, propEq, values } from 'ramda';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button, Card, Collapse } from 'reactstrap';
 import PropTypes from 'prop-types';
 import qs from 'qs';
@@ -41,10 +41,8 @@ const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.
   return acc;
 }, {});
 const format = formatDate();
-let memoizationId;
-let timeWhenMounted;
 
-const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
+const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBtn) => {
   const ShortUrlVisitsComp = ({
     match,
     location,
@@ -62,23 +60,28 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
     const [ highlightedVisits, setHighlightedVisits ] = useState([]);
     const [ isMobileDevice, setIsMobileDevice ] = useState(false);
     const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
+    const highlightVisitsForProp = (prop) => (value) => setHighlightedVisits(
+      highlightedVisits.length === 0 ? normalizedVisits.filter(propEq(prop, value)) : []
+    );
 
     const { params } = match;
     const { shortCode } = params;
     const { search } = location;
     const { domain } = qs.parse(search, { ignoreQueryPrefix: true });
 
-    const loadVisits = () => {
-      const start = format(startDate);
-      const end = format(endDate);
+    const { visits, loading, loadingLarge, error } = shortUrlVisits;
+    const showTableControls = !loading && visits.length > 0;
+    const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
+    const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
+      () => processStatsFromVisits(visits),
+      [ visits ]
+    );
+    const mapLocations = values(citiesForMap);
 
-      // While the "page" is loaded, use the timestamp + filtering dates as memoization IDs for stats calculations
-      memoizationId = `${timeWhenMounted}_${shortCode}_${start}_${end}`;
-      getShortUrlVisits(shortCode, { startDate: start, endDate: end, domain });
-    };
+    const loadVisits = () =>
+      getShortUrlVisits(shortCode, { startDate: format(startDate), endDate: format(endDate), domain });
 
     useEffect(() => {
-      timeWhenMounted = new Date().getTime();
       getShortUrlDetail(shortCode, domain);
       determineIsMobileDevice();
       window.addEventListener('resize', determineIsMobileDevice);
@@ -91,9 +94,6 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
     useEffect(() => {
       loadVisits();
     }, [ startDate, endDate ]);
-
-    const { visits, loading, loadingLarge, error } = shortUrlVisits;
-    const showTableControls = !loading && visits.length > 0;
 
     const renderVisitsContent = () => {
       if (loading) {
@@ -114,11 +114,6 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
         return <Message>There are no visits matching current filter  :(</Message>;
       }
 
-      const { os, browsers, referrers, countries, cities, citiesForMap } = processStatsFromVisits(
-        { id: memoizationId, visits }
-      );
-      const mapLocations = values(citiesForMap);
-
       return (
         <div className="row">
           <div className="col-xl-4 col-lg-6">
@@ -137,6 +132,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
                 name: 'Referrer name',
                 amount: 'Visits amount',
               }}
+              onClick={highlightVisitsForProp('referer')}
             />
           </div>
           <div className="col-lg-6">
@@ -148,6 +144,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
                 name: 'Country name',
                 amount: 'Visits amount',
               }}
+              onClick={highlightVisitsForProp('country')}
             />
           </div>
           <div className="col-lg-6">
@@ -163,6 +160,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
                 name: 'City name',
                 amount: 'Visits amount',
               }}
+              onClick={highlightVisitsForProp('city')}
             />
           </div>
         </div>
@@ -185,11 +183,7 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
             </div>
             <div className="col-lg-4 col-xl-6 mt-4 mt-lg-0">
               {showTableControls && (
-                <Button
-                  outline
-                  block={isMobileDevice}
-                  onClick={toggleTable}
-                >
+                <Button outline block={isMobileDevice} onClick={toggleTable}>
                   {showTable ? 'Hide' : 'Show'} table{' '}
                   <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} />
                 </Button>
@@ -201,12 +195,16 @@ const ShortUrlVisits = ({ processStatsFromVisits }, OpenMapModalBtn) => {
         {showTableControls && (
           <Collapse
             isOpen={showTable}
-
             // Enable stickiness only when there's no CSS animation, to avoid weird rendering effects
             onEntered={setSticky}
             onExiting={unsetSticky}
           >
-            <VisitsTable visits={visits} isSticky={tableIsSticky} onVisitsSelected={setHighlightedVisits} />
+            <VisitsTable
+              visits={normalizedVisits}
+              selectedVisits={highlightedVisits}
+              setSelectedVisits={setHighlightedVisits}
+              isSticky={tableIsSticky}
+            />
           </Collapse>
         )}
 
