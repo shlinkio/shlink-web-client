@@ -8,6 +8,7 @@ export const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_V
 export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_LARGE';
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
+export const CREATE_SHORT_URL_VISIT = 'shlink/shortUrlVisits/CREATE_SHORT_URL_VISIT';
 /* eslint-enable padding-line-between-statements */
 
 export const visitType = PropTypes.shape({
@@ -63,6 +64,9 @@ export default handleActions({
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
+
+  // TODO
+  [CREATE_SHORT_URL_VISIT]: (state) => state,
 }, initialState);
 
 export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) => async (dispatch, getState) => {
@@ -125,3 +129,5 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) =>
 };
 
 export const cancelGetShortUrlVisits = createAction(GET_SHORT_URL_VISITS_CANCEL);
+
+export const createNewVisit = ({ shortUrl, visit }) => ({ shortUrl, visit, type: CREATE_SHORT_URL_VISIT });

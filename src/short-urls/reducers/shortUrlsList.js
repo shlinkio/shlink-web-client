@@ -1,6 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { assoc, assocPath, isNil, reject } from 'ramda';
 import PropTypes from 'prop-types';
+import { CREATE_SHORT_URL_VISIT } from '../../visits/reducers/shortUrlVisits';
 import { SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 import { SHORT_URL_META_EDITED, shortUrlMetaType } from './shortUrlMeta';
@@ -56,6 +57,15 @@ export default handleActions({
   [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl('tags'),
   [SHORT_URL_META_EDITED]: setPropFromActionOnMatchingShortUrl('meta'),
   [SHORT_URL_EDITED]: setPropFromActionOnMatchingShortUrl('longUrl'),
+  [CREATE_SHORT_URL_VISIT]: (state, { shortUrl: { shortCode, domain, visitsCount } }) => assocPath(
+    [ 'shortUrls', 'data' ],
+    state.shortUrls.data.map(
+      (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain)
+        ? assoc('visitsCount', visitsCount, shortUrl)
+        : shortUrl
+    ),
+    state
+  ),
 }, initialState);
 
 export const listShortUrls = (buildShlinkApiClient) => (params = {}) => async (dispatch, getState) => {

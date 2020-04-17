@@ -17,7 +17,7 @@ export const MercureInfoType = PropTypes.shape({
 const initialState = {
   token: undefined,
   mercureHubUrl: undefined,
-  loading: false,
+  loading: true,
   error: false,
 };
 

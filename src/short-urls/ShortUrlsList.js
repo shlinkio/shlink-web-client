@@ -4,9 +4,11 @@ import { head, isEmpty, keys, values } from 'ramda';
 import React from 'react';
 import qs from 'qs';
 import PropTypes from 'prop-types';
+import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 import { serverType } from '../servers/prop-types';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir } from '../utils/utils';
+import { MercureInfoType } from '../mercure/reducers/mercureInfo';
 import { shortUrlType } from './reducers/shortUrlsList';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
@@ -30,6 +32,8 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
     error: PropTypes.bool,
     shortUrlsList: PropTypes.arrayOf(shortUrlType),
     selectedServer: serverType,
+    createNewVisit: PropTypes.func,
+    mercureInfo: MercureInfoType,
   };
 
   refreshList = (extraParams) => {
@@ -85,10 +89,38 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
     this.refreshList({ page: params.page, tags });
   }
 
+  componentDidUpdate() {
+    const { mercureHubUrl, token, loading, error } = this.props.mercureInfo;
+
+    if (loading || error) {
+      return;
+    }
+
+    const hubUrl = new URL(mercureHubUrl);
+
+    hubUrl.searchParams.append('topic', 'https://shlink.io/new-visit');
+    this.closeEventSource();
+    this.es = new EventSource(hubUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    this.es.onmessage = ({ data }) => this.props.createNewVisit(JSON.parse(data));
+  }
+
   componentWillUnmount() {
     const { resetShortUrlParams } = this.props;
 
+    this.closeEventSource();
     resetShortUrlParams();
+  }
+
+  closeEventSource = () => {
+    if (this.es) {
+      this.es.close();
+      this.es = undefined;
+    }
   }
 
   renderShortUrls() {
