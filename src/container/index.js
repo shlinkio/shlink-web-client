@@ -9,6 +9,7 @@ import provideServersServices from '../servers/services/provideServices';
 import provideVisitsServices from '../visits/services/provideServices';
 import provideTagsServices from '../tags/services/provideServices';
 import provideUtilsServices from '../utils/services/provideServices';
+import provideMercureServices from '../mercure/services/provideServices';
 
 const bottle = new Bottle();
 const { container } = bottle;
@@ -34,5 +35,6 @@ provideServersServices(bottle, connect, withRouter);
 provideTagsServices(bottle, connect);
 provideVisitsServices(bottle, connect);
 provideUtilsServices(bottle);
+provideMercureServices(bottle);
 
 export default container;

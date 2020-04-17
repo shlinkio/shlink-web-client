@@ -209,4 +209,20 @@ describe('ShlinkApiClient', () => {
       expect(result).toEqual(expectedData);
     });
   });
+
+  describe('mercureInfo', () => {
+    it('returns mercure info', async () => {
+      const expectedData = {
+        token: 'abc.123.def',
+        mercureHubUrl: 'http://example.com/.well-known/mercure',
+      };
+      const axiosSpy = jest.fn(createAxiosMock({ data: expectedData }));
+      const { mercureInfo } = new ShlinkApiClient(axiosSpy);
+
+      const result = await mercureInfo();
+
+      expect(axiosSpy).toHaveBeenCalled();
+      expect(result).toEqual(expectedData);
+    });
+  });
 });

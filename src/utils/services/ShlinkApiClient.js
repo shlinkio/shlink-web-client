@@ -66,6 +66,8 @@ export default class ShlinkApiClient {
 
   health = () => this._performRequest('/health', 'GET').then((resp) => resp.data);
 
+  mercureInfo = () => this._performRequest('/mercure-info', 'GET').then((resp) => resp.data);
+
   _performRequest = async (url, method = 'GET', query = {}, body = {}) => {
     try {
       return await this.axios({
