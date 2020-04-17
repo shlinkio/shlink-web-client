@@ -1,7 +1,7 @@
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, isEmpty, keys, values } from 'ramda';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import qs from 'qs';
 import PropTypes from 'prop-types';
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
@@ -20,148 +20,130 @@ export const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
+const propTypes = {
+  listShortUrls: PropTypes.func,
+  resetShortUrlParams: PropTypes.func,
+  shortUrlsListParams: shortUrlsListParamsType,
+  match: PropTypes.object,
+  location: PropTypes.object,
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+  shortUrlsList: PropTypes.arrayOf(shortUrlType),
+  selectedServer: serverType,
+  createNewVisit: PropTypes.func,
+  mercureInfo: MercureInfoType,
+};
+
 // FIXME Replace with typescript: (ShortUrlsRow component)
-const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Component {
-  static propTypes = {
-    listShortUrls: PropTypes.func,
-    resetShortUrlParams: PropTypes.func,
-    shortUrlsListParams: shortUrlsListParamsType,
-    match: PropTypes.object,
-    location: PropTypes.object,
-    loading: PropTypes.bool,
-    error: PropTypes.bool,
-    shortUrlsList: PropTypes.arrayOf(shortUrlType),
-    selectedServer: serverType,
-    createNewVisit: PropTypes.func,
-    mercureInfo: MercureInfoType,
-  };
-
-  refreshList = (extraParams) => {
-    const { listShortUrls, shortUrlsListParams } = this.props;
-
-    listShortUrls({
-      ...shortUrlsListParams,
-      ...extraParams,
+const ShortUrlsList = (ShortUrlsRow) => {
+  const ShortUrlsListComp = ({
+    listShortUrls,
+    resetShortUrlParams,
+    shortUrlsListParams,
+    match,
+    location,
+    loading,
+    error,
+    shortUrlsList,
+    selectedServer,
+    createNewVisit,
+    mercureInfo,
+  }) => {
+    const { orderBy } = shortUrlsListParams;
+    const [ order, setOrder ] = useState({
+      orderField: orderBy && head(keys(orderBy)),
+      orderDir: orderBy && head(values(orderBy)),
     });
-  };
-
-  handleOrderBy = (orderField, orderDir) => {
-    this.setState({ orderField, orderDir });
-    this.refreshList({ orderBy: { [orderField]: orderDir } });
-  };
-
-  orderByColumn = (columnName) => () =>
-    this.handleOrderBy(columnName, determineOrderDir(columnName, this.state.orderField, this.state.orderDir));
-
-  renderOrderIcon = (field) => {
-    if (this.state.orderField !== field) {
-      return null;
-    }
-
-    if (!this.state.orderDir) {
-      return null;
-    }
-
-    return (
-      <FontAwesomeIcon
-        icon={this.state.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
-        className="short-urls-list__header-icon"
-      />
-    );
-  };
-
-  constructor(props) {
-    super(props);
-
-    const { orderBy } = props.shortUrlsListParams;
-
-    this.state = {
-      orderField: orderBy ? head(keys(orderBy)) : undefined,
-      orderDir: orderBy ? head(values(orderBy)) : undefined,
+    const refreshList = (extraParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
+    const handleOrderBy = (orderField, orderDir) => {
+      setOrder({ orderField, orderDir });
+      refreshList({ orderBy: { [orderField]: orderDir } });
     };
-  }
+    const orderByColumn = (columnName) => () =>
+      handleOrderBy(columnName, determineOrderDir(columnName, order.orderField, order.orderDir));
+    const renderOrderIcon = (field) => {
+      if (order.orderField !== field) {
+        return null;
+      }
 
-  componentDidMount() {
-    const { match: { params }, location, shortUrlsListParams } = this.props;
-    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-    const tags = query.tag ? [ query.tag ] : shortUrlsListParams.tags;
+      if (!order.orderDir) {
+        return null;
+      }
 
-    this.refreshList({ page: params.page, tags });
-  }
-
-  componentDidUpdate() {
-    const { mercureHubUrl, token, loading, error } = this.props.mercureInfo;
-
-    if (loading || error) {
-      return;
-    }
-
-    const hubUrl = new URL(mercureHubUrl);
-
-    hubUrl.searchParams.append('topic', 'https://shlink.io/new-visit');
-    this.closeEventSource();
-    this.es = new EventSource(hubUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    this.es.onmessage = ({ data }) => this.props.createNewVisit(JSON.parse(data));
-  }
-
-  componentWillUnmount() {
-    const { resetShortUrlParams } = this.props;
-
-    this.closeEventSource();
-    resetShortUrlParams();
-  }
-
-  closeEventSource = () => {
-    if (this.es) {
-      this.es.close();
-      this.es = undefined;
-    }
-  }
-
-  renderShortUrls() {
-    const { shortUrlsList, selectedServer, loading, error, shortUrlsListParams } = this.props;
-
-    if (error) {
       return (
-        <tr>
-          <td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td>
-        </tr>
+        <FontAwesomeIcon
+          icon={order.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
+          className="short-urls-list__header-icon"
+        />
       );
-    }
+    };
+    const renderShortUrls = () => {
+      if (error) {
+        return (
+          <tr>
+            <td colSpan="6" className="text-center table-danger">Something went wrong while loading short URLs :(</td>
+          </tr>
+        );
+      }
 
-    if (loading) {
-      return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
-    }
+      if (loading) {
+        return <tr><td colSpan="6" className="text-center">Loading...</td></tr>;
+      }
 
-    if (!loading && isEmpty(shortUrlsList)) {
-      return <tr><td colSpan="6" className="text-center">No results found</td></tr>;
-    }
+      if (!loading && isEmpty(shortUrlsList)) {
+        return <tr><td colSpan="6" className="text-center">No results found</td></tr>;
+      }
 
-    return shortUrlsList.map((shortUrl) => (
-      <ShortUrlsRow
-        key={shortUrl.shortUrl}
-        shortUrl={shortUrl}
-        selectedServer={selectedServer}
-        refreshList={this.refreshList}
-        shortUrlsListParams={shortUrlsListParams}
-      />
-    ));
-  }
+      return shortUrlsList.map((shortUrl) => (
+        <ShortUrlsRow
+          key={shortUrl.shortUrl}
+          shortUrl={shortUrl}
+          selectedServer={selectedServer}
+          refreshList={refreshList}
+          shortUrlsListParams={shortUrlsListParams}
+        />
+      ));
+    };
 
-  render() {
+    useEffect(() => {
+      const { params } = match;
+      const query = qs.parse(location.search, { ignoreQueryPrefix: true });
+      const tags = query.tag ? [ query.tag ] : shortUrlsListParams.tags;
+
+      refreshList({ page: params.page, tags });
+
+      return resetShortUrlParams;
+    }, []);
+    useEffect(() => {
+      const { mercureHubUrl, token, loading, error } = mercureInfo;
+
+      if (loading || error) {
+        return undefined;
+      }
+
+      const hubUrl = new URL(mercureHubUrl);
+
+      hubUrl.searchParams.append('topic', 'https://shlink.io/new-visit');
+      const es = new EventSource(hubUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // es.onmessage = pipe(JSON.parse, createNewVisit);
+      es.onmessage = ({ data }) => createNewVisit(JSON.parse(data));
+
+      return () => es.close();
+    }, [ mercureInfo ]);
+
     return (
       <React.Fragment>
         <div className="d-block d-md-none mb-3">
           <SortingDropdown
             items={SORTABLE_FIELDS}
-            orderField={this.state.orderField}
-            orderDir={this.state.orderDir}
-            onChange={this.handleOrderBy}
+            orderField={order.orderField}
+            orderDir={order.orderDir}
+            onChange={handleOrderBy}
           />
         </div>
         <table className="table table-striped table-hover">
@@ -169,42 +151,46 @@ const ShortUrlsList = (ShortUrlsRow) => class ShortUrlsList extends React.Compon
             <tr>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={this.orderByColumn('dateCreated')}
+                onClick={orderByColumn('dateCreated')}
               >
-                {this.renderOrderIcon('dateCreated')}
+                {renderOrderIcon('dateCreated')}
                 Created at
               </th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={this.orderByColumn('shortCode')}
+                onClick={orderByColumn('shortCode')}
               >
-                {this.renderOrderIcon('shortCode')}
+                {renderOrderIcon('shortCode')}
                 Short URL
               </th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={this.orderByColumn('longUrl')}
+                onClick={orderByColumn('longUrl')}
               >
-                {this.renderOrderIcon('longUrl')}
+                {renderOrderIcon('longUrl')}
                 Long URL
               </th>
               <th className="short-urls-list__header-cell">Tags</th>
               <th
                 className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-                onClick={this.orderByColumn('visits')}
+                onClick={orderByColumn('visits')}
               >
-                <span className="indivisible">{this.renderOrderIcon('visits')} Visits</span>
+                <span className="indivisible">{renderOrderIcon('visits')} Visits</span>
               </th>
               <th className="short-urls-list__header-cell">&nbsp;</th>
             </tr>
           </thead>
           <tbody>
-            {this.renderShortUrls()}
+            {renderShortUrls()}
           </tbody>
         </table>
       </React.Fragment>
     );
-  }
+  };
+
+  ShortUrlsListComp.propTypes = propTypes;
+
+  return ShortUrlsListComp;
 };
 
 export default ShortUrlsList;

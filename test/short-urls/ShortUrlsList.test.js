@@ -71,10 +71,6 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('should render 6 table header cells with conditional order by icon', () => {
-    const orderDirOptionToIconMap = {
-      ASC: caretUpIcon,
-      DESC: caretDownIcon,
-    };
     const getThElementForSortableField = (sortableField) => wrapper.find('table')
       .find('thead')
       .find('tr')
@@ -82,24 +78,18 @@ describe('<ShortUrlsList />', () => {
       .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[sortableField]));
 
     Object.keys(SORTABLE_FIELDS).forEach((sortableField) => {
-      const sortableThElementWrapper = getThElementForSortableField(sortableField);
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(0);
 
-      expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(0);
-
-      sortableThElementWrapper.simulate('click');
+      getThElementForSortableField(sortableField).simulate('click');
       expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(1);
-      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(
-        orderDirOptionToIconMap.ASC,
-      );
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(caretUpIcon);
 
-      sortableThElementWrapper.simulate('click');
+      getThElementForSortableField(sortableField).simulate('click');
       expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(1);
-      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(
-        orderDirOptionToIconMap.DESC,
-      );
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(caretDownIcon);
 
-      sortableThElementWrapper.simulate('click');
-      expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(0);
+      getThElementForSortableField(sortableField).simulate('click');
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(0);
     });
   });
 });
