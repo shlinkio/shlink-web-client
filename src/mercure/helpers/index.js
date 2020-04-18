@@ -1,6 +1,6 @@
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 
-export const bindToMercureTopic = (mercureInfo, topic, onMessage) => () => {
+export const bindToMercureTopic = (mercureInfo, topic, onMessage, onTokenExpired) => () => {
   const { mercureHubUrl, token, loading, error } = mercureInfo;
 
   if (loading || error) {
@@ -17,9 +17,7 @@ export const bindToMercureTopic = (mercureInfo, topic, onMessage) => () => {
   });
 
   es.onmessage = ({ data }) => onMessage(JSON.parse(data));
-
-  // TODO Handle errors and get a new token
-  es.onerror = () => {};
+  es.onerror = ({ status }) => status === 401 && onTokenExpired();
 
   return () => es.close();
 };

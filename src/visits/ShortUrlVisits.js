@@ -33,6 +33,7 @@ const propTypes = {
   cancelGetShortUrlVisits: PropTypes.func,
   matchMedia: PropTypes.func,
   createNewVisit: PropTypes.func,
+  loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
 };
 
@@ -59,6 +60,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     cancelGetShortUrlVisits,
     matchMedia = window.matchMedia,
     createNewVisit,
+    loadMercureInfo,
     mercureInfo,
   }) => {
     const [ startDate, setStartDate ] = useState(undefined);
@@ -115,7 +117,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
       loadVisits();
     }, [ startDate, endDate ]);
     useEffect(
-      bindToMercureTopic(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit),
+      bindToMercureTopic(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit, loadMercureInfo),
       [ mercureInfo ],
     );
 

@@ -31,6 +31,7 @@ const propTypes = {
   shortUrlsList: PropTypes.arrayOf(shortUrlType),
   selectedServer: serverType,
   createNewVisit: PropTypes.func,
+  loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
 };
 
@@ -47,6 +48,7 @@ const ShortUrlsList = (ShortUrlsRow) => {
     shortUrlsList,
     selectedServer,
     createNewVisit,
+    loadMercureInfo,
     mercureInfo,
   }) => {
     const { orderBy } = shortUrlsListParams;
@@ -114,7 +116,10 @@ const ShortUrlsList = (ShortUrlsRow) => {
 
       return resetShortUrlParams;
     }, []);
-    useEffect(bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit), [ mercureInfo ]);
+    useEffect(
+      bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
+      [ mercureInfo ]
+    );
 
     return (
       <React.Fragment>
