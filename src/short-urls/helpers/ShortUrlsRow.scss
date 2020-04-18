@@ -35,12 +35,17 @@
     }
   }
 }
+
 .short-urls-row__cell--break {
   word-break: break-all;
 }
 
 .short-urls-row__cell--relative {
   position: relative;
+}
+
+.short-urls-row__cell--big {
+  transform: scale(1.5);
 }
 
 .short-urls-row__copy-btn {

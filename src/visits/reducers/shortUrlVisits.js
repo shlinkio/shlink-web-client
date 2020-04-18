@@ -1,6 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { flatten, prop, range, splitEvery } from 'ramda';
+import { shortUrlMatches } from '../../short-urls/helpers';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
@@ -29,12 +30,16 @@ export const visitType = PropTypes.shape({
 
 export const shortUrlVisitsType = PropTypes.shape({
   visits: PropTypes.arrayOf(visitType),
+  shortCode: PropTypes.string,
+  domain: PropTypes.string,
   loading: PropTypes.bool,
   error: PropTypes.bool,
 });
 
 const initialState = {
   visits: [],
+  shortCode: '',
+  domain: undefined,
   loading: false,
   loadingLarge: false,
   error: false,
@@ -55,8 +60,10 @@ export default handleActions({
     error: true,
     cancelLoad: false,
   }),
-  [GET_SHORT_URL_VISITS]: (state, { visits }) => ({
+  [GET_SHORT_URL_VISITS]: (state, { visits, shortCode, domain }) => ({
     visits,
+    shortCode,
+    domain,
     loading: false,
     loadingLarge: false,
     error: false,
@@ -64,12 +71,18 @@ export default handleActions({
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
+  [CREATE_SHORT_URL_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand
+    const { shortCode, domain, visits } = state;
 
-  // TODO
-  [CREATE_SHORT_URL_VISIT]: (state) => state,
+    if (!shortUrlMatches(shortUrl, shortCode, domain)) {
+      return state;
+    }
+
+    return { ...state, visits: [ ...visits, visit ] };
+  },
 }, initialState);
 
-export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) => async (dispatch, getState) => {
+export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query = {}) => async (dispatch, getState) => {
   dispatch({ type: GET_SHORT_URL_VISITS_START });
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
   const itemsPerPage = 5000;
@@ -122,7 +135,7 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query) =>
   try {
     const visits = await loadVisits();
 
-    dispatch({ visits, type: GET_SHORT_URL_VISITS });
+    dispatch({ visits, shortCode, domain: query.domain, type: GET_SHORT_URL_VISITS });
   } catch (e) {
     dispatch({ type: GET_SHORT_URL_VISITS_ERROR });
   }

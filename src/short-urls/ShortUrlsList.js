@@ -4,11 +4,11 @@ import { head, isEmpty, keys, values } from 'ramda';
 import React, { useState, useEffect } from 'react';
 import qs from 'qs';
 import PropTypes from 'prop-types';
-import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 import { serverType } from '../servers/prop-types';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir } from '../utils/utils';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
+import { bindToMercureTopic } from '../mercure/helpers';
 import { shortUrlType } from './reducers/shortUrlsList';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
@@ -114,27 +114,7 @@ const ShortUrlsList = (ShortUrlsRow) => {
 
       return resetShortUrlParams;
     }, []);
-    useEffect(() => {
-      const { mercureHubUrl, token, loading, error } = mercureInfo;
-
-      if (loading || error) {
-        return undefined;
-      }
-
-      const hubUrl = new URL(mercureHubUrl);
-
-      hubUrl.searchParams.append('topic', 'https://shlink.io/new-visit');
-      const es = new EventSource(hubUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      // es.onmessage = pipe(JSON.parse, createNewVisit);
-      es.onmessage = ({ data }) => createNewVisit(JSON.parse(data));
-
-      return () => es.close();
-    }, [ mercureInfo ]);
+    useEffect(bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit), [ mercureInfo ]);
 
     return (
       <React.Fragment>

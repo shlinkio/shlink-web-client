@@ -3,22 +3,28 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
+import classNames from 'classnames';
 import { serverType } from '../../servers/prop-types';
 import { shortUrlType } from '../reducers/shortUrlsList';
-import './ShortUrlVisitsCount.scss';
 import VisitStatsLink from './VisitStatsLink';
+import './ShortUrlVisitsCount.scss';
 
 const propTypes = {
   visitsCount: PropTypes.number.isRequired,
   shortUrl: shortUrlType,
   selectedServer: serverType,
+  active: PropTypes.bool,
 };
 
-const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer }) => {
+const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }) => {
   const maxVisits = shortUrl && shortUrl.meta && shortUrl.meta.maxVisits;
   const visitsLink = (
     <VisitStatsLink selectedServer={selectedServer} shortUrl={shortUrl}>
-      <strong>{visitsCount}</strong>
+      <strong
+        className={classNames('short-url-visits-count__amount', { 'short-url-visits-count__amount--big': active })}
+      >
+        {visitsCount}
+      </strong>
     </VisitStatsLink>
   );
 

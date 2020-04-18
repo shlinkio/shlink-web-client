@@ -10,6 +10,8 @@ import DateRangeRow from '../utils/DateRangeRow';
 import Message from '../utils/Message';
 import { formatDate } from '../utils/helpers/date';
 import { useToggle } from '../utils/helpers/hooks';
+import { MercureInfoType } from '../mercure/reducers/mercureInfo';
+import { bindToMercureTopic } from '../mercure/helpers';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
@@ -30,6 +32,8 @@ const propTypes = {
   shortUrlDetail: shortUrlDetailType,
   cancelGetShortUrlVisits: PropTypes.func,
   matchMedia: PropTypes.func,
+  createNewVisit: PropTypes.func,
+  mercureInfo: MercureInfoType,
 };
 
 const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.reduce((acc, highlightedVisit) => {
@@ -54,6 +58,8 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     getShortUrlDetail,
     cancelGetShortUrlVisits,
     matchMedia = window.matchMedia,
+    createNewVisit,
+    mercureInfo,
   }) => {
     const [ startDate, setStartDate ] = useState(undefined);
     const [ endDate, setEndDate ] = useState(undefined);
@@ -108,6 +114,10 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     useEffect(() => {
       loadVisits();
     }, [ startDate, endDate ]);
+    useEffect(
+      bindToMercureTopic(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit),
+      [ mercureInfo ],
+    );
 
     const renderVisitsContent = () => {
       if (loading) {

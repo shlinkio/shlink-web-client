@@ -1,12 +1,18 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-const DEFAULT_TIMEOUT_DELAY = 2000;
+const DEFAULT_DELAY = 2000;
 
-export const useStateFlagTimeout = (setTimeout) => (initialValue = true, delay = DEFAULT_TIMEOUT_DELAY) => {
+export const useStateFlagTimeout = (setTimeout, clearTimeout) => (initialValue = false, delay = DEFAULT_DELAY) => {
   const [ flag, setFlag ] = useState(initialValue);
+  const timeout = useRef(undefined);
   const callback = () => {
     setFlag(!initialValue);
-    setTimeout(() => setFlag(initialValue), delay);
+
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+
+    timeout.current = setTimeout(() => setFlag(initialValue), delay);
   };
 
   return [ flag, callback ];

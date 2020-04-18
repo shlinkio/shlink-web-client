@@ -72,8 +72,13 @@ describe('shortUrlVisitsReducer', () => {
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
     });
 
-    it('dispatches start and success when promise is resolved', async () => {
+    it.each([
+      [ undefined, undefined ],
+      [{}, undefined ],
+      [{ domain: 'foobar.com' }, 'foobar.com' ],
+    ])('dispatches start and success when promise is resolved', async (query, domain) => {
       const visits = [{}, {}];
+      const shortCode = 'abc123';
       const ShlinkApiClient = buildApiClientMock(Promise.resolve({
         data: visits,
         pagination: {
@@ -82,11 +87,11 @@ describe('shortUrlVisitsReducer', () => {
         },
       }));
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+      await getShortUrlVisits(() => ShlinkApiClient)(shortCode, query)(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_VISITS, visits });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_VISITS, visits, shortCode, domain });
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
     });
 
