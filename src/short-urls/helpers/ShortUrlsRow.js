@@ -1,5 +1,5 @@
 import { isEmpty } from 'ramda';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Moment from 'react-moment';
 import PropTypes from 'prop-types';
 import { ExternalLink } from 'react-external-link';
@@ -26,7 +26,10 @@ const ShortUrlsRow = (
   useStateFlagTimeout
 ) => {
   const ShortUrlsRowComp = ({ shortUrl, selectedServer, refreshList, shortUrlsListParams }) => {
-    const [ copiedToClipboard, setCopiedToClipboard ] = useStateFlagTimeout(false);
+    const [ copiedToClipboard, setCopiedToClipboard ] = useStateFlagTimeout();
+    const [ active, setActive ] = useStateFlagTimeout(false, 500);
+    const isFirstRun = useRef(true);
+
     const renderTags = (tags) => {
       if (isEmpty(tags)) {
         return <i className="indivisible"><small>No tags</small></i>;
@@ -43,6 +46,14 @@ const ShortUrlsRow = (
         />
       ));
     };
+
+    useEffect(() => {
+      if (isFirstRun.current) {
+        isFirstRun.current = false;
+      } else {
+        setActive(true);
+      }
+    }, [ shortUrl.visitsCount ]);
 
     return (
       <tr className="short-urls-row">
@@ -69,6 +80,7 @@ const ShortUrlsRow = (
             visitsCount={shortUrl.visitsCount}
             shortUrl={shortUrl}
             selectedServer={selectedServer}
+            active={active}
           />
         </td>
         <td className="short-urls-row__cell">

@@ -14,8 +14,9 @@ const provideServices = (bottle) => {
   bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'axios');
 
   bottle.constant('setTimeout', global.setTimeout);
+  bottle.constant('clearTimeout', global.clearTimeout);
   bottle.serviceFactory('stateFlagTimeout', stateFlagTimeout, 'setTimeout');
-  bottle.serviceFactory('useStateFlagTimeout', useStateFlagTimeout, 'setTimeout');
+  bottle.serviceFactory('useStateFlagTimeout', useStateFlagTimeout, 'setTimeout', 'clearTimeout');
 };
 
 export default provideServices;

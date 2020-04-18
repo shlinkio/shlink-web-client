@@ -1,5 +1,5 @@
 import ShortUrlVisits from '../ShortUrlVisits';
-import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
+import { cancelGetShortUrlVisits, createNewVisit, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import OpenMapModalBtn from '../helpers/OpenMapModalBtn';
 import MapModal from '../helpers/MapModal';
@@ -11,8 +11,8 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('MapModal', () => MapModal);
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsParser', 'OpenMapModalBtn');
   bottle.decorator('ShortUrlVisits', connect(
-    [ 'shortUrlVisits', 'shortUrlDetail' ],
-    [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits' ]
+    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
+    [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ]
   ));
 
   // Services
@@ -22,6 +22,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('getShortUrlDetail', getShortUrlDetail, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetShortUrlVisits', () => cancelGetShortUrlVisits);
+  bottle.serviceFactory('createNewVisit', () => createNewVisit);
 };
 
 export default provideServices;

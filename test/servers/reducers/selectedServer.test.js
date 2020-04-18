@@ -40,6 +40,7 @@ describe('selectedServerReducer', () => {
     };
     const buildApiClient = jest.fn().mockReturnValue(apiClientMock);
     const dispatch = jest.fn();
+    const loadMercureInfo = jest.fn();
 
     afterEach(jest.clearAllMocks);
 
@@ -56,16 +57,17 @@ describe('selectedServerReducer', () => {
 
       apiClientMock.health.mockResolvedValue({ version: serverVersion });
 
-      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
 
-      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenCalledTimes(4);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: RESET_SHORT_URL_PARAMS });
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(loadMercureInfo).toHaveBeenCalledTimes(1);
     });
 
     it('invokes dependencies', async () => {
-      await selectServer(ServersServiceMock, buildApiClient)(uuid())(() => {});
+      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(() => {});
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
@@ -76,10 +78,11 @@ describe('selectedServerReducer', () => {
 
       apiClientMock.health.mockRejectedValue({});
 
-      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
 
       expect(apiClientMock.health).toHaveBeenCalled();
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(loadMercureInfo).not.toHaveBeenCalled();
     });
 
     it('dispatches error when server is not found', async () => {
@@ -87,11 +90,12 @@ describe('selectedServerReducer', () => {
 
       ServersServiceMock.findServerById.mockReturnValue(undefined);
 
-      await selectServer(ServersServiceMock, buildApiClient)(uuid())(dispatch);
+      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
 
       expect(ServersServiceMock.findServerById).toHaveBeenCalled();
       expect(apiClientMock.health).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(loadMercureInfo).not.toHaveBeenCalled();
     });
   });
 });

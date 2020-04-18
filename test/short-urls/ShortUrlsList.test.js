@@ -36,13 +36,13 @@ describe('<ShortUrlsList />', () => {
             },
           ]
         }
+        mercureInfo={{ loading: true }}
       />
     );
   });
 
   afterEach(() => {
-    listShortUrlsMock.mockReset();
-    resetShortUrlParamsMock.mockReset();
+    jest.resetAllMocks();
     wrapper && wrapper.unmount();
   });
 
@@ -55,66 +55,41 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('should render table header by default', () => {
-    expect(wrapper.find('table').shallow().find('thead')).toHaveLength(1);
+    expect(wrapper.find('table').find('thead')).toHaveLength(1);
   });
 
   it('should render 6 table header cells by default', () => {
-    expect(wrapper.find('table').shallow()
-      .find('thead').shallow()
-      .find('tr').shallow()
-      .find('th')).toHaveLength(6);
+    expect(wrapper.find('table').find('thead').find('tr').find('th')).toHaveLength(6);
   });
 
   it('should render 6 table header cells without order by icon by default', () => {
-    const thElements = wrapper.find('table').shallow()
-      .find('thead').shallow()
-      .find('tr').shallow()
-      .find('th').map((e) => e.shallow());
+    const thElements = wrapper.find('table').find('thead').find('tr').find('th');
 
-    for (const thElement of thElements) {
+    thElements.forEach((thElement) => {
       expect(thElement.find(FontAwesomeIcon)).toHaveLength(0);
-    }
+    });
   });
 
   it('should render 6 table header cells with conditional order by icon', () => {
-    const orderDirOptionToIconMap = {
-      ASC: caretUpIcon,
-      DESC: caretDownIcon,
-    };
+    const getThElementForSortableField = (sortableField) => wrapper.find('table')
+      .find('thead')
+      .find('tr')
+      .find('th')
+      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[sortableField]));
 
-    for (const sortableField of Object.getOwnPropertyNames(SORTABLE_FIELDS)) {
-      wrapper.setState({ orderField: sortableField, orderDir: undefined });
-      const [ sortableThElement ] = wrapper.find('table').shallow()
-        .find('thead').shallow()
-        .find('tr').shallow()
-        .find('th')
-        .filterWhere(
-          (e) =>
-            e.text().includes(SORTABLE_FIELDS[sortableField])
-        );
+    Object.keys(SORTABLE_FIELDS).forEach((sortableField) => {
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(0);
 
-      const sortableThElementWrapper = shallow(sortableThElement);
+      getThElementForSortableField(sortableField).simulate('click');
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(1);
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(caretUpIcon);
 
-      expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(0);
+      getThElementForSortableField(sortableField).simulate('click');
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(1);
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon).prop('icon')).toEqual(caretDownIcon);
 
-      for (const orderDir of Object.getOwnPropertyNames(orderDirOptionToIconMap)) {
-        wrapper.setState({ orderField: sortableField, orderDir });
-        const [ sortableThElement ] = wrapper.find('table').shallow()
-          .find('thead').shallow()
-          .find('tr').shallow()
-          .find('th')
-          .filterWhere(
-            (e) =>
-              e.text().includes(SORTABLE_FIELDS[sortableField])
-          );
-
-        const sortableThElementWrapper = shallow(sortableThElement);
-
-        expect(sortableThElementWrapper.find(FontAwesomeIcon)).toHaveLength(1);
-        expect(
-          sortableThElementWrapper.find(FontAwesomeIcon).prop('icon')
-        ).toEqual(orderDirOptionToIconMap[orderDir]);
-      }
-    }
+      getThElementForSortableField(sortableField).simulate('click');
+      expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(0);
+    });
   });
 });

@@ -20,7 +20,9 @@ describe('<ShortUrlVisitsCount />', () => {
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
-    expect(wrapper.html()).toEqual(`<span><strong>${visitsCount}</strong></span>`);
+    expect(wrapper.html()).toEqual(
+      `<span><strong class="short-url-visits-count__amount">${visitsCount}</strong></span>`
+    );
     expect(maxVisitsHelper).toHaveLength(0);
     expect(maxVisitsTooltip).toHaveLength(0);
   });

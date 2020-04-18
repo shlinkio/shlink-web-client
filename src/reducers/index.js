@@ -13,6 +13,7 @@ import shortUrlDetailReducer from '../visits/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
+import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 
 export default combineReducers({
   servers: serversReducer,
@@ -29,4 +30,5 @@ export default combineReducers({
   tagsList: tagsListReducer,
   tagDelete: tagDeleteReducer,
   tagEdit: tagEditReducer,
+  mercureInfo: mercureInfoReducer,
 });
