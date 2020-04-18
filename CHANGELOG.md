@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+
+#### Added
+
+* [#148](https://github.com/shlinkio/shlink-web-client/issues/148) Added support for real-time updates when consuming a Shlink version that is integrated with a mercure hub server.
+
+    The integration is transparent. When a server is opened, shlink-web-client will try to get the mercure info from it.
+
+    * If it works, it will setup the necessary `EventSource`s, dispatching redux actions when an event is pushed, which will in turn update the UI.
+    * If it fails, it will assume it is either not configured or not supported by the Shlink version.
+
+#### Changed
+
+* *Nothing*
+
+#### Deprecated
+
+* *Nothing*
+
+#### Removed
+
+* *Nothing*
+
+#### Fixed
+
+* *Nothing*
+
+
 ## 2.4.0 - 2020-04-10
 
 #### Added
