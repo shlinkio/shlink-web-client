@@ -1,37 +1,28 @@
-import { faPlus as plusIcon, faChevronDown as arrowIcon } from '@fortawesome/free-solid-svg-icons';
+import { faPlus as plusIcon, faChevronDown as arrowIcon, faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { useToggle } from '../utils/helpers/hooks';
 import shlinkLogo from './shlink-logo-white.png';
 import './MainHeader.scss';
 
-const MainHeader = (ServersDropdown) => class MainHeader extends React.Component {
-  static propTypes = {
-    location: PropTypes.object,
-  };
+const propTypes = {
+  location: PropTypes.object,
+};
 
-  state = { isOpen: false };
-  handleToggle = () => {
-    this.setState(({ isOpen }) => ({
-      isOpen: !isOpen,
-    }));
-  };
+const MainHeader = (ServersDropdown) => {
+  const MainHeaderComp = ({ location }) => {
+    const [ isOpen, toggleOpen, , close ] = useToggle();
+    const { pathname } = location;
 
-  componentDidUpdate(prevProps) {
-    if (this.props.location !== prevProps.location) {
-      this.setState({ isOpen: false });
-    }
-  }
+    useEffect(close, [ location ]);
 
-  render() {
-    const { location } = this.props;
     const createServerPath = '/server/create';
-    const toggleClass = classnames('main-header__toggle-icon', {
-      'main-header__toggle-icon--opened': this.state.isOpen,
-    });
+    const settingsPath = '/settings';
+    const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isOpen });
 
     return (
       <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
@@ -39,18 +30,19 @@ const MainHeader = (ServersDropdown) => class MainHeader extends React.Component
           <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo" /> Shlink
         </NavbarBrand>
 
-        <NavbarToggler onClick={this.handleToggle}>
+        <NavbarToggler onClick={toggleOpen}>
           <FontAwesomeIcon icon={arrowIcon} className={toggleClass} />
         </NavbarToggler>
 
-        <Collapse navbar isOpen={this.state.isOpen}>
+        <Collapse navbar isOpen={isOpen}>
           <Nav navbar className="ml-auto">
             <NavItem>
-              <NavLink
-                tag={Link}
-                to={createServerPath}
-                active={location.pathname === createServerPath}
-              >
+              <NavLink tag={Link} to={settingsPath} active={pathname === settingsPath}>
+                <FontAwesomeIcon icon={cogsIcon} />&nbsp; Settings
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink tag={Link} to={createServerPath} active={pathname === createServerPath}>
                 <FontAwesomeIcon icon={plusIcon} />&nbsp; Add server
               </NavLink>
             </NavItem>
@@ -59,7 +51,11 @@ const MainHeader = (ServersDropdown) => class MainHeader extends React.Component
         </Collapse>
       </Navbar>
     );
-  }
+  };
+
+  MainHeaderComp.propTypes = propTypes;
+
+  return MainHeaderComp;
 };
 
 export default MainHeader;

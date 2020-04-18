@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import NoMenuLayout from '../common/NoMenuLayout';
 import { ServerForm } from './helpers/ServerForm';
 import { withSelectedServer } from './helpers/withSelectedServer';
 import { serverType } from './prop-types';
@@ -20,11 +21,11 @@ export const EditServer = (ServerError) => {
     };
 
     return (
-      <div className="create-server">
+      <NoMenuLayout>
         <ServerForm initialValues={selectedServer} onSubmit={handleSubmit}>
           <button className="btn btn-outline-primary">Save</button>
         </ServerForm>
-      </div>
+      </NoMenuLayout>
     );
   };
 
