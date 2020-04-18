@@ -3,7 +3,7 @@ import reducer, {
   GET_MERCURE_INFO_ERROR,
   GET_MERCURE_INFO,
   loadMercureInfo,
-} from '../../src/mercure/reducers/mercureInfo.js';
+} from '../../../src/mercure/reducers/mercureInfo.js';
 
 describe('mercureInfoReducer', () => {
   const mercureInfo = {
