@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import { serverType } from '../../servers/prop-types';
+import { prettify } from '../../utils/helpers/numbers';
 import { shortUrlType } from '../reducers/shortUrlsList';
 import VisitStatsLink from './VisitStatsLink';
 import './ShortUrlVisitsCount.scss';
@@ -23,7 +24,7 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
       <strong
         className={classNames('short-url-visits-count__amount', { 'short-url-visits-count__amount--big': active })}
       >
-        {visitsCount}
+        {prettify(visitsCount)}
       </strong>
     </VisitStatsLink>
   );
@@ -32,19 +33,27 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
     return visitsLink;
   }
 
+  const prettifiedMaxVisits = prettify(maxVisits);
+  const tooltipRef = useRef();
+
   return (
     <React.Fragment>
       <span className="indivisible">
         {visitsLink}
-        <small id="maxVisitsControl" className="short-urls-visits-count__max-visits-control">
-          {' '}/ {maxVisits}{' '}
+        <small
+          className="short-urls-visits-count__max-visits-control"
+          ref={(el) => {
+            tooltipRef.current = el;
+          }}
+        >
+          {' '}/ {prettifiedMaxVisits}{' '}
           <sup>
             <FontAwesomeIcon icon={infoIcon} />
           </sup>
         </small>
       </span>
-      <UncontrolledTooltip target="maxVisitsControl" placement="bottom">
-        This short URL will not accept more than <b>{maxVisits}</b> visits.
+      <UncontrolledTooltip target={() => tooltipRef.current} placement="bottom">
+        This short URL will not accept more than <b>{prettifiedMaxVisits}</b> visits.
       </UncontrolledTooltip>
     </React.Fragment>
   );
