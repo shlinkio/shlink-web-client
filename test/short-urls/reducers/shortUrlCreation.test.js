@@ -52,7 +52,7 @@ describe('shortUrlCreationReducer', () => {
     const dispatch = jest.fn();
     const getState = () => ({});
 
-    afterEach(() => dispatch.mockReset());
+    afterEach(jest.resetAllMocks);
 
     it('calls API on success', async () => {
       const result = 'foo';
