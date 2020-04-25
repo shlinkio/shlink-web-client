@@ -4,7 +4,9 @@ import reducer, {
   deleteServer,
   listServers,
   createServers,
-  FETCH_SERVERS, FETCH_SERVERS_START, editServer,
+  editServer,
+  FETCH_SERVERS,
+  FETCH_SERVERS_START,
 } from '../../../src/servers/reducers/server';
 
 describe('serverReducer', () => {

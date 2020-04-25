@@ -21,6 +21,7 @@ describe('<App />', () => {
     const routes = wrapper.find(Route);
     const expectedPaths = [
       '/',
+      '/settings',
       '/server/create',
       '/server/:serverId/edit',
       '/server/:serverId',

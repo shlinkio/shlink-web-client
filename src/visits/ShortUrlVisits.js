@@ -12,6 +12,7 @@ import { formatDate } from '../utils/helpers/date';
 import { useToggle } from '../utils/helpers/hooks';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
 import { bindToMercureTopic } from '../mercure/helpers';
+import { RealTimeUpdatesType } from '../settings/reducers/realTimeUpdates';
 import SortableBarGraph from './SortableBarGraph';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
@@ -35,6 +36,7 @@ const propTypes = {
   createNewVisit: PropTypes.func,
   loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
+  realTimeUpdates: RealTimeUpdatesType,
 };
 
 const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.reduce((acc, highlightedVisit) => {
@@ -62,6 +64,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
     createNewVisit,
     loadMercureInfo,
     mercureInfo,
+    realTimeUpdates,
   }) => {
     const [ startDate, setStartDate ] = useState(undefined);
     const [ endDate, setEndDate ] = useState(undefined);
@@ -117,7 +120,13 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
       loadVisits();
     }, [ startDate, endDate ]);
     useEffect(
-      bindToMercureTopic(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit, loadMercureInfo),
+      bindToMercureTopic(
+        mercureInfo,
+        realTimeUpdates,
+        `https://shlink.io/new-visit/${shortCode}`,
+        createNewVisit,
+        loadMercureInfo
+      ),
       [ mercureInfo ],
     );
 

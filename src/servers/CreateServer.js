@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import PropTypes from 'prop-types';
-import './CreateServer.scss';
+import NoMenuLayout from '../common/NoMenuLayout';
 import { ServerForm } from './helpers/ServerForm';
+import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 const propTypes = {
@@ -29,7 +30,7 @@ const CreateServer = (ImportServersBtn, useStateFlagTimeout) => {
     }, []);
 
     return (
-      <div className="create-server">
+      <NoMenuLayout>
         <ServerForm onSubmit={handleSubmit}>
           <ImportServersBtn onImport={setServersImported} />
           <button className="btn btn-outline-primary">Create server</button>
@@ -44,7 +45,7 @@ const CreateServer = (ImportServersBtn, useStateFlagTimeout) => {
             </div>
           </div>
         )}
-      </div>
+      </NoMenuLayout>
     );
   };
 

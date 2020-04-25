@@ -1,9 +1,10 @@
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 
-export const bindToMercureTopic = (mercureInfo, topic, onMessage, onTokenExpired) => () => {
+export const bindToMercureTopic = (mercureInfo, realTimeUpdates, topic, onMessage, onTokenExpired) => () => {
+  const { enabled } = realTimeUpdates;
   const { mercureHubUrl, token, loading, error } = mercureInfo;
 
-  if (loading || error) {
+  if (!enabled || loading || error) {
     return undefined;
   }
 

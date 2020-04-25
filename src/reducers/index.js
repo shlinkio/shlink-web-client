@@ -14,6 +14,7 @@ import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
 import mercureInfoReducer from '../mercure/reducers/mercureInfo';
+import realTimeUpdatesReducer from '../settings/reducers/realTimeUpdates';
 
 export default combineReducers({
   servers: serversReducer,
@@ -31,4 +32,5 @@ export default combineReducers({
   tagDelete: tagDeleteReducer,
   tagEdit: tagEditReducer,
   mercureInfo: mercureInfoReducer,
+  realTimeUpdates: realTimeUpdatesReducer,
 });
