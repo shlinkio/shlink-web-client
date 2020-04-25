@@ -15,6 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * If it works, it will setup the necessary `EventSource`s, dispatching redux actions when an event is pushed, which will in turn update the UI.
     * If it fails, it will assume it is either not configured or not supported by the Shlink version.
 
+* [#253](https://github.com/shlinkio/shlink-web-client/issues/253) Created new settings page that will be used to define customizations in the app.
+
 #### Changed
 
 * *Nothing*
