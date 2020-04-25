@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 
-const LOAD_REAL_TIME_UPDATES = 'shlink/realTimeUpdates/LOAD_REAL_TIME_UPDATES';
+export const LOAD_REAL_TIME_UPDATES = 'shlink/realTimeUpdates/LOAD_REAL_TIME_UPDATES';
 
 export const RealTimeUpdatesType = PropTypes.shape({
   enabled: PropTypes.bool.isRequired,
