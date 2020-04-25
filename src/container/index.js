@@ -10,6 +10,7 @@ import provideVisitsServices from '../visits/services/provideServices';
 import provideTagsServices from '../tags/services/provideServices';
 import provideUtilsServices from '../utils/services/provideServices';
 import provideMercureServices from '../mercure/services/provideServices';
+import provideSettingsServices from '../settings/services/provideServices';
 
 const bottle = new Bottle();
 const { container } = bottle;
@@ -27,7 +28,8 @@ const connect = (propsFromState, actionServiceNames = []) =>
     actionServiceNames.reduce(mapActionService, {})
   );
 
-bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer');
+bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer', 'Settings');
+bottle.decorator('App', connect(null, [ 'loadRealTimeUpdates' ]));
 
 provideCommonServices(bottle, connect, withRouter);
 provideShortUrlsServices(bottle, connect);
@@ -36,5 +38,6 @@ provideTagsServices(bottle, connect);
 provideVisitsServices(bottle, connect);
 provideUtilsServices(bottle);
 provideMercureServices(bottle);
+provideSettingsServices(bottle, connect);
 
 export default container;
