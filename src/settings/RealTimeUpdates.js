@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import Checkbox from '../utils/Checkbox';
-import { RealTimeUpdatesType } from './reducers/realTimeUpdates';
+import { SettingsType } from './reducers/settings';
 
 const propTypes = {
-  realTimeUpdates: RealTimeUpdatesType,
+  settings: SettingsType,
   setRealTimeUpdates: PropTypes.func,
 };
 
-const RealTimeUpdates = ({ realTimeUpdates, setRealTimeUpdates }) => (
+const RealTimeUpdates = ({ settings: { realTimeUpdates }, setRealTimeUpdates }) => (
   <Card>
     <CardHeader>Real-time updates</CardHeader>
     <CardBody>

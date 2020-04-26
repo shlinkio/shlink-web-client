@@ -1,6 +1,6 @@
 import RealTimeUpdates from '../RealTimeUpdates';
 import Settings from '../Settings';
-import { loadRealTimeUpdates, setRealTimeUpdates } from '../reducers/realTimeUpdates';
+import { loadRealTimeUpdates, setRealTimeUpdates } from '../reducers/settings';
 import SettingsService from './SettingsService';
 
 const provideServices = (bottle, connect) => {
@@ -8,7 +8,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('Settings', Settings, 'RealTimeUpdates');
 
   bottle.serviceFactory('RealTimeUpdates', () => RealTimeUpdates);
-  bottle.decorator('RealTimeUpdates', connect([ 'realTimeUpdates' ], [ 'setRealTimeUpdates' ]));
+  bottle.decorator('RealTimeUpdates', connect([ 'settings' ], [ 'setRealTimeUpdates' ]));
 
   // Services
   bottle.service('SettingsService', SettingsService, 'Storage');

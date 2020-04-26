@@ -9,6 +9,7 @@ describe('<ShortUrlsList />', () => {
   const ShortUrlsRow = () => '';
   const listShortUrlsMock = jest.fn();
   const resetShortUrlParamsMock = jest.fn();
+  const realTimeUpdates = { enabled: true };
 
   const ShortUrlsList = shortUrlsListCreator(ShortUrlsRow);
 
@@ -37,6 +38,7 @@ describe('<ShortUrlsList />', () => {
           ]
         }
         mercureInfo={{ loading: true }}
+        settings={{ realTimeUpdates }}
       />
     );
   });

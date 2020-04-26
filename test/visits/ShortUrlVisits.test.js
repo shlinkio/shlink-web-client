@@ -21,6 +21,7 @@ describe('<ShortUrlVisits />', () => {
   const history = {
     goBack: jest.fn(),
   };
+  const realTimeUpdates = { enabled: true };
 
   const createComponent = (shortUrlVisits) => {
     const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits, normalizeVisits: identity }, () => '');
@@ -36,6 +37,7 @@ describe('<ShortUrlVisits />', () => {
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}
         matchMedia={() => ({ matches: false })}
+        settings={{ realTimeUpdates }}
       />
     );
 

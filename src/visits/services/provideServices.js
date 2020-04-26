@@ -11,7 +11,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('MapModal', () => MapModal);
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsParser', 'OpenMapModalBtn');
   bottle.decorator('ShortUrlVisits', connect(
-    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'realTimeUpdates' ],
+    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ]
   ));
 
