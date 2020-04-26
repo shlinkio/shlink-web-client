@@ -17,9 +17,10 @@ describe('<VisitsHeader />', () => {
   const shortUrlVisits = {
     visits: [{}, {}, {}],
   };
+  const goBack = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(<VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />);
+    wrapper = shallow(<VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />);
   });
   afterEach(() => wrapper.unmount());
 

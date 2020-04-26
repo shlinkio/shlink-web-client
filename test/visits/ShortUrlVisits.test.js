@@ -18,6 +18,9 @@ describe('<ShortUrlVisits />', () => {
     params: { shortCode: 'abc123' },
   };
   const location = { search: '' };
+  const history = {
+    goBack: jest.fn(),
+  };
 
   const createComponent = (shortUrlVisits) => {
     const ShortUrlVisits = createShortUrlVisits({ processStatsFromVisits, normalizeVisits: identity }, () => '');
@@ -28,6 +31,7 @@ describe('<ShortUrlVisits />', () => {
         getShortUrlVisits={getShortUrlVisitsMock}
         match={match}
         location={location}
+        history={history}
         shortUrlVisits={shortUrlVisits}
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}
