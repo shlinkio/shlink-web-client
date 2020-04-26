@@ -21,6 +21,9 @@ import { shortUrlDetailType } from './reducers/shortUrlDetail';
 import VisitsTable from './VisitsTable';
 
 const propTypes = {
+  history: PropTypes.shape({
+    goBack: PropTypes.func,
+  }),
   match: PropTypes.shape({
     params: PropTypes.object,
   }),
@@ -53,6 +56,7 @@ let selectedBar;
 
 const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBtn) => {
   const ShortUrlVisitsComp = ({
+    history,
     match,
     location,
     shortUrlVisits,
@@ -204,7 +208,7 @@ const ShortUrlVisits = ({ processStatsFromVisits, normalizeVisits }, OpenMapModa
 
     return (
       <React.Fragment>
-        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} />
+        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={history.goBack} />
 
         <section className="mt-4">
           <div className="row flex-md-row-reverse">
