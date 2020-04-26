@@ -1,6 +1,6 @@
 import RealTimeUpdates from '../RealTimeUpdates';
 import Settings from '../Settings';
-import { loadRealTimeUpdates, setRealTimeUpdates } from '../reducers/settings';
+import { setRealTimeUpdates } from '../reducers/settings';
 import SettingsService from './SettingsService';
 
 const provideServices = (bottle, connect) => {
@@ -14,8 +14,7 @@ const provideServices = (bottle, connect) => {
   bottle.service('SettingsService', SettingsService, 'Storage');
 
   // Actions
-  bottle.serviceFactory('setRealTimeUpdates', setRealTimeUpdates, 'SettingsService', 'loadRealTimeUpdates');
-  bottle.serviceFactory('loadRealTimeUpdates', loadRealTimeUpdates, 'SettingsService');
+  bottle.serviceFactory('setRealTimeUpdates', () => setRealTimeUpdates);
 };
 
 export default provideServices;
