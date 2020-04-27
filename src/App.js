@@ -1,23 +1,40 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import './App.scss';
 
-const App = (MainHeader, Home, MenuLayout, CreateServer, EditServer, Settings) => () => (
-  <div className="container-fluid app-container">
-    <MainHeader />
+const propTypes = {
+  fetchServers: PropTypes.func,
+  servers: PropTypes.object,
+};
 
-    <div className="app">
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/settings" component={Settings} />
-        <Route exact path="/server/create" component={CreateServer} />
-        <Route exact path="/server/:serverId/edit" component={EditServer} />
-        <Route path="/server/:serverId" component={MenuLayout} />
-        <Route component={NotFound} />
-      </Switch>
+const App = (MainHeader, Home, MenuLayout, CreateServer, EditServer, Settings) => ({ fetchServers, servers }) => {
+  // On first load, try to fetch the remote servers if the list is empty
+  useEffect(() => {
+    if (Object.keys(servers).length === 0) {
+      fetchServers();
+    }
+  }, []);
+
+  return (
+    <div className="container-fluid app-container">
+      <MainHeader />
+
+      <div className="app">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/settings" component={Settings} />
+          <Route exact path="/server/create" component={CreateServer} />
+          <Route exact path="/server/:serverId/edit" component={EditServer} />
+          <Route path="/server/:serverId" component={MenuLayout} />
+          <Route component={NotFound} />
+        </Switch>
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+App.propTypes = propTypes;
 
 export default App;

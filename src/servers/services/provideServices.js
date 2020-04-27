@@ -6,7 +6,8 @@ import DeleteServerButton from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer, listServers } from '../reducers/servers';
+import { createServer, createServers, deleteServer, editServer } from '../reducers/servers';
+import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
@@ -52,7 +53,7 @@ const provideServices = (bottle, connect, withRouter) => {
   bottle.serviceFactory('createServers', () => createServers);
   bottle.serviceFactory('deleteServer', () => deleteServer);
   bottle.serviceFactory('editServer', () => editServer);
-  bottle.serviceFactory('listServers', listServers, 'ServersService', 'axios');
+  bottle.serviceFactory('fetchServers', fetchServers, 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
 };

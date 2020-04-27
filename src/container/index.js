@@ -29,6 +29,7 @@ const connect = (propsFromState, actionServiceNames = []) =>
   );
 
 bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer', 'Settings');
+bottle.decorator('App', connect([ 'servers' ], [ 'fetchServers' ]));
 
 provideCommonServices(bottle, connect, withRouter);
 provideShortUrlsServices(bottle, connect);
