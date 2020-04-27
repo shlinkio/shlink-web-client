@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import serversReducer from '../servers/reducers/server';
+import serversReducer from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
 import shortUrlsListReducer from '../short-urls/reducers/shortUrlsList';
 import shortUrlsListParamsReducer from '../short-urls/reducers/shortUrlsListParams';

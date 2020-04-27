@@ -5,15 +5,15 @@ import reducer, {
   listServers,
   createServers,
   editServer,
-  FETCH_SERVERS,
-} from '../../../src/servers/reducers/server';
+  LIST_SERVERS,
+} from '../../../src/servers/reducers/servers';
 
 describe('serverReducer', () => {
   const list = {
     abc123: { id: 'abc123' },
     def456: { id: 'def456' },
   };
-  const expectedFetchServersResult = { type: FETCH_SERVERS, list };
+  const expectedFetchServersResult = { type: LIST_SERVERS, list };
   const ServersServiceMock = {
     listServers: jest.fn(() => list),
     createServer: jest.fn(),
@@ -25,8 +25,8 @@ describe('serverReducer', () => {
   afterEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    it('returns servers when action is FETCH_SERVERS', () =>
-      expect(reducer({}, { type: FETCH_SERVERS, list })).toEqual(list));
+    it('returns servers when action is LIST_SERVERS', () =>
+      expect(reducer({}, { type: LIST_SERVERS, list })).toEqual(list));
   });
 
   describe('action creators', () => {
@@ -89,7 +89,7 @@ describe('serverReducer', () => {
         await listServers(NoListServersServiceMock, axios)()(dispatch);
 
         expect(dispatch).toHaveBeenCalledTimes(1);
-        expect(dispatch).toHaveBeenNthCalledWith(1, { type: FETCH_SERVERS, list: expectedList });
+        expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SERVERS, list: expectedList });
         expect(NoListServersServiceMock.listServers).toHaveBeenCalledTimes(1);
         expect(NoListServersServiceMock.createServer).not.toHaveBeenCalled();
         expect(NoListServersServiceMock.editServer).not.toHaveBeenCalled();

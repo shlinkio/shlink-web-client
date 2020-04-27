@@ -6,7 +6,7 @@ import DeleteServerButton from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer, listServers } from '../reducers/server';
+import { createServer, createServers, deleteServer, editServer, listServers } from '../reducers/servers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
