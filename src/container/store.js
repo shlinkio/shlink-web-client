@@ -8,7 +8,7 @@ const composeEnhancers = process.env.NODE_ENV !== 'production' && window.__REDUX
   : compose;
 
 const localStorageConfig = {
-  states: [ 'settings' ],
+  states: [ 'settings', 'servers' ],
   namespace: 'shlink',
   namespaceSeparator: '.',
 };

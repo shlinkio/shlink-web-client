@@ -23,7 +23,7 @@ const provideServices = (bottle, connect, withRouter) => {
 
   bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
   bottle.decorator('ServersDropdown', withRouter);
-  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ], [ 'listServers' ]));
+  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
   bottle.decorator('DeleteServerModal', withRouter);
@@ -48,10 +48,10 @@ const provideServices = (bottle, connect, withRouter) => {
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'ServersService', 'buildShlinkApiClient', 'loadMercureInfo');
-  bottle.serviceFactory('createServer', createServer, 'ServersService', 'listServers');
-  bottle.serviceFactory('createServers', createServers, 'ServersService', 'listServers');
-  bottle.serviceFactory('deleteServer', deleteServer, 'ServersService', 'listServers');
-  bottle.serviceFactory('editServer', editServer, 'ServersService', 'listServers');
+  bottle.serviceFactory('createServer', () => createServer);
+  bottle.serviceFactory('createServers', () => createServers);
+  bottle.serviceFactory('deleteServer', () => deleteServer);
+  bottle.serviceFactory('editServer', () => editServer);
   bottle.serviceFactory('listServers', listServers, 'ServersService', 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);

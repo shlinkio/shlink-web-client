@@ -8,7 +8,6 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
   static propTypes = {
     servers: PropTypes.object,
     selectedServer: serverType,
-    listServers: PropTypes.func,
     history: PropTypes.shape({
       push: PropTypes.func,
     }),
@@ -38,8 +37,6 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
       </React.Fragment>
     );
   };
-
-  componentDidMount = this.props.listServers;
 
   render = () => (
     <UncontrolledDropdown nav inNavbar>

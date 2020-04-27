@@ -6,6 +6,9 @@ import reducer, {
   createServers,
   editServer,
   LIST_SERVERS,
+  EDIT_SERVER,
+  DELETE_SERVER,
+  CREATE_SERVERS,
 } from '../../../src/servers/reducers/servers';
 
 describe('serverReducer', () => {
@@ -27,10 +30,36 @@ describe('serverReducer', () => {
   describe('reducer', () => {
     it('returns servers when action is LIST_SERVERS', () =>
       expect(reducer({}, { type: LIST_SERVERS, list })).toEqual(list));
+
+    it('returns edited server when action is EDIT_SERVER', () =>
+      expect(reducer(
+        list,
+        { type: EDIT_SERVER, serverId: 'abc123', serverData: { foo: 'foo' } },
+      )).toEqual({
+        abc123: { id: 'abc123', foo: 'foo' },
+        def456: { id: 'def456' },
+      }));
+
+    it('removes server when action is DELETE_SERVER', () =>
+      expect(reducer(list, { type: DELETE_SERVER, serverId: 'abc123' })).toEqual({
+        def456: { id: 'def456' },
+      }));
+
+    it('appends server when action is CREATE_SERVERS', () =>
+      expect(reducer(list, {
+        type: CREATE_SERVERS,
+        newServers: {
+          ghi789: { id: 'ghi789' },
+        },
+      })).toEqual({
+        abc123: { id: 'abc123' },
+        def456: { id: 'def456' },
+        ghi789: { id: 'ghi789' },
+      }));
   });
 
   describe('action creators', () => {
-    describe('listServers', () => {
+    xdescribe('listServers', () => {
       const axios = { get: jest.fn() };
       const dispatch = jest.fn();
       const NoListServersServiceMock = { ...ServersServiceMock, listServers: jest.fn(() => ({})) };
@@ -100,62 +129,38 @@ describe('serverReducer', () => {
     });
 
     describe('createServer', () => {
-      it('adds new server and then fetches servers again', () => {
+      it('returns expected action', () => {
         const serverToCreate = { id: 'abc123' };
-        const result = createServer(ServersServiceMock, () => expectedFetchServersResult)(serverToCreate);
+        const result = createServer(serverToCreate);
 
-        expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServer).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.createServer).toHaveBeenCalledWith(serverToCreate);
-        expect(ServersServiceMock.editServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
+        expect(result).toEqual(expect.objectContaining({ type: CREATE_SERVERS }));
       });
     });
 
     describe('editServer', () => {
-      it('edits existing server and then fetches servers again', () => {
-        const serverToEdit = { name: 'edited' };
-        const result = editServer(ServersServiceMock, () => expectedFetchServersResult)('123', serverToEdit);
+      it('returns expected action', () => {
+        const serverData = { name: 'edited' };
+        const result = editServer('123', serverData);
 
-        expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.editServer).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.editServer).toHaveBeenCalledWith('123', serverToEdit);
-        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
+        expect(result).toEqual({ type: EDIT_SERVER, serverId: '123', serverData });
       });
     });
 
     describe('deleteServer', () => {
-      it('deletes a server and then fetches servers again', () => {
+      it('returns expected action', () => {
         const serverToDelete = { id: 'abc123' };
-        const result = deleteServer(ServersServiceMock, () => expectedFetchServersResult)(serverToDelete);
+        const result = deleteServer(serverToDelete);
 
-        expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServers).not.toHaveBeenCalled();
-        expect(ServersServiceMock.editServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.deleteServer).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.deleteServer).toHaveBeenCalledWith(serverToDelete);
+        expect(result).toEqual({ type: DELETE_SERVER, serverId: 'abc123' });
       });
     });
 
     describe('createServers', () => {
-      it('creates multiple servers and then fetches servers again', () => {
-        const serversToCreate = values(list);
-        const result = createServers(ServersServiceMock, () => expectedFetchServersResult)(serversToCreate);
+      it('returns expected action', () => {
+        const newServers = values(list);
+        const result = createServers(newServers);
 
-        expect(result).toEqual(expectedFetchServersResult);
-        expect(ServersServiceMock.listServers).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.editServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.deleteServer).not.toHaveBeenCalled();
-        expect(ServersServiceMock.createServers).toHaveBeenCalledTimes(1);
-        expect(ServersServiceMock.createServers).toHaveBeenCalledWith(serversToCreate);
+        expect(result).toEqual(expect.objectContaining({ type: CREATE_SERVERS }));
       });
     });
   });
