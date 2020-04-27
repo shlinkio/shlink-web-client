@@ -12,8 +12,10 @@
 
   @include sticky-cell();
 
-  &.visits-table__sticky {
-    top: $headerHeight - 2px;
+  @media (min-width: $mdMin) {
+    &.visits-table__sticky {
+      top: $headerHeight - 2px;
+    }
   }
 }
 
