@@ -6,7 +6,7 @@ describe('<Home />', () => {
   let wrapped;
   const defaultProps = {
     resetSelectedServer: jest.fn(),
-    servers: { loading: false, list: {} },
+    servers: {},
   };
   const createComponent = (props) => {
     const actualProps = { ...defaultProps, ...props };
@@ -24,20 +24,12 @@ describe('<Home />', () => {
     expect(wrapped.find('Link')).toHaveLength(1);
   });
 
-  it('shows message when loading servers', () => {
-    const wrapped = createComponent({ servers: { loading: true } });
-    const span = wrapped.find('span');
-
-    expect(span).toHaveLength(1);
-    expect(span.text()).toContain('Trying to load servers...');
-  });
-
-  it('Asks to select a server when not loadign and servers exist', () => {
-    const list = [
-      { name: 'foo', id: '1' },
-      { name: 'bar', id: '2' },
-    ];
-    const wrapped = createComponent({ servers: { list } });
+  it('asks to select a server when servers exist', () => {
+    const servers = {
+      1: { name: 'foo', id: '1' },
+      2: { name: 'bar', id: '2' },
+    };
+    const wrapped = createComponent({ servers });
     const span = wrapped.find('span');
 
     expect(span).toHaveLength(1);

@@ -15,22 +15,18 @@ const ServersDropdown = (serversExporter) => class ServersDropdown extends React
   };
 
   renderServers = () => {
-    const { servers: { list, loading }, selectedServer } = this.props;
-    const servers = values(list);
+    const { servers, selectedServer } = this.props;
+    const serversList = values(servers);
     const { push } = this.props.history;
     const loadServer = (id) => push(`/server/${id}/list-short-urls/1`);
 
-    if (loading) {
-      return <DropdownItem disabled><i>Trying to load servers...</i></DropdownItem>;
-    }
-
-    if (isEmpty(servers)) {
+    if (isEmpty(serversList)) {
       return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
     }
 
     return (
       <React.Fragment>
-        {servers.map(({ name, id }) => (
+        {serversList.map(({ name, id }) => (
           <DropdownItem key={id} active={selectedServer && selectedServer.id === id} onClick={() => loadServer(id)}>
             {name}
           </DropdownItem>

@@ -13,7 +13,7 @@ const propTypes = {
 };
 
 export const ServerError = (DeleteServerButton) => {
-  const ServerErrorComp = ({ type, servers: { list }, selectedServer }) => (
+  const ServerErrorComp = ({ type, servers, selectedServer }) => (
     <div className="server-error__container flex-column">
       <div className="row w-100 mb-3 mb-md-5">
         <Message type="error">
@@ -27,7 +27,7 @@ export const ServerError = (DeleteServerButton) => {
         </Message>
       </div>
 
-      <ServersListGroup servers={Object.values(list)}>
+      <ServersListGroup servers={Object.values(servers)}>
         These are the Shlink servers currently configured. Choose one of
         them or <Link to="/server/create">add a new one</Link>.
       </ServersListGroup>

@@ -3,25 +3,17 @@ import { pipe, isEmpty, assoc, map, prop } from 'ramda';
 import { v4 as uuid } from 'uuid';
 import { homepage } from '../../../package.json';
 
-/* eslint-disable padding-line-between-statements */
-export const FETCH_SERVERS_START = 'shlink/servers/FETCH_SERVERS_START';
 export const FETCH_SERVERS = 'shlink/servers/FETCH_SERVERS';
-/* eslint-enable padding-line-between-statements */
 
-const initialState = {
-  list: {},
-  loading: false,
-};
+const initialState = {};
 
 const assocId = (server) => assoc('id', server.id || uuid(), server);
 
 export default handleActions({
-  [FETCH_SERVERS_START]: (state) => ({ ...state, loading: true }),
-  [FETCH_SERVERS]: (state, { list }) => ({ list, loading: false }),
+  [FETCH_SERVERS]: (state, { list }) => list,
 }, initialState);
 
 export const listServers = ({ listServers, createServers }, { get }) => () => async (dispatch) => {
-  dispatch({ type: FETCH_SERVERS_START });
   const localList = listServers();
 
   if (!isEmpty(localList)) {
