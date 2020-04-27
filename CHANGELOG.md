@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* [#218](https://github.com/shlinkio/shlink-web-client/issues/218) Added back button to sections not displayed in left menu
+* [#218](https://github.com/shlinkio/shlink-web-client/issues/218) Added back button to sections not displayed in left menu.
+* [#255](https://github.com/shlinkio/shlink-web-client/issues/255) Improved how servers and settings are persisted in the local storage.
 
 #### Deprecated
 
