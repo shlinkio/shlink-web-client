@@ -25,12 +25,15 @@ const getServerVersion = memoizeWith(identity, (serverId, health) => health().th
 
 export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
-export const selectServer = ({ findServerById }, buildShlinkApiClient, loadMercureInfo) => (serverId) => async (
-  dispatch
+export const selectServer = (buildShlinkApiClient, loadMercureInfo) => (serverId) => async (
+  dispatch,
+  getState
 ) => {
   dispatch(resetSelectedServer());
   dispatch(resetShortUrlParams());
-  const selectedServer = findServerById(serverId);
+
+  const { servers } = getState();
+  const selectedServer = servers[serverId];
 
   if (!selectedServer) {
     dispatch({

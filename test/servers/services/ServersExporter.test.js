@@ -18,8 +18,8 @@ describe('ServersExporter', () => {
       },
     },
   });
-  const serversServiceMock = {
-    listServers: jest.fn(() => ({
+  const storageMock = {
+    get: jest.fn(() => ({
       abc123: {
         id: 'abc123',
         name: 'foo',
@@ -48,19 +48,15 @@ describe('ServersExporter', () => {
       global.console = { error: jest.fn() };
       global.Blob = class Blob {};
       global.URL = { createObjectURL: () => '' };
-      serversServiceMock.listServers.mockReset();
     });
     afterEach(() => {
       global.console = originalConsole;
+      jest.clearAllMocks();
     });
 
     it('logs an error if something fails', () => {
       const csvjsonMock = createCsvjsonMock(true);
-      const exporter = new ServersExporter(
-        serversServiceMock,
-        createWindowMock(),
-        csvjsonMock,
-      );
+      const exporter = new ServersExporter(storageMock, createWindowMock(), csvjsonMock);
 
       exporter.exportServers();
 
@@ -70,30 +66,22 @@ describe('ServersExporter', () => {
 
     it('makes use of msSaveBlob API when available', () => {
       const windowMock = createWindowMock();
-      const exporter = new ServersExporter(
-        serversServiceMock,
-        windowMock,
-        createCsvjsonMock(),
-      );
+      const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
 
       exporter.exportServers();
 
-      expect(serversServiceMock.listServers).toHaveBeenCalledTimes(1);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
       expect(windowMock.navigator.msSaveBlob).toHaveBeenCalledTimes(1);
       expect(windowMock.document.createElement).not.toHaveBeenCalled();
     });
 
     it('makes use of download link API when available', () => {
       const windowMock = createWindowMock(false);
-      const exporter = new ServersExporter(
-        serversServiceMock,
-        windowMock,
-        createCsvjsonMock(),
-      );
+      const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
 
       exporter.exportServers();
 
-      expect(serversServiceMock.listServers).toHaveBeenCalledTimes(1);
+      expect(storageMock.get).toHaveBeenCalledTimes(1);
       expect(windowMock.document.createElement).toHaveBeenCalledTimes(1);
       expect(windowMock.document.body.appendChild).toHaveBeenCalledTimes(1);
       expect(windowMock.document.body.removeChild).toHaveBeenCalledTimes(1);

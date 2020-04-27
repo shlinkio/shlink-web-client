@@ -25,14 +25,14 @@ const saveCsv = (window, csv) => {
 };
 
 export default class ServersExporter {
-  constructor(serversService, window, csvjson) {
-    this.serversService = serversService;
+  constructor(storage, window, csvjson) {
+    this.storage = storage;
     this.window = window;
     this.csvjson = csvjson;
   }
 
   exportServers = async () => {
-    const servers = values(this.serversService.listServers()).map(dissoc('id'));
+    const servers = values(this.storage.get('servers') || {}).map(dissoc('id'));
 
     try {
       const csv = this.csvjson.toCSV(servers, {

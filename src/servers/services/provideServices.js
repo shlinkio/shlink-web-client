@@ -11,7 +11,6 @@ import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
-import ServersService from './ServersService';
 import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle, connect, withRouter) => {
@@ -44,11 +43,10 @@ const provideServices = (bottle, connect, withRouter) => {
   // Services
   bottle.constant('csvjson', csvjson);
   bottle.service('ServersImporter', ServersImporter, 'csvjson');
-  bottle.service('ServersService', ServersService, 'Storage');
-  bottle.service('ServersExporter', ServersExporter, 'ServersService', 'window', 'csvjson');
+  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'csvjson');
 
   // Actions
-  bottle.serviceFactory('selectServer', selectServer, 'ServersService', 'buildShlinkApiClient', 'loadMercureInfo');
+  bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');
   bottle.serviceFactory('createServer', () => createServer);
   bottle.serviceFactory('createServers', () => createServers);
   bottle.serviceFactory('deleteServer', () => deleteServer);
