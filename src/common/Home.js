@@ -10,9 +10,9 @@ const propTypes = {
   servers: PropTypes.object,
 };
 
-const Home = ({ resetSelectedServer, servers: { list, loading } }) => {
-  const servers = values(list);
-  const hasServers = !isEmpty(servers);
+const Home = ({ resetSelectedServer, servers }) => {
+  const serversList = values(servers);
+  const hasServers = !isEmpty(serversList);
 
   useEffect(() => {
     resetSelectedServer();
@@ -21,10 +21,9 @@ const Home = ({ resetSelectedServer, servers: { list, loading } }) => {
   return (
     <div className="home">
       <h1 className="home__title">Welcome to Shlink</h1>
-      <ServersListGroup servers={servers}>
-        {!loading && hasServers && <span>Please, select a server.</span>}
-        {!loading && !hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
-        {loading && <span>Trying to load servers...</span>}
+      <ServersListGroup servers={serversList}>
+        {hasServers && <span>Please, select a server.</span>}
+        {!hasServers && <span>Please, <Link to="/server/create">add a server</Link>.</span>}
       </ServersListGroup>
     </div>
   );

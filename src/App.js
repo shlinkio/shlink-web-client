@@ -1,11 +1,20 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import './App.scss';
 
-const App = (MainHeader, Home, MenuLayout, CreateServer, EditServer, Settings) => ({ loadRealTimeUpdates }) => {
+const propTypes = {
+  fetchServers: PropTypes.func,
+  servers: PropTypes.object,
+};
+
+const App = (MainHeader, Home, MenuLayout, CreateServer, EditServer, Settings) => ({ fetchServers, servers }) => {
+  // On first load, try to fetch the remote servers if the list is empty
   useEffect(() => {
-    loadRealTimeUpdates();
+    if (Object.keys(servers).length === 0) {
+      fetchServers();
+    }
   }, []);
 
   return (
@@ -25,5 +34,7 @@ const App = (MainHeader, Home, MenuLayout, CreateServer, EditServer, Settings) =
     </div>
   );
 };
+
+App.propTypes = propTypes;
 
 export default App;

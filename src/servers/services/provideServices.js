@@ -6,11 +6,11 @@ import DeleteServerButton from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer, listServers } from '../reducers/server';
+import { createServer, createServers, deleteServer, editServer } from '../reducers/servers';
+import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import ServersImporter from './ServersImporter';
-import ServersService from './ServersService';
 import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle, connect, withRouter) => {
@@ -23,7 +23,7 @@ const provideServices = (bottle, connect, withRouter) => {
 
   bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
   bottle.decorator('ServersDropdown', withRouter);
-  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ], [ 'listServers' ]));
+  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
   bottle.decorator('DeleteServerModal', withRouter);
@@ -43,16 +43,15 @@ const provideServices = (bottle, connect, withRouter) => {
   // Services
   bottle.constant('csvjson', csvjson);
   bottle.service('ServersImporter', ServersImporter, 'csvjson');
-  bottle.service('ServersService', ServersService, 'Storage');
-  bottle.service('ServersExporter', ServersExporter, 'ServersService', 'window', 'csvjson');
+  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'csvjson');
 
   // Actions
-  bottle.serviceFactory('selectServer', selectServer, 'ServersService', 'buildShlinkApiClient', 'loadMercureInfo');
-  bottle.serviceFactory('createServer', createServer, 'ServersService', 'listServers');
-  bottle.serviceFactory('createServers', createServers, 'ServersService', 'listServers');
-  bottle.serviceFactory('deleteServer', deleteServer, 'ServersService', 'listServers');
-  bottle.serviceFactory('editServer', editServer, 'ServersService', 'listServers');
-  bottle.serviceFactory('listServers', listServers, 'ServersService', 'axios');
+  bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');
+  bottle.serviceFactory('createServer', () => createServer);
+  bottle.serviceFactory('createServers', () => createServers);
+  bottle.serviceFactory('deleteServer', () => deleteServer);
+  bottle.serviceFactory('editServer', () => editServer);
+  bottle.serviceFactory('fetchServers', fetchServers, 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
 };

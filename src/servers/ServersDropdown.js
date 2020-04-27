@@ -4,53 +4,50 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import PropTypes from 'prop-types';
 import { serverType } from './prop-types';
 
-const ServersDropdown = (serversExporter) => class ServersDropdown extends React.Component {
-  static propTypes = {
-    servers: PropTypes.object,
-    selectedServer: serverType,
-    listServers: PropTypes.func,
-    history: PropTypes.shape({
-      push: PropTypes.func,
-    }),
-  };
+const propTypes = {
+  servers: PropTypes.object,
+  selectedServer: serverType,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};
 
-  renderServers = () => {
-    const { servers: { list, loading }, selectedServer } = this.props;
-    const servers = values(list);
-    const { push } = this.props.history;
-    const loadServer = (id) => push(`/server/${id}/list-short-urls/1`);
+const ServersDropdown = (serversExporter) => {
+  const ServersDropdownComp = ({ servers, selectedServer, history }) => {
+    const serversList = values(servers);
+    const loadServer = (id) => history.push(`/server/${id}/list-short-urls/1`);
 
-    if (loading) {
-      return <DropdownItem disabled><i>Trying to load servers...</i></DropdownItem>;
-    }
+    const renderServers = () => {
+      if (isEmpty(serversList)) {
+        return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
+      }
 
-    if (isEmpty(servers)) {
-      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
-    }
+      return (
+        <React.Fragment>
+          {serversList.map(({ name, id }) => (
+            <DropdownItem key={id} active={selectedServer && selectedServer.id === id} onClick={() => loadServer(id)}>
+              {name}
+            </DropdownItem>
+          ))}
+          <DropdownItem divider />
+          <DropdownItem className="servers-dropdown__export-item" onClick={() => serversExporter.exportServers()}>
+            Export servers
+          </DropdownItem>
+        </React.Fragment>
+      );
+    };
 
     return (
-      <React.Fragment>
-        {servers.map(({ name, id }) => (
-          <DropdownItem key={id} active={selectedServer && selectedServer.id === id} onClick={() => loadServer(id)}>
-            {name}
-          </DropdownItem>
-        ))}
-        <DropdownItem divider />
-        <DropdownItem className="servers-dropdown__export-item" onClick={() => serversExporter.exportServers()}>
-          Export servers
-        </DropdownItem>
-      </React.Fragment>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret>Servers</DropdownToggle>
+        <DropdownMenu right>{renderServers()}</DropdownMenu>
+      </UncontrolledDropdown>
     );
   };
 
-  componentDidMount = this.props.listServers;
+  ServersDropdownComp.propTypes = propTypes;
 
-  render = () => (
-    <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav caret>Servers</DropdownToggle>
-      <DropdownMenu right>{this.renderServers()}</DropdownMenu>
-    </UncontrolledDropdown>
-  );
+  return ServersDropdownComp;
 };
 
 export default ServersDropdown;

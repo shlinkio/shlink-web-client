@@ -32,7 +32,7 @@ describe('<ServerError />', () => {
   ])('renders expected information for type "%s"', (type, textsToFind) => {
     wrapper = shallow(
       <BrowserRouter>
-        <ServerError type={type} servers={{ list: [] }} selectedServer={selectedServer} />
+        <ServerError type={type} servers={{}} selectedServer={selectedServer} />
       </BrowserRouter>
     );
     const wrapperText = wrapper.html();

@@ -32,9 +32,7 @@ describe('selectedServerReducer', () => {
       id: 'abc123',
     };
     const version = '1.19.0';
-    const ServersServiceMock = {
-      findServerById: jest.fn(() => selectedServer),
-    };
+    const createGetStateMock = (id) => jest.fn().mockReturnValue({ servers: { [id]: selectedServer } });
     const apiClientMock = {
       health: jest.fn(),
     };
@@ -49,6 +47,8 @@ describe('selectedServerReducer', () => {
       [ 'latest', MAX_FALLBACK_VERSION, 'latest' ],
       [ '%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%' ],
     ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
+      const id = uuid();
+      const getState = createGetStateMock(id);
       const expectedSelectedServer = {
         ...selectedServer,
         version: expectedVersion,
@@ -57,7 +57,7 @@ describe('selectedServerReducer', () => {
 
       apiClientMock.health.mockResolvedValue({ version: serverVersion });
 
-      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
+      await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
       expect(dispatch).toHaveBeenCalledTimes(4);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
@@ -67,18 +67,23 @@ describe('selectedServerReducer', () => {
     });
 
     it('invokes dependencies', async () => {
-      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(() => {});
+      const id = uuid();
+      const getState = createGetStateMock(id);
 
-      expect(ServersServiceMock.findServerById).toHaveBeenCalledTimes(1);
+      await selectServer(buildApiClient, loadMercureInfo)(id)(() => {}, getState);
+
+      expect(getState).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
     });
 
     it('dispatches error when health endpoint fails', async () => {
+      const id = uuid();
+      const getState = createGetStateMock(id);
       const expectedSelectedServer = { ...selectedServer, serverNotReachable: true };
 
       apiClientMock.health.mockRejectedValue({});
 
-      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
+      await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
       expect(apiClientMock.health).toHaveBeenCalled();
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
@@ -86,13 +91,13 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when server is not found', async () => {
+      const id = uuid();
+      const getState = jest.fn(() => ({ servers: {} }));
       const expectedSelectedServer = { serverNotFound: true };
 
-      ServersServiceMock.findServerById.mockReturnValue(undefined);
+      await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
-      await selectServer(ServersServiceMock, buildApiClient, loadMercureInfo)(uuid())(dispatch);
-
-      expect(ServersServiceMock.findServerById).toHaveBeenCalled();
+      expect(getState).toHaveBeenCalled();
       expect(apiClientMock.health).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
       expect(loadMercureInfo).not.toHaveBeenCalled();

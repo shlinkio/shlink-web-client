@@ -27,6 +27,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
+    "@shlinkio/redux-localstorage-simple": "^2.2.0",
     "array-filter": "^1.0.0",
     "array-map": "^0.0.0",
     "array-reduce": "^0.0.0",

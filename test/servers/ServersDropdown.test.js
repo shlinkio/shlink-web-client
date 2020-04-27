@@ -8,12 +8,9 @@ describe('<ServersDropdown />', () => {
   let wrapped;
   let ServersDropdown;
   const servers = {
-    list: {
-      '1a': { name: 'foo', id: 1 },
-      '2b': { name: 'bar', id: 2 },
-      '3c': { name: 'baz', id: 3 },
-    },
-    loading: false,
+    '1a': { name: 'foo', id: 1 },
+    '2b': { name: 'bar', id: 2 },
+    '3c': { name: 'baz', id: 3 },
   };
   const history = {
     push: jest.fn(),
@@ -26,7 +23,7 @@ describe('<ServersDropdown />', () => {
   afterEach(() => wrapped.unmount());
 
   it('contains the list of servers, the divider and the export button', () =>
-    expect(wrapped.find(DropdownItem)).toHaveLength(values(servers.list).length + 2));
+    expect(wrapped.find(DropdownItem)).toHaveLength(values(servers).length + 2));
 
   it('contains a toggle with proper title', () =>
     expect(wrapped.find(DropdownToggle)).toHaveLength(1));
@@ -40,23 +37,12 @@ describe('<ServersDropdown />', () => {
 
   it('shows a message when no servers exist yet', () => {
     wrapped = shallow(
-      <ServersDropdown servers={{ loading: false, list: {} }} listServers={identity} history={history} />
+      <ServersDropdown servers={{}} listServers={identity} history={history} />
     );
     const item = wrapped.find(DropdownItem);
 
     expect(item).toHaveLength(1);
     expect(item.prop('disabled')).toEqual(true);
     expect(item.find('i').text()).toEqual('Add a server first...');
-  });
-
-  it('shows a message when loading', () => {
-    wrapped = shallow(
-      <ServersDropdown servers={{ loading: true, list: {} }} listServers={identity} history={history} />
-    );
-    const item = wrapped.find(DropdownItem);
-
-    expect(item).toHaveLength(1);
-    expect(item.prop('disabled')).toEqual(true);
-    expect(item.find('i').text()).toEqual('Trying to load servers...');
   });
 });
