@@ -88,7 +88,7 @@ const VisitsTable = ({
   }, [ searchTerm ]);
 
   return (
-    <table className="table table-striped table-bordered table-hover table-sm visits-table">
+    <table className="table table-striped table-bordered table-hover table-sm table-responsive-sm visits-table">
       <thead className="visits-table__header">
         <tr>
           <th
