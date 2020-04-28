@@ -31,8 +31,12 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
     const burgerClasses = classNames('menu-layout__burger-icon', {
       'menu-layout__burger-icon--active': sidebarVisible,
     });
-    const swipeMenuIfNoModalExists = (callback) => () => {
-      if (document.querySelector('.modal')) {
+    const swipeMenuIfNoModalExists = (callback) => (e) => {
+      const swippedOnVisitsTable = e.event.path.some(
+        ({ classList }) => classList && classList.contains('visits-table')
+      );
+
+      if (swippedOnVisitsTable || document.querySelector('.modal')) {
         return;
       }
 
