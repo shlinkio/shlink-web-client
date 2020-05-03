@@ -1,7 +1,6 @@
 {
   "name": "shlink-web-client",
   "description": "A React-based progressive web application for shlink",
-  "version": "2.3.0",
   "private": false,
   "homepage": "",
   "repository": "https://github.com/shlinkio/shlink-web-client",
@@ -27,7 +26,6 @@
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
-    "@shlinkio/redux-localstorage-simple": "^2.2.0",
     "array-filter": "^1.0.0",
     "array-map": "^0.0.0",
     "array-reduce": "^0.0.0",
@@ -63,6 +61,7 @@
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
+    "redux-localstorage-simple": "^2.2.0",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.3"
   },
