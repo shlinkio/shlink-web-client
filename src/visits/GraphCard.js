@@ -79,7 +79,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
     scales: isBarChart && {
       xAxes: [
         {
-          ticks: { beginAtZero: true, max },
+          ticks: { beginAtZero: true, precision: 0, max },
           stacked: true,
         },
       ],
