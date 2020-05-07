@@ -64,7 +64,7 @@ describe('<GraphCard />', () => {
     expect(scales).toEqual({
       xAxes: [
         {
-          ticks: { beginAtZero: true },
+          ticks: { beginAtZero: true, precision: 0 },
           stacked: true,
         },
       ],
