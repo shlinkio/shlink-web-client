@@ -4,6 +4,7 @@ import { MercureInfoType } from '../mercure/reducers/mercureInfo';
 import { SettingsType } from '../settings/reducers/settings';
 import { bindToMercureTopic } from '../mercure/helpers';
 import { TagVisitsType } from './reducers/tagVisits';
+import TagVisitsHeader from './TagVisitsHeader';
 
 const propTypes = {
   history: PropTypes.shape({
@@ -37,8 +38,6 @@ const TagVisits = (VisitsStats) => {
     const { tag } = params;
     const loadVisits = (dates) => getTagVisits(tag, dates);
 
-    console.log(history);
-
     useEffect(
       bindToMercureTopic(
         mercureInfo,
@@ -52,7 +51,7 @@ const TagVisits = (VisitsStats) => {
 
     return (
       <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetTagVisits} visitsInfo={tagVisits}>
-        <span>{tag} - {tagVisits.visits.length}</span>
+        <TagVisitsHeader tagVisits={tagVisits} goBack={history.goBack} />
       </VisitsStats>
     );
   };

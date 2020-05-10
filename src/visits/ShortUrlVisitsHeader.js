@@ -14,7 +14,7 @@ const propTypes = {
   goBack: PropTypes.func.isRequired,
 };
 
-export default function ShortUrlVisitsHeader({ shortUrlDetail, shortUrlVisits, goBack }) {
+const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }) => {
   const { shortUrl, loading } = shortUrlDetail;
   const { visits } = shortUrlVisits;
   const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
@@ -47,6 +47,8 @@ export default function ShortUrlVisitsHeader({ shortUrlDetail, shortUrlVisits, g
       </div>
     </VisitsHeader>
   );
-}
+};
 
 ShortUrlVisitsHeader.propTypes = propTypes;
+
+export default ShortUrlVisitsHeader;
