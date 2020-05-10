@@ -15,11 +15,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * If it works, it will setup the necessary `EventSource`s, dispatching redux actions when an event is pushed, which will in turn update the UI.
     * If it fails, it will assume it is either not configured or not supported by the Shlink version.
 
-* [#253](https://github.com/shlinkio/shlink-web-client/issues/253) Created new settings page that will be used to define customizations in the app.
-
 * [#265](https://github.com/shlinkio/shlink-web-client/issues/265) Updated tags section to allow displaying number of short URLs using every tag and number of visits for all short URLs using the tag.
 
     This will work only when using Shlink v2.2.0 or above. For previous versions, the tags page will continue behaving the same.
+
+* [#261](https://github.com/shlinkio/shlink-web-client/issues/261) Added new page to show visit stats by tag.
+
+    This new page will return a "not found" error when the server is lower than v2.2.0, as older versions do not support fetching stats by tag.
+
+* [#253](https://github.com/shlinkio/shlink-web-client/issues/253) Created new settings page that will be used to define customizations in the app.
 
 #### Changed
 
