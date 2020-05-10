@@ -54,7 +54,8 @@ export default class ShlinkApiClient {
 
   listTags = () =>
     this._performRequest('/tags', 'GET', { withStats: 'true' })
-      .then((resp) => resp.data.tags);
+      .then((resp) => resp.data.tags)
+      .then(({ data, stats }) => ({ tags: data, stats }));
 
   deleteTags = (tags) =>
     this._performRequest('/tags', 'DELETE', { tags })

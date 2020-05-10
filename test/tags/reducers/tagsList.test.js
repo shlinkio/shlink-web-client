@@ -103,7 +103,7 @@ describe('tagsListReducer', () => {
     it('dispatches loaded lists when no error occurs', async () => {
       const tags = [ 'foo', 'bar', 'baz' ];
 
-      listTagsMock.mockResolvedValue({ data: tags, stats: [] });
+      listTagsMock.mockResolvedValue({ tags, stats: [] });
       buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
       await listTags(buildShlinkApiClient, true)()(dispatch, getState);

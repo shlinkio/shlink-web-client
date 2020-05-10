@@ -61,14 +61,14 @@ export const listTags = (buildShlinkApiClient, force = true) => () => async (dis
 
   try {
     const { listTags } = buildShlinkApiClient(getState);
-    const { stats = [], data } = await listTags();
+    const { tags, stats = [] } = await listTags();
     const processedStats = stats.reduce((acc, { tag, shortUrlsCount, visitsCount }) => {
       acc[tag] = { shortUrlsCount, visitsCount };
 
       return acc;
     }, {});
 
-    dispatch({ tags: data, stats: processedStats, type: LIST_TAGS });
+    dispatch({ tags, stats: processedStats, type: LIST_TAGS });
   } catch (e) {
     dispatch({ type: LIST_TAGS_ERROR });
   }
