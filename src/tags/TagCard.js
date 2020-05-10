@@ -6,37 +6,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { serverType } from '../servers/prop-types';
 import { prettify } from '../utils/helpers/numbers';
+import { useToggle } from '../utils/helpers/hooks';
 import TagBullet from './helpers/TagBullet';
 import './TagCard.scss';
 
-const TagCard = (
-  DeleteTagConfirmModal,
-  EditTagModal,
-  ForServerVersion,
-  colorGenerator
-) => class TagCard extends React.Component {
-  static propTypes = {
-    tag: PropTypes.string,
-    tagStats: PropTypes.shape({
-      shortUrlsCount: PropTypes.number,
-      visitsCount: PropTypes.number,
-    }),
-    selectedServer: serverType,
-    displayed: PropTypes.bool,
-    toggle: PropTypes.func,
-  };
+const propTypes = {
+  tag: PropTypes.string,
+  tagStats: PropTypes.shape({
+    shortUrlsCount: PropTypes.number,
+    visitsCount: PropTypes.number,
+  }),
+  selectedServer: serverType,
+  displayed: PropTypes.bool,
+  toggle: PropTypes.func,
+};
 
-  state = { isDeleteModalOpen: false, isEditModalOpen: false };
+const TagCard = (DeleteTagConfirmModal, EditTagModal, ForServerVersion, colorGenerator) => {
+  const TagCardComp = ({ tag, tagStats, selectedServer, displayed, toggle }) => {
+    const [ isDeleteModalOpen, toggleDelete ] = useToggle();
+    const [ isEditModalOpen, toggleEdit ] = useToggle();
 
-  render() {
-    const { tag, tagStats, selectedServer, displayed, toggle } = this.props;
     const { id } = selectedServer;
     const shortUrlsLink = `/server/${id}/list-short-urls/1?tag=${tag}`;
-
-    const toggleDelete = () =>
-      this.setState(({ isDeleteModalOpen }) => ({ isDeleteModalOpen: !isDeleteModalOpen }));
-    const toggleEdit = () =>
-      this.setState(({ isEditModalOpen }) => ({ isEditModalOpen: !isEditModalOpen }));
 
     return (
       <Card className="tag-card">
@@ -79,11 +70,15 @@ const TagCard = (
           </Collapse>
         )}
 
-        <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={this.state.isDeleteModalOpen} />
-        <EditTagModal tag={tag} toggle={toggleEdit} isOpen={this.state.isEditModalOpen} />
+        <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={isDeleteModalOpen} />
+        <EditTagModal tag={tag} toggle={toggleEdit} isOpen={isEditModalOpen} />
       </Card>
     );
-  }
+  };
+
+  TagCardComp.propTypes = propTypes;
+
+  return TagCardComp;
 };
 
 export default TagCard;

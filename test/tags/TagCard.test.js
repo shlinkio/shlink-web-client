@@ -10,13 +10,17 @@ describe('<TagCard />', () => {
     shortUrlsCount: 48,
     visitsCount: 23257,
   };
+  const DeleteTagConfirmModal = jest.fn();
+  const EditTagModal = jest.fn();
 
   beforeEach(() => {
-    const TagCard = createTagCard(() => '', () => '', () => '', {});
+    const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => '', {});
 
     wrapper = shallow(<TagCard tag="ssr" selectedServer={{ id: 1, serverNotFound: false }} tagStats={tagStats} />);
   });
+
   afterEach(() => wrapper.unmount());
+  afterEach(jest.resetAllMocks);
 
   it('shows a TagBullet and a link to the list filtering by the tag', () => {
     const links = wrapper.find(Link);
@@ -26,28 +30,20 @@ describe('<TagCard />', () => {
     expect(bullet.prop('tag')).toEqual('ssr');
   });
 
-  it('displays delete modal when delete btn is clicked', (done) => {
+  it('displays delete modal when delete btn is clicked', () => {
     const delBtn = wrapper.find('.tag-card__btn').at(0);
 
-    expect(wrapper.state('isDeleteModalOpen')).toEqual(false);
+    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(false);
     delBtn.simulate('click');
-
-    setImmediate(() => {
-      expect(wrapper.state('isDeleteModalOpen')).toEqual(true);
-      done();
-    });
+    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(true);
   });
 
-  it('displays edit modal when edit btn is clicked', (done) => {
+  it('displays edit modal when edit btn is clicked', () => {
     const editBtn = wrapper.find('.tag-card__btn').at(1);
 
-    expect(wrapper.state('isEditModalOpen')).toEqual(false);
+    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(false);
     editBtn.simulate('click');
-
-    setImmediate(() => {
-      expect(wrapper.state('isEditModalOpen')).toEqual(true);
-      done();
-    });
+    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(true);
   });
 
   it('shows expected tag stats', () => {
