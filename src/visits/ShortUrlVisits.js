@@ -5,7 +5,7 @@ import { MercureInfoType } from '../mercure/reducers/mercureInfo';
 import { bindToMercureTopic } from '../mercure/helpers';
 import { SettingsType } from '../settings/reducers/settings';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
-import VisitsHeader from './VisitsHeader';
+import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
 
 const propTypes = {
@@ -67,7 +67,7 @@ const ShortUrlVisits = (VisitsStats) => {
 
     return (
       <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetShortUrlVisits} visitsInfo={shortUrlVisits}>
-        <VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={history.goBack} />
+        <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={history.goBack} />
       </VisitsStats>
     );
   };

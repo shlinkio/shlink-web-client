@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
 import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
-import VisitsHeader from '../../src/visits/VisitsHeader';
+import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper;
@@ -41,7 +41,7 @@ describe('<ShortUrlVisits />', () => {
 
   it('renders visit stats and visits header', () => {
     const visitStats = wrapper.find(VisitsStats);
-    const visitHeader = wrapper.find(VisitsHeader);
+    const visitHeader = wrapper.find(ShortUrlVisitsHeader);
 
     expect(visitStats).toHaveLength(1);
     expect(visitHeader).toHaveLength(1);

@@ -1,46 +1,35 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Moment from 'react-moment';
-import { ExternalLink } from 'react-external-link';
 import VisitsHeader from '../../src/visits/VisitsHeader';
 
 describe('<VisitsHeader />', () => {
   let wrapper;
-  const shortUrlDetail = {
-    shortUrl: {
-      shortUrl: 'https://doma.in/abc123',
-      longUrl: 'https://foo.bar/bar/foo',
-      dateCreated: '2018-01-01T10:00:00+01:00',
-    },
-    loading: false,
-  };
-  const shortUrlVisits = {
-    visits: [{}, {}, {}],
-  };
+  const visits = [{}, {}, {}];
+  const title = 'My header title';
   const goBack = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(<VisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />);
+    wrapper = shallow(
+      <VisitsHeader visits={visits} goBack={goBack} title={title} />
+    );
   });
+
   afterEach(() => wrapper.unmount());
+  afterEach(jest.resetAllMocks);
 
   it('shows the amount of visits', () => {
     const visitsBadge = wrapper.find('.badge');
 
     expect(visitsBadge.html()).toContain(
-      `Visits: <span><strong class="short-url-visits-count__amount">${shortUrlVisits.visits.length}</strong></span>`
+      `Visits: <span><strong class="short-url-visits-count__amount">${visits.length}</strong></span>`
     );
   });
 
-  it('shows when the URL was created', () => {
-    const moment = wrapper.find(Moment).first();
+  it('shows the title in two places', () => {
+    const titles = wrapper.find('.text-center');
 
-    expect(moment.prop('children')).toEqual(shortUrlDetail.shortUrl.dateCreated);
-  });
-
-  it('shows the long URL', () => {
-    const longUrlLink = wrapper.find(ExternalLink).last();
-
-    expect(longUrlLink.prop('href')).toEqual(shortUrlDetail.shortUrl.longUrl);
+    expect(titles).toHaveLength(2);
+    expect(titles.at(0).html()).toContain(title);
+    expect(titles.at(1).html()).toContain(title);
   });
 });
