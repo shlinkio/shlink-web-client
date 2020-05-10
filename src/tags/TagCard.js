@@ -1,22 +1,38 @@
-import { Card, CardBody } from 'reactstrap';
+import { Card, CardHeader, CardBody, Button, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash as deleteIcon, faPencilAlt as editIcon } from '@fortawesome/free-solid-svg-icons';
+import { faTrash as deleteIcon, faPencilAlt as editIcon, faLink, faEye } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { serverType } from '../servers/prop-types';
+import { prettify } from '../utils/helpers/numbers';
 import TagBullet from './helpers/TagBullet';
 import './TagCard.scss';
 
-const TagCard = (DeleteTagConfirmModal, EditTagModal, colorGenerator) => class TagCard extends React.Component {
+const TagCard = (
+  DeleteTagConfirmModal,
+  EditTagModal,
+  ForServerVersion,
+  colorGenerator
+) => class TagCard extends React.Component {
   static propTypes = {
     tag: PropTypes.string,
-    currentServerId: PropTypes.string,
+    tagStats: PropTypes.shape({
+      shortUrlsCount: PropTypes.number,
+      visitsCount: PropTypes.number,
+    }),
+    selectedServer: serverType,
+    displayed: PropTypes.bool,
+    toggle: PropTypes.func,
   };
 
   state = { isDeleteModalOpen: false, isEditModalOpen: false };
 
   render() {
-    const { tag, currentServerId } = this.props;
+    const { tag, tagStats, selectedServer, displayed, toggle } = this.props;
+    const { id } = selectedServer;
+    const shortUrlsLink = `/server/${id}/list-short-urls/1?tag=${tag}`;
+
     const toggleDelete = () =>
       this.setState(({ isDeleteModalOpen }) => ({ isDeleteModalOpen: !isDeleteModalOpen }));
     const toggleEdit = () =>
@@ -24,18 +40,44 @@ const TagCard = (DeleteTagConfirmModal, EditTagModal, colorGenerator) => class T
 
     return (
       <Card className="tag-card">
-        <CardBody className="tag-card__body">
-          <button className="btn btn-light btn-sm tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
+        <CardHeader className="tag-card__header">
+          <Button color="light" size="sm" className="tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} />
-          </button>
-          <button className="btn btn-light btn-sm tag-card__btn" onClick={toggleEdit}>
+          </Button>
+          <Button color="light" size="sm" className="tag-card__btn" onClick={toggleEdit}>
             <FontAwesomeIcon icon={editIcon} />
-          </button>
-          <h5 className="tag-card__tag-title">
+          </Button>
+          <h5 className="tag-card__tag-title text-ellipsis">
             <TagBullet tag={tag} colorGenerator={colorGenerator} />
-            <Link to={`/server/${currentServerId}/list-short-urls/1?tag=${tag}`}>{tag}</Link>
+            <ForServerVersion minVersion="2.2.0">
+              <span className="tag-card__tag-name" onClick={toggle}>{tag}</span>
+            </ForServerVersion>
+            <ForServerVersion maxVersion="2.1.*">
+              <Link to={shortUrlsLink}>{tag}</Link>
+            </ForServerVersion>
           </h5>
-        </CardBody>
+        </CardHeader>
+
+        {tagStats && (
+          <Collapse isOpen={displayed}>
+            <CardBody className="tag-card__body">
+              <Link
+                to={shortUrlsLink}
+                className="btn btn-light btn-block d-flex justify-content-between align-items-center mb-1"
+              >
+                <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>
+                <b>{prettify(tagStats.shortUrlsCount)}</b>
+              </Link>
+              <Link
+                to={`/server/${id}/tags/${tag}/visits`}
+                className="btn btn-light btn-block d-flex justify-content-between align-items-center"
+              >
+                <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
+                <b>{prettify(tagStats.visitsCount)}</b>
+              </Link>
+            </CardBody>
+          </Collapse>
+        )}
 
         <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={this.state.isDeleteModalOpen} />
         <EditTagModal tag={tag} toggle={toggleEdit} isOpen={this.state.isEditModalOpen} />

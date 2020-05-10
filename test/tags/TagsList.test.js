@@ -53,7 +53,7 @@ describe('<TagsList />', () => {
   it('renders the proper amount of groups and cards based on the amount of tags', () => {
     const amountOfTags = 10;
     const amountOfGroups = 4;
-    const wrapper = createWrapper({ filteredTags: rangeOf(amountOfTags, (i) => `tag_${i}`) });
+    const wrapper = createWrapper({ filteredTags: rangeOf(amountOfTags, (i) => `tag_${i}`), stats: {} });
     const cards = wrapper.find(TagCard);
     const groups = wrapper.find('.col-md-6');
 

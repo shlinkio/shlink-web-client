@@ -122,7 +122,7 @@ export default class SortableBarGraph extends React.Component {
         {withPagination && keys(stats).length > 50 && (
           <div className="float-right">
             <PaginationDropdown
-              toggleClassName="btn-sm paddingless mr-3"
+              toggleClassName="btn-sm p-0 mr-3"
               ranges={[ 50, 100, 200, 500 ]}
               value={this.state.itemsPerPage}
               setValue={(itemsPerPage) => this.setState({ itemsPerPage, currentPage: 1 })}

@@ -6,19 +6,23 @@ import TagBullet from '../../src/tags/helpers/TagBullet';
 
 describe('<TagCard />', () => {
   let wrapper;
+  const tagStats = {
+    shortUrlsCount: 48,
+    visitsCount: 23257,
+  };
 
   beforeEach(() => {
-    const TagCard = createTagCard(() => '', () => '', {});
+    const TagCard = createTagCard(() => '', () => '', () => '', {});
 
-    wrapper = shallow(<TagCard tag="ssr" currentServerId="1" />);
+    wrapper = shallow(<TagCard tag="ssr" selectedServer={{ id: 1, serverNotFound: false }} tagStats={tagStats} />);
   });
   afterEach(() => wrapper.unmount());
 
   it('shows a TagBullet and a link to the list filtering by the tag', () => {
-    const link = wrapper.find(Link);
+    const links = wrapper.find(Link);
     const bullet = wrapper.find(TagBullet);
 
-    expect(link.prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
+    expect(links.at(0).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
     expect(bullet.prop('tag')).toEqual('ssr');
   });
 
@@ -44,5 +48,14 @@ describe('<TagCard />', () => {
       expect(wrapper.state('isEditModalOpen')).toEqual(true);
       done();
     });
+  });
+
+  it('shows expected tag stats', () => {
+    const links = wrapper.find(Link);
+
+    expect(links.at(1).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
+    expect(links.at(1).text()).toContain('48');
+    expect(links.at(2).prop('to')).toEqual('/server/1/tags/ssr/visits');
+    expect(links.at(2).text()).toContain('23,257');
   });
 });

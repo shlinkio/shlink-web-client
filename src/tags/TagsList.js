@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
 import PropTypes from 'prop-types';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
+import { serverType } from '../servers/prop-types';
+import { TagsListType } from './reducers/tagsList';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
@@ -10,16 +12,14 @@ const TAGS_GROUPS_AMOUNT = 4;
 const propTypes = {
   filterTags: PropTypes.func,
   forceListTags: PropTypes.func,
-  tagsList: PropTypes.shape({
-    loading: PropTypes.bool,
-    error: PropTypes.bool,
-    filteredTags: PropTypes.arrayOf(PropTypes.string),
-  }),
-  match: PropTypes.object,
+  tagsList: TagsListType,
+  selectedServer: serverType,
 };
 
 const TagsList = (TagCard) => {
-  const TagListComp = ({ filterTags, forceListTags, tagsList, match }) => {
+  const TagListComp = ({ filterTags, forceListTags, tagsList, selectedServer }) => {
+    const [ displayedTag, setDisplayedTag ] = useState();
+
     useEffect(() => {
       forceListTags();
     }, []);
@@ -53,7 +53,10 @@ const TagsList = (TagCard) => {
                 <TagCard
                   key={tag}
                   tag={tag}
-                  currentServerId={match.params.serverId}
+                  tagStats={tagsList.stats[tag]}
+                  selectedServer={selectedServer}
+                  displayed={displayedTag === tag}
+                  toggle={() => setDisplayedTag(displayedTag !== tag ? tag : undefined)}
                 />
               ))}
             </div>

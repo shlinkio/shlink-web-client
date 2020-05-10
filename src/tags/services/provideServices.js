@@ -12,7 +12,14 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
   bottle.decorator('TagsSelector', connect([ 'tagsList' ], [ 'listTags' ]));
 
-  bottle.serviceFactory('TagCard', TagCard, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
+  bottle.serviceFactory(
+    'TagCard',
+    TagCard,
+    'DeleteTagConfirmModal',
+    'EditTagModal',
+    'ForServerVersion',
+    'ColorGenerator'
+  );
 
   bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
   bottle.decorator('DeleteTagConfirmModal', connect([ 'tagDelete' ], [ 'deleteTag', 'tagDeleted' ]));
@@ -21,7 +28,7 @@ const provideServices = (bottle, connect) => {
   bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
 
   bottle.serviceFactory('TagsList', TagsList, 'TagCard');
-  bottle.decorator('TagsList', connect([ 'tagsList' ], [ 'forceListTags', 'filterTags' ]));
+  bottle.decorator('TagsList', connect([ 'tagsList', 'selectedServer' ], [ 'forceListTags', 'filterTags' ]));
 
   // Actions
   const listTagsActionFactory = (force) => ({ buildShlinkApiClient }) => listTags(buildShlinkApiClient, force);
