@@ -141,7 +141,7 @@ describe('ShlinkApiClient', () => {
 
       const result = await listTags();
 
-      expect(expectedTags).toEqual(result);
+      expect({ tags: expectedTags }).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ url: '/tags', method: 'GET' }));
     });
   });

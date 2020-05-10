@@ -1,5 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { isEmpty, reject } from 'ramda';
+import PropTypes from 'prop-types';
 import { TAG_DELETED } from './tagDelete';
 import { TAG_EDITED } from './tagEdit';
 
@@ -10,9 +11,18 @@ export const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
 export const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
 /* eslint-enable padding-line-between-statements */
 
+export const TagsListType = PropTypes.shape({
+  tags: PropTypes.arrayOf(PropTypes.string),
+  filteredTags: PropTypes.arrayOf(PropTypes.string),
+  stats: PropTypes.object, // Record
+  loading: PropTypes.bool,
+  error: PropTypes.bool,
+});
+
 const initialState = {
   tags: [],
   filteredTags: [],
+  stats: {},
   loading: false,
   error: false,
 };
@@ -23,7 +33,7 @@ const rejectTag = (tags, tagToReject) => reject((tag) => tag === tagToReject, ta
 export default handleActions({
   [LIST_TAGS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_TAGS_ERROR]: (state) => ({ ...state, loading: false, error: true }),
-  [LIST_TAGS]: (state, { tags }) => ({ tags, filteredTags: tags, loading: false, error: false }),
+  [LIST_TAGS]: (state, { tags, stats }) => ({ stats, tags, filteredTags: tags, loading: false, error: false }),
   [TAG_DELETED]: (state, { tag }) => ({
     ...state,
     tags: rejectTag(state.tags, tag),
@@ -51,9 +61,14 @@ export const listTags = (buildShlinkApiClient, force = true) => () => async (dis
 
   try {
     const { listTags } = buildShlinkApiClient(getState);
-    const tags = await listTags();
+    const { tags, stats = [] } = await listTags();
+    const processedStats = stats.reduce((acc, { tag, shortUrlsCount, visitsCount }) => {
+      acc[tag] = { shortUrlsCount, visitsCount };
 
-    dispatch({ tags, type: LIST_TAGS });
+      return acc;
+    }, {});
+
+    dispatch({ tags, stats: processedStats, type: LIST_TAGS });
   } catch (e) {
     dispatch({ type: LIST_TAGS_ERROR });
   }

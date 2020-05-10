@@ -103,7 +103,7 @@ describe('tagsListReducer', () => {
     it('dispatches loaded lists when no error occurs', async () => {
       const tags = [ 'foo', 'bar', 'baz' ];
 
-      listTagsMock.mockResolvedValue(tags);
+      listTagsMock.mockResolvedValue({ tags, stats: [] });
       buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
       await listTags(buildShlinkApiClient, true)()(dispatch, getState);
@@ -112,7 +112,7 @@ describe('tagsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS, tags });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS, tags, stats: {} });
     });
 
     const assertErrorResult = async () => {
