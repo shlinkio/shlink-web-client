@@ -51,7 +51,7 @@ describe('<TagCard />', () => {
 
     expect(links.at(1).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
     expect(links.at(1).text()).toContain('48');
-    expect(links.at(2).prop('to')).toEqual('/server/1/tags/ssr/visits');
+    expect(links.at(2).prop('to')).toEqual('/server/1/tag/ssr/visits');
     expect(links.at(2).text()).toContain('23,257');
   });
 });

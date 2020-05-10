@@ -3,13 +3,15 @@ import { cancelGetShortUrlVisits, createNewVisit, getShortUrlVisits } from '../r
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import OpenMapModalBtn from '../helpers/OpenMapModalBtn';
 import MapModal from '../helpers/MapModal';
+import VisitsStats from '../VisitsStats';
 import * as visitsParser from './VisitsParser';
 
 const provideServices = (bottle, connect) => {
   // Components
   bottle.serviceFactory('OpenMapModalBtn', OpenMapModalBtn, 'MapModal');
   bottle.serviceFactory('MapModal', () => MapModal);
-  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsParser', 'OpenMapModalBtn');
+  bottle.serviceFactory('VisitsStats', VisitsStats, 'VisitsParser', 'OpenMapModalBtn');
+  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsStats');
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ]

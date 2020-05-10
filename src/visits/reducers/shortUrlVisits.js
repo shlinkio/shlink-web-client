@@ -2,6 +2,7 @@ import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { shortUrlMatches } from '../../short-urls/helpers';
+import { VisitType } from '../types';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
@@ -12,24 +13,8 @@ export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_
 export const CREATE_SHORT_URL_VISIT = 'shlink/shortUrlVisits/CREATE_SHORT_URL_VISIT';
 /* eslint-enable padding-line-between-statements */
 
-export const visitType = PropTypes.shape({
-  referer: PropTypes.string,
-  date: PropTypes.string,
-  userAgent: PropTypes.string,
-  visitLocations: PropTypes.shape({
-    countryCode: PropTypes.string,
-    countryName: PropTypes.string,
-    regionName: PropTypes.string,
-    cityName: PropTypes.string,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    timezone: PropTypes.string,
-    isEmpty: PropTypes.bool,
-  }),
-});
-
-export const shortUrlVisitsType = PropTypes.shape({
-  visits: PropTypes.arrayOf(visitType),
+export const shortUrlVisitsType = PropTypes.shape({ // TODO Should extend from VisitInfoType
+  visits: PropTypes.arrayOf(VisitType),
   shortCode: PropTypes.string,
   domain: PropTypes.string,
   loading: PropTypes.bool,
