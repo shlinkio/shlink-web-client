@@ -22,7 +22,7 @@ const propTypes = {
   settings: SettingsType,
 };
 
-const TagVisits = (VisitsStats) => {
+const TagVisits = (VisitsStats, colorGenerator) => {
   const TagVisitsComp = ({
     history,
     match,
@@ -51,7 +51,7 @@ const TagVisits = (VisitsStats) => {
 
     return (
       <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetTagVisits} visitsInfo={tagVisits}>
-        <TagVisitsHeader tagVisits={tagVisits} goBack={history.goBack} />
+        <TagVisitsHeader tagVisits={tagVisits} goBack={history.goBack} colorGenerator={colorGenerator} />
       </VisitsStats>
     );
   };

@@ -19,7 +19,7 @@ const provideServices = (bottle, connect) => {
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ]
   ));
-  bottle.serviceFactory('TagVisits', TagVisits, 'VisitsStats');
+  bottle.serviceFactory('TagVisits', TagVisits, 'VisitsStats', 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo', 'settings' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisit', 'loadMercureInfo' ]

@@ -30,7 +30,7 @@ const VisitsHeader = ({ visits, goBack, shortUrl, children, title }) => (
           <ShortUrlVisitsCount visitsCount={visits.length} shortUrl={shortUrl} />
         </span>
       </h2>
-      <h3 className="text-center d-block d-sm-none mb-0 mt-2">
+      <h3 className="text-center d-block d-sm-none mb-0 mt-3">
         <small>{title}</small>
       </h3>
 

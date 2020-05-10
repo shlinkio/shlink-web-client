@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './Tag.scss';
 import { colorGeneratorType } from '../../utils/services/ColorGenerator';
+import './Tag.scss';
 
 const propTypes = {
   text: PropTypes.string,
@@ -17,12 +17,12 @@ const Tag = ({
   children,
   clearable,
   colorGenerator,
-  onClick = () => {},
-  onClose = () => {},
+  onClick,
+  onClose,
 }) => (
   <span
     className="badge tag"
-    style={{ backgroundColor: colorGenerator.getColorForKey(text), cursor: clearable ? 'auto' : 'pointer' }}
+    style={{ backgroundColor: colorGenerator.getColorForKey(text), cursor: clearable || !onClick ? 'auto' : 'pointer' }}
     onClick={onClick}
   >
     {children || text}
