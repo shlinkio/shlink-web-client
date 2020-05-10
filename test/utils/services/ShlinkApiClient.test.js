@@ -71,6 +71,28 @@ describe('ShlinkApiClient', () => {
     });
   });
 
+  describe('getTagVisits', () => {
+    it('properly returns tag visits', async () => {
+      const expectedVisits = [ 'foo', 'bar' ];
+      const axiosSpy = jest.fn(createAxiosMock({
+        data: {
+          visits: {
+            data: expectedVisits,
+          },
+        },
+      }));
+      const { getTagVisits } = new ShlinkApiClient(axiosSpy);
+
+      const actualVisits = await getTagVisits('foo', {});
+
+      expect({ data: expectedVisits }).toEqual(actualVisits);
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/tags/foo/visits',
+        method: 'GET',
+      }));
+    });
+  });
+
   describe('getShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };

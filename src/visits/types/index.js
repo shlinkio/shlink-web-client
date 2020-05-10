@@ -19,5 +19,6 @@ export const VisitType = PropTypes.shape({
 export const VisitsInfoType = PropTypes.shape({
   visits: PropTypes.arrayOf(VisitType),
   loading: PropTypes.bool,
+  loadingLarge: PropTypes.bool,
   error: PropTypes.bool,
 });

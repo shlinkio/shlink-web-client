@@ -1,14 +1,13 @@
 import reducer, {
   getShortUrlVisits,
   cancelGetShortUrlVisits,
-  createNewVisit,
   GET_SHORT_URL_VISITS_START,
   GET_SHORT_URL_VISITS_ERROR,
   GET_SHORT_URL_VISITS,
   GET_SHORT_URL_VISITS_LARGE,
   GET_SHORT_URL_VISITS_CANCEL,
-  CREATE_SHORT_URL_VISIT,
 } from '../../../src/visits/reducers/shortUrlVisits';
+import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlVisitsReducer', () => {
   describe('reducer', () => {
@@ -54,7 +53,7 @@ describe('shortUrlVisitsReducer', () => {
     it.each([
       [{ shortCode: 'abc123' }, [{}, {}, {}]],
       [{ shortCode: 'def456' }, [{}, {}]],
-    ])('appends a new visit on CREATE_SHORT_URL_VISIT', (state, expectedVisits) => {
+    ])('appends a new visit on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         shortCode: 'abc123',
       };
@@ -63,7 +62,7 @@ describe('shortUrlVisitsReducer', () => {
         visits: [{}, {}],
       };
 
-      const { visits } = reducer(prevState, { type: CREATE_SHORT_URL_VISIT, shortUrl, visit: {} });
+      const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} });
 
       expect(visits).toEqual(expectedVisits);
     });
@@ -137,12 +136,5 @@ describe('shortUrlVisitsReducer', () => {
   describe('cancelGetShortUrlVisits', () => {
     it('just returns the action with proper type', () =>
       expect(cancelGetShortUrlVisits()).toEqual({ type: GET_SHORT_URL_VISITS_CANCEL }));
-  });
-
-  describe('createNewVisit', () => {
-    it('just returns the action with proper type', () =>
-      expect(createNewVisit({ shortUrl: {}, visit: {} })).toEqual(
-        { type: CREATE_SHORT_URL_VISIT, shortUrl: {}, visit: {} }
-      ));
   });
 });

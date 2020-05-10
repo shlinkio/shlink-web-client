@@ -36,6 +36,10 @@ export default class ShlinkApiClient {
     this._performRequest(`/short-urls/${shortCode}/visits`, 'GET', query)
       .then((resp) => resp.data.visits);
 
+  getTagVisits = (tag, query) =>
+    this._performRequest(`/tags/${tag}/visits`, 'GET', query)
+      .then((resp) => resp.data.visits);
+
   getShortUrl = (shortCode, domain) =>
     this._performRequest(`/short-urls/${shortCode}`, 'GET', { domain })
       .then((resp) => resp.data);

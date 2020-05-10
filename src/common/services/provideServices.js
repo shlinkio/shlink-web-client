@@ -27,6 +27,7 @@ const provideServices = (bottle, connect, withRouter) => {
     'AsideMenu',
     'CreateShortUrl',
     'ShortUrlVisits',
+    'TagVisits',
     'ShlinkVersions',
     'ServerError'
   );

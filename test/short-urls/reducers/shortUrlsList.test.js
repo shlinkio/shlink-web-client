@@ -7,7 +7,7 @@ import reducer, {
 import { SHORT_URL_TAGS_EDITED } from '../../../src/short-urls/reducers/shortUrlTags';
 import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrlMeta';
-import { CREATE_SHORT_URL_VISIT } from '../../../src/visits/reducers/shortUrlVisits';
+import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
@@ -103,7 +103,7 @@ describe('shortUrlsListReducer', () => {
       });
     });
 
-    it('updates visits count on CREATE_SHORT_URL_VISIT', () => {
+    it('updates visits count on CREATE_VISIT', () => {
       const shortCode = 'abc123';
       const shortUrl = {
         shortCode,
@@ -119,7 +119,7 @@ describe('shortUrlsListReducer', () => {
         },
       };
 
-      expect(reducer(state, { type: CREATE_SHORT_URL_VISIT, shortUrl })).toEqual({
+      expect(reducer(state, { type: CREATE_VISIT, shortUrl })).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },

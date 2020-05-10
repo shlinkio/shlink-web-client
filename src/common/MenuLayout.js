@@ -17,7 +17,16 @@ const propTypes = {
   selectedServer: serverType,
 };
 
-const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions, ServerError) => {
+const MenuLayout = (
+  TagsList,
+  ShortUrls,
+  AsideMenu,
+  CreateShortUrl,
+  ShortUrlVisits,
+  TagVisits,
+  ShlinkVersions,
+  ServerError
+) => {
   const MenuLayoutComp = ({ match, location, selectedServer }) => {
     const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
     const { params: { serverId } } = match;
@@ -61,7 +70,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
                   <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
                   <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                   <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
-                  {/* <Route exact path="/server/:serverId/tag/:tag/visits" component={TagVisits} /> */}
+                  <Route exact path="/server/:serverId/tag/:tag/visits" component={TagVisits} />
                   <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                   <Route
                     render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`}>List short URLs</NotFound>}

@@ -17,7 +17,7 @@ import { VisitsInfoType } from './types';
 const propTypes = {
   children: PropTypes.node,
   getVisits: PropTypes.func,
-  visitsInfo: VisitsInfoType, // TODO VisitsInfo type
+  visitsInfo: VisitsInfoType,
   cancelGetVisits: PropTypes.func,
   matchMedia: PropTypes.func,
 };
