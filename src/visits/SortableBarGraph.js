@@ -28,7 +28,7 @@ export default class SortableBarGraph extends React.Component {
     orderField: undefined,
     orderDir: undefined,
     currentPage: 1,
-    itemsPerPage: Infinity,
+    itemsPerPage: 50,
   };
 
   getSortedPairsForStats(stats, sortingItems) {
