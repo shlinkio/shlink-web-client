@@ -30,27 +30,9 @@ const initialState = {
 };
 
 export default handleActions({
-  [GET_TAG_VISITS_START]: (state) => ({
-    ...state,
-    loading: true,
-    loadingLarge: false,
-    cancelLoad: false,
-  }),
-  [GET_TAG_VISITS_ERROR]: (state) => ({
-    ...state,
-    loading: false,
-    loadingLarge: false,
-    error: true,
-    cancelLoad: false,
-  }),
-  [GET_TAG_VISITS]: (state, { visits, tag }) => ({
-    visits,
-    tag,
-    loading: false,
-    loadingLarge: false,
-    error: false,
-    cancelLoad: false,
-  }),
+  [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
+  [GET_TAG_VISITS_ERROR]: () => ({ ...initialState, error: true }),
+  [GET_TAG_VISITS]: (state, { visits, tag }) => ({ ...initialState, visits, tag }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [CREATE_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand

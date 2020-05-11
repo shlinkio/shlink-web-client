@@ -33,27 +33,13 @@ const initialState = {
 };
 
 export default handleActions({
-  [GET_SHORT_URL_VISITS_START]: (state) => ({
-    ...state,
-    loading: true,
-    loadingLarge: false,
-    cancelLoad: false,
-  }),
-  [GET_SHORT_URL_VISITS_ERROR]: (state) => ({
-    ...state,
-    loading: false,
-    loadingLarge: false,
-    error: true,
-    cancelLoad: false,
-  }),
+  [GET_SHORT_URL_VISITS_START]: () => ({ ...initialState, loading: true }),
+  [GET_SHORT_URL_VISITS_ERROR]: () => ({ ...initialState, error: true }),
   [GET_SHORT_URL_VISITS]: (state, { visits, shortCode, domain }) => ({
+    ...initialState,
     visits,
     shortCode,
     domain,
-    loading: false,
-    loadingLarge: false,
-    error: false,
-    cancelLoad: false,
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
