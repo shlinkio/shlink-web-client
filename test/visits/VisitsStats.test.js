@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { identity } from 'ramda';
-import { Card } from 'reactstrap';
+import { Card, Progress } from 'reactstrap';
 import createVisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
 import GraphCard from '../../src/visits/GraphCard';
@@ -35,17 +35,22 @@ describe('<VisitStats />', () => {
   it('renders a preloader when visits are loading', () => {
     const wrapper = createComponent({ loading: true, visits: [] });
     const loadingMessage = wrapper.find(Message);
+    const progress = wrapper.find(Progress);
 
     expect(loadingMessage).toHaveLength(1);
     expect(loadingMessage.html()).toContain('Loading...');
+    expect(progress).toHaveLength(0);
   });
 
-  it('renders a warning when loading large amounts of visits', () => {
-    const wrapper = createComponent({ loading: true, loadingLarge: true, visits: [] });
+  it('renders a warning and progress bar when loading large amounts of visits', () => {
+    const wrapper = createComponent({ loading: true, loadingLarge: true, visits: [], progress: 25 });
     const loadingMessage = wrapper.find(Message);
+    const progress = wrapper.find(Progress);
 
     expect(loadingMessage).toHaveLength(1);
     expect(loadingMessage.html()).toContain('This is going to take a while... :S');
+    expect(progress).toHaveLength(1);
+    expect(progress.prop('value')).toEqual(25);
   });
 
   it('renders an error message when visits could not be loaded', () => {

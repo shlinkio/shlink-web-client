@@ -6,6 +6,7 @@ import reducer, {
   GET_TAG_VISITS,
   GET_TAG_VISITS_LARGE,
   GET_TAG_VISITS_CANCEL,
+  GET_TAG_VISITS_PROGRESS_CHANGED,
 } from '../../../src/visits/reducers/tagVisits';
 import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
 
@@ -65,6 +66,12 @@ describe('tagVisitsReducer', () => {
       const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} });
 
       expect(visits).toEqual(expectedVisits);
+    });
+
+    it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
+      const state = reducer({}, { type: GET_TAG_VISITS_PROGRESS_CHANGED, progress: 85 });
+
+      expect(state).toEqual({ progress: 85 });
     });
   });
 

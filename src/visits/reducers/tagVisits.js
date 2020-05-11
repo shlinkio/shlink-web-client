@@ -10,6 +10,7 @@ export const GET_TAG_VISITS_ERROR = 'shlink/tagVisits/GET_TAG_VISITS_ERROR';
 export const GET_TAG_VISITS = 'shlink/tagVisits/GET_TAG_VISITS';
 export const GET_TAG_VISITS_LARGE = 'shlink/tagVisits/GET_TAG_VISITS_LARGE';
 export const GET_TAG_VISITS_CANCEL = 'shlink/tagVisits/GET_TAG_VISITS_CANCEL';
+export const GET_TAG_VISITS_PROGRESS_CHANGED = 'shlink/tagVisits/GET_TAG_VISITS_PROGRESS_CHANGED';
 /* eslint-enable padding-line-between-statements */
 
 export const TagVisitsType = PropTypes.shape({ // TODO Should extend from VisitInfoType
@@ -18,6 +19,7 @@ export const TagVisitsType = PropTypes.shape({ // TODO Should extend from VisitI
   loading: PropTypes.bool,
   loadingLarge: PropTypes.bool,
   error: PropTypes.bool,
+  progress: PropTypes.number,
 });
 
 const initialState = {
@@ -27,6 +29,7 @@ const initialState = {
   loadingLarge: false,
   error: false,
   cancelLoad: false,
+  progress: 0,
 };
 
 export default handleActions({
@@ -35,6 +38,7 @@ export default handleActions({
   [GET_TAG_VISITS]: (state, { visits, tag }) => ({ ...initialState, visits, tag }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
+  [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [CREATE_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand
     const { tag, visits } = state;
 
@@ -55,6 +59,7 @@ export const getTagVisits = (buildShlinkApiClient) => (tag, query = {}) => (disp
     large: GET_TAG_VISITS_LARGE,
     finish: GET_TAG_VISITS,
     error: GET_TAG_VISITS_ERROR,
+    progress: GET_TAG_VISITS_PROGRESS_CHANGED,
   };
 
   return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);

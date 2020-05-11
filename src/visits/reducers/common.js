@@ -1,7 +1,11 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 
 const ITEMS_PER_PAGE = 5000;
+const PARALLEL_REQUESTS_COUNT = 4;
+const PARALLEL_STARTING_PAGE = 2;
+
 const isLastPage = ({ currentPage, pagesCount }) => currentPage >= pagesCount;
+const calcProgress = (total, current) => current * 100 / total;
 
 export const getVisitsWithLoader = async (visitsLoader, extraFinishActionData, actionMap, dispatch, getState) => {
   dispatch({ type: actionMap.start });
@@ -15,12 +19,10 @@ export const getVisitsWithLoader = async (visitsLoader, extraFinishActionData, a
     }
 
     // If there are more pages, make requests in blocks of 4
-    const parallelRequestsCount = 4;
-    const parallelStartingPage = 2;
-    const pagesRange = range(parallelStartingPage, pagination.pagesCount + 1);
-    const pagesBlocks = splitEvery(parallelRequestsCount, pagesRange);
+    const pagesRange = range(PARALLEL_STARTING_PAGE, pagination.pagesCount + 1);
+    const pagesBlocks = splitEvery(PARALLEL_REQUESTS_COUNT, pagesRange);
 
-    if (pagination.pagesCount - 1 > parallelRequestsCount) {
+    if (pagination.pagesCount - 1 > PARALLEL_REQUESTS_COUNT) {
       dispatch({ type: actionMap.large });
     }
 
@@ -35,6 +37,8 @@ export const getVisitsWithLoader = async (visitsLoader, extraFinishActionData, a
     }
 
     const data = await loadVisitsInParallel(pagesBlocks[index]);
+
+    dispatch({ type: actionMap.progress, progress: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE) });
 
     if (index < pagesBlocks.length - 1) {
       return data.concat(await loadPagesBlocks(pagesBlocks, index + 1));

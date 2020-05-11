@@ -1,6 +1,6 @@
 import { isEmpty, propEq, values } from 'ramda';
 import React, { useState, useEffect, useMemo } from 'react';
-import { Button, Card, Collapse } from 'reactstrap';
+import { Button, Card, Collapse, Progress } from 'reactstrap';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -59,7 +59,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
       }
     };
 
-    const { visits, loading, loadingLarge, error } = visitsInfo;
+    const { visits, loading, loadingLarge, error, progress } = visitsInfo;
     const showTableControls = !loading && visits.length > 0;
     const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
     const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
@@ -82,10 +82,17 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
     }, [ startDate, endDate ]);
 
     const renderVisitsContent = () => {
-      if (loading) {
-        const message = loadingLarge ? 'This is going to take a while... :S' : 'Loading...';
+      if (loadingLarge) {
+        return (
+          <Message loading>
+            This is going to take a while... :S
+            <Progress value={progress} striped={progress === 100} className="mt-3" />
+          </Message>
+        );
+      }
 
-        return <Message loading>{message}</Message>;
+      if (loading) {
+        return <Message loading />;
       }
 
       if (error) {

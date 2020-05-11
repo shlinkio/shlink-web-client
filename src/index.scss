@@ -61,3 +61,7 @@ body,
     background-color: darken($mainColor, 12%);
   }
 }
+
+.progress-bar {
+  background-color: $mainColor;
+}

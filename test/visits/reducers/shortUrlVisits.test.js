@@ -6,6 +6,7 @@ import reducer, {
   GET_SHORT_URL_VISITS,
   GET_SHORT_URL_VISITS_LARGE,
   GET_SHORT_URL_VISITS_CANCEL,
+  GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
 } from '../../../src/visits/reducers/shortUrlVisits';
 import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
 
@@ -65,6 +66,12 @@ describe('shortUrlVisitsReducer', () => {
       const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} });
 
       expect(visits).toEqual(expectedVisits);
+    });
+
+    it('returns new progress on GET_SHORT_URL_VISITS_PROGRESS_CHANGED', () => {
+      const state = reducer({}, { type: GET_SHORT_URL_VISITS_PROGRESS_CHANGED, progress: 85 });
+
+      expect(state).toEqual({ progress: 85 });
     });
   });
 
@@ -127,7 +134,7 @@ describe('shortUrlVisitsReducer', () => {
       await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
 
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(expectedRequests);
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+      expect(dispatchMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
         visits: [{}, {}, {}, {}, {}, {}],
       }));
     });

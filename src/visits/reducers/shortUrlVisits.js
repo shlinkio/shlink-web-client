@@ -11,6 +11,7 @@ export const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_V
 export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
 export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_LARGE';
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
+export const GET_SHORT_URL_VISITS_PROGRESS_CHANGED = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_PROGRESS_CHANGED';
 /* eslint-enable padding-line-between-statements */
 
 export const shortUrlVisitsType = PropTypes.shape({ // TODO Should extend from VisitInfoType
@@ -20,6 +21,7 @@ export const shortUrlVisitsType = PropTypes.shape({ // TODO Should extend from V
   loading: PropTypes.bool,
   loadingLarge: PropTypes.bool,
   error: PropTypes.bool,
+  progress: PropTypes.number,
 });
 
 const initialState = {
@@ -30,6 +32,7 @@ const initialState = {
   loadingLarge: false,
   error: false,
   cancelLoad: false,
+  progress: 0,
 };
 
 export default handleActions({
@@ -43,6 +46,7 @@ export default handleActions({
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
+  [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [CREATE_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand
     const { shortCode, domain, visits } = state;
 
@@ -63,6 +67,7 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query = {
     large: GET_SHORT_URL_VISITS_LARGE,
     finish: GET_SHORT_URL_VISITS,
     error: GET_SHORT_URL_VISITS_ERROR,
+    progress: GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
   };
 
   return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);

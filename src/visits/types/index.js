@@ -21,4 +21,5 @@ export const VisitsInfoType = PropTypes.shape({
   loading: PropTypes.bool,
   loadingLarge: PropTypes.bool,
   error: PropTypes.bool,
+  progress: PropTypes.number,
 });
