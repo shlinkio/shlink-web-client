@@ -11,17 +11,17 @@ import { TAG_EDITED } from '../../../src/tags/reducers/tagEdit';
 describe('tagsListReducer', () => {
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
-      expect(reducer({}, { type: LIST_TAGS_START })).toEqual({
+      expect(reducer({}, { type: LIST_TAGS_START })).toEqual(expect.objectContaining({
         loading: true,
         error: false,
-      });
+      }));
     });
 
     it('returns error on LIST_TAGS_ERROR', () => {
-      expect(reducer({}, { type: LIST_TAGS_ERROR })).toEqual({
+      expect(reducer({}, { type: LIST_TAGS_ERROR })).toEqual(expect.objectContaining({
         loading: false,
         error: true,
-      });
+      }));
     });
 
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
