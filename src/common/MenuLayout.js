@@ -8,6 +8,7 @@ import * as PropTypes from 'prop-types';
 import { serverType } from '../servers/prop-types';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useToggle } from '../utils/helpers/hooks';
+import { versionMatch } from '../utils/helpers/version';
 import NotFound from './NotFound';
 import './MenuLayout.scss';
 
@@ -17,7 +18,16 @@ const propTypes = {
   selectedServer: serverType,
 };
 
-const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisits, ShlinkVersions, ServerError) => {
+const MenuLayout = (
+  TagsList,
+  ShortUrls,
+  AsideMenu,
+  CreateShortUrl,
+  ShortUrlVisits,
+  TagVisits,
+  ShlinkVersions,
+  ServerError
+) => {
   const MenuLayoutComp = ({ match, location, selectedServer }) => {
     const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
     const { params: { serverId } } = match;
@@ -28,6 +38,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
       return <ServerError type="not-reachable" />;
     }
 
+    const addTagsVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.2.0' });
     const burgerClasses = classNames('menu-layout__burger-icon', {
       'menu-layout__burger-icon--active': sidebarVisible,
     });
@@ -61,6 +72,7 @@ const MenuLayout = (TagsList, ShortUrls, AsideMenu, CreateShortUrl, ShortUrlVisi
                   <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
                   <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                   <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
+                  {addTagsVisitsRoute && <Route exact path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
                   <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                   <Route
                     render={() => <NotFound to={`/server/${serverId}/list-short-urls/1`}>List short URLs</NotFound>}

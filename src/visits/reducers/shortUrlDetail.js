@@ -21,9 +21,9 @@ const initialState = {
 };
 
 export default handleActions({
-  [GET_SHORT_URL_DETAIL_START]: (state) => ({ ...state, loading: true }),
-  [GET_SHORT_URL_DETAIL_ERROR]: (state) => ({ ...state, loading: false, error: true }),
-  [GET_SHORT_URL_DETAIL]: (state, { shortUrl }) => ({ shortUrl, loading: false, error: false }),
+  [GET_SHORT_URL_DETAIL_START]: () => ({ ...initialState, loading: true }),
+  [GET_SHORT_URL_DETAIL_ERROR]: () => ({ ...initialState, loading: false, error: true }),
+  [GET_SHORT_URL_DETAIL]: (state, { shortUrl }) => ({ ...initialState, shortUrl }),
 }, initialState);
 
 export const getShortUrlDetail = (buildShlinkApiClient) => (shortCode, domain) => async (dispatch, getState) => {

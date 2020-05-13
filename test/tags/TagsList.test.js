@@ -15,7 +15,7 @@ describe('<TagsList />', () => {
     const TagsList = createTagsList(TagCard);
 
     wrapper = shallow(
-      <TagsList forceListTags={identity} filterTags={filterTags} match={{ params }} tagsList={tagsList} />
+      <TagsList forceListTags={identity} filterTags={filterTags} match={{ params }} tagsList={tagsList} settings={{}} />
     );
 
     return wrapper;

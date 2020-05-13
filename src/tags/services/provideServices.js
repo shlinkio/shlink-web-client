@@ -28,7 +28,10 @@ const provideServices = (bottle, connect) => {
   bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
 
   bottle.serviceFactory('TagsList', TagsList, 'TagCard');
-  bottle.decorator('TagsList', connect([ 'tagsList', 'selectedServer' ], [ 'forceListTags', 'filterTags' ]));
+  bottle.decorator('TagsList', connect(
+    [ 'tagsList', 'selectedServer', 'mercureInfo', 'settings' ],
+    [ 'forceListTags', 'filterTags', 'createNewVisit', 'loadMercureInfo' ]
+  ));
 
   // Actions
   const listTagsActionFactory = (force) => ({ buildShlinkApiClient }) => listTags(buildShlinkApiClient, force);

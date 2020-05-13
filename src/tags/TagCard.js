@@ -60,7 +60,7 @@ const TagCard = (DeleteTagConfirmModal, EditTagModal, ForServerVersion, colorGen
                 <b>{prettify(tagStats.shortUrlsCount)}</b>
               </Link>
               <Link
-                to={`/server/${id}/tags/${tag}/visits`}
+                to={`/server/${id}/tag/${tag}/visits`}
                 className="btn btn-light btn-block d-flex justify-content-between align-items-center"
               >
                 <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
