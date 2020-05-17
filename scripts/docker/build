@@ -1,13 +1,33 @@
 #!/bin/bash
+
 set -e
+
+PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
+# PLATFORMS="linux/amd64"
+DOCKER_IMAGE="shlinkio/shlink-web-client"
+BUILDX_VER=v0.4.1
+export DOCKER_CLI_EXPERIMENTAL=enabled
+
+mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
+curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
+chmod a+x ~/.docker/cli-plugins/docker-buildx
+
+docker buildx create --use
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 if [[ -z $TRAVIS_TAG ]]; then
-  docker build -t shlinkio/shlink-web-client:latest .
-  docker push shlinkio/shlink-web-client:latest
+  docker buildx build --push \
+    --platform ${PLATFORMS} \
+    -t ${DOCKER_IMAGE}:latest .
+
 else
-  docker build --build-arg VERSION=${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:${TRAVIS_TAG#?} -t shlinkio/shlink-web-client:stable .
-  docker push shlinkio/shlink-web-client:${TRAVIS_TAG#?}
-  docker push shlinkio/shlink-web-client:stable
+  TAGS="-t ${DOCKER_IMAGE}:${TRAVIS_TAG#?}"
+  # Push stable tag only if this is not an alpha or beta release
+  [[ $TRAVIS_TAG != *"alpha"* && $TRAVIS_TAG != *"beta"* ]] && TAGS="${TAGS} -t ${DOCKER_IMAGE}:stable"
+
+  docker buildx build --push \
+    --build-arg SHLINK_VERSION=${TRAVIS_TAG#?} \
+    --platform ${PLATFORMS} \
+    ${TAGS} .
 fi
