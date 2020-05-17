@@ -6,12 +6,12 @@ jobs:
   fast_finish: true
   include:
     - name: "Docker publish"
-      node_js: '12.14.1'
+      node_js: '12.16.3'
       if: NOT type = pull_request
       env:
         - DOCKER_PUBLISH="true"
     - name: "CI"
-        node_js: '12.14.1'
+        node_js: '12.16.3'
       env:
         - DOCKER_PUBLISH="false"
   allow_failures:
