@@ -11,7 +11,7 @@ jobs:
       env:
         - DOCKER_PUBLISH="true"
     - name: "CI"
-        node_js: '12.16.3'
+      node_js: '12.16.3'
       env:
         - DOCKER_PUBLISH="false"
   allow_failures:
