@@ -2,8 +2,8 @@
 
 set -e
 
-PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
-# PLATFORMS="linux/amd64"
+#PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
+PLATFORMS="linux/amd64"
 DOCKER_IMAGE="shlinkio/shlink-web-client"
 BUILDX_VER=v0.4.1
 export DOCKER_CLI_EXPERIMENTAL=enabled
