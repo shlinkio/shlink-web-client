@@ -4,3 +4,4 @@
 ./node_modules
 ./test
 ./shlink-web-client.gif
+./dist
