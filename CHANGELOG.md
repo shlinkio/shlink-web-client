@@ -25,6 +25,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#253](https://github.com/shlinkio/shlink-web-client/issues/253) Created new settings page that will be used to define customizations in the app.
 
+* [#149](https://github.com/shlinkio/shlink-web-client/issues/149) and [#198](https://github.com/shlinkio/shlink-web-client/issues/198) Added new line chart to visits and tags stats which displays amount of visits during selected time period, grouped by month, week, day or hour.
+
 #### Changed
 
 * [#218](https://github.com/shlinkio/shlink-web-client/issues/218) Added back button to sections not displayed in left menu.

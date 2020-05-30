@@ -82,8 +82,9 @@ describe('<GraphCard />', () => {
     wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(HorizontalBar);
 
-    const { datasets: [{ data }, highlightedData ] } = horizontal.prop('data');
+    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');
 
+    expect(label).toEqual(highlightedStats ? 'Non-selected' : 'Visits');
     expect(data).toEqual(expectedData);
     expectedHighlightedData && expect(highlightedData.data).toEqual(expectedHighlightedData);
     !expectedHighlightedData && expect(highlightedData).toBeUndefined();
