@@ -11,6 +11,7 @@ import { formatDate } from '../utils/helpers/date';
 import { useToggle } from '../utils/helpers/hooks';
 import SortableBarGraph from './SortableBarGraph';
 import GraphCard from './GraphCard';
+import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { VisitsInfoType } from './types';
 
@@ -109,13 +110,16 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
 
       return (
         <div className="row">
-          <div className="col-xl-4 col-lg-6">
+          <div className="col-12 mt-4">
+            <LineChartCard title="Visits during time" visits={visits} highlightedVisits={highlightedVisits} />
+          </div>
+          <div className="col-xl-4 col-lg-6 mt-4">
             <GraphCard title="Operating systems" stats={os} />
           </div>
-          <div className="col-xl-4 col-lg-6">
+          <div className="col-xl-4 col-lg-6 mt-4">
             <GraphCard title="Browsers" stats={browsers} />
           </div>
-          <div className="col-xl-4">
+          <div className="col-xl-4 mt-4">
             <SortableBarGraph
               title="Referrers"
               stats={referrers}
@@ -128,7 +132,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
               onClick={highlightVisitsForProp('referer')}
             />
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 mt-4">
             <SortableBarGraph
               title="Countries"
               stats={countries}
@@ -140,7 +144,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
               onClick={highlightVisitsForProp('country')}
             />
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-6 mt-4">
             <SortableBarGraph
               title="Cities"
               stats={cities}

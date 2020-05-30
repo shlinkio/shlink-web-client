@@ -1,4 +1,5 @@
 import bowser from 'bowser';
+import { zipObj } from 'ramda';
 import { hasValue } from '../utils';
 
 const DEFAULT = 'Others';
@@ -35,3 +36,5 @@ export const extractDomain = (url) => {
 
   return domain.split(':')[0];
 };
+
+export const fillTheGaps = (stats, labels) => Object.values({ ...zipObj(labels, labels.map(() => 0)), ...stats });

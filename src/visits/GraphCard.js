@@ -2,7 +2,8 @@ import { Card, CardHeader, CardBody, CardFooter } from 'reactstrap';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { keys, values, zipObj } from 'ramda';
+import { keys, values } from 'ramda';
+import { fillTheGaps } from '../utils/helpers/visits';
 import './GraphCard.scss';
 
 const propTypes = {
@@ -20,7 +21,7 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
   datasets: [
     {
       title,
-      label: highlightedData && 'Non-selected',
+      label: highlightedData ? 'Non-selected' : 'Visits',
       data,
       backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
         '#97BBCD',
@@ -70,9 +71,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
 
     return acc;
   }, { ...stats }));
-  const highlightedData = hasHighlightedStats && values(
-    { ...zipObj(labels, labels.map(() => 0)), ...highlightedStats }
-  );
+  const highlightedData = hasHighlightedStats && fillTheGaps(highlightedStats, labels);
 
   const options = {
     legend: isBarChart ? { display: false } : { position: 'right' },
@@ -120,7 +119,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
 };
 
 const GraphCard = ({ title, footer, isBarChart, stats, max, highlightedStats, onClick }) => (
-  <Card className="mt-4">
+  <Card>
     <CardHeader className="graph-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
     <CardBody>{renderGraph(title, isBarChart, stats, max, highlightedStats, onClick)}</CardBody>
     {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
