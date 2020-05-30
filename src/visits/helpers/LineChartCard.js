@@ -14,7 +14,10 @@ import { reverse } from 'ramda';
 import moment from 'moment';
 import { VisitType } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
-import './LineCHartCard.scss';
+import './LineChartCard.scss';
+import { useToggle } from '../../utils/helpers/hooks';
+import { rangeOf } from '../../utils/utils';
+import Checkbox from '../../utils/Checkbox';
 
 const propTypes = {
   title: PropTypes.string,
@@ -22,12 +25,19 @@ const propTypes = {
   highlightedVisits: PropTypes.arrayOf(VisitType),
 };
 
-const steps = [
-  { value: 'monthly', menuText: 'Month' },
-  { value: 'weekly', menuText: 'Week' },
-  { value: 'daily', menuText: 'Day' },
-  { value: 'hourly', menuText: 'Hour' },
-];
+const STEPS_MAP = {
+  monthly: 'Month',
+  weekly: 'Week',
+  daily: 'Day',
+  hourly: 'Hour',
+};
+
+const STEP_TO_DIFF_UNIT_MAP = {
+  hourly: 'hour',
+  daily: 'day',
+  weekly: 'week',
+  monthly: 'month',
+};
 
 const STEP_TO_DATE_FORMAT = {
   hourly: (date) => moment(date).format('YYYY-MM-DD HH:00'),
@@ -49,6 +59,33 @@ const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
   return acc;
 }, {});
 
+const generateLabels = (step, visits) => {
+  const newerDate = moment(visits[0].date);
+  const oldestDate = moment(visits[visits.length - 1].date);
+  const size = newerDate.diff(oldestDate, STEP_TO_DIFF_UNIT_MAP[step]);
+
+  return [
+    STEP_TO_DATE_FORMAT[step](oldestDate),
+    ...rangeOf(size, () => {
+      const date = oldestDate.add(1, STEP_TO_DIFF_UNIT_MAP[step]);
+
+      return STEP_TO_DATE_FORMAT[step](date);
+    }),
+  ];
+};
+
+const generateLabelsAndGroupedVisits = (visits, step, skipNoElements) => {
+  const groupedVisits = groupVisitsByStep(step, reverse(visits));
+
+  if (skipNoElements) {
+    return [ Object.keys(groupedVisits), groupedVisits ];
+  }
+
+  const labels = generateLabels(step, visits);
+
+  return [ labels, fillTheGaps(groupedVisits, labels) ];
+};
+
 const generateDataset = (stats, label, color) => ({
   label,
   data: Object.values(stats),
@@ -59,9 +96,13 @@ const generateDataset = (stats, label, color) => ({
 });
 
 const LineChartCard = ({ title, visits, highlightedVisits }) => {
-  const [ step, setStep ] = useState(steps[0].value);
-  const groupedVisits = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ visits, step ]);
-  const labels = useMemo(() => Object.keys(groupedVisits), [ groupedVisits ]);
+  const [ step, setStep ] = useState('monthly');
+  const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
+
+  const [ labels, groupedVisits ] = useMemo(
+    () => generateLabelsAndGroupedVisits(visits, step, skipNoVisits),
+    [ visits, step, skipNoVisits ]
+  );
   const groupedHighlighted = useMemo(
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),
     [ highlightedVisits, step, labels ]
@@ -83,6 +124,15 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
           ticks: { beginAtZero: true, precision: 0 },
         },
       ],
+      xAxes: [
+        {
+          scaleLabel: { display: true, labelString: STEPS_MAP[step] },
+        },
+      ],
+    },
+    tooltips: {
+      intersect: false,
+      axis: 'x',
     },
   };
 
@@ -96,13 +146,18 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
               Group by
             </DropdownToggle>
             <DropdownMenu right>
-              {steps.map(({ menuText, value }) => (
+              {Object.entries(STEPS_MAP).map(([ value, menuText ]) => (
                 <DropdownItem key={value} active={step === value} onClick={() => setStep(value)}>
                   {menuText}
                 </DropdownItem>
               ))}
             </DropdownMenu>
           </UncontrolledDropdown>
+        </div>
+        <div className="float-right mr-2">
+          <Checkbox checked={skipNoVisits} onChange={toggleSkipNoVisits}>
+            <small>Skip dates with no visits</small>
+          </Checkbox>
         </div>
       </CardHeader>
       <CardBody className="line-chart-card__body">

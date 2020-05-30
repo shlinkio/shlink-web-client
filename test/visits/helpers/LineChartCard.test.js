@@ -3,8 +3,9 @@ import { shallow } from 'enzyme';
 import { CardHeader, DropdownItem } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import LineChartCard from '../../../src/visits/helpers/LineChartCard';
+import Checkbox from '../../../src/utils/Checkbox';
 
-describe('<LineCHartCard />', () => {
+describe('<LineChartCard />', () => {
   let wrapper;
   const createWrapper = (visits = [], highlightedVisits = []) => {
     wrapper = shallow(<LineChartCard title="Cool title" visits={visits} highlightedVisits={highlightedVisits} />);
@@ -49,6 +50,15 @@ describe('<LineCHartCard />', () => {
             ticks: { beginAtZero: true, precision: 0 },
           },
         ],
+        xAxes: [
+          {
+            scaleLabel: { display: true, labelString: 'Month' },
+          },
+        ],
+      },
+      tooltips: {
+        intersect: false,
+        axis: 'x',
       },
     });
   });
@@ -62,5 +72,16 @@ describe('<LineCHartCard />', () => {
     const { datasets } = chart.prop('data');
 
     expect(datasets).toHaveLength(expectedLines);
+  });
+
+  it('includes stats for visits with no dates if selected', () => {
+    const wrapper = createWrapper([
+      { date: '2016-04-01' },
+      { date: '2016-01-01' },
+    ]);
+
+    expect(wrapper.find(Line).prop('data').labels).toHaveLength(2);
+    wrapper.find(Checkbox).simulate('change');
+    expect(wrapper.find(Line).prop('data').labels).toHaveLength(4);
   });
 });
