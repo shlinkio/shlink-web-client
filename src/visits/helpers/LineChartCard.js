@@ -23,22 +23,10 @@ const propTypes = {
 };
 
 const steps = [
-  {
-    value: 'monthly',
-    menuText: 'Month',
-  },
-  {
-    value: 'weekly',
-    menuText: 'Week',
-  },
-  {
-    value: 'daily',
-    menuText: 'Day',
-  },
-  {
-    value: 'hourly',
-    menuText: 'Hour',
-  },
+  { value: 'monthly', menuText: 'Month' },
+  { value: 'weekly', menuText: 'Week' },
+  { value: 'daily', menuText: 'Day' },
+  { value: 'hourly', menuText: 'Hour' },
 ];
 
 const STEP_TO_DATE_FORMAT = {
