@@ -14,6 +14,7 @@ import { reverse } from 'ramda';
 import moment from 'moment';
 import { VisitType } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
+import './LineCHartCard.scss';
 
 const propTypes = {
   title: PropTypes.string,
@@ -86,6 +87,7 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
     ].filter(Boolean),
   };
   const options = {
+    maintainAspectRatio: false,
     legend: { display: false },
     scales: {
       yAxes: [
@@ -115,8 +117,8 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
           </UncontrolledDropdown>
         </div>
       </CardHeader>
-      <CardBody>
-        <Line data={data} options={options} height={80} />
+      <CardBody className="line-chart-card__body">
+        <Line data={data} options={options} />
       </CardBody>
     </Card>
   );
