@@ -32,7 +32,7 @@ const STEPS_MAP = {
   hourly: 'Hour',
 };
 
-const STEP_TO_DIFF_UNIT_MAP = {
+const STEP_TO_DATE_UNIT_MAP = {
   hourly: 'hour',
   daily: 'day',
   weekly: 'week',
@@ -60,17 +60,15 @@ const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
 }, {});
 
 const generateLabels = (step, visits) => {
+  const unit = STEP_TO_DATE_UNIT_MAP[step];
+  const formatter = STEP_TO_DATE_FORMAT[step];
   const newerDate = moment(visits[0].date);
   const oldestDate = moment(visits[visits.length - 1].date);
-  const size = newerDate.diff(oldestDate, STEP_TO_DIFF_UNIT_MAP[step]);
+  const size = newerDate.diff(oldestDate, unit);
 
   return [
-    STEP_TO_DATE_FORMAT[step](oldestDate),
-    ...rangeOf(size, () => {
-      const date = oldestDate.add(1, STEP_TO_DIFF_UNIT_MAP[step]);
-
-      return STEP_TO_DATE_FORMAT[step](date);
-    }),
+    formatter(oldestDate),
+    ...rangeOf(size, () => formatter(oldestDate.add(1, unit))),
   ];
 };
 
