@@ -37,17 +37,6 @@ describe('<EditTagsModal />', () => {
     jest.clearAllMocks();
   });
 
-  it('resets tags when component is mounted', () => {
-    createWrapper({
-      shortCode,
-      tags: [],
-      saving: false,
-      error: false,
-    });
-
-    expect(resetShortUrlsTags).toHaveBeenCalledTimes(1);
-  });
-
   it('renders tags selector and save button when loaded', () => {
     const wrapper = createWrapper({
       shortCode,
