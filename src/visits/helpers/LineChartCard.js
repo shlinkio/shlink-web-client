@@ -52,6 +52,22 @@ const STEP_TO_DATE_FORMAT = {
   monthly: (date) => moment(date).format('YYYY-MM'),
 };
 
+const determineInitialStep = (oldestVisitDate) => {
+  const now = moment();
+  const oldestDate = moment(oldestVisitDate);
+
+  if (now.diff(oldestDate, 'day') <= 2) { // Less than 2 days
+    return 'hourly';
+  } else if (now.diff(oldestDate, 'month') <= 1) { // Between 2 days and 1 month
+    return 'daily';
+  } else if (now.diff(oldestDate, 'month') <= 6) { // Between 1 and 6 months
+    return 'weekly';
+  }
+
+  // Older than 6 months
+  return 'monthly';
+};
+
 const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
   const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
@@ -93,7 +109,9 @@ const generateDataset = (stats, label, color) => ({
 });
 
 const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
-  const [ step, setStep ] = useState('monthly');
+  const [ step, setStep ] = useState(
+    visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly'
+  );
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
   const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
