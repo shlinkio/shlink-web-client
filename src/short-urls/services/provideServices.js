@@ -46,7 +46,7 @@ const provideServices = (bottle, connect) => {
     'EditShortUrlModal',
     'ForServerVersion'
   );
-  bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'stateFlagTimeout');
+  bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
 
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult', 'ForServerVersion');
   bottle.decorator(

@@ -25,8 +25,7 @@ describe('<DeleteTagConfirmModal />', () => {
 
   afterEach(() => {
     wrapper && wrapper.unmount();
-    deleteTag.mockReset();
-    tagDeleted.mockReset();
+    jest.resetAllMocks();
   });
 
   it('asks confirmation for provided tag to be deleted', () => {
@@ -56,14 +55,16 @@ describe('<DeleteTagConfirmModal />', () => {
     expect(delBtn.text()).toEqual('Deleting tag...');
   });
 
-  it('deletes tag modal when btn is clicked', () => {
+  it('deletes tag modal when btn is clicked', async () => {
     wrapper = createWrapper({ error: false, deleting: true });
     const footer = wrapper.find(ModalFooter);
     const delBtn = footer.find('.btn-danger');
 
-    delBtn.simulate('click');
+    await delBtn.simulate('click');
     expect(deleteTag).toHaveBeenCalledTimes(1);
     expect(deleteTag).toHaveBeenCalledWith(tag);
+    expect(tagDeleted).toHaveBeenCalledTimes(1);
+    expect(tagDeleted).toHaveBeenCalledWith(tag);
   });
 
   it('does no further actions when modal is closed without deleting tag', () => {
@@ -71,16 +72,7 @@ describe('<DeleteTagConfirmModal />', () => {
     const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
+    expect(deleteTag).not.toHaveBeenCalled();
     expect(tagDeleted).not.toHaveBeenCalled();
-  });
-
-  it('notifies tag to be deleted when modal is closed after deleting tag', () => {
-    wrapper = createWrapper({ error: false, deleting: false });
-    const modal = wrapper.find(Modal);
-
-    wrapper.instance().tagWasDeleted = true;
-    modal.simulate('closed');
-    expect(tagDeleted).toHaveBeenCalledTimes(1);
-    expect(tagDeleted).toHaveBeenCalledWith(tag);
   });
 });

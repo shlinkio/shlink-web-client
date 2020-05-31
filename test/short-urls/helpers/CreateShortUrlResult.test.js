@@ -7,17 +7,17 @@ import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateSh
 
 describe('<CreateShortUrlResult />', () => {
   let wrapper;
-  const stateFlagTimeout = jest.fn();
+  const copyToClipboard = jest.fn();
+  const useStateFlagTimeout = jest.fn(() => [ false, copyToClipboard ]);
+  const CreateShortUrlResult = createCreateShortUrlResult(useStateFlagTimeout);
   const createWrapper = (result, error = false) => {
-    const CreateShortUrlResult = createCreateShortUrlResult(stateFlagTimeout);
-
     wrapper = shallow(<CreateShortUrlResult resetCreateShortUrl={identity} result={result} error={error} />);
 
     return wrapper;
   };
 
   afterEach(() => {
-    stateFlagTimeout.mockReset();
+    jest.clearAllMocks();
     wrapper && wrapper.unmount();
   });
 
@@ -47,8 +47,8 @@ describe('<CreateShortUrlResult />', () => {
     const wrapper = createWrapper({ shortUrl: 'https://doma.in/abc123' });
     const copyBtn = wrapper.find(CopyToClipboard);
 
-    expect(stateFlagTimeout).not.toHaveBeenCalled();
+    expect(copyToClipboard).not.toHaveBeenCalled();
     copyBtn.simulate('copy');
-    expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
+    expect(copyToClipboard).toHaveBeenCalledTimes(1);
   });
 });

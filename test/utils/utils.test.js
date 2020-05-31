@@ -2,31 +2,9 @@ import L from 'leaflet';
 import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import {
-  stateFlagTimeout as stateFlagTimeoutFactory,
-  determineOrderDir,
-  fixLeafletIcons,
-  rangeOf,
-} from '../../src/utils/utils';
+import { determineOrderDir, fixLeafletIcons, rangeOf } from '../../src/utils/utils';
 
 describe('utils', () => {
-  describe('stateFlagTimeout', () => {
-    it('sets state and initializes timeout with provided delay', () => {
-      const setTimeout = jest.fn((callback) => callback());
-      const setState = jest.fn();
-      const stateFlagTimeout = stateFlagTimeoutFactory(setTimeout);
-      const delay = 5000;
-
-      stateFlagTimeout(setState, 'foo', false, delay);
-
-      expect(setState).toHaveBeenCalledTimes(2);
-      expect(setState).toHaveBeenNthCalledWith(1, { foo: false });
-      expect(setState).toHaveBeenNthCalledWith(2, { foo: true });
-      expect(setTimeout).toHaveBeenCalledTimes(1);
-      expect(setTimeout).toHaveBeenCalledWith(expect.anything(), delay);
-    });
-  });
-
   describe('determineOrderDir', () => {
     it('returns ASC when current order field and selected field are different', () => {
       expect(determineOrderDir('foo', 'bar')).toEqual('ASC');
