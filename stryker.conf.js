@@ -1,6 +1,6 @@
 const jestConfig = require(`${__dirname}/jest.config.js`);
 
-module.exports = (config) => config.set({
+module.exports = {
   mutate: jestConfig.collectCoverageFrom,
   mutator: 'javascript',
   testRunner: 'jest',
@@ -19,4 +19,4 @@ module.exports = (config) => config.set({
   clearTextReporter: {
     logTests: false,
   },
-});
+};
