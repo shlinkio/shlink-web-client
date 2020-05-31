@@ -21,6 +21,7 @@ import Checkbox from '../../utils/Checkbox';
 
 const propTypes = {
   title: PropTypes.string,
+  highlightedLabel: PropTypes.string,
   visits: PropTypes.arrayOf(VisitType),
   highlightedVisits: PropTypes.arrayOf(VisitType),
 };
@@ -72,16 +73,14 @@ const generateLabels = (step, visits) => {
   ];
 };
 
-const generateLabelsAndGroupedVisits = (visits, step, skipNoElements) => {
-  const groupedVisits = groupVisitsByStep(step, reverse(visits));
-
+const generateLabelsAndGroupedVisits = (visits, groupedVisitsWithGaps, step, skipNoElements) => {
   if (skipNoElements) {
-    return [ Object.keys(groupedVisits), groupedVisits ];
+    return [ Object.keys(groupedVisitsWithGaps), groupedVisitsWithGaps ];
   }
 
   const labels = generateLabels(step, visits);
 
-  return [ labels, fillTheGaps(groupedVisits, labels) ];
+  return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
 };
 
 const generateDataset = (stats, label, color) => ({
@@ -93,12 +92,13 @@ const generateDataset = (stats, label, color) => ({
   backgroundColor: color,
 });
 
-const LineChartCard = ({ title, visits, highlightedVisits }) => {
+const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
   const [ step, setStep ] = useState('monthly');
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
+  const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
   const [ labels, groupedVisits ] = useMemo(
-    () => generateLabelsAndGroupedVisits(visits, step, skipNoVisits),
+    () => generateLabelsAndGroupedVisits(visits, groupedVisitsWithGaps, step, skipNoVisits),
     [ visits, step, skipNoVisits ]
   );
   const groupedHighlighted = useMemo(
@@ -110,7 +110,7 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
     labels,
     datasets: [
       generateDataset(groupedVisits, 'Visits', '#4696e5'),
-      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, 'Selected', '#F77F28'),
+      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, '#F77F28'),
     ].filter(Boolean),
   };
   const options = {

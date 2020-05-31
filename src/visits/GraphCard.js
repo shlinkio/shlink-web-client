@@ -13,10 +13,11 @@ const propTypes = {
   stats: PropTypes.object,
   max: PropTypes.number,
   highlightedStats: PropTypes.object,
+  highlightedLabel: PropTypes.string,
   onClick: PropTypes.func,
 };
 
-const generateGraphData = (title, isBarChart, labels, data, highlightedData) => ({
+const generateGraphData = (title, isBarChart, labels, data, highlightedData, highlightedLabel) => ({
   labels,
   datasets: [
     {
@@ -41,7 +42,7 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData) => 
     },
     highlightedData && {
       title,
-      label: 'Selected',
+      label: highlightedLabel || 'Selected',
       data: highlightedData,
       backgroundColor: 'rgba(247, 127, 40, 0.4)',
       borderColor: '#F77F28',
@@ -60,7 +61,7 @@ const determineHeight = (isBarChart, labels) => {
   return isBarChart && labels.length > 20 ? labels.length * 8 : null;
 };
 
-const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) => {
+const renderGraph = (title, isBarChart, stats, max, highlightedStats, highlightedLabel, onClick) => {
   const hasHighlightedStats = highlightedStats && Object.keys(highlightedStats).length > 0;
   const Component = isBarChart ? HorizontalBar : Doughnut;
   const labels = keys(stats).map(dropLabelIfHidden);
@@ -94,7 +95,7 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
       target.style.cursor = chartElement[0] ? 'pointer' : 'default';
     }),
   };
-  const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData);
+  const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
 
   // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
@@ -118,10 +119,10 @@ const renderGraph = (title, isBarChart, stats, max, highlightedStats, onClick) =
   );
 };
 
-const GraphCard = ({ title, footer, isBarChart, stats, max, highlightedStats, onClick }) => (
+const GraphCard = ({ title, footer, isBarChart, stats, max, highlightedStats, highlightedLabel, onClick }) => (
   <Card>
     <CardHeader className="graph-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
-    <CardBody>{renderGraph(title, isBarChart, stats, max, highlightedStats, onClick)}</CardBody>
+    <CardBody>{renderGraph(title, isBarChart, stats, max, highlightedStats, highlightedLabel, onClick)}</CardBody>
     {footer && <CardFooter className="graph-card__footer--sticky">{footer}</CardFooter>}
   </Card>
 );

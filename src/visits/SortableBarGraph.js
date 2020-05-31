@@ -17,6 +17,7 @@ export default class SortableBarGraph extends React.Component {
   static propTypes = {
     stats: PropTypes.object.isRequired,
     highlightedStats: PropTypes.object,
+    highlightedLabel: PropTypes.string,
     title: PropTypes.string.isRequired,
     sortingItems: PropTypes.object.isRequired,
     extraHeaderContent: PropTypes.func,
