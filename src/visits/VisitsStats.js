@@ -42,6 +42,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
     const [ showTable, toggleTable ] = useToggle();
     const [ tableIsSticky, , setSticky, unsetSticky ] = useToggle();
     const [ highlightedVisits, setHighlightedVisits ] = useState([]);
+    const [ highlightedLabel, setHighlightedLabel ] = useState();
     const [ isMobileDevice, setIsMobileDevice ] = useState(false);
     const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
     const setSelectedVisits = (selectedVisits) => {
@@ -53,9 +54,11 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
 
       if (selectedBar === newSelectedBar) {
         setHighlightedVisits([]);
+        setHighlightedLabel(undefined);
         selectedBar = undefined;
       } else {
         setHighlightedVisits(normalizedVisits.filter(propEq(prop, value)));
+        setHighlightedLabel(value);
         selectedBar = newSelectedBar;
       }
     };
@@ -111,7 +114,12 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
       return (
         <div className="row">
           <div className="col-12 mt-4">
-            <LineChartCard title="Visits during time" visits={visits} highlightedVisits={highlightedVisits} />
+            <LineChartCard
+              title="Visits during time"
+              visits={visits}
+              highlightedVisits={highlightedVisits}
+              highlightedLabel={highlightedLabel}
+            />
           </div>
           <div className="col-xl-4 col-lg-6 mt-4">
             <GraphCard title="Operating systems" stats={os} />
@@ -125,6 +133,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
               stats={referrers}
               withPagination={false}
               highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
+              highlightedLabel={highlightedLabel}
               sortingItems={{
                 name: 'Referrer name',
                 amount: 'Visits amount',
@@ -137,6 +146,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
               title="Countries"
               stats={countries}
               highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
+              highlightedLabel={highlightedLabel}
               sortingItems={{
                 name: 'Country name',
                 amount: 'Visits amount',
@@ -149,6 +159,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
               title="Cities"
               stats={cities}
               highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
+              highlightedLabel={highlightedLabel}
               extraHeaderContent={(activeCities) =>
                 mapLocations.length > 0 &&
                 <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />

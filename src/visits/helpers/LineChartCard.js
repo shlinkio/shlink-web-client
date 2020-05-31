@@ -21,6 +21,7 @@ import Checkbox from '../../utils/Checkbox';
 
 const propTypes = {
   title: PropTypes.string,
+  highlightedLabel: PropTypes.string,
   visits: PropTypes.arrayOf(VisitType),
   highlightedVisits: PropTypes.arrayOf(VisitType),
 };
@@ -91,7 +92,7 @@ const generateDataset = (stats, label, color) => ({
   backgroundColor: color,
 });
 
-const LineChartCard = ({ title, visits, highlightedVisits }) => {
+const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
   const [ step, setStep ] = useState('monthly');
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
@@ -109,7 +110,7 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
     labels,
     datasets: [
       generateDataset(groupedVisits, 'Visits', '#4696e5'),
-      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, 'Selected', '#F77F28'),
+      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, '#F77F28'),
     ].filter(Boolean),
   };
   const options = {
