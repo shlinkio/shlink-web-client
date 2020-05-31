@@ -72,16 +72,14 @@ const generateLabels = (step, visits) => {
   ];
 };
 
-const generateLabelsAndGroupedVisits = (visits, step, skipNoElements) => {
-  const groupedVisits = groupVisitsByStep(step, reverse(visits));
-
+const generateLabelsAndGroupedVisits = (visits, groupedVisitsWithGaps, step, skipNoElements) => {
   if (skipNoElements) {
-    return [ Object.keys(groupedVisits), groupedVisits ];
+    return [ Object.keys(groupedVisitsWithGaps), groupedVisitsWithGaps ];
   }
 
   const labels = generateLabels(step, visits);
 
-  return [ labels, fillTheGaps(groupedVisits, labels) ];
+  return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
 };
 
 const generateDataset = (stats, label, color) => ({
@@ -97,8 +95,9 @@ const LineChartCard = ({ title, visits, highlightedVisits }) => {
   const [ step, setStep ] = useState('monthly');
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
+  const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
   const [ labels, groupedVisits ] = useMemo(
-    () => generateLabelsAndGroupedVisits(visits, step, skipNoVisits),
+    () => generateLabelsAndGroupedVisits(visits, groupedVisitsWithGaps, step, skipNoVisits),
     [ visits, step, skipNoVisits ]
   );
   const groupedHighlighted = useMemo(
