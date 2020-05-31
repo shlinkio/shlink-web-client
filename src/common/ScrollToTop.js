@@ -1,23 +1,23 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const ScrollToTop = ({ scrollTo }) => class ScrollToTop extends React.Component {
-  static propTypes = {
-    location: PropTypes.object,
-    children: PropTypes.node,
+const propTypes = {
+  location: PropTypes.object,
+  children: PropTypes.node,
+};
+
+const ScrollToTop = () => {
+  const ScrollToTopComp = ({ location, children }) => {
+    useEffect(() => {
+      scrollTo(0, 0);
+    }, [ location ]);
+
+    return children;
   };
 
-  componentDidUpdate({ location: prevLocation }) {
-    const { location } = this.props;
+  ScrollToTopComp.propTypes = propTypes;
 
-    if (location !== prevLocation) {
-      scrollTo(0, 0);
-    }
-  }
-
-  render() {
-    return this.props.children;
-  }
+  return ScrollToTopComp;
 };
 
 export default ScrollToTop;

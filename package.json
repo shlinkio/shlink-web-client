@@ -18,7 +18,8 @@
     "test:ci": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=clover",
     "test:pretty": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=html",
     "mutate": "./node_modules/.bin/stryker run",
-    "mutate:ci": "npm run mutate -- --mutate=$MUTATION_FILES"
+    "mutate:ci": "npm run mutate -- --mutate=$MUTATION_FILES",
+    "check": "npm run test & npm run lint & wait"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",

@@ -20,9 +20,4 @@ describe('<ScrollToTop />', () => {
   });
 
   it('just renders children', () => expect(wrapper.text()).toEqual('Foobar'));
-
-  it('scrolls to top when location changes', () => {
-    wrapper.instance().componentDidUpdate({ location: { href: 'bar' } });
-    expect(window.scrollTo).toHaveBeenCalledTimes(1);
-  });
 });
