@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { fromPairs, head, keys, pipe, prop, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
-import SortingDropdown from '../utils/SortingDropdown';
-import PaginationDropdown from '../utils/PaginationDropdown';
-import { rangeOf } from '../utils/utils';
-import { roundTen } from '../utils/helpers/numbers';
-import SimplePaginator from '../common/SimplePaginator';
+import SortingDropdown from '../../utils/SortingDropdown';
+import PaginationDropdown from '../../utils/PaginationDropdown';
+import { rangeOf } from '../../utils/utils';
+import { roundTen } from '../../utils/helpers/numbers';
+import SimplePaginator from '../../common/SimplePaginator';
 import GraphCard from './GraphCard';
 
 const propTypes = {

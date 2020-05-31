@@ -3,7 +3,7 @@ import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { keys, values } from 'ramda';
-import { fillTheGaps } from '../utils/helpers/visits';
+import { fillTheGaps } from '../../utils/helpers/visits';
 import './GraphCard.scss';
 
 const propTypes = {

@@ -4,8 +4,8 @@ import { identity } from 'ramda';
 import { Card, Progress } from 'reactstrap';
 import createVisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
-import GraphCard from '../../src/visits/GraphCard';
-import SortableBarGraph from '../../src/visits/SortableBarGraph';
+import GraphCard from '../../src/visits/helpers/GraphCard';
+import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import DateRangeRow from '../../src/utils/DateRangeRow';
 
 describe('<VisitStats />', () => {

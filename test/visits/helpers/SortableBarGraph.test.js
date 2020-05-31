@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { keys, range, values } from 'ramda';
-import SortableBarGraph from '../../src/visits/SortableBarGraph';
-import GraphCard from '../../src/visits/GraphCard';
-import SortingDropdown from '../../src/utils/SortingDropdown';
-import PaginationDropdown from '../../src/utils/PaginationDropdown';
-import { rangeOf } from '../../src/utils/utils';
+import SortableBarGraph from '../../../src/visits/helpers/SortableBarGraph';
+import GraphCard from '../../../src/visits/helpers/GraphCard';
+import SortingDropdown from '../../../src/utils/SortingDropdown';
+import PaginationDropdown from '../../../src/utils/PaginationDropdown';
+import { rangeOf } from '../../../src/utils/utils';
 
 describe('<SortableBarGraph />', () => {
   let wrapper;

@@ -10,7 +10,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
-import { reverse } from 'ramda';
+import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
 import { VisitType } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
@@ -50,6 +50,18 @@ const STEP_TO_DATE_FORMAT = {
     return `${firstWeekDay} - ${lastWeekDay}`;
   },
   monthly: (date) => moment(date).format('YYYY-MM'),
+};
+
+const determineInitialStep = (oldestVisitDate) => {
+  const now = moment();
+  const oldestDate = moment(oldestVisitDate);
+  const matcher = cond([
+    [ () => now.diff(oldestDate, 'day') <= 2, always('hourly') ], // Less than 2 days
+    [ () => now.diff(oldestDate, 'month') <= 1, always('daily') ], // Between 2 days and 1 month
+    [ () => now.diff(oldestDate, 'month') <= 6, always('weekly') ], // Between 1 and 6 months
+  ]);
+
+  return matcher() || 'monthly';
 };
 
 const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
@@ -93,7 +105,9 @@ const generateDataset = (stats, label, color) => ({
 });
 
 const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
-  const [ step, setStep ] = useState('monthly');
+  const [ step, setStep ] = useState(
+    visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly'
+  );
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
   const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
