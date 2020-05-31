@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { stateFlagTimeout } from '../utils';
 import { useStateFlagTimeout } from '../helpers/hooks';
 import Storage from './Storage';
 import ColorGenerator from './ColorGenerator';
@@ -15,7 +14,6 @@ const provideServices = (bottle) => {
 
   bottle.constant('setTimeout', global.setTimeout);
   bottle.constant('clearTimeout', global.clearTimeout);
-  bottle.serviceFactory('stateFlagTimeout', stateFlagTimeout, 'setTimeout');
   bottle.serviceFactory('useStateFlagTimeout', useStateFlagTimeout, 'setTimeout', 'clearTimeout');
 };
 

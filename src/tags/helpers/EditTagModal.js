@@ -1,109 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ChromePicker } from 'react-color';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import './EditTagModal.scss';
+import { useToggle } from '../../utils/helpers/hooks';
 
-const EditTagModal = ({ getColorForKey }) => class EditTagModal extends React.Component {
-  static propTypes = {
-    tag: PropTypes.string,
-    editTag: PropTypes.func,
-    toggle: PropTypes.func,
-    tagEdited: PropTypes.func,
-    isOpen: PropTypes.bool,
-    tagEdit: PropTypes.shape({
-      error: PropTypes.bool,
-      editing: PropTypes.bool,
-    }),
-  };
+const propTypes = {
+  tag: PropTypes.string,
+  editTag: PropTypes.func,
+  toggle: PropTypes.func,
+  tagEdited: PropTypes.func,
+  isOpen: PropTypes.bool,
+  tagEdit: PropTypes.shape({
+    error: PropTypes.bool,
+    editing: PropTypes.bool,
+  }),
+};
 
-  saveTag = (e) => {
-    e.preventDefault();
-    const { tag: oldName, editTag, toggle } = this.props;
-    const { tag: newName, color } = this.state;
+const EditTagModal = ({ getColorForKey }) => {
+  const EditTagModalComp = ({ tag, editTag, toggle, tagEdited, isOpen, tagEdit }) => {
+    const [ newTagName, setNewTagName ] = useState(tag);
+    const [ color, setColor ] = useState(getColorForKey(tag));
+    const [ showColorPicker, toggleColorPicker ] = useToggle();
+    const saveTag = (e) => {
+      e.preventDefault();
 
-    editTag(oldName, newName, color)
-      .then(() => {
-        this.tagWasEdited = true;
-        toggle();
-      })
-      .catch(() => {});
-  };
-  handleOnClosed = () => {
-    if (!this.tagWasEdited) {
-      return;
-    }
-
-    const { tag: oldName, tagEdited } = this.props;
-    const { tag: newName, color } = this.state;
-
-    tagEdited(oldName, newName, color);
-  };
-
-  constructor(props) {
-    super(props);
-
-    const { tag } = props;
-
-    this.state = {
-      showColorPicker: false,
-      tag,
-      color: getColorForKey(tag),
+      editTag(tag, newTagName, color)
+        .then(() => tagEdited(tag, newTagName, color))
+        .then(toggle)
+        .catch(() => {});
     };
-  }
-
-  componentDidMount() {
-    this.tagWasEdited = false;
-  }
-
-  render() {
-    const { isOpen, toggle, tagEdit } = this.props;
-    const { tag, color } = this.state;
-    const toggleColorPicker = () =>
-      this.setState(({ showColorPicker }) => ({ showColorPicker: !showColorPicker }));
 
     return (
-      <Modal isOpen={isOpen} toggle={toggle} centered onClosed={this.handleOnClosed}>
-        <form onSubmit={(e) => this.saveTag(e)}>
+      <Modal isOpen={isOpen} toggle={toggle} centered>
+        <form onSubmit={saveTag}>
           <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
           <ModalBody>
             <div className="input-group">
-              <div
-                className="input-group-prepend"
-                id="colorPickerBtn"
-                onClick={toggleColorPicker}
-              >
+              <div className="input-group-prepend" id="colorPickerBtn" onClick={toggleColorPicker}>
                 <div
                   className="input-group-text edit-tag-modal__color-picker-toggle"
-                  style={{
-                    backgroundColor: color,
-                    borderColor: color,
-                  }}
+                  style={{ backgroundColor: color, borderColor: color }}
                 >
                   <FontAwesomeIcon icon={colorIcon} className="edit-tag-modal__color-icon" />
                 </div>
               </div>
-              <Popover
-                isOpen={this.state.showColorPicker}
-                toggle={toggleColorPicker}
-                target="colorPickerBtn"
-                placement="right"
-              >
-                <ChromePicker
-                  color={color}
-                  disableAlpha
-                  onChange={(color) => this.setState({ color: color.hex })}
-                />
+              <Popover isOpen={showColorPicker} toggle={toggleColorPicker} target="colorPickerBtn" placement="right">
+                <ChromePicker color={color} disableAlpha onChange={({ hex }) => setColor(hex)} />
               </Popover>
               <input
                 type="text"
-                value={tag}
+                value={newTagName}
                 placeholder="Tag"
                 required
                 className="form-control"
-                onChange={(e) => this.setState({ tag: e.target.value })}
+                onChange={(e) => setNewTagName(e.target.value)}
               />
             </div>
 
@@ -122,7 +75,11 @@ const EditTagModal = ({ getColorForKey }) => class EditTagModal extends React.Co
         </form>
       </Modal>
     );
-  }
+  };
+
+  EditTagModalComp.propTypes = propTypes;
+
+  return EditTagModalComp;
 };
 
 export default EditTagModal;

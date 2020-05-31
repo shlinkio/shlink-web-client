@@ -4,18 +4,6 @@ import marker from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import { isEmpty, isNil, range } from 'ramda';
 
-const DEFAULT_TIMEOUT_DELAY = 2000;
-
-export const stateFlagTimeout = (setTimeout) => (
-  setState,
-  flagName,
-  initialValue = true,
-  delay = DEFAULT_TIMEOUT_DELAY
-) => {
-  setState({ [flagName]: initialValue });
-  setTimeout(() => setState({ [flagName]: !initialValue }), delay);
-};
-
 export const determineOrderDir = (clickedField, currentOrderField, currentOrderDir) => {
   if (currentOrderField !== clickedField) {
     return 'ASC';
