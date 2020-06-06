@@ -53,8 +53,8 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData, hig
 const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
 
 const determineHeight = (isBarChart, labels) => {
-  if (!isBarChart && labels.length > 8) {
-    return 200;
+  if (!isBarChart) {
+    return 300;
   }
 
   return isBarChart && labels.length > 20 ? labels.length * 8 : null;
