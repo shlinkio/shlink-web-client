@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
-import GraphCard from '../../../src/visits/helpers/GraphCard';
+import DefaultChart from '../../../src/visits/helpers/DefaultChart';
 
-describe('<GraphCard />', () => {
+describe('<DefaultChart />', () => {
   let wrapper;
   const stats = {
     foo: 123,
@@ -14,7 +14,7 @@ describe('<GraphCard />', () => {
   afterEach(() => wrapper && wrapper.unmount());
 
   it('renders Doughnut when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard title="The chart" stats={stats} />);
+    wrapper = shallow(<DefaultChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
 
@@ -48,7 +48,7 @@ describe('<GraphCard />', () => {
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
-    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} />);
+    wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
 
@@ -79,7 +79,7 @@ describe('<GraphCard />', () => {
     [{ bar: 20, foo: 13 }, [ 110, 436 ], [ 13, 20 ]],
     [ undefined, [ 123, 456 ], undefined ],
   ])('splits highlighted data from regular data', (highlightedStats, expectedData, expectedHighlightedData) => {
-    wrapper = shallow(<GraphCard isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
+    wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(HorizontalBar);
 
     const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');
