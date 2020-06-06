@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* *Nothing*
+* [#254](https://github.com/shlinkio/shlink-web-client/issues/254) Reduced duplication on code to handle mercure topics binding.
 
 #### Deprecated
 
