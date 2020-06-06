@@ -17,13 +17,14 @@ describe('<DefaultChart />', () => {
     wrapper = shallow(<DefaultChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
+    const cols = wrapper.find('.col-sm-12');
 
     expect(doughnut).toHaveLength(1);
     expect(horizontal).toHaveLength(0);
 
     const { labels, datasets } = doughnut.prop('data');
     const [{ title, data, backgroundColor, borderColor }] = datasets;
-    const { legend, scales } = doughnut.prop('options');
+    const { legend, legendCallback, scales } = doughnut.prop('options');
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
@@ -43,24 +44,28 @@ describe('<DefaultChart />', () => {
       '#463730',
     ]);
     expect(borderColor).toEqual('white');
-    expect(legend).toEqual({ position: 'right' });
+    expect(legend).toEqual({ display: false });
+    expect(typeof legendCallback).toEqual('function');
     expect(scales).toBeUndefined();
+    expect(cols).toHaveLength(2);
   });
 
   it('renders HorizontalBar when is not a bar chart', () => {
     wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} />);
     const doughnut = wrapper.find(Doughnut);
     const horizontal = wrapper.find(HorizontalBar);
+    const cols = wrapper.find('.col-sm-12');
 
     expect(doughnut).toHaveLength(0);
     expect(horizontal).toHaveLength(1);
 
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
-    const { legend, scales } = horizontal.prop('options');
+    const { legend, legendCallback, scales } = horizontal.prop('options');
 
     expect(backgroundColor).toEqual('rgba(70, 150, 229, 0.4)');
     expect(borderColor).toEqual('rgba(70, 150, 229, 1)');
     expect(legend).toEqual({ display: false });
+    expect(legendCallback).toEqual(false);
     expect(scales).toEqual({
       xAxes: [
         {
@@ -70,6 +75,7 @@ describe('<DefaultChart />', () => {
       ],
       yAxes: [{ stacked: true }],
     });
+    expect(cols).toHaveLength(1);
   });
 
   it.each([

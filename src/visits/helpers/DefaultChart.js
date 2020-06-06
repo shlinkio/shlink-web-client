@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
+import classNames from 'classnames';
 import { fillTheGaps } from '../../utils/helpers/visits';
+import './DefaultChart.scss';
 
 const propTypes = {
   title: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]),
@@ -58,6 +60,39 @@ const determineHeight = (isBarChart, labels) => {
   return isBarChart && labels.length > 20 ? labels.length * 8 : null;
 };
 
+/* eslint-disable react/prop-types */
+const renderPieChartLegend = ({ config }) => {
+  const { labels, datasets } = config.data;
+  const { defaultColor } = config.options;
+  const [{ backgroundColor: colors }] = datasets;
+
+  return (
+    <ul className="default-chart__pie-chart-legend">
+      {labels.map((label, index) => (
+        <li key={label} className="default-chart__pie-chart-legend-item d-flex">
+          <div
+            className="default-chart__pie-chart-legend-item-color"
+            style={{ backgroundColor: colors[index] || defaultColor }}
+          />
+          <small className="default-chart__pie-chart-legend-item-text flex-fill">{label}</small>
+        </li>
+      ))}
+    </ul>
+  );
+};
+/* eslint-enable react/prop-types */
+
+const chartElementAtEvent = (onClick) => ([ chart ]) => {
+  if (!onClick || !chart) {
+    return;
+  }
+
+  const { _index, _chart: { data } } = chart;
+  const { labels } = data;
+
+  onClick(labels[_index]);
+};
+
 const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlightedLabel, onClick }) => {
   const hasHighlightedStats = highlightedStats && Object.keys(highlightedStats).length > 0;
   const Component = isBarChart ? HorizontalBar : Doughnut;
@@ -70,9 +105,11 @@ const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlig
     return acc;
   }, { ...stats }));
   const highlightedData = hasHighlightedStats && fillTheGaps(highlightedStats, labels);
+  const chartRef = useRef();
 
   const options = {
-    legend: isBarChart ? { display: false } : { position: 'right' },
+    legend: { display: false },
+    legendCallback: !isBarChart && renderPieChartLegend,
     scales: isBarChart && {
       xAxes: [
         {
@@ -97,22 +134,23 @@ const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlig
 
   // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
   return (
-    <Component
-      key={height}
-      data={graphData}
-      options={options}
-      height={height}
-      getElementAtEvent={([ chart ]) => {
-        if (!onClick || !chart) {
-          return;
-        }
-
-        const { _index, _chart: { data } } = chart;
-        const { labels } = data;
-
-        onClick(labels[_index]);
-      }}
-    />
+    <div className="row">
+      <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
+        <Component
+          ref={chartRef}
+          key={height}
+          data={graphData}
+          options={options}
+          height={height}
+          getElementAtEvent={chartElementAtEvent(onClick)}
+        />
+      </div>
+      {!isBarChart && (
+        <div className="col-sm-12 col-md-5">
+          {chartRef.current && chartRef.current.chartInstance.generateLegend()}
+        </div>
+      )}
+    </div>
   );
 };
 
