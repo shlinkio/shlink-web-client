@@ -5,8 +5,7 @@ import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
 import { serverType } from '../servers/prop-types';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
-import { SettingsType } from '../settings/reducers/settings';
-import { bindToMercureTopic } from '../mercure/helpers';
+import { useMercureTopicBinding } from '../mercure/helpers';
 import { TagsListType } from './reducers/tagsList';
 
 const { ceil } = Math;
@@ -20,23 +19,18 @@ const propTypes = {
   createNewVisit: PropTypes.func,
   loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
-  settings: SettingsType,
 };
 
 const TagsList = (TagCard) => {
   const TagListComp = (
-    { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo, settings }
+    { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo }
   ) => {
-    const { realTimeUpdates } = settings;
     const [ displayedTag, setDisplayedTag ] = useState();
 
     useEffect(() => {
       forceListTags();
     }, []);
-    useEffect(
-      bindToMercureTopic(mercureInfo, realTimeUpdates, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
-      [ mercureInfo ]
-    );
+    useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
     const renderContent = () => {
       if (tagsList.loading) {

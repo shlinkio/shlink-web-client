@@ -14,7 +14,6 @@ describe('<ShortUrlVisits />', () => {
   const history = {
     goBack: jest.fn(),
   };
-  const realTimeUpdates = { enabled: true };
   const VisitsStats = jest.fn();
 
   beforeEach(() => {
@@ -31,7 +30,6 @@ describe('<ShortUrlVisits />', () => {
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}
         matchMedia={() => ({ matches: false })}
-        settings={{ realTimeUpdates }}
       />
     );
   });

@@ -1,10 +1,10 @@
+import { useEffect } from 'react';
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 
-export const bindToMercureTopic = (mercureInfo, realTimeUpdates, topic, onMessage, onTokenExpired) => () => {
-  const { enabled } = realTimeUpdates;
+export const bindToMercureTopic = (mercureInfo, topic, onMessage, onTokenExpired) => () => {
   const { mercureHubUrl, token, loading, error } = mercureInfo;
 
-  if (!enabled || loading || error) {
+  if (loading || error) {
     return undefined;
   }
 
@@ -21,4 +21,8 @@ export const bindToMercureTopic = (mercureInfo, realTimeUpdates, topic, onMessag
   es.onerror = ({ status }) => status === 401 && onTokenExpired();
 
   return () => es.close();
+};
+
+export const useMercureTopicBinding = (mercureInfo, topic, onMessage, onTokenExpired) => {
+  useEffect(bindToMercureTopic(mercureInfo, topic, onMessage, onTokenExpired), [ mercureInfo ]);
 };

@@ -2,8 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import qs from 'qs';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
-import { bindToMercureTopic } from '../mercure/helpers';
-import { SettingsType } from '../settings/reducers/settings';
+import { useMercureTopicBinding } from '../mercure/helpers';
 import { shortUrlVisitsType } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { shortUrlDetailType } from './reducers/shortUrlDetail';
@@ -26,7 +25,6 @@ const propTypes = {
   createNewVisit: PropTypes.func,
   loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
-  settings: SettingsType,
 };
 
 const ShortUrlVisits = (VisitsStats) => {
@@ -42,7 +40,6 @@ const ShortUrlVisits = (VisitsStats) => {
     createNewVisit,
     loadMercureInfo,
     mercureInfo,
-    settings: { realTimeUpdates },
   }) => {
     const { params } = match;
     const { shortCode } = params;
@@ -54,16 +51,7 @@ const ShortUrlVisits = (VisitsStats) => {
     useEffect(() => {
       getShortUrlDetail(shortCode, domain);
     }, []);
-    useEffect(
-      bindToMercureTopic(
-        mercureInfo,
-        realTimeUpdates,
-        `https://shlink.io/new-visit/${shortCode}`,
-        createNewVisit,
-        loadMercureInfo
-      ),
-      [ mercureInfo ],
-    );
+    useMercureTopicBinding(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit, loadMercureInfo);
 
     return (
       <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetShortUrlVisits} visitsInfo={shortUrlVisits}>

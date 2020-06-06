@@ -40,14 +40,31 @@ describe('mercureInfoReducer', () => {
       mercureInfo: jest.fn(() => result),
     });
     const dispatch = jest.fn();
-    const getState = () => ({});
+    const createGetStateMock = (enabled) => jest.fn(() => ({
+      settings: {
+        realTimeUpdates: { enabled },
+      },
+    }));
 
     afterEach(jest.resetAllMocks);
 
+    it('dispatches error when real time updates are disabled', async () => {
+      const apiClientMock = createApiClientMock(Promise.resolve(mercureInfo));
+      const getState = createGetStateMock(false);
+
+      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
+
+      expect(apiClientMock.mercureInfo).not.toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO_ERROR });
+    });
+
     it('calls API on success', async () => {
       const apiClientMock = createApiClientMock(Promise.resolve(mercureInfo));
+      const getState = createGetStateMock(true);
 
-      await loadMercureInfo(() => apiClientMock)()(dispatch, getState());
+      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
 
       expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
@@ -58,8 +75,9 @@ describe('mercureInfoReducer', () => {
     it('throws error on failure', async () => {
       const error = 'Error';
       const apiClientMock = createApiClientMock(Promise.reject(error));
+      const getState = createGetStateMock(true);
 
-      await loadMercureInfo(() => apiClientMock)()(dispatch, getState());
+      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
 
       expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

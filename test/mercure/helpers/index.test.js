@@ -11,12 +11,11 @@ describe('helpers', () => {
     const onTokenExpired = jest.fn();
 
     it.each([
-      [{ loading: true, error: false }, { enabled: true }],
-      [{ loading: false, error: true }, { enabled: true }],
-      [{ loading: true, error: true }, { enabled: true }],
-      [{ loading: false, error: false }, { enabled: false }],
-    ])('does not bind an EventSource when disabled, loading or error', (mercureInfo, realTimeUpdates) => {
-      bindToMercureTopic(mercureInfo, realTimeUpdates)();
+      [{ loading: true, error: false }],
+      [{ loading: false, error: true }],
+      [{ loading: true, error: true }],
+    ])('does not bind an EventSource when loading or error', (mercureInfo) => {
+      bindToMercureTopic(mercureInfo)();
 
       expect(EventSource).not.toHaveBeenCalled();
       expect(onMessage).not.toHaveBeenCalled();
@@ -36,7 +35,7 @@ describe('helpers', () => {
         error: false,
         mercureHubUrl,
         token,
-      }, { enabled: true }, topic, onMessage, onTokenExpired)();
+      }, topic, onMessage, onTokenExpired)();
 
       expect(EventSource).toHaveBeenCalledWith(hubUrl, {
         headers: {
