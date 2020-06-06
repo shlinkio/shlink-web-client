@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Fixed
 
 * [#276](https://github.com/shlinkio/shlink-web-client/issues/276) Fixed default grouping used for visits line chart, making it be dynamic depending on how old the short URL is.
+* [#280](https://github.com/shlinkio/shlink-web-client/issues/280) Fixed shlink-web-client version not being properly passed when building stable tags of the docker image.
 
 
 ## 2.5.0 - 2020-05-31

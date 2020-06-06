@@ -27,7 +27,7 @@ else
   [[ $TRAVIS_TAG != *"alpha"* && $TRAVIS_TAG != *"beta"* ]] && TAGS="${TAGS} -t ${DOCKER_IMAGE}:stable"
 
   docker buildx build --push \
-    --build-arg SHLINK_VERSION=${TRAVIS_TAG#?} \
+    --build-arg VERSION=${TRAVIS_TAG#?} \
     --platform ${PLATFORMS} \
     ${TAGS} .
 fi
