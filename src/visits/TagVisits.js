@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
-import { bindToMercureTopic } from '../mercure/helpers';
+import { useMercureTopicBinding } from '../mercure/helpers';
 import { TagVisitsType } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
 
@@ -35,10 +35,7 @@ const TagVisits = (VisitsStats, colorGenerator) => {
     const { tag } = params;
     const loadVisits = (dates) => getTagVisits(tag, dates);
 
-    useEffect(
-      bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
-      [ mercureInfo ],
-    );
+    useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
     return (
       <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetTagVisits} visitsInfo={tagVisits}>

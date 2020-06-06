@@ -8,7 +8,7 @@ import { serverType } from '../servers/prop-types';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir } from '../utils/utils';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
-import { bindToMercureTopic } from '../mercure/helpers';
+import { useMercureTopicBinding } from '../mercure/helpers';
 import { shortUrlType } from './reducers/shortUrlsList';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
@@ -116,10 +116,7 @@ const ShortUrlsList = (ShortUrlsRow) => {
 
       return resetShortUrlParams;
     }, []);
-    useEffect(
-      bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
-      [ mercureInfo ]
-    );
+    useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
     return (
       <React.Fragment>
