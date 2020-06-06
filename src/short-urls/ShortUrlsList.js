@@ -9,7 +9,6 @@ import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir } from '../utils/utils';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
 import { bindToMercureTopic } from '../mercure/helpers';
-import { SettingsType } from '../settings/reducers/settings';
 import { shortUrlType } from './reducers/shortUrlsList';
 import { shortUrlsListParamsType } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
@@ -34,7 +33,6 @@ const propTypes = {
   createNewVisit: PropTypes.func,
   loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
-  settings: SettingsType,
 };
 
 // FIXME Replace with typescript: (ShortUrlsRow component)
@@ -52,7 +50,6 @@ const ShortUrlsList = (ShortUrlsRow) => {
     createNewVisit,
     loadMercureInfo,
     mercureInfo,
-    settings: { realTimeUpdates },
   }) => {
     const { orderBy } = shortUrlsListParams;
     const [ order, setOrder ] = useState({
@@ -120,7 +117,7 @@ const ShortUrlsList = (ShortUrlsRow) => {
       return resetShortUrlParams;
     }, []);
     useEffect(
-      bindToMercureTopic(mercureInfo, realTimeUpdates, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
+      bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
       [ mercureInfo ]
     );
 

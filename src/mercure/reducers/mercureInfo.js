@@ -29,7 +29,15 @@ export default handleActions({
 
 export const loadMercureInfo = (buildShlinkApiClient) => () => async (dispatch, getState) => {
   dispatch({ type: GET_MERCURE_INFO_START });
+
+  const { settings } = getState();
   const { mercureInfo } = buildShlinkApiClient(getState);
+
+  if (!settings.realTimeUpdates.enabled) {
+    dispatch({ type: GET_MERCURE_INFO_ERROR });
+
+    return;
+  }
 
   try {
     const result = await mercureInfo();

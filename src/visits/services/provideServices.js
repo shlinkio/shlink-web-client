@@ -16,12 +16,12 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('VisitsStats', VisitsStats, 'VisitsParser', 'OpenMapModalBtn');
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsStats');
   bottle.decorator('ShortUrlVisits', connect(
-    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
+    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ]
   ));
   bottle.serviceFactory('TagVisits', TagVisits, 'VisitsStats', 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
-    [ 'tagVisits', 'mercureInfo', 'settings' ],
+    [ 'tagVisits', 'mercureInfo' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisit', 'loadMercureInfo' ]
   ));
 

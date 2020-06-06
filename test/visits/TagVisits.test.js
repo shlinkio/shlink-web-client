@@ -13,7 +13,6 @@ describe('<TagVisits />', () => {
   const history = {
     goBack: jest.fn(),
   };
-  const realTimeUpdates = { enabled: true };
   const VisitsStats = jest.fn();
 
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('<TagVisits />', () => {
         history={history}
         tagVisits={{ loading: true, visits: [] }}
         cancelGetTagVisits={identity}
-        settings={{ realTimeUpdates }}
       />
     );
   });

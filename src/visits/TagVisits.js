@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { MercureInfoType } from '../mercure/reducers/mercureInfo';
-import { SettingsType } from '../settings/reducers/settings';
 import { bindToMercureTopic } from '../mercure/helpers';
 import { TagVisitsType } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
@@ -19,7 +18,6 @@ const propTypes = {
   createNewVisit: PropTypes.func,
   loadMercureInfo: PropTypes.func,
   mercureInfo: MercureInfoType,
-  settings: SettingsType,
 };
 
 const TagVisits = (VisitsStats, colorGenerator) => {
@@ -32,20 +30,13 @@ const TagVisits = (VisitsStats, colorGenerator) => {
     createNewVisit,
     loadMercureInfo,
     mercureInfo,
-    settings: { realTimeUpdates },
   }) => {
     const { params } = match;
     const { tag } = params;
     const loadVisits = (dates) => getTagVisits(tag, dates);
 
     useEffect(
-      bindToMercureTopic(
-        mercureInfo,
-        realTimeUpdates,
-        'https://shlink.io/new-visit',
-        createNewVisit,
-        loadMercureInfo
-      ),
+      bindToMercureTopic(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo),
       [ mercureInfo ],
     );
 
