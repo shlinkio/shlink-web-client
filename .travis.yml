@@ -2,57 +2,52 @@ dist: bionic
 
 language: node_js
 
-jobs:
-  fast_finish: true
-  include:
-    - name: "Docker publish"
-      node_js: '12.16.3'
-      if: NOT type = pull_request
-      env:
-        - DOCKER_PUBLISH="true"
-    - name: "CI"
-      node_js: '12.16.3'
-      env:
-        - DOCKER_PUBLISH="false"
-  allow_failures:
-    - name: "Docker publish"
+branches:
+  only:
+    - /.*/
+
+services:
+  - docker
 
 cache:
   directories:
     - node_modules
 
-services:
-  - docker
+jobs:
+  fast_finish: true
+  include:
+    - name: "Docker publish"
+      if: NOT type = pull_request
+      install: sudo bash ./scripts/docker/install-docker
+      script: bash ./scripts/docker/build
+      # Overwrite all common steps that have to be different
+      before_script: echo "Before script"
+      after_success: echo "After success"
+    - name: "CI"
+      node_js: '12.16.3'
+      # Before deploying, build dist file for current travis tag
+      before_deploy: npm run build ${TRAVIS_TAG#?}
+      deploy:
+        - provider: releases
+          api_key:
+            secure: jBvPwC7EAbViaNR83rwMSt5XQDK0Iu9rgvEMa7GoyShbHcvUCCPd73Tu9quNpKi6NKsDY3INHgtch3vgonjGNGDGJ+yDyIBzXcvsAX2x3UcHpRbgY12uiINVmQxBI1+OVQB016Nm+cKC/i5Z36K4EmDbYfo+MrKndngM6AjcQFTwI8EwniIMaQgg4gNes//K8NhP5u0c3gwG+Q6jEGnq6uH3kcRgh6/epIZYpQyxjqWqKwF77sgcYj+X2Nf6XxtB5neuCi301UKLoLx8G0skh/Lm6KAIO4s9iIhIFa3UpoF21Ka0TxLpd2JxalLryCnFGlWWE6lxC9Htmc0TeRowJQlGdJXCskJ37xT9MljKY0fwNMu06VS/FUgykuCv+jP3zQu51pKu7Ew7+WeNPjautoOTu54VkdGyHcf2ThBNEyJQuiEwAQe4u7yAxY6R5ovEdvHBSIg4w1E5/Mxy5SMTCUlIAv6H7QQ1X9Z/zJm9HH5KeKz5tsHvQ/RIdSpgHXq/tC8o4Yup/LCFucXfrgvy/8pJoO1UpOlmvm62974NFfo0EG5YWwv6brUqz3QXpMjb8sWqgjltYMYJX3J7WZ34rIc+zt4NAmfhqgczaOC4pUGCiJ8jX3rMWIaQRn1AJ+5V337jL9fNDpTHny4phQjHrMJ1e0HZuNp0Xb5Q8wgqDPM=
+          file: "./dist/shlink-web-client_${TRAVIS_TAG#?}_dist.zip"
+          skip_cleanup: true
+          on:
+            tags: true
 
 install:
-  - if [[ ${DOCKER_PUBLISH} == 'true' ]]; then sudo bash ./scripts/docker/install-docker ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then npm ci ; fi
+  - npm ci
 
 before_script:
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then echo "Building commit range ${TRAVIS_COMMIT_RANGE}" ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/master} --name-only | grep -E 'src\/(.*).(js|ts|jsx|tsx)$' | paste -sd ",") ; fi
+  - echo "Building commit range ${TRAVIS_COMMIT_RANGE}"
+  - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/master} --name-only | grep -E 'src\/(.*).(js|ts|jsx|tsx)$' | paste -sd ",")
 
 script:
-  - if [[ ${DOCKER_PUBLISH} == 'true' ]]; then bash ./scripts/docker/build ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then npm run lint ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then npm run test:ci ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then docker build -t shlink-web-client:test . ; fi
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then npm run mutate:ci ; fi
+  - npm run lint
+  - npm run test:ci
+  - docker build -t shlink-web-client:test .
+  - npm run mutate:ci
 
 after_success:
-  - if [[ ${DOCKER_PUBLISH} == 'false' ]]; then node_modules/.bin/ocular coverage/clover.xml ; fi
-
-# Before deploying, build dist file for current travis tag
-before_deploy:
-  - if [[ ! -z $TRAVIS_TAG && ${DOCKER_PUBLISH} == 'false' ]]; then npm run build ${TRAVIS_TAG#?} ; fi
-
-deploy:
-  - provider: releases
-    api_key:
-      secure: jBvPwC7EAbViaNR83rwMSt5XQDK0Iu9rgvEMa7GoyShbHcvUCCPd73Tu9quNpKi6NKsDY3INHgtch3vgonjGNGDGJ+yDyIBzXcvsAX2x3UcHpRbgY12uiINVmQxBI1+OVQB016Nm+cKC/i5Z36K4EmDbYfo+MrKndngM6AjcQFTwI8EwniIMaQgg4gNes//K8NhP5u0c3gwG+Q6jEGnq6uH3kcRgh6/epIZYpQyxjqWqKwF77sgcYj+X2Nf6XxtB5neuCi301UKLoLx8G0skh/Lm6KAIO4s9iIhIFa3UpoF21Ka0TxLpd2JxalLryCnFGlWWE6lxC9Htmc0TeRowJQlGdJXCskJ37xT9MljKY0fwNMu06VS/FUgykuCv+jP3zQu51pKu7Ew7+WeNPjautoOTu54VkdGyHcf2ThBNEyJQuiEwAQe4u7yAxY6R5ovEdvHBSIg4w1E5/Mxy5SMTCUlIAv6H7QQ1X9Z/zJm9HH5KeKz5tsHvQ/RIdSpgHXq/tC8o4Yup/LCFucXfrgvy/8pJoO1UpOlmvm62974NFfo0EG5YWwv6brUqz3QXpMjb8sWqgjltYMYJX3J7WZ34rIc+zt4NAmfhqgczaOC4pUGCiJ8jX3rMWIaQRn1AJ+5V337jL9fNDpTHny4phQjHrMJ1e0HZuNp0Xb5Q8wgqDPM=
-    file: "./dist/shlink-web-client_${TRAVIS_TAG#?}_dist.zip"
-    skip_cleanup: true
-    on:
-      all_branches: true
-      condition: ${DOCKER_PUBLISH} == 'false'
-      tags: true
+  - node_modules/.bin/ocular coverage/clover.xml
