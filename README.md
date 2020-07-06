@@ -69,8 +69,11 @@ If you are using the shlink-web-client docker image, you can mount the `servers.
     docker run --name shlink-web-client -p 8000:80 -v ${PWD}/servers.json:/usr/share/nginx/html/servers.json shlinkio/shlink-web-client
 
 > **Be extremely careful when using this feature.**
+>
 > Due to shlink-web-client's client-side nature, the file needs to be accessible from the browser.
+>
 > Because of that, make sure you use this only when you self-host shlink-web-client, and you know only trusted people will have access to it.
+>
 > Failing to do this could cause your API keys to end up being exposed.
 
 ## Serve project in subpath
