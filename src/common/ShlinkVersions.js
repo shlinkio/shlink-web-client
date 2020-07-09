@@ -15,14 +15,12 @@ const propTypes = {
 };
 
 const ShlinkVersions = ({ selectedServer, className, clientVersion = SHLINK_WEB_CLIENT_VERSION }) => {
-  const { printableVersion: serverVersion } = selectedServer;
-  const normalizedClientVersion = pipe(versionToSemVer(), versionToPrintable)(clientVersion);
-  const linkClientVersion = () => (<div><ExternalLink className="text-muted" href="https://github.com/shlinkio/shlink-web-client/releases/"><b>normalizedClientVersion</b></ExternalLink></div>);
-  const linkServerVersion = () => (<div><ExternalLink className="text-muted" href="https://github.com/shlinkio/shlink/releases/"><b>serverVersion</b></ExternalLink></div>);
+  const { printableVersion: serverVersion } = <ExternalLink className="text-muted" href="https://github.com/shlinkio/shlink/releases/"><b>selectedServer</b></ExternalLink>;
+  const normalizedClientVersion = <ExternalLink className="text-muted" href="https://github.com/shlinkio/shlink/releases/"><b>pipe(versionToSemVer(), versionToPrintable)(clientVersion)</b></ExternalLink>;
 
   return (
     <small className={classNames('text-muted', className)}>
-      Client: {linkClientVersion} - Server: {linkServerVersion}
+      Client: {normalizedClientVersion} - Server: {serverVersion}
     </small>
   );
 };
