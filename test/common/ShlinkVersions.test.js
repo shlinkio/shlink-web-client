@@ -13,14 +13,20 @@ describe('<ShlinkVersions />', () => {
   afterEach(() => wrapper && wrapper.unmount());
 
   it.each([
-    [ '1.2.3', 'foo', 'Client: v1.2.3 - Server: foo' ],
-    [ 'foo', '1.2.3', 'Client: latest - Server: 1.2.3' ],
-    [ 'latest', 'latest', 'Client: latest - Server: latest' ],
-    [ '5.5.0', '0.2.8', 'Client: v5.5.0 - Server: 0.2.8' ],
-    [ 'not-semver', 'something', 'Client: latest - Server: something' ],
-  ])('displays expected versions', (clientVersion, printableVersion, expected) => {
+    [ '1.2.3', 'foo', 'v1.2.3', 'foo' ],
+    [ 'foo', '1.2.3', 'latest', '1.2.3' ],
+    [ 'latest', 'latest', 'latest', 'latest' ],
+    [ '5.5.0', '0.2.8', 'v5.5.0', '0.2.8' ],
+    [ 'not-semver', 'something', 'latest', 'something' ],
+  ])('displays expected versions', (clientVersion, printableVersion, expectedClientVersion, expectedServerVersion) => {
     const wrapper = createWrapper({ clientVersion, selectedServer: { printableVersion } });
+    const links = wrapper.find('VersionLink');
+    const clientLink = links.at(0);
+    const serverLink = links.at(1);
 
-    expect(wrapper.text()).toEqual(expected);
+    expect(clientLink.prop("project")).toEqual('shlink-web-client');
+    expect(clientLink.prop("version")).toEqual(expectedClientVersion);
+    expect(serverLink.prop("project")).toEqual('shlink');
+    expect(serverLink.prop("version")).toEqual(expectedServerVersion);
   });
 });
