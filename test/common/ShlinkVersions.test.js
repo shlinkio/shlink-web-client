@@ -24,9 +24,9 @@ describe('<ShlinkVersions />', () => {
     const clientLink = links.at(0);
     const serverLink = links.at(1);
 
-    expect(clientLink.prop("project")).toEqual('shlink-web-client');
-    expect(clientLink.prop("version")).toEqual(expectedClientVersion);
-    expect(serverLink.prop("project")).toEqual('shlink');
-    expect(serverLink.prop("version")).toEqual(expectedServerVersion);
+    expect(clientLink.prop('project')).toEqual('shlink-web-client');
+    expect(clientLink.prop('version')).toEqual(expectedClientVersion);
+    expect(serverLink.prop('project')).toEqual('shlink');
+    expect(serverLink.prop('version')).toEqual(expectedServerVersion);
   });
 });
