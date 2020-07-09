@@ -20,7 +20,7 @@ const ShlinkVersions = ({ selectedServer, className, clientVersion = SHLINK_WEB_
 
   return (
     <small className={classNames('text-muted', className)}>
-      Client: <ExternalLink href={`https://github.com/shlinkio/shlink-web-client/releases/`} className="text-muted"><b>{normalizedClientVersion}</b></ExternalLink> - Server: <ExternalLink href={`https://github.com/shlinkio/shlink/releases/`} className="text-muted"><b>{serverVersion}</b></ExternalLink>
+      Client: <ExternalLink href="https://github.com/shlinkio/shlink-web-client/releases/" className="text-muted"><b>{normalizedClientVersion}</b></ExternalLink> - Server: <ExternalLink href="https://github.com/shlinkio/shlink/releases/" className="text-muted"><b>{serverVersion}</b></ExternalLink>
     </small>
   );
 };
