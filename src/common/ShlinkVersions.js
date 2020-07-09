@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { pipe } from 'ramda';
 import { serverType } from '../servers/prop-types';
 import { versionToPrintable, versionToSemVer } from '../utils/helpers/version';
+import { ExternalLink } from 'react-external-link';
 
 const SHLINK_WEB_CLIENT_VERSION = '%_VERSION_%';
 
@@ -19,7 +20,7 @@ const ShlinkVersions = ({ selectedServer, className, clientVersion = SHLINK_WEB_
 
   return (
     <small className={classNames('text-muted', className)}>
-      Client: <a href="https://github.com/shlinkio/shlink-web-client/releases" rel="noopener noreferrer"><b>{normalizedClientVersion}</b></a> - Server: <a href="https://github.com/shlinkio/shlink/releases" rel="noopener noreferrer"><b>{serverVersion}</b></a>
+      Client: <ExternalLink href={`https://github.com/shlinkio/shlink-web-client/releases/`} className="text-muted"><b>{normalizedClientVersion}</b></ExternalLink> - Server: <ExternalLink href={`https://github.com/shlinkio/shlink/releases/`} className="text-muted"><b>{serverVersion}</b></ExternalLink>
     </small>
   );
 };
