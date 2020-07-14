@@ -1,27 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { v4 as uuid } from 'uuid';
+import BooleanControl, { basePropTypes } from './BooleanControl';
 
-const propTypes = {
-  checked: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
-  className: PropTypes.string,
-};
+const Checkbox = (props) => <BooleanControl type="checkbox" {...props} />;
 
-const Checkbox = ({ checked, onChange, className, children }) => {
-  const id = uuid();
-  const onChecked = (e) => onChange(e.target.checked, e);
-
-  return (
-    <span className={classNames('custom-control custom-checkbox', className)} style={{ display: 'inline' }}>
-      <input type="checkbox" className="custom-control-input" id={id} checked={checked} onChange={onChecked} />
-      <label className="custom-control-label" htmlFor={id}>{children}</label>
-    </span>
-  );
-};
-
-Checkbox.propTypes = propTypes;
+Checkbox.propTypes = basePropTypes;
 
 export default Checkbox;
