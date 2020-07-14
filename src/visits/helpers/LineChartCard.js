@@ -17,7 +17,7 @@ import { fillTheGaps } from '../../utils/helpers/visits';
 import './LineChartCard.scss';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
-import Checkbox from '../../utils/Checkbox';
+import ToggleSwitch from '../../utils/ToggleSwitch';
 
 const propTypes = {
   title: PropTypes.string,
@@ -167,9 +167,9 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
           </UncontrolledDropdown>
         </div>
         <div className="float-right mr-2">
-          <Checkbox checked={skipNoVisits} onChange={toggleSkipNoVisits}>
+          <ToggleSwitch checked={skipNoVisits} onChange={toggleSkipNoVisits}>
             <small>Skip dates with no visits</small>
-          </Checkbox>
+          </ToggleSwitch>
         </div>
       </CardHeader>
       <CardBody className="line-chart-card__body">

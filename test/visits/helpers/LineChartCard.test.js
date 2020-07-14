@@ -4,7 +4,7 @@ import { CardHeader, DropdownItem } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
 import LineChartCard from '../../../src/visits/helpers/LineChartCard';
-import Checkbox from '../../../src/utils/Checkbox';
+import ToggleSwitch from '../../../src/utils/ToggleSwitch';
 
 describe('<LineChartCard />', () => {
   let wrapper;
@@ -90,7 +90,7 @@ describe('<LineChartCard />', () => {
     ]);
 
     expect(wrapper.find(Line).prop('data').labels).toHaveLength(2);
-    wrapper.find(Checkbox).simulate('change');
+    wrapper.find(ToggleSwitch).simulate('change');
     expect(wrapper.find(Line).prop('data').labels).toHaveLength(4);
   });
 });
