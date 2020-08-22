@@ -1,16 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
+import { Mock } from 'ts-mockery';
+import { History } from 'history';
 import createServerConstruct from '../../src/servers/CreateServer';
 import { ServerForm } from '../../src/servers/helpers/ServerForm';
 
 describe('<CreateServer />', () => {
-  let wrapper;
-  const ImportServersBtn = () => '';
+  let wrapper: ShallowWrapper;
+  const ImportServersBtn = () => null;
   const createServerMock = jest.fn();
-  const historyMock = {
-    push: jest.fn(),
-  };
+  const push = jest.fn();
+  const historyMock = Mock.of<History>({ push });
   const createWrapper = (serversImported = false) => {
     const CreateServer = createServerConstruct(ImportServersBtn, () => [ serversImported, () => '' ]);
 
@@ -23,7 +24,7 @@ describe('<CreateServer />', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-    wrapper && wrapper.unmount();
+    wrapper?.unmount();
   });
 
   it('renders components', () => {
@@ -46,6 +47,6 @@ describe('<CreateServer />', () => {
     form.simulate('submit', {});
 
     expect(createServerMock).toHaveBeenCalledTimes(1);
-    expect(historyMock.push).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledTimes(1);
   });
 });

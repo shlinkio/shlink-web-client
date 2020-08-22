@@ -5,14 +5,17 @@ import { Server } from '../data';
 
 type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
-interface ImportServersBtnProps {
-  createServers: (servers: Server[]) => void;
-  fileRef: Ref<HTMLInputElement>;
+export interface ImportServersBtnProps {
   onImport?: () => void;
 }
 
+interface ImportServersBtnConnectProps {
+  createServers: (servers: Server[]) => void;
+  fileRef: Ref<HTMLInputElement>;
+}
+
 const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => (
-  { createServers, fileRef, onImport = () => {} }: ImportServersBtnProps,
+  { createServers, fileRef, onImport = () => {} }: ImportServersBtnConnectProps & ImportServersBtnProps,
 ) => {
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
