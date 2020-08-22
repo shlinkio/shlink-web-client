@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import Bottle, { IContainer } from 'bottlejs';
 import { withRouter } from 'react-router-dom';
 import { connect as reduxConnect } from 'react-redux';
 import { pick } from 'ramda';
@@ -12,17 +12,19 @@ import provideUtilsServices from '../utils/services/provideServices';
 import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
 
+type ActionMap = Record<string, any>;
+
 const bottle = new Bottle();
 const { container } = bottle;
 
-const lazyService = (container, serviceName) => (...args) => container[serviceName](...args);
-const mapActionService = (map, actionName) => ({
+const lazyService = (container: IContainer, serviceName: string) => (...args: any[]) => container[serviceName](...args);
+const mapActionService = (map: ActionMap, actionName: string): ActionMap => ({
   ...map,
 
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: lazyService(container, actionName),
 });
-const connect = (propsFromState, actionServiceNames = []) =>
+const connect = (propsFromState: string[], actionServiceNames: string[] = []) =>
   reduxConnect(
     propsFromState ? pick(propsFromState) : null,
     actionServiceNames.reduce(mapActionService, {}),

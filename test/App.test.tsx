@@ -1,17 +1,18 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Route } from 'react-router-dom';
 import { identity } from 'ramda';
 import appFactory from '../src/App';
 
 describe('<App />', () => {
-  let wrapper;
-  const MainHeader = () => '';
+  let wrapper: ShallowWrapper;
+  const MainHeader = () => null;
+  const DummyComponent = () => null;
 
   beforeEach(() => {
-    const App = appFactory(MainHeader, identity, identity, identity, identity);
+    const App = appFactory(MainHeader, DummyComponent, DummyComponent, DummyComponent, DummyComponent, DummyComponent);
 
-    wrapper = shallow(<App />);
+    wrapper = shallow(<App fetchServers={identity} servers={{}} />);
   });
   afterEach(() => wrapper.unmount());
 
