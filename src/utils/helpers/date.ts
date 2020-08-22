@@ -1,0 +1,13 @@
+import * as moment from 'moment';
+
+type MomentOrString = moment.Moment | string;
+type NullableDate = MomentOrString | null;
+
+const isMomentObject = (date: moment.Moment | string): date is moment.Moment => typeof (date as moment.Moment).format === 'function';
+
+const formatDateFromFormat = (date?: NullableDate, format?: string): NullableDate | undefined =>
+  !date || !isMomentObject(date) ? date : date.format(format);
+
+export const formatDate = (format = 'YYYY-MM-DD') => (date?: NullableDate) => formatDateFromFormat(date, format);
+
+export const formatIsoDate = (date: NullableDate) => formatDateFromFormat(date, undefined);
