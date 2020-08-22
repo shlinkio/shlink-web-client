@@ -6,7 +6,7 @@ import { homepage } from '../package.json';
 import registerServiceWorker from './registerServiceWorker';
 import container from './container';
 import store from './container/store';
-import { fixLeafletIcons } from './utils/utils';
+import { fixLeafletIcons } from './utils/helpers/leaflet';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'leaflet/dist/leaflet.css';

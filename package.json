@@ -78,6 +78,7 @@
     "@types/classnames": "^2.2.10",
     "@types/enzyme": "^3.10.5",
     "@types/jest": "^26.0.10",
+    "@types/leaflet": "^1.5.17",
     "@types/moment": "^2.13.0",
     "@types/ramda": "^0.27.14",
     "@types/react": "^16.9.46",

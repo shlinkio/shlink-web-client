@@ -1,8 +1,4 @@
-import L from 'leaflet';
-import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
-import marker from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
-import { determineOrderDir, fixLeafletIcons, rangeOf } from '../../src/utils/utils';
+import { determineOrderDir, rangeOf } from '../../src/utils/utils';
 
 describe('utils', () => {
   describe('determineOrderDir', () => {
@@ -24,18 +20,6 @@ describe('utils', () => {
     it('returns undefined when current order field and selected field are equal and current order dir is DESC', () => {
       expect(determineOrderDir('foo', 'foo', 'DESC')).toBeUndefined();
       expect(determineOrderDir('bar', 'bar', 'DESC')).toBeUndefined();
-    });
-  });
-
-  describe('fixLeafletIcons', () => {
-    it('updates icons used by leaflet', () => {
-      fixLeafletIcons();
-
-      const { iconRetinaUrl, iconUrl, shadowUrl } = L.Icon.Default.prototype.options;
-
-      expect(iconRetinaUrl).toEqual(marker2x);
-      expect(iconUrl).toEqual(marker);
-      expect(shadowUrl).toEqual(markerShadow);
     });
   });
 
