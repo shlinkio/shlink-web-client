@@ -68,6 +68,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
     "@shlinkio/eslint-config-js-coding-standard": "~1.1.0",
     "@stryker-mutator/core": "^3.2.4",
     "@stryker-mutator/javascript-mutator": "^3.2.4",
@@ -84,7 +86,7 @@
     "adm-zip": "^0.4.13",
     "autoprefixer": "^9.6.3",
     "babel-core": "7.0.0-bridge.0",
-    "babel-jest": "^24.9.0",
+    "babel-jest": "^26.3.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-named-asset-import": "^0.3.4",
     "babel-preset-react-app": "^9.0.2",
@@ -104,9 +106,9 @@
     "fs-extra": "^8.1.0",
     "html-webpack-plugin": "^4.0.0-beta.8",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.9.0",
+    "jest": "^26.4.1",
     "jest-pnp-resolver": "^1.2.1",
-    "jest-resolve": "^24.9.0",
+    "jest-resolve": "^26.4.0",
     "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "object-assign": "^4.1.1",
@@ -134,6 +136,7 @@
     "sw-precache-webpack-plugin": "^0.11.5",
     "terser-webpack-plugin": "^2.1.2",
     "ts-jest": "^26.0.0",
+    "ts-mockery": "^1.2.0",
     "typescript": "^3.9.3",
     "url-loader": "^2.2.0",
     "webpack": "^4.41.0",
@@ -145,6 +148,10 @@
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-optional-chaining",
+      "@babel/plugin-proposal-nullish-coalescing-operator"
     ]
   },
   "browserslist": [

@@ -41,7 +41,8 @@ const provideServices = (bottle, connect, withRouter) => {
 
   // Services
   bottle.constant('csvjson', csvjson);
-  bottle.service('ServersImporter', ServersImporter, 'csvjson');
+  bottle.constant('fileReaderFactory', () => new FileReader());
+  bottle.service('ServersImporter', ServersImporter, 'csvjson', 'fileReaderFactory');
   bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'csvjson');
 
   // Actions
