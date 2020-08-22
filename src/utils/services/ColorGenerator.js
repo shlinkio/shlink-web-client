@@ -33,7 +33,7 @@ export default class ColorGenerator {
     this.storage.set('colors', this.colors);
 
     return color;
-  }
+  };
 }
 
 export const colorGeneratorType = PropTypes.shape({

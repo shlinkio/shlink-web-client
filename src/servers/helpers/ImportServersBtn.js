@@ -10,7 +10,7 @@ const propTypes = {
 
 // FIXME Replace with typescript: (ServersImporter)
 const ImportServersBtn = ({ importServersFromFile }) => {
-  const ImportServersBtnComp = ({ createServers, fileRef, onImport = () => {} }) => {
+  const ImportServersBtnComp = ({ createServers, fileRef, onImport = () => '' }) => {
     const ref = fileRef || useRef();
     const onChange = ({ target }) =>
       importServersFromFile(target.files[0])

@@ -106,14 +106,14 @@ const generateDataset = (stats, label, color) => ({
 
 const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
   const [ step, setStep ] = useState(
-    visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly'
+    visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly',
   );
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
   const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
   const [ labels, groupedVisits ] = useMemo(
     () => generateLabelsAndGroupedVisits(visits, groupedVisitsWithGaps, step, skipNoVisits),
-    [ visits, step, skipNoVisits ]
+    [ visits, step, skipNoVisits ],
   );
   const groupedHighlighted = useMemo(
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),

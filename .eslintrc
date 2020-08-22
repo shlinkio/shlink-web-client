@@ -1,45 +1,58 @@
 {
-  "extends": [
-    "adidas-env/browser",
-    "adidas-env/module",
-    "adidas-env/node",
-    "adidas-es6",
-    "adidas-babel",
-    "adidas-react"
-  ],
   "plugins": ["jest"],
   "env": {
     "jest/globals": true
+  },
+  "parserOptions": {
+    "tsconfigRootDir": ".",
+    "createDefaultProgram": true
   },
   "globals": {
     "process": true,
     "setImmediate": true
   },
-  "settings": {
-    "react": {
-      "version": "16.3"
+  "overrides": [
+    {
+      "files": ["**/*.js"],
+      "extends": [
+        "adidas-env/browser",
+        "adidas-env/module",
+        "adidas-env/node",
+        "adidas-es9",
+        "adidas-babel",
+        "adidas-react"
+      ],
+      "settings": {
+        "react": {
+            "version": "detect"
+          }
+      },
+      "rules": {
+        "comma-dangle": ["error", "always-multiline"],
+        "no-invalid-this": "off",
+        "no-inline-comments": "off",
+        "no-console": "warn",
+        "template-curly-spacing": ["error", "never"],
+        "no-warning-comments": "off",
+        "no-undefined": "off",
+        "indent": ["error", 2, {"SwitchCase": 1}],
+        "no-empty-function": "off",
+        "lines-around-comment": "off",
+        "no-magic-numbers": "off",
+        "react/no-array-index-key": "off",
+        "react/no-did-update-set-state": "off",
+        "react/jsx-curly-spacing": ["error", "never"],
+        "react/jsx-indent-props": ["error", 2],
+        "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
+        "react/jsx-closing-bracket-location": ["error", "tag-aligned"],
+        "react/jsx-filename-extension": ["error", {"extensions": [".js", ".jsx"]}]
+      }
+    },
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "@shlinkio/js-coding-standard"
+      ]
     }
-  },
-  "rules": {
-    "comma-dangle": ["error", "always-multiline"],
-    "no-invalid-this": "off",
-    "no-console": "warn",
-    "template-curly-spacing": ["error", "never"],
-    "no-warning-comments": "off",
-    "no-magic-numbers": "off",
-    "no-undefined": "off",
-    "no-inline-comments": "off",
-    "lines-around-comment": "off",
-    "indent": ["error", 2, {
-      "SwitchCase": 1
-    }
-    ],
-    "react/jsx-curly-spacing": ["error", "never"],
-    "react/jsx-indent-props": ["error", 2],
-    "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
-    "react/jsx-closing-bracket-location": ["error", "tag-aligned"],
-    "react/no-array-index-key": "off",
-    "react/no-did-update-set-state": "off",
-    "react/display-name": "off"
-  }
+  ]
 }
