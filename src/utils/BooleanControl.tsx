@@ -1,23 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ChangeEvent, FC } from 'react';
 import classNames from 'classnames';
 import { v4 as uuid } from 'uuid';
+import { identity } from 'ramda';
 
-export const basePropTypes = {
-  checked: PropTypes.bool.isRequired,
-  onChange: PropTypes.func.isRequired,
-  children: PropTypes.oneOfType([ PropTypes.string, PropTypes.node ]),
-  className: PropTypes.string,
-};
+export interface BooleanControlProps {
+  checked?: boolean;
+  onChange?: (checked: boolean, e: ChangeEvent<HTMLInputElement>) => void;
+  className?: string;
+}
 
-const propTypes = {
-  ...basePropTypes,
-  type: PropTypes.oneOf([ 'switch', 'checkbox' ]).isRequired,
-};
+interface BooleanControlWithTypeProps extends BooleanControlProps {
+  type: 'switch' | 'checkbox';
+}
 
-const BooleanControl = ({ checked, onChange, className, children, type }) => {
+const BooleanControl: FC<BooleanControlWithTypeProps> = (
+  { checked = false, onChange = identity, className, children, type },
+) => {
   const id = uuid();
-  const onChecked = (e) => onChange(e.target.checked, e);
+  const onChecked = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked, e);
   const typeClasses = {
     'custom-switch': type === 'switch',
     'custom-checkbox': type === 'checkbox',
@@ -30,7 +30,5 @@ const BooleanControl = ({ checked, onChange, className, children, type }) => {
     </span>
   );
 };
-
-BooleanControl.propTypes = propTypes;
 
 export default BooleanControl;

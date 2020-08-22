@@ -1,6 +1,6 @@
 import bowser from 'bowser';
 import { zipObj } from 'ramda';
-import { hasValue } from '../utils';
+import { Empty, hasValue } from '../utils';
 
 const DEFAULT = 'Others';
 const BROWSERS_WHITELIST = [
@@ -17,17 +17,22 @@ const BROWSERS_WHITELIST = [
   'WeChat',
 ];
 
-export const parseUserAgent = (userAgent) => {
+interface UserAgent {
+  browser: string;
+  os: string;
+}
+
+export const parseUserAgent = (userAgent: string | Empty): UserAgent => {
   if (!hasValue(userAgent)) {
     return { browser: DEFAULT, os: DEFAULT };
   }
 
   const { browser: { name: browser }, os: { name: os } } = bowser.parse(userAgent);
 
-  return { os: os || DEFAULT, browser: browser && BROWSERS_WHITELIST.includes(browser) ? browser : DEFAULT };
+  return { os: os ?? DEFAULT, browser: browser && BROWSERS_WHITELIST.includes(browser) ? browser : DEFAULT };
 };
 
-export const extractDomain = (url) => {
+export const extractDomain = (url: string | Empty): string => {
   if (!hasValue(url)) {
     return 'Direct';
   }
@@ -37,4 +42,5 @@ export const extractDomain = (url) => {
   return domain.split(':')[0];
 };
 
-export const fillTheGaps = (stats, labels) => Object.values({ ...zipObj(labels, labels.map(() => 0)), ...stats });
+export const fillTheGaps = (stats: Record<string, number>, labels: string[]): number[] =>
+  Object.values({ ...zipObj(labels, labels.map(() => 0)), ...stats });

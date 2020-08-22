@@ -1,17 +1,19 @@
-import React from 'react';
-import { mount } from 'enzyme';
+import React, { ChangeEvent, PropsWithChildren } from 'react';
+import { mount, ReactWrapper } from 'enzyme';
+import { Mock } from 'ts-mockery';
 import Checkbox from '../../src/utils/Checkbox';
+import { BooleanControlProps } from '../../src/utils/BooleanControl';
 
 describe('<Checkbox />', () => {
-  let wrapped;
+  let wrapped: ReactWrapper;
 
-  const createComponent = (props = {}) => {
+  const createComponent = (props: PropsWithChildren<BooleanControlProps> = {}) => {
     wrapped = mount(<Checkbox {...props} />);
 
     return wrapped;
   };
 
-  afterEach(() => wrapped && wrapped.unmount());
+  afterEach(() => wrapped?.unmount());
 
   it('includes extra class names when provided', () => {
     const classNames = [ 'foo', 'bar', 'baz' ];
@@ -55,11 +57,11 @@ describe('<Checkbox />', () => {
 
   it('changes checked status on input change', () => {
     const onChange = jest.fn();
-    const e = { target: { checked: false } };
+    const e = Mock.of<ChangeEvent<HTMLInputElement>>({ target: { checked: false } });
     const wrapped = createComponent({ checked: true, onChange });
     const input = wrapped.find('input');
 
-    input.prop('onChange')(e);
+    (input.prop('onChange') as Function)(e);
 
     expect(onChange).toHaveBeenCalledWith(false, e);
   });
