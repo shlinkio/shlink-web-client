@@ -33,7 +33,7 @@ describe('<ServerError />', () => {
     wrapper = shallow(
       <BrowserRouter>
         <ServerError type={type} servers={{}} selectedServer={selectedServer} />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     const wrapperText = wrapper.html();
     const textPairs = Object.entries(textsToFind);

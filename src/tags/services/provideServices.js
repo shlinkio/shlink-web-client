@@ -18,7 +18,7 @@ const provideServices = (bottle, connect) => {
     'DeleteTagConfirmModal',
     'EditTagModal',
     'ForServerVersion',
-    'ColorGenerator'
+    'ColorGenerator',
   );
 
   bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
@@ -30,7 +30,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('TagsList', TagsList, 'TagCard');
   bottle.decorator('TagsList', connect(
     [ 'tagsList', 'selectedServer', 'mercureInfo' ],
-    [ 'forceListTags', 'filterTags', 'createNewVisit', 'loadMercureInfo' ]
+    [ 'forceListTags', 'filterTags', 'createNewVisit', 'loadMercureInfo' ],
   ));
 
   // Actions

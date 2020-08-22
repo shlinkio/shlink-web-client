@@ -27,7 +27,7 @@ const serversListToMap = reduce((acc, server) => assoc(server.id, server, acc), 
 export const createServers = pipe(
   map(assocId),
   serversListToMap,
-  (newServers) => ({ type: CREATE_SERVERS, newServers })
+  (newServers) => ({ type: CREATE_SERVERS, newServers }),
 );
 
 export const editServer = (serverId, serverData) => ({ type: EDIT_SERVER, serverId, serverData });

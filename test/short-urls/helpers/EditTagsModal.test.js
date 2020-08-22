@@ -26,7 +26,7 @@ describe('<EditTagsModal />', () => {
         toggle={toggle}
         editShortUrlTags={editShortUrlTags}
         resetShortUrlsTags={resetShortUrlsTags}
-      />
+      />,
     );
 
     return wrapper;

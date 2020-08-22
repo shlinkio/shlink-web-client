@@ -25,7 +25,7 @@ describe('<TagVisits />', () => {
         history={history}
         tagVisits={{ loading: true, visits: [] }}
         cancelGetTagVisits={identity}
-      />
+      />,
     );
   });
 

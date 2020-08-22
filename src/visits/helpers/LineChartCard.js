@@ -117,7 +117,7 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
   );
   const groupedHighlighted = useMemo(
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),
-    [ highlightedVisits, step, labels ]
+    [ highlightedVisits, step, labels ],
   );
 
   const data = {

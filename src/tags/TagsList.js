@@ -23,7 +23,7 @@ const propTypes = {
 
 const TagsList = (TagCard) => {
   const TagListComp = (
-    { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo }
+    { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo },
   ) => {
     const [ displayedTag, setDisplayedTag ] = useState();
 

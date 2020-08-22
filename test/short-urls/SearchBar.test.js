@@ -52,7 +52,7 @@ describe('<SearchBar />', () => {
 
   it('updates short URLs list when a tag is removed', () => {
     wrapper = shallow(
-      <SearchBar shortUrlsListParams={{ tags: [ 'foo' ] }} listShortUrls={listShortUrlsMock} />
+      <SearchBar shortUrlsListParams={{ tags: [ 'foo' ] }} listShortUrls={listShortUrlsMock} />,
     );
     const tag = wrapper.find(Tag).first();
 
@@ -63,7 +63,7 @@ describe('<SearchBar />', () => {
 
   it.each([ 'startDateChange', 'endDateChange' ])('updates short URLs list when date range changes', (event) => {
     wrapper = shallow(
-      <SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />
+      <SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />,
     );
     const dateRange = wrapper.find(DateRangeRow);
 

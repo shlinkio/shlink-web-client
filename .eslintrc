@@ -41,6 +41,7 @@
         "no-magic-numbers": "off",
         "react/no-array-index-key": "off",
         "react/no-did-update-set-state": "off",
+        "react/display-name": "off",
         "react/jsx-curly-spacing": ["error", "never"],
         "react/jsx-indent-props": ["error", 2],
         "react/jsx-first-prop-new-line": ["error", "multiline-multiprop"],
@@ -52,7 +53,10 @@
       "files": ["**/*.ts", "**/*.tsx"],
       "extends": [
         "@shlinkio/js-coding-standard"
-      ]
+      ],
+      "rules": {
+        "react/display-name": "off"
+      }
     }
   ]
 }

@@ -15,7 +15,7 @@ describe('<EditShortUrlModal />', () => {
         shortUrlEdition={shortUrlEdition}
         toggle={toggle}
         editShortUrl={editShortUrl}
-      />
+      />,
     );
 
     return wrapper;

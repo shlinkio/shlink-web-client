@@ -75,7 +75,7 @@ module.exports = (webpackEnv) => {
         loader: MiniCssExtractPlugin.loader,
         options: Object.assign(
           {},
-          shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined
+          shouldUseRelativeAssetPaths ? { publicPath: '../../' } : undefined,
         ),
       },
       {
@@ -281,7 +281,7 @@ module.exports = (webpackEnv) => {
       modules: [ 'node_modules' ].concat(
 
         // It is guaranteed to exist because we tweak it in `env.js`
-        process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+        process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
       ),
 
       // These are the reasonable defaults supported by the Node ecosystem.
@@ -372,7 +372,7 @@ module.exports = (webpackEnv) => {
               loader: require.resolve('babel-loader'),
               options: {
                 customize: require.resolve(
-                  'babel-preset-react-app/webpack-overrides'
+                  'babel-preset-react-app/webpack-overrides',
                 ),
 
                 plugins: [
@@ -470,7 +470,7 @@ module.exports = (webpackEnv) => {
                   importLoaders: 2,
                   sourceMap: isEnvProduction && shouldUseSourceMap,
                 },
-                'sass-loader'
+                'sass-loader',
               ),
 
               // Don't consider CSS imports dead code even if the
@@ -491,7 +491,7 @@ module.exports = (webpackEnv) => {
                   modules: true,
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
-                'sass-loader'
+                'sass-loader',
               ),
             },
 
@@ -544,8 +544,8 @@ module.exports = (webpackEnv) => {
                 minifyURLs: true,
               },
             }
-            : undefined
-        )
+            : undefined,
+        ),
       ),
 
       // Inlines the webpack runtime script. This script is too small to warrant

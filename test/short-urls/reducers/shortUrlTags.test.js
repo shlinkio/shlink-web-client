@@ -70,7 +70,7 @@ describe('shortUrlTagsReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
       expect(dispatch).toHaveBeenNthCalledWith(
         2,
-        { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode, domain }
+        { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode, domain },
       );
     });
 

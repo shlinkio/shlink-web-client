@@ -23,7 +23,7 @@ describe('<ShortUrlsRowMenu />', () => {
       EditTagsModal,
       EditMetaModal,
       EditShortUrlModal,
-      () => ''
+      () => '',
     );
 
     wrapper = shallow(
@@ -31,7 +31,7 @@ describe('<ShortUrlsRowMenu />', () => {
         selectedServer={selectedServer}
         shortUrl={shortUrl}
         onCopyToClipboard={onCopyToClipboard}
-      />
+      />,
     );
 
     return wrapper;

@@ -9,7 +9,7 @@ describe('<ForServerVersion />', () => {
     wrapped = mount(
       <ForServerVersion minVersion={minVersion} maxVersion={maxVersion} selectedServer={selectedServer}>
         <span>Hello</span>
-      </ForServerVersion>
+      </ForServerVersion>,
     );
 
     return wrapped;

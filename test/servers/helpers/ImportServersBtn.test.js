@@ -23,7 +23,7 @@ describe('<ImportServersBtn />', () => {
     const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
 
     wrapper = shallow(
-      <ImportServersBtn createServers={createServersMock} fileRef={fileRef} onImport={onImportMock} />
+      <ImportServersBtn createServers={createServersMock} fileRef={fileRef} onImport={onImportMock} />,
     );
   });
   afterEach(() => wrapper.unmount());

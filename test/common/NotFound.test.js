@@ -24,7 +24,7 @@ describe('<NotFound />', () => {
     const { content } = createWrapper();
 
     expect(content).toContain(
-      'Use your browser\'s back button to navigate to the page you have previously come from, or just press this button.'
+      'Use your browser\'s back button to navigate to the page you have previously come from, or just press this button.',
     );
   });
 

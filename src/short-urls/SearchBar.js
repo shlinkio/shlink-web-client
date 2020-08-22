@@ -23,7 +23,7 @@ const SearchBar = (colorGenerator, ForServerVersion) => {
     const selectedTags = shortUrlsListParams.tags || [];
     const setDate = (dateName) => pipe(
       formatDate(),
-      (date) => listShortUrls({ ...shortUrlsListParams, [dateName]: date })
+      (date) => listShortUrls({ ...shortUrlsListParams, [dateName]: date }),
     );
 
     return (
@@ -63,7 +63,7 @@ const SearchBar = (colorGenerator, ForServerVersion) => {
                   {
                     ...shortUrlsListParams,
                     tags: selectedTags.filter((selectedTag) => selectedTag !== tag),
-                  }
+                  },
                 )}
               />
             ))}

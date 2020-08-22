@@ -17,7 +17,7 @@ describe('<DeleteTagConfirmModal />', () => {
         deleteTag={deleteTag}
         tagDeleted={tagDeleted}
         tagDelete={tagDelete}
-      />
+      />,
     );
 
     return wrapper;

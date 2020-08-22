@@ -17,7 +17,7 @@ describe('<EditMetaModal />', () => {
         toggle={toggle}
         editShortUrlMeta={editShortUrlMeta}
         resetShortUrlMeta={resetShortUrlMeta}
-      />
+      />,
     );
 
     return wrapper;

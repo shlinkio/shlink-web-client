@@ -68,7 +68,7 @@ const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBt
     const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
     const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
       () => processStatsFromVisits(normalizedVisits),
-      [ normalizedVisits ]
+      [ normalizedVisits ],
     );
     const mapLocations = values(citiesForMap);
 

@@ -56,7 +56,7 @@ export const processStatsFromVisits = (normalizedVisits) =>
 
       return stats;
     },
-    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
+    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} },
   );
 
 export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }) => {

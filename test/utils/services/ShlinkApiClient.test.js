@@ -42,7 +42,7 @@ describe('ShlinkApiClient', () => {
       const { createShortUrl } = new ShlinkApiClient(axiosSpy);
 
       await createShortUrl(
-        { foo: 'bar', empty: undefined, anotherEmpty: null }
+        { foo: 'bar', empty: undefined, anotherEmpty: null },
       );
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { foo: 'bar' } }));

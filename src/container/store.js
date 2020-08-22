@@ -15,7 +15,7 @@ const localStorageConfig = {
 };
 
 const store = createStore(reducers, load(localStorageConfig), composeEnhancers(
-  applyMiddleware(save(localStorageConfig), ReduxThunk)
+  applyMiddleware(save(localStorageConfig), ReduxThunk),
 ));
 
 export default store;

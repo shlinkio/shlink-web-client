@@ -96,7 +96,7 @@ const VisitsTable = ({
               'visits-table__sticky': isSticky,
             })}
             onClick={() => setSelectedVisits(
-              selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : []
+              selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : [],
             )}
           >
             <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
@@ -149,7 +149,7 @@ const VisitsTable = ({
               style={{ cursor: 'pointer' }}
               className={classNames({ 'table-primary': isSelected })}
               onClick={() => setSelectedVisits(
-                isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ]
+                isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ],
               )}
             >
               <td className="text-center">

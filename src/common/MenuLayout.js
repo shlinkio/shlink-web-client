@@ -26,7 +26,7 @@ const MenuLayout = (
   ShortUrlVisits,
   TagVisits,
   ShlinkVersions,
-  ServerError
+  ServerError,
 ) => {
   const MenuLayoutComp = ({ match, location, selectedServer }) => {
     const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
@@ -44,7 +44,7 @@ const MenuLayout = (
     });
     const swipeMenuIfNoModalExists = (callback) => (e) => {
       const swippedOnVisitsTable = e.event.path.some(
-        ({ classList }) => classList && classList.contains('visits-table')
+        ({ classList }) => classList && classList.contains('visits-table'),
       );
 
       if (swippedOnVisitsTable || document.querySelector('.modal')) {

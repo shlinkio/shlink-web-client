@@ -23,7 +23,7 @@ const propTypes = {
 const ShortUrlsRow = (
   ShortUrlsRowMenu,
   colorGenerator,
-  useStateFlagTimeout
+  useStateFlagTimeout,
 ) => {
   const ShortUrlsRowComp = ({ shortUrl, selectedServer, refreshList, shortUrlsListParams }) => {
     const [ copiedToClipboard, setCopiedToClipboard ] = useStateFlagTimeout();

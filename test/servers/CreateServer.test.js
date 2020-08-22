@@ -15,7 +15,7 @@ describe('<CreateServer />', () => {
     const CreateServer = createServerConstruct(ImportServersBtn, () => [ serversImported, () => '' ]);
 
     wrapper = shallow(
-      <CreateServer createServer={createServerMock} resetSelectedServer={identity} history={historyMock} />
+      <CreateServer createServer={createServerMock} resetSelectedServer={identity} history={historyMock} />,
     );
 
     return wrapper;

@@ -30,7 +30,7 @@ describe('<ShortUrlVisits />', () => {
         shortUrlDetail={{}}
         cancelGetShortUrlVisits={identity}
         matchMedia={() => ({ matches: false })}
-      />
+      />,
     );
   });
 

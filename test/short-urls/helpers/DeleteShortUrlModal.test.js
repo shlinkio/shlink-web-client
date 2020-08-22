@@ -20,7 +20,7 @@ describe('<DeleteShortUrlModal />', () => {
         toggle={identity}
         deleteShortUrl={deleteShortUrl}
         resetDeleteShortUrl={identity}
-      />
+      />,
     );
 
     return wrapper;

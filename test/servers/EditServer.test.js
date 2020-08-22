@@ -28,7 +28,7 @@ describe('<EditServer />', () => {
         match={match}
         selectedServer={selectedServer}
         selectServer={jest.fn()}
-      />
+      />,
     );
   });
 

@@ -15,7 +15,7 @@ export const LATEST_VERSION_CONSTRAINT = 'latest';
 const initialState = null;
 const versionToSemVer = pipe(
   (version) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
-  toSemVer(MIN_FALLBACK_VERSION)
+  toSemVer(MIN_FALLBACK_VERSION),
 );
 
 const getServerVersion = memoizeWith(identity, (serverId, health) => health().then(({ version }) => ({
@@ -27,7 +27,7 @@ export const resetSelectedServer = createAction(RESET_SELECTED_SERVER);
 
 export const selectServer = (buildShlinkApiClient, loadMercureInfo) => (serverId) => async (
   dispatch,
-  getState
+  getState,
 ) => {
   dispatch(resetSelectedServer());
   dispatch(resetShortUrlParams());

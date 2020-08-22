@@ -23,7 +23,7 @@ const provideServices = (bottle, connect) => {
   // Components
   bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
   bottle.decorator('ShortUrls', reduxConnect(
-    (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList)
+    (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
   ));
 
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
@@ -32,7 +32,7 @@ const provideServices = (bottle, connect) => {
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
   bottle.decorator('ShortUrlsList', connect(
     [ 'selectedServer', 'shortUrlsListParams', 'mercureInfo' ],
-    [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisit', 'loadMercureInfo' ]
+    [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisit', 'loadMercureInfo' ],
   ));
 
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');
@@ -44,14 +44,14 @@ const provideServices = (bottle, connect) => {
     'EditTagsModal',
     'EditMetaModal',
     'EditShortUrlModal',
-    'ForServerVersion'
+    'ForServerVersion',
   );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
 
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult', 'ForServerVersion');
   bottle.decorator(
     'CreateShortUrl',
-    connect([ 'shortUrlCreationResult', 'selectedServer' ], [ 'createShortUrl', 'resetCreateShortUrl' ])
+    connect([ 'shortUrlCreationResult', 'selectedServer' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),
   );
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);

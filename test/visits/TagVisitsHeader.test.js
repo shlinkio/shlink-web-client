@@ -13,7 +13,7 @@ describe('<TagVisitsHeader />', () => {
 
   beforeEach(() => {
     wrapper = shallow(
-      <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={{}} />
+      <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={{}} />,
     );
   });
   afterEach(() => wrapper.unmount());

@@ -37,7 +37,7 @@ describe('<ServersDropdown />', () => {
 
   it('shows a message when no servers exist yet', () => {
     wrapped = shallow(
-      <ServersDropdown servers={{}} listServers={identity} history={history} />
+      <ServersDropdown servers={{}} listServers={identity} history={history} />,
     );
     const item = wrapped.find(DropdownItem);
 

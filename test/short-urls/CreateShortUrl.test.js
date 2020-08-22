@@ -17,7 +17,7 @@ describe('<CreateShortUrl />', () => {
     const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '', () => '');
 
     wrapper = shallow(
-      <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />
+      <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />,
     );
   });
   afterEach(() => {

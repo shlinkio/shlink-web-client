@@ -10,7 +10,7 @@ describe('<VisitsHeader />', () => {
 
   beforeEach(() => {
     wrapper = shallow(
-      <VisitsHeader visits={visits} goBack={goBack} title={title} />
+      <VisitsHeader visits={visits} goBack={goBack} title={title} />,
     );
   });
 
@@ -21,7 +21,7 @@ describe('<VisitsHeader />', () => {
     const visitsBadge = wrapper.find('.badge');
 
     expect(visitsBadge.html()).toContain(
-      `Visits: <span><strong class="short-url-visits-count__amount">${visits.length}</strong></span>`
+      `Visits: <span><strong class="short-url-visits-count__amount">${visits.length}</strong></span>`,
     );
   });
 

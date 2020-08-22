@@ -33,9 +33,9 @@ const initialState = {
 const setPropFromActionOnMatchingShortUrl = (prop) => (state, { shortCode, domain, [prop]: propValue }) => assocPath(
   [ 'shortUrls', 'data' ],
   state.shortUrls.data.map(
-    (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain) ? assoc(prop, propValue, shortUrl) : shortUrl
+    (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain) ? assoc(prop, propValue, shortUrl) : shortUrl,
   ),
-  state
+  state,
 );
 
 export default handleActions({
@@ -55,9 +55,9 @@ export default handleActions({
     state.shortUrls && state.shortUrls.data && state.shortUrls.data.map(
       (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain)
         ? assoc('visitsCount', visitsCount, shortUrl)
-        : shortUrl
+        : shortUrl,
     ),
-    state
+    state,
   ),
 }, initialState);
 

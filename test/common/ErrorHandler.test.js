@@ -30,7 +30,7 @@ describe('<ErrorHandler />', () => {
 
     expect(wrapper.text()).toContain('Oops! This is awkward :S');
     expect(wrapper.text()).toContain(
-      'It seems that something went wrong. Try refreshing the page or just click this button.'
+      'It seems that something went wrong. Try refreshing the page or just click this button.',
     );
     expect(wrapper.find(Button)).toHaveLength(1);
   });

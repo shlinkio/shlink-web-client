@@ -25,7 +25,7 @@ const mapActionService = (map, actionName) => ({
 const connect = (propsFromState, actionServiceNames = []) =>
   reduxConnect(
     propsFromState ? pick(propsFromState) : null,
-    actionServiceNames.reduce(mapActionService, {})
+    actionServiceNames.reduce(mapActionService, {}),
   );
 
 bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer', 'Settings');

@@ -16,7 +16,7 @@ describe('<VisitsTable />', () => {
         selectedVisits={selectedVisits}
         setSelectedVisits={setSelectedVisits}
         matchMedia={matchMedia}
-      />
+      />,
     );
 
     return wrapper;
@@ -64,7 +64,7 @@ describe('<VisitsTable />', () => {
   });
 
   it.each(
-    rangeOf(20, (value) => [ value ])
+    rangeOf(20, (value) => [ value ]),
   )('does not render footer when there is only one page to render', (visitsCount) => {
     const wrapper = createWrapper(rangeOf(visitsCount, () => ({ browser: '', date: '', referer: '' })));
     const tr = wrapper.find('tbody').find('tr');

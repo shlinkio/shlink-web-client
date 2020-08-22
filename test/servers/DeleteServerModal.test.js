@@ -22,7 +22,7 @@ describe('<DeleteServerModal />', () => {
         isOpen={true}
         deleteServer={deleteServerMock}
         history={historyMock}
-      />
+      />,
     );
   });
   afterEach(() => wrapper.unmount());
@@ -38,7 +38,7 @@ describe('<DeleteServerModal />', () => {
     const modalBody = wrapper.find(ModalBody);
 
     expect(modalBody.find('p').first().text()).toEqual(
-      `Are you sure you want to remove ${serverName}?`
+      `Are you sure you want to remove ${serverName}?`,
     );
   });
 

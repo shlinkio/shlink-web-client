@@ -21,7 +21,7 @@ describe('<ShortUrlVisitsHeader />', () => {
 
   beforeEach(() => {
     wrapper = shallow(
-      <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
+      <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />,
     );
   });
   afterEach(() => wrapper.unmount());

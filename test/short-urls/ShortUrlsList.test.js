@@ -37,7 +37,7 @@ describe('<ShortUrlsList />', () => {
           ]
         }
         mercureInfo={{ loading: true }}
-      />
+      />,
     );
   });
 

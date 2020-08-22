@@ -24,7 +24,7 @@ describe('<VisitStats />', () => {
         visitsInfo={visitsInfo}
         cancelGetVisits={identity}
         matchMedia={() => ({ matches: false })}
-      />
+      />,
     );
 
     return wrapper;

@@ -28,7 +28,7 @@ export default handleActions({
 
 export const editTag = (buildShlinkApiClient, colorGenerator) => (oldName, newName, color) => async (
   dispatch,
-  getState
+  getState,
 ) => {
   dispatch({ type: EDIT_TAG_START });
   const { editTag } = buildShlinkApiClient(getState);

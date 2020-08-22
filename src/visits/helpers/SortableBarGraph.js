@@ -44,9 +44,9 @@ const SortableBarGraph = ({
     const sortedPairs = !order.orderField ? pairs : sortBy(
       pipe(
         prop(order.orderField === head(keys(sortingItems)) ? 0 : 1),
-        toLowerIfString
+        toLowerIfString,
       ),
-      pairs
+      pairs,
     );
 
     return !order.orderDir || order.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs);
@@ -56,7 +56,7 @@ const SortableBarGraph = ({
     const sortedKeys = sortedPairs.map(pickKeyFromPair);
     // The highlighted stats have to be ordered based on the regular stats, not on its own values
     const sortedHighlightedPairs = highlightedStats && toPairs(
-      { ...zipObj(sortedKeys, sortedKeys.map(() => 0)), ...highlightedStats }
+      { ...zipObj(sortedKeys, sortedKeys.map(() => 0)), ...highlightedStats },
     );
 
     if (sortedPairs.length <= itemsPerPage) {
@@ -94,7 +94,7 @@ const SortableBarGraph = ({
   const { currentPageStats, currentPageHighlightedStats, pagination, max } = determineStats(
     stats,
     highlightedStats && keys(highlightedStats).length > 0 ? highlightedStats : undefined,
-    sortingItems
+    sortingItems,
   );
   const activeCities = keys(currentPageStats);
   const computeTitle = () => (

@@ -24,7 +24,7 @@ describe('<SortableBarGraph />', () => {
         stats={{ ...stats, ...extraStats }}
         sortingItems={sortingItems}
         withPagination={withPagination}
-      />
+      />,
     );
 
     return wrapper;
@@ -108,7 +108,7 @@ describe('<SortableBarGraph />', () => {
             </span>
           )}
         />
-      </span>
+      </span>,
     ).find(SortableBarGraph);
     const header = wrapper.renderProp('extraHeaderContent')();
 
