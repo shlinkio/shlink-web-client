@@ -6,7 +6,7 @@ const CSV_MIME_TYPE = 'text/csv';
 export default class ServersImporter {
   public constructor(private readonly csvjson: CsvJson, private readonly fileReaderFactory: () => FileReader) {}
 
-  public importServersFromFile = async (file?: File): Promise<RegularServer[]> => {
+  public importServersFromFile = async (file?: File | null): Promise<RegularServer[]> => {
     if (!file || file.type !== CSV_MIME_TYPE) {
       throw new Error('No file provided or file is not a CSV');
     }

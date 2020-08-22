@@ -1,24 +1,24 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import importServersBtnConstruct from '../../../src/servers/helpers/ImportServersBtn';
+import ServersImporter from '../../../src/servers/services/ServersImporter';
 
 describe('<ImportServersBtn />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const onImportMock = jest.fn();
   const createServersMock = jest.fn();
-  const serversImporterMock = {
+  const serversImporterMock = Mock.of<ServersImporter>({
     importServersFromFile: jest.fn().mockResolvedValue([]),
-  };
+  });
+  const click = jest.fn();
   const fileRef = {
-    current: { click: jest.fn() },
+    current: Mock.of<HTMLInputElement>({ click }),
   };
 
   beforeEach(() => {
-    onImportMock.mockReset();
-    createServersMock.mockReset();
-    serversImporterMock.importServersFromFile.mockClear();
-    fileRef.current.click.mockReset();
+    jest.clearAllMocks();
 
     const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
 
@@ -39,7 +39,7 @@ describe('<ImportServersBtn />', () => {
 
     btn.simulate('click');
 
-    expect(fileRef.current.click).toHaveBeenCalledTimes(1);
+    expect(click).toHaveBeenCalledTimes(1);
   });
 
   it('imports servers when file input changes', (done) => {
