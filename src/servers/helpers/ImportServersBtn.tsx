@@ -7,16 +7,20 @@ type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
 export interface ImportServersBtnProps {
   onImport?: () => void;
+  onImportError?: () => void;
 }
 
-interface ImportServersBtnConnectProps {
+interface ImportServersBtnConnectProps extends ImportServersBtnProps {
   createServers: (servers: Server[]) => void;
   fileRef: Ref<HTMLInputElement>;
 }
 
-const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => (
-  { createServers, fileRef, onImport = () => {} }: ImportServersBtnConnectProps & ImportServersBtnProps,
-) => {
+const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
+  createServers,
+  fileRef,
+  onImport = () => {},
+  onImportError = () => {},
+}: ImportServersBtnConnectProps) => {
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
     importServersFromFile(target.files?.[0])
@@ -25,7 +29,8 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => (
       .then(() => {
         // Reset input after processing file
         (target as { value: string | null }).value = null;
-      });
+      })
+      .catch(onImportError);
 
   return (
     <React.Fragment>
