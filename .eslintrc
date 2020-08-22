@@ -28,6 +28,12 @@
           }
       },
       "rules": {
+        "max-len": ["error", {
+          "code": 120,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }],
+        "no-mixed-operators": "off",
         "comma-dangle": ["error", "always-multiline"],
         "no-invalid-this": "off",
         "no-inline-comments": "off",
@@ -55,6 +61,12 @@
         "@shlinkio/js-coding-standard"
       ],
       "rules": {
+        "max-len": ["error", {
+          "code": 120,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }],
+        "no-mixed-operators": "off",
         "react/display-name": "off"
       }
     }

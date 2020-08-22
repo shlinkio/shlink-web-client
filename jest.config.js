@@ -1,7 +1,7 @@
 module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: [
-    'src/**/*.js',
+    'src/**/*.{js,jsx,ts,tsx}',
     '!src/registerServiceWorker.js',
     '!src/index.js',
     '!src/reducers/index.js',
