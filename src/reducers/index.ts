@@ -16,8 +16,9 @@ import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
 import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
+import { ShlinkState } from '../container/types';
 
-export default combineReducers({
+export default combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: selectedServerReducer,
   shortUrlsList: shortUrlsListReducer,

@@ -1,9 +1,14 @@
+import { Mock } from 'ts-mockery';
+import { Action } from 'redux-actions';
 import reducer, {
   GET_MERCURE_INFO_START,
   GET_MERCURE_INFO_ERROR,
   GET_MERCURE_INFO,
   loadMercureInfo,
-} from '../../../src/mercure/reducers/mercureInfo.js';
+} from '../../../src/mercure/reducers/mercureInfo';
+import { ShlinkMercureInfo } from '../../../src/utils/services/types';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import { GetState } from '../../../src/container/types';
 
 describe('mercureInfoReducer', () => {
   const mercureInfo = {
@@ -13,21 +18,21 @@ describe('mercureInfoReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on GET_MERCURE_INFO_START', () => {
-      expect(reducer({}, { type: GET_MERCURE_INFO_START })).toEqual({
+      expect(reducer(undefined, { type: GET_MERCURE_INFO_START } as Action<ShlinkMercureInfo>)).toEqual({
         loading: true,
         error: false,
       });
     });
 
     it('returns error on GET_MERCURE_INFO_ERROR', () => {
-      expect(reducer({}, { type: GET_MERCURE_INFO_ERROR })).toEqual({
+      expect(reducer(undefined, { type: GET_MERCURE_INFO_ERROR } as Action<ShlinkMercureInfo>)).toEqual({
         loading: false,
         error: true,
       });
     });
 
     it('returns mercure info on GET_MERCURE_INFO', () => {
-      expect(reducer({}, { type: GET_MERCURE_INFO, ...mercureInfo })).toEqual({
+      expect(reducer(undefined, { type: GET_MERCURE_INFO, payload: mercureInfo })).toEqual({
         ...mercureInfo,
         loading: false,
         error: false,
@@ -36,15 +41,15 @@ describe('mercureInfoReducer', () => {
   });
 
   describe('loadMercureInfo', () => {
-    const createApiClientMock = (result) => ({
-      mercureInfo: jest.fn(() => result),
+    const createApiClientMock = (result: Promise<ShlinkMercureInfo>) => Mock.of<ShlinkApiClient>({
+      mercureInfo: jest.fn().mockReturnValue(result),
     });
     const dispatch = jest.fn();
-    const createGetStateMock = (enabled) => jest.fn(() => ({
+    const createGetStateMock = (enabled: boolean): GetState => jest.fn().mockReturnValue({
       settings: {
         realTimeUpdates: { enabled },
       },
-    }));
+    });
 
     afterEach(jest.resetAllMocks);
 
@@ -69,7 +74,7 @@ describe('mercureInfoReducer', () => {
       expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO, ...mercureInfo });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO, payload: mercureInfo });
     });
 
     it('throws error on failure', async () => {
