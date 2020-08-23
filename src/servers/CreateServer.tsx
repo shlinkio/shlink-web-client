@@ -6,7 +6,7 @@ import NoMenuLayout from '../common/NoMenuLayout';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
-import { NewServerData, ServerWithId } from './data';
+import { ServerData, ServerWithId } from './data';
 import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
@@ -36,7 +36,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
 ) => {
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
-  const handleSubmit = (serverData: NewServerData) => {
+  const handleSubmit = (serverData: ServerData) => {
     const id = uuid();
 
     createServer({ ...serverData, id });

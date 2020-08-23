@@ -1,7 +1,7 @@
 import { handleActions } from 'redux-actions';
 import { pipe, assoc, map, reduce, dissoc } from 'ramda';
 import { v4 as uuid } from 'uuid';
-import { NewServerData, ServerWithId } from '../data';
+import { ServerData, ServerWithId } from '../data';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SERVER = 'shlink/servers/EDIT_SERVER';
@@ -13,7 +13,7 @@ export type ServersMap = Record<string, ServerWithId>;
 
 const initialState: ServersMap = {};
 
-const serverWithId = (server: ServerWithId | NewServerData): ServerWithId => {
+const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
   if ((server as ServerWithId).id) {
     return server as ServerWithId;
   }
@@ -39,7 +39,7 @@ export const createServers = pipe(
 
 export const createServer = (server: ServerWithId) => createServers([ server ]);
 
-export const editServer = (serverId: string, serverData: Partial<NewServerData>) => ({
+export const editServer = (serverId: string, serverData: Partial<ServerData>) => ({
   type: EDIT_SERVER,
   serverId,
   serverData,

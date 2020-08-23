@@ -1,4 +1,4 @@
-export interface NewServerData {
+export interface ServerData {
   name: string;
   url: string;
   apiKey: string;
