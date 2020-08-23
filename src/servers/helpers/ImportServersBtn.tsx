@@ -1,7 +1,7 @@
 import React, { useRef, RefObject, ChangeEvent, MutableRefObject } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import ServersImporter from '../services/ServersImporter';
-import { Server } from '../data';
+import { NewServerData } from '../data';
 
 type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
@@ -11,7 +11,7 @@ export interface ImportServersBtnProps {
 }
 
 interface ImportServersBtnConnectProps extends ImportServersBtnProps {
-  createServers: (servers: Server[]) => void;
+  createServers: (servers: NewServerData[]) => void;
   fileRef: Ref<HTMLInputElement>;
 }
 

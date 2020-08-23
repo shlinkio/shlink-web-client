@@ -4,15 +4,23 @@ export interface NewServerData {
   apiKey: string;
 }
 
-export interface RegularServer extends NewServerData {
+export interface ServerWithId {
   id: string;
-  version?: string;
-  printableVersion?: string;
-  serverNotReachable?: true;
 }
 
-interface NotFoundServer {
+export interface ReachableServer extends ServerWithId {
+  version: string;
+  printableVersion: string;
+}
+
+export interface NonReachableServer extends ServerWithId {
+  serverNotReachable: true;
+}
+
+export interface NotFoundServer {
   serverNotFound: true;
 }
 
-export type Server = RegularServer | NotFoundServer;
+export type RegularServer = ReachableServer | NonReachableServer;
+
+export type SelectedServer = RegularServer | NotFoundServer | null;

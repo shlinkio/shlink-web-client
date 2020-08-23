@@ -6,13 +6,13 @@ import NoMenuLayout from '../common/NoMenuLayout';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
-import { NewServerData, RegularServer } from './data';
+import { NewServerData, ServerWithId } from './data';
 import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
 interface CreateServerProps extends RouterProps {
-  createServer: (server: RegularServer) => void;
+  createServer: (server: ServerWithId) => void;
   resetSelectedServer: Function;
 }
 
