@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { Mock } from 'ts-mockery';
 import reducer, {
   selectServer,
   resetSelectedServer,
@@ -8,16 +9,18 @@ import reducer, {
   MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
 import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
+import { ShlinkState } from '../../../src/container/types';
+import { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
 
 describe('selectedServerReducer', () => {
   describe('reducer', () => {
     it('returns default when action is RESET_SELECTED_SERVER', () =>
-      expect(reducer(null, { type: RESET_SELECTED_SERVER })).toEqual(null));
+      expect(reducer(null, { type: RESET_SELECTED_SERVER } as any)).toEqual(null));
 
     it('returns selected server when action is SELECT_SERVER', () => {
       const selectedServer = { id: 'abc123' };
 
-      expect(reducer(null, { type: SELECT_SERVER, selectedServer })).toEqual(selectedServer);
+      expect(reducer(null, { type: SELECT_SERVER, selectedServer } as any)).toEqual(selectedServer);
     });
   });
 
@@ -32,7 +35,7 @@ describe('selectedServerReducer', () => {
       id: 'abc123',
     };
     const version = '1.19.0';
-    const createGetStateMock = (id) => jest.fn().mockReturnValue({ servers: { [id]: selectedServer } });
+    const createGetStateMock = (id: string) => jest.fn().mockReturnValue({ servers: { [id]: selectedServer } });
     const apiClientMock = {
       health: jest.fn(),
     };
@@ -70,7 +73,7 @@ describe('selectedServerReducer', () => {
       const id = uuid();
       const getState = createGetStateMock(id);
 
-      await selectServer(buildApiClient, loadMercureInfo)(id)(() => {}, getState);
+      await selectServer(buildApiClient, loadMercureInfo)(id)(jest.fn(), getState);
 
       expect(getState).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
@@ -79,7 +82,7 @@ describe('selectedServerReducer', () => {
     it('dispatches error when health endpoint fails', async () => {
       const id = uuid();
       const getState = createGetStateMock(id);
-      const expectedSelectedServer = { ...selectedServer, serverNotReachable: true };
+      const expectedSelectedServer: NonReachableServer = { ...selectedServer, serverNotReachable: true };
 
       apiClientMock.health.mockRejectedValue({});
 
@@ -92,8 +95,8 @@ describe('selectedServerReducer', () => {
 
     it('dispatches error when server is not found', async () => {
       const id = uuid();
-      const getState = jest.fn(() => ({ servers: {} }));
-      const expectedSelectedServer = { serverNotFound: true };
+      const getState = jest.fn(() => Mock.of<ShlinkState>({ servers: {} }));
+      const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 
       await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
