@@ -1,3 +1,4 @@
+import Bottle, { Decorator } from 'bottlejs';
 import ScrollToTop from '../ScrollToTop';
 import MainHeader from '../MainHeader';
 import Home from '../Home';
@@ -5,9 +6,10 @@ import MenuLayout from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
 import ErrorHandler from '../ErrorHandler';
 import ShlinkVersions from '../ShlinkVersions';
+import { ConnectDecorator } from '../../container/types';
 
-const provideServices = (bottle, connect, withRouter) => {
-  bottle.constant('window', global.window);
+const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
+  bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
 
   bottle.serviceFactory('ScrollToTop', ScrollToTop, 'window');

@@ -1,3 +1,4 @@
+import Bottle from 'bottlejs';
 import ShortUrlVisits from '../ShortUrlVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
@@ -7,9 +8,10 @@ import VisitsStats from '../VisitsStats';
 import { createNewVisit } from '../reducers/visitCreation';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import TagVisits from '../TagVisits';
+import { ConnectDecorator } from '../../container/types';
 import * as visitsParser from './VisitsParser';
 
-const provideServices = (bottle, connect) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('OpenMapModalBtn', OpenMapModalBtn, 'MapModal');
   bottle.serviceFactory('MapModal', () => MapModal);

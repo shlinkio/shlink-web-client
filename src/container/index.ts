@@ -11,6 +11,7 @@ import provideTagsServices from '../tags/services/provideServices';
 import provideUtilsServices from '../utils/services/provideServices';
 import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
+import { ConnectDecorator } from './types';
 
 type ActionMap = Record<string, any>;
 
@@ -20,11 +21,10 @@ const { container } = bottle;
 const lazyService = (container: IContainer, serviceName: string) => (...args: any[]) => container[serviceName](...args);
 const mapActionService = (map: ActionMap, actionName: string): ActionMap => ({
   ...map,
-
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: lazyService(container, actionName),
 });
-const connect = (propsFromState: string[], actionServiceNames: string[] = []) =>
+const connect: ConnectDecorator = (propsFromState: string[], actionServiceNames: string[] = []) =>
   reduxConnect(
     propsFromState ? pick(propsFromState) : null,
     actionServiceNames.reduce(mapActionService, {}),

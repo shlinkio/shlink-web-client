@@ -17,12 +17,10 @@ describe('<Checkbox />', () => {
 
   it('includes extra class names when provided', () => {
     const classNames = [ 'foo', 'bar', 'baz' ];
-    const checked = false;
-    const onChange = () => {};
 
     expect.assertions(classNames.length);
     classNames.forEach((className) => {
-      const wrapped = createComponent({ className, checked, onChange });
+      const wrapped = createComponent({ className });
 
       expect(wrapped.prop('className')).toContain(className);
     });
@@ -30,11 +28,10 @@ describe('<Checkbox />', () => {
 
   it('marks input as checked if defined', () => {
     const checkeds = [ true, false ];
-    const onChange = () => {};
 
     expect.assertions(checkeds.length);
     checkeds.forEach((checked) => {
-      const wrapped = createComponent({ checked, onChange });
+      const wrapped = createComponent({ checked });
       const input = wrapped.find('input');
 
       expect(input.prop('checked')).toEqual(checked);
@@ -43,12 +40,10 @@ describe('<Checkbox />', () => {
 
   it('renders provided children inside the label', () => {
     const labels = [ 'foo', 'bar', 'baz' ];
-    const checked = false;
-    const onChange = () => {};
 
     expect.assertions(labels.length);
     labels.forEach((children) => {
-      const wrapped = createComponent({ children, checked, onChange });
+      const wrapped = createComponent({ children });
       const label = wrapped.find('label');
 
       expect(label.text()).toEqual(children);

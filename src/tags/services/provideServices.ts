@@ -1,3 +1,4 @@
+import Bottle, { IContainer } from 'bottlejs';
 import TagsSelector from '../helpers/TagsSelector';
 import TagCard from '../TagCard';
 import DeleteTagConfirmModal from '../helpers/DeleteTagConfirmModal';
@@ -6,8 +7,9 @@ import TagsList from '../TagsList';
 import { filterTags, listTags } from '../reducers/tagsList';
 import { deleteTag, tagDeleted } from '../reducers/tagDelete';
 import { editTag, tagEdited } from '../reducers/tagEdit';
+import { ConnectDecorator } from '../../container/types';
 
-const provideServices = (bottle, connect) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
   bottle.decorator('TagsSelector', connect([ 'tagsList' ], [ 'listTags' ]));
@@ -34,7 +36,8 @@ const provideServices = (bottle, connect) => {
   ));
 
   // Actions
-  const listTagsActionFactory = (force) => ({ buildShlinkApiClient }) => listTags(buildShlinkApiClient, force);
+  const listTagsActionFactory = (force: boolean) =>
+    ({ buildShlinkApiClient }: IContainer) => listTags(buildShlinkApiClient, force);
 
   bottle.factory('listTags', listTagsActionFactory(false));
   bottle.factory('forceListTags', listTagsActionFactory(true));

@@ -1,11 +1,12 @@
 import axios from 'axios';
+import Bottle from 'bottlejs';
 import { useStateFlagTimeout } from '../helpers/hooks';
 import Storage from './Storage';
 import ColorGenerator from './ColorGenerator';
 import buildShlinkApiClient from './ShlinkApiClientBuilder';
 
-const provideServices = (bottle) => {
-  bottle.constant('localStorage', global.localStorage);
+const provideServices = (bottle: Bottle) => {
+  bottle.constant('localStorage', (global as any).localStorage);
   bottle.service('Storage', Storage, 'localStorage');
   bottle.service('ColorGenerator', ColorGenerator, 'Storage');
 

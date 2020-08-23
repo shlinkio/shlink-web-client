@@ -1,5 +1,6 @@
 import { connect as reduxConnect } from 'react-redux';
 import { assoc } from 'ramda';
+import Bottle from 'bottlejs';
 import ShortUrls from '../ShortUrls';
 import SearchBar from '../SearchBar';
 import ShortUrlsList from '../ShortUrlsList';
@@ -18,14 +19,16 @@ import { editShortUrlTags, resetShortUrlsTags } from '../reducers/shortUrlTags';
 import { editShortUrlMeta, resetShortUrlMeta } from '../reducers/shortUrlMeta';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
 import { editShortUrl } from '../reducers/shortUrlEdition';
+import { ConnectDecorator } from '../../container/types';
 
-const provideServices = (bottle, connect) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
   bottle.decorator('ShortUrls', reduxConnect(
-    (state) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
+    (state: any) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
   ));
 
+  // Services
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
   bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
 
