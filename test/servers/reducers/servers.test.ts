@@ -1,4 +1,5 @@
 import { values } from 'ramda';
+import { Mock } from 'ts-mockery';
 import reducer, {
   createServer,
   deleteServer,
@@ -8,11 +9,12 @@ import reducer, {
   DELETE_SERVER,
   CREATE_SERVERS,
 } from '../../../src/servers/reducers/servers';
+import { RegularServer } from '../../../src/servers/data';
 
 describe('serverReducer', () => {
   const list = {
-    abc123: { id: 'abc123' },
-    def456: { id: 'def456' },
+    abc123: Mock.of<RegularServer>({ id: 'abc123' }),
+    def456: Mock.of<RegularServer>({ id: 'def456' }),
   };
 
   afterEach(jest.clearAllMocks);
@@ -21,14 +23,14 @@ describe('serverReducer', () => {
     it('returns edited server when action is EDIT_SERVER', () =>
       expect(reducer(
         list,
-        { type: EDIT_SERVER, serverId: 'abc123', serverData: { foo: 'foo' } },
+        { type: EDIT_SERVER, serverId: 'abc123', serverData: { foo: 'foo' } } as any,
       )).toEqual({
         abc123: { id: 'abc123', foo: 'foo' },
         def456: { id: 'def456' },
       }));
 
     it('removes server when action is DELETE_SERVER', () =>
-      expect(reducer(list, { type: DELETE_SERVER, serverId: 'abc123' })).toEqual({
+      expect(reducer(list, { type: DELETE_SERVER, serverId: 'abc123' } as any)).toEqual({
         def456: { id: 'def456' },
       }));
 
@@ -38,7 +40,7 @@ describe('serverReducer', () => {
         newServers: {
           ghi789: { id: 'ghi789' },
         },
-      })).toEqual({
+      } as any)).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -48,7 +50,7 @@ describe('serverReducer', () => {
   describe('action creators', () => {
     describe('createServer', () => {
       it('returns expected action', () => {
-        const serverToCreate = { id: 'abc123' };
+        const serverToCreate = Mock.of<RegularServer>({ id: 'abc123' });
         const result = createServer(serverToCreate);
 
         expect(result).toEqual(expect.objectContaining({ type: CREATE_SERVERS }));
@@ -66,7 +68,7 @@ describe('serverReducer', () => {
 
     describe('deleteServer', () => {
       it('returns expected action', () => {
-        const serverToDelete = { id: 'abc123' };
+        const serverToDelete = Mock.of<RegularServer>({ id: 'abc123' });
         const result = deleteServer(serverToDelete);
 
         expect(result).toEqual({ type: DELETE_SERVER, serverId: 'abc123' });

@@ -1,9 +1,10 @@
 import { MercureInfo } from '../mercure/reducers/mercureInfo';
+import { ServersMap } from '../servers/reducers/servers';
 
 export type ConnectDecorator = (props: string[], actions?: string[]) => any;
 
 export interface ShlinkState {
-  servers: any;
+  servers: ServersMap;
   selectedServer: any;
   shortUrlsList: any;
   shortUrlsListParams: any;
