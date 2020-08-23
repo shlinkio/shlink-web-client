@@ -1,3 +1,5 @@
+import { Mock } from 'ts-mockery';
+import { AxiosInstance } from 'axios';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 import { CREATE_SERVERS } from '../../../src/servers/reducers/servers';
 
@@ -5,7 +7,8 @@ describe('remoteServersReducer', () => {
   afterEach(jest.resetAllMocks);
 
   describe('fetchServers', () => {
-    const axios = { get: jest.fn() };
+    const get = jest.fn();
+    const axios = Mock.of<AxiosInstance>({ get });
     const dispatch = jest.fn();
 
     it.each([
@@ -44,12 +47,12 @@ describe('remoteServersReducer', () => {
       [ Promise.resolve('<html></html>'), {}],
       [ Promise.reject({}), {}],
     ])('tries to fetch servers from remote', async (mockedValue, expectedList) => {
-      axios.get.mockReturnValue(mockedValue);
+      get.mockReturnValue(mockedValue);
 
       await fetchServers(axios)()(dispatch);
 
       expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, newServers: expectedList });
-      expect(axios.get).toHaveBeenCalledTimes(1);
+      expect(get).toHaveBeenCalledTimes(1);
     });
   });
 });
