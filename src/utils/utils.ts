@@ -21,3 +21,7 @@ export const rangeOf = <T>(size: number, mappingFn: (value: number) => T, startA
 export type Empty = null | undefined | '' | never[];
 
 export const hasValue = <T>(value: T | Empty): value is T => !isNil(value) && !isEmpty(value);
+
+export type Nullable<T> = {
+  [P in keyof T]: T[P] | null
+};

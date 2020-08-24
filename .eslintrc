@@ -64,7 +64,8 @@
         "max-len": ["error", {
           "code": 120,
           "ignoreStrings": true,
-          "ignoreTemplateLiterals": true
+          "ignoreTemplateLiterals": true,
+          "ignoreTrailingComments": true
         }],
         "no-mixed-operators": "off",
         "react/display-name": "off"
