@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import NoMenuLayout from '../common/NoMenuLayout';
 
-const Settings = (RealTimeUpdates) => () => (
+const Settings = (RealTimeUpdates: FC) => () => (
   <NoMenuLayout>
     <RealTimeUpdates />
   </NoMenuLayout>

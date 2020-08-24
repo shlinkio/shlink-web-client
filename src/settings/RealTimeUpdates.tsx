@@ -1,15 +1,14 @@
 import React from 'react';
 import { Card, CardBody, CardHeader } from 'reactstrap';
-import PropTypes from 'prop-types';
 import ToggleSwitch from '../utils/ToggleSwitch';
-import { SettingsType } from './reducers/settings';
+import { Settings } from './reducers/settings';
 
-const propTypes = {
-  settings: SettingsType,
-  setRealTimeUpdates: PropTypes.func,
-};
+interface RealTimeUpdatesProps {
+  settings: Settings;
+  setRealTimeUpdates: (enabled: boolean) => void;
+}
 
-const RealTimeUpdates = ({ settings: { realTimeUpdates }, setRealTimeUpdates }) => (
+const RealTimeUpdates = ({ settings: { realTimeUpdates }, setRealTimeUpdates }: RealTimeUpdatesProps) => (
   <Card>
     <CardHeader>Real-time updates</CardHeader>
     <CardBody>
@@ -19,7 +18,5 @@ const RealTimeUpdates = ({ settings: { realTimeUpdates }, setRealTimeUpdates }) 
     </CardBody>
   </Card>
 );
-
-RealTimeUpdates.propTypes = propTypes;
 
 export default RealTimeUpdates;

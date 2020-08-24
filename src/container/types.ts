@@ -1,6 +1,7 @@
 import { MercureInfo } from '../mercure/reducers/mercureInfo';
 import { ServersMap } from '../servers/reducers/servers';
 import { SelectedServer } from '../servers/data';
+import { Settings } from '../settings/reducers/settings';
 
 export type ConnectDecorator = (props: string[], actions?: string[]) => any;
 
@@ -21,7 +22,7 @@ export interface ShlinkState {
   tagDelete: any;
   tagEdit: any;
   mercureInfo: MercureInfo;
-  settings: any;
+  settings: Settings;
 }
 
 export type GetState = () => ShlinkState;

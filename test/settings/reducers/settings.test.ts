@@ -5,7 +5,7 @@ describe('settingsReducer', () => {
 
   describe('reducer', () => {
     it('returns realTimeUpdates when action is SET_REAL_TIME_UPDATES', () => {
-      expect(reducer({}, { type: SET_REAL_TIME_UPDATES, realTimeUpdates })).toEqual({ realTimeUpdates });
+      expect(reducer(undefined, { type: SET_REAL_TIME_UPDATES, realTimeUpdates } as any)).toEqual({ realTimeUpdates });
     });
   });
 

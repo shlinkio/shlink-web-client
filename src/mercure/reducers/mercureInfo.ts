@@ -1,4 +1,4 @@
-import { handleActions } from 'redux-actions';
+import { Action, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
 import { Dispatch } from 'redux';
 import { ShlinkApiClientBuilder, ShlinkMercureInfo } from '../../utils/services/types';
@@ -52,7 +52,7 @@ export const loadMercureInfo = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     try {
       const payload = await mercureInfo();
 
-      dispatch({ type: GET_MERCURE_INFO, payload });
+      dispatch<Action<ShlinkMercureInfo>>({ type: GET_MERCURE_INFO, payload });
     } catch (e) {
       dispatch({ type: GET_MERCURE_INFO_ERROR });
     }
