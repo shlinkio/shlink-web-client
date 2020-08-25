@@ -49,13 +49,7 @@ export default handleActions({
     state,
   ),
   [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl('tags'),
-  [SHORT_URL_META_EDITED]: (state, { payload: { shortCode, domain, meta } }) => assocPath(
-    [ 'shortUrls', 'data' ],
-    state.shortUrls.data.map(
-      (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain) ? assoc('meta', meta, shortUrl) : shortUrl,
-    ),
-    state,
-  ),
+  [SHORT_URL_META_EDITED]: setPropFromActionOnMatchingShortUrl('meta'),
   [SHORT_URL_EDITED]: setPropFromActionOnMatchingShortUrl('longUrl'),
   [CREATE_VISIT]: (state, { shortUrl: { shortCode, domain, visitsCount } }) => assocPath(
     [ 'shortUrls', 'data' ],

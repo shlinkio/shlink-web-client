@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
-import { Action } from 'redux-actions';
 import reducer, {
   GET_MERCURE_INFO_START,
   GET_MERCURE_INFO_ERROR,
   GET_MERCURE_INFO,
   loadMercureInfo,
+  GetMercureInfoAction,
 } from '../../../src/mercure/reducers/mercureInfo';
 import { ShlinkMercureInfo } from '../../../src/utils/services/types';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
@@ -17,22 +17,26 @@ describe('mercureInfoReducer', () => {
   };
 
   describe('reducer', () => {
+    const action = (type: string, args: Partial<ShlinkMercureInfo> = {}) => Mock.of<GetMercureInfoAction>(
+      { type, ...args },
+    );
+
     it('returns loading on GET_MERCURE_INFO_START', () => {
-      expect(reducer(undefined, { type: GET_MERCURE_INFO_START } as Action<ShlinkMercureInfo>)).toEqual({
+      expect(reducer(undefined, action(GET_MERCURE_INFO_START))).toEqual({
         loading: true,
         error: false,
       });
     });
 
     it('returns error on GET_MERCURE_INFO_ERROR', () => {
-      expect(reducer(undefined, { type: GET_MERCURE_INFO_ERROR } as Action<ShlinkMercureInfo>)).toEqual({
+      expect(reducer(undefined, action(GET_MERCURE_INFO_ERROR))).toEqual({
         loading: false,
         error: true,
       });
     });
 
     it('returns mercure info on GET_MERCURE_INFO', () => {
-      expect(reducer(undefined, { type: GET_MERCURE_INFO, payload: mercureInfo })).toEqual({
+      expect(reducer(undefined, { type: GET_MERCURE_INFO, ...mercureInfo })).toEqual({
         ...mercureInfo,
         loading: false,
         error: false,
@@ -74,7 +78,7 @@ describe('mercureInfoReducer', () => {
       expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO, payload: mercureInfo });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO, ...mercureInfo });
     });
 
     it('throws error on failure', async () => {

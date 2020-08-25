@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
-import { createAction, handleActions } from 'redux-actions';
 import { Action, Dispatch } from 'redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShortUrl, ShortUrlData } from '../data';
+import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
@@ -27,16 +27,20 @@ export interface ShortUrlCreation {
   error: boolean;
 }
 
+export interface CreateShortUrlAction extends Action<string> {
+  result: ShortUrl;
+}
+
 const initialState: ShortUrlCreation = {
   result: null,
   saving: false,
   error: false,
 };
 
-export default handleActions<ShortUrlCreation, any>({
+export default buildReducer<ShortUrlCreation, CreateShortUrlAction>({
   [CREATE_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
   [CREATE_SHORT_URL_ERROR]: (state) => ({ ...state, saving: false, error: true }),
-  [CREATE_SHORT_URL]: (_, { result }: any) => ({ result, saving: false, error: false }),
+  [CREATE_SHORT_URL]: (_, { result }) => ({ result, saving: false, error: false }),
   [RESET_CREATE_SHORT_URL]: () => initialState,
 }, initialState);
 
@@ -50,7 +54,7 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
   try {
     const result = await createShortUrl(data);
 
-    dispatch<Action & { result: ShortUrl }>({ type: CREATE_SHORT_URL, result });
+    dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
   } catch (e) {
     dispatch({ type: CREATE_SHORT_URL_ERROR });
 
@@ -58,4 +62,4 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
   }
 };
 
-export const resetCreateShortUrl = createAction(RESET_CREATE_SHORT_URL);
+export const resetCreateShortUrl = buildActionCreator(RESET_CREATE_SHORT_URL);

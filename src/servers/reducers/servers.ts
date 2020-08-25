@@ -1,7 +1,8 @@
-import { handleActions } from 'redux-actions';
 import { pipe, assoc, map, reduce, dissoc } from 'ramda';
 import { v4 as uuid } from 'uuid';
+import { Action } from 'redux';
 import { ServerData, ServerWithId } from '../data';
+import { buildReducer } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SERVER = 'shlink/servers/EDIT_SERVER';
@@ -10,6 +11,10 @@ export const CREATE_SERVERS = 'shlink/servers/CREATE_SERVERS';
 /* eslint-enable padding-line-between-statements */
 
 export type ServersMap = Record<string, ServerWithId>;
+
+export interface CreateServersAction extends Action<string> {
+  newServers: ServersMap;
+}
 
 const initialState: ServersMap = {};
 
@@ -21,8 +26,8 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
   return assoc('id', uuid(), server);
 };
 
-export default handleActions<ServersMap, any>({
-  [CREATE_SERVERS]: (state, { newServers }: any) => ({ ...state, ...newServers }),
+export default buildReducer<ServersMap, CreateServersAction>({
+  [CREATE_SERVERS]: (state, { newServers }) => ({ ...state, ...newServers }),
   [DELETE_SERVER]: (state, { serverId }: any) => dissoc(serverId, state),
   [EDIT_SERVER]: (state, { serverId, serverData }: any) => !state[serverId]
     ? state

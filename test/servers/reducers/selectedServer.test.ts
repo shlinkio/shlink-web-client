@@ -10,17 +10,17 @@ import reducer, {
 } from '../../../src/servers/reducers/selectedServer';
 import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
 import { ShlinkState } from '../../../src/container/types';
-import { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
+import { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
 
 describe('selectedServerReducer', () => {
   describe('reducer', () => {
     it('returns default when action is RESET_SELECTED_SERVER', () =>
-      expect(reducer(null, { type: RESET_SELECTED_SERVER } as any)).toEqual(null));
+      expect(reducer(null, { type: RESET_SELECTED_SERVER, selectedServer: null })).toEqual(null));
 
     it('returns selected server when action is SELECT_SERVER', () => {
-      const selectedServer = { id: 'abc123' };
+      const selectedServer = Mock.of<RegularServer>({ id: 'abc123' });
 
-      expect(reducer(null, { type: SELECT_SERVER, selectedServer } as any)).toEqual(selectedServer);
+      expect(reducer(null, { type: SELECT_SERVER, selectedServer })).toEqual(selectedServer);
     });
   });
 

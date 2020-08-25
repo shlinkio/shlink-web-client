@@ -37,7 +37,7 @@ describe('shortUrlMetaReducer', () => {
     });
 
     it('returns provided tags and shortCode on SHORT_URL_META_EDITED', () => {
-      expect(reducer(undefined, { type: SHORT_URL_META_EDITED, payload: { meta, shortCode } })).toEqual({
+      expect(reducer(undefined, { type: SHORT_URL_META_EDITED, meta, shortCode })).toEqual({
         meta,
         shortCode,
         saving: false,
@@ -64,8 +64,6 @@ describe('shortUrlMetaReducer', () => {
     afterEach(jest.clearAllMocks);
 
     it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches metadata on success', async (domain) => {
-      const payload = { meta, shortCode, domain };
-
       await editShortUrlMeta(buildShlinkApiClient)(shortCode, domain, meta)(dispatch, getState);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
@@ -73,7 +71,7 @@ describe('shortUrlMetaReducer', () => {
       expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, domain, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_META_EDITED, payload });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_META_EDITED, meta, shortCode, domain });
     });
 
     it('dispatches error on failure', async () => {

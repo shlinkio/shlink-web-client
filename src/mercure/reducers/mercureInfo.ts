@@ -1,8 +1,8 @@
-import { Action, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
-import { Dispatch } from 'redux';
+import { Action, Dispatch } from 'redux';
 import { ShlinkApiClientBuilder, ShlinkMercureInfo } from '../../utils/services/types';
 import { GetState } from '../../container/types';
+import { buildReducer } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_MERCURE_INFO_START = 'shlink/mercure/GET_MERCURE_INFO_START';
@@ -25,15 +25,17 @@ export interface MercureInfo {
   error: boolean;
 }
 
+export type GetMercureInfoAction = Action<string> & ShlinkMercureInfo;
+
 const initialState: MercureInfo = {
   loading: true,
   error: false,
 };
 
-export default handleActions<MercureInfo, ShlinkMercureInfo>({
+export default buildReducer<MercureInfo, GetMercureInfoAction>({
   [GET_MERCURE_INFO_START]: (state) => ({ ...state, loading: true, error: false }),
   [GET_MERCURE_INFO_ERROR]: (state) => ({ ...state, loading: false, error: true }),
-  [GET_MERCURE_INFO]: (_, { payload }) => ({ ...payload, loading: false, error: false }),
+  [GET_MERCURE_INFO]: (_, { token, mercureHubUrl }) => ({ token, mercureHubUrl, loading: false, error: false }),
 }, initialState);
 
 export const loadMercureInfo = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
@@ -50,9 +52,9 @@ export const loadMercureInfo = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     }
 
     try {
-      const payload = await mercureInfo();
+      const result = await mercureInfo();
 
-      dispatch<Action<ShlinkMercureInfo>>({ type: GET_MERCURE_INFO, payload });
+      dispatch<Action<ShlinkMercureInfo>>({ type: GET_MERCURE_INFO, ...result });
     } catch (e) {
       dispatch({ type: GET_MERCURE_INFO_ERROR });
     }

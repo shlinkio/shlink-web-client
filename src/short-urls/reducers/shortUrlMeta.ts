@@ -1,9 +1,9 @@
-import { createAction, handleActions, Action } from 'redux-actions';
 import PropTypes from 'prop-types';
-import { Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
 import { ShortUrlMeta } from '../data';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
+import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_META_START = 'shlink/shortUrlMeta/EDIT_SHORT_URL_META_START';
@@ -34,7 +34,7 @@ export interface ShortUrlMetaEdition {
   error: boolean;
 }
 
-interface ShortUrlMetaEditedAction {
+interface ShortUrlMetaEditedAction extends Action<string> {
   shortCode: string;
   domain?: string | null;
   meta: ShortUrlMeta;
@@ -47,10 +47,10 @@ const initialState: ShortUrlMetaEdition = {
   error: false,
 };
 
-export default handleActions<ShortUrlMetaEdition, ShortUrlMetaEditedAction>({
+export default buildReducer<ShortUrlMetaEdition, ShortUrlMetaEditedAction>({
   [EDIT_SHORT_URL_META_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_META_ERROR]: (state) => ({ ...state, saving: false, error: true }),
-  [SHORT_URL_META_EDITED]: (_, { payload }) => ({ ...payload, saving: false, error: false }),
+  [SHORT_URL_META_EDITED]: (_, { shortCode, meta }) => ({ shortCode, meta, saving: false, error: false }),
   [RESET_EDIT_SHORT_URL_META]: () => initialState,
 }, initialState);
 
@@ -64,10 +64,7 @@ export const editShortUrlMeta = (buildShlinkApiClient: ShlinkApiClientBuilder) =
 
   try {
     await updateShortUrlMeta(shortCode, domain, meta);
-    dispatch<Action<ShortUrlMetaEditedAction>>({
-      type: SHORT_URL_META_EDITED,
-      payload: { shortCode, meta, domain },
-    });
+    dispatch<ShortUrlMetaEditedAction>({ shortCode, meta, domain, type: SHORT_URL_META_EDITED });
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_META_ERROR });
 
@@ -75,4 +72,4 @@ export const editShortUrlMeta = (buildShlinkApiClient: ShlinkApiClientBuilder) =
   }
 };
 
-export const resetShortUrlMeta = createAction(RESET_EDIT_SHORT_URL_META);
+export const resetShortUrlMeta = buildActionCreator(RESET_EDIT_SHORT_URL_META);

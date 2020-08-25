@@ -6,6 +6,7 @@ import reducer, {
   RESET_CREATE_SHORT_URL,
   createShortUrl,
   resetCreateShortUrl,
+  CreateShortUrlAction,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
@@ -15,8 +16,12 @@ describe('shortUrlCreationReducer', () => {
   const shortUrl = Mock.all<ShortUrl>();
 
   describe('reducer', () => {
+    const action = (type: string, args: Partial<CreateShortUrlAction> = {}) => Mock.of<CreateShortUrlAction>(
+      { type, ...args },
+    );
+
     it('returns loading on CREATE_SHORT_URL_START', () => {
-      expect(reducer(undefined, { type: CREATE_SHORT_URL_START } as any)).toEqual({
+      expect(reducer(undefined, action(CREATE_SHORT_URL_START))).toEqual({
         result: null,
         saving: true,
         error: false,
@@ -24,7 +29,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns error on CREATE_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, { type: CREATE_SHORT_URL_ERROR } as any)).toEqual({
+      expect(reducer(undefined, action(CREATE_SHORT_URL_ERROR))).toEqual({
         result: null,
         saving: false,
         error: true,
@@ -32,7 +37,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns result on CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, { type: CREATE_SHORT_URL, result: shortUrl } as any)).toEqual({
+      expect(reducer(undefined, action(CREATE_SHORT_URL, { result: shortUrl }))).toEqual({
         result: shortUrl,
         saving: false,
         error: false,
@@ -40,7 +45,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns default state on RESET_CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, { type: RESET_CREATE_SHORT_URL } as any)).toEqual({
+      expect(reducer(undefined, action(RESET_CREATE_SHORT_URL))).toEqual({
         result: null,
         saving: false,
         error: false,
@@ -49,8 +54,7 @@ describe('shortUrlCreationReducer', () => {
   });
 
   describe('resetCreateShortUrl', () => {
-    it('returns proper action', () =>
-      expect(resetCreateShortUrl()).toEqual({ type: RESET_CREATE_SHORT_URL }));
+    it('returns proper action', () => expect(resetCreateShortUrl()).toEqual({ type: RESET_CREATE_SHORT_URL }));
   });
 
   describe('createShortUrl', () => {
