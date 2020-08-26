@@ -25,3 +25,7 @@ export const hasValue = <T>(value: T | Empty): value is T => !isNil(value) && !i
 export type Nullable<T> = {
   [P in keyof T]: T[P] | null
 };
+
+type Optional<T> = T | null | undefined;
+
+export type OptionalString = Optional<string>;

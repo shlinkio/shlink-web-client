@@ -1,21 +1,22 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import DateInput from '../../src/utils/DateInput';
+import { Mock } from 'ts-mockery';
+import DateInput, { DateInputProps } from '../../src/utils/DateInput';
 
 describe('<DateInput />', () => {
-  let wrapped;
+  let wrapped: ShallowWrapper;
 
-  const createComponent = (props = {}) => {
-    wrapped = shallow(<DateInput {...props} />);
+  const createComponent = (props: Partial<DateInputProps> = {}) => {
+    wrapped = shallow(<DateInput {...Mock.of<DateInputProps>(props)} />);
 
     return wrapped;
   };
 
-  afterEach(() => wrapped && wrapped.unmount());
+  afterEach(() => wrapped?.unmount());
 
-  it('wrapps a DatePicker', () => {
+  it('wraps a DatePicker', () => {
     wrapped = createComponent();
   });
 

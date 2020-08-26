@@ -1,21 +1,16 @@
-import React from 'react';
+import React, { Component, RefObject } from 'react';
 import { isNil } from 'ramda';
-import DatePicker from 'react-datepicker';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
-import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './DateInput.scss';
 
-const propTypes = {
-  className: PropTypes.string,
-  isClearable: PropTypes.bool,
-  selected: PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]),
-  ref: PropTypes.object,
-  disabled: PropTypes.bool,
-};
+export interface DateInputProps extends ReactDatePickerProps {
+  ref?: RefObject<Component<ReactDatePickerProps> & { input: HTMLInputElement }>;
+}
 
-const DateInput = (props) => {
+const DateInput = (props: DateInputProps) => {
   const { className, isClearable, selected, ref = React.createRef() } = props;
   const showCalendarIcon = !isClearable || isNil(selected);
 
@@ -32,13 +27,11 @@ const DateInput = (props) => {
         <FontAwesomeIcon
           icon={calendarIcon}
           className="date-input-container__icon"
-          onClick={() => ref.current.input.focus()}
+          onClick={() => ref.current?.input.focus()}
         />
       )}
     </div>
   );
 };
-
-DateInput.propTypes = propTypes;
 
 export default DateInput;

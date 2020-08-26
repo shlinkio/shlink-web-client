@@ -1,19 +1,22 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { FormGroup, Modal, ModalHeader } from 'reactstrap';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { FormGroup } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import EditMetaModal from '../../../src/short-urls/helpers/EditMetaModal';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrlMetaEdition } from '../../../src/short-urls/reducers/shortUrlMeta';
 
 describe('<EditMetaModal />', () => {
-  let wrapper;
-  const editShortUrlMeta = jest.fn(() => Promise.resolve());
+  let wrapper: ShallowWrapper;
+  const editShortUrlMeta = jest.fn(async () => Promise.resolve());
   const resetShortUrlMeta = jest.fn();
   const toggle = jest.fn();
-  const createWrapper = (shortUrl, shortUrlMeta) => {
+  const createWrapper = (shortUrlMeta: Partial<ShortUrlMetaEdition>) => {
     wrapper = shallow(
       <EditMetaModal
         isOpen={true}
-        shortUrl={shortUrl}
-        shortUrlMeta={shortUrlMeta}
+        shortUrl={Mock.all<ShortUrl>()}
+        shortUrlMeta={Mock.of<ShortUrlMetaEdition>(shortUrlMeta)}
         toggle={toggle}
         editShortUrlMeta={editShortUrlMeta}
         resetShortUrlMeta={resetShortUrlMeta}
@@ -23,13 +26,11 @@ describe('<EditMetaModal />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    jest.clearAllMocks();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('properly renders form with components', () => {
-    const wrapper = createWrapper({}, { saving: false, error: false, meta: {} });
+    const wrapper = createWrapper({ saving: false, error: false });
     const error = wrapper.find('.bg-danger');
     const form = wrapper.find('form');
     const formGroup = form.find(FormGroup);
@@ -43,7 +44,7 @@ describe('<EditMetaModal />', () => {
     [ true, 'Saving...' ],
     [ false, 'Save' ],
   ])('renders submit button on expected state', (saving, expectedText) => {
-    const wrapper = createWrapper({}, { saving, error: false, meta: {} });
+    const wrapper = createWrapper({ saving, error: false });
     const button = wrapper.find('[type="submit"]');
 
     expect(button.prop('disabled')).toEqual(saving);
@@ -51,7 +52,7 @@ describe('<EditMetaModal />', () => {
   });
 
   it('renders error message on error', () => {
-    const wrapper = createWrapper({}, { saving: false, error: true, meta: {} });
+    const wrapper = createWrapper({ saving: false, error: true });
     const error = wrapper.find('.bg-danger');
 
     expect(error).toHaveLength(1);
@@ -59,7 +60,7 @@ describe('<EditMetaModal />', () => {
 
   it('saves meta when form is submit', () => {
     const preventDefault = jest.fn();
-    const wrapper = createWrapper({}, { saving: false, error: false, meta: {} });
+    const wrapper = createWrapper({ saving: false, error: false });
     const form = wrapper.find('form');
 
     form.simulate('submit', { preventDefault });
@@ -70,13 +71,13 @@ describe('<EditMetaModal />', () => {
 
   it.each([
     [ '.btn-link', 'onClick' ],
-    [ Modal, 'toggle' ],
-    [ ModalHeader, 'toggle' ],
+    [ 'Modal', 'toggle' ],
+    [ 'ModalHeader', 'toggle' ],
   ])('resets meta when modal is toggled in any way', (componentToFind, propToCall) => {
-    const wrapper = createWrapper({}, { saving: false, error: false, meta: {} });
+    const wrapper = createWrapper({ saving: false, error: false });
     const component = wrapper.find(componentToFind);
 
-    component.prop(propToCall)();
+    (component.prop(propToCall) as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
 
     expect(resetShortUrlMeta).toHaveBeenCalled();
   });

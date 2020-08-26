@@ -1,41 +1,46 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import moment from 'moment';
 import { isEmpty, pipe } from 'ramda';
-import { shortUrlType } from '../reducers/shortUrlsList';
-import { shortUrlEditMetaType } from '../reducers/shortUrlMeta';
+import { ShortUrlMetaEdition } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
 import { formatIsoDate } from '../../utils/helpers/date';
+import { ShortUrl, ShortUrlMeta } from '../data';
+import { Nullable, OptionalString } from '../../utils/utils';
 
-const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-  shortUrl: shortUrlType.isRequired,
-  shortUrlMeta: shortUrlEditMetaType,
-  editShortUrlMeta: PropTypes.func,
-  resetShortUrlMeta: PropTypes.func,
+export interface EditMetaModalProps {
+  shortUrl: ShortUrl;
+  isOpen: boolean;
+  toggle: () => void;
+}
+
+interface EditMetaModalConnectProps extends EditMetaModalProps {
+  shortUrlMeta: ShortUrlMetaEdition;
+  resetShortUrlMeta: () => void;
+  editShortUrlMeta: (shortCode: string, domain: OptionalString, meta: Nullable<ShortUrlMeta>) => Promise<void>;
+}
+
+const dateOrUndefined = (shortUrl: ShortUrl | undefined, dateName: 'validSince' | 'validUntil') => {
+  const date = shortUrl?.meta?.[dateName];
+
+  return date ? moment(date) : undefined;
 };
 
-const dateOrUndefined = (shortUrl, dateName) => {
-  const date = shortUrl && shortUrl.meta && shortUrl.meta[dateName];
-
-  return date && moment(date);
-};
-
-const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }) => {
+const EditMetaModal = (
+  { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }: EditMetaModalConnectProps,
+) => {
   const { saving, error } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
   const [ validSince, setValidSince ] = useState(dateOrUndefined(shortUrl, 'validSince'));
   const [ validUntil, setValidUntil ] = useState(dateOrUndefined(shortUrl, 'validUntil'));
-  const [ maxVisits, setMaxVisits ] = useState(shortUrl && shortUrl.meta && shortUrl.meta.maxVisits);
+  const [ maxVisits, setMaxVisits ] = useState(shortUrl?.meta?.maxVisits);
 
   const close = pipe(resetShortUrlMeta, toggle);
-  const doEdit = () => editShortUrlMeta(shortUrl.shortCode, shortUrl.domain, {
-    maxVisits: maxVisits && !isEmpty(maxVisits) ? parseInt(maxVisits) : null,
+  const doEdit = async () => editShortUrlMeta(shortUrl.shortCode, shortUrl.domain, {
+    maxVisits: maxVisits && !isEmpty(maxVisits) ? maxVisits : null,
     validSince: validSince && formatIsoDate(validSince),
     validUntil: validUntil && formatIsoDate(validUntil),
   }).then(close);
@@ -49,7 +54,7 @@ const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMet
           <p>If any of the params is not met, the URL will behave as if it was an invalid short URL.</p>
         </UncontrolledTooltip>
       </ModalHeader>
-      <form onSubmit={(e) => e.preventDefault() || doEdit()}>
+      <form onSubmit={pipe((e: SyntheticEvent) => e.preventDefault(), doEdit)}>
         <ModalBody>
           <FormGroup>
             <DateInput
@@ -57,7 +62,7 @@ const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMet
               selected={validSince}
               maxDate={validUntil}
               isClearable
-              onChange={setValidSince}
+              onChange={setValidSince as any}
             />
           </FormGroup>
           <FormGroup>
@@ -66,7 +71,7 @@ const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMet
               selected={validUntil}
               minDate={validSince}
               isClearable
-              onChange={setValidUntil}
+              onChange={setValidUntil as any}
             />
           </FormGroup>
           <FormGroup className="mb-0">
@@ -74,8 +79,8 @@ const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMet
               type="number"
               placeholder="Maximum number of visits allowed"
               min={1}
-              value={maxVisits || ''}
-              onChange={(e) => setMaxVisits(e.target.value)}
+              value={maxVisits ?? ''}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxVisits(Number(e.target.value))}
             />
           </FormGroup>
           {error && (
@@ -92,7 +97,5 @@ const EditMetaModal = ({ isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMet
     </Modal>
   );
 };
-
-EditMetaModal.propTypes = propTypes;
 
 export default EditMetaModal;

@@ -3,6 +3,7 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
+import { OptionalString } from '../../utils/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
@@ -28,7 +29,7 @@ export interface ShortUrlEdition {
 export interface ShortUrlEditedAction extends Action<string> {
   shortCode: string;
   longUrl: string;
-  domain: string | undefined | null;
+  domain: OptionalString;
 }
 
 const initialState: ShortUrlEdition = {
@@ -46,7 +47,7 @@ export default buildReducer<ShortUrlEdition, ShortUrlEditedAction>({
 
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   shortCode: string,
-  domain: string | undefined | null,
+  domain: OptionalString,
   longUrl: string,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_START });
