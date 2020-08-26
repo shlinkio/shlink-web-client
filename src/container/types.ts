@@ -4,19 +4,21 @@ import { SelectedServer } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
 import { ShortUrlMetaEdition } from '../short-urls/reducers/shortUrlMeta';
 import { ShortUrlCreation } from '../short-urls/reducers/shortUrlCreation';
-
-export type ConnectDecorator = (props: string[], actions?: string[]) => any;
+import { ShortUrlDeletion } from '../short-urls/reducers/shortUrlDeletion';
+import { ShortUrlEdition } from '../short-urls/reducers/shortUrlEdition';
+import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
+import { ShortUrlTags } from '../short-urls/reducers/shortUrlTags';
 
 export interface ShlinkState {
   servers: ServersMap;
   selectedServer: SelectedServer;
   shortUrlsList: any;
-  shortUrlsListParams: any;
+  shortUrlsListParams: ShortUrlsListParams;
   shortUrlCreationResult: ShortUrlCreation;
-  shortUrlDeletion: any;
-  shortUrlTags: any;
+  shortUrlDeletion: ShortUrlDeletion;
+  shortUrlTags: ShortUrlTags;
   shortUrlMeta: ShortUrlMetaEdition;
-  shortUrlEdition: any;
+  shortUrlEdition: ShortUrlEdition;
   shortUrlVisits: any;
   tagVisits: any;
   shortUrlDetail: any;
@@ -26,5 +28,7 @@ export interface ShlinkState {
   mercureInfo: MercureInfo;
   settings: Settings;
 }
+
+export type ConnectDecorator = (props: string[], actions?: string[]) => any;
 
 export type GetState = () => ShlinkState;

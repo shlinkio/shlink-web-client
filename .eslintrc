@@ -31,7 +31,8 @@
         "max-len": ["error", {
           "code": 120,
           "ignoreStrings": true,
-          "ignoreTemplateLiterals": true
+          "ignoreTemplateLiterals": true,
+          "ignoreComments": true
         }],
         "no-mixed-operators": "off",
         "comma-dangle": ["error", "always-multiline"],
@@ -65,7 +66,7 @@
           "code": 120,
           "ignoreStrings": true,
           "ignoreTemplateLiterals": true,
-          "ignoreTrailingComments": true
+          "ignoreComments": true
         }],
         "no-mixed-operators": "off",
         "react/display-name": "off"

@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   EDIT_SHORT_URL_TAGS_ERROR,
   EDIT_SHORT_URL_TAGS_START,
@@ -5,29 +6,37 @@ import reducer, {
   resetShortUrlsTags,
   SHORT_URL_TAGS_EDITED,
   editShortUrlTags,
+  EditShortUrlTagsAction,
 } from '../../../src/short-urls/reducers/shortUrlTags';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlTagsReducer', () => {
   const tags = [ 'foo', 'bar', 'baz' ];
   const shortCode = 'abc123';
 
   describe('reducer', () => {
+    const action = (type: string) => Mock.of<EditShortUrlTagsAction>({ type });
+
     it('returns loading on EDIT_SHORT_URL_TAGS_START', () => {
-      expect(reducer({}, { type: EDIT_SHORT_URL_TAGS_START })).toEqual({
+      expect(reducer(undefined, action(EDIT_SHORT_URL_TAGS_START))).toEqual({
+        tags: [],
+        shortCode: null,
         saving: true,
         error: false,
       });
     });
 
     it('returns error on EDIT_SHORT_URL_TAGS_ERROR', () => {
-      expect(reducer({}, { type: EDIT_SHORT_URL_TAGS_ERROR })).toEqual({
+      expect(reducer(undefined, action(EDIT_SHORT_URL_TAGS_ERROR))).toEqual({
+        tags: [],
+        shortCode: null,
         saving: false,
         error: true,
       });
     });
 
     it('returns provided tags and shortCode on SHORT_URL_TAGS_EDITED', () => {
-      expect(reducer({}, { type: SHORT_URL_TAGS_EDITED, tags, shortCode })).toEqual({
+      expect(reducer(undefined, { type: SHORT_URL_TAGS_EDITED, tags, shortCode, domain: null })).toEqual({
         tags,
         shortCode,
         saving: false,
@@ -36,7 +45,7 @@ describe('shortUrlTagsReducer', () => {
     });
 
     it('goes back to initial state on RESET_EDIT_SHORT_URL_TAGS', () => {
-      expect(reducer({}, { type: RESET_EDIT_SHORT_URL_TAGS })).toEqual({
+      expect(reducer(undefined, action(RESET_EDIT_SHORT_URL_TAGS))).toEqual({
         tags: [],
         shortCode: null,
         saving: false,
@@ -53,6 +62,7 @@ describe('shortUrlTagsReducer', () => {
     const updateShortUrlTags = jest.fn();
     const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags });
     const dispatch = jest.fn();
+    const getState = () => Mock.all<ShlinkState>();
 
     afterEach(jest.clearAllMocks);
 
@@ -61,7 +71,7 @@ describe('shortUrlTagsReducer', () => {
 
       updateShortUrlTags.mockResolvedValue(normalizedTags);
 
-      await editShortUrlTags(buildShlinkApiClient)(shortCode, domain, tags)(dispatch);
+      await editShortUrlTags(buildShlinkApiClient)(shortCode, domain, tags)(dispatch, getState);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledTimes(1);
@@ -80,7 +90,7 @@ describe('shortUrlTagsReducer', () => {
       updateShortUrlTags.mockRejectedValue(error);
 
       try {
-        await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(dispatch);
+        await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(dispatch, getState);
       } catch (e) {
         expect(e).toBe(error);
       }

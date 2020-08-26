@@ -30,7 +30,6 @@ const initialState = {
   error: false,
 };
 
-// TODO Make all actions fetch shortCode, domain and prop from payload
 const setPropFromActionOnMatchingShortUrl = (prop) => (state, { shortCode, domain, [prop]: propValue }) => assocPath(
   [ 'shortUrls', 'data' ],
   state.shortUrls.data.map(

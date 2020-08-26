@@ -1,5 +1,8 @@
-import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
+import { Action, Dispatch } from 'redux';
+import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { ShlinkApiClientBuilder } from '../../utils/services/types';
+import { GetState } from '../../container/types';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -8,6 +11,7 @@ export const SHORT_URL_TAGS_EDITED = 'shlink/shortUrlTags/SHORT_URL_TAGS_EDITED'
 export const RESET_EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/RESET_EDIT_SHORT_URL_TAGS';
 /* eslint-enable padding-line-between-statements */
 
+/** @deprecated Use ShortUrlTags interface */
 export const shortUrlTagsType = PropTypes.shape({
   shortCode: PropTypes.string,
   tags: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -15,28 +19,45 @@ export const shortUrlTagsType = PropTypes.shape({
   error: PropTypes.bool.isRequired,
 });
 
-const initialState = {
+export interface ShortUrlTags {
+  shortCode: string | null;
+  tags: string[];
+  saving: boolean;
+  error: boolean;
+}
+
+export interface EditShortUrlTagsAction extends Action<string> {
+  shortCode: string;
+  tags: string[];
+  domain: string | null | undefined;
+}
+
+const initialState: ShortUrlTags = {
   shortCode: null,
   tags: [],
   saving: false,
   error: false,
 };
 
-export default handleActions({
+export default buildReducer<ShortUrlTags, EditShortUrlTagsAction>({
   [EDIT_SHORT_URL_TAGS_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_TAGS_ERROR]: (state) => ({ ...state, saving: false, error: true }),
-  [SHORT_URL_TAGS_EDITED]: (state, { shortCode, tags }) => ({ shortCode, tags, saving: false, error: false }),
+  [SHORT_URL_TAGS_EDITED]: (_, { shortCode, tags }) => ({ shortCode, tags, saving: false, error: false }),
   [RESET_EDIT_SHORT_URL_TAGS]: () => initialState,
 }, initialState);
 
-export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, domain, tags) => async (dispatch, getState) => {
+export const editShortUrlTags = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
+  shortCode: string,
+  domain: string | null | undefined,
+  tags: string[],
+) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
   const { updateShortUrlTags } = buildShlinkApiClient(getState);
 
   try {
     const normalizedTags = await updateShortUrlTags(shortCode, domain, tags);
 
-    dispatch({ tags: normalizedTags, shortCode, domain, type: SHORT_URL_TAGS_EDITED });
+    dispatch<EditShortUrlTagsAction>({ tags: normalizedTags, shortCode, domain, type: SHORT_URL_TAGS_EDITED });
   } catch (e) {
     dispatch({ type: EDIT_SHORT_URL_TAGS_ERROR });
 
@@ -44,4 +65,4 @@ export const editShortUrlTags = (buildShlinkApiClient) => (shortCode, domain, ta
   }
 };
 
-export const resetShortUrlsTags = createAction(RESET_EDIT_SHORT_URL_TAGS);
+export const resetShortUrlsTags = buildActionCreator(RESET_EDIT_SHORT_URL_TAGS);

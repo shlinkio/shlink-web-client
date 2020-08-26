@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   DELETE_SHORT_URL_ERROR,
   DELETE_SHORT_URL_START,
@@ -6,15 +7,17 @@ import reducer, {
   resetDeleteShortUrl,
   deleteShortUrl,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { ProblemDetailsError } from '../../../src/utils/services/types';
 
 describe('shortUrlDeletionReducer', () => {
   describe('reducer', () => {
+
+
     it('returns loading on DELETE_SHORT_URL_START', () =>
       expect(reducer(undefined, { type: DELETE_SHORT_URL_START })).toEqual({
         shortCode: '',
         loading: true,
         error: false,
-        errorData: {},
       }));
 
     it('returns default on RESET_DELETE_SHORT_URL', () =>
@@ -22,7 +25,6 @@ describe('shortUrlDeletionReducer', () => {
         shortCode: '',
         loading: false,
         error: false,
-        errorData: {},
       }));
 
     it('returns shortCode on SHORT_URL_DELETED', () =>
@@ -30,11 +32,10 @@ describe('shortUrlDeletionReducer', () => {
         shortCode: 'foo',
         loading: false,
         error: false,
-        errorData: {},
       }));
 
     it('returns errorData on DELETE_SHORT_URL_ERROR', () => {
-      const errorData = { foo: 'bar' };
+      const errorData = Mock.of<ProblemDetailsError>({ type: 'bar' });
 
       expect(reducer(undefined, { type: DELETE_SHORT_URL_ERROR, errorData })).toEqual({
         shortCode: '',

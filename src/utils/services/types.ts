@@ -14,3 +14,12 @@ export interface ShlinkHealth {
   status: 'pass' | 'fail';
   version: string;
 }
+
+export interface ProblemDetailsError {
+  type: string;
+  detail: string;
+  title: string;
+  status: number;
+  error?: string; // Deprecated
+  message?: string; // Deprecated
+}

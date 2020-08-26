@@ -22,7 +22,7 @@ const DeleteShortUrlModal = ({ shortUrl, toggle, isOpen, shortUrlDeletion, reset
   useEffect(() => resetDeleteShortUrl, []);
 
   const { error, errorData } = shortUrlDeletion;
-  const errorCode = error && (errorData.type || errorData.error);
+  const errorCode = error && errorData && (errorData.type || errorData.error);
   const hasThresholdError = errorCode === THRESHOLD_REACHED;
   const hasErrorOtherThanThreshold = error && errorCode !== THRESHOLD_REACHED;
   const close = pipe(resetDeleteShortUrl, toggle);

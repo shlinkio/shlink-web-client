@@ -1,9 +1,12 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   EDIT_SHORT_URL_START,
   EDIT_SHORT_URL_ERROR,
   SHORT_URL_EDITED,
   editShortUrl,
+  ShortUrlEditedAction,
 } from '../../../src/short-urls/reducers/shortUrlEdition';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
@@ -11,21 +14,25 @@ describe('shortUrlEditionReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on EDIT_SHORT_URL_START', () => {
-      expect(reducer({}, { type: EDIT_SHORT_URL_START })).toEqual({
+      expect(reducer(undefined, Mock.of<ShortUrlEditedAction>({ type: EDIT_SHORT_URL_START }))).toEqual({
+        longUrl: null,
+        shortCode: null,
         saving: true,
         error: false,
       });
     });
 
     it('returns error on EDIT_SHORT_URL_ERROR', () => {
-      expect(reducer({}, { type: EDIT_SHORT_URL_ERROR })).toEqual({
+      expect(reducer(undefined, Mock.of<ShortUrlEditedAction>({ type: EDIT_SHORT_URL_ERROR }))).toEqual({
+        longUrl: null,
+        shortCode: null,
         saving: false,
         error: true,
       });
     });
 
     it('returns provided tags and shortCode on SHORT_URL_EDITED', () => {
-      expect(reducer({}, { type: SHORT_URL_EDITED, longUrl, shortCode })).toEqual({
+      expect(reducer(undefined, { type: SHORT_URL_EDITED, longUrl, shortCode, domain: null })).toEqual({
         longUrl,
         shortCode,
         saving: false,
@@ -38,11 +45,12 @@ describe('shortUrlEditionReducer', () => {
     const updateShortUrlMeta = jest.fn().mockResolvedValue({});
     const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlMeta });
     const dispatch = jest.fn();
+    const getState = () => Mock.of<ShlinkState>();
 
     afterEach(jest.clearAllMocks);
 
     it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches long URL on success', async (domain) => {
-      await editShortUrl(buildShlinkApiClient)(shortCode, domain, longUrl)(dispatch);
+      await editShortUrl(buildShlinkApiClient)(shortCode, domain, longUrl)(dispatch, getState);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
@@ -58,7 +66,7 @@ describe('shortUrlEditionReducer', () => {
       updateShortUrlMeta.mockRejectedValue(error);
 
       try {
-        await editShortUrl(buildShlinkApiClient)(shortCode, undefined, longUrl)(dispatch);
+        await editShortUrl(buildShlinkApiClient)(shortCode, undefined, longUrl)(dispatch, getState);
       } catch (e) {
         expect(e).toBe(error);
       }
