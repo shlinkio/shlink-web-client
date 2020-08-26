@@ -22,4 +22,5 @@ export interface ProblemDetailsError {
   status: number;
   error?: string; // Deprecated
   message?: string; // Deprecated
+  [extraProps: string]: any;
 }

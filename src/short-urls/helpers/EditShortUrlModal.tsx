@@ -1,32 +1,28 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
-import { shortUrlType } from '../reducers/shortUrlsList';
-import { ShortUrlEditionType } from '../reducers/shortUrlEdition';
-import { hasValue } from '../../utils/utils';
+import { ShortUrlEdition } from '../reducers/shortUrlEdition';
+import { handleEventPreventingDefault, hasValue, OptionalString } from '../../utils/utils';
+import { ShortUrlModalProps } from '../data';
 
-const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  toggle: PropTypes.func.isRequired,
-  shortUrl: shortUrlType.isRequired,
-  shortUrlEdition: ShortUrlEditionType,
-  editShortUrl: PropTypes.func,
-};
+interface EditShortUrlModalProps extends ShortUrlModalProps {
+  shortUrlEdition: ShortUrlEdition;
+  editShortUrl: (shortUrl: string, domain: OptionalString, longUrl: string) => Promise<void>;
+}
 
-const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl }) => {
+const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl }: EditShortUrlModalProps) => {
   const { saving, error } = shortUrlEdition;
-  const url = shortUrl && (shortUrl.shortUrl || '');
+  const url = shortUrl?.shortUrl ?? '';
   const [ longUrl, setLongUrl ] = useState(shortUrl.longUrl);
 
-  const doEdit = () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
+  const doEdit = async () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}>
         Edit long URL for <ExternalLink href={url} />
       </ModalHeader>
-      <form onSubmit={(e) => e.preventDefault() || doEdit()}>
+      <form onSubmit={handleEventPreventingDefault(doEdit)}>
         <ModalBody>
           <FormGroup className="mb-0">
             <Input
@@ -51,7 +47,5 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
     </Modal>
   );
 };
-
-EditShortUrlModal.propTypes = propTypes;
 
 export default EditShortUrlModal;

@@ -1,35 +1,37 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
+import { Mock } from 'ts-mockery';
 import DeleteShortUrlModal from '../../../src/short-urls/helpers/DeleteShortUrlModal';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { ProblemDetailsError } from '../../../src/utils/services/types';
 
 describe('<DeleteShortUrlModal />', () => {
-  let wrapper;
-  const shortUrl = {
+  let wrapper: ShallowWrapper;
+  const shortUrl = Mock.of<ShortUrl>({
     tags: [],
     shortCode: 'abc123',
-    originalUrl: 'https://long-domain.com/foo/bar',
-  };
-  const deleteShortUrl = jest.fn(() => Promise.resolve());
-  const createWrapper = (shortUrlDeletion) => {
+    longUrl: 'https://long-domain.com/foo/bar',
+  });
+  const deleteShortUrl = jest.fn(async () => Promise.resolve());
+  const createWrapper = (shortUrlDeletion: Partial<ShortUrlDeletion>) => {
     wrapper = shallow(
       <DeleteShortUrlModal
         isOpen
         shortUrl={shortUrl}
-        shortUrlDeletion={shortUrlDeletion}
-        toggle={identity}
+        shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
+        toggle={() => {}}
         deleteShortUrl={deleteShortUrl}
-        resetDeleteShortUrl={identity}
+        resetDeleteShortUrl={() => {}}
       />,
     );
 
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    deleteShortUrl.mockClear();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it.each([
     [
@@ -48,12 +50,12 @@ describe('<DeleteShortUrlModal />', () => {
       { type: 'INVALID_SHORTCODE_DELETION', threshold: 8 },
       'This short URL has received more than 8 visits, and therefore, it cannot be deleted.',
     ],
-  ])('shows threshold error message when threshold error occurs', (errorData, expectedMessage) => {
+  ])('shows threshold error message when threshold error occurs', (errorData: Partial<ProblemDetailsError>, expectedMessage) => {
     const wrapper = createWrapper({
       loading: false,
       error: true,
       shortCode: 'abc123',
-      errorData,
+      errorData: Mock.of<ProblemDetailsError>(errorData),
     });
     const warning = wrapper.find('.bg-warning');
 
@@ -66,7 +68,7 @@ describe('<DeleteShortUrlModal />', () => {
       loading: false,
       error: true,
       shortCode: 'abc123',
-      errorData: { error: 'OTHER_ERROR' },
+      errorData: Mock.of<ProblemDetailsError>({ error: 'OTHER_ERROR' }),
     });
     const error = wrapper.find('.bg-danger');
 
@@ -79,7 +81,6 @@ describe('<DeleteShortUrlModal />', () => {
       loading: true,
       error: false,
       shortCode: 'abc123',
-      errorData: {},
     });
     const submit = wrapper.find('.btn-danger');
 
@@ -94,7 +95,6 @@ describe('<DeleteShortUrlModal />', () => {
       loading: false,
       error: false,
       shortCode,
-      errorData: {},
     });
     const input = wrapper.find('.form-control');
 
@@ -113,7 +113,6 @@ describe('<DeleteShortUrlModal />', () => {
       loading: false,
       error: false,
       shortCode,
-      errorData: {},
     });
     const input = wrapper.find('.form-control');
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
@@ -8,16 +8,10 @@ import { isEmpty, pipe } from 'ramda';
 import { ShortUrlMetaEdition } from '../reducers/shortUrlMeta';
 import DateInput from '../../utils/DateInput';
 import { formatIsoDate } from '../../utils/helpers/date';
-import { ShortUrl, ShortUrlMeta } from '../data';
-import { Nullable, OptionalString } from '../../utils/utils';
+import { ShortUrl, ShortUrlMeta, ShortUrlModalProps } from '../data';
+import { handleEventPreventingDefault, Nullable, OptionalString } from '../../utils/utils';
 
-export interface EditMetaModalProps {
-  shortUrl: ShortUrl;
-  isOpen: boolean;
-  toggle: () => void;
-}
-
-interface EditMetaModalConnectProps extends EditMetaModalProps {
+interface EditMetaModalConnectProps extends ShortUrlModalProps {
   shortUrlMeta: ShortUrlMetaEdition;
   resetShortUrlMeta: () => void;
   editShortUrlMeta: (shortCode: string, domain: OptionalString, meta: Nullable<ShortUrlMeta>) => Promise<void>;
@@ -54,7 +48,7 @@ const EditMetaModal = (
           <p>If any of the params is not met, the URL will behave as if it was an invalid short URL.</p>
         </UncontrolledTooltip>
       </ModalHeader>
-      <form onSubmit={pipe((e: SyntheticEvent) => e.preventDefault(), doEdit)}>
+      <form onSubmit={handleEventPreventingDefault(doEdit)}>
         <ModalBody>
           <FormGroup>
             <DateInput

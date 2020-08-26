@@ -8,7 +8,7 @@ import DateInput from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
 import { serverType } from '../servers/prop-types';
 import { versionMatch } from '../utils/helpers/version';
-import { hasValue } from '../utils/utils';
+import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import { useToggle } from '../utils/helpers/hooks';
 import { createShortUrlResultType } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
@@ -42,9 +42,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) =>
 
     const changeTags = (tags) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
     const reset = () => setShortUrlCreation(initialState);
-    const save = (e) => {
-      e.preventDefault();
-
+    const save = handleEventPreventingDefault(() => {
       const shortUrlData = {
         ...shortUrlCreation,
         validSince: formatDate(shortUrlCreation.validSince),
@@ -52,7 +50,7 @@ const CreateShortUrl = (TagsSelector, CreateShortUrlResult, ForServerVersion) =>
       };
 
       createShortUrl(shortUrlData).then(reset).catch(() => {});
-    };
+    });
     const renderOptionalInput = (id, placeholder, type = 'text', props = {}) => (
       <FormGroup>
         <Input

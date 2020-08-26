@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
-import { apiErrorType } from '../../utils/services/ShlinkApiClient';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ProblemDetailsError, ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
@@ -11,14 +9,6 @@ export const DELETE_SHORT_URL_ERROR = 'shlink/deleteShortUrl/DELETE_SHORT_URL_ER
 export const SHORT_URL_DELETED = 'shlink/deleteShortUrl/SHORT_URL_DELETED';
 export const RESET_DELETE_SHORT_URL = 'shlink/deleteShortUrl/RESET_DELETE_SHORT_URL';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlDeletion interface */
-export const shortUrlDeletionType = PropTypes.shape({
-  shortCode: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-  errorData: apiErrorType.isRequired,
-});
 
 export interface ShortUrlDeletion {
   shortCode: string;

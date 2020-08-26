@@ -1,15 +1,5 @@
 import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
-import PropTypes from 'prop-types';
-
-export const apiErrorType = PropTypes.shape({
-  type: PropTypes.string,
-  detail: PropTypes.string,
-  title: PropTypes.string,
-  status: PropTypes.number,
-  error: PropTypes.string, // Deprecated
-  message: PropTypes.string, // Deprecated
-});
 
 const buildShlinkBaseUrl = (url, apiVersion) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);

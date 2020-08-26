@@ -27,3 +27,9 @@ export interface ShortUrlMeta {
   validUntil?: string;
   maxVisits?: number;
 }
+
+export interface ShortUrlModalProps {
+  shortUrl: ShortUrl;
+  isOpen: boolean;
+  toggle: () => void;
+}

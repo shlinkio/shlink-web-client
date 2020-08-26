@@ -1,18 +1,21 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { FormGroup, Modal, ModalHeader } from 'reactstrap';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { FormGroup } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import EditShortUrlModal from '../../../src/short-urls/helpers/EditShortUrlModal';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrlEdition } from '../../../src/short-urls/reducers/shortUrlEdition';
 
 describe('<EditShortUrlModal />', () => {
-  let wrapper;
-  const editShortUrl = jest.fn(() => Promise.resolve());
+  let wrapper: ShallowWrapper;
+  const editShortUrl = jest.fn(async () => Promise.resolve());
   const toggle = jest.fn();
-  const createWrapper = (shortUrl, shortUrlEdition) => {
+  const createWrapper = (shortUrl: Partial<ShortUrl>, shortUrlEdition: Partial<ShortUrlEdition>) => {
     wrapper = shallow(
       <EditShortUrlModal
         isOpen={true}
-        shortUrl={shortUrl}
-        shortUrlEdition={shortUrlEdition}
+        shortUrl={Mock.of<ShortUrl>(shortUrl)}
+        shortUrlEdition={Mock.of<ShortUrlEdition>(shortUrlEdition)}
         toggle={toggle}
         editShortUrl={editShortUrl}
       />,
@@ -21,10 +24,8 @@ describe('<EditShortUrlModal />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    jest.clearAllMocks();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it.each([
     [ false, 0 ],
@@ -66,13 +67,13 @@ describe('<EditShortUrlModal />', () => {
 
   it.each([
     [ '[color="link"]', 'onClick' ],
-    [ Modal, 'toggle' ],
-    [ ModalHeader, 'toggle' ],
+    [ 'Modal', 'toggle' ],
+    [ 'ModalHeader', 'toggle' ],
   ])('toggles modal with different mechanisms', (componentToFind, propToCall) => {
     const wrapper = createWrapper({}, { saving: false, error: false });
     const component = wrapper.find(componentToFind);
 
-    component.prop(propToCall)();
+    (component.prop(propToCall) as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
 
     expect(toggle).toHaveBeenCalled();
   });

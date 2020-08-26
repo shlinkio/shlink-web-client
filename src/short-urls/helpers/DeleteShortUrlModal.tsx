@@ -1,40 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { identity, pipe } from 'ramda';
-import { shortUrlType } from '../reducers/shortUrlsList';
-import { shortUrlDeletionType } from '../reducers/shortUrlDeletion';
+import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
+import { ShortUrlModalProps } from '../data';
+import { handleEventPreventingDefault, OptionalString } from '../../utils/utils';
 
 const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
 
-const propTypes = {
-  shortUrl: shortUrlType,
-  toggle: PropTypes.func,
-  isOpen: PropTypes.bool,
-  shortUrlDeletion: shortUrlDeletionType,
-  deleteShortUrl: PropTypes.func,
-  resetDeleteShortUrl: PropTypes.func,
-};
+interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
+  shortUrlDeletion: ShortUrlDeletion;
+  deleteShortUrl: (shortCode: string, domain: OptionalString) => Promise<void>;
+  resetDeleteShortUrl: () => void;
+}
 
-const DeleteShortUrlModal = ({ shortUrl, toggle, isOpen, shortUrlDeletion, resetDeleteShortUrl, deleteShortUrl }) => {
+const DeleteShortUrlModal = (
+  { shortUrl, toggle, isOpen, shortUrlDeletion, resetDeleteShortUrl, deleteShortUrl }: DeleteShortUrlModalConnectProps,
+) => {
   const [ inputValue, setInputValue ] = useState('');
 
   useEffect(() => resetDeleteShortUrl, []);
 
   const { error, errorData } = shortUrlDeletion;
-  const errorCode = error && errorData && (errorData.type || errorData.error);
+  const errorCode = error && (errorData?.type || errorData?.error);
   const hasThresholdError = errorCode === THRESHOLD_REACHED;
   const hasErrorOtherThanThreshold = error && errorCode !== THRESHOLD_REACHED;
   const close = pipe(resetDeleteShortUrl, toggle);
-  const handleDeleteUrl = (e) => {
-    e.preventDefault();
-
+  const handleDeleteUrl = handleEventPreventingDefault(() => {
     const { shortCode, domain } = shortUrl;
 
     deleteShortUrl(shortCode, domain)
       .then(toggle)
       .catch(identity);
-  };
+  });
 
   return (
     <Modal isOpen={isOpen} toggle={close} centered>
@@ -56,8 +53,8 @@ const DeleteShortUrlModal = ({ shortUrl, toggle, isOpen, shortUrlDeletion, reset
 
           {hasThresholdError && (
             <div className="p-2 mt-2 bg-warning text-center">
-              {errorData.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
-              {!errorData.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
+              {errorData?.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
+              {!errorData?.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
             </div>
           )}
           {hasErrorOtherThanThreshold && (
@@ -80,7 +77,5 @@ const DeleteShortUrlModal = ({ shortUrl, toggle, isOpen, shortUrlDeletion, reset
     </Modal>
   );
 };
-
-DeleteShortUrlModal.propTypes = propTypes;
 
 export default DeleteShortUrlModal;

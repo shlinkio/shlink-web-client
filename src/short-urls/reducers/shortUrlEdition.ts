@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
@@ -10,14 +9,6 @@ export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START
 export const EDIT_SHORT_URL_ERROR = 'shlink/shortUrlEdition/EDIT_SHORT_URL_ERROR';
 export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlEdition interface instead */
-export const ShortUrlEditionType = PropTypes.shape({
-  shortCode: PropTypes.string,
-  longUrl: PropTypes.string,
-  saving: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-});
 
 export interface ShortUrlEdition {
   shortCode: string | null;

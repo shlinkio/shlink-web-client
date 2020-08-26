@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { HorizontalFormGroup } from '../../utils/HorizontalFormGroup';
+import { handleEventPreventingDefault } from '../../utils/utils';
 
 const propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -16,10 +17,7 @@ export const ServerForm = ({ onSubmit, initialValues, children }) => {
   const [ name, setName ] = useState('');
   const [ url, setUrl ] = useState('');
   const [ apiKey, setApiKey ] = useState('');
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit({ name, url, apiKey });
-  };
+  const handleSubmit = handleEventPreventingDefault(() => onSubmit({ name, url, apiKey }));
 
   useEffect(() => {
     initialValues && setName(initialValues.name);

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import './EditTagModal.scss';
 import { useToggle } from '../../utils/helpers/hooks';
+import { handleEventPreventingDefault } from '../../utils/utils';
 
 const propTypes = {
   tag: PropTypes.string,
@@ -24,14 +25,10 @@ const EditTagModal = ({ getColorForKey }) => {
     const [ newTagName, setNewTagName ] = useState(tag);
     const [ color, setColor ] = useState(getColorForKey(tag));
     const [ showColorPicker, toggleColorPicker ] = useToggle();
-    const saveTag = (e) => {
-      e.preventDefault();
-
-      editTag(tag, newTagName, color)
-        .then(() => tagEdited(tag, newTagName, color))
-        .then(toggle)
-        .catch(() => {});
-    };
+    const saveTag = handleEventPreventingDefault(() => editTag(tag, newTagName, color)
+      .then(() => tagEdited(tag, newTagName, color))
+      .then(toggle)
+      .catch(() => {}));
 
     return (
       <Modal isOpen={isOpen} toggle={toggle} centered>
