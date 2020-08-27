@@ -14,6 +14,7 @@ export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements */
 
+/** @deprecated Use ShortUrl interface instead */
 export const shortUrlType = PropTypes.shape({
   shortCode: PropTypes.string,
   shortUrl: PropTypes.string,
