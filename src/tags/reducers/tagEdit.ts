@@ -2,8 +2,8 @@ import { pick } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
-import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import ColorGenerator from '../../utils/services/ColorGenerator';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';

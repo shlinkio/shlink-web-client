@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
-import { ShlinkApiClientBuilder } from '../../utils/services/types';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';

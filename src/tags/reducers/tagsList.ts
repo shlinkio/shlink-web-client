@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder, ShlinkTags } from '../../utils/services/types';
+import { ShlinkTags } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrlIdentifier } from '../data';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';

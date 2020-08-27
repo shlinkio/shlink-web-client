@@ -4,7 +4,7 @@ export interface ServerData {
   apiKey: string;
 }
 
-export interface ServerWithId {
+export interface ServerWithId extends ServerData {
   id: string;
 }
 
@@ -24,3 +24,6 @@ export interface NotFoundServer {
 export type RegularServer = ReachableServer | NonReachableServer;
 
 export type SelectedServer = RegularServer | NotFoundServer | null;
+
+export const hasServerData = (server: ServerData | NotFoundServer | null): server is ServerData =>
+  !!(server as ServerData)?.url && !!(server as ServerData)?.apiKey;

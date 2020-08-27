@@ -1,18 +1,25 @@
+import { Mock } from 'ts-mockery';
+import { AxiosInstance } from 'axios';
 import buildShlinkApiClient from '../../../src/utils/services/ShlinkApiClientBuilder';
+import { ReachableServer, SelectedServer } from '../../../src/servers/data';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('ShlinkApiClientBuilder', () => {
-  const createBuilder = () => {
-    const builder = buildShlinkApiClient({});
+  const axiosMock = Mock.all<AxiosInstance>();
+  const server = (data: Partial<ReachableServer>) => Mock.of<ReachableServer>(data);
 
-    return (selectedServer) => builder(() => ({ selectedServer }));
+  const createBuilder = () => {
+    const builder = buildShlinkApiClient(axiosMock);
+
+    return (selectedServer: SelectedServer) => builder(() => Mock.of<ShlinkState>({ selectedServer }));
   };
 
   it('creates new instances when provided params are different', async () => {
     const builder = createBuilder();
     const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
-      builder({ url: 'foo', apiKey: 'bar' }),
-      builder({ url: 'bar', apiKey: 'bar' }),
-      builder({ url: 'bar', apiKey: 'foo' }),
+      builder(server({ url: 'foo', apiKey: 'bar' })),
+      builder(server({ url: 'bar', apiKey: 'bar' })),
+      builder(server({ url: 'bar', apiKey: 'foo' })),
     ]);
 
     expect(firstApiClient).not.toBe(secondApiClient);
@@ -22,7 +29,7 @@ describe('ShlinkApiClientBuilder', () => {
 
   it('returns existing instances when provided params are the same', async () => {
     const builder = createBuilder();
-    const selectedServer = { url: 'foo', apiKey: 'bar' };
+    const selectedServer = server({ url: 'foo', apiKey: 'bar' });
     const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
       builder(selectedServer),
       builder(selectedServer),
@@ -37,7 +44,7 @@ describe('ShlinkApiClientBuilder', () => {
   it('does not fetch from state when provided param is already selected server', () => {
     const url = 'url';
     const apiKey = 'apiKey';
-    const apiClient = buildShlinkApiClient({})({ url, apiKey });
+    const apiClient = buildShlinkApiClient(axiosMock)(server({ url, apiKey }));
 
     expect(apiClient._baseUrl).toEqual(url);
     expect(apiClient._apiKey).toEqual(apiKey);

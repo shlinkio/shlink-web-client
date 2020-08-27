@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShortUrl, ShortUrlData } from '../data';
 import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
