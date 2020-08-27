@@ -15,6 +15,17 @@ export interface ShlinkHealth {
   version: string;
 }
 
+interface ShlinkTagsStats {
+  tag: string;
+  shortUrlsCount: number;
+  visitsCount: number;
+}
+
+export interface ShlinkTags {
+  tags: string[];
+  stats?: ShlinkTagsStats[];
+}
+
 export interface ProblemDetailsError {
   type: string;
   detail: string;

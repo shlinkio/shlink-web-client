@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   DELETE_TAG_START,
   DELETE_TAG_ERROR,
@@ -6,25 +7,27 @@ import reducer, {
   tagDeleted,
   deleteTag,
 } from '../../../src/tags/reducers/tagDelete';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('tagDeleteReducer', () => {
   describe('reducer', () => {
     it('returns loading on DELETE_TAG_START', () => {
-      expect(reducer({}, { type: DELETE_TAG_START })).toEqual({
+      expect(reducer(undefined, { type: DELETE_TAG_START })).toEqual({
         deleting: true,
         error: false,
       });
     });
 
     it('returns error on DELETE_TAG_ERROR', () => {
-      expect(reducer({}, { type: DELETE_TAG_ERROR })).toEqual({
+      expect(reducer(undefined, { type: DELETE_TAG_ERROR })).toEqual({
         deleting: false,
         error: true,
       });
     });
 
     it('returns tag names on DELETE_TAG', () => {
-      expect(reducer({}, { type: DELETE_TAG })).toEqual({
+      expect(reducer(undefined, { type: DELETE_TAG })).toEqual({
         deleting: false,
         error: false,
       });
@@ -40,11 +43,11 @@ describe('tagDeleteReducer', () => {
   });
 
   describe('deleteTag', () => {
-    const createApiClientMock = (result) => ({
-      deleteTags: jest.fn(() => result),
+    const createApiClientMock = (result: Promise<void>) => Mock.of<ShlinkApiClient>({
+      deleteTags: jest.fn(async () => result),
     });
     const dispatch = jest.fn();
-    const getState = () => ({});
+    const getState = () => Mock.all<ShlinkState>();
 
     afterEach(() => dispatch.mockReset());
 

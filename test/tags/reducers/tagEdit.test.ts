@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   EDIT_TAG_START,
   EDIT_TAG_ERROR,
@@ -5,26 +6,38 @@ import reducer, {
   TAG_EDITED,
   tagEdited,
   editTag,
+  EditTagAction,
 } from '../../../src/tags/reducers/tagEdit';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('tagEditReducer', () => {
+  const oldName = 'foo';
+  const newName = 'bar';
+  const color = '#ff0000';
+
   describe('reducer', () => {
     it('returns loading on EDIT_TAG_START', () => {
-      expect(reducer({}, { type: EDIT_TAG_START })).toEqual({
+      expect(reducer(undefined, Mock.of<EditTagAction>({ type: EDIT_TAG_START }))).toEqual({
         editing: true,
         error: false,
+        oldName: '',
+        newName: '',
       });
     });
 
     it('returns error on EDIT_TAG_ERROR', () => {
-      expect(reducer({}, { type: EDIT_TAG_ERROR })).toEqual({
+      expect(reducer(undefined, Mock.of<EditTagAction>({ type: EDIT_TAG_ERROR }))).toEqual({
         editing: false,
         error: true,
+        oldName: '',
+        newName: '',
       });
     });
 
     it('returns tag names on EDIT_TAG', () => {
-      expect(reducer({}, { type: EDIT_TAG, oldName: 'foo', newName: 'bar' })).toEqual({
+      expect(reducer(undefined, { type: EDIT_TAG, oldName, newName, color })).toEqual({
         editing: false,
         error: false,
         oldName: 'foo',
@@ -44,24 +57,18 @@ describe('tagEditReducer', () => {
   });
 
   describe('editTag', () => {
-    const createApiClientMock = (result) => ({
-      editTag: jest.fn(() => result),
+    const createApiClientMock = (result: Promise<void>) => Mock.of<ShlinkApiClient>({
+      editTag: jest.fn(async () => result),
     });
-    const colorGenerator = {
+    const colorGenerator = Mock.of<ColorGenerator>({
       setColorForKey: jest.fn(),
-    };
-    const dispatch = jest.fn();
-    const getState = () => ({});
-
-    afterEach(() => {
-      colorGenerator.setColorForKey.mockReset();
-      dispatch.mockReset();
     });
+    const dispatch = jest.fn();
+    const getState = () => Mock.of<ShlinkState>();
+
+    afterEach(jest.clearAllMocks);
 
     it('calls API on success', async () => {
-      const oldName = 'foo';
-      const newName = 'bar';
-      const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.resolve());
       const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
 
@@ -80,9 +87,6 @@ describe('tagEditReducer', () => {
 
     it('throws on error', async () => {
       const error = 'Error';
-      const oldName = 'foo';
-      const newName = 'bar';
-      const color = '#ff0000';
       const apiClientMock = createApiClientMock(Promise.reject(error));
       const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
 

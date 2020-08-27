@@ -69,7 +69,8 @@
           "ignoreComments": true
         }],
         "no-mixed-operators": "off",
-        "react/display-name": "off"
+        "react/display-name": "off",
+        "@typescript-eslint/require-array-sort-compare": "off"
       }
     }
   ]

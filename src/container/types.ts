@@ -9,6 +9,9 @@ import { ShortUrlEdition } from '../short-urls/reducers/shortUrlEdition';
 import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
 import { ShortUrlTags } from '../short-urls/reducers/shortUrlTags';
 import { ShortUrlsList } from '../short-urls/reducers/shortUrlsList';
+import { TagDeletion } from '../tags/reducers/tagDelete';
+import { TagEdition } from '../tags/reducers/tagEdit';
+import { TagsList } from '../tags/reducers/tagsList';
 
 export interface ShlinkState {
   servers: ServersMap;
@@ -23,9 +26,9 @@ export interface ShlinkState {
   shortUrlVisits: any;
   tagVisits: any;
   shortUrlDetail: any;
-  tagsList: any;
-  tagDelete: any;
-  tagEdit: any;
+  tagsList: TagsList;
+  tagDelete: TagDeletion;
+  tagEdit: TagEdition;
   mercureInfo: MercureInfo;
   settings: Settings;
 }
