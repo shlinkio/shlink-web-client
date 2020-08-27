@@ -8,11 +8,12 @@ import { ShortUrlDeletion } from '../short-urls/reducers/shortUrlDeletion';
 import { ShortUrlEdition } from '../short-urls/reducers/shortUrlEdition';
 import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
 import { ShortUrlTags } from '../short-urls/reducers/shortUrlTags';
+import { ShortUrlsList } from '../short-urls/reducers/shortUrlsList';
 
 export interface ShlinkState {
   servers: ServersMap;
   selectedServer: SelectedServer;
-  shortUrlsList: any;
+  shortUrlsList: ShortUrlsList;
   shortUrlsListParams: ShortUrlsListParams;
   shortUrlCreationResult: ShortUrlCreation;
   shortUrlDeletion: ShortUrlDeletion;

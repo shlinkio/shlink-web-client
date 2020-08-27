@@ -4,6 +4,7 @@ import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
+import { ShortUrlIdentifier } from '../data';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -27,10 +28,8 @@ export interface ShortUrlTags {
   error: boolean;
 }
 
-export interface EditShortUrlTagsAction extends Action<string> {
-  shortCode: string;
+export interface EditShortUrlTagsAction extends Action<string>, ShortUrlIdentifier {
   tags: string[];
-  domain: OptionalString;
 }
 
 const initialState: ShortUrlTags = {

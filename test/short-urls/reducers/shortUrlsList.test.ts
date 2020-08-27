@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   LIST_SHORT_URLS,
   LIST_SHORT_URLS_ERROR,
@@ -8,26 +9,32 @@ import { SHORT_URL_TAGS_EDITED } from '../../../src/short-urls/reducers/shortUrl
 import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrlMeta';
 import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
+import { ShortUrl } from '../../../src/short-urls/data';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
     it('returns loading on LIST_SHORT_URLS_START', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS_START })).toEqual({
-        shortUrls: {},
+      expect(reducer(undefined, { type: LIST_SHORT_URLS_START } as any)).toEqual({
+        shortUrls: {
+          data: [],
+        },
         loading: true,
         error: false,
       }));
 
     it('returns short URLs on LIST_SHORT_URLS', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS, shortUrls: { data: [], paginator: {} } })).toEqual({
-        shortUrls: { data: [], paginator: {} },
+      expect(reducer(undefined, { type: LIST_SHORT_URLS, shortUrls: { data: [] } } as any)).toEqual({
+        shortUrls: { data: [] },
         loading: false,
         error: false,
       }));
 
     it('returns error on LIST_SHORT_URLS_ERROR', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS_ERROR })).toEqual({
-        shortUrls: {},
+      expect(reducer(undefined, { type: LIST_SHORT_URLS_ERROR } as any)).toEqual({
+        shortUrls: {
+          data: [],
+        },
         loading: false,
         error: true,
       }));
@@ -38,14 +45,16 @@ describe('shortUrlsListReducer', () => {
       const state = {
         shortUrls: {
           data: [
-            { shortCode, tags: [] },
-            { shortCode, tags: [], domain: 'example.com' },
-            { shortCode: 'foo', tags: [] },
+            Mock.of<ShortUrl>({ shortCode, tags: [] }),
+            Mock.of<ShortUrl>({ shortCode, tags: [], domain: 'example.com' }),
+            Mock.of<ShortUrl>({ shortCode: 'foo', tags: [] }),
           ],
         },
+        loading: false,
+        error: false,
       };
 
-      expect(reducer(state, { type: SHORT_URL_TAGS_EDITED, shortCode, tags, domain: null })).toEqual({
+      expect(reducer(state, { type: SHORT_URL_TAGS_EDITED, shortCode, tags, domain: null } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, tags },
@@ -53,6 +62,8 @@ describe('shortUrlsListReducer', () => {
             { shortCode: 'foo', tags: [] },
           ],
         },
+        loading: false,
+        error: false,
       });
     });
 
@@ -66,21 +77,25 @@ describe('shortUrlsListReducer', () => {
       const state = {
         shortUrls: {
           data: [
-            { shortCode, meta: { maxVisits: 10 }, domain },
-            { shortCode, meta: { maxVisits: 50 } },
-            { shortCode: 'foo', meta: null },
+            Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 10 }, domain }),
+            Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 50 } }),
+            Mock.of<ShortUrl>({ shortCode: 'foo', meta: {} }),
           ],
         },
+        loading: false,
+        error: false,
       };
 
-      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta, domain })).toEqual({
+      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta, domain } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, meta, domain: 'example.com' },
             { shortCode, meta: { maxVisits: 50 } },
-            { shortCode: 'foo', meta: null },
+            { shortCode: 'foo', meta: {} },
           ],
         },
+        loading: false,
+        error: false,
       });
     });
 
@@ -89,17 +104,21 @@ describe('shortUrlsListReducer', () => {
       const state = {
         shortUrls: {
           data: [
-            { shortCode },
-            { shortCode, domain: 'example.com' },
-            { shortCode: 'foo' },
+            Mock.of<ShortUrl>({ shortCode }),
+            Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
+            Mock.of<ShortUrl>({ shortCode: 'foo' }),
           ],
         },
+        loading: false,
+        error: false,
       };
 
-      expect(reducer(state, { type: SHORT_URL_DELETED, shortCode })).toEqual({
+      expect(reducer(state, { type: SHORT_URL_DELETED, shortCode } as any)).toEqual({
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
         },
+        loading: false,
+        error: false,
       });
     });
 
@@ -112,14 +131,16 @@ describe('shortUrlsListReducer', () => {
       const state = {
         shortUrls: {
           data: [
-            { shortCode, domain: 'example.com', visitsCount: 5 },
-            { shortCode, visitsCount: 10 },
-            { shortCode: 'foo', visitsCount: 8 },
+            Mock.of<ShortUrl>({ shortCode, domain: 'example.com', visitsCount: 5 }),
+            Mock.of<ShortUrl>({ shortCode, visitsCount: 10 }),
+            Mock.of<ShortUrl>({ shortCode: 'foo', visitsCount: 8 }),
           ],
         },
+        loading: false,
+        error: false,
       };
 
-      expect(reducer(state, { type: CREATE_VISIT, shortUrl })).toEqual({
+      expect(reducer(state, { type: CREATE_VISIT, shortUrl } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },
@@ -127,6 +148,8 @@ describe('shortUrlsListReducer', () => {
             { shortCode: 'foo', visitsCount: 8 },
           ],
         },
+        loading: false,
+        error: false,
       });
     });
   });
@@ -135,15 +158,11 @@ describe('shortUrlsListReducer', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValue({ selectedServer: {} });
 
-    afterEach(() => {
-      dispatch.mockReset();
-      getState.mockClear();
-    });
+    afterEach(jest.clearAllMocks);
 
     it('dispatches proper actions if API client request succeeds', async () => {
-      const apiClientMock = {
-        listShortUrls: jest.fn().mockResolvedValue([]),
-      };
+      const listShortUrlsMock = jest.fn().mockResolvedValue([]);
+      const apiClientMock = Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
 
@@ -151,13 +170,12 @@ describe('shortUrlsListReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [], params: {} });
 
-      expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
+      expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
-      const apiClientMock = {
-        listShortUrls: jest.fn().mockRejectedValue(),
-      };
+      const listShortUrlsMock = jest.fn().mockRejectedValue(undefined);
+      const apiClientMock = Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
 
@@ -165,7 +183,7 @@ describe('shortUrlsListReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS_ERROR, params: {} });
 
-      expect(apiClientMock.listShortUrls).toHaveBeenCalledTimes(1);
+      expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });
   });
 });

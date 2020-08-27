@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
-import { Action } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { LIST_SHORT_URLS } from './shortUrlsList';
+import { LIST_SHORT_URLS, ListShortUrlsAction } from './shortUrlsList';
 
 export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
 
@@ -16,7 +15,7 @@ export const shortUrlsListParamsType = PropTypes.shape({
 });
 
 export interface ShortUrlsListParams {
-  page: string;
+  page?: string;
   tags?: string[];
   searchTerm?: string;
   startDate?: string;
@@ -24,11 +23,7 @@ export interface ShortUrlsListParams {
   orderBy?: object;
 }
 
-interface ListShortUrlsAction extends Action<string> {
-  params: ShortUrlsListParams;
-}
-
-const initialState = { page: '1' };
+const initialState: ShortUrlsListParams = { page: '1' };
 
 export default buildReducer<ShortUrlsListParams, ListShortUrlsAction>({
   [LIST_SHORT_URLS]: (state, { params }) => ({ ...state, ...params }),

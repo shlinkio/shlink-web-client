@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Dispatch, Action } from 'redux';
-import { ShortUrlMeta } from '../data';
+import { ShortUrlIdentifier, ShortUrlMeta } from '../data';
 import { ShlinkApiClientBuilder } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
@@ -27,9 +27,7 @@ export interface ShortUrlMetaEdition {
   error: boolean;
 }
 
-interface ShortUrlMetaEditedAction extends Action<string> {
-  shortCode: string;
-  domain?: string | null;
+export interface ShortUrlMetaEditedAction extends Action<string>, ShortUrlIdentifier {
   meta: ShortUrlMeta;
 }
 

@@ -1,4 +1,4 @@
-import { Nullable } from '../../utils/utils';
+import { Nullable, OptionalString } from '../../utils/utils';
 
 export interface ShortUrlData {
   longUrl: string;
@@ -32,4 +32,9 @@ export interface ShortUrlModalProps {
   shortUrl: ShortUrl;
   isOpen: boolean;
   toggle: () => void;
+}
+
+export interface ShortUrlIdentifier {
+  shortCode: string;
+  domain: OptionalString;
 }
