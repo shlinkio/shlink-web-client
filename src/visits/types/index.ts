@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { ShortUrl } from '../../short-urls/data';
+import { Action } from 'redux';
 
 /** @deprecated Use Visit interface instead */
 export const VisitType = PropTypes.shape({
@@ -32,6 +33,11 @@ export interface VisitsInfo {
   loading: boolean;
   loadingLarge: boolean;
   error: boolean;
+  progress: number;
+  cancelLoad: boolean;
+}
+
+export interface VisitsLoadProgressChangedAction extends Action<string> {
   progress: number;
 }
 

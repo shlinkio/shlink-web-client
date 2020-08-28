@@ -1,8 +1,11 @@
-import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
-import { VisitType } from '../types';
+import { Action, Dispatch } from 'redux';
+import { Visit, VisitsInfo, VisitsLoadProgressChangedAction, VisitType } from '../types';
+import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { GetState } from '../../container/types';
 import { getVisitsWithLoader } from './common';
-import { CREATE_VISIT } from './visitCreation';
+import { CREATE_VISIT, CreateVisitAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';
@@ -13,7 +16,8 @@ export const GET_TAG_VISITS_CANCEL = 'shlink/tagVisits/GET_TAG_VISITS_CANCEL';
 export const GET_TAG_VISITS_PROGRESS_CHANGED = 'shlink/tagVisits/GET_TAG_VISITS_PROGRESS_CHANGED';
 /* eslint-enable padding-line-between-statements */
 
-export const TagVisitsType = PropTypes.shape({ // TODO Should extend from VisitInfoType
+/** @deprecated Use TagVisits interface instead */
+export const TagVisitsType = PropTypes.shape({
   visits: PropTypes.arrayOf(VisitType),
   tag: PropTypes.string,
   loading: PropTypes.bool,
@@ -22,7 +26,16 @@ export const TagVisitsType = PropTypes.shape({ // TODO Should extend from VisitI
   progress: PropTypes.number,
 });
 
-const initialState = {
+export interface TagVisits extends VisitsInfo {
+  tag: string;
+}
+
+export interface TagVisitsAction extends Action<string> {
+  visits: Visit[];
+  tag: string;
+}
+
+const initialState: TagVisits = {
   visits: [],
   tag: '',
   loading: false,
@@ -32,10 +45,10 @@ const initialState = {
   progress: 0,
 };
 
-export default handleActions({
+export default buildReducer<TagVisits, TagVisitsAction & VisitsLoadProgressChangedAction & CreateVisitAction>({
   [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_TAG_VISITS_ERROR]: () => ({ ...initialState, error: true }),
-  [GET_TAG_VISITS]: (state, { visits, tag }) => ({ ...initialState, visits, tag }),
+  [GET_TAG_VISITS]: (_, { visits, tag }) => ({ ...initialState, visits, tag }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
@@ -50,10 +63,13 @@ export default handleActions({
   },
 }, initialState);
 
-export const getTagVisits = (buildShlinkApiClient) => (tag, query = {}) => (dispatch, getState) => {
+export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag: string, query = {}) => async (
+  dispatch: Dispatch,
+  getState: GetState,
+) => {
   const { getTagVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = (page, itemsPerPage) => getTagVisits(tag, { ...query, page, itemsPerPage });
-  const extraFinishActionData = { tag };
+  const visitsLoader = (page: number, itemsPerPage: number) => getTagVisits(tag, { ...query, page, itemsPerPage });
+  const extraFinishActionData: Partial<TagVisitsAction> = { tag };
   const actionMap = {
     start: GET_TAG_VISITS_START,
     large: GET_TAG_VISITS_LARGE,
@@ -65,4 +81,4 @@ export const getTagVisits = (buildShlinkApiClient) => (tag, query = {}) => (disp
   return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);
 };
 
-export const cancelGetTagVisits = createAction(GET_TAG_VISITS_CANCEL);
+export const cancelGetTagVisits = buildActionCreator(GET_TAG_VISITS_CANCEL);

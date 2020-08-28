@@ -1,3 +1,4 @@
+import { Mock } from 'ts-mockery';
 import reducer, {
   getTagVisits,
   cancelGetTagVisits,
@@ -7,34 +8,44 @@ import reducer, {
   GET_TAG_VISITS_LARGE,
   GET_TAG_VISITS_CANCEL,
   GET_TAG_VISITS_PROGRESS_CHANGED,
+  TagVisits,
 } from '../../../src/visits/reducers/tagVisits';
 import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
+import { rangeOf } from '../../../src/utils/utils';
+import { Visit } from '../../../src/visits/types';
+import { ShlinkVisits } from '../../../src/utils/services/types';
+import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import { ShlinkState } from '../../../src/container/types';
 
 describe('tagVisitsReducer', () => {
+  const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+
   describe('reducer', () => {
+    const buildState = (data: Partial<TagVisits>) => Mock.of<TagVisits>(data);
+
     it('returns loading on GET_TAG_VISITS_START', () => {
-      const state = reducer({ loading: false }, { type: GET_TAG_VISITS_START });
+      const state = reducer(buildState({ loading: false }), { type: GET_TAG_VISITS_START } as any);
       const { loading } = state;
 
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_TAG_VISITS_LARGE', () => {
-      const state = reducer({ loadingLarge: false }, { type: GET_TAG_VISITS_LARGE });
+      const state = reducer(buildState({ loadingLarge: false }), { type: GET_TAG_VISITS_LARGE } as any);
       const { loadingLarge } = state;
 
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_TAG_VISITS_CANCEL', () => {
-      const state = reducer({ cancelLoad: false }, { type: GET_TAG_VISITS_CANCEL });
+      const state = reducer(buildState({ cancelLoad: false }), { type: GET_TAG_VISITS_CANCEL } as any);
       const { cancelLoad } = state;
 
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_TAG_VISITS_ERROR', () => {
-      const state = reducer({ loading: true, error: false }, { type: GET_TAG_VISITS_ERROR });
+      const state = reducer(buildState({ loading: true, error: false }), { type: GET_TAG_VISITS_ERROR } as any);
       const { loading, error } = state;
 
       expect(loading).toEqual(false);
@@ -43,7 +54,10 @@ describe('tagVisitsReducer', () => {
 
     it('return visits on GET_TAG_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer({ loading: true, error: false }, { type: GET_TAG_VISITS, visits: actionVisits });
+      const state = reducer(
+        buildState({ loading: true, error: false }),
+        { type: GET_TAG_VISITS, visits: actionVisits } as any,
+      );
       const { loading, error, visits } = state;
 
       expect(loading).toEqual(false);
@@ -52,36 +66,38 @@ describe('tagVisitsReducer', () => {
     });
 
     it.each([
-      [{ tag: 'foo' }, [{}, {}, {}]],
-      [{ tag: 'bar' }, [{}, {}]],
+      [{ tag: 'foo' }, [ ...visitsMocks, {}]],
+      [{ tag: 'bar' }, visitsMocks ],
     ])('appends a new visit on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         tags: [ 'foo', 'baz' ],
       };
-      const prevState = {
+      const prevState = buildState({
         ...state,
-        visits: [{}, {}],
-      };
+        visits: visitsMocks,
+      });
 
-      const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} });
+      const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} } as any);
 
       expect(visits).toEqual(expectedVisits);
     });
 
     it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer({}, { type: GET_TAG_VISITS_PROGRESS_CHANGED, progress: 85 });
+      const state = reducer(undefined, { type: GET_TAG_VISITS_PROGRESS_CHANGED, progress: 85 } as any);
 
-      expect(state).toEqual({ progress: 85 });
+      expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
   });
 
   describe('getTagVisits', () => {
-    const buildApiClientMock = (returned) => ({
-      getTagVisits: jest.fn(typeof returned === 'function' ? returned : () => returned),
+    type GetVisitsReturn = Promise<ShlinkVisits> | ((shortCode: string, query: any) => Promise<ShlinkVisits>);
+
+    const buildApiClientMock = (returned: GetVisitsReturn) => Mock.of<ShlinkApiClient>({
+      getTagVisits: jest.fn(typeof returned === 'function' ? returned : async () => returned),
     });
     const dispatchMock = jest.fn();
-    const getState = () => ({
-      tagVisits: { cancelVisits: false },
+    const getState = () => Mock.of<ShlinkState>({
+      tagVisits: { cancelLoad: false },
     });
 
     beforeEach(jest.resetAllMocks);
@@ -101,10 +117,10 @@ describe('tagVisitsReducer', () => {
       [ undefined ],
       [{}],
     ])('dispatches start and success when promise is resolved', async (query) => {
-      const visits = [{}, {}];
+      const visits = visitsMocks;
       const tag = 'foo';
       const ShlinkApiClient = buildApiClientMock(Promise.resolve({
-        data: visits,
+        data: visitsMocks,
         pagination: {
           currentPage: 1,
           pagesCount: 1,

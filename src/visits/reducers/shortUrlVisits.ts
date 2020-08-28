@@ -1,9 +1,14 @@
-import { createAction, handleActions } from 'redux-actions';
 import PropTypes from 'prop-types';
+import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../../short-urls/helpers';
-import { VisitType } from '../types';
+import { Visit, VisitsInfo, VisitsLoadProgressChangedAction, VisitType } from '../types';
+import { ShortUrlIdentifier } from '../../short-urls/data';
+import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { GetState } from '../../container/types';
+import { OptionalString } from '../../utils/utils';
 import { getVisitsWithLoader } from './common';
-import { CREATE_VISIT } from './visitCreation';
+import { CREATE_VISIT, CreateVisitAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
@@ -14,7 +19,8 @@ export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_
 export const GET_SHORT_URL_VISITS_PROGRESS_CHANGED = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_PROGRESS_CHANGED';
 /* eslint-enable padding-line-between-statements */
 
-export const shortUrlVisitsType = PropTypes.shape({ // TODO Should extend from VisitInfoType
+/** @deprecated Use ShortUrlVisits interface instead */
+export const shortUrlVisitsType = PropTypes.shape({
   visits: PropTypes.arrayOf(VisitType),
   shortCode: PropTypes.string,
   domain: PropTypes.string,
@@ -24,7 +30,15 @@ export const shortUrlVisitsType = PropTypes.shape({ // TODO Should extend from V
   progress: PropTypes.number,
 });
 
-const initialState = {
+export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
+
+interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
+  visits: Visit[];
+}
+
+type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction & VisitsLoadProgressChangedAction & CreateVisitAction;
+
+const initialState: ShortUrlVisits = {
   visits: [],
   shortCode: '',
   domain: undefined,
@@ -35,10 +49,10 @@ const initialState = {
   progress: 0,
 };
 
-export default handleActions({
+export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_SHORT_URL_VISITS_ERROR]: () => ({ ...initialState, error: true }),
-  [GET_SHORT_URL_VISITS]: (state, { visits, shortCode, domain }) => ({
+  [GET_SHORT_URL_VISITS]: (_, { visits, shortCode, domain }) => ({
     ...initialState,
     visits,
     shortCode,
@@ -58,10 +72,16 @@ export default handleActions({
   },
 }, initialState);
 
-export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query = {}) => (dispatch, getState) => {
+export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
+  shortCode: string,
+  query: { domain?: OptionalString } = {},
+) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = (page, itemsPerPage) => getShortUrlVisits(shortCode, { ...query, page, itemsPerPage });
-  const extraFinishActionData = { shortCode, domain: query.domain };
+  const visitsLoader = (page: number, itemsPerPage: number) => getShortUrlVisits(
+    shortCode,
+    { ...query, page, itemsPerPage },
+  );
+  const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, domain: query.domain };
   const actionMap = {
     start: GET_SHORT_URL_VISITS_START,
     large: GET_SHORT_URL_VISITS_LARGE,
@@ -73,4 +93,4 @@ export const getShortUrlVisits = (buildShlinkApiClient) => (shortCode, query = {
   return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);
 };
 
-export const cancelGetShortUrlVisits = createAction(GET_SHORT_URL_VISITS_CANCEL);
+export const cancelGetShortUrlVisits = buildActionCreator(GET_SHORT_URL_VISITS_CANCEL);
