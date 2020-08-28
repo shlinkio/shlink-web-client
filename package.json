@@ -52,7 +52,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-datepicker": "~1.5.0",
     "react-dom": "^16.13.1",
-    "react-external-link": "^1.0.0",
+    "react-external-link": "^1.1.1",
     "react-leaflet": "^2.4.0",
     "react-moment": "^0.9.5",
     "react-redux": "^7.1.1",

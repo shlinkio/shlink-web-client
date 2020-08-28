@@ -1,20 +1,23 @@
 import { max, min, range } from 'ramda';
 
+const DELTA = 2;
+
 export const ELLIPSIS = '...';
 
-type NumberOrEllipsis = number | '...';
+type Ellipsis = typeof ELLIPSIS;
+
+export type NumberOrEllipsis = number | Ellipsis;
 
 export const progressivePagination = (currentPage: number, pageCount: number): NumberOrEllipsis[] => {
-  const delta = 2;
   const pages: NumberOrEllipsis[] = range(
-    max(delta, currentPage - delta),
-    min(pageCount - 1, currentPage + delta) + 1,
+    max(DELTA, currentPage - DELTA),
+    min(pageCount - 1, currentPage + DELTA) + 1,
   );
 
-  if (currentPage - delta > delta) {
+  if (currentPage - DELTA > DELTA) {
     pages.unshift(ELLIPSIS);
   }
-  if (currentPage + delta < pageCount - 1) {
+  if (currentPage + DELTA < pageCount - 1) {
     pages.push(ELLIPSIS);
   }
 
@@ -24,6 +27,6 @@ export const progressivePagination = (currentPage: number, pageCount: number): N
   return pages;
 };
 
-export const keyForPage = (pageNumber: NumberOrEllipsis, index: number) => pageNumber !== ELLIPSIS ? pageNumber : `${pageNumber}_${index}`;
+export const pageIsEllipsis = (pageNumber: NumberOrEllipsis): pageNumber is Ellipsis => pageNumber === ELLIPSIS;
 
-export const isPageDisabled = (pageNumber: NumberOrEllipsis) => pageNumber === ELLIPSIS;
+export const keyForPage = (pageNumber: NumberOrEllipsis, index: number) => !pageIsEllipsis(pageNumber) ? `${pageNumber}` : `${pageNumber}_${index}`;

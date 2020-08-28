@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { isPageDisabled, keyForPage, progressivePagination } from '../utils/helpers/pagination';
+import { pageIsEllipsis, keyForPage, progressivePagination } from '../utils/helpers/pagination';
 import './Paginator.scss';
 
 const propTypes = {
@@ -24,7 +24,7 @@ const Paginator = ({ paginator = {}, serverId }) => {
     progressivePagination(currentPage, pagesCount).map((pageNumber, index) => (
       <PaginationItem
         key={keyForPage(pageNumber, index)}
-        disabled={isPageDisabled(pageNumber)}
+        disabled={pageIsEllipsis(pageNumber)}
         active={currentPage === pageNumber}
       >
         <PaginationLink

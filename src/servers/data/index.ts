@@ -27,3 +27,6 @@ export type SelectedServer = RegularServer | NotFoundServer | null;
 
 export const hasServerData = (server: ServerData | NotFoundServer | null): server is ServerData =>
   !!(server as ServerData)?.url && !!(server as ServerData)?.apiKey;
+
+export const isReachableServer = (server: SelectedServer): server is ReachableServer =>
+  !!server?.hasOwnProperty('printableVersion');

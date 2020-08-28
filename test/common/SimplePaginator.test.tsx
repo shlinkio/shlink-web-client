@@ -1,29 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
 import { PaginationItem } from 'reactstrap';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<SimplePaginator />', () => {
-  let wrapper;
-  const createWrapper = (pagesCount, currentPage = 1) => {
+  let wrapper: ShallowWrapper;
+  const createWrapper = (pagesCount: number, currentPage = 1) => {
+    // @ts-expect-error
     wrapper = shallow(<SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={identity} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it.each([ -3, -2, 0, 1 ])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
     expect(createWrapper(pagesCount).text()).toEqual('');
   });
 
   describe('ELLIPSIS are rendered where expected', () => {
-    const getItemsForPages = (pagesCount, currentPage) => {
+    const getItemsForPages = (pagesCount: number, currentPage: number) => {
       const paginator = createWrapper(pagesCount, currentPage);
       const items = paginator.find(PaginationItem);
-      const itemsWithEllipsis = items.filterWhere((item) => item.key() && item.key().includes(ELLIPSIS));
+      const itemsWithEllipsis = items.filterWhere((item) => item?.key()?.includes(ELLIPSIS));
 
       return { items, itemsWithEllipsis };
     };
