@@ -1,4 +1,5 @@
 import csvjson from 'csvjson';
+import Bottle, { Decorator } from 'bottlejs';
 import CreateServer from '../CreateServer';
 import ServersDropdown from '../ServersDropdown';
 import DeleteServerModal from '../DeleteServerModal';
@@ -10,10 +11,11 @@ import { createServer, createServers, deleteServer, editServer } from '../reduce
 import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
+import { ConnectDecorator } from '../../container/types';
 import ServersImporter from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
-const provideServices = (bottle, connect, withRouter) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   // Components
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', connect([ 'selectedServer' ], [ 'createServer', 'resetSelectedServer' ]));

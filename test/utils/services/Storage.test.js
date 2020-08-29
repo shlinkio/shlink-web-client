@@ -1,6 +1,6 @@
-import Storage from '../../../src/utils/services/Storage';
+import LocalStorage from '../../../src/utils/services/LocalStorage';
 
-describe('Storage', () => {
+describe('LocalStorage', () => {
   const localStorageMock = {
     getItem: jest.fn((key) => key === 'shlink.foo' ? JSON.stringify({ foo: 'bar' }) : null),
     setItem: jest.fn(),
@@ -11,7 +11,7 @@ describe('Storage', () => {
     localStorageMock.getItem.mockClear();
     localStorageMock.setItem.mockReset();
 
-    storage = new Storage(localStorageMock);
+    storage = new LocalStorage(localStorageMock);
   });
 
   describe('set', () => {

@@ -24,7 +24,7 @@ const mapActionService = (map: ActionMap, actionName: string): ActionMap => ({
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: lazyService(container, actionName),
 });
-const connect: ConnectDecorator = (propsFromState: string[], actionServiceNames: string[] = []) =>
+const connect: ConnectDecorator = (propsFromState: string[] | null, actionServiceNames: string[] = []) =>
   reduxConnect(
     propsFromState ? pick(propsFromState) : null,
     actionServiceNames.reduce(mapActionService, {}),

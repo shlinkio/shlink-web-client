@@ -1,6 +1,9 @@
 import { dissoc, head, keys, values } from 'ramda';
+import { CsvJson } from 'csvjson';
+import LocalStorage from '../../utils/services/LocalStorage';
+import { ServersMap } from '../data';
 
-const saveCsv = (window, csv) => {
+const saveCsv = (window: Window, csv: string) => {
   const { navigator, document } = window;
   const filename = 'shlink-servers.csv';
   const blob = new Blob([ csv ], { type: 'text/csv;charset=utf-8;' });
@@ -25,14 +28,14 @@ const saveCsv = (window, csv) => {
 };
 
 export default class ServersExporter {
-  constructor(storage, window, csvjson) {
-    this.storage = storage;
-    this.window = window;
-    this.csvjson = csvjson;
-  }
+  public constructor(
+    private readonly storage: LocalStorage,
+    private readonly window: Window,
+    private readonly csvjson: CsvJson,
+  ) {}
 
-  exportServers = async () => {
-    const servers = values(this.storage.get('servers') || {}).map(dissoc('id'));
+  public readonly exportServers = async () => {
+    const servers = values(this.storage.get<ServersMap>('servers') || {}).map(dissoc('id'));
 
     try {
       const csv = this.csvjson.toCSV(servers, {

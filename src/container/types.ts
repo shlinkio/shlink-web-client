@@ -35,6 +35,6 @@ export interface ShlinkState {
   settings: Settings;
 }
 
-export type ConnectDecorator = (props: string[], actions?: string[]) => any;
+export type ConnectDecorator = (props: string[] | null, actions?: string[]) => any;
 
 export type GetState = () => ShlinkState;
