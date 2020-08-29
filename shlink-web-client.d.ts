@@ -1,7 +1,5 @@
-export declare global {
-  declare module '*.png'
-
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: Function;
-  }
+declare module 'event-source-polyfill' {
+  export const EventSourcePolyfill: any;
 }
+
+declare module '*.png'

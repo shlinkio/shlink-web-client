@@ -3,10 +3,10 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/registerServiceWorker.js',
-    '!src/index.js',
-    '!src/reducers/index.js',
-    '!src/**/provideServices.js',
-    '!src/container/*.js',
+    '!src/index.ts',
+    '!src/reducers/index.ts',
+    '!src/**/provideServices.ts',
+    '!src/container/*.ts',
   ],
   resolver: 'jest-pnp-resolver',
   setupFiles: [

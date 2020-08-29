@@ -1,5 +1,8 @@
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
+import { Mock } from 'ts-mockery';
+import { identity } from 'ramda';
 import { bindToMercureTopic } from '../../../src/mercure/helpers';
+import { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
 
 jest.mock('event-source-polyfill');
 
@@ -11,11 +14,13 @@ describe('helpers', () => {
     const onTokenExpired = jest.fn();
 
     it.each([
-      [{ loading: true, error: false }],
-      [{ loading: false, error: true }],
-      [{ loading: true, error: true }],
-    ])('does not bind an EventSource when loading or error', (mercureInfo) => {
-      bindToMercureTopic(mercureInfo)();
+      [ Mock.of<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' }) ],
+      [ Mock.of<MercureInfo>({ loading: false, error: true, mercureHubUrl: 'foo' }) ],
+      [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: 'foo' }) ],
+      [ Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined }) ],
+      [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined }) ],
+    ])('does not bind an EventSource when loading, error or no hub URL', (mercureInfo) => {
+      bindToMercureTopic(mercureInfo, '', identity, identity)();
 
       expect(EventSource).not.toHaveBeenCalled();
       expect(onMessage).not.toHaveBeenCalled();
@@ -50,7 +55,7 @@ describe('helpers', () => {
       expect(onMessage).toHaveBeenCalledWith({ foo: 'bar' });
       expect(onTokenExpired).toHaveBeenCalled();
 
-      callback();
+      callback?.();
       expect(es.close).toHaveBeenCalled();
     });
   });

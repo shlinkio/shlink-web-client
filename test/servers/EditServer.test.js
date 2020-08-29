@@ -16,6 +16,8 @@ describe('<EditServer />', () => {
     name: 'name',
     url: 'url',
     apiKey: 'apiKey',
+    printableVersion: 'v1.2.0',
+    version: '1.2.0'
   };
 
   beforeEach(() => {

@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, useEffect, useState } from 'react';
 import { HorizontalFormGroup } from '../../utils/HorizontalFormGroup';
 import { handleEventPreventingDefault } from '../../utils/utils';
+import { ServerData } from '../data';
 
-const propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  initialValues: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    apiKey: PropTypes.string.isRequired,
-  }),
-  children: PropTypes.node.isRequired,
-};
+interface ServerFormProps {
+  onSubmit: (server: ServerData) => void;
+  initialValues?: ServerData;
+}
 
-export const ServerForm = ({ onSubmit, initialValues, children }) => {
+export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children }) => {
   const [ name, setName ] = useState('');
   const [ url, setUrl ] = useState('');
   const [ apiKey, setApiKey ] = useState('');
@@ -35,5 +30,3 @@ export const ServerForm = ({ onSubmit, initialValues, children }) => {
     </form>
   );
 };
-
-ServerForm.propTypes = propTypes;
