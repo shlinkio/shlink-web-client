@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
 import ServersListGroup from '../servers/ServersListGroup';
-import { ServersMap } from '../servers/reducers/servers';
 import './Home.scss';
+import { ServersMap } from '../servers/data';
 
 export interface HomeProps {
   resetSelectedServer: Function;

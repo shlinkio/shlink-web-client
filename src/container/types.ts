@@ -1,6 +1,5 @@
 import { MercureInfo } from '../mercure/reducers/mercureInfo';
-import { ServersMap } from '../servers/reducers/servers';
-import { SelectedServer } from '../servers/data';
+import { SelectedServer, ServersMap } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
 import { ShortUrlMetaEdition } from '../short-urls/reducers/shortUrlMeta';
 import { ShortUrlCreation } from '../short-urls/reducers/shortUrlCreation';

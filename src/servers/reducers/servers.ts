@@ -1,7 +1,7 @@
-import { pipe, assoc, map, reduce, dissoc } from 'ramda';
+import { assoc, dissoc, map, pipe, reduce } from 'ramda';
 import { v4 as uuid } from 'uuid';
 import { Action } from 'redux';
-import { ServerData, ServerWithId } from '../data';
+import { ServerData, ServersMap, ServerWithId } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
@@ -9,8 +9,6 @@ export const EDIT_SERVER = 'shlink/servers/EDIT_SERVER';
 export const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
 export const CREATE_SERVERS = 'shlink/servers/CREATE_SERVERS';
 /* eslint-enable padding-line-between-statements */
-
-export type ServersMap = Record<string, ServerWithId>;
 
 export interface CreateServersAction extends Action<string> {
   newServers: ServersMap;

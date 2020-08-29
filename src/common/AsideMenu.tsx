@@ -13,18 +13,18 @@ import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import { ServerWithId } from '../servers/data';
 import './AsideMenu.scss';
 
-interface AsideMenuProps {
+export interface AsideMenuProps {
   selectedServer: ServerWithId;
   className?: string;
   showOnMobile?: boolean;
 }
 
-interface AsideMenuItemItemProps extends NavLinkProps {
+interface AsideMenuItemProps extends NavLinkProps {
   to: string;
   className?: string;
 }
 
-const AsideMenuItem: FC<AsideMenuItemItemProps> = ({ children, to, className, ...rest }) => (
+const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...rest }) => (
   <NavLink
     className={classNames('aside-menu__item', className)}
     activeClassName="aside-menu__item--selected"

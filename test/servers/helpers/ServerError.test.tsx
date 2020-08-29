@@ -1,18 +1,19 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { BrowserRouter } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import { ServerError as createServerError } from '../../../src/servers/helpers/ServerError';
+import { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
 
 describe('<ServerError />', () => {
-  let wrapper;
-  const selectedServer = { id: '' };
-  const ServerError = createServerError(() => '');
+  let wrapper: ShallowWrapper;
+  const ServerError = createServerError(() => null);
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it.each([
     [
-      'not-found',
+      Mock.all<NotFoundServer>(),
       {
         'Could not find this Shlink server.': true,
         'Oops! Could not connect to this Shlink server.': false,
@@ -21,7 +22,7 @@ describe('<ServerError />', () => {
       },
     ],
     [
-      'not-reachable',
+      Mock.of<NonReachableServer>({ id: 'abc123' }),
       {
         'Could not find this Shlink server.': false,
         'Oops! Could not connect to this Shlink server.': true,
@@ -29,10 +30,10 @@ describe('<ServerError />', () => {
         'Alternatively, if you think you may have miss-configured this server': true,
       },
     ],
-  ])('renders expected information for type "%s"', (type, textsToFind) => {
+  ])('renders expected information based on provided server type', (selectedServer, textsToFind) => {
     wrapper = shallow(
       <BrowserRouter>
-        <ServerError type={type} servers={{}} selectedServer={selectedServer} />
+        <ServerError servers={{}} selectedServer={selectedServer} />
       </BrowserRouter>,
     );
     const wrapperText = wrapper.html();

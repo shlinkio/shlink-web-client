@@ -23,7 +23,7 @@ export const withSelectedServer = (WrappedComponent, ServerError) => {
     }
 
     if (selectedServer.serverNotFound) {
-      return <ServerError type="not-found" />;
+      return <ServerError />;
     }
 
     return <WrappedComponent {...props} />;

@@ -1,16 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Button } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import createErrorHandler from '../../src/common/ErrorHandler';
 
 describe('<ErrorHandler />', () => {
-  const window = {
+  const window = Mock.of<Window>({
     location: {
       reload: jest.fn(),
     },
-  };
-  const console = { error: jest.fn() };
-  let wrapper;
+  });
+  const console = Mock.of<Console>({ error: jest.fn() });
+  let wrapper: ShallowWrapper;
 
   beforeEach(() => {
     const ErrorHandler = createErrorHandler(window, console);

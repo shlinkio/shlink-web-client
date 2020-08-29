@@ -1,30 +1,31 @@
-import React from 'react';
-import * as PropTypes from 'prop-types';
-import './ErrorHandler.scss';
+import React, { ReactNode } from 'react';
 import { Button } from 'reactstrap';
+import './ErrorHandler.scss';
 
-// FIXME Replace with typescript: (window, console)
-const ErrorHandler = ({ location }, { error }) => class ErrorHandler extends React.Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-  };
+interface ErrorHandlerState {
+  hasError: boolean;
+}
 
-  constructor(props) {
+const ErrorHandler = (
+  { location }: Window,
+  { error }: Console,
+) => class ErrorHandler extends React.Component<any, ErrorHandlerState> {
+  public constructor(props: object) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
+  public static getDerivedStateFromError(): ErrorHandlerState {
     return { hasError: true };
   }
 
-  componentDidCatch(e) {
+  public componentDidCatch(e: Error): void {
     if (process.env.NODE_ENV !== 'development') {
       error(e);
     }
   }
 
-  render() {
+  public render(): ReactNode | undefined {
     if (this.state.hasError) {
       return (
         <div className="error-handler">

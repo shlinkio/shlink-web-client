@@ -20,7 +20,7 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }) => {
   const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
   const longLink = shortUrl && shortUrl.longUrl ? shortUrl.longUrl : '';
 
-  const renderDate = () => (
+  const renderDate = () => !shortUrl ? <small>Loading...</small> : (
     <span>
       <b id="created" className="short-url-visits-header__created-at">
         <Moment fromNow>{shortUrl.dateCreated}</Moment>
