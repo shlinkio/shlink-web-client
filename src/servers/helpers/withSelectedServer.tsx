@@ -8,22 +8,22 @@ interface WithSelectedServerProps extends RouteChildrenProps<{ serverId: string 
   selectedServer: SelectedServer;
 }
 
-export const withSelectedServer = (WrappedComponent: FC<WithSelectedServerProps>, ServerError: FC) => (
-  props: WithSelectedServerProps,
-) => {
-  const { selectServer, selectedServer, match } = props;
+export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServerProps & T>, ServerError: FC) {
+  return (props: WithSelectedServerProps & T) => {
+    const { selectServer, selectedServer, match } = props;
 
-  useEffect(() => {
-    match?.params?.serverId && selectServer(match?.params.serverId);
-  }, [ match?.params.serverId ]);
+    useEffect(() => {
+      match?.params?.serverId && selectServer(match?.params.serverId);
+    }, [ match?.params.serverId ]);
 
-  if (!selectedServer) {
-    return <Message loading />;
-  }
+    if (!selectedServer) {
+      return <Message loading />;
+    }
 
-  if (isNotFoundServer(selectedServer)) {
-    return <ServerError />;
-  }
+    if (isNotFoundServer(selectedServer)) {
+      return <ServerError />;
+    }
 
-  return <WrappedComponent {...props} />;
-};
+    return <WrappedComponent {...props} />;
+  };
+}

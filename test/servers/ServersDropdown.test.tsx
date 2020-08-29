@@ -1,24 +1,24 @@
-import { identity, values } from 'ramda';
-import React from 'react';
-import { shallow } from 'enzyme';
+import { values } from 'ramda';
+import { Mock } from 'ts-mockery';
+import React, { FC } from 'react';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem, DropdownToggle } from 'reactstrap';
-import serversDropdownCreator from '../../src/servers/ServersDropdown';
+import serversDropdownCreator, { ServersDropdownProps } from '../../src/servers/ServersDropdown';
+import { ServerWithId } from '../../src/servers/data';
+import ServersExporter from '../../src/servers/services/ServersExporter';
 
 describe('<ServersDropdown />', () => {
-  let wrapped;
-  let ServersDropdown;
+  let wrapped: ShallowWrapper;
+  let ServersDropdown: FC<ServersDropdownProps>;
   const servers = {
-    '1a': { name: 'foo', id: 1 },
-    '2b': { name: 'bar', id: 2 },
-    '3c': { name: 'baz', id: 3 },
-  };
-  const history = {
-    push: jest.fn(),
+    '1a': Mock.of<ServerWithId>({ name: 'foo', id: '1a' }),
+    '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2b' }),
+    '3c': Mock.of<ServerWithId>({ name: 'baz', id: '3c' }),
   };
 
   beforeEach(() => {
-    ServersDropdown = serversDropdownCreator({});
-    wrapped = shallow(<ServersDropdown servers={servers} listServers={identity} history={history} />);
+    ServersDropdown = serversDropdownCreator(Mock.of<ServersExporter>());
+    wrapped = shallow(<ServersDropdown servers={servers} selectedServer={null} />);
   });
   afterEach(() => wrapped.unmount());
 
@@ -37,7 +37,7 @@ describe('<ServersDropdown />', () => {
 
   it('shows a message when no servers exist yet', () => {
     wrapped = shallow(
-      <ServersDropdown servers={{}} listServers={identity} history={history} />,
+      <ServersDropdown servers={{}} selectedServer={null} />,
     );
     const item = wrapped.find(DropdownItem);
 

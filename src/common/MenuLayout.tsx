@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { Route, RouteChildrenProps, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { EventData, Swipeable } from 'react-swipeable';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,14 +7,10 @@ import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useToggle } from '../utils/helpers/hooks';
 import { versionMatch } from '../utils/helpers/version';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { isReachableServer } from '../servers/data';
 import NotFound from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
 import './MenuLayout.scss';
-
-interface MenuLayoutProps extends RouteChildrenProps {
-  selectedServer: SelectedServer;
-}
 
 const MenuLayout = (
   TagsList: FC,
@@ -25,7 +21,7 @@ const MenuLayout = (
   TagVisits: FC,
   ShlinkVersions: FC,
   ServerError: FC,
-) => withSelectedServer(({ location, selectedServer }: MenuLayoutProps) => {
+) => withSelectedServer(({ location, selectedServer }) => {
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
 
   useEffect(() => hideSidebar(), [ location ]);
