@@ -55,7 +55,7 @@ export const loadMercureInfo = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     try {
       const result = await mercureInfo();
 
-      dispatch<Action<ShlinkMercureInfo>>({ type: GET_MERCURE_INFO, ...result });
+      dispatch<GetMercureInfoAction>({ type: GET_MERCURE_INFO, ...result });
     } catch (e) {
       dispatch({ type: GET_MERCURE_INFO_ERROR });
     }

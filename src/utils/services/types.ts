@@ -1,4 +1,11 @@
-import { Visit } from '../../visits/types'; // FIXME Should be defined here
+import { Visit } from '../../visits/types'; // FIXME Should be defined as part of this module
+import { ShortUrl, ShortUrlMeta } from '../../short-urls/data'; // FIXME Should be defined as part of this module
+import { OptionalString } from '../utils';
+
+export interface ShlinkShortUrlsResponse {
+  data: ShortUrl[];
+  pagination: ShlinkPaginator;
+}
 
 export interface ShlinkMercureInfo {
   token: string;
@@ -21,6 +28,11 @@ export interface ShlinkTags {
   stats?: ShlinkTagsStats[]; // TODO Is only optional in old versions
 }
 
+export interface ShlinkTagsResponse {
+  data: string[];
+  stats?: ShlinkTagsStats[]; // TODO Is only optional in old versions
+}
+
 export interface ShlinkPaginator {
   currentPage: number;
   pagesCount: number;
@@ -29,6 +41,18 @@ export interface ShlinkPaginator {
 export interface ShlinkVisits {
   data: Visit[];
   pagination?: ShlinkPaginator; // TODO Is only optional in old versions
+}
+
+export interface ShlinkVisitsParams {
+  domain?: OptionalString;
+  page?: number;
+  itemsPerPage?: number;
+  startDate?: string;
+  endDate?: string;
+}
+
+export interface ShlinkShortUrlMeta extends ShortUrlMeta {
+  longUrl?: string;
 }
 
 export interface ProblemDetailsError {

@@ -1,9 +1,12 @@
+import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import { OptionalString } from '../../../src/utils/utils';
 
 describe('ShlinkApiClient', () => {
-  const createAxiosMock = (data) => () => Promise.resolve(data);
-  const createApiClient = (data) => new ShlinkApiClient(createAxiosMock(data));
-  const shortCodesWithDomainCombinations = [
+  const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
+  const createAxiosMock = (data: AxiosRequestConfig = {}) => jest.fn(createAxios(data)) as unknown as AxiosInstance;
+  const createApiClient = (data: AxiosRequestConfig) => new ShlinkApiClient(createAxios(data), '', '');
+  const shortCodesWithDomainCombinations: [ string, OptionalString ][] = [
     [ 'abc123', null ],
     [ 'abc123', undefined ],
     [ 'abc123', 'example.com' ],
@@ -38,8 +41,8 @@ describe('ShlinkApiClient', () => {
     });
 
     it('removes all empty options', async () => {
-      const axiosSpy = jest.fn(createAxiosMock({ data: shortUrl }));
-      const { createShortUrl } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock({ data: shortUrl });
+      const { createShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
       await createShortUrl(
         { foo: 'bar', empty: undefined, anotherEmpty: null },
@@ -52,14 +55,14 @@ describe('ShlinkApiClient', () => {
   describe('getShortUrlVisits', () => {
     it('properly returns short URL visits', async () => {
       const expectedVisits = [ 'foo', 'bar' ];
-      const axiosSpy = jest.fn(createAxiosMock({
+      const axiosSpy = createAxiosMock({
         data: {
           visits: {
             data: expectedVisits,
           },
         },
-      }));
-      const { getShortUrlVisits } = new ShlinkApiClient(axiosSpy);
+      });
+      const { getShortUrlVisits } = new ShlinkApiClient(axiosSpy, '', '');
 
       const actualVisits = await getShortUrlVisits('abc123', {});
 
@@ -74,14 +77,14 @@ describe('ShlinkApiClient', () => {
   describe('getTagVisits', () => {
     it('properly returns tag visits', async () => {
       const expectedVisits = [ 'foo', 'bar' ];
-      const axiosSpy = jest.fn(createAxiosMock({
+      const axiosSpy = createAxiosMock({
         data: {
           visits: {
             data: expectedVisits,
           },
         },
-      }));
-      const { getTagVisits } = new ShlinkApiClient(axiosSpy);
+      });
+      const { getTagVisits } = new ShlinkApiClient(axiosSpy, '', '');
 
       const actualVisits = await getTagVisits('foo', {});
 
@@ -96,10 +99,10 @@ describe('ShlinkApiClient', () => {
   describe('getShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };
-      const axiosSpy = jest.fn(createAxiosMock({
+      const axiosSpy = createAxiosMock({
         data: expectedShortUrl,
-      }));
-      const { getShortUrl } = new ShlinkApiClient(axiosSpy);
+      });
+      const { getShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await getShortUrl(shortCode, domain);
 
@@ -115,10 +118,10 @@ describe('ShlinkApiClient', () => {
   describe('updateShortUrlTags', () => {
     it.each(shortCodesWithDomainCombinations)('properly updates short URL tags', async (shortCode, domain) => {
       const expectedTags = [ 'foo', 'bar' ];
-      const axiosSpy = jest.fn(createAxiosMock({
+      const axiosSpy = createAxiosMock({
         data: { tags: expectedTags },
-      }));
-      const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy);
+      });
+      const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await updateShortUrlTags(shortCode, domain, expectedTags);
 
@@ -137,8 +140,8 @@ describe('ShlinkApiClient', () => {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
       };
-      const axiosSpy = jest.fn(createAxiosMock());
-      const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock();
+      const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await updateShortUrlMeta(shortCode, domain, expectedMeta);
 
@@ -154,12 +157,12 @@ describe('ShlinkApiClient', () => {
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
       const expectedTags = [ 'foo', 'bar' ];
-      const axiosSpy = jest.fn(createAxiosMock({
+      const axiosSpy = createAxiosMock({
         data: {
           tags: { data: expectedTags },
         },
-      }));
-      const { listTags } = new ShlinkApiClient(axiosSpy);
+      });
+      const { listTags } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await listTags();
 
@@ -171,8 +174,8 @@ describe('ShlinkApiClient', () => {
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
       const tags = [ 'foo', 'bar' ];
-      const axiosSpy = jest.fn(createAxiosMock({}));
-      const { deleteTags } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock();
+      const { deleteTags } = new ShlinkApiClient(axiosSpy, '', '');
 
       await deleteTags(tags);
 
@@ -188,8 +191,8 @@ describe('ShlinkApiClient', () => {
     it('properly edits provided tag', async () => {
       const oldName = 'foo';
       const newName = 'bar';
-      const axiosSpy = jest.fn(createAxiosMock({}));
-      const { editTag } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock();
+      const { editTag } = new ShlinkApiClient(axiosSpy, '', '');
 
       await editTag(oldName, newName);
 
@@ -203,8 +206,8 @@ describe('ShlinkApiClient', () => {
 
   describe('deleteShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly deletes provided short URL', async (shortCode, domain) => {
-      const axiosSpy = jest.fn(createAxiosMock({}));
-      const { deleteShortUrl } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock({});
+      const { deleteShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
       await deleteShortUrl(shortCode, domain);
 
@@ -222,8 +225,8 @@ describe('ShlinkApiClient', () => {
         status: 'pass',
         version: '1.19.0',
       };
-      const axiosSpy = jest.fn(createAxiosMock({ data: expectedData }));
-      const { health } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock({ data: expectedData });
+      const { health } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await health();
 
@@ -238,8 +241,8 @@ describe('ShlinkApiClient', () => {
         token: 'abc.123.def',
         mercureHubUrl: 'http://example.com/.well-known/mercure',
       };
-      const axiosSpy = jest.fn(createAxiosMock({ data: expectedData }));
-      const { mercureInfo } = new ShlinkApiClient(axiosSpy);
+      const axiosSpy = createAxiosMock({ data: expectedData });
+      const { mercureInfo } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await mercureInfo();
 

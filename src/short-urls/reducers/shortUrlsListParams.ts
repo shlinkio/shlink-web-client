@@ -20,7 +20,7 @@ export interface ShortUrlsListParams {
   searchTerm?: string;
   startDate?: string;
   endDate?: string;
-  orderBy?: object;
+  orderBy?: string | Record<string, 'ASC' | 'DESC'>;
 }
 
 const initialState: ShortUrlsListParams = { page: '1' };
