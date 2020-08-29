@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { RouteChildrenProps } from 'react-router';
 import Message from '../../utils/Message';
-import { isReachableServer, SelectedServer } from '../data';
+import { isNotFoundServer, SelectedServer } from '../data';
 
 interface WithSelectedServerProps extends RouteChildrenProps<{ serverId: string }> {
   selectServer: (serverId: string) => void;
@@ -21,7 +21,7 @@ export const withSelectedServer = (WrappedComponent: FC<WithSelectedServerProps>
     return <Message loading />;
   }
 
-  if (!isReachableServer(selectedServer)) {
+  if (isNotFoundServer(selectedServer)) {
     return <ServerError />;
   }
 

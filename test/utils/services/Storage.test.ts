@@ -1,16 +1,14 @@
+import { Mock } from 'ts-mockery';
 import LocalStorage from '../../../src/utils/services/LocalStorage';
 
 describe('LocalStorage', () => {
-  const localStorageMock = {
-    getItem: jest.fn((key) => key === 'shlink.foo' ? JSON.stringify({ foo: 'bar' }) : null),
-    setItem: jest.fn(),
-  };
-  let storage;
+  const getItem = jest.fn((key) => key === 'shlink.foo' ? JSON.stringify({ foo: 'bar' }) : null);
+  const setItem = jest.fn();
+  const localStorageMock = Mock.of<Storage>({ getItem, setItem });
+  let storage: LocalStorage;
 
   beforeEach(() => {
-    localStorageMock.getItem.mockClear();
-    localStorageMock.setItem.mockReset();
-
+    jest.clearAllMocks();
     storage = new LocalStorage(localStorageMock);
   });
 
@@ -20,15 +18,15 @@ describe('LocalStorage', () => {
 
       storage.set('foo', value);
 
-      expect(localStorageMock.setItem).toHaveBeenCalledTimes(1);
-      expect(localStorageMock.setItem).toHaveBeenCalledWith('shlink.foo', JSON.stringify(value));
+      expect(setItem).toHaveBeenCalledTimes(1);
+      expect(setItem).toHaveBeenCalledWith('shlink.foo', JSON.stringify(value));
     });
   });
 
   describe('get', () => {
     it('fetches item from local storage', () => {
       storage.get('foo');
-      expect(localStorageMock.getItem).toHaveBeenCalledTimes(1);
+      expect(getItem).toHaveBeenCalledTimes(1);
     });
 
     it('returns parsed value when requested value is found in local storage', () => {

@@ -35,3 +35,6 @@ export const isReachableServer = (server: SelectedServer): server is ReachableSe
 
 export const isServerWithId = (server: SelectedServer | ServerWithId): server is ServerWithId =>
   !!server?.hasOwnProperty('id');
+
+export const isNotFoundServer = (server: SelectedServer): server is NotFoundServer =>
+  !!server?.hasOwnProperty('serverNotFound');

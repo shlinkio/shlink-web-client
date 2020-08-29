@@ -1,16 +1,16 @@
+import { Mock } from 'ts-mockery';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import LocalStorage from '../../../src/utils/services/LocalStorage';
 
 describe('ColorGenerator', () => {
-  let colorGenerator;
-  const storageMock = {
+  let colorGenerator: ColorGenerator;
+  const storageMock = Mock.of<LocalStorage>({
     set: jest.fn(),
     get: jest.fn(),
-  };
+  });
 
   beforeEach(() => {
-    storageMock.set.mockReset();
-    storageMock.get.mockReset();
-
+    jest.clearAllMocks();
     colorGenerator = new ColorGenerator(storageMock);
   });
 
