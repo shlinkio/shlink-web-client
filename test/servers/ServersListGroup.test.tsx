@@ -1,17 +1,19 @@
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 import { ListGroup } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import ServersListGroup from '../../src/servers/ServersListGroup';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<ServersListGroup />', () => {
-  let wrapped;
-  const createComponent = (servers) => {
+  let wrapped: ShallowWrapper;
+  const createComponent = (servers: ServerWithId[]) => {
     wrapped = shallow(<ServersListGroup servers={servers}>The list of servers</ServersListGroup>);
 
     return wrapped;
   };
 
-  afterEach(() => wrapped && wrapped.unmount());
+  afterEach(() => wrapped?.unmount());
 
   it('Renders title', () => {
     const wrapped = createComponent([]);
@@ -23,8 +25,8 @@ describe('<ServersListGroup />', () => {
 
   it('shows servers list', () => {
     const servers = [
-      { name: 'foo', id: '123' },
-      { name: 'bar', id: '456' },
+      Mock.of<ServerWithId>({ name: 'foo', id: '123' }),
+      Mock.of<ServerWithId>({ name: 'bar', id: '456' }),
     ];
     const wrapped = createComponent(servers);
 

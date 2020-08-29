@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
 import NotFound from '../../src/common/NotFound';
 
 describe('<NotFound />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const createWrapper = (props = {}) => {
     wrapper = shallow(<NotFound {...props} />);
     const content = wrapper.text();
@@ -12,7 +12,7 @@ describe('<NotFound />', () => {
     return { wrapper, content };
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('shows expected error title', () => {
     const { content } = createWrapper();

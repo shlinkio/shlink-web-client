@@ -1,15 +1,17 @@
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
+import { Mock } from 'ts-mockery';
 import asideMenuCreator from '../../src/common/AsideMenu';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<AsideMenu />', () => {
-  let wrapped;
-  const DeleteServerButton = () => '';
+  let wrapped: ShallowWrapper;
+  const DeleteServerButton = () => null;
 
   beforeEach(() => {
     const AsideMenu = asideMenuCreator(DeleteServerButton);
 
-    wrapped = shallow(<AsideMenu selectedServer={{ id: 'abc123' }} />);
+    wrapped = shallow(<AsideMenu selectedServer={Mock.of<ServerWithId>({ id: 'abc123' })} />);
   });
   afterEach(() => wrapped.unmount());
 

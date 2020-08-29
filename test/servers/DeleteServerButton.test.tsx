@@ -1,15 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { Mock } from 'ts-mockery';
 import deleteServerButtonConstruct from '../../src/servers/DeleteServerButton';
-import DeleteServerModal from '../../src/servers/DeleteServerModal';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<DeleteServerButton />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
+  const DeleteServerModal = () => null;
 
   beforeEach(() => {
     const DeleteServerButton = deleteServerButtonConstruct(DeleteServerModal);
 
-    wrapper = shallow(<DeleteServerButton server={{}} className="button" />);
+    wrapper = shallow(<DeleteServerButton server={Mock.all<ServerWithId>()} className="button" />);
   });
   afterEach(() => wrapper.unmount());
 

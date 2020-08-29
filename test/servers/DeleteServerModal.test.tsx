@@ -1,31 +1,31 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { History } from 'history';
+import { Mock } from 'ts-mockery';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<DeleteServerModal />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const deleteServerMock = jest.fn();
-  const historyMock = { push: jest.fn() };
+  const push = jest.fn();
   const toggleMock = jest.fn();
   const serverName = 'the_server_name';
 
   beforeEach(() => {
-    deleteServerMock.mockReset();
-    toggleMock.mockReset();
-    historyMock.push.mockReset();
-
     wrapper = shallow(
       <DeleteServerModal
-        server={{ name: serverName }}
+        server={Mock.of<ServerWithId>({ name: serverName })}
         toggle={toggleMock}
         isOpen={true}
         deleteServer={deleteServerMock}
-        history={historyMock}
+        history={Mock.of<History>({ push })}
       />,
     );
   });
   afterEach(() => wrapper.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('renders a modal window', () => {
     expect(wrapper.find(Modal)).toHaveLength(1);
@@ -49,7 +49,7 @@ describe('<DeleteServerModal />', () => {
 
     expect(toggleMock).toHaveBeenCalledTimes(1);
     expect(deleteServerMock).not.toHaveBeenCalled();
-    expect(historyMock.push).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
   });
 
   it('deletes server when clicking accept button', () => {
@@ -59,6 +59,6 @@ describe('<DeleteServerModal />', () => {
 
     expect(toggleMock).toHaveBeenCalledTimes(1);
     expect(deleteServerMock).toHaveBeenCalledTimes(1);
-    expect(historyMock.push).toHaveBeenCalledTimes(1);
+    expect(push).toHaveBeenCalledTimes(1);
   });
 });

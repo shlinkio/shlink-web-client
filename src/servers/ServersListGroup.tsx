@@ -1,30 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
-import { serverType } from './prop-types';
 import './ServersListGroup.scss';
+import { ServerWithId } from './data';
 
-const propTypes = {
-  servers: PropTypes.arrayOf(serverType).isRequired,
-  children: PropTypes.node.isRequired,
-};
+interface ServersListGroup {
+  servers: ServerWithId[];
+}
 
-const ServerListItem = ({ id, name }) => (
+const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   <ListGroupItem tag={Link} to={`/server/${id}/list-short-urls/1`} className="servers-list__server-item">
     {name}
     <FontAwesomeIcon icon={chevronIcon} className="servers-list__server-item-icon" />
   </ListGroupItem>
 );
 
-ServerListItem.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-};
-
-const ServersListGroup = ({ servers, children }) => (
+const ServersListGroup: FC<ServersListGroup> = ({ servers, children }) => (
   <React.Fragment>
     <div className="container">
       <h5>{children}</h5>
@@ -36,7 +29,5 @@ const ServersListGroup = ({ servers, children }) => (
     )}
   </React.Fragment>
 );
-
-ServersListGroup.propTypes = propTypes;
 
 export default ServersListGroup;

@@ -1,13 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
-import * as PropTypes from 'prop-types';
 
-const propTypes = {
-  to: PropTypes.string,
-  children: PropTypes.node,
-};
+interface NotFoundProps {
+  to?: string;
+}
 
-const NotFound = ({ to = '/', children = 'Home' }) => (
+const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
   <div className="home">
     <h2>Oops! We could not find requested route.</h2>
     <p>
@@ -18,7 +16,5 @@ const NotFound = ({ to = '/', children = 'Home' }) => (
     <Link to={to} className="btn btn-outline-primary btn-lg">{children}</Link>
   </div>
 );
-
-NotFound.propTypes = propTypes;
 
 export default NotFound;

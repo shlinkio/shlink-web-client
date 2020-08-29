@@ -1,14 +1,16 @@
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
-import Home from '../../src/common/Home';
+import { Mock } from 'ts-mockery';
+import Home, { HomeProps } from '../../src/common/Home';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<Home />', () => {
-  let wrapped;
+  let wrapped: ShallowWrapper;
   const defaultProps = {
     resetSelectedServer: jest.fn(),
     servers: {},
   };
-  const createComponent = (props) => {
+  const createComponent = (props: Partial<HomeProps> = {}) => {
     const actualProps = { ...defaultProps, ...props };
 
     wrapped = shallow(<Home {...actualProps} />);
@@ -16,7 +18,7 @@ describe('<Home />', () => {
     return wrapped;
   };
 
-  afterEach(() => wrapped && wrapped.unmount());
+  afterEach(() => wrapped?.unmount());
 
   it('shows link to create server when no servers exist', () => {
     const wrapped = createComponent();
@@ -26,8 +28,8 @@ describe('<Home />', () => {
 
   it('asks to select a server when servers exist', () => {
     const servers = {
-      1: { name: 'foo', id: '1' },
-      2: { name: 'bar', id: '2' },
+      '1a': Mock.of<ServerWithId>({ name: 'foo', id: '1' }),
+      '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2' }),
     };
     const wrapped = createComponent({ servers });
     const span = wrapped.find('span');

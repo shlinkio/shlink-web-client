@@ -12,7 +12,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
 
-  bottle.serviceFactory('ScrollToTop', ScrollToTop, 'window');
+  bottle.serviceFactory('ScrollToTop', ScrollToTop);
   bottle.decorator('ScrollToTop', withRouter);
 
   bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');

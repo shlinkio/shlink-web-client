@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import './Home.scss';
 import ServersListGroup from '../servers/ServersListGroup';
+import { ServersMap } from '../servers/reducers/servers';
+import './Home.scss';
 
-const propTypes = {
-  resetSelectedServer: PropTypes.func,
-  servers: PropTypes.object,
-};
+export interface HomeProps {
+  resetSelectedServer: Function;
+  servers: ServersMap;
+}
 
-const Home = ({ resetSelectedServer, servers }) => {
+const Home = ({ resetSelectedServer, servers }: HomeProps) => {
   const serversList = values(servers);
   const hasServers = !isEmpty(serversList);
 
@@ -28,7 +28,5 @@ const Home = ({ resetSelectedServer, servers }) => {
     </div>
   );
 };
-
-Home.propTypes = propTypes;
 
 export default Home;

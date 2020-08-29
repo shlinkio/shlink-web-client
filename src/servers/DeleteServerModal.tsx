@@ -1,19 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { serverType } from './prop-types';
+import { RouterProps } from 'react-router';
+import { ServerWithId } from './data';
 
-const propTypes = {
-  toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  server: serverType,
-  deleteServer: PropTypes.func,
-  history: PropTypes.shape({
-    push: PropTypes.func,
-  }),
-};
+export interface DeleteServerModalProps {
+  server: ServerWithId;
+  toggle: () => void;
+  isOpen: boolean;
+}
 
-const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) => {
+interface DeleteServerModalConnectProps extends DeleteServerModalProps, RouterProps {
+  deleteServer: (server: ServerWithId) => void;
+}
+
+const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }: DeleteServerModalConnectProps) => {
   const closeModal = () => {
     deleteServer(server);
     toggle();
@@ -39,7 +39,5 @@ const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }) =>
     </Modal>
   );
 };
-
-DeleteServerModal.propTypes = propTypes;
 
 export default DeleteServerModal;
