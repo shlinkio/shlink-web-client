@@ -1,22 +1,21 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { Mock } from 'ts-mockery';
 import shortUrlsCreator from '../../src/short-urls/ShortUrls';
 import Paginator from '../../src/short-urls/Paginator';
+import { ShortUrlsListProps } from '../../src/short-urls/ShortUrlsList';
 
 describe('<ShortUrls />', () => {
-  let wrapper;
-  const SearchBar = () => '';
-  const ShortUrlsList = () => '';
+  let wrapper: ShallowWrapper;
+  const SearchBar = () => null;
+  const ShortUrlsList = () => null;
 
   beforeEach(() => {
-    const params = {
-      serverId: '1',
-      page: '1',
-    };
-
     const ShortUrls = shortUrlsCreator(SearchBar, ShortUrlsList);
 
-    wrapper = shallow(<ShortUrls match={{ params }} shortUrlsList={{ data: [] }} />);
+    wrapper = shallow(
+      <ShortUrls {...Mock.all<ShortUrlsListProps>()} />,
+    );
   });
   afterEach(() => wrapper.unmount());
 

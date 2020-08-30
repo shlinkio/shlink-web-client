@@ -7,6 +7,7 @@ import { ShortUrl, ShortUrlIdentifier } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkShortUrlsResponse } from '../../utils/services/types';
 import { EditShortUrlTagsAction, SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 import { SHORT_URL_META_EDITED, ShortUrlMetaEditedAction, shortUrlMetaType } from './shortUrlMeta';
@@ -30,18 +31,14 @@ export const shortUrlType = PropTypes.shape({
   domain: PropTypes.string,
 });
 
-interface ShortUrlsData {
-  data: ShortUrl[];
-}
-
 export interface ShortUrlsList {
-  shortUrls: ShortUrlsData;
+  shortUrls?: ShlinkShortUrlsResponse;
   loading: boolean;
   error: boolean;
 }
 
 export interface ListShortUrlsAction extends Action<string> {
-  shortUrls: ShortUrlsData;
+  shortUrls: ShlinkShortUrlsResponse;
   params: ShortUrlsListParams;
 }
 
@@ -50,9 +47,6 @@ export type ListShortUrlsCombinedAction = (
 );
 
 const initialState: ShortUrlsList = {
-  shortUrls: {
-    data: [],
-  },
   loading: true,
   error: false,
 };
@@ -60,7 +54,7 @@ const initialState: ShortUrlsList = {
 const setPropFromActionOnMatchingShortUrl = <T extends ShortUrlIdentifier>(prop: keyof T) => (
   state: ShortUrlsList,
   { shortCode, domain, [prop]: propValue }: T,
-): ShortUrlsList => assocPath(
+): ShortUrlsList => !state.shortUrls ? state : assocPath(
   [ 'shortUrls', 'data' ],
   state.shortUrls.data.map(
     (shortUrl: ShortUrl) =>
@@ -71,9 +65,9 @@ const setPropFromActionOnMatchingShortUrl = <T extends ShortUrlIdentifier>(prop:
 
 export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
-  [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true, shortUrls: { data: [] } }),
+  [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true }),
   [LIST_SHORT_URLS]: (_, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
-  [SHORT_URL_DELETED]: (state, { shortCode, domain }) => assocPath(
+  [SHORT_URL_DELETED]: (state, { shortCode, domain }) => !state.shortUrls ? state : assocPath(
     [ 'shortUrls', 'data' ],
     reject((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
     state,

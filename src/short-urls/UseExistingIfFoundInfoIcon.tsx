@@ -5,7 +5,7 @@ import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import './UseExistingIfFoundInfoIcon.scss';
 import { useToggle } from '../utils/helpers/hooks';
 
-const renderInfoModal = (isOpen, toggle) => (
+const InfoModal = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => (
   <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
     <ModalHeader toggle={toggle}>Info</ModalHeader>
     <ModalBody>
@@ -45,7 +45,7 @@ const UseExistingIfFoundInfoIcon = () => {
       <span title="What does this mean?">
         <FontAwesomeIcon icon={infoIcon} style={{ cursor: 'pointer' }} onClick={toggleModal} />
       </span>
-      {renderInfoModal(isModalOpen, toggleModal)}
+      <InfoModal isOpen={isModalOpen} toggle={toggleModal} />
     </React.Fragment>
   );
 };

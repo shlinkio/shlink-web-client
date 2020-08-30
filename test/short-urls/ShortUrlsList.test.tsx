@@ -1,12 +1,14 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
-import shortUrlsListCreator, { SORTABLE_FIELDS } from '../../src/short-urls/ShortUrlsList';
+import { Mock } from 'ts-mockery';
+import shortUrlsListCreator, { ShortUrlsListProps, SORTABLE_FIELDS } from '../../src/short-urls/ShortUrlsList';
+import { ShortUrl } from '../../src/short-urls/data';
 
 describe('<ShortUrlsList />', () => {
-  let wrapper;
-  const ShortUrlsRow = () => '';
+  let wrapper: ShallowWrapper;
+  const ShortUrlsRow = () => null;
   const listShortUrlsMock = jest.fn();
   const resetShortUrlParamsMock = jest.fn();
 
@@ -15,6 +17,7 @@ describe('<ShortUrlsList />', () => {
   beforeEach(() => {
     wrapper = shallow(
       <ShortUrlsList
+        {...Mock.all<ShortUrlsListProps>()}
         listShortUrls={listShortUrlsMock}
         resetShortUrlParams={resetShortUrlParamsMock}
         shortUrlsListParams={{
@@ -22,29 +25,27 @@ describe('<ShortUrlsList />', () => {
           tags: [ 'test tag' ],
           searchTerm: 'example.com',
         }}
-        match={{ params: {} }}
-        location={{}}
+        match={{ params: {} } as any}
+        location={{} as any}
         loading={false}
         error={false}
         shortUrlsList={
           [
-            {
+            Mock.of<ShortUrl>({
               shortCode: 'testShortCode',
               shortUrl: 'https://www.example.com/testShortUrl',
               longUrl: 'https://www.example.com/testLongUrl',
               tags: [ 'test tag' ],
-            },
+            }),
           ]
         }
-        mercureInfo={{ loading: true }}
+        mercureInfo={{ loading: true } as any}
       />,
     );
   });
 
-  afterEach(() => {
-    jest.resetAllMocks();
-    wrapper && wrapper.unmount();
-  });
+  afterEach(jest.resetAllMocks);
+  afterEach(() => wrapper?.unmount());
 
   it('wraps a ShortUrlsList with 1 ShortUrlsRow', () => {
     expect(wrapper.find(ShortUrlsRow)).toHaveLength(1);
@@ -71,11 +72,11 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('should render 6 table header cells with conditional order by icon', () => {
-    const getThElementForSortableField = (sortableField) => wrapper.find('table')
+    const getThElementForSortableField = (sortableField: string) => wrapper.find('table')
       .find('thead')
       .find('tr')
       .find('th')
-      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[sortableField]));
+      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[sortableField as keyof typeof SORTABLE_FIELDS]));
 
     Object.keys(SORTABLE_FIELDS).forEach((sortableField) => {
       expect(getThElementForSortableField(sortableField).find(FontAwesomeIcon)).toHaveLength(0);

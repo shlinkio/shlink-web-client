@@ -19,13 +19,13 @@ import { editShortUrlTags, resetShortUrlsTags } from '../reducers/shortUrlTags';
 import { editShortUrlMeta, resetShortUrlMeta } from '../reducers/shortUrlMeta';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
 import { editShortUrl } from '../reducers/shortUrlEdition';
-import { ConnectDecorator } from '../../container/types';
+import { ConnectDecorator, ShlinkState } from '../../container/types';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
   bottle.decorator('ShortUrls', reduxConnect(
-    (state: any) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
+    (state: ShlinkState) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
   ));
 
   // Services

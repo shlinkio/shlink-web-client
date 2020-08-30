@@ -11,14 +11,12 @@ import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrl
 import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import { ShlinkShortUrlsResponse } from '../../../src/utils/services/types';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
     it('returns loading on LIST_SHORT_URLS_START', () =>
       expect(reducer(undefined, { type: LIST_SHORT_URLS_START } as any)).toEqual({
-        shortUrls: {
-          data: [],
-        },
         loading: true,
         error: false,
       }));
@@ -32,9 +30,6 @@ describe('shortUrlsListReducer', () => {
 
     it('returns error on LIST_SHORT_URLS_ERROR', () =>
       expect(reducer(undefined, { type: LIST_SHORT_URLS_ERROR } as any)).toEqual({
-        shortUrls: {
-          data: [],
-        },
         loading: false,
         error: true,
       }));
@@ -43,13 +38,13 @@ describe('shortUrlsListReducer', () => {
       const shortCode = 'abc123';
       const tags = [ 'foo', 'bar', 'baz' ];
       const state = {
-        shortUrls: {
+        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
             Mock.of<ShortUrl>({ shortCode, tags: [] }),
             Mock.of<ShortUrl>({ shortCode, tags: [], domain: 'example.com' }),
             Mock.of<ShortUrl>({ shortCode: 'foo', tags: [] }),
           ],
-        },
+        }),
         loading: false,
         error: false,
       };
@@ -75,13 +70,13 @@ describe('shortUrlsListReducer', () => {
         validSince: '2020-05-05',
       };
       const state = {
-        shortUrls: {
+        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
             Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 10 }, domain }),
             Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 50 } }),
             Mock.of<ShortUrl>({ shortCode: 'foo', meta: {} }),
           ],
-        },
+        }),
         loading: false,
         error: false,
       };
@@ -102,13 +97,13 @@ describe('shortUrlsListReducer', () => {
     it('removes matching URL on SHORT_URL_DELETED', () => {
       const shortCode = 'abc123';
       const state = {
-        shortUrls: {
+        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
             Mock.of<ShortUrl>({ shortCode }),
             Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
             Mock.of<ShortUrl>({ shortCode: 'foo' }),
           ],
-        },
+        }),
         loading: false,
         error: false,
       };
@@ -129,13 +124,13 @@ describe('shortUrlsListReducer', () => {
         visitsCount: 11,
       };
       const state = {
-        shortUrls: {
+        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
             Mock.of<ShortUrl>({ shortCode, domain: 'example.com', visitsCount: 5 }),
             Mock.of<ShortUrl>({ shortCode, visitsCount: 10 }),
             Mock.of<ShortUrl>({ shortCode: 'foo', visitsCount: 8 }),
           ],
-        },
+        }),
         loading: false,
         error: false,
       };

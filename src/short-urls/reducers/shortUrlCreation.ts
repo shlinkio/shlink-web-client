@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { GetState } from '../../container/types';
 import { ShortUrl, ShortUrlData } from '../data';
@@ -11,15 +10,6 @@ export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ER
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlCreation interface instead */
-export const createShortUrlResultType = PropTypes.shape({
-  result: PropTypes.shape({
-    shortUrl: PropTypes.string,
-  }),
-  saving: PropTypes.bool,
-  error: PropTypes.bool,
-});
 
 export interface ShortUrlCreation {
   result: ShortUrl | null;

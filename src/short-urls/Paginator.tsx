@@ -1,20 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { pageIsEllipsis, keyForPage, progressivePagination } from '../utils/helpers/pagination';
+import { ShlinkPaginator } from '../utils/services/types';
 import './Paginator.scss';
 
-const propTypes = {
-  serverId: PropTypes.string.isRequired,
-  paginator: PropTypes.shape({
-    currentPage: PropTypes.number,
-    pagesCount: PropTypes.number,
-  }),
-};
+interface PaginatorProps {
+  paginator?: ShlinkPaginator;
+  serverId: string;
+}
 
-const Paginator = ({ paginator = {}, serverId }) => {
-  const { currentPage, pagesCount = 0 } = paginator;
+const Paginator = ({ paginator, serverId }: PaginatorProps) => {
+  const { currentPage = 0, pagesCount = 0 } = paginator ?? {};
 
   if (pagesCount <= 1) {
     return null;
@@ -56,7 +53,5 @@ const Paginator = ({ paginator = {}, serverId }) => {
     </Pagination>
   );
 };
-
-Paginator.propTypes = propTypes;
 
 export default Paginator;

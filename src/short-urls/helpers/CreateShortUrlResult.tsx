@@ -5,11 +5,11 @@ import React, { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Card, CardBody, Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';
-import './CreateShortUrlResult.scss';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
+import './CreateShortUrlResult.scss';
 
-interface CreateShortUrlResultProps extends ShortUrlCreation {
-  resetCreateShortUrl: Function;
+export interface CreateShortUrlResultProps extends ShortUrlCreation {
+  resetCreateShortUrl: () => void;
 }
 
 const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (

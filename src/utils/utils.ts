@@ -3,7 +3,7 @@ import { SyntheticEvent } from 'react';
 
 export type OrderDir = 'ASC' | 'DESC' | undefined;
 
-export const determineOrderDir = (currentField: string, newField: string, currentOrderDir?: OrderDir): OrderDir => {
+export const determineOrderDir = (currentField: string, newField?: string, currentOrderDir?: OrderDir): OrderDir => {
   if (currentField !== newField) {
     return 'ASC';
   }

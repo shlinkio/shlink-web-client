@@ -1,29 +1,32 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import moment from 'moment';
 import { identity } from 'ramda';
+import { Mock } from 'ts-mockery';
 import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
 import DateInput from '../../src/utils/DateInput';
+import { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrl />', () => {
-  let wrapper;
-  const TagsSelector = () => '';
-  const shortUrlCreationResult = {
-    loading: false,
-  };
-  const createShortUrl = jest.fn(() => Promise.resolve());
+  let wrapper: ShallowWrapper;
+  const TagsSelector = () => null;
+  const shortUrlCreationResult = Mock.all<ShortUrlCreation>();
+  const createShortUrl = jest.fn(async () => Promise.resolve());
 
   beforeEach(() => {
-    const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => '', () => '');
+    const CreateShortUrl = createShortUrlsCreator(TagsSelector, () => null, () => null);
 
     wrapper = shallow(
-      <CreateShortUrl shortUrlCreationResult={shortUrlCreationResult} createShortUrl={createShortUrl} />,
+      <CreateShortUrl
+        shortUrlCreationResult={shortUrlCreationResult}
+        createShortUrl={createShortUrl}
+        selectedServer={null}
+        resetCreateShortUrl={() => {}}
+      />,
     );
   });
-  afterEach(() => {
-    wrapper.unmount();
-    createShortUrl.mockClear();
-  });
+  afterEach(() => wrapper.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('saves short URL with data set in form controls', () => {
     const validSince = moment('2017-01-01');

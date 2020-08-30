@@ -1,12 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { PaginationItem } from 'reactstrap';
 import Paginator from '../../src/short-urls/Paginator';
 
 describe('<Paginator />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders nothing if the number of pages is below 2', () => {
     wrapper = shallow(<Paginator serverId="abc123" />);
