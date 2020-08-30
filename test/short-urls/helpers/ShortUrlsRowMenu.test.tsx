@@ -1,43 +1,39 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { ButtonDropdown, DropdownItem } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import createShortUrlsRowMenu from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
 import PreviewModal from '../../../src/short-urls/helpers/PreviewModal';
 import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
+import { ReachableServer } from '../../../src/servers/data';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<ShortUrlsRowMenu />', () => {
-  let wrapper;
-  const DeleteShortUrlModal = () => '';
-  const EditTagsModal = () => '';
-  const EditMetaModal = () => '';
-  const EditShortUrlModal = () => '';
-  const onCopyToClipboard = jest.fn();
-  const selectedServer = { id: 'abc123' };
-  const shortUrl = {
+  let wrapper: ShallowWrapper;
+  const DeleteShortUrlModal = () => null;
+  const EditTagsModal = () => null;
+  const EditMetaModal = () => null;
+  const EditShortUrlModal = () => null;
+  const selectedServer = Mock.of<ReachableServer>({ id: 'abc123' });
+  const shortUrl = Mock.of<ShortUrl>({
     shortCode: 'abc123',
     shortUrl: 'https://doma.in/abc123',
-  };
+  });
   const createWrapper = () => {
     const ShortUrlsRowMenu = createShortUrlsRowMenu(
       DeleteShortUrlModal,
       EditTagsModal,
       EditMetaModal,
       EditShortUrlModal,
-      () => '',
+      () => null,
     );
 
-    wrapper = shallow(
-      <ShortUrlsRowMenu
-        selectedServer={selectedServer}
-        shortUrl={shortUrl}
-        onCopyToClipboard={onCopyToClipboard}
-      />,
-    );
+    wrapper = shallow(<ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders modal windows', () => {
     const wrapper = createWrapper();
@@ -62,8 +58,8 @@ describe('<ShortUrlsRowMenu />', () => {
     expect(items.find('[divider]')).toHaveLength(1);
   });
 
-  describe('toggles state when toggling modal windows', () => {
-    const assert = (modalComponent) => {
+  describe('toggles state when toggling modals or the dropdown', () => {
+    const assert = (modalComponent: Function) => {
       const wrapper = createWrapper();
 
       expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(false);
@@ -76,13 +72,6 @@ describe('<ShortUrlsRowMenu />', () => {
     it('PreviewModal', () => assert(PreviewModal));
     it('QrCodeModal', () => assert(QrCodeModal));
     it('EditShortUrlModal', () => assert(EditShortUrlModal));
-  });
-
-  it('toggles dropdown state when toggling dropdown', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(false);
-    wrapper.find(ButtonDropdown).prop('toggle')();
-    expect(wrapper.find(ButtonDropdown).prop('isOpen')).toEqual(true);
+    it('EditShortUrlModal', () => assert(ButtonDropdown));
   });
 });

@@ -1,14 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
+import { Mock } from 'ts-mockery';
 import PreviewModal from '../../../src/short-urls/helpers/PreviewModal';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<PreviewModal />', () => {
-  let wrapper;
-  const url = 'https://doma.in/abc123';
+  let wrapper: ShallowWrapper;
+  const shortUrl = 'https://doma.in/abc123';
 
   beforeEach(() => {
-    wrapper = shallow(<PreviewModal url={url} />);
+    wrapper = shallow(<PreviewModal shortUrl={Mock.of<ShortUrl>({ shortUrl })} isOpen={true} toggle={() => {}} />);
   });
   afterEach(() => wrapper.unmount());
 
@@ -16,13 +18,13 @@ describe('<PreviewModal />', () => {
     const externalLink = wrapper.find(ExternalLink);
 
     expect(externalLink).toHaveLength(1);
-    expect(externalLink.prop('href')).toEqual(url);
+    expect(externalLink.prop('href')).toEqual(shortUrl);
   });
 
   it('displays an image with the preview of the URL', () => {
     const img = wrapper.find('img');
 
     expect(img).toHaveLength(1);
-    expect(img.prop('src')).toEqual(`${url}/preview`);
+    expect(img.prop('src')).toEqual(`${shortUrl}/preview`);
   });
 });

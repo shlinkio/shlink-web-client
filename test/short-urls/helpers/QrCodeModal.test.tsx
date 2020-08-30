@@ -1,14 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
+import { Mock } from 'ts-mockery';
 import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<QrCodeModal />', () => {
-  let wrapper;
-  const url = 'https://doma.in/abc123';
+  let wrapper: ShallowWrapper;
+  const shortUrl = 'https://doma.in/abc123';
 
   beforeEach(() => {
-    wrapper = shallow(<QrCodeModal url={url} />);
+    wrapper = shallow(<QrCodeModal shortUrl={Mock.of<ShortUrl>({ shortUrl })} isOpen={true} toggle={() => {}} />);
   });
   afterEach(() => wrapper.unmount());
 
@@ -16,13 +18,13 @@ describe('<QrCodeModal />', () => {
     const externalLink = wrapper.find(ExternalLink);
 
     expect(externalLink).toHaveLength(1);
-    expect(externalLink.prop('href')).toEqual(url);
+    expect(externalLink.prop('href')).toEqual(shortUrl);
   });
 
   it('displays an image with the QR code of the URL', () => {
     const img = wrapper.find('img');
 
     expect(img).toHaveLength(1);
-    expect(img.prop('src')).toEqual(`${url}/qr-code`);
+    expect(img.prop('src')).toEqual(`${shortUrl}/qr-code`);
   });
 });

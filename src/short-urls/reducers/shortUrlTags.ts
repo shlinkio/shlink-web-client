@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
@@ -12,14 +11,6 @@ export const EDIT_SHORT_URL_TAGS_ERROR = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAG
 export const SHORT_URL_TAGS_EDITED = 'shlink/shortUrlTags/SHORT_URL_TAGS_EDITED';
 export const RESET_EDIT_SHORT_URL_TAGS = 'shlink/shortUrlTags/RESET_EDIT_SHORT_URL_TAGS';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlTags interface */
-export const shortUrlTagsType = PropTypes.shape({
-  shortCode: PropTypes.string,
-  tags: PropTypes.arrayOf(PropTypes.string).isRequired,
-  saving: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
-});
 
 export interface ShortUrlTags {
   shortCode: string | null;

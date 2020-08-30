@@ -1,27 +1,31 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrlTags } from '../../../src/short-urls/reducers/shortUrlTags';
+import { OptionalString } from '../../../src/utils/utils';
 
 describe('<EditTagsModal />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const shortCode = 'abc123';
-  const TagsSelector = () => '';
-  const editShortUrlTags = jest.fn(() => Promise.resolve());
+  const TagsSelector = () => null;
+  const editShortUrlTags = jest.fn(async () => Promise.resolve());
   const resetShortUrlsTags = jest.fn();
   const toggle = jest.fn();
-  const createWrapper = (shortUrlTags, domain) => {
+  const createWrapper = (shortUrlTags: ShortUrlTags, domain?: OptionalString) => {
     const EditTagsModal = createEditTagsModal(TagsSelector);
 
     wrapper = shallow(
       <EditTagsModal
         isOpen={true}
-        shortUrl={{
+        shortUrl={Mock.of<ShortUrl>({
           tags: [],
           shortCode,
           domain,
-          originalUrl: 'https://long-domain.com/foo/bar',
-        }}
+          longUrl: 'https://long-domain.com/foo/bar',
+        })}
         shortUrlTags={shortUrlTags}
         toggle={toggle}
         editShortUrlTags={editShortUrlTags}
@@ -32,10 +36,8 @@ describe('<EditTagsModal />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    jest.clearAllMocks();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('renders tags selector and save button when loaded', () => {
     const wrapper = createWrapper({
@@ -64,7 +66,12 @@ describe('<EditTagsModal />', () => {
     expect(saveBtn.text()).toEqual('Saving tags...');
   });
 
-  it.each([[ undefined ], [ null ], [ 'example.com' ]])('saves tags when save button is clicked', (domain, done) => {
+  it.each([
+    [ undefined ],
+    [ null ],
+    [ 'example.com' ],
+    // @ts-expect-error
+  ])('saves tags when save button is clicked', (domain: OptionalString, done: jest.DoneCallback) => {
     const wrapper = createWrapper({
       shortCode,
       tags: [],

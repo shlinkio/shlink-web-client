@@ -1,24 +1,19 @@
 import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
-import { serverType } from '../../servers/prop-types';
 import { prettify } from '../../utils/helpers/numbers';
-import { shortUrlType } from '../reducers/shortUrlsList';
-import VisitStatsLink from './VisitStatsLink';
+import VisitStatsLink, { VisitStatsLinkProps } from './VisitStatsLink';
 import './ShortUrlVisitsCount.scss';
 
-const propTypes = {
-  visitsCount: PropTypes.number.isRequired,
-  shortUrl: shortUrlType,
-  selectedServer: serverType,
-  active: PropTypes.bool,
-};
+export interface ShortUrlVisitsCount extends VisitStatsLinkProps {
+  visitsCount: number;
+  active?: boolean;
+}
 
-const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }) => {
-  const maxVisits = shortUrl && shortUrl.meta && shortUrl.meta.maxVisits;
+const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCount) => {
+  const maxVisits = shortUrl?.meta?.maxVisits;
   const visitsLink = (
     <VisitStatsLink selectedServer={selectedServer} shortUrl={shortUrl}>
       <strong
@@ -34,7 +29,7 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
   }
 
   const prettifiedMaxVisits = prettify(maxVisits);
-  const tooltipRef = useRef();
+  const tooltipRef = useRef<HTMLElement | null>();
 
   return (
     <React.Fragment>
@@ -52,13 +47,11 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
           </sup>
         </small>
       </span>
-      <UncontrolledTooltip target={() => tooltipRef.current} placement="bottom">
+      <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
         This short URL will not accept more than <b>{prettifiedMaxVisits}</b> visits.
       </UncontrolledTooltip>
     </React.Fragment>
   );
 };
-
-ShortUrlVisitsCount.propTypes = propTypes;
 
 export default ShortUrlVisitsCount;

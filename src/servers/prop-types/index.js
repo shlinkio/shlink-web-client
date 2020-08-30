@@ -14,6 +14,7 @@ const notFoundServerType = PropTypes.shape({
   serverNotFound: PropTypes.bool.isRequired,
 });
 
+/** @deprecated Use SelectedServer type instead */
 export const serverType = PropTypes.oneOfType([
   regularServerType,
   notFoundServerType,

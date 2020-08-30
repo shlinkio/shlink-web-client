@@ -1,40 +1,51 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import moment from 'moment';
 import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
+import { Mock } from 'ts-mockery';
 import { ExternalLink } from 'react-external-link';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import Tag from '../../../src/tags/helpers/Tag';
+import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { ReachableServer } from '../../../src/servers/data';
 
 describe('<ShortUrlsRow />', () => {
-  let wrapper;
-  const mockFunction = () => '';
+  let wrapper: ShallowWrapper;
+  const mockFunction = () => null;
   const ShortUrlsRowMenu = mockFunction;
   const stateFlagTimeout = jest.fn(() => true);
-  const useStateFlagTimeout = jest.fn(() => [ false, stateFlagTimeout ]);
-  const colorGenerator = {
-    getColorForKey: mockFunction,
-    setColorForKey: mockFunction,
-  };
-  const server = {
+  const useStateFlagTimeout = jest.fn(() => [ false, stateFlagTimeout ]) as StateFlagTimeout;
+  const colorGenerator = Mock.of<ColorGenerator>({
+    getColorForKey: jest.fn(),
+    setColorForKey: jest.fn(),
+  });
+  const server = Mock.of<ReachableServer>({
     url: 'https://doma.in',
-  };
-  const shortUrl = {
+  });
+  const shortUrl: ShortUrl = {
     shortCode: 'abc123',
     shortUrl: 'http://doma.in/abc123',
     longUrl: 'http://foo.com/bar',
     dateCreated: moment('2018-05-23 18:30:41').format(),
     tags: [ 'nodejs', 'reactjs' ],
     visitsCount: 45,
+    domain: null,
+    meta: {
+      validSince: null,
+      validUntil: null,
+      maxVisits: null,
+    },
   };
 
   beforeEach(() => {
     const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
 
     wrapper = shallow(
-      <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selecrtedServer={server} shortUrl={shortUrl} />,
+      <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selectedServer={server} shortUrl={shortUrl} />,
     );
   });
   afterEach(() => wrapper.unmount());

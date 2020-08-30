@@ -16,6 +16,7 @@ export interface ShortUrl {
   shortCode: string;
   shortUrl: string;
   longUrl: string;
+  dateCreated: string;
   visitsCount: number;
   meta: Required<Nullable<ShortUrlMeta>>;
   tags: string[];

@@ -1,22 +1,24 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
+import { Mock } from 'ts-mockery';
 import ShortUrlVisitsCount from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<ShortUrlVisitsCount />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
 
-  const createWrapper = (visitsCount, shortUrl) => {
+  const createWrapper = (visitsCount: number, shortUrl: ShortUrl) => {
     wrapper = shallow(<ShortUrlVisitsCount visitsCount={visitsCount} shortUrl={shortUrl} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it.each([ undefined, {}])('just returns visits when no maxVisits is provided', (meta) => {
     const visitsCount = 45;
-    const wrapper = createWrapper(visitsCount, { meta });
+    const wrapper = createWrapper(visitsCount, Mock.of<ShortUrl>({ meta }));
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 
@@ -31,7 +33,7 @@ describe('<ShortUrlVisitsCount />', () => {
     const visitsCount = 45;
     const maxVisits = 500;
     const meta = { maxVisits };
-    const wrapper = createWrapper(visitsCount, { meta });
+    const wrapper = createWrapper(visitsCount, Mock.of<ShortUrl>({ meta }));
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');
     const maxVisitsTooltip = wrapper.find(UncontrolledTooltip);
 

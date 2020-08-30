@@ -6,12 +6,12 @@ import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCrea
 import { ShortUrl, ShortUrlIdentifier } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { EditShortUrlTagsAction, SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
 import { SHORT_URL_META_EDITED, ShortUrlMetaEditedAction, shortUrlMetaType } from './shortUrlMeta';
 import { SHORT_URL_EDITED, ShortUrlEditedAction } from './shortUrlEdition';
 import { ShortUrlsListParams } from './shortUrlsListParams';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';

@@ -1,28 +1,20 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import PropTypes from 'prop-types';
 import { ExternalLink } from 'react-external-link';
+import { ShortUrlModalProps } from '../data';
 import './QrCodeModal.scss';
 
-const propTypes = {
-  url: PropTypes.string,
-  toggle: PropTypes.func,
-  isOpen: PropTypes.bool,
-};
-
-const QrCodeModal = ({ url, toggle, isOpen }) => (
+const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen }: ShortUrlModalProps) => (
   <Modal isOpen={isOpen} toggle={toggle} centered>
     <ModalHeader toggle={toggle}>
-      QR code for <ExternalLink href={url}>{url}</ExternalLink>
+      QR code for <ExternalLink href={shortUrl}>{shortUrl}</ExternalLink>
     </ModalHeader>
     <ModalBody>
       <div className="text-center">
-        <img src={`${url}/qr-code`} className="qr-code-modal__img" alt="QR code" />
+        <img src={`${shortUrl}/qr-code`} className="qr-code-modal__img" alt="QR code" />
       </div>
     </ModalBody>
   </Modal>
 );
-
-QrCodeModal.propTypes = propTypes;
 
 export default QrCodeModal;
