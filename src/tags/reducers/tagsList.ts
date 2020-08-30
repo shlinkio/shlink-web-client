@@ -1,5 +1,4 @@
 import { isEmpty, reject } from 'ramda';
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
@@ -16,18 +15,6 @@ export const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
 export const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
 export const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use TagsList interface instead */
-export const TagsListType = PropTypes.shape({
-  tags: PropTypes.arrayOf(PropTypes.string),
-  filteredTags: PropTypes.arrayOf(PropTypes.string),
-  stats: PropTypes.objectOf(PropTypes.shape({
-    shortUrlsCount: PropTypes.number,
-    visitsCount: PropTypes.number,
-  })), // Record
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-});
 
 type TagsStatsMap = Record<string, TagStats>;
 

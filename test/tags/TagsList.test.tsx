@@ -1,30 +1,34 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
-import createTagsList from '../../src/tags/TagsList';
+import { Mock } from 'ts-mockery';
+import createTagsList, { TagsListProps } from '../../src/tags/TagsList';
 import Message from '../../src/utils/Message';
 import SearchField from '../../src/utils/SearchField';
 import { rangeOf } from '../../src/utils/utils';
+import { TagsList } from '../../src/tags/reducers/tagsList';
 
 describe('<TagsList />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const filterTags = jest.fn();
-  const TagCard = () => '';
-  const createWrapper = (tagsList) => {
-    const params = { serverId: '1' };
-    const TagsList = createTagsList(TagCard);
+  const TagCard = () => null;
+  const createWrapper = (tagsList: Partial<TagsList>) => {
+    const TagsListComp = createTagsList(TagCard);
 
     wrapper = shallow(
-      <TagsList forceListTags={identity} filterTags={filterTags} match={{ params }} tagsList={tagsList} />,
+      <TagsListComp
+        {...Mock.all<TagsListProps>()}
+        forceListTags={identity}
+        filterTags={filterTags}
+        tagsList={Mock.of<TagsList>(tagsList)}
+      />,
     );
 
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    filterTags.mockReset();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('shows a loading message when tags are being loaded', () => {
     const wrapper = createWrapper({ loading: true });

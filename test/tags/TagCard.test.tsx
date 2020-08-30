@@ -1,11 +1,14 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import createTagCard from '../../src/tags/TagCard';
 import TagBullet from '../../src/tags/helpers/TagBullet';
+import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { ReachableServer } from '../../src/servers/data';
 
 describe('<TagCard />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const tagStats = {
     shortUrlsCount: 48,
     visitsCount: 23257,
@@ -14,9 +17,17 @@ describe('<TagCard />', () => {
   const EditTagModal = jest.fn();
 
   beforeEach(() => {
-    const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => '', {});
+    const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => null, Mock.all<ColorGenerator>());
 
-    wrapper = shallow(<TagCard tag="ssr" selectedServer={{ id: 1, serverNotFound: false }} tagStats={tagStats} />);
+    wrapper = shallow(
+      <TagCard
+        tag="ssr"
+        selectedServer={Mock.of<ReachableServer>({ id: '1' })}
+        tagStats={tagStats}
+        displayed={true}
+        toggle={() => {}}
+      />,
+    );
   });
 
   afterEach(() => wrapper.unmount());
