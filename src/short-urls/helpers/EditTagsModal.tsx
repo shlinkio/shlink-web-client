@@ -4,6 +4,7 @@ import { ExternalLink } from 'react-external-link';
 import { ShortUrlTags } from '../reducers/shortUrlTags';
 import { ShortUrlModalProps } from '../data';
 import { OptionalString } from '../../utils/utils';
+import { TagsSelectorProps } from '../../tags/helpers/TagsSelector';
 
 interface EditTagsModalProps extends ShortUrlModalProps {
   shortUrlTags: ShortUrlTags;
@@ -11,7 +12,7 @@ interface EditTagsModalProps extends ShortUrlModalProps {
   resetShortUrlsTags: () => void;
 }
 
-const EditTagsModal = (TagsSelector: FC<any>) => ( // TODO Use TagsSelector type when available
+const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
   { isOpen, toggle, shortUrl, shortUrlTags, editShortUrlTags, resetShortUrlsTags }: EditTagsModalProps,
 ) => {
   const [ selectedTags, setSelectedTags ] = useState<string[]>(shortUrl.tags || []);

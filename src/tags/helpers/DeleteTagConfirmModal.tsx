@@ -1,18 +1,17 @@
 import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import PropTypes from 'prop-types';
-import { tagDeleteType } from '../reducers/tagDelete';
+import { TagDeletion } from '../reducers/tagDelete';
+import { TagModalProps } from '../data';
 
-const propTypes = {
-  tag: PropTypes.string.isRequired,
-  toggle: PropTypes.func.isRequired,
-  isOpen: PropTypes.bool.isRequired,
-  deleteTag: PropTypes.func,
-  tagDelete: tagDeleteType,
-  tagDeleted: PropTypes.func,
-};
+interface DeleteTagConfirmModalProps extends TagModalProps {
+  deleteTag: (tag: string) => Promise<void>;
+  tagDeleted: (tag: string) => void;
+  tagDelete: TagDeletion;
+}
 
-const DeleteTagConfirmModal = ({ tag, toggle, isOpen, deleteTag, tagDelete, tagDeleted }) => {
+const DeleteTagConfirmModal = (
+  { tag, toggle, isOpen, deleteTag, tagDelete, tagDeleted }: DeleteTagConfirmModalProps,
+) => {
   const doDelete = async () => {
     await deleteTag(tag);
     tagDeleted(tag);
@@ -41,7 +40,5 @@ const DeleteTagConfirmModal = ({ tag, toggle, isOpen, deleteTag, tagDelete, tagD
     </Modal>
   );
 };
-
-DeleteTagConfirmModal.propTypes = propTypes;
 
 export default DeleteTagConfirmModal;

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
@@ -10,12 +9,6 @@ export const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
 export const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
 export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use TagDeletion interface */
-export const tagDeleteType = PropTypes.shape({
-  deleting: PropTypes.bool,
-  error: PropTypes.bool,
-});
 
 export interface TagDeletion {
   deleting: boolean;

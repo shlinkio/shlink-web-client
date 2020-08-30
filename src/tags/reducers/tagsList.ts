@@ -5,9 +5,10 @@ import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCrea
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkTags } from '../../utils/services/types';
 import { GetState } from '../../container/types';
+import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { TagStats } from '../data';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -28,19 +29,19 @@ export const TagsListType = PropTypes.shape({
   error: PropTypes.bool,
 });
 
-type TagsStats = Record<string, { shortUrlsCount: number; visitsCount: number }>;
+type TagsStatsMap = Record<string, TagStats>;
 
 export interface TagsList {
   tags: string[];
   filteredTags: string[];
-  stats: TagsStats;
+  stats: TagsStatsMap;
   loading: boolean;
   error: boolean;
 }
 
 interface ListTagsAction extends Action<string> {
   tags: string[];
-  stats: TagsStats;
+  stats: TagsStatsMap;
 }
 
 interface FilterTagsAction extends Action<string> {
@@ -59,7 +60,7 @@ const initialState = {
 
 const renameTag = (oldName: string, newName: string) => (tag: string) => tag === oldName ? newName : tag;
 const rejectTag = (tags: string[], tagToReject: string) => reject((tag) => tag === tagToReject, tags);
-const increaseVisitsForTags = (tags: string[], stats: TagsStats) => tags.reduce((stats, tag) => {
+const increaseVisitsForTags = (tags: string[], stats: TagsStatsMap) => tags.reduce((stats, tag) => {
   if (!stats[tag]) {
     return stats;
   }
@@ -111,7 +112,7 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
   try {
     const { listTags } = buildShlinkApiClient(getState);
     const { tags, stats = [] }: ShlinkTags = await listTags();
-    const processedStats = stats.reduce<TagsStats>((acc, { tag, shortUrlsCount, visitsCount }) => {
+    const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
       acc[tag] = { shortUrlsCount, visitsCount };
 
       return acc;

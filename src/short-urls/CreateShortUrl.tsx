@@ -12,6 +12,7 @@ import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import { useToggle } from '../utils/helpers/hooks';
 import { isReachableServer, SelectedServer } from '../servers/data';
 import { formatIsoDate } from '../utils/helpers/date';
+import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { ShortUrlData } from './data';
 import { ShortUrlCreation } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
@@ -42,7 +43,7 @@ type NonDateFields = 'longUrl' | 'customSlug' | 'shortCodeLength' | 'domain' | '
 type DateFields = 'validSince' | 'validUntil';
 
 const CreateShortUrl = (
-  TagsSelector: FC<any>,
+  TagsSelector: FC<TagsSelectorProps>,
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
   ForServerVersion: FC<Versions>,
 ) => ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }: CreateShortUrlProps) => {
@@ -103,7 +104,7 @@ const CreateShortUrl = (
 
       <Collapse isOpen={moreOptionsVisible}>
         <div className="form-group">
-          <TagsSelector tags={shortUrlCreation.tags} onChange={changeTags} />
+          <TagsSelector tags={shortUrlCreation.tags ?? []} onChange={changeTags} />
         </div>
 
         <div className="row">

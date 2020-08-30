@@ -1,14 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DeleteTagConfirmModal from '../../../src/tags/helpers/DeleteTagConfirmModal';
+import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
 
 describe('<DeleteTagConfirmModal />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const tag = 'nodejs';
   const deleteTag = jest.fn();
   const tagDeleted = jest.fn();
-  const createWrapper = (tagDelete) => {
+  const createWrapper = (tagDelete: TagDeletion) => {
     wrapper = shallow(
       <DeleteTagConfirmModal
         tag={tag}
@@ -23,10 +24,8 @@ describe('<DeleteTagConfirmModal />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    wrapper && wrapper.unmount();
-    jest.resetAllMocks();
-  });
+  afterEach(() => wrapper?.unmount());
+  afterEach(jest.resetAllMocks);
 
   it('asks confirmation for provided tag to be deleted', () => {
     wrapper = createWrapper({ error: false, deleting: false });
@@ -60,7 +59,8 @@ describe('<DeleteTagConfirmModal />', () => {
     const footer = wrapper.find(ModalFooter);
     const delBtn = footer.find('.btn-danger');
 
-    await delBtn.simulate('click');
+    await delBtn.simulate('click'); // eslint-disable-line @typescript-eslint/await-thenable
+
     expect(deleteTag).toHaveBeenCalledTimes(1);
     expect(deleteTag).toHaveBeenCalledWith(tag);
     expect(tagDeleted).toHaveBeenCalledTimes(1);
