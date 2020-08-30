@@ -108,7 +108,9 @@ const CreateShortUrl = (
 
         <div className="row">
           <div className="col-sm-4">
-            {renderOptionalInput('customSlug', 'Custom slug')}
+            {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+              disabled: hasValue(shortUrlCreation.shortCodeLength),
+            })}
           </div>
           <div className="col-sm-4">
             {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
