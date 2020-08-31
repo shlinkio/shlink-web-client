@@ -62,9 +62,9 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
     orderDir: orderBy && head(values(orderBy)),
   });
   const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
-  const handleOrderBy = (orderField: OrderableFields, orderDir: OrderDir) => {
+  const handleOrderBy = (orderField?: OrderableFields, orderDir?: OrderDir) => {
     setOrder({ orderField, orderDir });
-    refreshList({ orderBy: { [orderField]: orderDir } });
+    refreshList({ orderBy: orderField ? { [orderField]: orderDir } : undefined });
   };
   const orderByColumn = (field: OrderableFields) => () =>
     handleOrderBy(field, determineOrderDir(field, order.orderField, order.orderDir));

@@ -1,28 +1,25 @@
 import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toPairs } from 'ramda';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountUp as sortAscIcon, faSortAmountDown as sortDescIcon } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
-import { determineOrderDir } from './utils';
+import { determineOrderDir, OrderDir } from './utils';
 import './SortingDropdown.scss';
 
-const propTypes = {
-  items: PropTypes.object.isRequired,
-  orderField: PropTypes.string,
-  orderDir: PropTypes.oneOf([ 'ASC', 'DESC' ]),
-  onChange: PropTypes.func.isRequired,
-  isButton: PropTypes.bool,
-  right: PropTypes.bool,
-};
-const defaultProps = {
-  isButton: true,
-  right: false,
-};
+export interface SortingDropdownProps<T extends string = string> {
+  items: Record<T, string>;
+  orderField?: T;
+  orderDir?: OrderDir;
+  onChange: (orderField?: T, orderDir?: OrderDir) => void;
+  isButton?: boolean;
+  right?: boolean;
+}
 
-const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, right }) => {
-  const handleItemClick = (fieldKey) => () => {
+export default function SortingDropdown<T extends string = string>(
+  { items, orderField, orderDir, onChange, isButton = true, right = false }: SortingDropdownProps<T>,
+) {
+  const handleItemClick = (fieldKey: T) => () => {
     const newOrderDir = determineOrderDir(fieldKey, orderField, orderDir);
 
     onChange(newOrderDir ? fieldKey : undefined, newOrderDir);
@@ -42,7 +39,7 @@ const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, righ
         className={classNames('sorting-dropdown__menu', { 'sorting-dropdown__menu--link': !isButton })}
       >
         {toPairs(items).map(([ fieldKey, fieldValue ]) => (
-          <DropdownItem key={fieldKey} active={orderField === fieldKey} onClick={handleItemClick(fieldKey)}>
+          <DropdownItem key={fieldKey} active={orderField === fieldKey} onClick={handleItemClick(fieldKey as T)}>
             {fieldValue}
             {orderField === fieldKey && (
               <FontAwesomeIcon
@@ -59,9 +56,4 @@ const SortingDropdown = ({ items, orderField, orderDir, onChange, isButton, righ
       </DropdownMenu>
     </UncontrolledDropdown>
   );
-};
-
-SortingDropdown.propTypes = propTypes;
-SortingDropdown.defaultProps = defaultProps;
-
-export default SortingDropdown;
+}

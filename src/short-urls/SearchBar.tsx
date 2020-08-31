@@ -17,7 +17,7 @@ interface SearchBarProps {
   shortUrlsListParams: ShortUrlsListParams;
 }
 
-const dateOrUndefined = (date?: string) => date ? moment(date) : undefined;
+const dateOrNull = (date?: string) => date ? moment(date) : null;
 
 const SearchBar = (colorGenerator: ColorGenerator, ForServerVersion: FC<Versions>) => (
   { listShortUrls, shortUrlsListParams }: SearchBarProps,
@@ -41,8 +41,8 @@ const SearchBar = (colorGenerator: ColorGenerator, ForServerVersion: FC<Versions
           <div className="row">
             <div className="col-lg-8 offset-lg-4 col-xl-6 offset-xl-6">
               <DateRangeRow
-                startDate={dateOrUndefined(shortUrlsListParams.startDate)}
-                endDate={dateOrUndefined(shortUrlsListParams.endDate)}
+                startDate={dateOrNull(shortUrlsListParams.startDate)}
+                endDate={dateOrNull(shortUrlsListParams.endDate)}
                 onStartDateChange={setDate('startDate')}
                 onEndDateChange={setDate('endDate')}
               />

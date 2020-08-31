@@ -1,25 +1,26 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import moment from 'moment';
 import DateInput from './DateInput';
 import './DateRangeRow.scss';
 
-const dateType = PropTypes.oneOfType([ PropTypes.string, PropTypes.object ]);
-const propTypes = {
-  startDate: dateType,
-  endDate: dateType,
-  onStartDateChange: PropTypes.func.isRequired,
-  onEndDateChange: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-};
+interface DateRangeRowProps {
+  startDate?: moment.Moment | null;
+  endDate?: moment.Moment | null;
+  onStartDateChange: (date: moment.Moment | null) => void;
+  onEndDateChange: (date: moment.Moment | null) => void;
+  disabled?: boolean;
+}
 
-const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange, disabled = false }) => (
+const DateRangeRow = (
+  { startDate = null, endDate = null, disabled = false, onStartDateChange, onEndDateChange }: DateRangeRowProps,
+) => (
   <div className="row">
     <div className="col-md-6">
       <DateInput
         selected={startDate}
         placeholderText="Since"
         isClearable
-        maxDate={endDate}
+        maxDate={endDate ?? undefined}
         disabled={disabled}
         onChange={onStartDateChange}
       />
@@ -30,14 +31,12 @@ const DateRangeRow = ({ startDate, endDate, onStartDateChange, onEndDateChange, 
         selected={endDate}
         placeholderText="Until"
         isClearable
-        minDate={startDate}
+        minDate={startDate ?? undefined}
         disabled={disabled}
         onChange={onEndDateChange}
       />
     </div>
   </div>
 );
-
-DateRangeRow.propTypes = propTypes;
 
 export default DateRangeRow;

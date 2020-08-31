@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import DateRangeRow from '../../src/utils/DateRangeRow';
 import DateInput from '../../src/utils/DateInput';
 
 describe('<DateRangeRow />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const onEndDateChange = jest.fn();
   const onStartDateChange = jest.fn();
 

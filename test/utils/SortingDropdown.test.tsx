@@ -1,25 +1,25 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
 import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import SortingDropdown, { SortingDropdownProps } from '../../src/utils/SortingDropdown';
 
 describe('<SortingDropdown />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const items = {
     foo: 'Foo',
     bar: 'Bar',
     baz: 'Hello World',
   };
-  const createWrapper = (props) => {
+  const createWrapper = (props: Partial<SortingDropdownProps> = {}) => {
     wrapper = shallow(<SortingDropdown items={items} onChange={identity} {...props} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('properly renders provided list of items', () => {
     const wrapper = createWrapper();

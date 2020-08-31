@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './SearchField.scss';
 
 const DEFAULT_SEARCH_INTERVAL = 500;
-let timer;
+let timer: NodeJS.Timeout | null;
 
-const propTypes = {
-  onChange: PropTypes.func.isRequired,
-  className: PropTypes.string,
-  placeholder: PropTypes.string,
-  large: PropTypes.bool,
-  noBorder: PropTypes.bool,
-};
+interface SearchField {
+  onChange: (value: string) => void;
+  className?: string;
+  placeholder?: string;
+  large?: boolean;
+  noBorder?: boolean;
+}
 
-const SearchField = ({ onChange, className, placeholder = 'Search...', large = true, noBorder = false }) => {
+const SearchField = (
+  { onChange, className, placeholder = 'Search...', large = true, noBorder = false }: SearchField,
+) => {
   const [ searchTerm, setSearchTerm ] = useState('');
 
   const resetTimer = () => {
-    clearTimeout(timer);
+    timer && clearTimeout(timer);
     timer = null;
   };
-  const searchTermChanged = (newSearchTerm, timeout = DEFAULT_SEARCH_INTERVAL) => {
+  const searchTermChanged = (newSearchTerm: string, timeout = DEFAULT_SEARCH_INTERVAL) => {
     setSearchTerm(newSearchTerm);
 
     resetTimer();
@@ -58,7 +59,5 @@ const SearchField = ({ onChange, className, placeholder = 'Search...', large = t
     </div>
   );
 };
-
-SearchField.propTypes = propTypes;
 
 export default SearchField;

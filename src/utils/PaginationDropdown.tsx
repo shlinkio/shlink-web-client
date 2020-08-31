@@ -1,15 +1,14 @@
 import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import * as PropTypes from 'prop-types';
 
-const propTypes = {
-  toggleClassName: PropTypes.string,
-  ranges: PropTypes.arrayOf(PropTypes.number).isRequired,
-  value: PropTypes.number.isRequired,
-  setValue: PropTypes.func.isRequired,
-};
+interface PaginationDropdownProps {
+  ranges: number[];
+  value: number;
+  setValue: (newValue: number) => void;
+  toggleClassName?: string;
+}
 
-const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }) => (
+const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }: PaginationDropdownProps) => (
   <UncontrolledDropdown>
     <DropdownToggle caret color="link" className={toggleClassName}>
       Paginate
@@ -27,7 +26,5 @@ const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }) => (
     </DropdownMenu>
   </UncontrolledDropdown>
 );
-
-PaginationDropdown.propTypes = propTypes;
 
 export default PaginationDropdown;
