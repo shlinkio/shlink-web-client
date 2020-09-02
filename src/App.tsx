@@ -1,11 +1,12 @@
 import React, { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
+import { ServersMap } from './servers/data';
 import './App.scss';
 
 interface AppProps {
   fetchServers: Function;
-  servers: Record<string, object>;
+  servers: ServersMap;
 }
 
 const App = (MainHeader: FC, Home: FC, MenuLayout: FC, CreateServer: FC, EditServer: FC, Settings: FC) => (

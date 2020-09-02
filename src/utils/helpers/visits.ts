@@ -1,6 +1,7 @@
 import bowser from 'bowser';
 import { zipObj } from 'ramda';
 import { Empty, hasValue } from '../utils';
+import { Stats, UserAgent } from '../../visits/types';
 
 const DEFAULT = 'Others';
 const BROWSERS_WHITELIST = [
@@ -16,11 +17,6 @@ const BROWSERS_WHITELIST = [
   'Vivaldi',
   'WeChat',
 ];
-
-interface UserAgent {
-  browser: string;
-  os: string;
-}
 
 export const parseUserAgent = (userAgent: string | Empty): UserAgent => {
   if (!hasValue(userAgent)) {
@@ -42,5 +38,5 @@ export const extractDomain = (url: string | Empty): string => {
   return domain.split(':')[0];
 };
 
-export const fillTheGaps = (stats: Record<string, number>, labels: string[]): number[] =>
+export const fillTheGaps = (stats: Stats, labels: string[]): number[] =>
   Object.values({ ...zipObj(labels, labels.map(() => 0)), ...stats });

@@ -13,13 +13,13 @@ import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
 import { ConnectDecorator } from './types';
 
-type ActionMap = Record<string, any>;
+type LazyActionMap = Record<string, Function>;
 
 const bottle = new Bottle();
 const { container } = bottle;
 
 const lazyService = (container: IContainer, serviceName: string) => (...args: any[]) => container[serviceName](...args);
-const mapActionService = (map: ActionMap, actionName: string): ActionMap => ({
+const mapActionService = (map: LazyActionMap, actionName: string): LazyActionMap => ({
   ...map,
   // Wrap actual action service in a function so that it is lazily created the first time it is called
   [actionName]: lazyService(container, actionName),

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import { ShortUrl } from '../../short-urls/data';
 import { Action } from 'redux';
+import { ShortUrl } from '../../short-urls/data';
 
 /** @deprecated Use Visit interface instead */
 export const VisitType = PropTypes.shape({
@@ -59,7 +59,38 @@ export interface Visit {
   visitLocation: VisitLocation | null;
 }
 
+export interface UserAgent {
+  browser: string;
+  os: string;
+}
+
+export interface NormalizedVisit extends UserAgent {
+  date: string;
+  referer: string;
+  country: string;
+  city: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
 export interface CreateVisit {
   shortUrl: ShortUrl;
   visit: Visit;
+}
+
+export type Stats = Record<string, number>;
+
+export interface CityStats {
+  cityName: string;
+  count: number;
+  latLong: [number, number];
+}
+
+export interface VisitsStats {
+  os: Stats;
+  browsers: Stats;
+  referrers: Stats;
+  countries: Stats;
+  cities: Stats;
+  citiesForMap: Record<string, CityStats>;
 }
