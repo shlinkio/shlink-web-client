@@ -77,7 +77,7 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   query: { domain?: OptionalString } = {},
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = (page: number, itemsPerPage: number) => getShortUrlVisits(
+  const visitsLoader = async (page: number, itemsPerPage: number) => getShortUrlVisits(
     shortCode,
     { ...query, page, itemsPerPage },
   );

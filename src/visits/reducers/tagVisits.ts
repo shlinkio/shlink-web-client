@@ -68,7 +68,10 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (t
   getState: GetState,
 ) => {
   const { getTagVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = (page: number, itemsPerPage: number) => getTagVisits(tag, { ...query, page, itemsPerPage });
+  const visitsLoader = async (page: number, itemsPerPage: number) => getTagVisits(
+    tag,
+    { ...query, page, itemsPerPage },
+  );
   const extraFinishActionData: Partial<TagVisitsAction> = { tag };
   const actionMap = {
     start: GET_TAG_VISITS_START,

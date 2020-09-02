@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Modal, ModalBody } from 'reactstrap';
-import { Map, TileLayer, Marker, Popup, MapProps } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import { prop } from 'ramda';
 import { CityStats } from '../types';
 import './MapModal.scss';
@@ -19,7 +19,7 @@ const OpenStreetMapTile: FC = () => (
   />
 );
 
-const calculateMapProps = (locations: CityStats[]): Partial<MapProps> => {
+const calculateMapProps = (locations: CityStats[]): any => {
   if (locations.length === 0) {
     return {};
   }

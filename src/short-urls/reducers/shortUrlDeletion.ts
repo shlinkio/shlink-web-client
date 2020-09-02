@@ -1,6 +1,6 @@
 import { Action, Dispatch } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { ProblemDetailsError} from '../../utils/services/types';
+import { ProblemDetailsError } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 
