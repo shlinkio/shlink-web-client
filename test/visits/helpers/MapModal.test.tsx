@@ -1,11 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal } from 'reactstrap';
 import { Marker, Popup } from 'react-leaflet';
 import MapModal from '../../../src/visits/helpers/MapModal';
+import { CityStats } from '../../../src/visits/types';
 
 describe('<MapModal />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const toggle = () => '';
   const isOpen = true;
   const title = 'Foobar';
@@ -13,7 +14,7 @@ describe('<MapModal />', () => {
   const zaragozaLong = -0.876566;
   const newYorkLat = 40.730610;
   const newYorkLong = -73.935242;
-  const locations = [
+  const locations: CityStats[] = [
     {
       cityName: 'Zaragoza',
       count: 54,
@@ -34,12 +35,12 @@ describe('<MapModal />', () => {
 
   it('renders modal with provided props', () => {
     const modal = wrapper.find(Modal);
-    const headerheader = wrapper.find('.map-modal__modal-title');
+    const header = wrapper.find('.map-modal__modal-title');
 
     expect(modal.prop('toggle')).toEqual(toggle);
     expect(modal.prop('isOpen')).toEqual(isOpen);
-    expect(headerheader.find('.close').prop('onClick')).toEqual(toggle);
-    expect(headerheader.text()).toContain(title);
+    expect(header.find('.close').prop('onClick')).toEqual(toggle);
+    expect(header.text()).toContain(title);
   });
 
   it('renders open street map tile', () => {

@@ -14,6 +14,7 @@ import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { VisitsInfoType } from './types';
+import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 
 const propTypes = {
   children: PropTypes.node,
@@ -35,7 +36,7 @@ const highlightedVisitsToStats = (highlightedVisits, prop) => highlightedVisits.
 const format = formatDate();
 let selectedBar;
 
-const VisitsStats = ({ processStatsFromVisits, normalizeVisits }, OpenMapModalBtn) => {
+const VisitsStats = ({ processStatsFromVisits, normalizeVisits }) => {
   const VisitsStatsComp = ({ children, visitsInfo, getVisits, cancelGetVisits, matchMedia = window.matchMedia }) => {
     const [ startDate, setStartDate ] = useState(undefined);
     const [ endDate, setEndDate ] = useState(undefined);

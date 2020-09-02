@@ -1,32 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Modal, ModalBody } from 'reactstrap';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, Marker, Popup, MapProps } from 'react-leaflet';
 import { prop } from 'ramda';
-import * as PropTypes from 'prop-types';
+import { CityStats } from '../types';
 import './MapModal.scss';
 
-const propTypes = {
-  toggle: PropTypes.func,
-  isOpen: PropTypes.bool,
-  title: PropTypes.string,
-  locations: PropTypes.arrayOf(PropTypes.shape({
-    cityName: PropTypes.string.isRequired,
-    latLong: PropTypes.arrayOf(PropTypes.number).isRequired,
-    count: PropTypes.number.isRequired,
-  })),
-};
-const defaultProps = {
-  locations: [],
-};
+interface MapModalProps {
+  toggle: () => void;
+  isOpen: boolean;
+  title: string;
+  locations?: CityStats[];
+}
 
-const OpenStreetMapTile = () => (
+const OpenStreetMapTile: FC = () => (
   <TileLayer
     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
   />
 );
 
-const calculateMapProps = (locations) => {
+const calculateMapProps = (locations: CityStats[]): Partial<MapProps> => {
   if (locations.length === 0) {
     return {};
   }
@@ -39,10 +32,10 @@ const calculateMapProps = (locations) => {
   // When that happens, we use zoom and center as a workaround
   const [{ latLong: center }] = locations;
 
-  return { zoom: '10', center };
+  return { zoom: 10, center };
 };
 
-const MapModal = ({ toggle, isOpen, title, locations }) => (
+const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
   <Modal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
     <ModalBody className="map-modal__modal-body">
       <h3 className="map-modal__modal-title">
@@ -60,8 +53,5 @@ const MapModal = ({ toggle, isOpen, title, locations }) => (
     </ModalBody>
   </Modal>
 );
-
-MapModal.propTypes = propTypes;
-MapModal.defaultProps = defaultProps;
 
 export default MapModal;
