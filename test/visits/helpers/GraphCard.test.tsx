@@ -1,18 +1,18 @@
-import React from 'react';
-import { shallow } from 'enzyme';
+import React, { ReactNode } from 'react';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Card, CardBody, CardHeader, CardFooter } from 'reactstrap';
 import GraphCard from '../../../src/visits/helpers/GraphCard';
 import DefaultChart from '../../../src/visits/helpers/DefaultChart';
 
 describe('<GraphCard />', () => {
-  let wrapper;
-  const createWrapper = (title = '', footer) => {
-    wrapper = shallow(<GraphCard title={title} footer={footer} />);
+  let wrapper: ShallowWrapper;
+  const createWrapper = (title: Function | string = '', footer?: ReactNode) => {
+    wrapper = shallow(<GraphCard title={title} footer={footer} stats={{}} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders expected components', () => {
     const wrapper = createWrapper();

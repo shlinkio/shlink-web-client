@@ -1,22 +1,30 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { ChangeEvent, useRef } from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
+import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { fillTheGaps } from '../../utils/helpers/visits';
+import { Stats } from '../types';
 import './DefaultChart.scss';
 
-const propTypes = {
-  title: PropTypes.oneOfType([ PropTypes.string, PropTypes.func ]),
-  isBarChart: PropTypes.bool,
-  stats: PropTypes.object,
-  max: PropTypes.number,
-  highlightedStats: PropTypes.object,
-  highlightedLabel: PropTypes.string,
-  onClick: PropTypes.func,
-};
+export interface DefaultChartProps {
+  title: Function | string;
+  stats: Stats;
+  isBarChart?: boolean;
+  max?: number;
+  highlightedStats?: Stats;
+  highlightedLabel?: string;
+  onClick?: (label: string) => void;
+}
 
-const generateGraphData = (title, isBarChart, labels, data, highlightedData, highlightedLabel) => ({
+const generateGraphData = (
+  title: Function | string,
+  isBarChart: boolean,
+  labels: string[],
+  data: number[],
+  highlightedData?: number[],
+  highlightedLabel?: string,
+): ChartData => ({
   labels,
   datasets: [
     {
@@ -39,40 +47,40 @@ const generateGraphData = (title, isBarChart, labels, data, highlightedData, hig
       borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
       borderWidth: 2,
     },
-    highlightedData && {
+    (highlightedData && {
       title,
-      label: highlightedLabel || 'Selected',
+      label: highlightedLabel ?? 'Selected',
       data: highlightedData,
       backgroundColor: 'rgba(247, 127, 40, 0.4)',
       borderColor: '#F77F28',
       borderWidth: 2,
-    },
+    }) as unknown as ChartDataSets,
   ].filter(Boolean),
 });
 
-const dropLabelIfHidden = (label) => label.startsWith('hidden') ? '' : label;
+const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;
 
-const determineHeight = (isBarChart, labels) => {
+const determineHeight = (isBarChart: boolean, labels: string[]): number | undefined => {
   if (!isBarChart) {
     return 300;
   }
 
-  return isBarChart && labels.length > 20 ? labels.length * 8 : null;
+  return isBarChart && labels.length > 20 ? labels.length * 8 : undefined;
 };
 
 /* eslint-disable react/prop-types */
-const renderPieChartLegend = ({ config }) => {
-  const { labels, datasets } = config.data;
-  const { defaultColor } = config.options;
+const renderPieChartLegend = ({ config }: Chart) => {
+  const { labels = [], datasets = [] } = config.data ?? {};
+  const { defaultColor } = config.options ?? {} as any;
   const [{ backgroundColor: colors }] = datasets;
 
   return (
     <ul className="default-chart__pie-chart-legend">
       {labels.map((label, index) => (
-        <li key={label} className="default-chart__pie-chart-legend-item d-flex">
+        <li key={label as string} className="default-chart__pie-chart-legend-item d-flex">
           <div
             className="default-chart__pie-chart-legend-item-color"
-            style={{ backgroundColor: colors[index] || defaultColor }}
+            style={{ backgroundColor: (colors as string[])[index] || defaultColor }}
           />
           <small className="default-chart__pie-chart-legend-item-text flex-fill">{label}</small>
         </li>
@@ -82,7 +90,7 @@ const renderPieChartLegend = ({ config }) => {
 };
 /* eslint-enable react/prop-types */
 
-const chartElementAtEvent = (onClick) => ([ chart ]) => {
+const chartElementAtEvent = (onClick?: (label: string) => void) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
   if (!onClick || !chart) {
     return;
   }
@@ -90,30 +98,35 @@ const chartElementAtEvent = (onClick) => ([ chart ]) => {
   const { _index, _chart: { data } } = chart;
   const { labels } = data;
 
-  onClick(labels[_index]);
+  onClick(labels?.[_index] as string);
 };
 
-const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlightedLabel, onClick }) => {
-  const hasHighlightedStats = highlightedStats && Object.keys(highlightedStats).length > 0;
+const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
+
+const DefaultChart = (
+  { title, isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
+) => {
   const Component = isBarChart ? HorizontalBar : Doughnut;
   const labels = keys(stats).map(dropLabelIfHidden);
-  const data = values(!hasHighlightedStats ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
-    if (acc[highlightedKey]) {
-      acc[highlightedKey] -= highlightedStats[highlightedKey];
-    }
+  const data = values(
+    !statsAreDefined(highlightedStats) ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
+      if (acc[highlightedKey]) {
+        acc[highlightedKey] -= highlightedStats[highlightedKey];
+      }
 
-    return acc;
-  }, { ...stats }));
-  const highlightedData = hasHighlightedStats && fillTheGaps(highlightedStats, labels);
-  const chartRef = useRef();
+      return acc;
+    }, { ...stats }),
+  );
+  const highlightedData = statsAreDefined(highlightedStats) ? fillTheGaps(highlightedStats, labels) : undefined;
+  const chartRef = useRef<HorizontalBar | Doughnut>();
 
-  const options = {
+  const options: ChartOptions = {
     legend: { display: false },
-    legendCallback: !isBarChart && renderPieChartLegend,
-    scales: isBarChart && {
+    legendCallback: !isBarChart && renderPieChartLegend as any,
+    scales: !isBarChart ? undefined : {
       xAxes: [
         {
-          ticks: { beginAtZero: true, precision: 0, max },
+          ticks: { beginAtZero: true, precision: 0, max } as any,
           stacked: true,
         },
       ],
@@ -125,9 +138,11 @@ const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlig
       // Do not show tooltip on items with empty label when in a bar chart
       filter: ({ yLabel }) => !isBarChart || yLabel !== '',
     },
-    onHover: isBarChart && (({ target }, chartElement) => {
+    onHover: !isBarChart ? undefined : ((e: ChangeEvent<HTMLElement>, chartElement: HorizontalBar[] | Doughnut[]) => {
+      const { target } = e;
+
       target.style.cursor = chartElement[0] ? 'pointer' : 'default';
-    }),
+    }) as any, // TODO Types seem to be incorrectly defined
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
@@ -137,7 +152,7 @@ const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlig
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
         <Component
-          ref={chartRef}
+          ref={chartRef as any}
           key={height}
           data={graphData}
           options={options}
@@ -147,13 +162,11 @@ const DefaultChart = ({ title, isBarChart, stats, max, highlightedStats, highlig
       </div>
       {!isBarChart && (
         <div className="col-sm-12 col-md-5">
-          {chartRef.current && chartRef.current.chartInstance.generateLegend()}
+          {chartRef.current?.chartInstance.generateLegend()}
         </div>
       )}
     </div>
   );
 };
-
-DefaultChart.propTypes = propTypes;
 
 export default DefaultChart;

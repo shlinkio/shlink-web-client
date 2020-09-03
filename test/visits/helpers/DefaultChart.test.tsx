@@ -1,17 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import DefaultChart from '../../../src/visits/helpers/DefaultChart';
 
 describe('<DefaultChart />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const stats = {
     foo: 123,
     bar: 456,
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders Doughnut when is not a bar chart', () => {
     wrapper = shallow(<DefaultChart title="The chart" stats={stats} />);
@@ -22,9 +22,9 @@ describe('<DefaultChart />', () => {
     expect(doughnut).toHaveLength(1);
     expect(horizontal).toHaveLength(0);
 
-    const { labels, datasets } = doughnut.prop('data');
+    const { labels, datasets } = doughnut.prop('data') as any;
     const [{ title, data, backgroundColor, borderColor }] = datasets;
-    const { legend, legendCallback, scales } = doughnut.prop('options');
+    const { legend, legendCallback, scales } = doughnut.prop('options') ?? {};
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
@@ -59,8 +59,8 @@ describe('<DefaultChart />', () => {
     expect(doughnut).toHaveLength(0);
     expect(horizontal).toHaveLength(1);
 
-    const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
-    const { legend, legendCallback, scales } = horizontal.prop('options');
+    const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data') as any;
+    const { legend, legendCallback, scales } = horizontal.prop('options') ?? {};
 
     expect(backgroundColor).toEqual('rgba(70, 150, 229, 0.4)');
     expect(borderColor).toEqual('rgba(70, 150, 229, 1)');
@@ -88,7 +88,7 @@ describe('<DefaultChart />', () => {
     wrapper = shallow(<DefaultChart isBarChart title="The chart" stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(HorizontalBar);
 
-    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');
+    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data') as any;
 
     expect(label).toEqual(highlightedStats ? 'Non-selected' : 'Visits');
     expect(data).toEqual(expectedData);
