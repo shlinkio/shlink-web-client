@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { rangeOf } from '../utils';
 import LocalStorage from './LocalStorage';
 
@@ -36,9 +35,3 @@ export default class ColorGenerator {
     return color;
   };
 }
-
-/** @deprecated Use ColorGenerator class instead */
-export const colorGeneratorType = PropTypes.shape({
-  getColorForKey: PropTypes.func,
-  setColorForKey: PropTypes.func,
-});

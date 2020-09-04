@@ -7,7 +7,7 @@ import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 
-interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: string }>, MercureBoundProps {
+export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: string }>, MercureBoundProps {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams) => void;
   shortUrlVisits: ShortUrlVisitsState;
   getShortUrlDetail: Function;

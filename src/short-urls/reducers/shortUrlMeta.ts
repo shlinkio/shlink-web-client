@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Dispatch, Action } from 'redux';
 import { ShortUrlIdentifier, ShortUrlMeta } from '../data';
 import { GetState } from '../../container/types';
@@ -12,13 +11,6 @@ export const EDIT_SHORT_URL_META_ERROR = 'shlink/shortUrlMeta/EDIT_SHORT_URL_MET
 export const SHORT_URL_META_EDITED = 'shlink/shortUrlMeta/SHORT_URL_META_EDITED';
 export const RESET_EDIT_SHORT_URL_META = 'shlink/shortUrlMeta/RESET_EDIT_SHORT_URL_META';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlMeta interface instead */
-export const shortUrlMetaType = PropTypes.shape({
-  validSince: PropTypes.string,
-  validUntil: PropTypes.string,
-  maxVisits: PropTypes.number,
-});
 
 export interface ShortUrlMetaEdition {
   shortCode: string | null;

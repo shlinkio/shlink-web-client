@@ -1,5 +1,4 @@
 import { assoc, assocPath, reject } from 'ramda';
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../helpers';
 import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCreation';
@@ -10,7 +9,7 @@ import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuil
 import { ShlinkShortUrlsResponse } from '../../utils/services/types';
 import { EditShortUrlTagsAction, SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { SHORT_URL_DELETED } from './shortUrlDeletion';
-import { SHORT_URL_META_EDITED, ShortUrlMetaEditedAction, shortUrlMetaType } from './shortUrlMeta';
+import { SHORT_URL_META_EDITED, ShortUrlMetaEditedAction } from './shortUrlMeta';
 import { SHORT_URL_EDITED, ShortUrlEditedAction } from './shortUrlEdition';
 import { ShortUrlsListParams } from './shortUrlsListParams';
 
@@ -19,17 +18,6 @@ export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START
 export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrl interface instead */
-export const shortUrlType = PropTypes.shape({
-  shortCode: PropTypes.string,
-  shortUrl: PropTypes.string,
-  longUrl: PropTypes.string,
-  visitsCount: PropTypes.number,
-  meta: shortUrlMetaType,
-  tags: PropTypes.arrayOf(PropTypes.string),
-  domain: PropTypes.string,
-});
 
 export interface ShortUrlsList {
   shortUrls?: ShlinkShortUrlsResponse;

@@ -1,6 +1,4 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
-import { shortUrlType } from '../../short-urls/reducers/shortUrlsList';
 import { ShortUrl } from '../../short-urls/data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
@@ -12,13 +10,6 @@ export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_D
 export const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';
 export const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use ShortUrlDetail interface instead */
-export const shortUrlDetailType = PropTypes.shape({
-  shortUrl: shortUrlType,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-});
 
 export interface ShortUrlDetail {
   shortUrl?: ShortUrl;

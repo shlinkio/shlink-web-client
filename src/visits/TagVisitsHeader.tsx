@@ -1,18 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Tag from '../tags/helpers/Tag';
-import { colorGeneratorType } from '../utils/services/ColorGenerator';
+import ColorGenerator from '../utils/services/ColorGenerator';
 import VisitsHeader from './VisitsHeader';
-import { TagVisitsType } from './reducers/tagVisits';
+import { TagVisits } from './reducers/tagVisits';
 import './ShortUrlVisitsHeader.scss';
 
-const propTypes = {
-  tagVisits: TagVisitsType.isRequired,
-  goBack: PropTypes.func.isRequired,
-  colorGenerator: colorGeneratorType,
-};
+interface TagVisitsHeader {
+  tagVisits: TagVisits;
+  goBack: () => void;
+  colorGenerator: ColorGenerator;
+}
 
-const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }) => {
+const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }: TagVisitsHeader) => {
   const { visits, tag } = tagVisits;
 
   const visitsStatsTitle = (
@@ -24,7 +23,5 @@ const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }) => {
 
   return <VisitsHeader title={visitsStatsTitle} goBack={goBack} visits={visits} />;
 };
-
-TagVisitsHeader.propTypes = propTypes;
 
 export default TagVisitsHeader;

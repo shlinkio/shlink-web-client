@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsInfo, VisitsLoadProgressChangedAction, VisitType } from '../types';
+import { Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -15,16 +14,6 @@ export const GET_TAG_VISITS_LARGE = 'shlink/tagVisits/GET_TAG_VISITS_LARGE';
 export const GET_TAG_VISITS_CANCEL = 'shlink/tagVisits/GET_TAG_VISITS_CANCEL';
 export const GET_TAG_VISITS_PROGRESS_CHANGED = 'shlink/tagVisits/GET_TAG_VISITS_PROGRESS_CHANGED';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use TagVisits interface instead */
-export const TagVisitsType = PropTypes.shape({
-  visits: PropTypes.arrayOf(VisitType),
-  tag: PropTypes.string,
-  loading: PropTypes.bool,
-  loadingLarge: PropTypes.bool,
-  error: PropTypes.bool,
-  progress: PropTypes.number,
-});
 
 export interface TagVisits extends VisitsInfo {
   tag: string;

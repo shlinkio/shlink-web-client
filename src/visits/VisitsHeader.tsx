@@ -1,21 +1,19 @@
 import { Button, Card } from 'reactstrap';
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { FC, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
-import { shortUrlType } from '../short-urls/reducers/shortUrlsList';
-import { VisitType } from './types';
+import { ShortUrl } from '../short-urls/data';
+import { Visit } from './types';
 
-const propTypes = {
-  visits: PropTypes.arrayOf(VisitType).isRequired,
-  goBack: PropTypes.func.isRequired,
-  title: PropTypes.node.isRequired,
-  children: PropTypes.node,
-  shortUrl: shortUrlType,
-};
+interface VisitsHeaderProps {
+  visits: Visit[];
+  goBack: () => void;
+  title: ReactNode;
+  shortUrl?: ShortUrl;
+}
 
-const VisitsHeader = ({ visits, goBack, shortUrl, children, title }) => (
+const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, children, title }) => (
   <header>
     <Card className="bg-light" body>
       <h2 className="d-flex justify-content-between align-items-center mb-0">
@@ -38,7 +36,5 @@ const VisitsHeader = ({ visits, goBack, shortUrl, children, title }) => (
     </Card>
   </header>
 );
-
-VisitsHeader.propTypes = propTypes;
 
 export default VisitsHeader;

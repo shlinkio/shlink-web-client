@@ -1,19 +1,24 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
-import createShortUrlVisits from '../../src/visits/ShortUrlVisits';
+import { Mock } from 'ts-mockery';
+import { History, Location } from 'history';
+import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import createShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
+import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
+import { ShortUrlDetail } from '../../src/visits/reducers/shortUrlDetail';
 
 describe('<ShortUrlVisits />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const getShortUrlVisitsMock = jest.fn();
-  const match = {
+  const match = Mock.of<match<{ shortCode: string }>>({
     params: { shortCode: 'abc123' },
-  };
-  const location = { search: '' };
-  const history = {
+  });
+  const location = Mock.of<Location>({ search: '' });
+  const history = Mock.of<History>({
     goBack: jest.fn(),
-  };
+  });
   const VisitsStats = jest.fn();
 
   beforeEach(() => {
@@ -21,15 +26,15 @@ describe('<ShortUrlVisits />', () => {
 
     wrapper = shallow(
       <ShortUrlVisits
+        {...Mock.all<ShortUrlVisitsProps>()}
         getShortUrlDetail={identity}
         getShortUrlVisits={getShortUrlVisitsMock}
         match={match}
         location={location}
         history={history}
-        shortUrlVisits={{ loading: true, visits: [] }}
-        shortUrlDetail={{}}
+        shortUrlVisits={Mock.of<ShortUrlVisitsState>({ loading: true, visits: [] })}
+        shortUrlDetail={Mock.all<ShortUrlDetail>()}
         cancelGetShortUrlVisits={identity}
-        matchMedia={() => ({ matches: false })}
       />,
     );
   });

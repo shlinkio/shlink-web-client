@@ -1,24 +1,23 @@
 import { UncontrolledTooltip } from 'reactstrap';
 import Moment from 'react-moment';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ExternalLink } from 'react-external-link';
-import { shortUrlDetailType } from './reducers/shortUrlDetail';
-import { shortUrlVisitsType } from './reducers/shortUrlVisits';
+import { ShortUrlDetail } from './reducers/shortUrlDetail';
+import { ShortUrlVisits } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';
 
-const propTypes = {
-  shortUrlDetail: shortUrlDetailType.isRequired,
-  shortUrlVisits: shortUrlVisitsType.isRequired,
-  goBack: PropTypes.func.isRequired,
-};
+interface ShortUrlVisitsHeaderProps {
+  shortUrlDetail: ShortUrlDetail;
+  shortUrlVisits: ShortUrlVisits;
+  goBack: () => void;
+}
 
-const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }) => {
+const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortUrlVisitsHeaderProps) => {
   const { shortUrl, loading } = shortUrlDetail;
   const { visits } = shortUrlVisits;
-  const shortLink = shortUrl && shortUrl.shortUrl ? shortUrl.shortUrl : '';
-  const longLink = shortUrl && shortUrl.longUrl ? shortUrl.longUrl : '';
+  const shortLink = shortUrl?.shortUrl ?? '';
+  const longLink = shortUrl?.longUrl ?? '';
 
   const renderDate = () => !shortUrl ? <small>Loading...</small> : (
     <span>
@@ -48,7 +47,5 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }) => {
     </VisitsHeader>
   );
 };
-
-ShortUrlVisitsHeader.propTypes = propTypes;
 
 export default ShortUrlVisitsHeader;

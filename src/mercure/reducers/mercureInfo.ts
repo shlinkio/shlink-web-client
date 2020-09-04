@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { Action, Dispatch } from 'redux';
 import { ShlinkMercureInfo } from '../../utils/services/types';
 import { GetState } from '../../container/types';
@@ -10,14 +9,6 @@ export const GET_MERCURE_INFO_START = 'shlink/mercure/GET_MERCURE_INFO_START';
 export const GET_MERCURE_INFO_ERROR = 'shlink/mercure/GET_MERCURE_INFO_ERROR';
 export const GET_MERCURE_INFO = 'shlink/mercure/GET_MERCURE_INFO';
 /* eslint-enable padding-line-between-statements */
-
-/** @deprecated Use MercureInfo interface */
-export const MercureInfoType = PropTypes.shape({
-  token: PropTypes.string,
-  mercureHubUrl: PropTypes.string,
-  loading: PropTypes.bool,
-  error: PropTypes.bool,
-});
 
 export interface MercureInfo {
   token?: string;
