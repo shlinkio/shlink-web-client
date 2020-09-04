@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import {
   Card,
   CardHeader,
@@ -12,35 +11,38 @@ import {
 import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
-import { VisitType } from '../types';
+import { ChartData, ChartDataSets } from 'chart.js';
+import { Stats, Visit } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
-import './LineChartCard.scss';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
+import './LineChartCard.scss';
 
-const propTypes = {
-  title: PropTypes.string,
-  highlightedLabel: PropTypes.string,
-  visits: PropTypes.arrayOf(VisitType),
-  highlightedVisits: PropTypes.arrayOf(VisitType),
-};
+interface LineChartCardProps {
+  title: string;
+  highlightedLabel?: string;
+  visits: Visit[];
+  highlightedVisits: Visit[];
+}
 
-const STEPS_MAP = {
+type Step = 'monthly' | 'weekly' | 'daily' | 'hourly';
+
+const STEPS_MAP: Record<Step, string> = {
   monthly: 'Month',
   weekly: 'Week',
   daily: 'Day',
   hourly: 'Hour',
 };
 
-const STEP_TO_DATE_UNIT_MAP = {
+const STEP_TO_DATE_UNIT_MAP: Record<Step, moment.unitOfTime.Diff> = {
   hourly: 'hour',
   daily: 'day',
   weekly: 'week',
   monthly: 'month',
 };
 
-const STEP_TO_DATE_FORMAT = {
+const STEP_TO_DATE_FORMAT: Record<Step, (date: moment.Moment | string) => string> = {
   hourly: (date) => moment(date).format('YYYY-MM-DD HH:00'),
   daily: (date) => moment(date).format('YYYY-MM-DD'),
   weekly(date) {
@@ -52,19 +54,19 @@ const STEP_TO_DATE_FORMAT = {
   monthly: (date) => moment(date).format('YYYY-MM'),
 };
 
-const determineInitialStep = (oldestVisitDate) => {
+const determineInitialStep = (oldestVisitDate: string): Step => {
   const now = moment();
   const oldestDate = moment(oldestVisitDate);
-  const matcher = cond([
-    [ () => now.diff(oldestDate, 'day') <= 2, always('hourly') ], // Less than 2 days
-    [ () => now.diff(oldestDate, 'month') <= 1, always('daily') ], // Between 2 days and 1 month
-    [ () => now.diff(oldestDate, 'month') <= 6, always('weekly') ], // Between 1 and 6 months
+  const matcher = cond<never, Step | undefined>([
+    [ () => now.diff(oldestDate, 'day') <= 2, always<Step>('hourly') ], // Less than 2 days
+    [ () => now.diff(oldestDate, 'month') <= 1, always<Step>('daily') ], // Between 2 days and 1 month
+    [ () => now.diff(oldestDate, 'month') <= 6, always<Step>('weekly') ], // Between 1 and 6 months
   ]);
 
-  return matcher() || 'monthly';
+  return matcher() ?? 'monthly';
 };
 
-const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
+const groupVisitsByStep = (step: Step, visits: Visit[]): Stats => visits.reduce<Stats>((acc, visit) => {
   const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
   acc[key] = acc[key] ? acc[key] + 1 : 1;
@@ -72,7 +74,7 @@ const groupVisitsByStep = (step, visits) => visits.reduce((acc, visit) => {
   return acc;
 }, {});
 
-const generateLabels = (step, visits) => {
+const generateLabels = (step: Step, visits: Visit[]): string[] => {
   const unit = STEP_TO_DATE_UNIT_MAP[step];
   const formatter = STEP_TO_DATE_FORMAT[step];
   const newerDate = moment(visits[0].date);
@@ -85,9 +87,14 @@ const generateLabels = (step, visits) => {
   ];
 };
 
-const generateLabelsAndGroupedVisits = (visits, groupedVisitsWithGaps, step, skipNoElements) => {
+const generateLabelsAndGroupedVisits = (
+  visits: Visit[],
+  groupedVisitsWithGaps: Stats,
+  step: Step,
+  skipNoElements: boolean,
+): [string[], number[]] => {
   if (skipNoElements) {
-    return [ Object.keys(groupedVisitsWithGaps), groupedVisitsWithGaps ];
+    return [ Object.keys(groupedVisitsWithGaps), Object.values(groupedVisitsWithGaps) ];
   }
 
   const labels = generateLabels(step, visits);
@@ -95,17 +102,17 @@ const generateLabelsAndGroupedVisits = (visits, groupedVisitsWithGaps, step, ski
   return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
 };
 
-const generateDataset = (stats, label, color) => ({
+const generateDataset = (data: number[], label: string, color: string): ChartDataSets => ({
   label,
-  data: Object.values(stats),
+  data,
   fill: false,
   lineTension: 0.2,
   borderColor: color,
   backgroundColor: color,
 });
 
-const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }) => {
-  const [ step, setStep ] = useState(
+const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }: LineChartCardProps) => {
+  const [ step, setStep ] = useState<Step>(
     visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly',
   );
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
@@ -120,12 +127,12 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
     [ highlightedVisits, step, labels ],
   );
 
-  const data = {
+  const data: ChartData = {
     labels,
     datasets: [
       generateDataset(groupedVisits, 'Visits', '#4696e5'),
       highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, '#F77F28'),
-    ].filter(Boolean),
+    ].filter(Boolean) as ChartDataSets[],
   };
   const options = {
     maintainAspectRatio: false,
@@ -159,7 +166,7 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
             </DropdownToggle>
             <DropdownMenu right>
               {Object.entries(STEPS_MAP).map(([ value, menuText ]) => (
-                <DropdownItem key={value} active={step === value} onClick={() => setStep(value)}>
+                <DropdownItem key={value} active={step === value} onClick={() => setStep(value as Step)}>
                   {menuText}
                 </DropdownItem>
               ))}
@@ -178,7 +185,5 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
     </Card>
   );
 };
-
-LineChartCard.propTypes = propTypes;
 
 export default LineChartCard;

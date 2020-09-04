@@ -1,8 +1,10 @@
+import { Mock } from 'ts-mockery';
 import { processStatsFromVisits, normalizeVisits } from '../../../src/visits/services/VisitsParser';
+import { Visit, VisitsStats } from '../../../src/visits/types';
 
 describe('VisitsParser', () => {
-  const visits = [
-    {
+  const visits: Visit[] = [
+    Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
       referer: 'https://google.com',
       visitLocation: {
@@ -11,8 +13,8 @@ describe('VisitsParser', () => {
         latitude: 123.45,
         longitude: -543.21,
       },
-    },
-    {
+    }),
+    Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0',
       referer: 'https://google.com',
       visitLocation: {
@@ -21,14 +23,14 @@ describe('VisitsParser', () => {
         latitude: 1029,
         longitude: 6758,
       },
-    },
-    {
+    }),
+    Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
       visitLocation: {
         countryName: 'Spain',
       },
-    },
-    {
+    }),
+    Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
       referer: 'https://m.facebook.com',
       visitLocation: {
@@ -37,14 +39,14 @@ describe('VisitsParser', () => {
         latitude: 123.45,
         longitude: -543.21,
       },
-    },
-    {
+    }),
+    Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
-    },
+    }),
   ];
 
   describe('processStatsFromVisits', () => {
-    let stats;
+    let stats: VisitsStats;
 
     beforeAll(() => {
       stats = processStatsFromVisits(normalizeVisits(visits));

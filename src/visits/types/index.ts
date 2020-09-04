@@ -80,6 +80,8 @@ export interface CreateVisit {
 
 export type Stats = Record<string, number>;
 
+export type StatsRow = [string, number];
+
 export interface CityStats {
   cityName: string;
   count: number;

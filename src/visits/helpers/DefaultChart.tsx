@@ -47,15 +47,15 @@ const generateGraphData = (
       borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
       borderWidth: 2,
     },
-    (highlightedData && {
+    highlightedData && {
       title,
       label: highlightedLabel ?? 'Selected',
       data: highlightedData,
       backgroundColor: 'rgba(247, 127, 40, 0.4)',
       borderColor: '#F77F28',
       borderWidth: 2,
-    }) as unknown as ChartDataSets,
-  ].filter(Boolean),
+    },
+  ].filter(Boolean) as ChartDataSets[],
 });
 
 const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;

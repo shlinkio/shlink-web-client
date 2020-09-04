@@ -1,14 +1,15 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { keys, range, values } from 'ramda';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { range } from 'ramda';
 import SortableBarGraph from '../../../src/visits/helpers/SortableBarGraph';
 import GraphCard from '../../../src/visits/helpers/GraphCard';
 import SortingDropdown from '../../../src/utils/SortingDropdown';
 import PaginationDropdown from '../../../src/utils/PaginationDropdown';
-import { rangeOf } from '../../../src/utils/utils';
+import { OrderDir, rangeOf } from '../../../src/utils/utils';
+import { Stats } from '../../../src/visits/types';
 
 describe('<SortableBarGraph />', () => {
-  let wrapper;
+  let wrapper: ShallowWrapper;
   const sortingItems = {
     name: 'Name',
     amount: 'Amount',
@@ -30,7 +31,7 @@ describe('<SortableBarGraph />', () => {
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders stats unchanged when no ordering is set', () => {
     const wrapper = createWrapper();
@@ -40,19 +41,19 @@ describe('<SortableBarGraph />', () => {
   });
 
   describe('renders properly ordered stats when ordering is set', () => {
-    let assert;
+    let assert: (sortName: string, sortDir: OrderDir, keys: string[], values: number[], done: Function) => void;
 
     beforeEach(() => {
       const wrapper = createWrapper();
-      const dropdown = wrapper.renderProp('title')().find(SortingDropdown);
+      const dropdown = wrapper.renderProp('title' as never)().find(SortingDropdown);
 
-      assert = (sortName, sortDir, expectedKeys, expectedValues, done) => {
+      assert = (sortName: string, sortDir: OrderDir, keys: string[], values: number[], done: Function) => {
         dropdown.prop('onChange')(sortName, sortDir);
         setImmediate(() => {
           const stats = wrapper.find(GraphCard).prop('stats');
 
-          expect(keys(stats)).toEqual(expectedKeys);
-          expect(values(stats)).toEqual(expectedValues);
+          expect(Object.keys(stats)).toEqual(keys);
+          expect(Object.values(stats)).toEqual(values);
           done();
         });
       };
@@ -65,28 +66,28 @@ describe('<SortableBarGraph />', () => {
   });
 
   describe('renders properly paginated stats when pagination is set', () => {
-    let assert;
+    let assert: (itemsPerPage: number, expectedStats: string[], done: Function) => void;
 
     beforeEach(() => {
-      const wrapper = createWrapper(true, range(1, 159).reduce((accum, value) => {
+      const wrapper = createWrapper(true, range(1, 159).reduce<Stats>((accum, value) => {
         accum[`key_${value}`] = value;
 
         return accum;
       }, {}));
-      const dropdown = wrapper.renderProp('title')().find(PaginationDropdown);
+      const dropdown = wrapper.renderProp('title' as never)().find(PaginationDropdown);
 
-      assert = (itemsPerPage, expectedStats, done) => {
+      assert = (itemsPerPage: number, expectedStats: string[], done: Function) => {
         dropdown.prop('setValue')(itemsPerPage);
         setImmediate(() => {
           const stats = wrapper.find(GraphCard).prop('stats');
 
-          expect(keys(stats)).toEqual(expectedStats);
+          expect(Object.keys(stats)).toEqual(expectedStats);
           done();
         });
       };
     });
 
-    const buildExpected = (size) => [ 'Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`) ];
+    const buildExpected = (size: number): string[] => [ 'Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`) ];
 
     it('50 items per page', (done) => assert(50, buildExpected(50), done));
     it('100 items per page', (done) => assert(100, buildExpected(100), done));
@@ -95,7 +96,7 @@ describe('<SortableBarGraph />', () => {
   });
 
   it('renders extra header content', () => {
-    wrapper = shallow(
+    const wrapper = shallow(
       <span>
         <SortableBarGraph
           title="Foo"

@@ -1,20 +1,22 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { CardHeader, DropdownItem } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import moment from 'moment';
+import { Mock } from 'ts-mockery';
 import LineChartCard from '../../../src/visits/helpers/LineChartCard';
 import ToggleSwitch from '../../../src/utils/ToggleSwitch';
+import { Visit } from '../../../src/visits/types';
 
 describe('<LineChartCard />', () => {
-  let wrapper;
-  const createWrapper = (visits = [], highlightedVisits = []) => {
+  let wrapper: ShallowWrapper;
+  const createWrapper = (visits: Visit[] = [], highlightedVisits: Visit[] = []) => {
     wrapper = shallow(<LineChartCard title="Cool title" visits={visits} highlightedVisits={highlightedVisits} />);
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders provided title', () => {
     const wrapper = createWrapper();
@@ -32,7 +34,7 @@ describe('<LineChartCard />', () => {
     [[{ date: moment().subtract(7, 'month').format() }], 'monthly' ],
     [[{ date: moment().subtract(1, 'year').format() }], 'monthly' ],
   ])('renders group menu and selects proper grouping item based on visits dates', (visits, expectedActiveItem) => {
-    const wrapper = createWrapper(visits);
+    const wrapper = createWrapper(visits.map((visit) => Mock.of<Visit>(visit)));
     const items = wrapper.find(DropdownItem);
 
     expect(items).toHaveLength(4);
@@ -73,24 +75,24 @@ describe('<LineChartCard />', () => {
   });
 
   it.each([
-    [[{}], [], 1 ],
-    [[{}], [{}], 2 ],
+    [[ Mock.of<Visit>({}) ], [], 1 ],
+    [[ Mock.of<Visit>({}) ], [ Mock.of<Visit>({}) ], 2 ],
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);
-    const { datasets } = chart.prop('data');
+    const { datasets } = chart.prop('data') as any;
 
     expect(datasets).toHaveLength(expectedLines);
   });
 
   it('includes stats for visits with no dates if selected', () => {
     const wrapper = createWrapper([
-      { date: '2016-04-01' },
-      { date: '2016-01-01' },
+      Mock.of<Visit>({ date: '2016-04-01' }),
+      Mock.of<Visit>({ date: '2016-01-01' }),
     ]);
 
-    expect(wrapper.find(Line).prop('data').labels).toHaveLength(2);
+    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(2);
     wrapper.find(ToggleSwitch).simulate('change');
-    expect(wrapper.find(Line).prop('data').labels).toHaveLength(4);
+    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(4);
   });
 });
