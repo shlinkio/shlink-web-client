@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { RouteChildrenProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import createScrollToTop from '../../src/common/ScrollToTop';
 
 describe('<ScrollToTop />', () => {
@@ -10,7 +10,7 @@ describe('<ScrollToTop />', () => {
   beforeEach(() => {
     const ScrollToTop = createScrollToTop();
 
-    wrapper = shallow(<ScrollToTop {...Mock.all<RouteChildrenProps>()}>Foobar</ScrollToTop>);
+    wrapper = shallow(<ScrollToTop {...Mock.all<RouteComponentProps>()}>Foobar</ScrollToTop>);
   });
 
   afterEach(() => wrapper.unmount());

@@ -2,8 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
-import { MercureInfo } from '../mercure/reducers/mercureInfo';
-import { useMercureTopicBinding } from '../mercure/helpers';
+import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
 import { SelectedServer } from '../servers/data';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagCardProps } from './TagCard';
@@ -11,14 +10,11 @@ import { TagCardProps } from './TagCard';
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
-export interface TagsListProps {
+export interface TagsListProps extends MercureBoundProps {
   filterTags: (searchTerm: string) => void;
   forceListTags: Function;
   tagsList: TagsListState;
   selectedServer: SelectedServer;
-  createNewVisit: () => void;
-  loadMercureInfo: Function;
-  mercureInfo: MercureInfo;
 }
 
 const TagsList = (TagCard: FC<TagCardProps>) => (

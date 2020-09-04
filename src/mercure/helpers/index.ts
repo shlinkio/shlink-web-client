@@ -32,3 +32,9 @@ export const useMercureTopicBinding = <T>(
 ) => {
   useEffect(bindToMercureTopic(mercureInfo, topic, onMessage, onTokenExpired), [ mercureInfo ]);
 };
+
+export interface MercureBoundProps {
+  createNewVisit: (message: any) => void;
+  loadMercureInfo: Function;
+  mercureInfo: MercureInfo;
+}

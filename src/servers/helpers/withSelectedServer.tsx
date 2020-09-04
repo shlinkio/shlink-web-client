@@ -1,9 +1,9 @@
 import React, { FC, useEffect } from 'react';
-import { RouteChildrenProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import Message from '../../utils/Message';
 import { isNotFoundServer, SelectedServer } from '../data';
 
-interface WithSelectedServerProps extends RouteChildrenProps<{ serverId: string }> {
+interface WithSelectedServerProps extends RouteComponentProps<{ serverId: string }> {
   selectServer: (serverId: string) => void;
   selectedServer: SelectedServer;
 }
@@ -13,8 +13,8 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
     const { selectServer, selectedServer, match } = props;
 
     useEffect(() => {
-      match?.params?.serverId && selectServer(match?.params.serverId);
-    }, [ match?.params.serverId ]);
+      selectServer(match.params.serverId);
+    }, [ match.params.serverId ]);
 
     if (!selectedServer) {
       return <Message loading />;

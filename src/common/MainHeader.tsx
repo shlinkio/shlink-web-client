@@ -4,12 +4,12 @@ import React, { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import classNames from 'classnames';
-import { RouteChildrenProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import { useToggle } from '../utils/helpers/hooks';
 import shlinkLogo from './shlink-logo-white.png';
 import './MainHeader.scss';
 
-const MainHeader = (ServersDropdown: FC) => ({ location }: RouteChildrenProps) => {
+const MainHeader = (ServersDropdown: FC) => ({ location }: RouteComponentProps) => {
   const [ isOpen, toggleOpen, , close ] = useToggle();
   const { pathname } = location;
 

@@ -3,11 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, isEmpty, keys, values } from 'ramda';
 import React, { useState, useEffect, FC } from 'react';
 import qs from 'qs';
-import { RouteChildrenProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/utils';
-import { MercureInfo } from '../mercure/reducers/mercureInfo';
-import { useMercureTopicBinding } from '../mercure/helpers';
+import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
 import { SelectedServer } from '../servers/data';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
@@ -32,14 +31,11 @@ export interface WithList {
   shortUrlsList: ShortUrl[];
 }
 
-export interface ShortUrlsListProps extends ShortUrlsListState, RouteChildrenProps<RouteParams> {
+export interface ShortUrlsListProps extends ShortUrlsListState, RouteComponentProps<RouteParams>, MercureBoundProps {
   selectedServer: SelectedServer;
   listShortUrls: (params: ShortUrlsListParams) => void;
   shortUrlsListParams: ShortUrlsListParams;
   resetShortUrlParams: () => void;
-  createNewVisit: (message: any) => void;
-  loadMercureInfo: Function;
-  mercureInfo: MercureInfo;
 }
 
 const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
@@ -116,7 +112,7 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     const tags = query.tag ? [ query.tag as string ] : shortUrlsListParams.tags;
 
-    refreshList({ page: match?.params.page, tags });
+    refreshList({ page: match.params.page, tags });
 
     return resetShortUrlParams;
   }, []);
