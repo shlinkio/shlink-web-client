@@ -2,7 +2,7 @@ import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 import { AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrlsListParams } from '../../short-urls/reducers/shortUrlsListParams';
-import { ShortUrl } from '../../short-urls/data';
+import { ShortUrl, ShortUrlData } from '../../short-urls/data';
 import { OptionalString } from '../utils';
 import {
   ShlinkHealth,
@@ -33,8 +33,8 @@ export default class ShlinkApiClient {
     this.performRequest<{ shortUrls: ShlinkShortUrlsResponse }>('/short-urls', 'GET', params)
       .then(({ data }) => data.shortUrls);
 
-  public readonly createShortUrl = async (options: any): Promise<ShortUrl> => { // TODO CreateShortUrl interface
-    const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options);
+  public readonly createShortUrl = async (options: ShortUrlData): Promise<ShortUrl> => {
+    const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options as any);
 
     return this.performRequest<ShortUrl>('/short-urls', 'POST', {}, filteredOptions)
       .then((resp) => resp.data);

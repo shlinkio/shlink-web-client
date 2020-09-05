@@ -25,12 +25,12 @@ interface ShlinkTagsStats {
 
 export interface ShlinkTags {
   tags: string[];
-  stats?: ShlinkTagsStats[]; // TODO Is only optional in old versions
+  stats?: ShlinkTagsStats[]; // Is only optional in old Shlink versions
 }
 
 export interface ShlinkTagsResponse {
   data: string[];
-  stats?: ShlinkTagsStats[]; // TODO Is only optional in old versions
+  stats?: ShlinkTagsStats[]; // Is only optional in old Shlink versions
 }
 
 export interface ShlinkPaginator {
@@ -40,7 +40,7 @@ export interface ShlinkPaginator {
 
 export interface ShlinkVisits {
   data: Visit[];
-  pagination?: ShlinkPaginator; // TODO Is only optional in old versions
+  pagination?: ShlinkPaginator; // Is only optional in old Shlink versions
 }
 
 export interface ShlinkVisitsParams {

@@ -42,7 +42,6 @@
     "leaflet": "^1.5.1",
     "moment": "^2.24.0",
     "promise": "^8.0.3",
-    "prop-types": "^15.7.2",
     "qs": "^6.9.0",
     "ramda": "^0.26.1",
     "react": "^16.13.1",
@@ -61,7 +60,6 @@
     "react-tagsinput": "^3.19.0",
     "reactstrap": "^8.0.1",
     "redux": "^4.0.4",
-    "redux-actions": "^2.6.5",
     "redux-localstorage-simple": "^2.2.0",
     "redux-thunk": "^2.3.0",
     "uuid": "^3.3.3"

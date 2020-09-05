@@ -68,7 +68,6 @@ const determineHeight = (isBarChart: boolean, labels: string[]): number | undefi
   return isBarChart && labels.length > 20 ? labels.length * 8 : undefined;
 };
 
-/* eslint-disable react/prop-types */
 const renderPieChartLegend = ({ config }: Chart) => {
   const { labels = [], datasets = [] } = config.data ?? {};
   const { defaultColor } = config.options ?? {} as any;
@@ -88,7 +87,6 @@ const renderPieChartLegend = ({ config }: Chart) => {
     </ul>
   );
 };
-/* eslint-enable react/prop-types */
 
 const chartElementAtEvent = (onClick?: (label: string) => void) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
   if (!onClick || !chart) {
