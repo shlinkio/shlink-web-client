@@ -1,36 +1,34 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { identity } from 'ramda';
+import { shallow, ShallowWrapper } from 'enzyme';
 import { Card, Progress } from 'reactstrap';
-import createVisitStats from '../../src/visits/VisitsStats';
+import { Mock } from 'ts-mockery';
+import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
 import GraphCard from '../../src/visits/helpers/GraphCard';
 import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import DateRangeRow from '../../src/utils/DateRangeRow';
+import { Visit, VisitsInfo } from '../../src/visits/types';
 
 describe('<VisitStats />', () => {
-  let wrapper;
-  const processStatsFromVisits = () => (
-    { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} }
-  );
+  const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
+
+  let wrapper: ShallowWrapper;
   const getVisitsMock = jest.fn();
 
-  const createComponent = (visitsInfo) => {
-    const VisitStats = createVisitStats({ processStatsFromVisits, normalizeVisits: identity }, () => '');
-
+  const createComponent = (visitsInfo: Partial<VisitsInfo>) => {
     wrapper = shallow(
       <VisitStats
         getVisits={getVisitsMock}
-        visitsInfo={visitsInfo}
-        cancelGetVisits={identity}
-        matchMedia={() => ({ matches: false })}
+        visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
+        cancelGetVisits={() => {}}
+        matchMedia={() => Mock.of<MediaQueryList>({ matches: false })}
       />,
     );
 
     return wrapper;
   };
 
-  afterEach(() => wrapper && wrapper.unmount());
+  afterEach(() => wrapper?.unmount());
 
   it('renders a preloader when visits are loading', () => {
     const wrapper = createComponent({ loading: true, visits: [] });
@@ -70,7 +68,7 @@ describe('<VisitStats />', () => {
   });
 
   it('renders all graphics when visits are properly loaded', () => {
-    const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
+    const wrapper = createComponent({ loading: false, error: false, visits });
     const graphs = wrapper.find(GraphCard);
     const sortableBarGraphs = wrapper.find(SortableBarGraph);
 
@@ -78,7 +76,7 @@ describe('<VisitStats />', () => {
   });
 
   it('reloads visits when selected dates change', () => {
-    const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
+    const wrapper = createComponent({ loading: false, error: false, visits });
     const dateRange = wrapper.find(DateRangeRow);
 
     dateRange.simulate('startDateChange', '2016-01-01T00:00:00+01:00');
@@ -90,7 +88,7 @@ describe('<VisitStats />', () => {
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
-    const wrapper = createComponent({ loading: false, error: false, visits: [{}, {}, {}] });
+    const wrapper = createComponent({ loading: false, error: false, visits });
     const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
     const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
 

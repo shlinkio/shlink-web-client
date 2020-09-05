@@ -1,17 +1,19 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
 import ColorGenerator from '../utils/services/ColorGenerator';
+import { ShlinkVisitsParams } from '../utils/services/types';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
+import VisitsStats from './VisitsStats';
 
 export interface TagVisitsProps extends RouteComponentProps<{ tag: string }>, MercureBoundProps {
   getTagVisits: (tag: string, query: any) => void;
   tagVisits: TagVisitsState;
-  cancelGetTagVisits: Function;
+  cancelGetTagVisits: () => void;
 }
 
-const TagVisits = (VisitsStats: FC<any>, colorGenerator: ColorGenerator) => ({ // TODO Use VisitsStatsProps once available
+const TagVisits = (colorGenerator: ColorGenerator) => ({
   history: { goBack },
   match,
   getTagVisits,
@@ -23,7 +25,7 @@ const TagVisits = (VisitsStats: FC<any>, colorGenerator: ColorGenerator) => ({ /
 }: TagVisitsProps) => {
   const { params } = match;
   const { tag } = params;
-  const loadVisits = (dates: any) => getTagVisits(tag, dates);
+  const loadVisits = (params: ShlinkVisitsParams) => getTagVisits(tag, params);
 
   useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 

@@ -77,3 +77,8 @@ export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }:
   latitude: visitLocation?.latitude,
   longitude: visitLocation?.longitude,
 }));
+
+export interface VisitsParser {
+  processStatsFromVisits: (normalizedVisits: NormalizedVisit[]) => VisitsStats;
+  normalizeVisits: (visits: Visit[]) => NormalizedVisit[];
+}

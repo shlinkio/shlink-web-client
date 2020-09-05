@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
@@ -11,35 +10,42 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
-import { determineOrderDir } from '../utils/utils';
+import { determineOrderDir, OrderDir } from '../utils/utils';
 import { prettify } from '../utils/helpers/numbers';
+import { NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
-const NormalizedVisitType = PropTypes.shape({
+interface VisitsTableProps {
+  visits: NormalizedVisit[];
+  selectedVisits?: NormalizedVisit[];
+  setSelectedVisits: (visits: NormalizedVisit[]) => void;
+  isSticky?: boolean;
+  matchMedia?: (query: string) => MediaQueryList;
+}
 
-});
+type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer';
 
-const propTypes = {
-  visits: PropTypes.arrayOf(NormalizedVisitType).isRequired,
-  selectedVisits: PropTypes.arrayOf(NormalizedVisitType),
-  setSelectedVisits: PropTypes.func.isRequired,
-  isSticky: PropTypes.bool,
-  matchMedia: PropTypes.func,
-};
+interface Order {
+  field?: OrderableFields;
+  dir?: OrderDir;
+}
 
 const PAGE_SIZE = 20;
-const visitMatchesSearch = ({ browser, os, referer, country, city }, searchTerm) =>
+const visitMatchesSearch = ({ browser, os, referer, country, city }: NormalizedVisit, searchTerm: string) =>
   `${browser} ${os} ${referer} ${country} ${city}`.toLowerCase().includes(searchTerm.toLowerCase());
-const searchVisits = (searchTerm, visits) => visits.filter((visit) => visitMatchesSearch(visit, searchTerm));
-const sortVisits = ({ field, dir }, visits) => visits.sort((a, b) => {
-  const greaterThan = dir === 'ASC' ? 1 : -1;
-  const smallerThan = dir === 'ASC' ? -1 : 1;
+const searchVisits = (searchTerm: string, visits: NormalizedVisit[]) =>
+  visits.filter((visit) => visitMatchesSearch(visit, searchTerm));
+const sortVisits = ({ field, dir }: Order, visits: NormalizedVisit[]) => !field || !dir ? visits : visits.sort(
+  (a, b) => {
+    const greaterThan = dir === 'ASC' ? 1 : -1;
+    const smallerThan = dir === 'ASC' ? -1 : 1;
 
-  return a[field] > b[field] ? greaterThan : smallerThan;
-});
-const calculateVisits = (allVisits, searchTerm, order) => {
+    return a[field] > b[field] ? greaterThan : smallerThan;
+  },
+);
+const calculateVisits = (allVisits: NormalizedVisit[], searchTerm: string | undefined, order: Order) => {
   const filteredVisits = searchTerm ? searchVisits(searchTerm, allVisits) : [ ...allVisits ];
-  const sortedVisits = order.dir ? sortVisits(order, filteredVisits) : filteredVisits;
+  const sortedVisits = sortVisits(order, filteredVisits);
   const total = sortedVisits.length;
   const visitsGroups = splitEvery(PAGE_SIZE, sortedVisits);
 
@@ -52,23 +58,24 @@ const VisitsTable = ({
   setSelectedVisits,
   isSticky = false,
   matchMedia = window.matchMedia,
-}) => {
+}: VisitsTableProps) => {
   const headerCellsClass = classNames('visits-table__header-cell', {
     'visits-table__sticky': isSticky,
   });
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
-  const [ searchTerm, setSearchTerm ] = useState(undefined);
-  const [ order, setOrder ] = useState({ field: undefined, dir: undefined });
+  const [ searchTerm, setSearchTerm ] = useState<string | undefined>(undefined);
+  const [ order, setOrder ] = useState<Order>({ field: undefined, dir: undefined });
   const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
 
   const [ page, setPage ] = useState(1);
   const end = page * PAGE_SIZE;
   const start = end - PAGE_SIZE;
 
-  const orderByColumn = (field) => () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field) => order.dir && order.field === field && (
+  const orderByColumn = (field: OrderableFields) =>
+    () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
+  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field && (
     <FontAwesomeIcon
       icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon}
       className="visits-table__header-icon"
@@ -200,7 +207,5 @@ const VisitsTable = ({
     </table>
   );
 };
-
-VisitsTable.propTypes = propTypes;
 
 export default VisitsTable;

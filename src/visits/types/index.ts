@@ -1,32 +1,5 @@
-import PropTypes from 'prop-types';
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
-
-/** @deprecated Use Visit interface instead */
-export const VisitType = PropTypes.shape({
-  referer: PropTypes.string,
-  date: PropTypes.string,
-  userAgent: PropTypes.string,
-  visitLocation: PropTypes.shape({
-    countryCode: PropTypes.string,
-    countryName: PropTypes.string,
-    regionName: PropTypes.string,
-    cityName: PropTypes.string,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-    timezone: PropTypes.string,
-    isEmpty: PropTypes.bool,
-  }),
-});
-
-/** @deprecated Use VisitsInfo interface instead */
-export const VisitsInfoType = PropTypes.shape({
-  visits: PropTypes.arrayOf(VisitType),
-  loading: PropTypes.bool,
-  loadingLarge: PropTypes.bool,
-  error: PropTypes.bool,
-  progress: PropTypes.number,
-});
 
 export interface VisitsInfo {
   visits: Visit[];

@@ -1,10 +1,12 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { Mock } from 'ts-mockery';
 import VisitsHeader from '../../src/visits/VisitsHeader';
+import { Visit } from '../../src/visits/types';
 
 describe('<VisitsHeader />', () => {
-  let wrapper;
-  const visits = [{}, {}, {}];
+  let wrapper: ShallowWrapper;
+  const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
   const title = 'My header title';
   const goBack = jest.fn();
 

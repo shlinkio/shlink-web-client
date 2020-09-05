@@ -4,10 +4,11 @@ import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
-import createShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
+import ShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlDetail } from '../../src/visits/reducers/shortUrlDetail';
+import VisitsStats from '../../src/visits/VisitsStats';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper: ShallowWrapper;
@@ -19,11 +20,8 @@ describe('<ShortUrlVisits />', () => {
   const history = Mock.of<History>({
     goBack: jest.fn(),
   });
-  const VisitsStats = jest.fn();
 
   beforeEach(() => {
-    const ShortUrlVisits = createShortUrlVisits(VisitsStats);
-
     wrapper = shallow(
       <ShortUrlVisits
         {...Mock.all<ShortUrlVisitsProps>()}
@@ -34,7 +32,7 @@ describe('<ShortUrlVisits />', () => {
         history={history}
         shortUrlVisits={Mock.of<ShortUrlVisitsState>({ loading: true, visits: [] })}
         shortUrlDetail={Mock.all<ShortUrlDetail>()}
-        cancelGetShortUrlVisits={identity}
+        cancelGetShortUrlVisits={() => {}}
       />,
     );
   });

@@ -1,15 +1,17 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, ShallowWrapper } from 'enzyme';
+import { Mock } from 'ts-mockery';
 import VisitsTable from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import SearchField from '../../src/utils/SearchField';
+import { NormalizedVisit } from '../../src/visits/types';
 
 describe('<VisitsTable />', () => {
-  const matchMedia = () => ({ matches: false });
+  const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
   const setSelectedVisits = jest.fn();
-  let wrapper;
-  const createWrapper = (visits, selectedVisits = []) => {
+  let wrapper: ShallowWrapper;
+  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => {
     wrapper = shallow(
       <VisitsTable
         visits={visits}
@@ -22,10 +24,8 @@ describe('<VisitsTable />', () => {
     return wrapper;
   };
 
-  afterEach(() => {
-    jest.resetAllMocks();
-    wrapper && wrapper.unmount();
-  });
+  afterEach(jest.resetAllMocks);
+  afterEach(() => wrapper?.unmount());
 
   it('renders columns as expected', () => {
     const wrapper = createWrapper([]);
@@ -55,7 +55,9 @@ describe('<VisitsTable />', () => {
     [ 60, 3 ],
     [ 115, 6 ],
   ])('renders the expected amount of pages', (visitsCount, expectedAmountOfPages) => {
-    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ browser: '', date: '', referer: '' })));
+    const wrapper = createWrapper(
+      rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' })),
+    );
     const tr = wrapper.find('tbody').find('tr');
     const paginator = wrapper.find(SimplePaginator);
 
@@ -66,7 +68,9 @@ describe('<VisitsTable />', () => {
   it.each(
     rangeOf(20, (value) => [ value ]),
   )('does not render footer when there is only one page to render', (visitsCount) => {
-    const wrapper = createWrapper(rangeOf(visitsCount, () => ({ browser: '', date: '', referer: '' })));
+    const wrapper = createWrapper(
+      rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' })),
+    );
     const tr = wrapper.find('tbody').find('tr');
     const paginator = wrapper.find(SimplePaginator);
 
@@ -75,7 +79,7 @@ describe('<VisitsTable />', () => {
   });
 
   it('selected rows are highlighted', () => {
-    const visits = rangeOf(10, () => ({ browser: '', date: '', referer: '' }));
+    const visits = rangeOf(10, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' }));
     const wrapper = createWrapper(
       visits,
       [ visits[1], visits[2] ],
@@ -98,7 +102,7 @@ describe('<VisitsTable />', () => {
   });
 
   it('orders visits when column is clicked', () => {
-    const wrapper = createWrapper(rangeOf(9, (index) => ({
+    const wrapper = createWrapper(rangeOf(9, (index) => Mock.of<NormalizedVisit>({
       browser: '',
       date: `${9 - index}`,
       referer: `${index}`,
@@ -118,8 +122,8 @@ describe('<VisitsTable />', () => {
 
   it('filters list when writing in search box', () => {
     const wrapper = createWrapper([
-      ...rangeOf(7, () => ({ browser: 'aaa', date: 'aaa', referer: 'aaa' })),
-      ...rangeOf(2, () => ({ browser: 'bbb', date: 'bbb', referer: 'bbb' })),
+      ...rangeOf(7, () => Mock.of<NormalizedVisit>({ browser: 'aaa', date: 'aaa', referer: 'aaa' })),
+      ...rangeOf(2, () => Mock.of<NormalizedVisit>({ browser: 'bbb', date: 'bbb', referer: 'bbb' })),
     ]);
     const searchField = wrapper.find(SearchField);
 

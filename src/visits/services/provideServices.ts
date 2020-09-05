@@ -3,7 +3,6 @@ import ShortUrlVisits from '../ShortUrlVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import MapModal from '../helpers/MapModal';
-import VisitsStats from '../VisitsStats';
 import { createNewVisit } from '../reducers/visitCreation';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import TagVisits from '../TagVisits';
@@ -13,13 +12,12 @@ import * as visitsParser from './VisitsParser';
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
-  bottle.serviceFactory('VisitsStats', VisitsStats, 'VisitsParser');
-  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsStats');
+  bottle.serviceFactory('ShortUrlVisits', () => ShortUrlVisits);
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ],
   ));
-  bottle.serviceFactory('TagVisits', TagVisits, 'VisitsStats', 'ColorGenerator');
+  bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisit', 'loadMercureInfo' ],

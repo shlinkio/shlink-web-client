@@ -12,7 +12,7 @@ import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
 import { ChartData, ChartDataSets } from 'chart.js';
-import { Stats, Visit } from '../types';
+import { NormalizedVisit, Stats, Visit } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
@@ -23,7 +23,7 @@ interface LineChartCardProps {
   title: string;
   highlightedLabel?: string;
   visits: Visit[];
-  highlightedVisits: Visit[];
+  highlightedVisits: NormalizedVisit[];
 }
 
 type Step = 'monthly' | 'weekly' | 'daily' | 'hourly';
@@ -66,13 +66,16 @@ const determineInitialStep = (oldestVisitDate: string): Step => {
   return matcher() ?? 'monthly';
 };
 
-const groupVisitsByStep = (step: Step, visits: Visit[]): Stats => visits.reduce<Stats>((acc, visit) => {
-  const key = STEP_TO_DATE_FORMAT[step](visit.date);
+const groupVisitsByStep = (step: Step, visits: (Visit | NormalizedVisit)[]): Stats => visits.reduce<Stats>(
+  (acc, visit) => {
+    const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
-  acc[key] = acc[key] ? acc[key] + 1 : 1;
+    acc[key] = acc[key] ? acc[key] + 1 : 1;
 
-  return acc;
-}, {});
+    return acc;
+  },
+  {},
+);
 
 const generateLabels = (step: Step, visits: Visit[]): string[] => {
   const unit = STEP_TO_DATE_UNIT_MAP[step];
