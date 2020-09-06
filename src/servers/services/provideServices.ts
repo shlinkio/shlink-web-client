@@ -12,12 +12,14 @@ import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
+import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import ServersImporter from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   // Components
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
+  bottle.decorator('CreateServer', withoutSelectedServer);
   bottle.decorator('CreateServer', connect([ 'selectedServer' ], [ 'createServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');

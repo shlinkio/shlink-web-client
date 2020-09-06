@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
 import ServersListGroup from '../servers/ServersListGroup';
@@ -6,17 +6,12 @@ import './Home.scss';
 import { ServersMap } from '../servers/data';
 
 export interface HomeProps {
-  resetSelectedServer: Function;
   servers: ServersMap;
 }
 
-const Home = ({ resetSelectedServer, servers }: HomeProps) => {
+const Home = ({ servers }: HomeProps) => {
   const serversList = values(servers);
   const hasServers = !isEmpty(serversList);
-
-  useEffect(() => {
-    resetSelectedServer();
-  }, []);
 
   return (
     <div className="home">
