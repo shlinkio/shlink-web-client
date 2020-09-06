@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Added
 
 * [#289](https://github.com/shlinkio/shlink-web-client/issues/289) Client and server version constraints are now links to the corresponding project release notes.
+* [#293](https://github.com/shlinkio/shlink-web-client/issues/293) Shlink versions are now always displayed in footer, hiding the server version when there's no connected server.
 
 #### Changed
 
