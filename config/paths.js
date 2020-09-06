@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/promise-function-async, @typescript-eslint/prefer-optional-chain */
 
 const path = require('path');
 const fs = require('fs');

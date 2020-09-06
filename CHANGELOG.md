@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* *Nothing*
+* [#40](https://github.com/shlinkio/shlink-web-client/issues/40) Migrated project to TypeScript.
 
 #### Deprecated
 
@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Fixed
 
-* *Nothing*
+* [#295](https://github.com/shlinkio/shlink-web-client/issues/295) Fixed custom slug field not being disabled when selecting a short code length.
 
 
 ## 2.5.1 - 2020-06-06

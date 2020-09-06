@@ -41,7 +41,7 @@ install:
 
 before_script:
   - echo "Building commit range ${TRAVIS_COMMIT_RANGE}"
-  - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/main} --name-only | grep -E 'src\/(.*).(js|ts|jsx|tsx)$' | paste -sd ",")
+  - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/main} --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
 
 script:
   - npm run lint

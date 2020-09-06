@@ -1,12 +1,12 @@
 module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: [
-    'src/**/*.js',
+    'src/**/*.{js,ts,tsx}',
     '!src/registerServiceWorker.js',
-    '!src/index.js',
-    '!src/reducers/index.js',
-    '!src/**/provideServices.js',
-    '!src/container/*.js',
+    '!src/index.ts',
+    '!src/reducers/index.ts',
+    '!src/**/provideServices.ts',
+    '!src/container/*.ts',
   ],
   resolver: 'jest-pnp-resolver',
   setupFiles: [
@@ -17,9 +17,9 @@ module.exports = {
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
   transform: {
-    '^.+\\.(js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest',
+    '^.+\\.(ts|tsx|js|jsx|mjs)$': '<rootDir>/node_modules/babel-jest',
     '^.+\\.css$': '<rootDir>/config/jest/cssTransform.js',
-    '^(?!.*\\.(js|jsx|mjs|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
+    '^(?!.*\\.(ts|tsx|js|jsx|mjs|css|json)$)': '<rootDir>/config/jest/fileTransform.js',
   },
   transformIgnorePatterns: [
     '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
