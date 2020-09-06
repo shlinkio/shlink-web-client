@@ -2,7 +2,7 @@ const jestConfig = require(`${__dirname}/jest.config.js`);
 
 module.exports = {
   mutate: jestConfig.collectCoverageFrom,
-  mutator: 'javascript',
+  mutator: 'typescript',
   testRunner: 'jest',
   reporters: [ 'progress', 'clear-text' ],
   coverageAnalysis: 'off',
