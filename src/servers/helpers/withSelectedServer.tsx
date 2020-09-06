@@ -17,7 +17,11 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
     }, [ match.params.serverId ]);
 
     if (!selectedServer) {
-      return <Message loading />;
+      return (
+        <div className="row">
+          <Message loading />
+        </div>
+      );
     }
 
     if (isNotFoundServer(selectedServer)) {
