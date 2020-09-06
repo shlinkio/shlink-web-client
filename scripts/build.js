@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, @typescript-eslint/prefer-nullish-coalescing, @typescript-eslint/promise-function-async, @typescript-eslint/prefer-optional-chain */
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'production';
@@ -43,8 +43,8 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 // Process CLI arguments
 const argvSliceStart = 2;
 const argv = process.argv.slice(argvSliceStart);
-const writeStatsJson = argv.indexOf('--stats') !== -1;
-const withoutDist = argv.indexOf('--no-dist') !== -1;
+const writeStatsJson = argv.includes('--stats');
+const withoutDist = argv.includes('--no-dist');
 const { version, hasVersion } = getVersionFromArgs(argv);
 
 // Generate configuration

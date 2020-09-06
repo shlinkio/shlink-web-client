@@ -227,7 +227,7 @@ module.exports = (webpackEnv) => {
 
               // Turned on because emoji and regex is not minified properly using default
               // https://github.com/facebook/create-react-app/issues/2488
-              ascii_only: true,
+              ascii_only: true, // eslint-disable-line @typescript-eslint/camelcase
             },
           },
 
@@ -668,7 +668,7 @@ module.exports = (webpackEnv) => {
       fs: 'empty',
       net: 'empty',
       tls: 'empty',
-      child_process: 'empty',
+      child_process: 'empty', // eslint-disable-line @typescript-eslint/camelcase
     },
 
     // Turn off performance processing because we utilize
