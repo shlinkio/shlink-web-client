@@ -30,7 +30,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'CreateShortUrl',
     'ShortUrlVisits',
     'TagVisits',
-    'ShlinkVersions',
     'ServerError',
   );
   bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));

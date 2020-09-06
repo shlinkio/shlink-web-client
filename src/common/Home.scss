@@ -2,7 +2,7 @@
 
 .home {
   text-align: center;
-  height: calc(100vh - #{$headerHeight});
+  height: calc(100vh - #{$headerHeight} - #{($footer-height + $footer-margin)});
   display: flex;
   align-items: center;
   justify-content: center;

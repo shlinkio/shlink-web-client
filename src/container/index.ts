@@ -30,7 +30,7 @@ const connect: ConnectDecorator = (propsFromState: string[] | null, actionServic
     actionServiceNames.reduce(mapActionService, {}),
   );
 
-bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer', 'Settings');
+bottle.serviceFactory('App', App, 'MainHeader', 'Home', 'MenuLayout', 'CreateServer', 'EditServer', 'Settings', 'ShlinkVersions');
 bottle.decorator('App', connect([ 'servers' ], [ 'fetchServers' ]));
 
 provideCommonServices(bottle, connect, withRouter);
