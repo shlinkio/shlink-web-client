@@ -19,7 +19,6 @@ const MenuLayout = (
   CreateShortUrl: FC,
   ShortUrlVisits: FC,
   TagVisits: FC,
-  ShlinkVersions: FC,
   ServerError: FC,
 ) => withSelectedServer(({ location, selectedServer }) => {
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
@@ -70,10 +69,6 @@ const MenuLayout = (
                   render={() => <NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}
                 />
               </Switch>
-            </div>
-
-            <div className="menu-layout__footer text-center text-md-right">
-              <ShlinkVersions />
             </div>
           </div>
         </div>

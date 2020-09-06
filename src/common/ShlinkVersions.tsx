@@ -14,12 +14,7 @@ export interface ShlinkVersionsProps {
   className?: string;
 }
 
-interface VersionLinkProps {
-  project: 'shlink' | 'shlink-web-client';
-  version: string;
-}
-
-const VersionLink = ({ project, version }: VersionLinkProps) => (
+const VersionLink = ({ project, version }: { project: 'shlink' | 'shlink-web-client'; version: string }) => (
   <ExternalLink href={`https://github.com/shlinkio/${project}/releases/${version}`} className="text-muted">
     <b>{version}</b>
   </ExternalLink>

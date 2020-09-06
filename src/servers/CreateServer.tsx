@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { v4 as uuid } from 'uuid';
 import { RouterProps } from 'react-router';
 import classNames from 'classnames';
@@ -13,7 +13,6 @@ const SHOW_IMPORT_MSG_TIME = 4000;
 
 interface CreateServerProps extends RouterProps {
   createServer: (server: ServerWithId) => void;
-  resetSelectedServer: Function;
 }
 
 const Result: FC<{ type: 'success' | 'error' }> = ({ children, type }) => (
@@ -32,7 +31,7 @@ const Result: FC<{ type: 'success' | 'error' }> = ({ children, type }) => (
 );
 
 const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
-  { createServer, history: { push }, resetSelectedServer }: CreateServerProps,
+  { createServer, history: { push } }: CreateServerProps,
 ) => {
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
@@ -42,10 +41,6 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
     createServer({ ...serverData, id });
     push(`/server/${id}/list-short-urls/1`);
   };
-
-  useEffect(() => {
-    resetSelectedServer();
-  }, []);
 
   return (
     <NoMenuLayout>
