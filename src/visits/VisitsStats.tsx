@@ -125,7 +125,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
         <div className="col-12 mt-4">
           <LineChartCard
             title="Visits during time"
-            visits={visits}
+            visits={normalizedVisits}
             highlightedVisits={highlightedVisits}
             highlightedLabel={highlightedLabel}
           />

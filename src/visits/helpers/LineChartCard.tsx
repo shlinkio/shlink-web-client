@@ -12,7 +12,7 @@ import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
 import { ChartData, ChartDataSets } from 'chart.js';
-import { NormalizedVisit, Stats, Visit } from '../types';
+import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
@@ -22,7 +22,7 @@ import './LineChartCard.scss';
 interface LineChartCardProps {
   title: string;
   highlightedLabel?: string;
-  visits: Visit[];
+  visits: NormalizedVisit[];
   highlightedVisits: NormalizedVisit[];
 }
 
@@ -66,7 +66,7 @@ const determineInitialStep = (oldestVisitDate: string): Step => {
   return matcher() ?? 'monthly';
 };
 
-const groupVisitsByStep = (step: Step, visits: (Visit | NormalizedVisit)[]): Stats => visits.reduce<Stats>(
+const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => visits.reduce<Stats>(
   (acc, visit) => {
     const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
@@ -77,7 +77,7 @@ const groupVisitsByStep = (step: Step, visits: (Visit | NormalizedVisit)[]): Sta
   {},
 );
 
-const generateLabels = (step: Step, visits: Visit[]): string[] => {
+const generateLabels = (step: Step, visits: NormalizedVisit[]): string[] => {
   const unit = STEP_TO_DATE_UNIT_MAP[step];
   const formatter = STEP_TO_DATE_FORMAT[step];
   const newerDate = moment(visits[0].date);
@@ -91,7 +91,7 @@ const generateLabels = (step: Step, visits: Visit[]): string[] => {
 };
 
 const generateLabelsAndGroupedVisits = (
-  visits: Visit[],
+  visits: NormalizedVisit[],
   groupedVisitsWithGaps: Stats,
   step: Step,
   skipNoElements: boolean,
