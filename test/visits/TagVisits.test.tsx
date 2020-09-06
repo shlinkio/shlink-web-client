@@ -8,6 +8,7 @@ import TagVisitsHeader from '../../src/visits/TagVisitsHeader';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import VisitsStats from '../../src/visits/VisitsStats';
+import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 
 describe('<TagVisits />', () => {
   let wrapper: ShallowWrapper;
@@ -25,13 +26,14 @@ describe('<TagVisits />', () => {
     wrapper = shallow(
       <TagVisits
         {...Mock.all<TagVisitsProps>()}
+        {...Mock.all<MercureBoundProps>()}
         getTagVisits={getTagVisitsMock}
         match={match}
         history={history}
         tagVisits={Mock.of<TagVisitsStats>({ loading: true, visits: [] })}
         cancelGetTagVisits={() => {}}
       />,
-    );
+    ).dive(); // Dive is needed as this component is wrapped in a HOC
   });
 
   afterEach(() => wrapper.unmount());

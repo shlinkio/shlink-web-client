@@ -7,10 +7,9 @@ import appFactory from '../src/App';
 describe('<App />', () => {
   let wrapper: ShallowWrapper;
   const MainHeader = () => null;
-  const DummyComponent = () => null;
 
   beforeEach(() => {
-    const App = appFactory(MainHeader, DummyComponent, DummyComponent, DummyComponent, DummyComponent, DummyComponent);
+    const App = appFactory(MainHeader, () => null, () => null, () => null, () => null, () => null, () => null);
 
     wrapper = shallow(<App fetchServers={identity} servers={{}} />);
   });

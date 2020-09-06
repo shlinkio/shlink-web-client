@@ -6,8 +6,8 @@ import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/utils';
-import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
 import { SelectedServer } from '../servers/data';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
 import { ShortUrl } from './data';
@@ -31,14 +31,14 @@ export interface WithList {
   shortUrlsList: ShortUrl[];
 }
 
-export interface ShortUrlsListProps extends ShortUrlsListState, RouteComponentProps<RouteParams>, MercureBoundProps {
+export interface ShortUrlsListProps extends ShortUrlsListState, RouteComponentProps<RouteParams> {
   selectedServer: SelectedServer;
   listShortUrls: (params: ShortUrlsListParams) => void;
   shortUrlsListParams: ShortUrlsListParams;
   resetShortUrlParams: () => void;
 }
 
-const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
+const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub(({
   listShortUrls,
   resetShortUrlParams,
   shortUrlsListParams,
@@ -48,9 +48,6 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   error,
   shortUrlsList,
   selectedServer,
-  createNewVisit,
-  loadMercureInfo,
-  mercureInfo,
 }: ShortUrlsListProps & WithList) => {
   const { orderBy } = shortUrlsListParams;
   const [ order, setOrder ] = useState<{ orderField?: OrderableFields; orderDir?: OrderDir }>({
@@ -116,7 +113,6 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
 
     return resetShortUrlParams;
   }, []);
-  useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
   return (
     <React.Fragment>
@@ -168,6 +164,6 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
       </table>
     </React.Fragment>
   );
-};
+}, () => 'https://shlink.io/new-visit');
 
 export default ShortUrlsList;

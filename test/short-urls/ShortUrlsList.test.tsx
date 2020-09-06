@@ -5,6 +5,7 @@ import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawe
 import { Mock } from 'ts-mockery';
 import shortUrlsListCreator, { ShortUrlsListProps, SORTABLE_FIELDS } from '../../src/short-urls/ShortUrlsList';
 import { ShortUrl } from '../../src/short-urls/data';
+import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;
@@ -18,6 +19,7 @@ describe('<ShortUrlsList />', () => {
     wrapper = shallow(
       <ShortUrlsList
         {...Mock.all<ShortUrlsListProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
         listShortUrls={listShortUrlsMock}
         resetShortUrlParams={resetShortUrlParamsMock}
         shortUrlsListParams={{
@@ -39,9 +41,8 @@ describe('<ShortUrlsList />', () => {
             }),
           ]
         }
-        mercureInfo={{ loading: true } as any}
       />,
-    );
+    ).dive(); // Dive is needed as this component is wrapped in a HOC
   });
 
   afterEach(jest.resetAllMocks);

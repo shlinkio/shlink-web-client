@@ -2,30 +2,29 @@ import React, { FC, useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
-import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
 import { SelectedServer } from '../servers/data';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagCardProps } from './TagCard';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
-export interface TagsListProps extends MercureBoundProps {
+export interface TagsListProps {
   filterTags: (searchTerm: string) => void;
   forceListTags: Function;
   tagsList: TagsListState;
   selectedServer: SelectedServer;
 }
 
-const TagsList = (TagCard: FC<TagCardProps>) => (
-  { filterTags, forceListTags, tagsList, selectedServer, createNewVisit, loadMercureInfo, mercureInfo }: TagsListProps,
+const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
+  { filterTags, forceListTags, tagsList, selectedServer }: TagsListProps,
 ) => {
   const [ displayedTag, setDisplayedTag ] = useState<string | undefined>();
 
   useEffect(() => {
     forceListTags();
   }, []);
-  useMercureTopicBinding(mercureInfo, 'https://shlink.io/new-visit', createNewVisit, loadMercureInfo);
 
   const renderContent = () => {
     if (tagsList.loading) {
@@ -76,6 +75,6 @@ const TagsList = (TagCard: FC<TagCardProps>) => (
       </div>
     </React.Fragment>
   );
-};
+}, () => 'https://shlink.io/new-visit');
 
 export default TagsList;

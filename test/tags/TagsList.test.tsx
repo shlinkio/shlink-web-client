@@ -7,6 +7,7 @@ import Message from '../../src/utils/Message';
 import SearchField from '../../src/utils/SearchField';
 import { rangeOf } from '../../src/utils/utils';
 import { TagsList } from '../../src/tags/reducers/tagsList';
+import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
@@ -18,11 +19,12 @@ describe('<TagsList />', () => {
     wrapper = shallow(
       <TagsListComp
         {...Mock.all<TagsListProps>()}
+        {...Mock.all<MercureBoundProps>()}
         forceListTags={identity}
         filterTags={filterTags}
         tagsList={Mock.of<TagsList>(tagsList)}
       />,
-    );
+    ).dive(); // Dive is needed as this component is wrapped in a HOC
 
     return wrapper;
   };
