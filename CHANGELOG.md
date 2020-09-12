@@ -10,6 +10,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#289](https://github.com/shlinkio/shlink-web-client/issues/289) Client and server version constraints are now links to the corresponding project release notes.
 * [#293](https://github.com/shlinkio/shlink-web-client/issues/293) Shlink versions are now always displayed in footer, hiding the server version when there's no connected server.
+* [#250](https://github.com/shlinkio/shlink-web-client/issues/250) Added support to group real time updates in fixed intervals.
+
+    The settings page now allows to provide the interval in which the UI should get updated, making that happen at once, with all the updates that have happened during that interval.
+
+    By default updates are immediately applied if real-time updates are enabled, to keep the behavior as it was.
 
 #### Changed
 
