@@ -26,7 +26,7 @@ describe('<TagVisits />', () => {
     wrapper = shallow(
       <TagVisits
         {...Mock.all<TagVisitsProps>()}
-        {...Mock.all<MercureBoundProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getTagVisits={getTagVisitsMock}
         match={match}
         history={history}

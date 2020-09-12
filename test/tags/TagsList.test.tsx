@@ -19,7 +19,7 @@ describe('<TagsList />', () => {
     wrapper = shallow(
       <TagsListComp
         {...Mock.all<TagsListProps>()}
-        {...Mock.all<MercureBoundProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         forceListTags={identity}
         filterTags={filterTags}
         tagsList={Mock.of<TagsList>(tagsList)}

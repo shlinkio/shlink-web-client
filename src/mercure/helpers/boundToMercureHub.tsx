@@ -13,13 +13,22 @@ export function boundToMercureHub<T = {}>(
   WrappedComponent: FC<MercureBoundProps & T>,
   getTopicForProps: (props: T) => string,
 ) {
+  const pendingUpdates = new Set<CreateVisit>();
+
   return (props: MercureBoundProps & T) => {
     const { createNewVisit, loadMercureInfo, mercureInfo } = props;
+    const { interval } = mercureInfo;
 
-    useEffect(
-      bindToMercureTopic(mercureInfo, getTopicForProps(props), createNewVisit, loadMercureInfo),
-      [ mercureInfo ],
-    );
+    useEffect(() => {
+      const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisit(visit);
+
+      interval && setInterval(() => {
+        pendingUpdates.forEach(createNewVisit);
+        pendingUpdates.clear();
+      }, interval * 1000 * 60);
+
+      bindToMercureTopic(mercureInfo, getTopicForProps(props), onMessage, loadMercureInfo);
+    }, [ mercureInfo ]);
 
     return <WrappedComponent {...props} />;
   };

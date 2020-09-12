@@ -26,7 +26,7 @@ describe('<ShortUrlVisits />', () => {
     wrapper = shallow(
       <ShortUrlVisits
         {...Mock.all<ShortUrlVisitsProps>()}
-        {...Mock.all<MercureBoundProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getShortUrlDetail={identity}
         getShortUrlVisits={getShortUrlVisitsMock}
         match={match}

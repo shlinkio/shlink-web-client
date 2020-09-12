@@ -13,7 +13,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Services
   bottle.serviceFactory('RealTimeUpdates', () => RealTimeUpdates);
-  bottle.decorator('RealTimeUpdates', connect([ 'settings' ], [ 'setRealTimeUpdatesInterval' ]));
+  bottle.decorator(
+    'RealTimeUpdates',
+    connect([ 'settings' ], [ 'toggleRealTimeUpdates', 'setRealTimeUpdatesInterval' ]),
+  );
 
   // Actions
   bottle.serviceFactory('toggleRealTimeUpdates', () => toggleRealTimeUpdates);

@@ -30,7 +30,7 @@ const RealTimeUpdates = (
         <Input
           type="number"
           min={0}
-          placeholder={realTimeUpdates.enabled ? 'Immediate' : ''}
+          placeholder="Immediate"
           disabled={!realTimeUpdates.enabled}
           value={intervalValue(realTimeUpdates.interval)}
           onChange={(e) => setRealTimeUpdatesInterval(Number(e.target.value))}

@@ -20,7 +20,7 @@ describe('helpers', () => {
       [ Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined }) ],
       [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined }) ],
     ])('does not bind an EventSource when loading, error or no hub URL', (mercureInfo) => {
-      bindToMercureTopic(mercureInfo, '', identity, identity)();
+      bindToMercureTopic(mercureInfo, '', identity, identity);
 
       expect(EventSource).not.toHaveBeenCalled();
       expect(onMessage).not.toHaveBeenCalled();
@@ -40,7 +40,7 @@ describe('helpers', () => {
         error: false,
         mercureHubUrl,
         token,
-      }, topic, onMessage, onTokenExpired)();
+      }, topic, onMessage, onTokenExpired);
 
       expect(EventSource).toHaveBeenCalledWith(hubUrl, {
         headers: {
