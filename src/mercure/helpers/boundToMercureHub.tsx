@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react';
+import { pipe } from 'ramda';
 import { CreateVisit } from '../../visits/types';
 import { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
@@ -21,11 +22,10 @@ export function boundToMercureHub<T = {}>(
 
     useEffect(() => {
       const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisits([ visit ]);
-
-      bindToMercureTopic(mercureInfo, getTopicForProps(props), onMessage, loadMercureInfo);
+      const closeEventSource = bindToMercureTopic(mercureInfo, getTopicForProps(props), onMessage, loadMercureInfo);
 
       if (!interval) {
-        return undefined;
+        return closeEventSource;
       }
 
       const timer = setInterval(() => {
@@ -33,7 +33,7 @@ export function boundToMercureHub<T = {}>(
         pendingUpdates.clear();
       }, interval * 1000 * 60);
 
-      return () => clearInterval(timer);
+      return pipe(() => clearInterval(timer), () => closeEventSource?.());
     }, [ mercureInfo ]);
 
     return <WrappedComponent {...props} />;
