@@ -36,11 +36,11 @@ describe('mercureInfoReducer', () => {
     });
 
     it('returns mercure info on GET_MERCURE_INFO', () => {
-      expect(reducer(undefined, { type: GET_MERCURE_INFO, ...mercureInfo })).toEqual({
+      expect(reducer(undefined, { type: GET_MERCURE_INFO, ...mercureInfo })).toEqual(expect.objectContaining({
         ...mercureInfo,
         loading: false,
         error: false,
-      });
+      }));
     });
   });
 

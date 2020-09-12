@@ -3,7 +3,7 @@ import ShortUrlVisits from '../ShortUrlVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import MapModal from '../helpers/MapModal';
-import { createNewVisit } from '../reducers/visitCreation';
+import { createNewVisits } from '../reducers/visitCreation';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import TagVisits from '../TagVisits';
 import { ConnectDecorator } from '../../container/types';
@@ -15,12 +15,12 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('ShortUrlVisits', () => ShortUrlVisits);
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
-    [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisit', 'loadMercureInfo' ],
+    [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
   bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo' ],
-    [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisit', 'loadMercureInfo' ],
+    [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
   // Services
@@ -34,7 +34,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
 
-  bottle.serviceFactory('createNewVisit', () => createNewVisit);
+  bottle.serviceFactory('createNewVisits', () => createNewVisits);
 };
 
 export default provideServices;

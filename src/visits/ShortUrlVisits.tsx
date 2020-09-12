@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
-import { MercureBoundProps, useMercureTopicBinding } from '../mercure/helpers';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../utils/services/types';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import VisitsStats from './VisitsStats';
 
-export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: string }>, MercureBoundProps {
+export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: string }> {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams) => void;
   shortUrlVisits: ShortUrlVisitsState;
   getShortUrlDetail: Function;
@@ -16,7 +16,7 @@ export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: st
   cancelGetShortUrlVisits: () => void;
 }
 
-const ShortUrlVisits = ({
+const ShortUrlVisits = boundToMercureHub(({
   history: { goBack },
   match,
   location: { search },
@@ -25,9 +25,6 @@ const ShortUrlVisits = ({
   getShortUrlVisits,
   getShortUrlDetail,
   cancelGetShortUrlVisits,
-  createNewVisit,
-  loadMercureInfo,
-  mercureInfo,
 }: ShortUrlVisitsProps) => {
   const { params } = match;
   const { shortCode } = params;
@@ -38,13 +35,12 @@ const ShortUrlVisits = ({
   useEffect(() => {
     getShortUrlDetail(shortCode, domain);
   }, []);
-  useMercureTopicBinding(mercureInfo, `https://shlink.io/new-visit/${shortCode}`, createNewVisit, loadMercureInfo);
 
   return (
     <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetShortUrlVisits} visitsInfo={shortUrlVisits}>
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
-};
+}, ({ match }) => `https://shlink.io/new-visit/${match.params.shortCode}`);
 
 export default ShortUrlVisits;

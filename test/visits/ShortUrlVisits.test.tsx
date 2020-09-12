@@ -9,6 +9,7 @@ import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlDetail } from '../../src/visits/reducers/shortUrlDetail';
 import VisitsStats from '../../src/visits/VisitsStats';
+import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper: ShallowWrapper;
@@ -25,6 +26,7 @@ describe('<ShortUrlVisits />', () => {
     wrapper = shallow(
       <ShortUrlVisits
         {...Mock.all<ShortUrlVisitsProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getShortUrlDetail={identity}
         getShortUrlVisits={getShortUrlVisitsMock}
         match={match}
@@ -34,7 +36,7 @@ describe('<ShortUrlVisits />', () => {
         shortUrlDetail={Mock.all<ShortUrlDetail>()}
         cancelGetShortUrlVisits={() => {}}
       />,
-    );
+    ).dive(); // Dive is needed as this component is wrapped in a HOC
   });
 
   afterEach(() => wrapper.unmount());

@@ -10,7 +10,7 @@ import reducer, {
   GET_TAG_VISITS_PROGRESS_CHANGED,
   TagVisits,
 } from '../../../src/visits/reducers/tagVisits';
-import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
+import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/utils/services/types';
@@ -77,7 +77,7 @@ describe('tagVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(prevState, { type: CREATE_VISIT, shortUrl, visit: {} } as any);
+      const { visits } = reducer(prevState, { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: {} }] } as any);
 
       expect(visits).toEqual(expectedVisits);
     });

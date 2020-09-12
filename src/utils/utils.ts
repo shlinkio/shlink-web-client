@@ -39,3 +39,7 @@ export type Nullable<T> = {
 type Optional<T> = T | null | undefined;
 
 export type OptionalString = Optional<string>;
+
+export type RecursivePartial<T> = {
+  [P in keyof T]?: RecursivePartial<T[P]>;
+};

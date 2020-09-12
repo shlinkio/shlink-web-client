@@ -1,11 +1,12 @@
 import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCreation';
+import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkTags } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { TagStats } from '../data';
+import { CreateVisit, Stats } from '../../visits/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
 
@@ -35,7 +36,7 @@ interface FilterTagsAction extends Action<string> {
   searchTerm: string;
 }
 
-type ListTagsCombinedAction = ListTagsAction & DeleteTagAction & CreateVisitAction & EditTagAction & FilterTagsAction;
+type ListTagsCombinedAction = ListTagsAction & DeleteTagAction & CreateVisitsAction & EditTagAction & FilterTagsAction;
 
 const initialState = {
   tags: [],
@@ -45,20 +46,31 @@ const initialState = {
   error: false,
 };
 
+type TagIncrease = [string, number];
+
 const renameTag = (oldName: string, newName: string) => (tag: string) => tag === oldName ? newName : tag;
 const rejectTag = (tags: string[], tagToReject: string) => reject((tag) => tag === tagToReject, tags);
-const increaseVisitsForTags = (tags: string[], stats: TagsStatsMap) => tags.reduce((stats, tag) => {
+const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags.reduce((stats, [ tag, increase ]) => {
   if (!stats[tag]) {
     return stats;
   }
 
   const tagStats = stats[tag];
 
-  tagStats.visitsCount = tagStats.visitsCount + 1;
+  tagStats.visitsCount = tagStats.visitsCount + increase;
   stats[tag] = tagStats;
 
   return stats;
 }, { ...stats });
+const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
+  createdVisits.reduce((acc, { shortUrl }) => {
+    shortUrl.tags.forEach((tag) => {
+      acc[tag] = (acc[tag] || 0) + 1;
+    });
+
+    return acc;
+  }, {} as Stats),
+);
 
 export default buildReducer<TagsList, ListTagsCombinedAction>({
   [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
@@ -78,9 +90,9 @@ export default buildReducer<TagsList, ListTagsCombinedAction>({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm)),
   }),
-  [CREATE_VISIT]: (state, { shortUrl }) => ({
+  [CREATE_VISITS]: (state, { createdVisits }) => ({
     ...state,
-    stats: increaseVisitsForTags(shortUrl.tags, state.stats),
+    stats: increaseVisitsForTags(calculateVisitsPerTag(createdVisits), state.stats),
   }),
 }, initialState);
 
