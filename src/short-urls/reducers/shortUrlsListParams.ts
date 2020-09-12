@@ -4,16 +4,28 @@ import { LIST_SHORT_URLS, ListShortUrlsAction } from './shortUrlsList';
 
 export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
 
+export const SORTABLE_FIELDS = {
+  dateCreated: 'Created at',
+  shortCode: 'Short URL',
+  longUrl: 'Long URL',
+  visits: 'Visits',
+};
+
+export type OrderableFields = keyof typeof SORTABLE_FIELDS;
+
 export interface ShortUrlsListParams {
   page?: string;
   tags?: string[];
   searchTerm?: string;
   startDate?: string;
   endDate?: string;
-  orderBy?: Record<string, OrderDir>;
+  orderBy?: Partial<Record<OrderableFields, OrderDir>>;
 }
 
-const initialState: ShortUrlsListParams = { page: '1' };
+const initialState: ShortUrlsListParams = {
+  page: '1',
+  orderBy: { dateCreated: 'DESC' },
+};
 
 export default buildReducer<ShortUrlsListParams, ListShortUrlsAction>({
   [LIST_SHORT_URLS]: (state, { params }) => ({ ...state, ...params }),

@@ -1,7 +1,7 @@
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, isEmpty, keys, values } from 'ramda';
-import React, { useState, useEffect, FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import SortingDropdown from '../utils/SortingDropdown';
@@ -11,16 +11,8 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
 import { ShortUrl } from './data';
-import { ShortUrlsListParams } from './reducers/shortUrlsListParams';
+import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import './ShortUrlsList.scss';
-
-export const SORTABLE_FIELDS = {
-  dateCreated: 'Created at',
-  shortCode: 'Short URL',
-  longUrl: 'Long URL',
-  visits: 'Visits',
-};
-type OrderableFields = keyof typeof SORTABLE_FIELDS;
 
 interface RouteParams {
   page: string;
