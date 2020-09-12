@@ -37,9 +37,11 @@ const RealTimeUpdates = (
         />
         {realTimeUpdates.enabled && (
           <small className="form-text text-muted">
-            {realTimeUpdates.interval !== undefined && realTimeUpdates.interval > 0 &&
-              <span>Updates will be reflected in the UI every <b>{realTimeUpdates.interval}</b> minutes.</span>
-            }
+            {realTimeUpdates.interval !== undefined && realTimeUpdates.interval > 0 && (
+              <span>
+                Updates will be reflected in the UI every <b>{realTimeUpdates.interval}</b> minute{realTimeUpdates.interval > 1 && 's'}.
+              </span>
+            )}
             {!realTimeUpdates.interval && 'Updates will be reflected in the UI as soon as they happen.'}
           </small>
         )}
