@@ -4,7 +4,7 @@ import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { getVisitsWithLoader } from './common';
-import { CREATE_VISIT, CreateVisitAction } from './visitCreation';
+import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';
@@ -34,21 +34,20 @@ const initialState: TagVisits = {
   progress: 0,
 };
 
-export default buildReducer<TagVisits, TagVisitsAction & VisitsLoadProgressChangedAction & CreateVisitAction>({
+export default buildReducer<TagVisits, TagVisitsAction & VisitsLoadProgressChangedAction & CreateVisitsAction>({
   [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_TAG_VISITS_ERROR]: () => ({ ...initialState, error: true }),
   [GET_TAG_VISITS]: (_, { visits, tag }) => ({ ...initialState, visits, tag }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [CREATE_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand
+  [CREATE_VISITS]: (state, { createdVisits }) => { // eslint-disable-line object-shorthand
     const { tag, visits } = state;
+    const newVisits = createdVisits
+      .filter(({ shortUrl }) => shortUrl.tags.includes(tag))
+      .map(({ visit }) => visit);
 
-    if (!shortUrl.tags.includes(tag)) {
-      return state;
-    }
-
-    return { ...state, visits: [ ...visits, visit ] };
+    return { ...state, visits: [ ...visits, ...newVisits ] };
   },
 }, initialState);
 

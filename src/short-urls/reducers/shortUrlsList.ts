@@ -1,7 +1,7 @@
-import { assoc, assocPath, reject } from 'ramda';
+import { assoc, assocPath, last, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../helpers';
-import { CREATE_VISIT, CreateVisitAction } from '../../visits/reducers/visitCreation';
+import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { ShortUrl, ShortUrlIdentifier } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
@@ -31,7 +31,7 @@ export interface ListShortUrlsAction extends Action<string> {
 }
 
 export type ListShortUrlsCombinedAction = (
-  ListShortUrlsAction & EditShortUrlTagsAction & ShortUrlEditedAction & ShortUrlMetaEditedAction & CreateVisitAction
+  ListShortUrlsAction & EditShortUrlTagsAction & ShortUrlEditedAction & ShortUrlMetaEditedAction & CreateVisitsAction
 );
 
 const initialState: ShortUrlsList = {
@@ -63,12 +63,17 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [SHORT_URL_TAGS_EDITED]: setPropFromActionOnMatchingShortUrl<EditShortUrlTagsAction>('tags'),
   [SHORT_URL_META_EDITED]: setPropFromActionOnMatchingShortUrl<ShortUrlMetaEditedAction>('meta'),
   [SHORT_URL_EDITED]: setPropFromActionOnMatchingShortUrl<ShortUrlEditedAction>('longUrl'),
-  [CREATE_VISIT]: (state, { shortUrl: { shortCode, domain, visitsCount } }) => assocPath(
+  [CREATE_VISITS]: (state, { createdVisits }) => assocPath(
     [ 'shortUrls', 'data' ],
-    state.shortUrls && state.shortUrls.data && state.shortUrls.data.map(
-      (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain)
-        ? assoc('visitsCount', visitsCount, shortUrl)
-        : shortUrl,
+    state.shortUrls?.data?.map(
+      (currentShortUrl) => {
+        // Find the last of the new visit for this short URL, and pick the amount of visits from it
+        const lastVisit = last(
+          createdVisits.filter(({ shortUrl }) => shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain)),
+        );
+
+        return lastVisit ? assoc('visitsCount', lastVisit.shortUrl.visitsCount, currentShortUrl) : currentShortUrl;
+      },
     ),
     state,
   ),

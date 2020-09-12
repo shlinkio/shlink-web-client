@@ -4,7 +4,7 @@ import { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
 
 export interface MercureBoundProps {
-  createNewVisit: (visitData: CreateVisit) => void;
+  createNewVisits: (createdVisits: CreateVisit[]) => void;
   loadMercureInfo: Function;
   mercureInfo: MercureInfo;
 }
@@ -16,14 +16,14 @@ export function boundToMercureHub<T = {}>(
   const pendingUpdates = new Set<CreateVisit>();
 
   return (props: MercureBoundProps & T) => {
-    const { createNewVisit, loadMercureInfo, mercureInfo } = props;
+    const { createNewVisits, loadMercureInfo, mercureInfo } = props;
     const { interval } = mercureInfo;
 
     useEffect(() => {
-      const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisit(visit);
+      const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisits([ visit ]);
 
       interval && setInterval(() => {
-        pendingUpdates.forEach(createNewVisit);
+        createNewVisits([ ...pendingUpdates ]);
         pendingUpdates.clear();
       }, interval * 1000 * 60);
 

@@ -35,7 +35,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
   bottle.decorator('ShortUrlsList', connect(
     [ 'selectedServer', 'shortUrlsListParams', 'mercureInfo' ],
-    [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisit', 'loadMercureInfo' ],
+    [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');

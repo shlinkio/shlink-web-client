@@ -8,7 +8,7 @@ import reducer, {
 import { SHORT_URL_TAGS_EDITED } from '../../../src/short-urls/reducers/shortUrlTags';
 import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrlMeta';
-import { CREATE_VISIT } from '../../../src/visits/reducers/visitCreation';
+import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 import { ShlinkShortUrlsResponse } from '../../../src/utils/services/types';
@@ -135,7 +135,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_VISIT, shortUrl } as any)).toEqual({
+      expect(reducer(state, { type: CREATE_VISITS, createdVisits: [{ shortUrl }] } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },

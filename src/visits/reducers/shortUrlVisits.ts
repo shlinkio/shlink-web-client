@@ -7,7 +7,7 @@ import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuil
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { getVisitsWithLoader } from './common';
-import { CREATE_VISIT, CreateVisitAction } from './visitCreation';
+import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
@@ -24,7 +24,7 @@ interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
   visits: Visit[];
 }
 
-type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction & VisitsLoadProgressChangedAction & CreateVisitAction;
+type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction & VisitsLoadProgressChangedAction & CreateVisitsAction;
 
 const initialState: ShortUrlVisits = {
   visits: [],
@@ -49,14 +49,14 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [CREATE_VISIT]: (state, { shortUrl, visit }) => { // eslint-disable-line object-shorthand
+  [CREATE_VISITS]: (state, { createdVisits }) => { // eslint-disable-line object-shorthand
     const { shortCode, domain, visits } = state;
 
-    if (!shortUrlMatches(shortUrl, shortCode, domain)) {
-      return state;
-    }
+    const newVisits = createdVisits
+      .filter(({ shortUrl }) => shortUrlMatches(shortUrl, shortCode, domain))
+      .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...visits, visit ] };
+    return { ...state, visits: [ ...visits, ...newVisits ] };
   },
 }, initialState);
 

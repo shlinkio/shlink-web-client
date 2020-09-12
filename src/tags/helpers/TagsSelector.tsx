@@ -56,6 +56,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
           </React.Fragment>
         )}
         onSuggestionsFetchRequested={() => {}}
+        onSuggestionsClearRequested={() => {}}
         onSuggestionSelected={(_, { suggestion }: SuggestionSelectedEventData<string>) => {
           addTag(suggestion);
         }}
