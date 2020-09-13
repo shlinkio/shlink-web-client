@@ -11,13 +11,14 @@ import {
 import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
-import { ChartData, ChartDataSets } from 'chart.js';
+import { ChartData, ChartDataSets, ChartTooltipItem, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import './LineChartCard.scss';
+import { prettify } from '../../utils/helpers/numbers';
 
 interface LineChartCardProps {
   title: string;
@@ -137,13 +138,18 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
       highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, '#F77F28'),
     ].filter(Boolean) as ChartDataSets[],
   };
-  const options = {
+  const options: ChartOptions = {
     maintainAspectRatio: false,
     legend: { display: false },
     scales: {
       yAxes: [
         {
-          ticks: { beginAtZero: true, precision: 0 },
+          ticks: {
+            beginAtZero: true,
+            // @ts-expect-error
+            precision: 0,
+            callback: prettify,
+          },
         },
       ],
       xAxes: [
@@ -154,7 +160,15 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
     },
     tooltips: {
       intersect: false,
+      // @ts-expect-error
       axis: 'x',
+      callbacks: {
+        label({ datasetIndex, yLabel }: ChartTooltipItem, data: ChartData) {
+          const datasetLabel = datasetIndex !== undefined && data.datasets?.[datasetIndex]?.label || '';
+
+          return `${datasetLabel}: ${prettify(Number(yLabel))}`;
+        },
+      },
     },
   };
 
