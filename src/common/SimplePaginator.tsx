@@ -1,7 +1,13 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { pageIsEllipsis, keyForPage, NumberOrEllipsis, progressivePagination } from '../utils/helpers/pagination';
+import {
+  pageIsEllipsis,
+  keyForPage,
+  NumberOrEllipsis,
+  progressivePagination,
+  prettifyPageNumber,
+} from '../utils/helpers/pagination';
 import './SimplePaginator.scss';
 
 interface SimplePaginatorProps {
@@ -29,7 +35,7 @@ const SimplePaginator: FC<SimplePaginatorProps> = ({ pagesCount, currentPage, se
           disabled={pageIsEllipsis(pageNumber)}
           active={currentPage === pageNumber}
         >
-          <PaginationLink tag="span" onClick={onClick(pageNumber)}>{pageNumber}</PaginationLink>
+          <PaginationLink tag="span" onClick={onClick(pageNumber)}>{prettifyPageNumber(pageNumber)}</PaginationLink>
         </PaginationItem>
       ))}
       <PaginationItem disabled={currentPage >= pagesCount}>

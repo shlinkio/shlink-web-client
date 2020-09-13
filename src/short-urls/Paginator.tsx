@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { pageIsEllipsis, keyForPage, progressivePagination } from '../utils/helpers/pagination';
+import { pageIsEllipsis, keyForPage, progressivePagination, prettifyPageNumber } from '../utils/helpers/pagination';
 import { ShlinkPaginator } from '../utils/services/types';
 import './Paginator.scss';
 
@@ -28,7 +28,7 @@ const Paginator = ({ paginator, serverId }: PaginatorProps) => {
           tag={Link}
           to={`/server/${serverId}/list-short-urls/${pageNumber}`}
         >
-          {pageNumber}
+          {prettifyPageNumber(pageNumber)}
         </PaginationLink>
       </PaginationItem>
     ));
