@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
+* [#150](https://github.com/shlinkio/shlink-web-client/issues/150) The list of short URLs is now ordered by the creation date, showing newest results first.
 * [#40](https://github.com/shlinkio/shlink-web-client/issues/40) Migrated project to TypeScript.
 
 #### Deprecated
