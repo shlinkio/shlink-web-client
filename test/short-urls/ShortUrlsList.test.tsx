@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { Mock } from 'ts-mockery';
-import shortUrlsListCreator, { ShortUrlsListProps} from '../../src/short-urls/ShortUrlsList';
+import shortUrlsListCreator, { ShortUrlsListProps } from '../../src/short-urls/ShortUrlsList';
 import { ShortUrl } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { SORTABLE_FIELDS } from '../../src/short-urls/reducers/shortUrlsListParams';
