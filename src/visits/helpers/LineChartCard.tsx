@@ -17,8 +17,8 @@ import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
-import './LineChartCard.scss';
 import { prettify } from '../../utils/helpers/numbers';
+import './LineChartCard.scss';
 
 interface LineChartCardProps {
   title: string;
