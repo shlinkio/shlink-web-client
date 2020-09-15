@@ -2,11 +2,11 @@ import React, { ChangeEvent, useRef } from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
-import Chart, { ChartData, ChartDataSets, ChartOptions, ChartTooltipItem } from 'chart.js';
-import { fillTheGaps } from '../../utils/helpers/visits';
+import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import { fillTheGaps, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/visits';
 import { Stats } from '../types';
-import './DefaultChart.scss';
 import { prettify } from '../../utils/helpers/numbers';
+import './DefaultChart.scss';
 
 export interface DefaultChartProps {
   title: Function | string;
@@ -142,23 +142,7 @@ const DefaultChart = (
       // Do not show tooltip on items with empty label when in a bar chart
       filter: ({ yLabel }) => !isBarChart || yLabel !== '',
       callbacks: {
-        ...isBarChart ? {} : {
-          label({ datasetIndex, index }: ChartTooltipItem, { labels, datasets }: ChartData) {
-            const datasetLabel = index !== undefined && labels?.[index] || '';
-            const value = datasetIndex !== undefined && index !== undefined
-              && datasets?.[datasetIndex]?.data?.[index]
-              || '';
-
-            return `${datasetLabel}: ${prettify(Number(value))}`;
-          },
-        },
-        ...!isBarChart ? {} : {
-          label({ datasetIndex, xLabel }: ChartTooltipItem, { datasets }: ChartData) {
-            const datasetLabel = datasetIndex !== undefined && datasets?.[datasetIndex]?.label || '';
-
-            return `${datasetLabel}: ${prettify(Number(xLabel))}`;
-          },
-        },
+        label: isBarChart ? renderNonDoughnutChartLabel('xLabel') : renderDoughnutChartLabel,
       },
     },
     onHover: !isBarChart ? undefined : ((e: ChangeEvent<HTMLElement>, chartElement: HorizontalBar[] | Doughnut[]) => {

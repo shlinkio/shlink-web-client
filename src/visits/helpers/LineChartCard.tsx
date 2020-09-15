@@ -11,9 +11,9 @@ import {
 import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
-import { ChartData, ChartDataSets, ChartTooltipItem, ChartOptions } from 'chart.js';
+import { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
-import { fillTheGaps } from '../../utils/helpers/visits';
+import { fillTheGaps, renderNonDoughnutChartLabel } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
@@ -163,11 +163,7 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
       // @ts-expect-error
       axis: 'x',
       callbacks: {
-        label({ datasetIndex, yLabel }: ChartTooltipItem, data: ChartData) {
-          const datasetLabel = datasetIndex !== undefined && data.datasets?.[datasetIndex]?.label || '';
-
-          return `${datasetLabel}: ${prettify(Number(yLabel))}`;
-        },
+        label: renderNonDoughnutChartLabel('yLabel'),
       },
     },
   };

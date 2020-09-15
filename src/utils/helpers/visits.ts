@@ -1,7 +1,9 @@
 import bowser from 'bowser';
 import { zipObj } from 'ramda';
+import { ChartData, ChartTooltipItem } from 'chart.js';
 import { Empty, hasValue } from '../utils';
 import { Stats, UserAgent } from '../../visits/types';
+import { prettify } from './numbers';
 
 const DEFAULT = 'Others';
 const BROWSERS_WHITELIST = [
@@ -40,3 +42,26 @@ export const extractDomain = (url: string | Empty): string => {
 
 export const fillTheGaps = (stats: Stats, labels: string[]): number[] =>
   Object.values({ ...zipObj(labels, labels.map(() => 0)), ...stats });
+
+export const renderDoughnutChartLabel = (
+  { datasetIndex, index }: ChartTooltipItem,
+  { labels, datasets }: ChartData,
+) => {
+  const datasetLabel = index !== undefined && labels?.[index] || '';
+  const value = datasetIndex !== undefined && index !== undefined
+    && datasets?.[datasetIndex]?.data?.[index]
+    || '';
+
+  return `${datasetLabel}: ${prettify(Number(value))}`;
+};
+
+export const renderNonDoughnutChartLabel = (labelToPick: 'yLabel' | 'xLabel') => (
+  item: ChartTooltipItem,
+  { datasets }: ChartData,
+) => {
+  const { datasetIndex } = item;
+  const value = item[labelToPick];
+  const datasetLabel = datasetIndex !== undefined && datasets?.[datasetIndex]?.label || '';
+
+  return `${datasetLabel}: ${prettify(Number(value))}`;
+};
