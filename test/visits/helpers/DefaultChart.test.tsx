@@ -3,6 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import DefaultChart from '../../../src/visits/helpers/DefaultChart';
+import { prettify } from '../../../src/utils/helpers/numbers';
 
 describe('<DefaultChart />', () => {
   let wrapper: ShallowWrapper;
@@ -69,7 +70,7 @@ describe('<DefaultChart />', () => {
     expect(scales).toEqual({
       xAxes: [
         {
-          ticks: { beginAtZero: true, precision: 0 },
+          ticks: { beginAtZero: true, precision: 0, callback: prettify },
           stacked: true,
         },
       ],

@@ -35,9 +35,7 @@ export const extractDomain = (url: string | Empty): string => {
     return 'Direct';
   }
 
-  const domain = url.includes('://') ? url.split('/')[2] : url.split('/')[0];
-
-  return domain.split(':')[0];
+  return url.split('/')[url.includes('://') ? 2 : 0]?.split(':')[0] ?? '';
 };
 
 export const fillTheGaps = (stats: Stats, labels: string[]): number[] =>

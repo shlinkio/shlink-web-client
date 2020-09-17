@@ -6,11 +6,12 @@ import moment from 'moment';
 import { Mock } from 'ts-mockery';
 import LineChartCard from '../../../src/visits/helpers/LineChartCard';
 import ToggleSwitch from '../../../src/utils/ToggleSwitch';
-import { Visit } from '../../../src/visits/types';
+import { NormalizedVisit } from '../../../src/visits/types';
+import { prettify } from '../../../src/utils/helpers/numbers';
 
 describe('<LineChartCard />', () => {
   let wrapper: ShallowWrapper;
-  const createWrapper = (visits: Visit[] = [], highlightedVisits: Visit[] = []) => {
+  const createWrapper = (visits: NormalizedVisit[] = [], highlightedVisits: NormalizedVisit[] = []) => {
     wrapper = shallow(<LineChartCard title="Cool title" visits={visits} highlightedVisits={highlightedVisits} />);
 
     return wrapper;
@@ -34,7 +35,7 @@ describe('<LineChartCard />', () => {
     [[{ date: moment().subtract(7, 'month').format() }], 'monthly' ],
     [[{ date: moment().subtract(1, 'year').format() }], 'monthly' ],
   ])('renders group menu and selects proper grouping item based on visits dates', (visits, expectedActiveItem) => {
-    const wrapper = createWrapper(visits.map((visit) => Mock.of<Visit>(visit)));
+    const wrapper = createWrapper(visits.map((visit) => Mock.of<NormalizedVisit>(visit)));
     const items = wrapper.find(DropdownItem);
 
     expect(items).toHaveLength(4);
@@ -58,7 +59,7 @@ describe('<LineChartCard />', () => {
       scales: {
         yAxes: [
           {
-            ticks: { beginAtZero: true, precision: 0 },
+            ticks: { beginAtZero: true, precision: 0, callback: prettify },
           },
         ],
         xAxes: [
@@ -67,16 +68,16 @@ describe('<LineChartCard />', () => {
           },
         ],
       },
-      tooltips: {
+      tooltips: expect.objectContaining({
         intersect: false,
         axis: 'x',
-      },
+      }),
     });
   });
 
   it.each([
-    [[ Mock.of<Visit>({}) ], [], 1 ],
-    [[ Mock.of<Visit>({}) ], [ Mock.of<Visit>({}) ], 2 ],
+    [[ Mock.of<NormalizedVisit>({}) ], [], 1 ],
+    [[ Mock.of<NormalizedVisit>({}) ], [ Mock.of<NormalizedVisit>({}) ], 2 ],
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);
@@ -87,8 +88,8 @@ describe('<LineChartCard />', () => {
 
   it('includes stats for visits with no dates if selected', () => {
     const wrapper = createWrapper([
-      Mock.of<Visit>({ date: '2016-04-01' }),
-      Mock.of<Visit>({ date: '2016-01-01' }),
+      Mock.of<NormalizedVisit>({ date: '2016-04-01' }),
+      Mock.of<NormalizedVisit>({ date: '2016-01-01' }),
     ]);
 
     expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(2);
