@@ -1,7 +1,6 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { ShlinkPaginator, ShlinkVisits } from '../../utils/services/types';
-import { GetState } from '../../container/types';
 import { Visit } from '../types';
 
 const ITEMS_PER_PAGE = 5000;
@@ -25,7 +24,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
   extraFinishActionData: Partial<T>,
   actionMap: ActionMap,
   dispatch: Dispatch,
-  getState: GetState,
+  shouldCancel: () => boolean,
 ) => {
   dispatch({ type: actionMap.start });
 
@@ -33,9 +32,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
     Promise.all(pages.map(async (page) => visitsLoader(page, ITEMS_PER_PAGE).then(prop('data')))).then(flatten);
 
   const loadPagesBlocks = async (pagesBlocks: number[][], index = 0): Promise<Visit[]> => {
-    const { shortUrlVisits: { cancelLoad } } = getState();
-
-    if (cancelLoad) {
+    if (shouldCancel()) {
       return [];
     }
 

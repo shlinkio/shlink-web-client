@@ -69,6 +69,7 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     shortCode,
     { ...query, page, itemsPerPage },
   );
+  const shouldCancel = () => getState().shortUrlVisits.cancelLoad;
   const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, domain: query.domain };
   const actionMap = {
     start: GET_SHORT_URL_VISITS_START,
@@ -78,7 +79,7 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     progress: GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
   };
 
-  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);
+  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
 };
 
 export const cancelGetShortUrlVisits = buildActionCreator(GET_SHORT_URL_VISITS_CANCEL);
