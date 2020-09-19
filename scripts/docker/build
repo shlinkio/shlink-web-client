@@ -1,33 +1,25 @@
 #!/bin/bash
 
-set -e
+set -ex
 
-#PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
-PLATFORMS="linux/amd64"
+PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
 DOCKER_IMAGE="shlinkio/shlink-web-client"
-BUILDX_VER=v0.4.1
-export DOCKER_CLI_EXPERIMENTAL=enabled
 
-mkdir -vp ~/.docker/cli-plugins/ ~/dockercache
-curl --silent -L "https://github.com/docker/buildx/releases/download/${BUILDX_VER}/buildx-${BUILDX_VER}.linux-amd64" > ~/.docker/cli-plugins/docker-buildx
-chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-docker buildx create --use
-
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-
-if [[ -z $TRAVIS_TAG ]]; then
+if [[ "$GITHUB_REF" == *"main"* ]]; then
   docker buildx build --push \
     --platform ${PLATFORMS} \
     -t ${DOCKER_IMAGE}:latest .
 
+# If ref is not main, then this is a tag. Build that docker tag and also "stable"
 else
-  TAGS="-t ${DOCKER_IMAGE}:${TRAVIS_TAG#?}"
+  VERSION=${GITHUB_REF#refs/tags/v}
+  TAGS="-t ${DOCKER_IMAGE}:${VERSION}"
+
   # Push stable tag only if this is not an alpha or beta release
-  [[ $TRAVIS_TAG != *"alpha"* && $TRAVIS_TAG != *"beta"* ]] && TAGS="${TAGS} -t ${DOCKER_IMAGE}:stable"
+  [[ $GITHUB_REF != *"alpha"* && $GITHUB_REF != *"beta"* ]] && TAGS="${TAGS} -t ${DOCKER_IMAGE}:stable"
 
   docker buildx build --push \
-    --build-arg VERSION=${TRAVIS_TAG#?} \
+    --build-arg VERSION=${VERSION} \
     --platform ${PLATFORMS} \
     ${TAGS} .
 fi

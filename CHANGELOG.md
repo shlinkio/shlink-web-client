@@ -16,6 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
     By default updates are immediately applied if real-time updates are enabled, to keep the behavior as it was.
 
+* [#297](https://github.com/shlinkio/shlink-web-client/issues/297) Enabled docker image multi-arch support, by moving image building to github actions.
+
 #### Changed
 
 * [#150](https://github.com/shlinkio/shlink-web-client/issues/150) The list of short URLs is now ordered by the creation date, showing newest results first.
