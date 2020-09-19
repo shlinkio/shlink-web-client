@@ -1,4 +1,5 @@
 import { max, min, range } from 'ramda';
+import { prettify } from './numbers';
 
 const DELTA = 2;
 
@@ -28,5 +29,8 @@ export const progressivePagination = (currentPage: number, pageCount: number): N
 };
 
 export const pageIsEllipsis = (pageNumber: NumberOrEllipsis): pageNumber is Ellipsis => pageNumber === ELLIPSIS;
+
+export const prettifyPageNumber = (pageNumber: NumberOrEllipsis): string =>
+  pageIsEllipsis(pageNumber) ? pageNumber : prettify(pageNumber);
 
 export const keyForPage = (pageNumber: NumberOrEllipsis, index: number) => !pageIsEllipsis(pageNumber) ? `${pageNumber}` : `${pageNumber}_${index}`;

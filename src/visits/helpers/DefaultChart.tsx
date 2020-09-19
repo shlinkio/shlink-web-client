@@ -3,8 +3,9 @@ import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
-import { fillTheGaps } from '../../utils/helpers/visits';
+import { fillTheGaps, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/visits';
 import { Stats } from '../types';
+import { prettify } from '../../utils/helpers/numbers';
 import './DefaultChart.scss';
 
 export interface DefaultChartProps {
@@ -124,7 +125,13 @@ const DefaultChart = (
     scales: !isBarChart ? undefined : {
       xAxes: [
         {
-          ticks: { beginAtZero: true, precision: 0, max } as any,
+          ticks: {
+            beginAtZero: true,
+            // @ts-expect-error
+            precision: 0,
+            callback: prettify,
+            max,
+          },
           stacked: true,
         },
       ],
@@ -132,9 +139,11 @@ const DefaultChart = (
     },
     tooltips: {
       intersect: !isBarChart,
-
       // Do not show tooltip on items with empty label when in a bar chart
       filter: ({ yLabel }) => !isBarChart || yLabel !== '',
+      callbacks: {
+        label: isBarChart ? renderNonDoughnutChartLabel('xLabel') : renderDoughnutChartLabel,
+      },
     },
     onHover: !isBarChart ? undefined : ((e: ChangeEvent<HTMLElement>, chartElement: HorizontalBar[] | Doughnut[]) => {
       const { target } = e;
