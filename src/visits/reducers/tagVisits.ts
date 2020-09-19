@@ -60,6 +60,7 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (t
     tag,
     { ...query, page, itemsPerPage },
   );
+  const shouldCancel = () => getState().tagVisits.cancelLoad;
   const extraFinishActionData: Partial<TagVisitsAction> = { tag };
   const actionMap = {
     start: GET_TAG_VISITS_START,
@@ -69,7 +70,7 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (t
     progress: GET_TAG_VISITS_PROGRESS_CHANGED,
   };
 
-  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, getState);
+  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
 };
 
 export const cancelGetTagVisits = buildActionCreator(GET_TAG_VISITS_CANCEL);
