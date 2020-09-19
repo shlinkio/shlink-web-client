@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Fixed
 
 * [#295](https://github.com/shlinkio/shlink-web-client/issues/295) Fixed custom slug field not being disabled when selecting a short code length.
+* [#301](https://github.com/shlinkio/shlink-web-client/issues/301) Fixed tags visits loading not being cancelled when leaving visits page.
 
 
 ## 2.5.1 - 2020-06-06
