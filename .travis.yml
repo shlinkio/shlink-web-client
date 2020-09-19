@@ -18,24 +18,29 @@ jobs:
   allow_failures:
     - name: 'Mutation tests'
   include:
+
     - name: 'Lint'
       install: npm ci
       script: npm run lint
+
     - name: 'Unit tests'
       install: npm ci
       script: npm run test:ci
       after_success:
         - node_modules/.bin/ocular coverage/clover.xml
+
     - name: 'Mutation tests'
       install: npm ci
       before_script:
         - echo "Building commit range ${TRAVIS_COMMIT_RANGE}"
         - export MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/main} --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
       script: npm run mutate:ci
+
     - name: 'Build docker image'
       services:
         - docker
       script: docker build -t shlink-web-client:test .
+
     - name: 'Publish release'
       if: tag IS present
       before_deploy: npm run build ${TRAVIS_TAG#?} # Before deploying, build dist file for current travis tag
