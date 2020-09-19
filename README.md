@@ -12,6 +12,8 @@ A ReactJS-based progressive web application for [Shlink](https://shlink.io).
 
 ![shlink-web-client](shlink-web-client.gif)
 
+> If you are trying to find out how to run the project in development mode or how to provide contributions, read the [CONTRIBUTING](CONTRIBUTING.md) doc.
+
 ## Installation
 
 There are three ways in which you can use this application.
