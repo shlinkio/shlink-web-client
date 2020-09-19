@@ -72,8 +72,8 @@ export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }:
   date,
   ...parseUserAgent(userAgent),
   referer: extractDomain(referer),
-  country: visitLocation?.countryName ?? 'Unknown',
-  city: visitLocation?.cityName ?? 'Unknown',
+  country: visitLocation?.countryName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+  city: visitLocation?.cityName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
   latitude: visitLocation?.latitude,
   longitude: visitLocation?.longitude,
 }));
