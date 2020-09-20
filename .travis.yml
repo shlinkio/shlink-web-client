@@ -43,6 +43,7 @@ jobs:
 
     - name: 'Publish release'
       if: tag IS present
+      script: echo "Publishing GitHub release"
       before_deploy: npm run build ${TRAVIS_TAG#?}
       deploy:
         provider: releases
