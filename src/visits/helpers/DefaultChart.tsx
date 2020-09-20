@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
@@ -7,6 +7,7 @@ import { fillTheGaps, renderDoughnutChartLabel, renderNonDoughnutChartLabel } fr
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
 import './DefaultChart.scss';
+import { pointerOnHover } from '../../utils/helpers/charts';
 
 export interface DefaultChartProps {
   title: Function | string;
@@ -145,11 +146,7 @@ const DefaultChart = (
         label: isBarChart ? renderNonDoughnutChartLabel('xLabel') : renderDoughnutChartLabel,
       },
     },
-    onHover: !isBarChart ? undefined : ((e: ChangeEvent<HTMLElement>, chartElement: HorizontalBar[] | Doughnut[]) => {
-      const { target } = e;
-
-      target.style.cursor = chartElement[0] ? 'pointer' : 'default';
-    }) as any, // TODO Types seem to be incorrectly defined
+    onHover: !isBarChart ? undefined : (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
   };
   const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);

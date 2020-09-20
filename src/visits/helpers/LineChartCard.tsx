@@ -11,7 +11,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
-import { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps, renderNonDoughnutChartLabel } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -19,12 +19,14 @@ import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
 import './LineChartCard.scss';
+import { pointerOnHover } from '../../utils/helpers/charts';
 
 interface LineChartCardProps {
   title: string;
   highlightedLabel?: string;
   visits: NormalizedVisit[];
   highlightedVisits: NormalizedVisit[];
+  setSelectedVisits?: (visits: NormalizedVisit[]) => void;
 }
 
 type Step = 'monthly' | 'weekly' | 'daily' | 'hourly';
@@ -71,11 +73,23 @@ const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => visi
   (acc, visit) => {
     const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
-    acc[key] = acc[key] ? acc[key] + 1 : 1;
+    acc[key] = (acc[key] || 0) + 1;
 
     return acc;
   },
   {},
+);
+
+const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) => visits.reduce(
+  (acc, visit) => {
+    const key = STEP_TO_DATE_FORMAT[step](visit.date);
+
+    acc[key] = acc[key] ?? [];
+    acc[key].push(visit);
+
+    return acc;
+  },
+  {} as Record<string, NormalizedVisit[]>,
 );
 
 const generateLabels = (step: Step, visits: NormalizedVisit[]): string[] => {
@@ -115,12 +129,37 @@ const generateDataset = (data: number[], label: string, color: string): ChartDat
   backgroundColor: color,
 });
 
-const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'Selected' }: LineChartCardProps) => {
+let selectedLabel: string | null = null;
+
+const chartElementAtEvent = (
+  datasetsByPoint: Record<string, NormalizedVisit[]>,
+  setSelectedVisits?: (visits: NormalizedVisit[]) => void,
+) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
+  if (!setSelectedVisits || !chart) {
+    return;
+  }
+
+  const { _index: index, _chart: { data } } = chart;
+  const { labels } = data as { labels: string[] };
+
+  if (selectedLabel === labels[index]) {
+    setSelectedVisits([]);
+    selectedLabel = null;
+  } else {
+    setSelectedVisits(labels[index] && datasetsByPoint[labels[index]] || []);
+    selectedLabel = labels[index] ?? null;
+  }
+};
+
+const LineChartCard = (
+  { title, visits, highlightedVisits, highlightedLabel = 'Selected', setSelectedVisits }: LineChartCardProps,
+) => {
   const [ step, setStep ] = useState<Step>(
     visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly',
   );
   const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
 
+  const datasetsByPoint = useMemo(() => visitsToDatasetGroups(step, visits), [ step, visits ]);
   const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
   const [ labels, groupedVisits ] = useMemo(
     () => generateLabelsAndGroupedVisits(visits, groupedVisitsWithGaps, step, skipNoVisits),
@@ -166,6 +205,7 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
         label: renderNonDoughnutChartLabel('yLabel'),
       },
     },
+    onHover: (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
   };
 
   return (
@@ -193,7 +233,11 @@ const LineChartCard = ({ title, visits, highlightedVisits, highlightedLabel = 'S
         </div>
       </CardHeader>
       <CardBody className="line-chart-card__body">
-        <Line data={data} options={options} />
+        <Line
+          data={data}
+          options={options}
+          getElementAtEvent={chartElementAtEvent(datasetsByPoint, setSelectedVisits)}
+        />
       </CardBody>
     </Card>
   );

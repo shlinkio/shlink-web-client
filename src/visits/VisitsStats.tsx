@@ -128,6 +128,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
             visits={normalizedVisits}
             highlightedVisits={highlightedVisits}
             highlightedLabel={highlightedLabel}
+            setSelectedVisits={setSelectedVisits}
           />
         </div>
         <div className="col-xl-4 col-lg-6 mt-4">
