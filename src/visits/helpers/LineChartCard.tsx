@@ -13,7 +13,7 @@ import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
-import { fillTheGaps} from '../../utils/helpers/visits';
+import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';

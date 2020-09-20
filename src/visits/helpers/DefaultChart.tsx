@@ -3,7 +3,7 @@ import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
-import { fillTheGaps} from '../../utils/helpers/visits';
+import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
