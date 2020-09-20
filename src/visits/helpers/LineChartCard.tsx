@@ -13,13 +13,13 @@ import { always, cond, reverse } from 'ramda';
 import moment from 'moment';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
-import { fillTheGaps, renderNonDoughnutChartLabel } from '../../utils/helpers/visits';
+import { fillTheGaps} from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
+import { pointerOnHover, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
 import './LineChartCard.scss';
-import { pointerOnHover } from '../../utils/helpers/charts';
 
 interface LineChartCardProps {
   title: string;
