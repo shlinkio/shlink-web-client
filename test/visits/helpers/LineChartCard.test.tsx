@@ -53,7 +53,7 @@ describe('<LineChartCard />', () => {
     const wrapper = createWrapper();
     const chart = wrapper.find(Line);
 
-    expect(chart.prop('options')).toEqual({
+    expect(chart.prop('options')).toEqual(expect.objectContaining({
       maintainAspectRatio: false,
       legend: { display: false },
       scales: {
@@ -72,7 +72,7 @@ describe('<LineChartCard />', () => {
         intersect: false,
         axis: 'x',
       }),
-    });
+    }));
   });
 
   it.each([
