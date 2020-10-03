@@ -34,6 +34,10 @@ body,
   display: block !important;
 }
 
+.react-datepicker-popper {
+  z-index: 2;
+}
+
 .navbar-brand {
   @media (max-width: $smMax) {
     margin: 0 auto !important;
