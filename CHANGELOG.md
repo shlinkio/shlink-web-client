@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 #### Fixed
 
 * [#316](https://github.com/shlinkio/shlink-web-client/issues/316) Fixed manifest.json file not getting downloaded after passing credentials when the app is protected with basic auth.
+* [#311](https://github.com/shlinkio/shlink-web-client/issues/311) Fixed datepicker showing below other components.
 
 
 ## 2.6.0 - 2020-09-20
