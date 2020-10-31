@@ -2,8 +2,7 @@
 
 set -ex
 
-# PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
-PLATFORMS="linux/amd64"
+PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
 DOCKER_IMAGE="shlinkio/shlink-web-client"
 
 if [[ "$GITHUB_REF" == *"main"* ]]; then
