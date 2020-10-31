@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { homepage } from '../package.json';
-import registerServiceWorker from './registerServiceWorker';
 import container from './container';
 import store from './container/store';
 import { fixLeafletIcons } from './utils/helpers/leaflet';
@@ -30,4 +29,3 @@ render(
   </Provider>,
   document.getElementById('root'),
 );
-registerServiceWorker();
