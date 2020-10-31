@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 #### Changed
 
-* *Nothing*
+* [#292](https://github.com/shlinkio/shlink-web-client/issues/292) Improved a bit how caching works by removing the service worker and adding proper HTTP caching config on nginx inside docker image.
 
 #### Deprecated
 
