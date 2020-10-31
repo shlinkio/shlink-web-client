@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#316](https://github.com/shlinkio/shlink-web-client/issues/316) Fixed manifest.json file not getting downloaded after passing credentials when the app is protected with basic auth.
 * [#311](https://github.com/shlinkio/shlink-web-client/issues/311) Fixed datepicker showing below other components.
+* [#306](https://github.com/shlinkio/shlink-web-client/issues/306) Fixed multi-arch docker builds by replacing node-sass with dart-sass.
 
 
 ## 2.6.0 - 2020-09-20
