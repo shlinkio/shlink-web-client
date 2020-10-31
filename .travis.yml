@@ -11,7 +11,7 @@ cache:
     - node_modules
 
 node_js:
-  - '12.16.3'
+  - '14.15.0'
 
 jobs:
   fast_finish: true
