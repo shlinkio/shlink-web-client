@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## 2.6.1 - 2020-10-31
 
 #### Added
 
@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#316](https://github.com/shlinkio/shlink-web-client/issues/316) Fixed manifest.json file not getting downloaded after passing credentials when the app is protected with basic auth.
 * [#311](https://github.com/shlinkio/shlink-web-client/issues/311) Fixed datepicker showing below other components.
 * [#306](https://github.com/shlinkio/shlink-web-client/issues/306) Fixed multi-arch docker builds by replacing node-sass with dart-sass.
+* [#328](https://github.com/shlinkio/shlink-web-client/issues/328) Fixed toggle switches getting broken in mobile resolutions.
 
 
 ## 2.6.0 - 2020-09-20

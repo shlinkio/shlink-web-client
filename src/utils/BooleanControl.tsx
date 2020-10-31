@@ -24,7 +24,7 @@ const BooleanControl: FC<BooleanControlWithTypeProps> = (
   };
 
   return (
-    <span className={classNames('custom-control', typeClasses, className)} style={{ display: 'inline' }}>
+    <span className={classNames('custom-control', typeClasses, className)}>
       <input type="checkbox" className="custom-control-input" id={id} checked={checked} onChange={onChecked} />
       <label className="custom-control-label" htmlFor={id}>{children}</label>
     </span>
