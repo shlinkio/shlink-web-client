@@ -1,0 +1,27 @@
+name: Publish release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14.15
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+      - name: Generate release assets
+        run: npm run build ${GITHUB_REF#refs/tags/v}
+      - name: Publish release with assets
+        uses: docker://antonyurchenko/git-release:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALLOW_TAG_PREFIX: "true"
+        with:
+          args: |
+            dist/shlink-web-client_*_dist.zip
