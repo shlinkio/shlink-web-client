@@ -1,12 +1,12 @@
 import { Mock } from 'ts-mockery';
+import { CsvJson } from 'csvjson';
 import ServersImporter from '../../../src/servers/services/ServersImporter';
 import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
   const servers: RegularServer[] = [ Mock.all<RegularServer>(), Mock.all<RegularServer>() ];
-  const csvjsonMock = {
-    toObject: jest.fn().mockReturnValue(servers),
-  };
+  const toObject = jest.fn().mockReturnValue(servers);
+  const csvjsonMock = Mock.of<CsvJson>({ toObject });
   const readAsText = jest.fn();
   const fileReaderMock = Mock.of<FileReader>({
     readAsText,
@@ -33,7 +33,7 @@ describe('ServersImporter', () => {
       await importer.importServersFromFile(Mock.of<File>({ type: 'text/csv' }));
 
       expect(readAsText).toHaveBeenCalledTimes(1);
-      expect(csvjsonMock.toObject).toHaveBeenCalledTimes(1);
+      expect(toObject).toHaveBeenCalledTimes(1);
     });
   });
 });
