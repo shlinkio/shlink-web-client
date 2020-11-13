@@ -1,4 +1,4 @@
-import React, { ChangeEvent, PropsWithChildren } from 'react';
+import { ChangeEvent, PropsWithChildren } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import Checkbox from '../../src/utils/Checkbox';

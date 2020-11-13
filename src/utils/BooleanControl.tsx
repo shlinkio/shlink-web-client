@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import classNames from 'classnames';
 import { v4 as uuid } from 'uuid';
 import { identity } from 'ramda';

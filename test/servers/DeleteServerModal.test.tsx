@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { History } from 'history';

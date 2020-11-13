@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlEdition } from '../reducers/shortUrlEdition';

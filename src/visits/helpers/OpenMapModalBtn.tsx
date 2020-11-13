@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt as mapIcon } from '@fortawesome/free-solid-svg-icons';
 import { Dropdown, DropdownItem, DropdownMenu, UncontrolledTooltip } from 'reactstrap';
@@ -36,7 +36,7 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
   };
 
   return (
-    <React.Fragment>
+    <>
       <button className="btn btn-link open-map-modal-btn__btn" ref={buttonRef as any} onClick={onClick}>
         <FontAwesomeIcon icon={mapIcon} />
       </button>
@@ -48,7 +48,7 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
         </DropdownMenu>
       </Dropdown>
       <MapModal toggle={closeMap} isOpen={mapIsOpened} title={modalTitle} locations={locationsToShow} />
-    </React.Fragment>
+    </>
   );
 };
 

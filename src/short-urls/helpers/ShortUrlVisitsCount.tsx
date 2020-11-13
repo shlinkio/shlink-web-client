@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -32,7 +32,7 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
   const tooltipRef = useRef<HTMLElement | null>();
 
   return (
-    <React.Fragment>
+    <>
       <span className="indivisible">
         {visitsLink}
         <small
@@ -50,7 +50,7 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
       <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
         This short URL will not accept more than <b>{prettifiedMaxVisits}</b> visits.
       </UncontrolledTooltip>
-    </React.Fragment>
+    </>
   );
 };
 

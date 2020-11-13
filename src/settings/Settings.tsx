@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import NoMenuLayout from '../common/NoMenuLayout';
 
 const Settings = (RealTimeUpdates: FC) => () => (

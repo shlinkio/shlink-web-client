@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { pipe } from 'ramda';
 import { CreateVisit } from '../../visits/types';
 import { MercureInfo } from '../reducers/mercureInfo';

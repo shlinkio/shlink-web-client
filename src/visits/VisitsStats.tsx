@@ -1,5 +1,5 @@
 import { isEmpty, propEq, values } from 'ramda';
-import React, { useState, useEffect, useMemo, FC } from 'react';
+import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Collapse, Progress } from 'reactstrap';
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -186,7 +186,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
   };
 
   return (
-    <React.Fragment>
+    <>
       {children}
 
       <section className="mt-4">
@@ -244,7 +244,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
       <section>
         {renderVisitsContent()}
       </section>
-    </React.Fragment>
+    </>
   );
 };
 

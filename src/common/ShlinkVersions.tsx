@@ -1,4 +1,3 @@
-import React from 'react';
 import classNames from 'classnames';
 import { pipe } from 'ramda';
 import { ExternalLink } from 'react-external-link';
@@ -28,7 +27,7 @@ const ShlinkVersions = (
   return (
     <small className={classNames('text-muted', className)}>
       {isReachableServer(selectedServer) &&
-        <React.Fragment>Server: <VersionLink project="shlink" version={selectedServer.printableVersion} /> - </React.Fragment>
+        <>Server: <VersionLink project="shlink" version={selectedServer.printableVersion} /> - </>
       }
       Client: <VersionLink project="shlink-web-client" version={normalizedClientVersion} />
     </small>

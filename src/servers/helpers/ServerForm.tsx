@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { HorizontalFormGroup } from '../../utils/HorizontalFormGroup';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';

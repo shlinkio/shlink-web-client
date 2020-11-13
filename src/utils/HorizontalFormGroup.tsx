@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { v4 as uuid } from 'uuid';
 import { InputType } from 'reactstrap/lib/Input';
 

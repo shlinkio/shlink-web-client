@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Modal, ModalBody } from 'reactstrap';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import { prop } from 'ramda';

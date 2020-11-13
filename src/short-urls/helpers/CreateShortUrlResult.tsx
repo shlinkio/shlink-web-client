@@ -1,7 +1,7 @@
 import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil } from 'ramda';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Card, CardBody, Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';

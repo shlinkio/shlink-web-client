@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Button } from 'reactstrap';
 import NoMenuLayout from '../common/NoMenuLayout';
 import { ServerForm } from './helpers/ServerForm';

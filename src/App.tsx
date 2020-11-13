@@ -1,4 +1,4 @@
-import React, { useEffect, FC } from 'react';
+import { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import { ServersMap } from './servers/data';

@@ -1,4 +1,3 @@
-import React from 'react';
 import Tag from '../tags/helpers/Tag';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import VisitsHeader from './VisitsHeader';

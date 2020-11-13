@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { PaginationItem } from 'reactstrap';
 import Paginator from '../../src/short-urls/Paginator';

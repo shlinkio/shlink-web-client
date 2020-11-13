@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Card } from 'reactstrap';
 import classNames from 'classnames';
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';

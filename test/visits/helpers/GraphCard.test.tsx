@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Card, CardBody, CardHeader, CardFooter } from 'reactstrap';
 import GraphCard from '../../../src/visits/helpers/GraphCard';

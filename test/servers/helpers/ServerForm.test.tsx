@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
 import { HorizontalFormGroup } from '../../../src/utils/HorizontalFormGroup';

@@ -1,6 +1,6 @@
 import { values } from 'ramda';
 import { Mock } from 'ts-mockery';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem, DropdownToggle } from 'reactstrap';
 import serversDropdownCreator, { ServersDropdownProps } from '../../src/servers/ServersDropdown';

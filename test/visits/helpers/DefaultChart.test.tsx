@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';

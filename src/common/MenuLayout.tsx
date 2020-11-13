@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { EventData, Swipeable } from 'react-swipeable';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
@@ -46,7 +46,7 @@ const MenuLayout = (
   };
 
   return (
-    <React.Fragment>
+    <>
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
       <Swipeable
@@ -73,7 +73,7 @@ const MenuLayout = (
           </div>
         </div>
       </Swipeable>
-    </React.Fragment>
+    </>
   );
 }, ServerError);
 

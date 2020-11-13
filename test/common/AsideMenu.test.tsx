@@ -1,5 +1,4 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import React from 'react';
 import { Mock } from 'ts-mockery';
 import asideMenuCreator from '../../src/common/AsideMenu';
 import { ServerWithId } from '../../src/servers/data';

@@ -1,6 +1,4 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { History } from 'history';
 import createServerConstruct from '../../src/servers/CreateServer';
@@ -18,9 +16,7 @@ describe('<CreateServer />', () => {
       .mockReturnValueOnce([ importFailed, () => '' ]);
     const CreateServer = createServerConstruct(ImportServersBtn, useStateFlagTimeout);
 
-    wrapper = shallow(
-      <CreateServer createServer={createServerMock} resetSelectedServer={identity} history={historyMock} />,
-    );
+    wrapper = shallow(<CreateServer createServer={createServerMock} history={historyMock} />);
 
     return wrapper;
   };

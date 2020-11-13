@@ -9,7 +9,7 @@ import {
   faLink as linkIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { useToggle } from '../../utils/helpers/hooks';
 import { ShortUrl, ShortUrlModalProps } from '../data';

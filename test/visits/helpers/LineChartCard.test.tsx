@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { CardHeader, DropdownItem } from 'reactstrap';
 import { Line } from 'react-chartjs-2';

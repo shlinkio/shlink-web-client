@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter } from 'reactstrap';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import DefaultChart, { DefaultChartProps } from './DefaultChart';
 import './GraphCard.scss';
 

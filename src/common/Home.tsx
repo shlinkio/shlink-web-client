@@ -1,4 +1,3 @@
-import React from 'react';
 import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
 import ServersListGroup from '../servers/ServersListGroup';

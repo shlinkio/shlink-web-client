@@ -1,4 +1,3 @@
-import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 
 interface PaginationDropdownProps {

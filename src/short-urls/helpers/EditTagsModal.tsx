@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlTags } from '../reducers/shortUrlTags';

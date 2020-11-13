@@ -23,6 +23,7 @@
     }],
     "no-mixed-operators": "off",
     "react/display-name": "off",
+    "react/react-in-jsx-scope": "off",
     "@typescript-eslint/require-array-sort-compare": "off"
   }
 }

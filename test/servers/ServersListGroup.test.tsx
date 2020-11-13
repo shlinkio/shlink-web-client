@@ -1,5 +1,4 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import React from 'react';
 import { ListGroup } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import ServersListGroup from '../../src/servers/ServersListGroup';

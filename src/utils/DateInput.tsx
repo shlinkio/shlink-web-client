@@ -1,4 +1,4 @@
-import React, { Component, RefObject } from 'react';
+import { Component, RefObject, createRef } from 'react';
 import { isNil } from 'ramda';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ export interface DateInputProps extends ReactDatePickerProps {
 }
 
 const DateInput = (props: DateInputProps) => {
-  const { className, isClearable, selected, ref = React.createRef() } = props;
+  const { className, isClearable, selected, ref = createRef() } = props;
   const showCalendarIcon = !isClearable || isNil(selected);
 
   return (

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { versionMatch, Versions } from '../../utils/helpers/version';
 import { isReachableServer, SelectedServer } from '../data';
 
@@ -18,7 +18,7 @@ const ForServerVersion: FC<ForServerVersionProps> = ({ minVersion, maxVersion, s
     return null;
   }
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return <>{children}</>;
 };
 
 export default ForServerVersion;

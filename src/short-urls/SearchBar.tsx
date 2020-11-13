@@ -1,6 +1,6 @@
 import { faTags as tagsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { isEmpty, pipe } from 'ramda';
 import moment from 'moment';
 import SearchField from '../utils/SearchField';

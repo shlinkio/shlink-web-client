@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
@@ -48,7 +48,7 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
 
     return (
-      <React.Fragment>
+      <>
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
             {group.map((tag) => (
@@ -63,17 +63,17 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
             ))}
           </div>
         ))}
-      </React.Fragment>
+      </>
     );
   };
 
   return (
-    <React.Fragment>
+    <>
       {!tagsList.loading && <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />}
       <div className="row">
         {renderContent()}
       </div>
-    </React.Fragment>
+    </>
   );
 }, () => 'https://shlink.io/new-visit');
 

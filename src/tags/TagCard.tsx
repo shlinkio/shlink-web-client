@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, Button, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as deleteIcon, faPencilAlt as editIcon, faLink, faEye } from '@fortawesome/free-solid-svg-icons';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';

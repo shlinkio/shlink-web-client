@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ChromePicker } from 'react-color';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';

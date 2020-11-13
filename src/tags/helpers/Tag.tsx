@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import './Tag.scss';
 

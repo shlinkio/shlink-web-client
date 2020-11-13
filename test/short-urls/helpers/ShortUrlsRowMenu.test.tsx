@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ButtonDropdown, DropdownItem } from 'reactstrap';
 import { Mock } from 'ts-mockery';

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import TagsInput, { RenderInputProps, RenderTagProps } from 'react-tagsinput';
 import Autosuggest, { ChangeEvent as AutoChangeEvent, SuggestionSelectedEventData } from 'react-autosuggest';
 import ColorGenerator from '../../utils/services/ColorGenerator';
@@ -50,10 +50,10 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
         shouldRenderSuggestions={(value: string) => value.trim().length > 0}
         getSuggestionValue={(suggestion) => suggestion}
         renderSuggestion={(suggestion) => (
-          <React.Fragment>
+          <>
             <TagBullet tag={suggestion} colorGenerator={colorGenerator} />
             {suggestion}
-          </React.Fragment>
+          </>
         )}
         onSuggestionsFetchRequested={() => {}}
         onSuggestionsClearRequested={() => {}}
