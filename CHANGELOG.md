@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* [#325](https://github.com/shlinkio/shlink-web-client/issues/325) and [#294](https://github.com/shlinkio/shlink-web-client/issues/294) Updated all dependencies, including React 17, Typescript 4, react-datepicker 3 and Stryker 4.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#334](https://github.com/shlinkio/shlink-web-client/issues/334) Fixed color-picker making the app crash when closing the modal without closing the color-picker, and then trying to open the modal again.
+
+
 ## [2.6.1] - 2020-10-31
 ### Added
 * *Nothing*
