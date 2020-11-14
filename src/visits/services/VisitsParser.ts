@@ -1,4 +1,4 @@
-import { isNil, map, reduce } from 'ramda';
+import { isNil, map } from 'ramda';
 import { extractDomain, parseUserAgent } from '../../utils/helpers/visits';
 import { hasValue } from '../../utils/utils';
 import { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
@@ -53,7 +53,7 @@ const updateCitiesForMapForVisit = (citiesForMapStats: Record<string, CityStats>
   citiesForMapStats[city] = currentCity;
 };
 
-export const processStatsFromVisits = reduce(
+export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.reduce(
   (stats: VisitsStats, visit: NormalizedVisit) => {
     // We mutate the original object because it has a big performance impact when large data sets are processed
     updateOsStatsForVisit(stats.os, visit);
