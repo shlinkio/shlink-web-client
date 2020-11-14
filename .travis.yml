@@ -16,6 +16,7 @@ node_js:
 jobs:
   fast_finish: true
   allow_failures:
+    - name: 'Lint'
     - name: 'Mutation tests'
   include:
 

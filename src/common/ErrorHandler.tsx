@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { Component, ReactNode } from 'react';
 import { Button } from 'reactstrap';
 import './ErrorHandler.scss';
 
@@ -9,7 +9,7 @@ interface ErrorHandlerState {
 const ErrorHandler = (
   { location }: Window,
   { error }: Console,
-) => class ErrorHandler extends React.Component<any, ErrorHandlerState> {
+) => class ErrorHandler extends Component<any, ErrorHandlerState> {
   public constructor(props: object) {
     super(props);
     this.state = { hasError: false };

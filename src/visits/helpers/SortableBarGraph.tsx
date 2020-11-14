@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import SortingDropdown from '../../utils/SortingDropdown';
 import PaginationDropdown from '../../utils/PaginationDropdown';
@@ -94,7 +94,7 @@ const SortableBarGraph = ({
   );
   const activeCities = Object.keys(currentPageStats);
   const computeTitle = () => (
-    <React.Fragment>
+    <>
       {title}
       <div className="float-right">
         <SortingDropdown
@@ -127,7 +127,7 @@ const SortableBarGraph = ({
           {extraHeaderContent(pagination ? activeCities : undefined)}
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 
   return (

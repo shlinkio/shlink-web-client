@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';

@@ -1,26 +1,45 @@
-import React, { Component, RefObject } from 'react';
-import { isNil } from 'ramda';
+import { useRef } from 'react';
+import { isNil, dissoc } from 'ramda';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
+import moment from 'moment';
 import './DateInput.scss';
 
-export interface DateInputProps extends ReactDatePickerProps {
-  ref?: RefObject<Component<ReactDatePickerProps> & { input: HTMLInputElement }>;
+interface DatePropsInterface {
+  endDate?: moment.Moment | null;
+  maxDate?: moment.Moment | null;
+  minDate?: moment.Moment | null;
+  selected?: moment.Moment | null;
+  startDate?: moment.Moment | null;
+  onChange?: (date: moment.Moment | null) => void;
 }
 
+export type DateInputProps = DatePropsInterface & Omit<ReactDatePickerProps, keyof DatePropsInterface>;
+
+const transformProps = (props: DateInputProps): ReactDatePickerProps => ({
+  ...dissoc('ref', props),
+  endDate: props.endDate?.toDate(),
+  maxDate: props.maxDate?.toDate(),
+  minDate: props.minDate?.toDate(),
+  selected: props.selected?.toDate(),
+  startDate: props.startDate?.toDate(),
+  onChange: (date: Date | null) => props.onChange?.(date && moment(date)),
+});
+
 const DateInput = (props: DateInputProps) => {
-  const { className, isClearable, selected, ref = React.createRef() } = props;
+  const { className, isClearable, selected } = props;
   const showCalendarIcon = !isClearable || isNil(selected);
+  const ref = useRef<{ input: HTMLInputElement }>();
 
   return (
     <div className="date-input-container">
       <DatePicker
-        {...props}
+        {...transformProps(props)}
+        dateFormat="yyyy-MM-dd"
         className={classNames('date-input-container__input form-control', className)}
-        dateFormat="YYYY-MM-DD"
-        readOnly
+        // @ts-expect-error
         ref={ref}
       />
       {showCalendarIcon && (

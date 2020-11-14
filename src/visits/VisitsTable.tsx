@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Moment from 'react-moment';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';

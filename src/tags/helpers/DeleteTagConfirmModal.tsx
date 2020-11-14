@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { TagDeletion } from '../reducers/tagDelete';
 import { TagModalProps } from '../data';

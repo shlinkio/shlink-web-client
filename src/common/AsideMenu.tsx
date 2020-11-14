@@ -5,7 +5,7 @@ import {
   faPen as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import classNames from 'classnames';
 import { Location } from 'history';

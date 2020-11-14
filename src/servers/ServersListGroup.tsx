@@ -1,10 +1,10 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
-import './ServersListGroup.scss';
 import { ServerWithId } from './data';
+import './ServersListGroup.scss';
 
 interface ServersListGroup {
   servers: ServerWithId[];
@@ -18,7 +18,7 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
 );
 
 const ServersListGroup: FC<ServersListGroup> = ({ servers, children }) => (
-  <React.Fragment>
+  <>
     <div className="container">
       <h5>{children}</h5>
     </div>
@@ -27,7 +27,7 @@ const ServersListGroup: FC<ServersListGroup> = ({ servers, children }) => (
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
       </ListGroup>
     )}
-  </React.Fragment>
+  </>
 );
 
 export default ServersListGroup;

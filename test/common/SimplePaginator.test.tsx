@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
 import { PaginationItem } from 'reactstrap';
@@ -8,7 +7,6 @@ import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 describe('<SimplePaginator />', () => {
   let wrapper: ShallowWrapper;
   const createWrapper = (pagesCount: number, currentPage = 1) => {
-    // @ts-expect-error
     wrapper = shallow(<SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={identity} />);
 
     return wrapper;

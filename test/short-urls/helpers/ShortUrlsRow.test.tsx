@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import moment from 'moment';
 import Moment from 'react-moment';

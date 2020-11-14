@@ -1,5 +1,4 @@
 import { isEmpty, values } from 'ramda';
-import React from 'react';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import ServersExporter from './services/ServersExporter';
@@ -19,7 +18,7 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
     }
 
     return (
-      <React.Fragment>
+      <>
         {serversList.map(({ name, id }) => (
           <DropdownItem
             key={id}
@@ -34,7 +33,7 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
         <DropdownItem className="servers-dropdown__export-item" onClick={async () => serversExporter.exportServers()}>
           Export servers
         </DropdownItem>
-      </React.Fragment>
+      </>
     );
   };
 

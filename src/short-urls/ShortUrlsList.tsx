@@ -1,7 +1,7 @@
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, isEmpty, keys, values } from 'ramda';
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import SortingDropdown from '../utils/SortingDropdown';
@@ -107,7 +107,7 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <div className="d-block d-md-none mb-3">
         <SortingDropdown
           items={SORTABLE_FIELDS}
@@ -154,7 +154,7 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub
           {renderShortUrls()}
         </tbody>
       </table>
-    </React.Fragment>
+    </>
   );
 }, () => 'https://shlink.io/new-visit');
 

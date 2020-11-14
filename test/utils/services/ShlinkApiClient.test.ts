@@ -35,7 +35,7 @@ describe('ShlinkApiClient', () => {
 
     it('returns create short URL', async () => {
       const { createShortUrl } = createApiClient({ data: shortUrl });
-      const result = await createShortUrl({});
+      const result = await createShortUrl({ longUrl: '' });
 
       expect(result).toEqual(shortUrl);
     });
@@ -45,10 +45,11 @@ describe('ShlinkApiClient', () => {
       const { createShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
       await createShortUrl(
-        { foo: 'bar', empty: undefined, anotherEmpty: null },
+        // @ts-expect-error
+        { longUrl: 'bar', customSlug: undefined, maxVisits: null },
       );
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { foo: 'bar' } }));
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { longUrl: 'bar' } }));
     });
   });
 

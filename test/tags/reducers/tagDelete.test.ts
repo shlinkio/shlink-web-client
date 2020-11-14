@@ -43,7 +43,7 @@ describe('tagDeleteReducer', () => {
   });
 
   describe('deleteTag', () => {
-    const createApiClientMock = (result: Promise<void>) => Mock.of<ShlinkApiClient>({
+    const createApiClientMock = (result: Promise<any>) => Mock.of<ShlinkApiClient>({
       deleteTags: jest.fn(async () => result),
     });
     const dispatch = jest.fn();

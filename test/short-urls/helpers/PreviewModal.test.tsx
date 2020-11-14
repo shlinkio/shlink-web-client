@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
 import { Mock } from 'ts-mockery';

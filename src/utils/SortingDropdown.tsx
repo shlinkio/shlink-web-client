@@ -1,4 +1,3 @@
-import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toPairs } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

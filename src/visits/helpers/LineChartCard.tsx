@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Card,
   CardHeader,
@@ -199,7 +199,6 @@ const LineChartCard = (
     },
     tooltips: {
       intersect: false,
-      // @ts-expect-error
       axis: 'x',
       callbacks: {
         label: renderNonDoughnutChartLabel('yLabel'),

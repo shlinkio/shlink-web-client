@@ -1,7 +1,7 @@
 import { faAngleDoubleDown as downIcon, faAngleDoubleUp as upIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, pipe, replace, trim } from 'ramda';
-import React, { FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { Collapse, FormGroup, Input } from 'reactstrap';
 import { InputType } from 'reactstrap/lib/Input';
 import * as m from 'moment';

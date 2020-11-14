@@ -37,7 +37,7 @@ describe('shortUrlMetaReducer', () => {
     });
 
     it('returns provided tags and shortCode on SHORT_URL_META_EDITED', () => {
-      expect(reducer(undefined, { type: SHORT_URL_META_EDITED, meta, shortCode })).toEqual({
+      expect(reducer(undefined, { type: SHORT_URL_META_EDITED, meta, shortCode } as any)).toEqual({
         meta,
         shortCode,
         saving: false,

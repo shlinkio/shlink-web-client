@@ -1,6 +1,4 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { identity } from 'ramda';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
@@ -15,7 +13,7 @@ describe('<CreateShortUrlResult />', () => {
   const CreateShortUrlResult = createCreateShortUrlResult(useStateFlagTimeout);
   const createWrapper = (result: ShortUrl | null = null, error = false) => {
     wrapper = shallow(
-      <CreateShortUrlResult resetCreateShortUrl={identity} result={result} error={error} saving={false} />,
+      <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,
     );
 
     return wrapper;

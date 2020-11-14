@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 const ScrollToTop = () => ({ location, children }: PropsWithChildren<RouteComponentProps>) => {
@@ -6,7 +6,7 @@ const ScrollToTop = () => ({ location, children }: PropsWithChildren<RouteCompon
     scrollTo(0, 0);
   }, [ location ]);
 
-  return <React.Fragment>{children}</React.Fragment>;
+  return <>{children}</>;
 };
 
 export default ScrollToTop;

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import Message from '../../utils/Message';
 import ServersListGroup from '../ServersListGroup';
@@ -19,10 +19,10 @@ export const ServerError = (DeleteServerButton: FC<DeleteServerButtonProps>): FC
       <Message type="error">
         {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
         {isServerWithId(selectedServer) && (
-          <React.Fragment>
+          <>
             <p>Oops! Could not connect to this Shlink server.</p>
             Make sure you have internet connection, and the server is properly configured and on-line.
-          </React.Fragment>
+          </>
         )}
       </Message>
     </div>

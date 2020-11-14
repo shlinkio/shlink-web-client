@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Message from '../../utils/Message';
 import { isNotFoundServer, SelectedServer } from '../data';

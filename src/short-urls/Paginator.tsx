@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { pageIsEllipsis, keyForPage, progressivePagination, prettifyPageNumber } from '../utils/helpers/pagination';

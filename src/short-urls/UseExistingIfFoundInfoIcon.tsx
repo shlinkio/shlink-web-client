@@ -1,4 +1,3 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
@@ -41,12 +40,12 @@ const UseExistingIfFoundInfoIcon = () => {
   const [ isModalOpen, toggleModal ] = useToggle();
 
   return (
-    <React.Fragment>
+    <>
       <span title="What does this mean?">
         <FontAwesomeIcon icon={infoIcon} style={{ cursor: 'pointer' }} onClick={toggleModal} />
       </span>
       <InfoModal isOpen={isModalOpen} toggle={toggleModal} />
-    </React.Fragment>
+    </>
   );
 };
 

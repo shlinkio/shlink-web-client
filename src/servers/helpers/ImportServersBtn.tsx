@@ -1,4 +1,4 @@
-import React, { useRef, RefObject, ChangeEvent, MutableRefObject } from 'react';
+import { useRef, RefObject, ChangeEvent, MutableRefObject } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import ServersImporter from '../services/ServersImporter';
 import { ServerData } from '../data';
@@ -33,7 +33,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
       .catch(onImportError);
 
   return (
-    <React.Fragment>
+    <>
       <button
         type="button"
         className="btn btn-outline-secondary mr-2"
@@ -47,7 +47,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
       </UncontrolledTooltip>
 
       <input type="file" accept="text/csv" className="create-server__csv-select" ref={ref} onChange={onChange} />
-    </React.Fragment>
+    </>
   );
 };
 

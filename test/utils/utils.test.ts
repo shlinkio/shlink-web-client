@@ -24,7 +24,7 @@ describe('utils', () => {
   });
 
   describe('rangeOf', () => {
-    const func = (i) => `result_${i}`;
+    const func = (i: number) => `result_${i}`;
     const size = 5;
 
     it('builds a range of specified size invike provided function', () => {

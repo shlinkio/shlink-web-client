@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import DateRangeRow from '../../src/utils/DateRangeRow';
 import DateInput from '../../src/utils/DateInput';

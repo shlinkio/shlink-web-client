@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import { Modal, ModalBody } from 'reactstrap';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, MapContainerProps } from 'react-leaflet';
 import { prop } from 'ramda';
 import { CityStats } from '../types';
 import './MapModal.scss';
@@ -19,7 +19,7 @@ const OpenStreetMapTile: FC = () => (
   />
 );
 
-const calculateMapProps = (locations: CityStats[]): any => {
+const calculateMapProps = (locations: CityStats[]): MapContainerProps => {
   if (locations.length === 0) {
     return {};
   }
@@ -42,14 +42,14 @@ const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
         {title}
         <button type="button" className="close" onClick={toggle}>&times;</button>
       </h3>
-      <Map {...calculateMapProps(locations)}>
+      <MapContainer {...calculateMapProps(locations)}>
         <OpenStreetMapTile />
         {locations.map(({ cityName, latLong, count }, index) => (
           <Marker key={index} position={latLong}>
             <Popup><b>{count}</b> visit{count > 1 ? 's' : ''} from <b>{cityName}</b></Popup>
           </Marker>
         ))}
-      </Map>
+      </MapContainer>
     </ModalBody>
   </Modal>
 );

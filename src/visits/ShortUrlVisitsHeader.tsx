@@ -1,6 +1,5 @@
 import { UncontrolledTooltip } from 'reactstrap';
 import Moment from 'react-moment';
-import React from 'react';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import { ShortUrlVisits } from './reducers/shortUrlVisits';
@@ -30,9 +29,9 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
     </span>
   );
   const visitsStatsTitle = (
-    <React.Fragment>
+    <>
       Visits for <ExternalLink href={shortLink} />
-    </React.Fragment>
+    </>
   );
 
   return (

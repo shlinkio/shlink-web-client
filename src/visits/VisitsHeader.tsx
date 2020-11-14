@@ -1,5 +1,5 @@
 import { Button, Card } from 'reactstrap';
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';

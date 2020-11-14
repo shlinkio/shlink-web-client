@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal } from 'reactstrap';
 import { Marker, Popup } from 'react-leaflet';

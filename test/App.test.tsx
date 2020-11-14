@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Route } from 'react-router-dom';
 import { identity } from 'ramda';

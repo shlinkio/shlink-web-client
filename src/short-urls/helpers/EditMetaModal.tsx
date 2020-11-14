@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
@@ -17,10 +17,10 @@ interface EditMetaModalConnectProps extends ShortUrlModalProps {
   editShortUrlMeta: (shortCode: string, domain: OptionalString, meta: Nullable<ShortUrlMeta>) => Promise<void>;
 }
 
-const dateOrUndefined = (shortUrl: ShortUrl | undefined, dateName: 'validSince' | 'validUntil') => {
+const dateOrNull = (shortUrl: ShortUrl | undefined, dateName: 'validSince' | 'validUntil') => {
   const date = shortUrl?.meta?.[dateName];
 
-  return date ? moment(date) : undefined;
+  return date ? moment(date) : null;
 };
 
 const EditMetaModal = (
@@ -28,8 +28,8 @@ const EditMetaModal = (
 ) => {
   const { saving, error } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
-  const [ validSince, setValidSince ] = useState(dateOrUndefined(shortUrl, 'validSince'));
-  const [ validUntil, setValidUntil ] = useState(dateOrUndefined(shortUrl, 'validUntil'));
+  const [ validSince, setValidSince ] = useState(dateOrNull(shortUrl, 'validSince'));
+  const [ validUntil, setValidUntil ] = useState(dateOrNull(shortUrl, 'validUntil'));
   const [ maxVisits, setMaxVisits ] = useState(shortUrl?.meta?.maxVisits);
 
   const close = pipe(resetShortUrlMeta, toggle);
@@ -56,7 +56,7 @@ const EditMetaModal = (
               selected={validSince}
               maxDate={validUntil}
               isClearable
-              onChange={setValidSince as any}
+              onChange={setValidSince}
             />
           </FormGroup>
           <FormGroup>

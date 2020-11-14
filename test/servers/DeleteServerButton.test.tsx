@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import deleteServerButtonConstruct from '../../src/servers/DeleteServerButton';

@@ -57,7 +57,7 @@ describe('tagEditReducer', () => {
   });
 
   describe('editTag', () => {
-    const createApiClientMock = (result: Promise<void>) => Mock.of<ShlinkApiClient>({
+    const createApiClientMock = (result: Promise<any>) => Mock.of<ShlinkApiClient>({
       editTag: jest.fn(async () => result),
     });
     const colorGenerator = Mock.of<ColorGenerator>({

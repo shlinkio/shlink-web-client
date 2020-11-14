@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { RouterProps } from 'react-router';
 import { ServerWithId } from './data';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardBody, CardHeader, FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
 import ToggleSwitch from '../utils/ToggleSwitch';

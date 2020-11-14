@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlModalProps } from '../data';

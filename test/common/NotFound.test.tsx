@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
 import NotFound from '../../src/common/NotFound';

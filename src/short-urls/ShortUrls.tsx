@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ShlinkShortUrlsResponse } from '../utils/services/types';
 import Paginator from './Paginator';
 import { ShortUrlsListProps, WithList } from './ShortUrlsList';
@@ -20,13 +20,13 @@ const ShortUrls = (SearchBar: FC, ShortUrlsList: FC<ShortUrlsListProps & WithLis
   }, [ serverId, page ]);
 
   return (
-    <React.Fragment>
+    <>
       <div className="form-group"><SearchBar /></div>
       <div>
         <ShortUrlsList {...props} shortUrlsList={data} key={urlsListKey} />
         <Paginator paginator={pagination} serverId={serverId} />
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

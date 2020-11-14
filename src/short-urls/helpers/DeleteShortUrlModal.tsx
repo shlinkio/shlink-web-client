@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { identity, pipe } from 'ramda';
 import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
