@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { EventData, Swipeable } from 'react-swipeable';
+import { useSwipeable } from 'react-swipeable';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -33,7 +33,7 @@ const MenuLayout = (
   const burgerClasses = classNames('menu-layout__burger-icon', {
     'menu-layout__burger-icon--active': sidebarVisible,
   });
-  const swipeMenuIfNoModalExists = (callback: () => void) => (e: EventData) => {
+  const swipeMenuIfNoModalExists = (callback: () => void) => (e: any) => {
     const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some(
       ({ classList }) => classList?.contains('visits-table'),
     );
@@ -44,17 +44,17 @@ const MenuLayout = (
 
     callback();
   };
+  const swipeableProps = useSwipeable({
+    delta: 40,
+    onSwipedLeft: swipeMenuIfNoModalExists(hideSidebar),
+    onSwipedRight: swipeMenuIfNoModalExists(showSidebar),
+  });
 
   return (
     <>
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
-      <Swipeable
-        delta={40}
-        className="menu-layout__swipeable"
-        onSwipedLeft={swipeMenuIfNoModalExists(hideSidebar)}
-        onSwipedRight={swipeMenuIfNoModalExists(showSidebar)}
-      >
+      <div {...swipeableProps} className="menu-layout__swipeable">
         <div className="row menu-layout__swipeable-inner">
           <AsideMenu className="col-lg-2 col-md-3" selectedServer={selectedServer} showOnMobile={sidebarVisible} />
           <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3" onClick={() => hideSidebar()}>
@@ -72,7 +72,7 @@ const MenuLayout = (
             </div>
           </div>
         </div>
-      </Swipeable>
+      </div>
     </>
   );
 }, ServerError);
