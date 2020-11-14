@@ -199,7 +199,6 @@ const LineChartCard = (
     },
     tooltips: {
       intersect: false,
-      // @ts-expect-error
       axis: 'x',
       callbacks: {
         label: renderNonDoughnutChartLabel('yLabel'),
