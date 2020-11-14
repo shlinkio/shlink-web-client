@@ -21,14 +21,14 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
 ) => {
   const [ newTagName, setNewTagName ] = useState(tag);
   const [ color, setColor ] = useState(getColorForKey(tag));
-  const [ showColorPicker, toggleColorPicker ] = useToggle();
+  const [ showColorPicker, toggleColorPicker, , hideColorPicker ] = useToggle();
   const saveTag = handleEventPreventingDefault(async () => editTag(tag, newTagName, color)
     .then(() => tagEdited(tag, newTagName, color))
     .then(toggle)
     .catch(() => {}));
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
       <form onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>
