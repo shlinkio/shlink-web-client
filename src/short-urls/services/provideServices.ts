@@ -51,7 +51,14 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
 
-  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'TagsSelector', 'CreateShortUrlResult', 'ForServerVersion');
+  bottle.serviceFactory(
+    'CreateShortUrl',
+    CreateShortUrl,
+    'TagsSelector',
+    'CreateShortUrlResult',
+    'ForServerVersion',
+    'DomainsDropdown',
+  );
   bottle.decorator(
     'CreateShortUrl',
     connect([ 'shortUrlCreationResult', 'selectedServer' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),

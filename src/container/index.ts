@@ -11,6 +11,7 @@ import provideTagsServices from '../tags/services/provideServices';
 import provideUtilsServices from '../utils/services/provideServices';
 import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
+import provideDomainsServices from '../domains/services/provideServices';
 import { ConnectDecorator } from './types';
 
 type LazyActionMap = Record<string, Function>;
@@ -41,5 +42,6 @@ provideVisitsServices(bottle, connect);
 provideUtilsServices(bottle);
 provideMercureServices(bottle);
 provideSettingsServices(bottle, connect);
+provideDomainsServices(bottle, connect);
 
 export default container;

@@ -1,0 +1,20 @@
+@import '../utils/mixins/vertical-align';
+
+.domains-dropdown__toggle-btn.domains-dropdown__toggle-btn,
+.domains-dropdown__toggle-btn.domains-dropdown__toggle-btn:hover,
+.domains-dropdown__toggle-btn.domains-dropdown__toggle-btn:active {
+  text-align: left;
+  color: #6c757d;
+  border-color: #6c757d;
+  background-color: white;
+}
+
+.domains-dropdown__toggle-btn.domains-dropdown__toggle-btn::after {
+  right: .75rem;
+
+  @include vertical-align();
+}
+
+.domains-dropdown__menu {
+  width: 100%;
+}

@@ -17,6 +17,8 @@ interface TagsSelectorConnectProps extends TagsSelectorProps {
   tagsList: TagsList;
 }
 
+const noop = () => {};
+
 const TagsSelector = (colorGenerator: ColorGenerator) => (
   { tags, onChange, listTags, tagsList, placeholder = 'Add tags to the URL' }: TagsSelectorConnectProps,
 ) => {
@@ -55,8 +57,8 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
             {suggestion}
           </>
         )}
-        onSuggestionsFetchRequested={() => {}}
-        onSuggestionsClearRequested={() => {}}
+        onSuggestionsFetchRequested={noop}
+        onSuggestionsClearRequested={noop}
         onSuggestionSelected={(_, { suggestion }: SuggestionSelectedEventData<string>) => {
           addTag(suggestion);
         }}
