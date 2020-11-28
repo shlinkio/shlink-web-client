@@ -13,7 +13,7 @@ import { useToggle } from '../utils/helpers/hooks';
 import { isReachableServer, SelectedServer } from '../servers/data';
 import { formatIsoDate } from '../utils/helpers/date';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
-import { DomainsDropdownProps } from '../domains/DomainsDropdown';
+import { DomainSelectorProps } from '../domains/DomainSelector';
 import { ShortUrlData } from './data';
 import { ShortUrlCreation } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
@@ -47,7 +47,7 @@ const CreateShortUrl = (
   TagsSelector: FC<TagsSelectorProps>,
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
   ForServerVersion: FC<Versions>,
-  DomainsDropdown: FC<DomainsDropdownProps>,
+  DomainSelector: FC<DomainSelectorProps>,
 ) => ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }: CreateShortUrlProps) => {
   const [ shortUrlCreation, setShortUrlCreation ] = useState(initialState);
   const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle();
@@ -89,7 +89,7 @@ const CreateShortUrl = (
 
   const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
   const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
-  const showDomainsDropdown = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
+  const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
   const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
   return (
@@ -126,13 +126,13 @@ const CreateShortUrl = (
             })}
           </div>
           <div className="col-sm-4">
-            {!showDomainsDropdown && renderOptionalInput('domain', 'Domain', 'text', {
+            {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
               disabled: disableDomain,
               ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
             })}
-            {showDomainsDropdown && (
+            {showDomainSelector && (
               <FormGroup>
-                <DomainsDropdown
+                <DomainSelector
                   value={shortUrlCreation.domain}
                   onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
                 />

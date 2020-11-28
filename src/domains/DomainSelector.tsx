@@ -17,19 +17,19 @@ import { isEmpty, pipe } from 'ramda';
 import classNames from 'classnames';
 import { useToggle } from '../utils/helpers/hooks';
 import { DomainsList } from './reducers/domainsList';
-import './DomainsDropdown.scss';
+import './DomainSelector.scss';
 
-export interface DomainsDropdownProps extends Omit<InputProps, 'onChange'> {
+export interface DomainSelectorProps extends Omit<InputProps, 'onChange'> {
   value?: string;
   onChange: (domain?: string) => void;
 }
 
-interface DomainsDropdownConnectProps extends DomainsDropdownProps {
+interface DomainSelectorConnectProps extends DomainSelectorProps {
   listDomains: Function;
   domainsList: DomainsList;
 }
 
-export const DomainsDropdown = ({ listDomains, value, domainsList, onChange }: DomainsDropdownConnectProps) => {
+export const DomainSelector = ({ listDomains, value, domainsList, onChange }: DomainSelectorConnectProps) => {
   const [ inputDisplayed,, showInput, hideInput ] = useToggle();
   const [ isDropdownOpen, toggleDropdown ] = useToggle();
   const { domains } = domainsList;
@@ -48,7 +48,13 @@ export const DomainsDropdown = ({ listDomains, value, domainsList, onChange }: D
         onChange={(e) => onChange(e.target.value)}
       />
       <InputGroupAddon addonType="append">
-        <Button id="backToDropdown" outline type="button" onClick={pipe(unselectDomain, hideInput)}>
+        <Button
+          id="backToDropdown"
+          outline
+          type="button"
+          className="domains-dropdown__back-btn"
+          onClick={pipe(unselectDomain, hideInput)}
+        >
           <FontAwesomeIcon icon={faUndo} />
         </Button>
         <UncontrolledTooltip target="backToDropdown" placement="left" trigger="hover">
@@ -58,7 +64,13 @@ export const DomainsDropdown = ({ listDomains, value, domainsList, onChange }: D
     </InputGroup>
   ) : (
     <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-      <DropdownToggle caret className={classNames('domains-dropdown__toggle-btn btn-block', { 'domains-dropdown__toggle-btn--active': !valueIsEmpty })}>
+      <DropdownToggle
+        caret
+        className={classNames(
+          'domains-dropdown__toggle-btn btn-block',
+          { 'domains-dropdown__toggle-btn--active': !valueIsEmpty },
+        )}
+      >
         {valueIsEmpty && <>Domain</>}
         {!valueIsEmpty && <>Domain: {value}</>}
       </DropdownToggle>

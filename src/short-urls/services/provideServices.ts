@@ -57,7 +57,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'TagsSelector',
     'CreateShortUrlResult',
     'ForServerVersion',
-    'DomainsDropdown',
+    'DomainSelector',
   );
   bottle.decorator(
     'CreateShortUrl',

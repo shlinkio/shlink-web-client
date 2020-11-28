@@ -15,6 +15,11 @@
   color: #495057;
 }
 
+.domains-dropdown__back-btn.domains-dropdown__back-btn,
+.domains-dropdown__back-btn.domains-dropdown__back-btn:hover {
+  border-color: #ced4da;
+}
+
 .domains-dropdown__toggle-btn.domains-dropdown__toggle-btn::after {
   right: .75rem;
 
