@@ -60,4 +60,11 @@ describe('<Checkbox />', () => {
 
     expect(onChange).toHaveBeenCalledWith(false, e);
   });
+
+  it('allows setting inline rendering', () => {
+    const wrapped = createComponent({ inline: true });
+    const control = wrapped.find('.custom-control');
+
+    expect(control.prop('style')).toEqual({ display: 'inline-block' });
+  });
 });

@@ -1,6 +1,8 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
+import { Mock } from 'ts-mockery';
+import { ShlinkDomain } from '../../../src/utils/services/types';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
@@ -246,6 +248,22 @@ describe('ShlinkApiClient', () => {
       const { mercureInfo } = new ShlinkApiClient(axiosSpy, '', '');
 
       const result = await mercureInfo();
+
+      expect(axiosSpy).toHaveBeenCalled();
+      expect(result).toEqual(expectedData);
+    });
+  });
+
+  describe('listDomains', () => {
+    it('returns domains', async () => {
+      const expectedData = [Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>()];
+      const resp = {
+        domains: { data: expectedData },
+      };
+      const axiosSpy = createAxiosMock({ data: resp });
+      const { listDomains } = new ShlinkApiClient(axiosSpy, '', '');
+
+      const result = await listDomains();
 
       expect(axiosSpy).toHaveBeenCalled();
       expect(result).toEqual(expectedData);
