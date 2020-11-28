@@ -16,7 +16,7 @@ export interface DomainsList {
   error: boolean;
 }
 
-interface ListDomainsAction extends Action<string> {
+export interface ListDomainsAction extends Action<string> {
   domains: ShlinkDomain[];
 }
 
