@@ -21,7 +21,7 @@ import './DomainSelector.scss';
 
 export interface DomainSelectorProps extends Omit<InputProps, 'onChange'> {
   value?: string;
-  onChange: (domain?: string) => void;
+  onChange: (domain: string) => void;
 }
 
 interface DomainSelectorConnectProps extends DomainSelectorProps {
