@@ -14,6 +14,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { isEmpty, pipe } from 'ramda';
+import classNames from 'classnames';
 import { useToggle } from '../utils/helpers/hooks';
 import { DomainsList } from './reducers/domainsList';
 import './DomainsDropdown.scss';
@@ -32,7 +33,6 @@ export const DomainsDropdown = ({ listDomains, value, domainsList, onChange }: D
   const [ inputDisplayed,, showInput, hideInput ] = useToggle();
   const [ isDropdownOpen, toggleDropdown ] = useToggle();
   const { domains } = domainsList;
-  const defaultDomain = domains.find(({ isDefault }) => isDefault);
   const valueIsEmpty = isEmpty(value);
   const unselectDomain = () => onChange('');
 
@@ -58,8 +58,9 @@ export const DomainsDropdown = ({ listDomains, value, domainsList, onChange }: D
     </InputGroup>
   ) : (
     <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-      <DropdownToggle caret className="domains-dropdown__toggle-btn btn-block">
-        Domain: {valueIsEmpty ? defaultDomain?.domain : value}
+      <DropdownToggle caret className={classNames('domains-dropdown__toggle-btn btn-block', { 'domains-dropdown__toggle-btn--active': !valueIsEmpty })}>
+        {valueIsEmpty && <>Domain</>}
+        {!valueIsEmpty && <>Domain: {value}</>}
       </DropdownToggle>
       <DropdownMenu className="domains-dropdown__menu">
         {domains.map(({ domain, isDefault }) => (

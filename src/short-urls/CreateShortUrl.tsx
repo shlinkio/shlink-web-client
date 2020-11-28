@@ -156,6 +156,7 @@ const CreateShortUrl = (
         <ForServerVersion minVersion="1.16.0">
           <div className="mb-4 text-right">
             <Checkbox
+              inline
               className="mr-2"
               checked={shortUrlCreation.findIfExists}
               onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
