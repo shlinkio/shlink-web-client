@@ -13,6 +13,8 @@ import {
   ShlinkVisits,
   ShlinkVisitsParams,
   ShlinkShortUrlMeta,
+  ShlinkDomain,
+  ShlinkDomainsResponse,
 } from './types';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
@@ -92,6 +94,9 @@ export default class ShlinkApiClient {
   public readonly mercureInfo = async (): Promise<ShlinkMercureInfo> =>
     this.performRequest<ShlinkMercureInfo>('/mercure-info', 'GET')
       .then((resp) => resp.data);
+
+  public readonly listDomains = async (): Promise<ShlinkDomain[]> =>
+    this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains.data);
 
   private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> => {
     try {

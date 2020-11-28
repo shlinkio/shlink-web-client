@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* [#309](https://github.com/shlinkio/shlink-web-client/issues/309) Added new domain selector component in create URL form which allows selecting from previously used domains or set a new one.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [2.6.2] - 2020-11-14
 ### Added
 * *Nothing*

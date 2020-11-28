@@ -64,3 +64,12 @@ export interface ProblemDetailsError {
   message?: string; // Deprecated
   [extraProps: string]: any;
 }
+
+export interface ShlinkDomain {
+  domain: string;
+  isDefault: boolean;
+}
+
+export interface ShlinkDomainsResponse {
+  data: ShlinkDomain[];
+}

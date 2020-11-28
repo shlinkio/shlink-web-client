@@ -13,6 +13,7 @@ import { useToggle } from '../utils/helpers/hooks';
 import { isReachableServer, SelectedServer } from '../servers/data';
 import { formatIsoDate } from '../utils/helpers/date';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
+import { DomainSelectorProps } from '../domains/DomainSelector';
 import { ShortUrlData } from './data';
 import { ShortUrlCreation } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
@@ -46,6 +47,7 @@ const CreateShortUrl = (
   TagsSelector: FC<TagsSelectorProps>,
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
   ForServerVersion: FC<Versions>,
+  DomainSelector: FC<DomainSelectorProps>,
 ) => ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }: CreateShortUrlProps) => {
   const [ shortUrlCreation, setShortUrlCreation ] = useState(initialState);
   const [ moreOptionsVisible, toggleMoreOptionsVisible ] = useToggle();
@@ -87,6 +89,7 @@ const CreateShortUrl = (
 
   const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
   const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
+  const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
   const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
   return (
@@ -123,10 +126,18 @@ const CreateShortUrl = (
             })}
           </div>
           <div className="col-sm-4">
-            {renderOptionalInput('domain', 'Domain', 'text', {
+            {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
               disabled: disableDomain,
               ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
             })}
+            {showDomainSelector && (
+              <FormGroup>
+                <DomainSelector
+                  value={shortUrlCreation.domain}
+                  onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
+                />
+              </FormGroup>
+            )}
           </div>
         </div>
 
@@ -145,6 +156,7 @@ const CreateShortUrl = (
         <ForServerVersion minVersion="1.16.0">
           <div className="mb-4 text-right">
             <Checkbox
+              inline
               className="mr-2"
               checked={shortUrlCreation.findIfExists}
               onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
