@@ -40,4 +40,5 @@ jobs:
     - name: 'Build docker image'
       services:
         - docker
+      install: skip
       script: docker build -t shlink-web-client:test .
