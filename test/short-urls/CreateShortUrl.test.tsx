@@ -52,6 +52,7 @@ describe('<CreateShortUrl />', () => {
       maxVisits: '20',
       findIfExists: false,
       shortCodeLength: 15,
+      validateUrl: true,
     });
   });
 });

@@ -11,6 +11,7 @@ export interface ShortUrlData {
   validUntil?: m.Moment | string;
   maxVisits?: number;
   findIfExists?: boolean;
+  validateUrl?: boolean;
 }
 
 export interface ShortUrl {

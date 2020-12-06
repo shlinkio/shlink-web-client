@@ -8,9 +8,9 @@ import {
   Input,
   InputGroup,
   InputGroupAddon,
-  InputProps,
   UncontrolledTooltip,
 } from 'reactstrap';
+import { InputProps } from 'reactstrap/lib/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { isEmpty, pipe } from 'ramda';

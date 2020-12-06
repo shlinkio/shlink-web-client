@@ -38,6 +38,7 @@ const initialState: ShortUrlData = {
   validUntil: undefined,
   maxVisits: undefined,
   findIfExists: false,
+  validateUrl: true,
 };
 
 type NonDateFields = 'longUrl' | 'customSlug' | 'shortCodeLength' | 'domain' | 'maxVisits';
@@ -154,16 +155,29 @@ const CreateShortUrl = (
         </div>
 
         <ForServerVersion minVersion="1.16.0">
-          <div className="mb-4 text-right">
-            <Checkbox
-              inline
-              className="mr-2"
-              checked={shortUrlCreation.findIfExists}
-              onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
-            >
-              Use existing URL if found
-            </Checkbox>
-            <UseExistingIfFoundInfoIcon />
+          <div className="mb-4 row">
+            <div className="col-sm-6 text-center text-sm-left mb-2 mb-sm-0">
+              <ForServerVersion minVersion="2.4.0">
+                <Checkbox
+                  inline
+                  checked={shortUrlCreation.validateUrl}
+                  onChange={(validateUrl) => setShortUrlCreation({ ...shortUrlCreation, validateUrl })}
+                >
+                  Validate URL
+                </Checkbox>
+              </ForServerVersion>
+            </div>
+            <div className="col-sm-6 text-center text-sm-right">
+              <Checkbox
+                inline
+                className="mr-2"
+                checked={shortUrlCreation.findIfExists}
+                onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
+              >
+                Use existing URL if found
+              </Checkbox>
+              <UseExistingIfFoundInfoIcon />
+            </div>
           </div>
         </ForServerVersion>
       </Collapse>
