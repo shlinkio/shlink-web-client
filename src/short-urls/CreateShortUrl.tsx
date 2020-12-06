@@ -156,7 +156,7 @@ const CreateShortUrl = (
 
         <ForServerVersion minVersion="1.16.0">
           <div className="mb-4 row">
-            <div className="col-6">
+            <div className="col-sm-6 text-center text-sm-left mb-2 mb-sm-0">
               <ForServerVersion minVersion="2.4.0">
                 <Checkbox
                   inline
@@ -167,7 +167,7 @@ const CreateShortUrl = (
                 </Checkbox>
               </ForServerVersion>
             </div>
-            <div className="col-6 text-right">
+            <div className="col-sm-6 text-center text-sm-right">
               <Checkbox
                 inline
                 className="mr-2"
