@@ -36,6 +36,7 @@ export interface ShlinkTagsResponse {
 export interface ShlinkPaginator {
   currentPage: number;
   pagesCount: number;
+  totalItems: number;
 }
 
 export interface ShlinkVisits {

@@ -20,6 +20,7 @@ const MenuLayout = (
   ShortUrlVisits: FC,
   TagVisits: FC,
   ServerError: FC,
+  Overview: FC,
 ) => withSelectedServer(({ location, selectedServer }) => {
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
 
@@ -60,6 +61,7 @@ const MenuLayout = (
           <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3" onClick={() => hideSidebar()}>
             <div className="menu-layout__container">
               <Switch>
+                <Route exact path="/server/:serverId/overview" component={Overview} />
                 <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                 <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />

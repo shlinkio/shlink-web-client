@@ -15,6 +15,7 @@ export type OrderableFields = keyof typeof SORTABLE_FIELDS;
 
 export interface ShortUrlsListParams {
   page?: string;
+  itemsPerPage?: number;
   tags?: string[];
   searchTerm?: string;
   startDate?: string;

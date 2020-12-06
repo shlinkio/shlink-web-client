@@ -39,7 +39,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
     const id = uuid();
 
     createServer({ ...serverData, id });
-    push(`/server/${id}/list-short-urls/1`);
+    push(`/server/${id}/overview`);
   };
 
   return (

@@ -11,7 +11,7 @@ interface ServersListGroup {
 }
 
 const ServerListItem = ({ id, name }: { id: string; name: string }) => (
-  <ListGroupItem tag={Link} to={`/server/${id}/list-short-urls/1`} className="servers-list__server-item">
+  <ListGroupItem tag={Link} to={`/server/${id}/overview`} className="servers-list__server-item">
     {name}
     <FontAwesomeIcon icon={chevronIcon} className="servers-list__server-item-icon" />
   </ListGroupItem>

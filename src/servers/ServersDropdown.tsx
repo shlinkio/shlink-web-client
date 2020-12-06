@@ -23,7 +23,7 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
           <DropdownItem
             key={id}
             tag={Link}
-            to={`/server/${id}/list-short-urls/1`}
+            to={`/server/${id}/overview`}
             active={isServerWithId(selectedServer) && selectedServer.id === id}
           >
             {name}
