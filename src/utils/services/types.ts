@@ -44,6 +44,10 @@ export interface ShlinkVisits {
   pagination?: ShlinkPaginator; // Is only optional in old Shlink versions
 }
 
+export interface ShlinkVisitsOverview {
+  visitsCount: number;
+}
+
 export interface ShlinkVisitsParams {
   domain?: OptionalString;
   page?: number;

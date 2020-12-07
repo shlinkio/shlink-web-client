@@ -17,6 +17,7 @@ import tagEditReducer from '../tags/reducers/tagEdit';
 import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
 import domainsListReducer from '../domains/reducers/domainsList';
+import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import { ShlinkState } from '../container/types';
 
 export default combineReducers<ShlinkState>({
@@ -38,4 +39,5 @@ export default combineReducers<ShlinkState>({
   mercureInfo: mercureInfoReducer,
   settings: settingsReducer,
   domainsList: domainsListReducer,
+  visitsOverview: visitsOverviewReducer,
 });

@@ -1,0 +1,8 @@
+@import '../utils/base';
+
+.create-short-url__save-btn {
+  @media (max-width: $xsMax) {
+    width: 100%;
+    display: block;
+  }
+}

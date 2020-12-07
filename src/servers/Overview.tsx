@@ -7,6 +7,7 @@ import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
 import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
 
@@ -16,18 +17,28 @@ interface OverviewConnectProps {
   listTags: Function;
   tagsList: TagsList;
   selectedServer: SelectedServer;
+  visitsOverview: VisitsOverview;
+  loadVisitsOverview: Function;
 }
 
-export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub((
-  { shortUrlsList, listShortUrls, listTags, tagsList, selectedServer }: OverviewConnectProps,
-) => {
-  const { loading, error, shortUrls } = shortUrlsList;
+export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
+  shortUrlsList,
+  listShortUrls,
+  listTags,
+  tagsList,
+  selectedServer,
+  loadVisitsOverview,
+  visitsOverview,
+}: OverviewConnectProps) => {
+  const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
+  const { loading: loadingVisits, visitsCount } = visitsOverview;
   const serverId = !isServerWithId(selectedServer) ? '' : selectedServer.id;
 
   useEffect(() => {
     listShortUrls({ itemsPerPage: 5, orderBy: { dateCreated: 'DESC' } });
     listTags();
+    loadVisitsOverview();
   }, []);
 
   return (
@@ -36,16 +47,14 @@ export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMerc
         <div className="col-sm-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
-            <CardText tag="h2">?</CardText>
+            <CardText tag="h2">{loadingVisits ? 'Loading...' : prettify(visitsCount)}</CardText>
           </Card>
         </div>
         <div className="col-sm-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
-              {loading && !error && 'Loading...'}
-              {error && !loading && 'Failed :('}
-              {!error && !loading && prettify(shortUrls?.pagination.totalItems ?? 0)}
+              {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
             </CardText>
           </Card>
         </div>
