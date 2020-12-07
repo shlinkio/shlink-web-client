@@ -7,6 +7,7 @@ import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
 import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
@@ -21,7 +22,10 @@ interface OverviewConnectProps {
   loadVisitsOverview: Function;
 }
 
-export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
+export const Overview = (
+  ShortUrlsTable: FC<ShortUrlsTableProps>,
+  CreateShortUrl: FC<CreateShortUrlProps>,
+) => boundToMercureHub(({
   shortUrlsList,
   listShortUrls,
   listTags,
@@ -67,10 +71,12 @@ export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMerc
       </div>
       <Card className="mb-4">
         <CardHeader>
-          Create short URL
+          Create a short URL
           <Link className="float-right" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
         </CardHeader>
-        <CardBody>Create</CardBody>
+        <CardBody>
+          <CreateShortUrl basicMode />
+        </CardBody>
       </Card>
       <Card>
         <CardHeader>

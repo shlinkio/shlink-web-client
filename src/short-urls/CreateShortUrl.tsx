@@ -17,14 +17,18 @@ import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 import { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
 import './CreateShortUrl.scss';
 
-const normalizeTag = pipe(trim, replace(/ /g, '-'));
+export interface CreateShortUrlProps {
+  basicMode?: boolean;
+}
 
-interface CreateShortUrlProps {
+interface CreateShortUrlConnectProps extends CreateShortUrlProps {
   shortUrlCreationResult: ShortUrlCreation;
   selectedServer: SelectedServer;
-  createShortUrl: Function;
+  createShortUrl: (data: ShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
 }
+
+export const normalizeTag = pipe(trim, replace(/ /g, '-'));
 
 const initialState: ShortUrlData = {
   longUrl: '',
@@ -47,7 +51,13 @@ const CreateShortUrl = (
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
   ForServerVersion: FC<Versions>,
   DomainSelector: FC<DomainSelectorProps>,
-) => ({ createShortUrl, shortUrlCreationResult, resetCreateShortUrl, selectedServer }: CreateShortUrlProps) => {
+) => ({
+  createShortUrl,
+  shortUrlCreationResult,
+  resetCreateShortUrl,
+  selectedServer,
+  basicMode = false,
+}: CreateShortUrlConnectProps) => {
   const [ shortUrlCreation, setShortUrlCreation ] = useState(initialState);
 
   const changeTags = (tags: string[]) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
@@ -55,8 +65,8 @@ const CreateShortUrl = (
   const save = handleEventPreventingDefault(() => {
     const shortUrlData = {
       ...shortUrlCreation,
-      validSince: formatIsoDate(shortUrlCreation.validSince),
-      validUntil: formatIsoDate(shortUrlCreation.validUntil),
+      validSince: formatIsoDate(shortUrlCreation.validSince) ?? undefined,
+      validUntil: formatIsoDate(shortUrlCreation.validUntil) ?? undefined,
     };
 
     createShortUrl(shortUrlData).then(reset).catch(() => {});
@@ -92,90 +102,94 @@ const CreateShortUrl = (
 
   return (
     <form onSubmit={save}>
-      <div className="form-group">
-        <input
-          className="form-control form-control-lg"
+      <FormGroup>
+        <Input
+          bsSize="lg"
           type="url"
           placeholder="Insert the URL to be shortened"
           required
           value={shortUrlCreation.longUrl}
           onChange={(e) => setShortUrlCreation({ ...shortUrlCreation, longUrl: e.target.value })}
         />
-      </div>
+      </FormGroup>
 
-      <div className="form-group">
+      <FormGroup>
         <TagsSelector tags={shortUrlCreation.tags ?? []} onChange={changeTags} />
-      </div>
+      </FormGroup>
 
-      <div className="row">
-        <div className="col-sm-4">
-          {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-            disabled: hasValue(shortUrlCreation.shortCodeLength),
-          })}
-        </div>
-        <div className="col-sm-4">
-          {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-            min: 4,
-            disabled: disableShortCodeLength || hasValue(shortUrlCreation.customSlug),
-            ...disableShortCodeLength && {
-              title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
-            },
-          })}
-        </div>
-        <div className="col-sm-4">
-          {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
-            disabled: disableDomain,
-            ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
-          })}
-          {showDomainSelector && (
-            <FormGroup>
-              <DomainSelector
-                value={shortUrlCreation.domain}
-                onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
-              />
-            </FormGroup>
-          )}
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-sm-4">
-          {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-        </div>
-        <div className="col-sm-4">
-          {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil as m.Moment | undefined })}
-        </div>
-        <div className="col-sm-4">
-          {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince as m.Moment | undefined })}
-        </div>
-      </div>
-
-      <ForServerVersion minVersion="1.16.0">
-        <div className="mb-4 row">
-          <div className="col-sm-6 text-center text-sm-left mb-2 mb-sm-0">
-            <ForServerVersion minVersion="2.4.0">
-              <Checkbox
-                inline
-                checked={shortUrlCreation.validateUrl}
-                onChange={(validateUrl) => setShortUrlCreation({ ...shortUrlCreation, validateUrl })}
-              >
-                Validate URL
-              </Checkbox>
-            </ForServerVersion>
+      {!basicMode && (
+        <>
+          <div className="row">
+            <div className="col-sm-4">
+              {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                disabled: hasValue(shortUrlCreation.shortCodeLength),
+              })}
+            </div>
+            <div className="col-sm-4">
+              {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                min: 4,
+                disabled: disableShortCodeLength || hasValue(shortUrlCreation.customSlug),
+                ...disableShortCodeLength && {
+                  title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
+                },
+              })}
+            </div>
+            <div className="col-sm-4">
+              {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
+                disabled: disableDomain,
+                ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
+              })}
+              {showDomainSelector && (
+                <FormGroup>
+                  <DomainSelector
+                    value={shortUrlCreation.domain}
+                    onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
+                  />
+                </FormGroup>
+              )}
+            </div>
           </div>
-          <div className="col-sm-6 text-center text-sm-right">
-            <Checkbox
-              inline
-              className="mr-2"
-              checked={shortUrlCreation.findIfExists}
-              onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
-            >
-              Use existing URL if found
-            </Checkbox>
-            <UseExistingIfFoundInfoIcon />
+
+          <div className="row">
+            <div className="col-sm-4">
+              {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
+            </div>
+            <div className="col-sm-4">
+              {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil as m.Moment | undefined })}
+            </div>
+            <div className="col-sm-4">
+              {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince as m.Moment | undefined })}
+            </div>
           </div>
-        </div>
-      </ForServerVersion>
+
+          <ForServerVersion minVersion="1.16.0">
+            <div className="mb-4 row">
+              <div className="col-sm-6 text-center text-sm-left mb-2 mb-sm-0">
+                <ForServerVersion minVersion="2.4.0">
+                  <Checkbox
+                    inline
+                    checked={shortUrlCreation.validateUrl}
+                    onChange={(validateUrl) => setShortUrlCreation({ ...shortUrlCreation, validateUrl })}
+                  >
+                    Validate URL
+                  </Checkbox>
+                </ForServerVersion>
+              </div>
+              <div className="col-sm-6 text-center text-sm-right">
+                <Checkbox
+                  inline
+                  className="mr-2"
+                  checked={shortUrlCreation.findIfExists}
+                  onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
+                >
+                  Use existing URL if found
+                </Checkbox>
+                <UseExistingIfFoundInfoIcon />
+              </div>
+            </div>
+          </ForServerVersion>
+        </>
+      )}
 
       <div className="text-right">
         <Button

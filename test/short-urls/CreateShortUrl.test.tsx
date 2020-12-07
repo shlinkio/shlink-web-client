@@ -2,6 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import moment from 'moment';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
+import { Input } from 'reactstrap';
 import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
 import DateInput from '../../src/utils/DateInput';
 import { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
@@ -31,7 +32,7 @@ describe('<CreateShortUrl />', () => {
     const validSince = moment('2017-01-01');
     const validUntil = moment('2017-01-06');
 
-    wrapper.find('.form-control-lg').simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
+    wrapper.find(Input).first().simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
     wrapper.find('TagsSelector').simulate('change', [ 'tag_foo', 'tag_bar' ]);
     wrapper.find('#customSlug').simulate('change', { target: { value: 'my-slug' } });
     wrapper.find('#domain').simulate('change', { target: { value: 'example.com' } });
