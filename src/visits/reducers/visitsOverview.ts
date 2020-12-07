@@ -17,7 +17,7 @@ export interface VisitsOverview {
   error: boolean;
 }
 
-type GetVisitsOverviewAction = ShlinkVisitsOverview & Action<string>;
+export type GetVisitsOverviewAction = ShlinkVisitsOverview & Action<string>;
 
 const initialState: VisitsOverview = {
   visitsCount: 0,
