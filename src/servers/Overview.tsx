@@ -68,7 +68,7 @@ export const Overview = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMerc
       <Card className="mb-4">
         <CardHeader>
           Create short URL
-          <Link className="float-right" to={`/server/${serverId}/create-short-url`}>More options &raquo;</Link>
+          <Link className="float-right" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
         </CardHeader>
         <CardBody>Create</CardBody>
       </Card>
