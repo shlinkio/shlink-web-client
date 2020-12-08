@@ -37,7 +37,7 @@ export const Overview = (
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount } = visitsOverview;
-  const serverId = !isServerWithId(selectedServer) ? '' : selectedServer.id;
+  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
 
   useEffect(() => {
     listShortUrls({ itemsPerPage: 5, orderBy: { dateCreated: 'DESC' } });
@@ -49,13 +49,13 @@ export const Overview = (
     <>
       <div className="row mb-3">
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body color="light">
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
             <CardText tag="h2">{loadingVisits ? 'Loading...' : prettify(visitsCount)}</CardText>
           </Card>
         </div>
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body color="light">
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
               {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
@@ -63,15 +63,16 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body color="light">
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
-            <CardText tag="h2">{loadingTags ? 'Loading... ' : prettify(tagsList.tags.length)}</CardText>
+            <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>
           </Card>
         </div>
       </div>
       <Card className="mb-4">
         <CardHeader>
-          Create a short URL
+          <span className="d-sm-none">Create a short URL</span>
+          <h5 className="d-none d-sm-inline">Create a short URL</h5>
           <Link className="float-right" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
         </CardHeader>
         <CardBody>
@@ -80,7 +81,8 @@ export const Overview = (
       </Card>
       <Card>
         <CardHeader>
-          Recently created URLs
+          <span className="d-sm-none">Recently created URLs</span>
+          <h5 className="d-none d-sm-inline">Recently created URLs</h5>
           <Link className="float-right" to={`/server/${serverId}/list-short-urls/1`}>See all &raquo;</Link>
         </CardHeader>
         <CardBody>

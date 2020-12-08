@@ -106,7 +106,7 @@ const CreateShortUrl = (
         <Input
           bsSize="lg"
           type="url"
-          placeholder="Insert the URL to be shortened"
+          placeholder="URL to be shortened"
           required
           value={shortUrlCreation.longUrl}
           onChange={(e) => setShortUrlCreation({ ...shortUrlCreation, longUrl: e.target.value })}

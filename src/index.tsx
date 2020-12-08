@@ -5,10 +5,8 @@ import { homepage } from '../package.json';
 import container from './container';
 import store from './container/store';
 import { fixLeafletIcons } from './utils/helpers/leaflet';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'leaflet/dist/leaflet.css';
-import './common/react-tagsinput.scss';
 import './index.scss';
 
 // This overwrites icons used for leaflet maps, fixing some issues caused by webpack while processing the CSS
