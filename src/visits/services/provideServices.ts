@@ -7,6 +7,7 @@ import { createNewVisits } from '../reducers/visitCreation';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import TagVisits from '../TagVisits';
 import { ConnectDecorator } from '../../container/types';
+import { loadVisitsOverview } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
@@ -35,6 +36,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
+  bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'buildShlinkApiClient');
 };
 
 export default provideServices;

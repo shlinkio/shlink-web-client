@@ -33,6 +33,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'ShortUrlVisits',
     'TagVisits',
     'ServerError',
+    'Overview',
   );
   bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));
   bottle.decorator('MenuLayout', withRouter);

@@ -36,11 +36,16 @@ export interface ShlinkTagsResponse {
 export interface ShlinkPaginator {
   currentPage: number;
   pagesCount: number;
+  totalItems: number;
 }
 
 export interface ShlinkVisits {
   data: Visit[];
   pagination?: ShlinkPaginator; // Is only optional in old Shlink versions
+}
+
+export interface ShlinkVisitsOverview {
+  visitsCount: number;
 }
 
 export interface ShlinkVisitsParams {

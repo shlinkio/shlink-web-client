@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
+* [#340](https://github.com/shlinkio/shlink-web-client/issues/340) Added new "overview" page, showing basic information of the active server.
+
+    As a side effect, it also introduces improvements in the "create short URL" page, grouping components by context and explaining what they are for.
+
 * [#309](https://github.com/shlinkio/shlink-web-client/issues/309) Added new domain selector component in create URL form which allows selecting from previously used domains or set a new one.
 * [#315](https://github.com/shlinkio/shlink-web-client/issues/315) Now you can tell if you want to validate the long URL when using Shlink >=2.4.
 

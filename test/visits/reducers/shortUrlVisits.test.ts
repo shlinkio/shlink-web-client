@@ -125,6 +125,7 @@ describe('shortUrlVisitsReducer', () => {
         pagination: {
           currentPage: 1,
           pagesCount: 1,
+          totalItems: 1,
         },
       }));
 
@@ -144,6 +145,7 @@ describe('shortUrlVisitsReducer', () => {
           pagination: {
             currentPage: page,
             pagesCount: expectedRequests,
+            totalItems: 1,
           },
         }));
 

@@ -18,7 +18,7 @@ export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProp
 
   const handleSubmit = (serverData: ServerData) => {
     editServer(selectedServer.id, serverData);
-    push(`/server/${selectedServer.id}/list-short-urls/1`);
+    push(`/server/${selectedServer.id}`);
   };
 
   return (

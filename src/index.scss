@@ -1,4 +1,6 @@
 @import './utils/base';
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import './common/react-tagsinput.scss';
 
 html,
 body,
@@ -50,6 +52,10 @@ body,
 
 .indivisible {
   white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 .text-ellipsis {

@@ -13,6 +13,7 @@ import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
+import { Overview } from '../Overview';
 import ServersImporter from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
@@ -42,6 +43,12 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
   bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
+
+  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
+  bottle.decorator('Overview', connect(
+    [ 'shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview' ],
+    [ 'listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview' ],
+  ));
 
   // Services
   bottle.constant('csvjson', csvjson);

@@ -18,7 +18,7 @@ export interface ShortUrlDeletion {
   errorData?: ProblemDetailsError;
 }
 
-interface DeleteShortUrlAction extends Action<string> {
+export interface DeleteShortUrlAction extends Action<string> {
   shortCode: string;
   domain?: string | null;
 }

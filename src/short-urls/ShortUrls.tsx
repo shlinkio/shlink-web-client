@@ -1,16 +1,11 @@
 import { FC, useEffect, useState } from 'react';
-import { ShlinkShortUrlsResponse } from '../utils/services/types';
 import Paginator from './Paginator';
-import { ShortUrlsListProps, WithList } from './ShortUrlsList';
+import { ShortUrlsListProps } from './ShortUrlsList';
 
-interface ShortUrlsProps extends ShortUrlsListProps {
-  shortUrlsList?: ShlinkShortUrlsResponse;
-}
-
-const ShortUrls = (SearchBar: FC, ShortUrlsList: FC<ShortUrlsListProps & WithList>) => (props: ShortUrlsProps) => {
+const ShortUrls = (SearchBar: FC, ShortUrlsList: FC<ShortUrlsListProps>) => (props: ShortUrlsListProps) => {
   const { match, shortUrlsList } = props;
   const { page = '1', serverId = '' } = match?.params ?? {};
-  const { data = [], pagination } = shortUrlsList ?? {};
+  const { pagination } = shortUrlsList?.shortUrls ?? {};
   const [ urlsListKey, setUrlsListKey ] = useState(`${serverId}_${page}`);
 
   // Using a key on a component makes react to create a new instance every time the key changes
@@ -23,7 +18,7 @@ const ShortUrls = (SearchBar: FC, ShortUrlsList: FC<ShortUrlsListProps & WithLis
     <>
       <div className="form-group"><SearchBar /></div>
       <div>
-        <ShortUrlsList {...props} shortUrlsList={data} key={urlsListKey} />
+        <ShortUrlsList {...props} key={urlsListKey} />
         <Paginator paginator={pagination} serverId={serverId} />
       </div>
     </>

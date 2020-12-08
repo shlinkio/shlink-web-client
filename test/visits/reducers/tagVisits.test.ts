@@ -124,6 +124,7 @@ describe('tagVisitsReducer', () => {
         pagination: {
           currentPage: 1,
           pagesCount: 1,
+          totalItems: 1,
         },
       }));
 

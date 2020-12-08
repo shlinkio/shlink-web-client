@@ -1,5 +1,3 @@
-import { connect as reduxConnect } from 'react-redux';
-import { assoc } from 'ramda';
 import Bottle from 'bottlejs';
 import ShortUrls from '../ShortUrls';
 import SearchBar from '../SearchBar';
@@ -19,27 +17,22 @@ import { editShortUrlTags, resetShortUrlsTags } from '../reducers/shortUrlTags';
 import { editShortUrlMeta, resetShortUrlMeta } from '../reducers/shortUrlMeta';
 import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
 import { editShortUrl } from '../reducers/shortUrlEdition';
-import { ConnectDecorator, ShlinkState } from '../../container/types';
+import { ConnectDecorator } from '../../container/types';
+import { ShortUrlsTable } from '../ShortUrlsTable';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
-  bottle.decorator('ShortUrls', reduxConnect(
-    (state: ShlinkState) => assoc('shortUrlsList', state.shortUrlsList.shortUrls, state.shortUrlsList),
-  ));
+  bottle.decorator('ShortUrls', connect([ 'shortUrlsList' ]));
 
-  // Services
-  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
-  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
-
-  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsRow');
+  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable');
   bottle.decorator('ShortUrlsList', connect(
     [ 'selectedServer', 'shortUrlsListParams', 'mercureInfo' ],
     [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
+  bottle.serviceFactory('ShortUrlsTable', ShortUrlsTable, 'ShortUrlsRow');
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');
-
   bottle.serviceFactory(
     'ShortUrlsRowMenu',
     ShortUrlsRowMenu,
@@ -75,6 +68,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('EditShortUrlModal', () => EditShortUrlModal);
   bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
+
+  // Services
+  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
+  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
 
   // Actions
   bottle.serviceFactory('editShortUrlTags', editShortUrlTags, 'buildShlinkApiClient');

@@ -3,6 +3,7 @@ import {
   faLink as createIcon,
   faTags as tagsIcon,
   faPen as editIcon,
+  faHome as overviewIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
@@ -48,6 +49,10 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   return (
     <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
+        <AsideMenuItem to={buildPath('/overview')}>
+          <FontAwesomeIcon icon={overviewIcon} />
+          <span className="aside-menu__item-text">Overview</span>
+        </AsideMenuItem>
         <AsideMenuItem to={buildPath('/list-short-urls/1')} isActive={shortUrlsIsActive}>
           <FontAwesomeIcon icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>

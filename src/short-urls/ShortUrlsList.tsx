@@ -1,6 +1,6 @@
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { head, isEmpty, keys, values } from 'ramda';
+import { head, keys, values } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
@@ -9,9 +9,8 @@ import { determineOrderDir, OrderDir } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
-import { ShortUrl } from './data';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
+import { ShortUrlsTableProps } from './ShortUrlsTable';
 import './ShortUrlsList.scss';
 
 interface RouteParams {
@@ -19,28 +18,23 @@ interface RouteParams {
   serverId: string;
 }
 
-export interface WithList {
-  shortUrlsList: ShortUrl[];
-}
-
-export interface ShortUrlsListProps extends ShortUrlsListState, RouteComponentProps<RouteParams> {
+export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
   selectedServer: SelectedServer;
+  shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShortUrlsListParams) => void;
   shortUrlsListParams: ShortUrlsListParams;
   resetShortUrlParams: () => void;
 }
 
-const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub(({
+const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
   listShortUrls,
   resetShortUrlParams,
   shortUrlsListParams,
   match,
   location,
-  loading,
-  error,
   shortUrlsList,
   selectedServer,
-}: ShortUrlsListProps & WithList) => {
+}: ShortUrlsListProps) => {
   const { orderBy } = shortUrlsListParams;
   const [ order, setOrder ] = useState<{ orderField?: OrderableFields; orderDir?: OrderDir }>({
     orderField: orderBy && (head(keys(orderBy)) as OrderableFields),
@@ -69,39 +63,12 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub
       />
     );
   };
-  const renderShortUrls = () => {
-    if (error) {
-      return (
-        <tr>
-          <td colSpan={6} className="text-center table-danger">Something went wrong while loading short URLs :(</td>
-        </tr>
-      );
-    }
-
-    if (loading) {
-      return <tr><td colSpan={6} className="text-center">Loading...</td></tr>;
-    }
-
-    if (!loading && isEmpty(shortUrlsList)) {
-      return <tr><td colSpan={6} className="text-center">No results found</td></tr>;
-    }
-
-    return shortUrlsList.map((shortUrl) => (
-      <ShortUrlsRow
-        key={shortUrl.shortUrl}
-        shortUrl={shortUrl}
-        selectedServer={selectedServer}
-        refreshList={refreshList}
-        shortUrlsListParams={shortUrlsListParams}
-      />
-    ));
-  };
 
   useEffect(() => {
     const query = qs.parse(location.search, { ignoreQueryPrefix: true });
     const tags = query.tag ? [ query.tag as string ] : shortUrlsListParams.tags;
 
-    refreshList({ page: match.params.page, tags });
+    refreshList({ page: match.params.page, tags, itemsPerPage: undefined });
 
     return resetShortUrlParams;
   }, []);
@@ -116,44 +83,14 @@ const ShortUrlsList = (ShortUrlsRow: FC<ShortUrlsRowProps>) => boundToMercureHub
           onChange={handleOrderBy}
         />
       </div>
-      <table className="table table-striped table-hover">
-        <thead className="short-urls-list__header">
-          <tr>
-            <th
-              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-              onClick={orderByColumn('dateCreated')}
-            >
-              {renderOrderIcon('dateCreated')}
-              Created at
-            </th>
-            <th
-              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-              onClick={orderByColumn('shortCode')}
-            >
-              {renderOrderIcon('shortCode')}
-              Short URL
-            </th>
-            <th
-              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-              onClick={orderByColumn('longUrl')}
-            >
-              {renderOrderIcon('longUrl')}
-              Long URL
-            </th>
-            <th className="short-urls-list__header-cell">Tags</th>
-            <th
-              className="short-urls-list__header-cell short-urls-list__header-cell--with-action"
-              onClick={orderByColumn('visits')}
-            >
-              <span className="indivisible">{renderOrderIcon('visits')} Visits</span>
-            </th>
-            <th className="short-urls-list__header-cell">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {renderShortUrls()}
-        </tbody>
-      </table>
+      <ShortUrlsTable
+        orderByColumn={orderByColumn}
+        renderOrderIcon={renderOrderIcon}
+        selectedServer={selectedServer}
+        refreshList={refreshList}
+        shortUrlsListParams={shortUrlsListParams}
+        shortUrlsList={shortUrlsList}
+      />
     </>
   );
 }, () => 'https://shlink.io/new-visit');

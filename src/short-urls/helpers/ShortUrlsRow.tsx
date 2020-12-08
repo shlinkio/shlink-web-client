@@ -16,8 +16,8 @@ import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
 export interface ShortUrlsRowProps {
-  refreshList: Function;
-  shortUrlsListParams: ShortUrlsListParams;
+  refreshList?: Function;
+  shortUrlsListParams?: ShortUrlsListParams;
   selectedServer: SelectedServer;
   shortUrl: ShortUrl;
 }
@@ -36,14 +36,14 @@ const ShortUrlsRow = (
       return <i className="indivisible"><small>No tags</small></i>;
     }
 
-    const selectedTags = shortUrlsListParams.tags ?? [];
+    const selectedTags = shortUrlsListParams?.tags ?? [];
 
     return tags.map((tag) => (
       <Tag
         colorGenerator={colorGenerator}
         key={tag}
         text={tag}
-        onClick={() => refreshList({ tags: [ ...selectedTags, tag ] })}
+        onClick={() => refreshList?.({ tags: [ ...selectedTags, tag ] })}
       />
     ));
   };

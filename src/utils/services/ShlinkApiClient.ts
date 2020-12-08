@@ -15,6 +15,7 @@ import {
   ShlinkShortUrlMeta,
   ShlinkDomain,
   ShlinkDomainsResponse,
+  ShlinkVisitsOverview,
 } from './types';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
@@ -48,6 +49,10 @@ export default class ShlinkApiClient {
 
   public readonly getTagVisits = async (tag: string, query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>(`/tags/${tag}/visits`, 'GET', query)
+      .then(({ data }) => data.visits);
+
+  public readonly getVisitsOverview = async (): Promise<ShlinkVisitsOverview> =>
+    this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits', 'GET')
       .then(({ data }) => data.visits);
 
   public readonly getShortUrl = async (shortCode: string, domain?: OptionalString): Promise<ShortUrl> =>
