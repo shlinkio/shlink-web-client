@@ -95,14 +95,8 @@ const CreateShortUrl = (
       />
     </div>
   );
-
-  const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
-  const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
-  const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
-  const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
-
-  return (
-    <form className="create-short-url" onSubmit={save}>
+  const basicComponents = (
+    <>
       <FormGroup>
         <Input
           bsSize="lg"
@@ -117,16 +111,26 @@ const CreateShortUrl = (
       <FormGroup>
         <TagsSelector tags={shortUrlCreation.tags ?? []} onChange={changeTags} />
       </FormGroup>
+    </>
+  );
 
+  const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
+  const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
+  const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
+  const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
+
+  return (
+    <form className="create-short-url" onSubmit={save}>
+      {basicMode && basicComponents}
       {!basicMode && (
         <>
+          <SimpleCard title="Basic options" className="mb-3">
+            {basicComponents}
+          </SimpleCard>
+
           <div className="row">
             <div className="col-sm-6 mb-3">
               <SimpleCard title="Customize the short URL">
-                <p>
-                  Use a custom slug for your marketing campaigns, change the domain or set a specific length for
-                  the auto-generated short code.
-                </p>
                 {renderOptionalInput('customSlug', 'Custom slug', 'text', {
                   disabled: hasValue(shortUrlCreation.shortCodeLength),
                 })}
@@ -154,7 +158,6 @@ const CreateShortUrl = (
 
             <div className="col-sm-6 mb-3">
               <SimpleCard title="Limit access to the short URL">
-                <p>Determine when and how many times your short URL can be accessed.</p>
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
                 {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil as m.Moment | undefined })}
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince as m.Moment | undefined })}
