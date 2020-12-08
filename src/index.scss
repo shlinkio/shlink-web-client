@@ -52,6 +52,10 @@ body,
   white-space: nowrap;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .text-ellipsis {
   text-overflow: ellipsis;
   overflow: hidden;

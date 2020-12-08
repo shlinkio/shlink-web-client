@@ -202,7 +202,11 @@ const CreateShortUrl = (
         </Button>
       </div>
 
-      <CreateShortUrlResult {...shortUrlCreationResult} resetCreateShortUrl={resetCreateShortUrl} />
+      <CreateShortUrlResult
+        {...shortUrlCreationResult}
+        resetCreateShortUrl={resetCreateShortUrl}
+        canBeClosed={basicMode}
+      />
     </form>
   );
 };

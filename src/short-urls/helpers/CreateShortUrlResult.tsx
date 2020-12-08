@@ -1,4 +1,5 @@
 import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { faTimes as closeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil } from 'ramda';
 import { useEffect } from 'react';
@@ -10,10 +11,11 @@ import './CreateShortUrlResult.scss';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
   resetCreateShortUrl: () => void;
+  canBeClosed: boolean;
 }
 
 const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
-  { error, result, resetCreateShortUrl }: CreateShortUrlResultProps,
+  { error, result, resetCreateShortUrl, canBeClosed }: CreateShortUrlResultProps,
 ) => {
   const [ showCopyTooltip, setShowCopyTooltip ] = useStateFlagTimeout();
 
@@ -38,6 +40,7 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
   return (
     <Card inverse className="bg-main mt-3">
       <CardBody>
+        {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
         <b>Great!</b> The short URL is <b>{shortUrl}</b>
 
         <CopyToClipboard text={shortUrl} onCopy={setShowCopyTooltip}>
