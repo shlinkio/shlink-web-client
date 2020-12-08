@@ -16,6 +16,7 @@ describe('<Paginator />', () => {
     const paginator = {
       currentPage: 1,
       pagesCount: 5,
+      totalItems: 10,
     };
     const extraPagesPrevNext = 2;
     const expectedItems = paginator.pagesCount + extraPagesPrevNext;

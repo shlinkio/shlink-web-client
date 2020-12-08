@@ -11,11 +11,11 @@ import './CreateShortUrlResult.scss';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
   resetCreateShortUrl: () => void;
-  canBeClosed: boolean;
+  canBeClosed?: boolean;
 }
 
 const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
-  { error, result, resetCreateShortUrl, canBeClosed }: CreateShortUrlResultProps,
+  { error, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
   const [ showCopyTooltip, setShowCopyTooltip ] = useStateFlagTimeout();
 
