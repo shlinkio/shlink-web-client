@@ -6,3 +6,8 @@
     display: block;
   }
 }
+
+.create-short-url .form-group:last-child,
+.create-short-url p:last-child {
+  margin-bottom: 0;
+}

@@ -1,6 +1,6 @@
 import { isEmpty, pipe, replace, trim } from 'ramda';
 import { FC, useState } from 'react';
-import { Button, FormGroup, Input } from 'reactstrap';
+import { Button, Card, CardBody, CardHeader, FormGroup, Input } from 'reactstrap';
 import { InputType } from 'reactstrap/lib/Input';
 import * as m from 'moment';
 import DateInput, { DateInputProps } from '../utils/DateInput';
@@ -101,7 +101,7 @@ const CreateShortUrl = (
   const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
   return (
-    <form onSubmit={save}>
+    <form className="create-short-url" onSubmit={save}>
       <FormGroup>
         <Input
           bsSize="lg"
@@ -120,52 +120,62 @@ const CreateShortUrl = (
       {!basicMode && (
         <>
           <div className="row">
-            <div className="col-sm-4">
-              {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-                disabled: hasValue(shortUrlCreation.shortCodeLength),
-              })}
+            <div className="col-sm-6 mb-3">
+              <Card>
+                <CardHeader>Customize the short URL</CardHeader>
+                <CardBody>
+                  <p>
+                    Use a custom slug for your marketing campaigns, change the domain or set a specific length for
+                    the auto-generated short code.
+                  </p>
+                  {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                    disabled: hasValue(shortUrlCreation.shortCodeLength),
+                  })}
+                  {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                    min: 4,
+                    disabled: disableShortCodeLength || hasValue(shortUrlCreation.customSlug),
+                    ...disableShortCodeLength && {
+                      title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
+                    },
+                  })}
+                  {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
+                    disabled: disableDomain,
+                    ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
+                  })}
+                  {showDomainSelector && (
+                    <FormGroup>
+                      <DomainSelector
+                        value={shortUrlCreation.domain}
+                        onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
+                      />
+                    </FormGroup>
+                  )}
+                </CardBody>
+              </Card>
             </div>
-            <div className="col-sm-4">
-              {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-                min: 4,
-                disabled: disableShortCodeLength || hasValue(shortUrlCreation.customSlug),
-                ...disableShortCodeLength && {
-                  title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
-                },
-              })}
-            </div>
-            <div className="col-sm-4">
-              {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
-                disabled: disableDomain,
-                ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
-              })}
-              {showDomainSelector && (
-                <FormGroup>
-                  <DomainSelector
-                    value={shortUrlCreation.domain}
-                    onChange={(domain?: string) => setShortUrlCreation({ ...shortUrlCreation, domain })}
-                  />
-                </FormGroup>
-              )}
+
+            <div className="col-sm-6 mb-3">
+              <Card>
+                <CardHeader>Limit access to the short URL</CardHeader>
+                <CardBody>
+                  <p>Determine when and how many times your short URL can be accessed.</p>
+                  {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
+                  {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil as m.Moment | undefined })}
+                  {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince as m.Moment | undefined })}
+                </CardBody>
+              </Card>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-sm-4">
-              {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-            </div>
-            <div className="col-sm-4">
-              {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlCreation.validUntil as m.Moment | undefined })}
-            </div>
-            <div className="col-sm-4">
-              {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlCreation.validSince as m.Moment | undefined })}
-            </div>
-          </div>
-
-          <ForServerVersion minVersion="1.16.0">
-            <div className="mb-4 row">
-              <div className="col-sm-6 text-center text-sm-left mb-2 mb-sm-0">
-                <ForServerVersion minVersion="2.4.0">
+          <Card className="mb-3">
+            <CardHeader>Extra validations</CardHeader>
+            <CardBody>
+              <p>
+                Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
+                provided data.
+              </p>
+              <ForServerVersion minVersion="2.4.0">
+                <p>
                   <Checkbox
                     inline
                     checked={shortUrlCreation.validateUrl}
@@ -173,25 +183,27 @@ const CreateShortUrl = (
                   >
                     Validate URL
                   </Checkbox>
-                </ForServerVersion>
-              </div>
-              <div className="col-sm-6 text-center text-sm-right">
-                <Checkbox
-                  inline
-                  className="mr-2"
-                  checked={shortUrlCreation.findIfExists}
-                  onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
-                >
-                  Use existing URL if found
-                </Checkbox>
-                <UseExistingIfFoundInfoIcon />
-              </div>
-            </div>
-          </ForServerVersion>
+                </p>
+              </ForServerVersion>
+              <ForServerVersion minVersion="1.16.0">
+                <p>
+                  <Checkbox
+                    inline
+                    className="mr-2"
+                    checked={shortUrlCreation.findIfExists}
+                    onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
+                  >
+                    Use existing URL if found
+                  </Checkbox>
+                  <UseExistingIfFoundInfoIcon />
+                </p>
+              </ForServerVersion>
+            </CardBody>
+          </Card>
         </>
       )}
 
-      <div className="text-right">
+      <div className="text-center">
         <Button
           outline
           color="primary"
