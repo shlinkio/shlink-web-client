@@ -44,8 +44,7 @@ jobs:
         with:
           node-version: 14.15
       - run: npm ci
-      - run: echo "Building commit range ${TRAVIS_COMMIT_RANGE}"
-      - run: MUTATION_FILES=$(git diff ${TRAVIS_COMMIT_RANGE:-origin/main} --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",") npm run mutate:ci
+      - run: MUTATION_FILES=$(git diff origin/main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",") npm run mutate:ci
 
   build-docker-image:
     runs-on: ubuntu-latest
