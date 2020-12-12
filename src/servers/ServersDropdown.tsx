@@ -1,6 +1,8 @@
 import { isEmpty, values } from 'ramda';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { faPlus as plusIcon, faFileDownload as exportIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ServersExporter from './services/ServersExporter';
 import { isServerWithId, SelectedServer, ServersMap } from './data';
 
@@ -11,10 +13,15 @@ export interface ServersDropdownProps {
 
 const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, selectedServer }: ServersDropdownProps) => {
   const serversList = values(servers);
+  const createServerItem = (
+    <DropdownItem tag={Link} to="/server/create">
+      <FontAwesomeIcon icon={plusIcon} /> <span className="ml-1">Add server</span>
+    </DropdownItem>
+  );
 
   const renderServers = () => {
     if (isEmpty(serversList)) {
-      return <DropdownItem disabled><i>Add a server first...</i></DropdownItem>;
+      return createServerItem;
     }
 
     return (
@@ -30,8 +37,9 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
           </DropdownItem>
         ))}
         <DropdownItem divider />
+        {createServerItem}
         <DropdownItem className="servers-dropdown__export-item" onClick={async () => serversExporter.exportServers()}>
-          Export servers
+          <FontAwesomeIcon icon={exportIcon} /> <span className="ml-1">Export servers</span>
         </DropdownItem>
       </>
     );
@@ -39,7 +47,9 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
 
   return (
     <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav caret>Servers</DropdownToggle>
+      <DropdownToggle nav caret>
+        <FontAwesomeIcon icon={serverIcon} /> <span className="ml-1">Servers</span>
+      </DropdownToggle>
       <DropdownMenu right>{renderServers()}</DropdownMenu>
     </UncontrolledDropdown>
   );

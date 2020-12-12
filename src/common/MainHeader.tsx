@@ -1,4 +1,4 @@
-import { faPlus as plusIcon, faChevronDown as arrowIcon, faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown as arrowIcon, faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,6 @@ const MainHeader = (ServersDropdown: FC) => ({ location }: RouteComponentProps) 
 
   useEffect(close, [ location ]);
 
-  const createServerPath = '/server/create';
   const settingsPath = '/settings';
   const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isOpen });
 
@@ -32,13 +31,8 @@ const MainHeader = (ServersDropdown: FC) => ({ location }: RouteComponentProps) 
       <Collapse navbar isOpen={isOpen}>
         <Nav navbar className="ml-auto">
           <NavItem>
-            <NavLink tag={Link} to={settingsPath} active={pathname === settingsPath}>
+            <NavLink tag={Link} to={'/settings'} active={pathname === settingsPath}>
               <FontAwesomeIcon icon={cogsIcon} />&nbsp; Settings
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink tag={Link} to={createServerPath} active={pathname === createServerPath}>
-              <FontAwesomeIcon icon={plusIcon} />&nbsp; Add server
             </NavLink>
           </NavItem>
           <ServersDropdown />
