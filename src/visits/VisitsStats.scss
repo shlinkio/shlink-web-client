@@ -1,5 +1,11 @@
 @import '../utils/base';
 
+.visits-stats__nav {
+  position: sticky !important;
+  top: $headerHeight - 1px;
+  z-index: 2;
+}
+
 .visits-stats__nav-link {
   border-radius: 0 !important;
   padding-bottom: calc(.5rem - 3px) !important;

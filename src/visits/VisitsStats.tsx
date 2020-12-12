@@ -116,8 +116,8 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
 
     return (
       <>
-        <Card className="p-0 mt-4 overflow-hidden" body>
-          <Nav className="visits-stats__nav" pills justified>
+        <Card className="visits-stats__nav p-0 mt-4 overflow-hidden" body>
+          <Nav pills justified>
             {Object.entries(sections).map(
               ([ section, { title, icon }]) => (
                 <NavLink

@@ -15,7 +15,7 @@
 
   @media (min-width: $mdMin) {
     &.visits-table__sticky {
-      top: $headerHeight - 2px;
+      top: $headerHeight + 40px;
     }
   }
 }
