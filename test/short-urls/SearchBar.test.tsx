@@ -9,7 +9,7 @@ import ColorGenerator from '../../src/utils/services/ColorGenerator';
 describe('<SearchBar />', () => {
   let wrapper: ShallowWrapper;
   const listShortUrlsMock = jest.fn();
-  const SearchBar = searchBarCreator(Mock.all<ColorGenerator>(), () => null);
+  const SearchBar = searchBarCreator(Mock.all<ColorGenerator>());
 
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());

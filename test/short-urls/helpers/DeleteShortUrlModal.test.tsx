@@ -34,16 +34,8 @@ describe('<DeleteShortUrlModal />', () => {
 
   it.each([
     [
-      { error: 'INVALID_SHORTCODE_DELETION' },
-      'This short URL has received too many visits, and therefore, it cannot be deleted.',
-    ],
-    [
       { type: 'INVALID_SHORTCODE_DELETION' },
       'This short URL has received too many visits, and therefore, it cannot be deleted.',
-    ],
-    [
-      { error: 'INVALID_SHORTCODE_DELETION', threshold: 35 },
-      'This short URL has received more than 35 visits, and therefore, it cannot be deleted.',
     ],
     [
       { type: 'INVALID_SHORTCODE_DELETION', threshold: 8 },
@@ -67,7 +59,7 @@ describe('<DeleteShortUrlModal />', () => {
       loading: false,
       error: true,
       shortCode: 'abc123',
-      errorData: Mock.of<ProblemDetailsError>({ error: 'OTHER_ERROR' }),
+      errorData: Mock.of<ProblemDetailsError>({ type: 'OTHER_ERROR' }),
     });
     const error = wrapper.find('.bg-danger');
 

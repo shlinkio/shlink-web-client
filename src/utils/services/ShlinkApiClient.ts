@@ -125,7 +125,7 @@ export default class ShlinkApiClient {
 
       // When the request is not invalid or we have already tried both API versions, throw the error and let the
       // caller handle it
-      if (!apiVersionIsNotSupported || this.apiVersion === 1) {
+      if (!apiVersionIsNotSupported || this.apiVersion === 2) {
         throw e;
       }
 

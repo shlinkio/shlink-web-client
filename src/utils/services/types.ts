@@ -65,8 +65,6 @@ export interface ProblemDetailsError {
   detail: string;
   title: string;
   status: number;
-  error?: string; // Deprecated
-  message?: string; // Deprecated
   [extraProps: string]: any;
 }
 

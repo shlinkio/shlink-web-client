@@ -1,4 +1,3 @@
-import { faImage as pictureIcon } from '@fortawesome/free-regular-svg-icons';
 import {
   faTags as tagsIcon,
   faChartPie as pieChartIcon,
@@ -15,7 +14,6 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { ShortUrl, ShortUrlModalProps } from '../data';
 import { Versions } from '../../utils/helpers/version';
 import { SelectedServer } from '../../servers/data';
-import PreviewModal from './PreviewModal';
 import QrCodeModal from './QrCodeModal';
 import VisitStatsLink from './VisitStatsLink';
 import './ShortUrlsRowMenu.scss';
@@ -35,7 +33,6 @@ const ShortUrlsRowMenu = (
 ) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
   const [ isOpen, toggle ] = useToggle();
   const [ isQrModalOpen, toggleQrCode ] = useToggle();
-  const [ isPreviewModalOpen, togglePreview ] = useToggle();
   const [ isTagsModalOpen, toggleTags ] = useToggle();
   const [ isMetaModalOpen, toggleMeta ] = useToggle();
   const [ isDeleteModalOpen, toggleDelete ] = useToggle();
@@ -56,12 +53,10 @@ const ShortUrlsRowMenu = (
         </DropdownItem>
         <EditTagsModal shortUrl={shortUrl} isOpen={isTagsModalOpen} toggle={toggleTags} />
 
-        <ForServerVersion minVersion="1.18.0">
-          <DropdownItem onClick={toggleMeta}>
-            <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
-          </DropdownItem>
-          <EditMetaModal shortUrl={shortUrl} isOpen={isMetaModalOpen} toggle={toggleMeta} />
-        </ForServerVersion>
+        <DropdownItem onClick={toggleMeta}>
+          <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit metadata
+        </DropdownItem>
+        <EditMetaModal shortUrl={shortUrl} isOpen={isMetaModalOpen} toggle={toggleMeta} />
 
         <ForServerVersion minVersion="2.1.0">
           <DropdownItem onClick={toggleEdit}>
@@ -74,13 +69,6 @@ const ShortUrlsRowMenu = (
           <FontAwesomeIcon icon={qrIcon} fixedWidth /> QR code
         </DropdownItem>
         <QrCodeModal shortUrl={shortUrl} isOpen={isQrModalOpen} toggle={toggleQrCode} />
-
-        <ForServerVersion maxVersion="1.x">
-          <DropdownItem onClick={togglePreview}>
-            <FontAwesomeIcon icon={pictureIcon} fixedWidth /> Preview
-          </DropdownItem>
-          <PreviewModal shortUrl={shortUrl} isOpen={isPreviewModalOpen} toggle={togglePreview} />
-        </ForServerVersion>
 
         <DropdownItem divider />
 
