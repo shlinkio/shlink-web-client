@@ -26,14 +26,21 @@ const getTextClassForType = (type: MessageType) => {
 interface MessageProps {
   noMargin?: boolean;
   loading?: boolean;
+  fullWidth?: boolean;
   type?: MessageType;
 }
 
-const Message: FC<MessageProps> = ({ children, loading = false, noMargin = false, type = 'default' }) => {
+const Message: FC<MessageProps> = (
+  { children, loading = false, noMargin = false, type = 'default', fullWidth = false },
+) => {
   const cardClasses = classNames(getClassForType(type), { 'mt-4': !noMargin });
+  const classes = classNames({
+    'col-md-12': fullWidth,
+    'col-md-10 offset-md-1': !fullWidth,
+  });
 
   return (
-    <div className="col-md-10 offset-md-1">
+    <div className={classes}>
       <Card className={cardClasses} body>
         <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>
           {loading && <FontAwesomeIcon icon={preloader} spin />}
