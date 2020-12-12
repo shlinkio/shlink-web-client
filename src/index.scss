@@ -6,6 +6,7 @@ html,
 body,
 #root {
   height: 100%;
+  background: #f5f6fe;
 }
 
 * {
@@ -14,6 +15,18 @@ body,
 
 .bg-main {
   background-color: $mainColor !important;
+}
+
+.card {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+}
+
+.card-header {
+  background-color: white;
+}
+
+.card-footer {
+  background-color: rgba(255, 255, 255, .5);
 }
 
 .dropdown-item:not(:disabled) {

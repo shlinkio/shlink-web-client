@@ -49,13 +49,13 @@ export const Overview = (
     <>
       <div className="row mb-3">
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body color="light">
+          <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
             <CardText tag="h2">{loadingVisits ? 'Loading...' : prettify(visitsCount)}</CardText>
           </Card>
         </div>
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body color="light">
+          <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
               {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
@@ -63,7 +63,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-sm-4">
-          <Card className="overview__card mb-2" body color="light">
+          <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
             <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>
           </Card>

@@ -30,7 +30,7 @@ interface MessageProps {
 }
 
 const Message: FC<MessageProps> = ({ children, loading = false, noMargin = false, type = 'default' }) => {
-  const cardClasses = classNames('bg-light', getClassForType(type), { 'mt-4': !noMargin });
+  const cardClasses = classNames(getClassForType(type), { 'mt-4': !noMargin });
 
   return (
     <div className="col-md-10 offset-md-1">
