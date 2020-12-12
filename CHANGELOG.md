@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#309](https://github.com/shlinkio/shlink-web-client/issues/309) Added new domain selector component in create URL form which allows selecting from previously used domains or set a new one.
 * [#315](https://github.com/shlinkio/shlink-web-client/issues/315) Now you can tell if you want to validate the long URL when using Shlink >=2.4.
+* [#285](https://github.com/shlinkio/shlink-web-client/issues/285) Improved visits section:
+
+    * Charts are now grouped in tabs, so that only one part of the components is rendered at a time.
+    * Amount of highlighted visits is now displayed.
 
 ### Changed
 * [#267](https://github.com/shlinkio/shlink-web-client/issues/267) Added some subtle but important improvements on UI/UX.
