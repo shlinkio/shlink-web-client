@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react';
 import Moment from 'react-moment';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
@@ -68,6 +68,7 @@ const VisitsTable = ({
   const [ searchTerm, setSearchTerm ] = useState<string | undefined>(undefined);
   const [ order, setOrder ] = useState<Order>({ field: undefined, dir: undefined });
   const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
+  const isFirstLoad = useRef(true);
 
   const [ page, setPage ] = useState(1);
   const end = page * PAGE_SIZE;
@@ -91,7 +92,12 @@ const VisitsTable = ({
   }, []);
   useEffect(() => {
     setPage(1);
-    setSelectedVisits([]);
+
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+    } else {
+      setSelectedVisits([]);
+    }
   }, [ searchTerm ]);
 
   return (

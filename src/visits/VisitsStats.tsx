@@ -1,14 +1,13 @@
 import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
-import { Button, Card, Collapse, Progress } from 'reactstrap';
-import classNames from 'classnames';
+import { Button, Card, Nav, NavLink, Progress } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown as chevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import moment from 'moment';
 import DateRangeRow from '../utils/DateRangeRow';
 import Message from '../utils/Message';
 import { formatDate } from '../utils/helpers/date';
-import { useToggle } from '../utils/helpers/hooks';
 import { ShlinkVisitsParams } from '../utils/services/types';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
@@ -17,15 +16,23 @@ import VisitsTable from './VisitsTable';
 import { NormalizedVisit, Stats, VisitsInfo } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
+import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
-  matchMedia?: (query: string) => MediaQueryList;
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
   visitsInfo: VisitsInfo;
   cancelGetVisits: () => void;
 }
 
 type HighlightableProps = 'referer' | 'country' | 'city';
+type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
+
+const sections: Record<Section, { title: string; icon: IconDefinition }> = {
+  byTime: { title: 'By time', icon: faCalendarAlt },
+  byContext: { title: 'By context', icon: faChartPie },
+  byLocation: { title: 'By location', icon: faMapMarkedAlt },
+  list: { title: 'List', icon: faList },
+};
 
 const highlightedVisitsToStats = (
   highlightedVisits: NormalizedVisit[],
@@ -42,19 +49,15 @@ const highlightedVisitsToStats = (
 const format = formatDate();
 let selectedBar: string | undefined;
 
-const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, matchMedia = window.matchMedia },
-) => {
+const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits }) => {
   const [ startDate, setStartDate ] = useState<moment.Moment | null>(null);
   const [ endDate, setEndDate ] = useState<moment.Moment | null>(null);
-  const [ showTable, toggleTable ] = useToggle();
-  const [ tableIsSticky, , setSticky, unsetSticky ] = useToggle();
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
-  const [ isMobileDevice, setIsMobileDevice ] = useState(false);
+  const [ activeSection, setActiveSection ] = useState<Section>('byTime');
+  const onSectionChange = (section: Section) => () => setActiveSection(section);
 
   const { visits, loading, loadingLarge, error, progress } = visitsInfo;
-  const showTableControls = !loading && visits.length > 0;
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
@@ -62,7 +65,6 @@ const VisitsStats: FC<VisitsStatsProps> = (
   );
   const mapLocations = values(citiesForMap);
 
-  const determineIsMobileDevice = () => setIsMobileDevice(matchMedia('(max-width: 991px)').matches);
   const setSelectedVisits = (selectedVisits: NormalizedVisit[]) => {
     selectedBar = undefined;
     setHighlightedVisits(selectedVisits);
@@ -81,15 +83,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     }
   };
 
-  useEffect(() => {
-    determineIsMobileDevice();
-    window.addEventListener('resize', determineIsMobileDevice);
-
-    return () => {
-      cancelGetVisits();
-      window.removeEventListener('resize', determineIsMobileDevice);
-    };
-  }, []);
+  useEffect(() => () => cancelGetVisits(), []);
   useEffect(() => {
     getVisits({ startDate: format(startDate) ?? undefined, endDate: format(endDate) ?? undefined });
   }, [ startDate, endDate ]);
@@ -121,67 +115,106 @@ const VisitsStats: FC<VisitsStatsProps> = (
     }
 
     return (
-      <div className="row">
-        <div className="col-12 mt-4">
-          <LineChartCard
-            title="Visits during time"
-            visits={normalizedVisits}
-            highlightedVisits={highlightedVisits}
-            highlightedLabel={highlightedLabel}
-            setSelectedVisits={setSelectedVisits}
-          />
+      <>
+        <Card className="visits-stats__nav p-0 mt-4 overflow-hidden" body>
+          <Nav pills justified>
+            {Object.entries(sections).map(
+              ([ section, { title, icon }]) => (
+                <NavLink
+                  key={section}
+                  active={activeSection === section}
+                  className="visits-stats__nav-link"
+                  onClick={onSectionChange(section as Section)}
+                >
+                  <FontAwesomeIcon icon={icon} />
+                  <span className="ml-2 d-none d-sm-inline">{title}</span>
+                </NavLink>
+              ),
+            )}
+          </Nav>
+        </Card>
+        <div className="row">
+          {activeSection === 'byTime' && (
+            <div className="col-12 mt-4">
+              <LineChartCard
+                title="Visits during time"
+                visits={normalizedVisits}
+                highlightedVisits={highlightedVisits}
+                highlightedLabel={highlightedLabel}
+                setSelectedVisits={setSelectedVisits}
+              />
+            </div>
+          )}
+          {activeSection === 'byContext' && (
+            <>
+              <div className="col-xl-4 col-lg-6 mt-4">
+                <GraphCard title="Operating systems" stats={os} />
+              </div>
+              <div className="col-xl-4 col-lg-6 mt-4">
+                <GraphCard title="Browsers" stats={browsers} />
+              </div>
+              <div className="col-xl-4 mt-4">
+                <SortableBarGraph
+                  title="Referrers"
+                  stats={referrers}
+                  withPagination={false}
+                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
+                  highlightedLabel={highlightedLabel}
+                  sortingItems={{
+                    name: 'Referrer name',
+                    amount: 'Visits amount',
+                  }}
+                  onClick={highlightVisitsForProp('referer')}
+                />
+              </div>
+            </>
+          )}
+          {activeSection === 'byLocation' && (
+            <>
+              <div className="col-lg-6 mt-4">
+                <SortableBarGraph
+                  title="Countries"
+                  stats={countries}
+                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
+                  highlightedLabel={highlightedLabel}
+                  sortingItems={{
+                    name: 'Country name',
+                    amount: 'Visits amount',
+                  }}
+                  onClick={highlightVisitsForProp('country')}
+                />
+              </div>
+              <div className="col-lg-6 mt-4">
+                <SortableBarGraph
+                  title="Cities"
+                  stats={cities}
+                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
+                  highlightedLabel={highlightedLabel}
+                  extraHeaderContent={(activeCities: string[]) =>
+                    mapLocations.length > 0 &&
+                    <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
+                  }
+                  sortingItems={{
+                    name: 'City name',
+                    amount: 'Visits amount',
+                  }}
+                  onClick={highlightVisitsForProp('city')}
+                />
+              </div>
+            </>
+          )}
+          {activeSection === 'list' && (
+            <div className="col-12">
+              <VisitsTable
+                visits={normalizedVisits}
+                selectedVisits={highlightedVisits}
+                setSelectedVisits={setSelectedVisits}
+                isSticky
+              />
+            </div>
+          )}
         </div>
-        <div className="col-xl-4 col-lg-6 mt-4">
-          <GraphCard title="Operating systems" stats={os} />
-        </div>
-        <div className="col-xl-4 col-lg-6 mt-4">
-          <GraphCard title="Browsers" stats={browsers} />
-        </div>
-        <div className="col-xl-4 mt-4">
-          <SortableBarGraph
-            title="Referrers"
-            stats={referrers}
-            withPagination={false}
-            highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
-            highlightedLabel={highlightedLabel}
-            sortingItems={{
-              name: 'Referrer name',
-              amount: 'Visits amount',
-            }}
-            onClick={highlightVisitsForProp('referer')}
-          />
-        </div>
-        <div className="col-lg-6 mt-4">
-          <SortableBarGraph
-            title="Countries"
-            stats={countries}
-            highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
-            highlightedLabel={highlightedLabel}
-            sortingItems={{
-              name: 'Country name',
-              amount: 'Visits amount',
-            }}
-            onClick={highlightVisitsForProp('country')}
-          />
-        </div>
-        <div className="col-lg-6 mt-4">
-          <SortableBarGraph
-            title="Cities"
-            stats={cities}
-            highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
-            highlightedLabel={highlightedLabel}
-            extraHeaderContent={(activeCities: string[]) =>
-              mapLocations.length > 0 &&
-              <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
-            }
-            sortingItems={{
-              name: 'City name',
-              amount: 'Visits amount',
-            }}
-            onClick={highlightVisitsForProp('city')}
-          />
-        </div>
-      </div>
+      </>
     );
   };
 
@@ -200,46 +233,20 @@ const VisitsStats: FC<VisitsStatsProps> = (
               onEndDateChange={setEndDate}
             />
           </div>
-          <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
-            {showTableControls && (
-              <span className={classNames({ row: isMobileDevice })}>
-                <span className={classNames({ 'col-6': isMobileDevice })}>
-                  <Button outline color="primary" block={isMobileDevice} onClick={toggleTable}>
-                    {showTable ? 'Hide' : 'Show'} table
-                    <FontAwesomeIcon icon={chevronDown} rotation={showTable ? 180 : undefined} className="ml-2" />
-                  </Button>
-                </span>
-                <span className={classNames({ 'col-6': isMobileDevice, 'ml-2': !isMobileDevice })}>
-                  <Button
-                    outline
-                    disabled={highlightedVisits.length === 0}
-                    block={isMobileDevice}
-                    onClick={() => setSelectedVisits([])}
-                  >
-                    Reset selection
-                  </Button>
-                </span>
-              </span>
-            )}
-          </div>
+          {visits.length > 0 && (
+            <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
+              <Button
+                outline
+                disabled={highlightedVisits.length === 0}
+                className="btn-md-block"
+                onClick={() => setSelectedVisits([])}
+              >
+                Reset selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+              </Button>
+            </div>
+          )}
         </div>
       </section>
-
-      {showTableControls && (
-        <Collapse
-          isOpen={showTable}
-          // Enable stickiness only when there's no CSS animation, to avoid weird rendering effects
-          onEntered={setSticky}
-          onExiting={unsetSticky}
-        >
-          <VisitsTable
-            visits={normalizedVisits}
-            selectedVisits={highlightedVisits}
-            setSelectedVisits={setSelectedVisits}
-            isSticky={tableIsSticky}
-          />
-        </Collapse>
-      )}
 
       <section>
         {renderVisitsContent()}

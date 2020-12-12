@@ -197,7 +197,7 @@ const CreateShortUrl = (
           outline
           color="primary"
           disabled={shortUrlCreationResult.saving || isEmpty(shortUrlCreation.longUrl)}
-          className="create-short-url__save-btn"
+          className="btn-xs-block"
         >
           {shortUrlCreationResult.saving ? 'Creating...' : 'Create'}
         </Button>

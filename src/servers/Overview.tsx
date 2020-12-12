@@ -9,9 +9,9 @@ import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
+import { Versions } from '../utils/helpers/version';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
-import { Versions } from '../utils/helpers/version';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;

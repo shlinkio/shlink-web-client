@@ -1,6 +1,5 @@
 import moment from 'moment';
 import DateInput from './DateInput';
-import './DateRangeRow.scss';
 
 interface DateRangeRowProps {
   startDate?: moment.Moment | null;
@@ -26,7 +25,7 @@ const DateRangeRow = (
     </div>
     <div className="col-md-6">
       <DateInput
-        className="date-range-row__date-input"
+        className="mt-2 mt-md-0"
         selected={endDate}
         placeholderText="Until"
         isClearable

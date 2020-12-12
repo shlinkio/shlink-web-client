@@ -6,7 +6,7 @@ html,
 body,
 #root {
   height: 100%;
-  background: #f5f6fe;
+  background: $lightColor;
 }
 
 * {
@@ -42,6 +42,10 @@ body,
 .badge-main {
   color: #ffffff;
   background-color: $mainColor;
+}
+
+.table-hover tbody tr:hover {
+  background-color: $lightColor;
 }
 
 .react-datepicker__input-container,
@@ -87,4 +91,18 @@ body,
 
 .progress-bar {
   background-color: $mainColor;
+}
+
+.btn-xs-block {
+  @media (max-width: $xsMax) {
+    width: 100%;
+    display: block;
+  }
+}
+
+.btn-md-block {
+  @media (max-width: $mdMax) {
+    width: 100%;
+    display: block;
+  }
 }

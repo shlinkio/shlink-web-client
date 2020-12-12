@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
@@ -118,7 +118,7 @@ const DefaultChart = (
     }, { ...stats }),
   );
   const highlightedData = statsAreDefined(highlightedStats) ? fillTheGaps(highlightedStats, labels) : undefined;
-  const chartRef = useRef<HorizontalBar | Doughnut>();
+  const [ chartRef, setChartRef ] = useState<HorizontalBar | Doughnut | undefined>()
 
   const options: ChartOptions = {
     legend: { display: false },
@@ -156,7 +156,7 @@ const DefaultChart = (
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
         <Component
-          ref={chartRef as any}
+          ref={(element) => setChartRef(element ?? undefined)}
           key={height}
           data={graphData}
           options={options}
@@ -166,7 +166,7 @@ const DefaultChart = (
       </div>
       {!isBarChart && (
         <div className="col-sm-12 col-md-5">
-          {chartRef.current?.chartInstance.generateLegend()}
+          {chartRef?.chartInstance.generateLegend()}
         </div>
       )}
     </div>

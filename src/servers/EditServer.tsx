@@ -24,7 +24,7 @@ export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProp
   return (
     <NoMenuLayout>
       <ServerForm
-        title={<h5 className="mb-0">Edit "{selectedServer.name}"</h5>}
+        title={<h5 className="mb-0">Edit &quot;{selectedServer.name}&quot;</h5>}
         initialValues={selectedServer}
         onSubmit={handleSubmit}
       >
