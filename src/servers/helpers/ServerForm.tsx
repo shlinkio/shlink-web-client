@@ -1,14 +1,17 @@
-import { FC, useEffect, useState } from 'react';
-import { HorizontalFormGroup } from '../../utils/HorizontalFormGroup';
+import { FC, ReactNode, useEffect, useState } from 'react';
+import { FormGroupContainer } from '../../utils/FormGroupContainer';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';
+import { SimpleCard } from '../../utils/SimpleCard';
+import './ServerForm.scss';
 
 interface ServerFormProps {
   onSubmit: (server: ServerData) => void;
   initialValues?: ServerData;
+  title?: ReactNode;
 }
 
-export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children }) => {
+export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
   const [ name, setName ] = useState('');
   const [ url, setUrl ] = useState('');
   const [ apiKey, setApiKey ] = useState('');
@@ -21,10 +24,12 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
   }, [ initialValues ]);
 
   return (
-    <form onSubmit={handleSubmit}>
-      <HorizontalFormGroup value={name} onChange={setName}>Name</HorizontalFormGroup>
-      <HorizontalFormGroup type="url" value={url} onChange={setUrl}>URL</HorizontalFormGroup>
-      <HorizontalFormGroup value={apiKey} onChange={setApiKey}>API key</HorizontalFormGroup>
+    <form className="server-form" onSubmit={handleSubmit}>
+      <SimpleCard className="mb-4" title={title}>
+        <FormGroupContainer value={name} onChange={setName}>Name</FormGroupContainer>
+        <FormGroupContainer type="url" value={url} onChange={setUrl}>URL</FormGroupContainer>
+        <FormGroupContainer value={apiKey} onChange={setApiKey}>API key</FormGroupContainer>
+      </SimpleCard>
 
       <div className="text-right">{children}</div>
     </form>

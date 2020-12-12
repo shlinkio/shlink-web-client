@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
-import { HorizontalFormGroup } from '../../../src/utils/HorizontalFormGroup';
+import { FormGroupContainer } from '../../../src/utils/FormGroupContainer';
 
 describe('<ServerForm />', () => {
   let wrapper: ShallowWrapper;
@@ -14,7 +14,7 @@ describe('<ServerForm />', () => {
   afterEach(jest.resetAllMocks);
 
   it('renders components', () => {
-    expect(wrapper.find(HorizontalFormGroup)).toHaveLength(3);
+    expect(wrapper.find(FormGroupContainer)).toHaveLength(3);
     expect(wrapper.find('span')).toHaveLength(1);
   });
 

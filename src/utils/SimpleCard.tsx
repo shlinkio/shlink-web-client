@@ -1,8 +1,9 @@
 import { CardProps } from 'reactstrap/lib/Card';
 import { Card, CardBody, CardHeader } from 'reactstrap';
+import { ReactNode } from 'react';
 
-interface SimpleCardProps extends CardProps {
-  title?: string;
+interface SimpleCardProps extends Omit<CardProps, 'title'> {
+  title?: ReactNode;
 }
 
 export const SimpleCard = ({ title, children, ...rest }: SimpleCardProps) => (
