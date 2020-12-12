@@ -92,3 +92,17 @@ body,
 .progress-bar {
   background-color: $mainColor;
 }
+
+.btn-xs-block {
+  @media (max-width: $xsMax) {
+    width: 100%;
+    display: block;
+  }
+}
+
+.btn-md-block {
+  @media (max-width: $mdMax) {
+    width: 100%;
+    display: block;
+  }
+}

@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Card, Progress } from 'reactstrap';
+import { Card, NavLink, Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
@@ -7,6 +7,8 @@ import GraphCard from '../../src/visits/helpers/GraphCard';
 import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import DateRangeRow from '../../src/utils/DateRangeRow';
 import { Visit, VisitsInfo } from '../../src/visits/types';
+import LineChartCard from '../../src/visits/helpers/LineChartCard';
+import VisitsTable from '../../src/visits/VisitsTable';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -20,7 +22,6 @@ describe('<VisitStats />', () => {
         getVisits={getVisitsMock}
         visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
         cancelGetVisits={() => {}}
-        matchMedia={() => Mock.of<MediaQueryList>({ matches: false })}
       />,
     );
 
@@ -66,12 +67,24 @@ describe('<VisitStats />', () => {
     expect(message.html()).toContain('There are no visits matching current filter  :(');
   });
 
-  it('renders all graphics when visits are properly loaded', () => {
+  it.each([
+    [ 0, 1, 0 ],
+    [ 1, 3, 0 ],
+    [ 2, 2, 0 ],
+    [ 3, 0, 1 ],
+  ])('renders expected amount of graphics based on active section', (navIndex, expectedGraphics, expectedTables) => {
     const wrapper = createComponent({ loading: false, error: false, visits });
+    const nav = wrapper.find(NavLink).at(navIndex);
+
+    nav.simulate('click');
+
     const graphs = wrapper.find(GraphCard);
     const sortableBarGraphs = wrapper.find(SortableBarGraph);
+    const lineChart = wrapper.find(LineChartCard);
+    const table = wrapper.find(VisitsTable);
 
-    expect(graphs.length + sortableBarGraphs.length).toEqual(5);
+    expect(graphs.length + sortableBarGraphs.length + lineChart.length).toEqual(expectedGraphics);
+    expect(table).toHaveLength(expectedTables);
   });
 
   it('reloads visits when selected dates change', () => {
@@ -88,6 +101,10 @@ describe('<VisitStats />', () => {
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
+    const locationNav = wrapper.find(NavLink).at(2);
+
+    locationNav.simulate('click');
+
     const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
     const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
 
