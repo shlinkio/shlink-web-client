@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Message from '../../utils/Message';
 import { isNotFoundServer, SelectedServer } from '../data';
+import NoMenuLayout from '../../common/NoMenuLayout';
 
 interface WithSelectedServerProps extends RouteComponentProps<{ serverId: string }> {
   selectServer: (serverId: string) => void;
@@ -18,9 +19,9 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
 
     if (!selectedServer) {
       return (
-        <div className="row">
-          <Message loading />
-        </div>
+        <NoMenuLayout>
+          <Message loading noMargin />
+        </NoMenuLayout>
       );
     }
 

@@ -44,7 +44,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
 
   return (
     <NoMenuLayout>
-      <ServerForm onSubmit={handleSubmit}>
+      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={handleSubmit}>
         <ImportServersBtn onImport={setServersImported} onImportError={setErrorImporting} />
         <button className="btn btn-outline-primary">Create server</button>
       </ServerForm>

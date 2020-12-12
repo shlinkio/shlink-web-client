@@ -18,7 +18,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
   const doEdit = async () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
       <ModalHeader toggle={toggle}>
         Edit long URL for <ExternalLink href={url} />
       </ModalHeader>

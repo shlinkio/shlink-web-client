@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Card } from 'reactstrap';
 import Paginator from './Paginator';
 import { ShortUrlsListProps } from './ShortUrlsList';
 
@@ -17,10 +18,10 @@ const ShortUrls = (SearchBar: FC, ShortUrlsList: FC<ShortUrlsListProps>) => (pro
   return (
     <>
       <div className="form-group"><SearchBar /></div>
-      <div>
+      <Card body className="pb-1">
         <ShortUrlsList {...props} key={urlsListKey} />
         <Paginator paginator={pagination} serverId={serverId} />
-      </div>
+      </Card>
     </>
   );
 };

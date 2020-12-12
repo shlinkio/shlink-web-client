@@ -30,7 +30,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   const orderableColumnsClasses = classNames('short-urls-table__header-cell', {
     'short-urls-table__header-cell--with-action': !!orderByColumn,
   });
-  const tableClasses = classNames('table table-striped table-hover', className);
+  const tableClasses = classNames('table table-hover', className);
 
   const renderShortUrls = () => {
     if (error) {

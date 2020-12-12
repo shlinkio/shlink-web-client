@@ -15,7 +15,7 @@ interface VisitsHeaderProps {
 
 const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, children, title }) => (
   <header>
-    <Card className="bg-light" body>
+    <Card body>
       <h2 className="d-flex justify-content-between align-items-center mb-0">
         <Button color="link" size="lg" className="p-0 mr-3" onClick={goBack}>
           <FontAwesomeIcon icon={faArrowLeft} />
