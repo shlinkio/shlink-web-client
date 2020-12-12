@@ -1,0 +1,58 @@
+name: Continuous integration
+
+on:
+  pull_request: null
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14.15
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+      - run: npm ci
+      - run: npm run lint
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14.15
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+      - run: npm ci
+      - run: npm run test:ci
+      - run: node_modules/.bin/ocular coverage/clover.xml
+
+  mutation-tests:
+    continue-on-error: true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Use node.js 14.15
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+      - run: npm ci
+      - run: MUTATION_FILES=$(git diff origin/main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",") npm run mutate:ci
+
+  build-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          version: latest
+      - run: docker build -t shlink-web-client:test .
