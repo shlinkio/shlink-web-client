@@ -14,7 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#315](https://github.com/shlinkio/shlink-web-client/issues/315) Now you can tell if you want to validate the long URL when using Shlink >=2.4.
 
 ### Changed
-* *Nothing*
+* [#267](https://github.com/shlinkio/shlink-web-client/issues/267) Added some subtle but important improvements on UI/UX.
 
 ### Deprecated
 * *Nothing*
