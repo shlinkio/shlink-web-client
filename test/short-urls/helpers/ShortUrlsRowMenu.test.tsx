@@ -2,7 +2,6 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { ButtonDropdown, DropdownItem } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createShortUrlsRowMenu from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
-import PreviewModal from '../../../src/short-urls/helpers/PreviewModal';
 import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ReachableServer } from '../../../src/servers/data';
 import { ShortUrl } from '../../../src/short-urls/data';
@@ -38,13 +37,11 @@ describe('<ShortUrlsRowMenu />', () => {
     const wrapper = createWrapper();
     const deleteShortUrlModal = wrapper.find(DeleteShortUrlModal);
     const editTagsModal = wrapper.find(EditTagsModal);
-    const previewModal = wrapper.find(PreviewModal);
     const qrCodeModal = wrapper.find(QrCodeModal);
     const editModal = wrapper.find(EditShortUrlModal);
 
     expect(deleteShortUrlModal).toHaveLength(1);
     expect(editTagsModal).toHaveLength(1);
-    expect(previewModal).toHaveLength(1);
     expect(qrCodeModal).toHaveLength(1);
     expect(editModal).toHaveLength(1);
   });
@@ -53,7 +50,7 @@ describe('<ShortUrlsRowMenu />', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(8);
+    expect(items).toHaveLength(7);
     expect(items.find('[divider]')).toHaveLength(1);
   });
 
@@ -68,7 +65,6 @@ describe('<ShortUrlsRowMenu />', () => {
 
     it('DeleteShortUrlModal', () => assert(DeleteShortUrlModal));
     it('EditTagsModal', () => assert(EditTagsModal));
-    it('PreviewModal', () => assert(PreviewModal));
     it('QrCodeModal', () => assert(QrCodeModal));
     it('EditShortUrlModal', () => assert(EditShortUrlModal));
     it('EditShortUrlModal', () => assert(ButtonDropdown));

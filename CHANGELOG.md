@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Removed
-* *Nothing*
+* [#344](https://github.com/shlinkio/shlink-web-client/issues/344) Dropped support for Shlink v1.
 
 ### Fixed
 * *Nothing*

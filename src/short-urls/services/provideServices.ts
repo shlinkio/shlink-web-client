@@ -70,7 +70,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
 
   // Services
-  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator', 'ForServerVersion');
+  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
   bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
 
   // Actions

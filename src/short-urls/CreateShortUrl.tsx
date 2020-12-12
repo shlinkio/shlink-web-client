@@ -115,7 +115,6 @@ const CreateShortUrl = (
   );
 
   const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
-  const disableDomain = !versionMatch(currentServerVersion, { minVersion: '1.19.0-beta.1' });
   const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
   const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
 
@@ -141,10 +140,7 @@ const CreateShortUrl = (
                     title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
                   },
                 })}
-                {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text', {
-                  disabled: disableDomain,
-                  ...disableDomain && { title: 'Shlink 1.19.0 or higher is required to be able to provide the domain' },
-                })}
+                {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
                 {showDomainSelector && (
                   <FormGroup>
                     <DomainSelector
@@ -165,36 +161,34 @@ const CreateShortUrl = (
             </div>
           </div>
 
-          <ForServerVersion minVersion="1.16.0">
-            <SimpleCard title="Extra validations" className="mb-3">
-              <p>
-                Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
-                provided data.
-              </p>
-              <ForServerVersion minVersion="2.4.0">
-                <p>
-                  <Checkbox
-                    inline
-                    checked={shortUrlCreation.validateUrl}
-                    onChange={(validateUrl) => setShortUrlCreation({ ...shortUrlCreation, validateUrl })}
-                  >
-                    Validate URL
-                  </Checkbox>
-                </p>
-              </ForServerVersion>
+          <SimpleCard title="Extra validations" className="mb-3">
+            <p>
+              Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
+              provided data.
+            </p>
+            <ForServerVersion minVersion="2.4.0">
               <p>
                 <Checkbox
                   inline
-                  className="mr-2"
-                  checked={shortUrlCreation.findIfExists}
-                  onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
+                  checked={shortUrlCreation.validateUrl}
+                  onChange={(validateUrl) => setShortUrlCreation({ ...shortUrlCreation, validateUrl })}
                 >
-                  Use existing URL if found
+                  Validate URL
                 </Checkbox>
-                <UseExistingIfFoundInfoIcon />
               </p>
-            </SimpleCard>
-          </ForServerVersion>
+            </ForServerVersion>
+            <p>
+              <Checkbox
+                inline
+                className="mr-2"
+                checked={shortUrlCreation.findIfExists}
+                onChange={(findIfExists) => setShortUrlCreation({ ...shortUrlCreation, findIfExists })}
+              >
+                Use existing URL if found
+              </Checkbox>
+              <UseExistingIfFoundInfoIcon />
+            </p>
+          </SimpleCard>
         </>
       )}
 
