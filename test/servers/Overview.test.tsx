@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { CardText } from 'reactstrap';
@@ -14,10 +15,11 @@ describe('<Overview />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsTable = () => null;
   const CreateShortUrl = () => null;
+  const ForServerVersion: FC = ({ children }) => <>{children}</>;
   const listShortUrls = jest.fn();
   const listTags = jest.fn();
   const loadVisitsOverview = jest.fn();
-  const Overview = overviewCreator(ShortUrlsTable, CreateShortUrl);
+  const Overview = overviewCreator(ShortUrlsTable, CreateShortUrl, ForServerVersion);
   const shortUrls = {
     pagination: { totalItems: 83710 },
   };
@@ -59,6 +61,13 @@ describe('<Overview />', () => {
     expect(cards.at(0).html()).toContain(prettify(3456));
     expect(cards.at(1).html()).toContain(prettify(83710));
     expect(cards.at(2).html()).toContain(prettify(3));
+  });
+
+  test('first card displays warning for old shlink versions', () => {
+    const wrapper = createWrapper();
+    const firstCard = wrapper.find(CardText).first();
+
+    expect(firstCard.html()).toContain('Shlink 2.2 is needed');
   });
 
   test('nests complex components', () => {

@@ -11,6 +11,7 @@ import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
+import { Versions } from '../utils/helpers/version';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
@@ -25,6 +26,7 @@ interface OverviewConnectProps {
 export const Overview = (
   ShortUrlsTable: FC<ShortUrlsTableProps>,
   CreateShortUrl: FC<CreateShortUrlProps>,
+  ForServerVersion: FC<Versions>,
 ) => boundToMercureHub(({
   shortUrlsList,
   listShortUrls,
@@ -51,7 +53,14 @@ export const Overview = (
         <div className="col-sm-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
-            <CardText tag="h2">{loadingVisits ? 'Loading...' : prettify(visitsCount)}</CardText>
+            <CardText tag="h2">
+              <ForServerVersion minVersion="2.2.0">
+                {loadingVisits ? 'Loading...' : prettify(visitsCount)}
+              </ForServerVersion>
+              <ForServerVersion maxVersion="2.1.*">
+                <small className="text-muted"><i>Shlink 2.2 is needed</i></small>
+              </ForServerVersion>
+            </CardText>
           </Card>
         </div>
         <div className="col-sm-4">

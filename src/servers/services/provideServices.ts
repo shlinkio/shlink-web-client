@@ -44,7 +44,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
   bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
 
-  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
+  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl', 'ForServerVersion');
   bottle.decorator('Overview', connect(
     [ 'shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview' ],
     [ 'listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview' ],
