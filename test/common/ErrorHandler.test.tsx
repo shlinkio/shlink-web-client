@@ -2,6 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Button } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createErrorHandler from '../../src/common/ErrorHandler';
+import { SimpleCard } from '../../src/utils/SimpleCard';
 
 describe('<ErrorHandler />', () => {
   const window = Mock.of<Window>({
@@ -28,10 +29,10 @@ describe('<ErrorHandler />', () => {
   it('renders error page when error has occurred', () => {
     wrapper.setState({ hasError: true });
 
-    expect(wrapper.text()).toContain('Oops! This is awkward :S');
-    expect(wrapper.text()).toContain(
+    expect(wrapper.find(SimpleCard).contains('Oops! This is awkward :S')).toEqual(true);
+    expect(wrapper.find(SimpleCard).contains(
       'It seems that something went wrong. Try refreshing the page or just click this button.',
-    );
+    )).toEqual(true);
     expect(wrapper.find(Button)).toHaveLength(1);
   });
 });
