@@ -12,7 +12,7 @@ import {
 import DateRangeRow from './DateRangeRow';
 import './DateRangeSelector.scss';
 
-interface DateRangeSelectorProps {
+export interface DateRangeSelectorProps {
   initialDateRange?: DateInterval | DateRange;
   disabled?: boolean;
   onDatesChange: (dateRange: DateRange) => void;
