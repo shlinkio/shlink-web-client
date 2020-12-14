@@ -16,9 +16,12 @@ export interface DateRangeSelectorProps {
   initialDateRange?: DateInterval | DateRange;
   disabled?: boolean;
   onDatesChange: (dateRange: DateRange) => void;
+  defaultText: string;
 }
 
-export const DateRangeSelector = ({ onDatesChange, initialDateRange, disabled = false }: DateRangeSelectorProps) => {
+export const DateRangeSelector = (
+  { onDatesChange, initialDateRange, defaultText, disabled = false }: DateRangeSelectorProps,
+) => {
   const [ isOpen, toggle ] = useToggle();
   const [ activeInterval, setActiveInterval ] = useState(
     rangeIsInterval(initialDateRange) ? initialDateRange : undefined,
@@ -40,35 +43,23 @@ export const DateRangeSelector = ({ onDatesChange, initialDateRange, disabled = 
   return (
     <Dropdown isOpen={isOpen} toggle={toggle} disabled={disabled}>
       <DropdownToggle caret className="date-range-selector__btn btn-block" color="primary">
-        {rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? 'All visits'}
+        {rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}
       </DropdownToggle>
       <DropdownMenu className="w-100">
         <DropdownItem
           active={activeInterval === undefined && dateRangeIsEmpty(activeDateRange)}
           onClick={updateInterval(undefined)}
         >
-          All visits
+          {defaultText}
         </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem active={activeInterval === 'today'} onClick={updateInterval('today')}>Today</DropdownItem>
-        <DropdownItem active={activeInterval === 'yesterday'} onClick={updateInterval('yesterday')}>
-          Yesterday
-        </DropdownItem>
-        <DropdownItem active={activeInterval === 'last7Days'} onClick={updateInterval('last7Days')}>
-          Last 7 days
-        </DropdownItem>
-        <DropdownItem active={activeInterval === 'last30Days'} onClick={updateInterval('last30Days')}>
-          Last 30 days
-        </DropdownItem>
-        <DropdownItem active={activeInterval === 'last90Days'} onClick={updateInterval('last90Days')}>
-          Last 90 days
-        </DropdownItem>
-        <DropdownItem active={activeInterval === 'last180days'} onClick={updateInterval('last180days')}>
-          Last 180 days
-        </DropdownItem>
-        <DropdownItem active={activeInterval === 'last365Days'} onClick={updateInterval('last365Days')}>
-          Last 365 days
-        </DropdownItem>
+        {([ 'today', 'yesterday', 'last7Days', 'last30Days', 'last90Days', 'last180days', 'last365Days' ] as DateInterval[]).map(
+          (interval) => (
+            <DropdownItem key={interval} active={activeInterval === interval} onClick={updateInterval(interval)}>
+              {rangeOrIntervalToString(interval)}
+            </DropdownItem>
+          ),
+        )}
         <DropdownItem divider />
         <DropdownItem header>Custom:</DropdownItem>
         <DropdownItem text>

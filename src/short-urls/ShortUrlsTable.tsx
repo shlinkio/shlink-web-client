@@ -45,7 +45,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
       return <tr><td colSpan={6} className="text-center">Loading...</td></tr>;
     }
 
-    if (!loading && isEmpty(shortUrlsList)) {
+    if (!loading && isEmpty(shortUrls?.data)) {
       return <tr><td colSpan={6} className="text-center">No results found</td></tr>;
     }
 

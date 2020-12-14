@@ -227,6 +227,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
           <div className="col-lg-7 col-xl-6">
             <DateRangeSelector
               disabled={loading}
+              defaultText="All visits"
               onDatesChange={({ startDate: newStartDate, endDate: newEndDate }) => {
                 setStartDate(newStartDate ?? null);
                 setEndDate(newEndDate ?? null);

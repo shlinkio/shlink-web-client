@@ -4,9 +4,10 @@ import { isEmpty, pipe } from 'ramda';
 import moment from 'moment';
 import SearchField from '../utils/SearchField';
 import Tag from '../tags/helpers/Tag';
-import DateRangeRow from '../utils/dates/DateRangeRow';
-import { formatDate } from '../utils/helpers/date';
+import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
+import { formatIsoDate } from '../utils/helpers/date';
 import ColorGenerator from '../utils/services/ColorGenerator';
+import { DateRange } from '../utils/dates/types';
 import { ShortUrlsListParams } from './reducers/shortUrlsListParams';
 import './SearchBar.scss';
 
@@ -19,9 +20,12 @@ const dateOrNull = (date?: string) => date ? moment(date) : null;
 
 const SearchBar = (colorGenerator: ColorGenerator) => ({ listShortUrls, shortUrlsListParams }: SearchBarProps) => {
   const selectedTags = shortUrlsListParams.tags ?? [];
-  const setDate = (dateName: 'startDate' | 'endDate') => pipe(
-    formatDate(),
-    (date) => listShortUrls({ ...shortUrlsListParams, [dateName]: date }),
+  const setDates = pipe(
+    ({ startDate, endDate }: DateRange) => ({
+      startDate: formatIsoDate(startDate) ?? undefined,
+      endDate: formatIsoDate(endDate) ?? undefined,
+    }),
+    (dates) => listShortUrls({ ...shortUrlsListParams, ...dates }),
   );
 
   return (
@@ -35,11 +39,13 @@ const SearchBar = (colorGenerator: ColorGenerator) => ({ listShortUrls, shortUrl
       <div className="mt-3">
         <div className="row">
           <div className="col-lg-8 offset-lg-4 col-xl-6 offset-xl-6">
-            <DateRangeRow
-              startDate={dateOrNull(shortUrlsListParams.startDate)}
-              endDate={dateOrNull(shortUrlsListParams.endDate)}
-              onStartDateChange={setDate('startDate')}
-              onEndDateChange={setDate('endDate')}
+            <DateRangeSelector
+              defaultText="All short URLs"
+              initialDateRange={{
+                startDate: dateOrNull(shortUrlsListParams.startDate),
+                endDate: dateOrNull(shortUrlsListParams.endDate),
+              }}
+              onDatesChange={setDates}
             />
           </div>
         </div>

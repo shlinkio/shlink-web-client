@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
-import DateRangeRow from '../../src/utils/dates/DateRangeRow';
+import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
 
 describe('<SearchBar />', () => {
@@ -20,10 +20,10 @@ describe('<SearchBar />', () => {
     expect(wrapper.find(SearchField)).toHaveLength(1);
   });
 
-  it('renders a DateRangeRow', () => {
+  it('renders a DateRangeSelector', () => {
     wrapper = shallow(<SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />);
 
-    expect(wrapper.find(DateRangeRow)).toHaveLength(1);
+    expect(wrapper.find(DateRangeSelector)).toHaveLength(1);
   });
 
   it('renders no tags when the list of tags is empty', () => {
@@ -60,14 +60,14 @@ describe('<SearchBar />', () => {
     expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 
-  it.each([ 'startDateChange', 'endDateChange' ])('updates short URLs list when date range changes', (event) => {
+  it('updates short URLs list when date range changes', () => {
     wrapper = shallow(
       <SearchBar shortUrlsListParams={{}} listShortUrls={listShortUrlsMock} />,
     );
-    const dateRange = wrapper.find(DateRangeRow);
+    const dateRange = wrapper.find(DateRangeSelector);
 
     expect(listShortUrlsMock).not.toHaveBeenCalled();
-    dateRange.simulate(event);
+    dateRange.simulate('datesChange', {});
     expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
   });
 });
