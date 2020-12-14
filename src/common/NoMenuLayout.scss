@@ -1,3 +1,9 @@
+@import '../utils/base';
+
 .no-menu-wrapper {
-  padding: 30px 20px 20px;
+  padding: 15px 0 0;
+
+  @media (min-width: $mdMin) {
+    padding: 30px 20px 20px;
+  }
 }
