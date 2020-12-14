@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import searchBarCreator from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
-import DateRangeRow from '../../src/utils/DateRangeRow';
+import DateRangeRow from '../../src/utils/dates/DateRangeRow';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
 
 describe('<SearchBar />', () => {

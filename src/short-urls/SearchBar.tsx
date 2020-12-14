@@ -4,7 +4,7 @@ import { isEmpty, pipe } from 'ramda';
 import moment from 'moment';
 import SearchField from '../utils/SearchField';
 import Tag from '../tags/helpers/Tag';
-import DateRangeRow from '../utils/DateRangeRow';
+import DateRangeRow from '../utils/dates/DateRangeRow';
 import { formatDate } from '../utils/helpers/date';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import { ShortUrlsListParams } from './reducers/shortUrlsListParams';

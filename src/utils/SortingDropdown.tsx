@@ -35,7 +35,7 @@ export default function SortingDropdown<T extends string = string>(
       </DropdownToggle>
       <DropdownMenu
         right={right}
-        className={classNames('sorting-dropdown__menu', { 'sorting-dropdown__menu--link': !isButton })}
+        className={classNames('w-100', { 'sorting-dropdown__menu--link': !isButton })}
       >
         {toPairs(items).map(([ fieldKey, fieldValue ]) => (
           <DropdownItem key={fieldKey} active={orderField === fieldKey} onClick={handleItemClick(fieldKey as T)}>

@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import DateRangeRow from '../../src/utils/DateRangeRow';
-import DateInput from '../../src/utils/DateInput';
+import DateRangeRow from '../../../src/utils/dates/DateRangeRow';
+import DateInput from '../../../src/utils/DateInput';
 
 describe('<DateRangeRow />', () => {
   let wrapper: ShallowWrapper;
