@@ -46,7 +46,7 @@ jobs:
         with:
           node-version: 14.15
       - run: npm ci
-      - run: npm run mutate -- --mutate=$(git diff main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
+      - run: npm run mutate -- --mutate=$(git diff origin/main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
 
   build-docker-image:
     runs-on: ubuntu-latest
