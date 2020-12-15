@@ -1,0 +1,9 @@
+@import '../utils/base';
+
+.shlink-versions-container--with-server {
+  margin-left: 0;
+
+  @media (min-width: $mdMin) {
+    margin-left: $asideMenuWidth;
+  }
+}

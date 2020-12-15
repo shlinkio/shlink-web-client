@@ -22,7 +22,6 @@ export interface AsideMenuProps {
 
 interface AsideMenuItemProps extends NavLinkProps {
   to: string;
-  className?: string;
 }
 
 const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...rest }) => (
@@ -37,10 +36,10 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
 );
 
 const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
-  { selectedServer, className, showOnMobile = false }: AsideMenuProps,
+  { selectedServer, showOnMobile = false }: AsideMenuProps,
 ) => {
   const serverId = selectedServer ? selectedServer.id : '';
-  const asideClass = classNames('aside-menu', className, {
+  const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
   const shortUrlsIsActive = (_: null, location: Location) => location.pathname.match('/list-short-urls') !== null;

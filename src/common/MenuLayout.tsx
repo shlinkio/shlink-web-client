@@ -56,10 +56,10 @@ const MenuLayout = (
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
       <div {...swipeableProps} className="menu-layout__swipeable">
-        <div className="row menu-layout__swipeable-inner">
-          <AsideMenu className="col-lg-2 col-md-3" selectedServer={selectedServer} showOnMobile={sidebarVisible} />
-          <div className="col-lg-10 offset-lg-2 col-md-9 offset-md-3" onClick={() => hideSidebar()}>
-            <div className="menu-layout__container container-xl">
+        <div className="menu-layout__swipeable-inner">
+          <AsideMenu selectedServer={selectedServer} showOnMobile={sidebarVisible} />
+          <div className="menu-layout__container" onClick={() => hideSidebar()}>
+            <div className="container-xl">
               <Switch>
                 <Redirect exact from="/server/:serverId" to="/server/:serverId/overview" />
                 <Route exact path="/server/:serverId/overview" component={Overview} />

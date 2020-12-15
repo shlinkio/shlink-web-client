@@ -15,13 +15,13 @@ describe('<ShlinkVersionsContainer />', () => {
   afterEach(() => wrapper?.unmount());
 
   test.each([
-    [ null, 'col-12' ],
-    [ Mock.of<NotFoundServer>({ serverNotFound: true }), 'col-12' ],
-    [ Mock.of<NonReachableServer>({ serverNotReachable: true }), 'col-12' ],
-    [ Mock.of<ReachableServer>({ printableVersion: 'v1.0.0' }), 'col-lg-10 offset-lg-2 col-md-9 offset-md-3' ],
+    [ null, 'text-center' ],
+    [ Mock.of<NotFoundServer>({ serverNotFound: true }), 'text-center' ],
+    [ Mock.of<NonReachableServer>({ serverNotReachable: true }), 'text-center' ],
+    [ Mock.of<ReachableServer>({ printableVersion: 'v1.0.0' }), 'text-center shlink-versions-container--with-server' ],
   ])('renders proper col classes based on type of selected server', (selectedServer, expectedClasses) => {
     const wrapper = createWrapper(selectedServer);
 
-    expect(wrapper.find('div').at(1).prop('className')).toEqual(`text-center ${expectedClasses}`);
+    expect(wrapper.find('div').prop('className')).toEqual(`${expectedClasses}`);
   });
 });

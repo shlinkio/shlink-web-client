@@ -1,23 +1,20 @@
 import classNames from 'classnames';
 import { isReachableServer, SelectedServer } from '../servers/data';
 import ShlinkVersions from './ShlinkVersions';
+import './ShlinkVersionsContainer.scss';
 
 export interface ShlinkVersionsContainerProps {
   selectedServer: SelectedServer;
 }
 
 const ShlinkVersionsContainer = ({ selectedServer }: ShlinkVersionsContainerProps) => {
-  const serverIsReachable = isReachableServer(selectedServer);
-  const colClasses = classNames('text-center', {
-    'col-12': !serverIsReachable,
-    'col-lg-10 offset-lg-2 col-md-9 offset-md-3': serverIsReachable,
+  const classes = classNames('text-center', {
+    'shlink-versions-container--with-server': isReachableServer(selectedServer),
   });
 
   return (
-    <div className="row">
-      <div className={colClasses}>
-        <ShlinkVersions selectedServer={selectedServer} />
-      </div>
+    <div className={classes}>
+      <ShlinkVersions selectedServer={selectedServer} />
     </div>
   );
 };
