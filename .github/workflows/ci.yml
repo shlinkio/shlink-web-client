@@ -39,12 +39,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # needed so that the main branch is also fetched
       - name: Use node.js 14.15
         uses: actions/setup-node@v1
         with:
           node-version: 14.15
       - run: npm ci
-      - run: npm run mutate -- --mutate=$(git diff origin/main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
+      - run: npm run mutate -- --mutate=$(git diff main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
 
   build-docker-image:
     runs-on: ubuntu-latest
