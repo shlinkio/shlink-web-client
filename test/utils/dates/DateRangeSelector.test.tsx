@@ -3,12 +3,13 @@ import { DropdownItem } from 'reactstrap';
 import moment from 'moment';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
+import { Mock } from 'ts-mockery';
 
 describe('<DateRangeSelector />', () => {
   let wrapper: ShallowWrapper;
   const onDatesChange = jest.fn();
   const createWrapper = (props: Partial<DateRangeSelectorProps> = {}) => {
-    wrapper = shallow(<DateRangeSelector {...props} onDatesChange={onDatesChange} />);
+    wrapper = shallow(<DateRangeSelector {...Mock.of<DateRangeSelectorProps>(props)} onDatesChange={onDatesChange} />);
 
     return wrapper;
   };
