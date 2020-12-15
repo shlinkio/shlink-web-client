@@ -50,7 +50,7 @@ export const Overview = (
   return (
     <>
       <div className="row mb-3">
-        <div className="col-sm-4">
+        <div className="col-md-6 col-lg-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
             <CardText tag="h2">
@@ -63,7 +63,7 @@ export const Overview = (
             </CardText>
           </Card>
         </div>
-        <div className="col-sm-4">
+        <div className="col-md-6 col-lg-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
@@ -71,7 +71,7 @@ export const Overview = (
             </CardText>
           </Card>
         </div>
-        <div className="col-sm-4">
+        <div className="col-md-12 col-lg-4">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
             <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>

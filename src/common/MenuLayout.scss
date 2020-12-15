@@ -33,11 +33,11 @@
   color: white;
 }
 
-.menu-layout__container {
+.menu-layout__container.menu-layout__container {
   padding: 20px 0 0;
   min-height: 100%;
 
   @media (min-width: $mdMin) {
-    padding: 30px 15px 0;
+    padding: 30px 0 0 $asideMenuWidth;
   }
 }

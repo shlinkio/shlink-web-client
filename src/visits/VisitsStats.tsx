@@ -4,11 +4,11 @@ import { Button, Card, Nav, NavLink, Progress } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import moment from 'moment';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
-import { formatDate } from '../utils/helpers/date';
+import { formatIsoDate } from '../utils/helpers/date';
 import { ShlinkVisitsParams } from '../utils/services/types';
+import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -46,12 +46,11 @@ const highlightedVisitsToStats = (
 
   return acc;
 }, {});
-const format = formatDate();
 let selectedBar: string | undefined;
+const initialInterval: DateInterval = 'last30Days';
 
 const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits }) => {
-  const [ startDate, setStartDate ] = useState<moment.Moment | null>(null);
-  const [ endDate, setEndDate ] = useState<moment.Moment | null>(null);
+  const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
   const [ activeSection, setActiveSection ] = useState<Section>('byTime');
@@ -83,10 +82,12 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
     }
   };
 
-  useEffect(() => () => cancelGetVisits(), []);
+  useEffect(() => cancelGetVisits, []);
   useEffect(() => {
-    getVisits({ startDate: format(startDate) ?? undefined, endDate: format(endDate) ?? undefined });
-  }, [ startDate, endDate ]);
+    const { startDate, endDate } = dateRange;
+
+    getVisits({ startDate: formatIsoDate(startDate) ?? undefined, endDate: formatIsoDate(endDate) ?? undefined });
+  }, [ dateRange ]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
@@ -227,11 +228,9 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
           <div className="col-lg-7 col-xl-6">
             <DateRangeSelector
               disabled={loading}
+              initialDateRange={initialInterval}
               defaultText="All visits"
-              onDatesChange={({ startDate: newStartDate, endDate: newEndDate }) => {
-                setStartDate(newStartDate ?? null);
-                setEndDate(newEndDate ?? null);
-              }}
+              onDatesChange={setDateRange}
             />
           </div>
           {visits.length > 0 && (

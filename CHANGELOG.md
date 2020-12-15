@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * Charts are now grouped in tabs, so that only one part of the components is rendered at a time.
     * Amount of highlighted visits is now displayed.
     * Date filtering can be now selected through relative times (last 7 days, last 30 days, etc) or absolute dates using date pickers.
+    * Only the visits for last 30 days are loaded by default. You can change that at any moment if required.
 
 ### Changed
 * [#267](https://github.com/shlinkio/shlink-web-client/issues/267) Added some subtle but important improvements on UI/UX.

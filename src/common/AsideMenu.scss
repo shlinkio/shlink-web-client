@@ -1,9 +1,8 @@
 @import '../utils/base';
 @import '../utils/mixins/vertical-align';
 
-$asideMenuMobileWidth: 280px;
-
 .aside-menu {
+  width: $asideMenuWidth;
   background-color: white;
   box-shadow: rgba(0, 0, 0, .05) 0 8px 15px;
   position: fixed !important;
@@ -23,7 +22,6 @@ $asideMenuMobileWidth: 280px;
   }
 
   @media (max-width: $smMax) {
-    width: $asideMenuMobileWidth !important;
     transition: left 300ms;
     top: $headerHeight - 3px;
     box-shadow: -10px 0 50px 11px rgba(0, 0, 0, .55);
@@ -32,7 +30,7 @@ $asideMenuMobileWidth: 280px;
 
 .aside-menu--hidden {
   @media (max-width: $smMax) {
-    left: -($asideMenuMobileWidth + 35px);
+    left: -($asideMenuWidth + 35px);
   }
 }
 
@@ -45,6 +43,10 @@ $asideMenuMobileWidth: 280px;
   margin: 0 -15px;
   text-decoration: none !important;
   cursor: pointer;
+
+  @media (max-width: $smMax) {
+    margin: 0;
+  }
 }
 
 .aside-menu__item:hover {

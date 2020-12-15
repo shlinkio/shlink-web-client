@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
 import moment from 'moment';
+import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
-import { Mock } from 'ts-mockery';
 
 describe('<DateRangeSelector />', () => {
   let wrapper: ShallowWrapper;
