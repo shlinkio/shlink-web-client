@@ -1,6 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { Button } from 'reactstrap';
-import './ErrorHandler.scss';
+import { SimpleCard } from '../utils/SimpleCard';
 
 interface ErrorHandlerState {
   hasError: boolean;
@@ -25,14 +25,16 @@ const ErrorHandler = (
     }
   }
 
-  public render(): ReactNode | undefined {
+  public render(): ReactNode {
     if (this.state.hasError) {
       return (
-        <div className="error-handler">
-          <h1>Oops! This is awkward :S</h1>
-          <p>It seems that something went wrong. Try refreshing the page or just click this button.</p>
-          <br />
-          <Button outline color="primary" onClick={() => location.reload()}>Take me back</Button>
+        <div className="home">
+          <SimpleCard className="p-4">
+            <h1>Oops! This is awkward :S</h1>
+            <p>It seems that something went wrong. Try refreshing the page or just click this button.</p>
+            <br />
+            <Button outline color="primary" onClick={() => location.reload()}>Take me back</Button>
+          </SimpleCard>
         </div>
       );
     }

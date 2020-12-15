@@ -12,3 +12,5 @@ const formatDateFromFormat = (date?: NullableDate, format?: string): OptionalStr
 export const formatDate = (format = 'YYYY-MM-DD') => (date?: NullableDate) => formatDateFromFormat(date, format);
 
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
+
+export const formatInternational = formatDate();

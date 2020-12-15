@@ -1,16 +1,14 @@
-import classNames from 'classnames';
 import { pipe } from 'ramda';
 import { ExternalLink } from 'react-external-link';
 import { versionToPrintable, versionToSemVer } from '../utils/helpers/version';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { isReachableServer } from '../servers/data';
+import { ShlinkVersionsContainerProps } from './ShlinkVersionsContainer';
 
 const SHLINK_WEB_CLIENT_VERSION = '%_VERSION_%';
 const normalizeVersion = pipe(versionToSemVer(), versionToPrintable);
 
-export interface ShlinkVersionsProps {
-  selectedServer: SelectedServer;
+export interface ShlinkVersionsProps extends ShlinkVersionsContainerProps {
   clientVersion?: string;
-  className?: string;
 }
 
 const VersionLink = ({ project, version }: { project: 'shlink' | 'shlink-web-client'; version: string }) => (
@@ -19,13 +17,11 @@ const VersionLink = ({ project, version }: { project: 'shlink' | 'shlink-web-cli
   </ExternalLink>
 );
 
-const ShlinkVersions = (
-  { selectedServer, className, clientVersion = SHLINK_WEB_CLIENT_VERSION }: ShlinkVersionsProps,
-) => {
+const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIENT_VERSION }: ShlinkVersionsProps) => {
   const normalizedClientVersion = normalizeVersion(clientVersion);
 
   return (
-    <small className={classNames('text-muted', className)}>
+    <small className="text-muted">
       {isReachableServer(selectedServer) &&
         <>Server: <VersionLink project="shlink" version={selectedServer.printableVersion} /> - </>
       }

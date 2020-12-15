@@ -1,9 +1,8 @@
 import moment from 'moment';
-import DateInput from './DateInput';
+import DateInput from '../DateInput';
+import { DateRange } from './types';
 
-interface DateRangeRowProps {
-  startDate?: moment.Moment | null;
-  endDate?: moment.Moment | null;
+interface DateRangeRowProps extends DateRange {
   onStartDateChange: (date: moment.Moment | null) => void;
   onEndDateChange: (date: moment.Moment | null) => void;
   disabled?: boolean;
@@ -16,7 +15,7 @@ const DateRangeRow = (
     <div className="col-md-6">
       <DateInput
         selected={startDate}
-        placeholderText="Since"
+        placeholderText="Since..."
         isClearable
         maxDate={endDate ?? undefined}
         disabled={disabled}
@@ -27,7 +26,7 @@ const DateRangeRow = (
       <DateInput
         className="mt-2 mt-md-0"
         selected={endDate}
-        placeholderText="Until"
+        placeholderText="Until..."
         isClearable
         minDate={startDate ?? undefined}
         disabled={disabled}

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import moment from 'moment';
-import DateRangeRow from '../utils/DateRangeRow';
+import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
 import { formatDate } from '../utils/helpers/date';
 import { ShlinkVisitsParams } from '../utils/services/types';
@@ -225,12 +225,13 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
       <section className="mt-4">
         <div className="row flex-md-row-reverse">
           <div className="col-lg-7 col-xl-6">
-            <DateRangeRow
+            <DateRangeSelector
               disabled={loading}
-              startDate={startDate}
-              endDate={endDate}
-              onStartDateChange={setStartDate}
-              onEndDateChange={setEndDate}
+              defaultText="All visits"
+              onDatesChange={({ startDate: newStartDate, endDate: newEndDate }) => {
+                setStartDate(newStartDate ?? null);
+                setEndDate(newEndDate ?? null);
+              }}
             />
           </div>
           {visits.length > 0 && (

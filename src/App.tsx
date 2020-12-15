@@ -16,7 +16,7 @@ const App = (
   CreateServer: FC,
   EditServer: FC,
   Settings: FC,
-  ShlinkVersions: FC,
+  ShlinkVersionsContainer: FC,
 ) => ({ fetchServers, servers }: AppProps) => {
   // On first load, try to fetch the remote servers if the list is empty
   useEffect(() => {
@@ -41,8 +41,8 @@ const App = (
           </Switch>
         </div>
 
-        <div className="shlink-footer text-center text-md-right">
-          <ShlinkVersions />
+        <div className="shlink-footer">
+          <ShlinkVersionsContainer />
         </div>
       </div>
     </div>

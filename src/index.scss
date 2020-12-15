@@ -29,6 +29,17 @@ body,
   background-color: rgba(255, 255, 255, .5);
 }
 
+.container-xl {
+  @media (min-width: $xlgMin) {
+    max-width: 1320px;
+  }
+
+  @media (max-width: $smMax) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
 .dropdown-item:not(:disabled) {
   cursor: pointer;
 }

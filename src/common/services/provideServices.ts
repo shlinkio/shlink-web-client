@@ -5,7 +5,7 @@ import Home from '../Home';
 import MenuLayout from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
 import ErrorHandler from '../ErrorHandler';
-import ShlinkVersions from '../ShlinkVersions';
+import ShlinkVersionsContainer from '../ShlinkVersionsContainer';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 
@@ -40,8 +40,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
-  bottle.serviceFactory('ShlinkVersions', () => ShlinkVersions);
-  bottle.decorator('ShlinkVersions', connect([ 'selectedServer' ]));
+  bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
+  bottle.decorator('ShlinkVersionsContainer', connect([ 'selectedServer' ]));
 
   bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
 };

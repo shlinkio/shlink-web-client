@@ -5,7 +5,6 @@ import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
 import GraphCard from '../../src/visits/helpers/GraphCard';
 import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
-import DateRangeRow from '../../src/utils/DateRangeRow';
 import { Visit, VisitsInfo } from '../../src/visits/types';
 import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
@@ -85,18 +84,6 @@ describe('<VisitStats />', () => {
 
     expect(graphs.length + sortableBarGraphs.length + lineChart.length).toEqual(expectedGraphics);
     expect(table).toHaveLength(expectedTables);
-  });
-
-  it('reloads visits when selected dates change', () => {
-    const wrapper = createComponent({ loading: false, error: false, visits });
-    const dateRange = wrapper.find(DateRangeRow);
-
-    dateRange.simulate('startDateChange', '2016-01-01T00:00:00+01:00');
-    dateRange.simulate('endDateChange', '2016-01-02T00:00:00+01:00');
-    dateRange.simulate('endDateChange', '2016-01-03T00:00:00+01:00');
-
-    expect(wrapper.find(DateRangeRow).prop('startDate')).toEqual('2016-01-01T00:00:00+01:00');
-    expect(wrapper.find(DateRangeRow).prop('endDate')).toEqual('2016-01-03T00:00:00+01:00');
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {

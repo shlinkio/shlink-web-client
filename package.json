@@ -17,8 +17,7 @@
     "test": "node scripts/test.js --env=jsdom --colors",
     "test:ci": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=clover",
     "test:pretty": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=html",
-    "mutate": "./node_modules/.bin/stryker run --concurrency 4",
-    "mutate:ci": "npm run mutate -- --mutate=$MUTATION_FILES"
+    "mutate": "./node_modules/.bin/stryker run --concurrency 4"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
