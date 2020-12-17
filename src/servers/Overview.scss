@@ -1,5 +1,8 @@
+@import '../utils/base';
+
 .overview__card.overview__card {
   text-align: center;
+  border-top: 3px solid $mainColor;
 }
 
 .overview__card-title {
