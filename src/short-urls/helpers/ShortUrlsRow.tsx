@@ -16,7 +16,7 @@ import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
 export interface ShortUrlsRowProps {
-  refreshList?: Function;
+  refreshList?: (params: ShortUrlsListParams) => void;
   shortUrlsListParams?: ShortUrlsListParams;
   selectedServer: SelectedServer;
   shortUrl: ShortUrl;

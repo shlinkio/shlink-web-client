@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardText, CardTitle } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { prettify } from '../utils/helpers/numbers';
@@ -40,6 +40,7 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount } = visitsOverview;
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const history = useHistory();
 
   useEffect(() => {
     listShortUrls({ itemsPerPage: 5, orderBy: { dateCreated: 'DESC' } });
@@ -95,7 +96,12 @@ export const Overview = (
           <Link className="float-right" to={`/server/${serverId}/list-short-urls/1`}>See all &raquo;</Link>
         </CardHeader>
         <CardBody>
-          <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={selectedServer} className="mb-0" />
+          <ShortUrlsTable
+            shortUrlsList={shortUrlsList}
+            selectedServer={selectedServer}
+            className="mb-0"
+            refreshList={({ tags }) => tags?.[0] && history.push(`/server/${serverId}/list-short-urls/1?tag=${tags[0]}`)}
+          />
         </CardBody>
       </Card>
     </>

@@ -12,7 +12,7 @@ export interface ShortUrlsTableProps {
   renderOrderIcon?: (column: OrderableFields) => ReactNode;
   shortUrlsList: ShortUrlsListState;
   selectedServer: SelectedServer;
-  refreshList?: Function;
+  refreshList?: (params: ShortUrlsListParams) => void;
   shortUrlsListParams?: ShortUrlsListParams;
   className?: string;
 }
