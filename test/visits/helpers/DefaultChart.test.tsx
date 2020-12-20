@@ -3,6 +3,7 @@ import { Doughnut, HorizontalBar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import DefaultChart from '../../../src/visits/helpers/DefaultChart';
 import { prettify } from '../../../src/utils/helpers/numbers';
+import { MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../../src/utils/theme';
 
 describe('<DefaultChart />', () => {
   let wrapper: ShallowWrapper;
@@ -62,8 +63,8 @@ describe('<DefaultChart />', () => {
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data') as any;
     const { legend, legendCallback, scales } = horizontal.prop('options') ?? {};
 
-    expect(backgroundColor).toEqual('rgba(70, 150, 229, 0.4)');
-    expect(borderColor).toEqual('rgba(70, 150, 229, 1)');
+    expect(backgroundColor).toEqual(MAIN_COLOR_ALPHA);
+    expect(borderColor).toEqual(MAIN_COLOR);
     expect(legend).toEqual({ display: false });
     expect(legendCallback).toEqual(false);
     expect(scales).toEqual({

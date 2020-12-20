@@ -19,6 +19,7 @@ import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
+import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
 import './LineChartCard.scss';
 
 interface LineChartCardProps {
@@ -173,8 +174,8 @@ const LineChartCard = (
   const data: ChartData = {
     labels,
     datasets: [
-      generateDataset(groupedVisits, 'Visits', '#4696e5'),
-      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, '#F77F28'),
+      generateDataset(groupedVisits, 'Visits', MAIN_COLOR),
+      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR),
     ].filter(Boolean) as ChartDataSets[],
   };
   const options: ChartOptions = {

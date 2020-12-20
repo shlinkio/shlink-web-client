@@ -1,9 +1,11 @@
-interface ShlinkLogoProps {
+import { MAIN_COLOR } from '../../utils/theme';
+
+export interface ShlinkLogoProps {
   color?: string;
   className?: string;
 }
 
-export const ShlinkLogo = ({ color = '#4595e3', className }: ShlinkLogoProps) => (
+export const ShlinkLogo = ({ color = MAIN_COLOR, className }: ShlinkLogoProps) => (
   <svg className={className} viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <g fill={color}>
       <path

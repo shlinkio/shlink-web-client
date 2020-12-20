@@ -1,7 +1,11 @@
+@import '../utils/base';
 @import '../utils/mixins/vertical-align';
 
-.servers-list__list-group {
+.servers-list__list-group.servers-list__list-group {
   width: 100%;
+}
+
+.servers-list__list-group:not(.servers-list__list-group--embedded) {
   max-width: 400px;
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
 }
@@ -12,8 +16,27 @@
   padding: .75rem 2.5rem .75rem 1rem;
 }
 
+.servers-list__server-item:hover {
+  background-color: $lightColor;
+}
+
 .servers-list__server-item-icon {
   @include vertical-align();
 
   right: 1rem;
+}
+
+.servers-list__list-group--embedded.servers-list__list-group--embedded {
+  border-radius: 0;
+  border-top: 1px solid rgba(0, 0, 0, .125);
+
+  @media (min-width: $mdMin) {
+    max-height: 220px;
+    overflow-x: auto;
+  }
+
+  .servers-list__server-item {
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+  }
 }

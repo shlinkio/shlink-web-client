@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
 import { ServerWithId } from './data';
@@ -8,6 +9,7 @@ import './ServersListGroup.scss';
 
 interface ServersListGroup {
   servers: ServerWithId[];
+  embedded?: boolean;
 }
 
 const ServerListItem = ({ id, name }: { id: string; name: string }) => (
@@ -17,13 +19,13 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   </ListGroupItem>
 );
 
-const ServersListGroup: FC<ServersListGroup> = ({ servers, children }) => (
+const ServersListGroup: FC<ServersListGroup> = ({ servers, children, embedded = false }) => (
   <>
-    <div className="container">
-      <h5>{children}</h5>
-    </div>
+    {children && <h5 className="mb-md-3">{children}</h5>}
     {servers.length > 0 && (
-      <ListGroup className="servers-list__list-group mt-md-3">
+      <ListGroup
+        className={classNames('servers-list__list-group', { 'servers-list__list-group--embedded': embedded })}
+      >
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
       </ListGroup>
     )}
