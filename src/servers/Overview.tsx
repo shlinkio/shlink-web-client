@@ -100,7 +100,7 @@ export const Overview = (
             shortUrlsList={shortUrlsList}
             selectedServer={selectedServer}
             className="mb-0"
-            refreshList={({ tags }) => tags?.[0] && history.push(`/server/${serverId}/list-short-urls/1?tag=${tags[0]}`)}
+            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tag=${tag}`)}
           />
         </CardBody>
       </Card>
