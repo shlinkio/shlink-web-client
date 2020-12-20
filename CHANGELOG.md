@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * Date filtering can be now selected through relative times (last 7 days, last 30 days, etc) or absolute dates using date pickers.
     * Only the visits for last 30 days are loaded by default. You can change that at any moment if required.
 
+* [#355](https://github.com/shlinkio/shlink-web-client/issues/355) Improved home page, fixing also its scrolling behavior for mobile devices.
+
 ### Changed
 * [#267](https://github.com/shlinkio/shlink-web-client/issues/267) Added some subtle but important improvements on UI/UX.
 * [#352](https://github.com/shlinkio/shlink-web-client/issues/352) Moved from Scrutinizer to Codecov as the code coverage backend.
