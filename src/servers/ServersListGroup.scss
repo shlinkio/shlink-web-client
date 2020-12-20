@@ -1,5 +1,6 @@
 @import '../utils/base';
 @import '../utils/mixins/vertical-align';
+@import '../utils/mixins/thin-scroll';
 
 .servers-list__list-group.servers-list__list-group {
   width: 100%;
@@ -33,6 +34,8 @@
   @media (min-width: $mdMin) {
     max-height: 220px;
     overflow-x: auto;
+
+    @include thin-scroll();
   }
 
   .servers-list__server-item {
