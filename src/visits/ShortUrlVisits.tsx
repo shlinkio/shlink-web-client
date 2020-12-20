@@ -28,7 +28,6 @@ const ShortUrlVisits = boundToMercureHub(({
 }: ShortUrlVisitsProps) => {
   const { shortCode } = params;
   const { domain } = parseQuery<{ domain?: string }>(search);
-
   const loadVisits = (params: Partial<ShlinkVisitsParams>) => getShortUrlVisits(shortCode, { ...params, domain });
 
   useEffect(() => {

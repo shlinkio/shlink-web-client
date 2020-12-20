@@ -31,11 +31,11 @@ export interface VisitsStatsProps {
 type HighlightableProps = 'referer' | 'country' | 'city';
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
-const sections: Record<Section, { title: string; subPath?: string; icon: IconDefinition }> = {
-  byTime: { title: 'By time', icon: faCalendarAlt },
-  byContext: { title: 'By context', subPath: 'by-context', icon: faChartPie },
-  byLocation: { title: 'By location', subPath: 'by-location', icon: faMapMarkedAlt },
-  list: { title: 'List', subPath: 'list', icon: faList },
+const sections: Record<Section, { title: string; subPath: string; icon: IconDefinition }> = {
+  byTime: { title: 'By time', subPath: '', icon: faCalendarAlt },
+  byContext: { title: 'By context', subPath: '/by-context', icon: faChartPie },
+  byLocation: { title: 'By location', subPath: '/by-location', icon: faMapMarkedAlt },
+  list: { title: 'List', subPath: '/list', icon: faList },
 };
 
 const highlightedVisitsToStats = (
@@ -61,7 +61,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
 
-    return !subPath ? `${baseUrl}${query}` : `${baseUrl}/${subPath}${query}`;
+    return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
   const { visits, loading, loadingLarge, error, progress } = visitsInfo;
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
@@ -133,9 +133,8 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
                   tag={RouterNavLink}
                   className="visits-stats__nav-link"
                   to={buildSectionUrl(subPath)}
-                  isActive={(_: null, { pathname }: Location) =>
-                    (!subPath && pathname.endsWith('/visits')) || (subPath && pathname.endsWith(subPath))
-                  }
+                  isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
+                  replace
                 >
                   <FontAwesomeIcon icon={icon} />
                   <span className="ml-2 d-none d-sm-inline">{title}</span>
@@ -158,7 +157,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
               </div>
             </Route>
 
-            <Route exact path={`${baseUrl}/by-context`}>
+            <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
               <div className="col-xl-4 col-lg-6 mt-4">
                 <GraphCard title="Operating systems" stats={os} />
               </div>
@@ -181,7 +180,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
               </div>
             </Route>
 
-            <Route exact path={`${baseUrl}/by-location`}>
+            <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
               <div className="col-lg-6 mt-4">
                 <SortableBarGraph
                   title="Countries"
@@ -214,7 +213,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
               </div>
             </Route>
 
-            <Route exact path={`${baseUrl}/list`}>
+            <Route exact path={`${baseUrl}${sections.list.subPath}`}>
               <div className="col-12">
                 <VisitsTable
                   visits={normalizedVisits}
@@ -253,7 +252,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
                 className="btn-md-block"
                 onClick={() => setSelectedVisits([])}
               >
-                Reset selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+                Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
               </Button>
             </div>
           )}
