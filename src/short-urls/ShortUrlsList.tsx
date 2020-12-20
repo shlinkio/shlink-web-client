@@ -2,12 +2,12 @@ import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawe
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, keys, values } from 'ramda';
 import { FC, useEffect, useState } from 'react';
-import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { parseQuery } from '../utils/helpers/query';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
@@ -65,8 +65,8 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
   };
 
   useEffect(() => {
-    const query = qs.parse(location.search, { ignoreQueryPrefix: true });
-    const tags = query.tag ? [ query.tag as string ] : shortUrlsListParams.tags;
+    const { tag } = parseQuery<{ tag?: string }>(location.search);
+    const tags = tag ? [ tag ] : shortUrlsListParams.tags;
 
     refreshList({ page: match.params.page, tags, itemsPerPage: undefined });
 
