@@ -1,18 +1,41 @@
 @import '../utils/base';
+@import '../utils/mixins/vertical-align';
 
 .home {
-  text-align: center;
-  height: calc(100vh - #{$headerHeight} - #{($footer-height + $footer-margin)});
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-flow: column;
+  position: relative;
+  padding-top: 15px;
+
+  @media (min-width: $mdMin) {
+    padding-top: 0;
+    height: calc(100vh - #{$headerHeight} - #{($footer-height + $footer-margin)});
+  }
+}
+
+.home__logo {
+  @include vertical-align();
+}
+
+.home__main-card {
+  margin: 0 auto;
+  max-width: 720px;
+
+  @media (min-width: $mdMin) {
+    @include vertical-align();
+  }
 }
 
 .home__title {
+  text-align: center;
   font-size: 1.75rem;
+  margin: 0;
 
   @media (min-width: $mdMin) {
     font-size: 2.2rem;
+  }
+}
+
+.home__servers-container {
+  @media (min-width: $mdMin) {
+    border-left: 1px solid rgba(0, 0, 0, .125);
   }
 }

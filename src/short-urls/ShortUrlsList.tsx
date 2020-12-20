@@ -87,9 +87,8 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
         orderByColumn={orderByColumn}
         renderOrderIcon={renderOrderIcon}
         selectedServer={selectedServer}
-        refreshList={refreshList}
-        shortUrlsListParams={shortUrlsListParams}
         shortUrlsList={shortUrlsList}
+        onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
       />
     </>
   );

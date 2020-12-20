@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { SelectedServer } from '../servers/data';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
-import { OrderableFields, ShortUrlsListParams } from './reducers/shortUrlsListParams';
+import { OrderableFields } from './reducers/shortUrlsListParams';
 import './ShortUrlsTable.scss';
 
 export interface ShortUrlsTableProps {
@@ -12,8 +12,7 @@ export interface ShortUrlsTableProps {
   renderOrderIcon?: (column: OrderableFields) => ReactNode;
   shortUrlsList: ShortUrlsListState;
   selectedServer: SelectedServer;
-  refreshList?: Function;
-  shortUrlsListParams?: ShortUrlsListParams;
+  onTagClick?: (tag: string) => void;
   className?: string;
 }
 
@@ -21,8 +20,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   orderByColumn,
   renderOrderIcon,
   shortUrlsList,
-  refreshList,
-  shortUrlsListParams,
+  onTagClick,
   selectedServer,
   className,
 }: ShortUrlsTableProps) => {
@@ -54,8 +52,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
         key={shortUrl.shortUrl}
         shortUrl={shortUrl}
         selectedServer={selectedServer}
-        refreshList={refreshList}
-        shortUrlsListParams={shortUrlsListParams}
+        onTagClick={onTagClick}
       />
     ));
   };

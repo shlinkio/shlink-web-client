@@ -6,7 +6,7 @@ import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } f
 import classNames from 'classnames';
 import { RouteComponentProps } from 'react-router';
 import { useToggle } from '../utils/helpers/hooks';
-import shlinkLogo from './shlink-logo-white.png';
+import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 
 const MainHeader = (ServersDropdown: FC) => ({ location }: RouteComponentProps) => {
@@ -21,7 +21,7 @@ const MainHeader = (ServersDropdown: FC) => ({ location }: RouteComponentProps) 
   return (
     <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
       <NavbarBrand tag={Link} to="/">
-        <img src={shlinkLogo} alt="Shlink" className="main-header__brand-logo" /> Shlink
+        <ShlinkLogo className="main-header__brand-logo" color="white" /> Shlink
       </NavbarBrand>
 
       <NavbarToggler onClick={toggleOpen}>

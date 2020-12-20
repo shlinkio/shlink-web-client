@@ -1,0 +1,16 @@
+@mixin thin-scroll() {
+  /* Forefox scrollbar */
+  scrollbar-color: rgba(0, 0, 0, .2) #f5f5f5;
+  scrollbar-width: thin;
+
+  /* Chrome webkit scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+    background-color: #f5f5f5;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: .5rem;
+  }
+}

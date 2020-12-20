@@ -7,6 +7,7 @@ import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
+import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../utils/theme';
 import './DefaultChart.scss';
 
 export interface DefaultChartProps {
@@ -33,7 +34,7 @@ const generateGraphData = (
       title,
       label: highlightedData ? 'Non-selected' : 'Visits',
       data,
-      backgroundColor: isBarChart ? 'rgba(70, 150, 229, 0.4)' : [
+      backgroundColor: isBarChart ? MAIN_COLOR_ALPHA : [
         '#97BBCD',
         '#F7464A',
         '#46BFBD',
@@ -46,15 +47,15 @@ const generateGraphData = (
         '#DCDCDC',
         '#463730',
       ],
-      borderColor: isBarChart ? 'rgba(70, 150, 229, 1)' : 'white',
+      borderColor: isBarChart ? MAIN_COLOR : 'white',
       borderWidth: 2,
     },
     highlightedData && {
       title,
       label: highlightedLabel ?? 'Selected',
       data: highlightedData,
-      backgroundColor: 'rgba(247, 127, 40, 0.4)',
-      borderColor: '#F77F28',
+      backgroundColor: HIGHLIGHTED_COLOR_ALPHA,
+      borderColor: HIGHLIGHTED_COLOR,
       borderWidth: 2,
     },
   ].filter(Boolean) as ChartDataSets[],

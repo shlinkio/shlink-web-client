@@ -2,6 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import Home, { HomeProps } from '../../src/common/Home';
 import { ServerWithId } from '../../src/servers/data';
+import { ShlinkLogo } from '../../src/common/img/ShlinkLogo';
 
 describe('<Home />', () => {
   let wrapped: ShallowWrapper;
@@ -19,21 +20,26 @@ describe('<Home />', () => {
 
   afterEach(() => wrapped?.unmount());
 
-  it('shows link to create server when no servers exist', () => {
+  it('renders logo and title', () => {
     const wrapped = createComponent();
 
-    expect(wrapped.find('Link')).toHaveLength(1);
+    expect(wrapped.find(ShlinkLogo)).toHaveLength(1);
+    expect(wrapped.find('.home__title')).toHaveLength(1);
   });
 
-  it('asks to select a server when servers exist', () => {
-    const servers = {
-      '1a': Mock.of<ServerWithId>({ name: 'foo', id: '1' }),
-      '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2' }),
-    };
+  it.each([
+    [
+      {
+        '1a': Mock.of<ServerWithId>({ name: 'foo', id: '1' }),
+        '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2' }),
+      },
+      0,
+    ],
+    [{}, 3 ],
+  ])('shows link to create or set-up server only when no servers exist', (servers, expectedParagraphs) => {
     const wrapped = createComponent({ servers });
-    const span = wrapped.find('span');
+    const p = wrapped.find('p');
 
-    expect(span).toHaveLength(1);
-    expect(span.text()).toContain('Please, select a server.');
+    expect(p).toHaveLength(expectedParagraphs);
   });
 });

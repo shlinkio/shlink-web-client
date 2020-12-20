@@ -5,7 +5,6 @@ import { ExternalLink } from 'react-external-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { ShortUrlsListParams } from '../reducers/shortUrlsListParams';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
 import Tag from '../../tags/helpers/Tag';
@@ -16,8 +15,7 @@ import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
 export interface ShortUrlsRowProps {
-  refreshList?: Function;
-  shortUrlsListParams?: ShortUrlsListParams;
+  onTagClick?: (tag: string) => void;
   selectedServer: SelectedServer;
   shortUrl: ShortUrl;
 }
@@ -26,7 +24,7 @@ const ShortUrlsRow = (
   ShortUrlsRowMenu: FC<ShortUrlsRowMenuProps>,
   colorGenerator: ColorGenerator,
   useStateFlagTimeout: StateFlagTimeout,
-) => ({ shortUrl, selectedServer, refreshList, shortUrlsListParams }: ShortUrlsRowProps) => {
+) => ({ shortUrl, selectedServer, onTagClick }: ShortUrlsRowProps) => {
   const [ copiedToClipboard, setCopiedToClipboard ] = useStateFlagTimeout();
   const [ active, setActive ] = useStateFlagTimeout(false, 500);
   const isFirstRun = useRef(true);
@@ -36,14 +34,12 @@ const ShortUrlsRow = (
       return <i className="indivisible"><small>No tags</small></i>;
     }
 
-    const selectedTags = shortUrlsListParams?.tags ?? [];
-
     return tags.map((tag) => (
       <Tag
         colorGenerator={colorGenerator}
         key={tag}
         text={tag}
-        onClick={() => refreshList?.({ tags: [ ...selectedTags, tag ] })}
+        onClick={() => onTagClick?.(tag)}
       />
     ));
   };

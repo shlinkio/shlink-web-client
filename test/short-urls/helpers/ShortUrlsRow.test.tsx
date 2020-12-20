@@ -43,9 +43,7 @@ describe('<ShortUrlsRow />', () => {
   beforeEach(() => {
     const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
 
-    wrapper = shallow(
-      <ShortUrlsRow shortUrlsListParams={{}} refreshList={mockFunction} selectedServer={server} shortUrl={shortUrl} />,
-    );
+    wrapper = shallow(<ShortUrlsRow selectedServer={server} shortUrl={shortUrl} onTagClick={mockFunction} />);
   });
   afterEach(() => wrapper.unmount());
 
