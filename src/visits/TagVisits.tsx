@@ -14,17 +14,16 @@ export interface TagVisitsProps extends RouteComponentProps<{ tag: string }> {
 
 const TagVisits = (colorGenerator: ColorGenerator) => boundToMercureHub(({
   history: { goBack },
-  match,
+  match: { params, url },
   getTagVisits,
   tagVisits,
   cancelGetTagVisits,
 }: TagVisitsProps) => {
-  const { params } = match;
   const { tag } = params;
   const loadVisits = (params: ShlinkVisitsParams) => getTagVisits(tag, params);
 
   return (
-    <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetTagVisits} visitsInfo={tagVisits}>
+    <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetTagVisits} visitsInfo={tagVisits} baseUrl={url}>
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />
     </VisitsStats>
   );

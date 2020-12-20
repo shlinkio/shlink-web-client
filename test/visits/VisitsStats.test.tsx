@@ -21,6 +21,7 @@ describe('<VisitStats />', () => {
         getVisits={getVisitsMock}
         visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
         cancelGetVisits={() => {}}
+        baseUrl={''}
       />,
     );
 
@@ -66,24 +67,15 @@ describe('<VisitStats />', () => {
     expect(message.html()).toContain('There are no visits matching current filter  :(');
   });
 
-  it.each([
-    [ 0, 1, 0 ],
-    [ 1, 3, 0 ],
-    [ 2, 2, 0 ],
-    [ 3, 0, 1 ],
-  ])('renders expected amount of graphics based on active section', (navIndex, expectedGraphics, expectedTables) => {
+  it('renders expected amount of graphics', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const nav = wrapper.find(NavLink).at(navIndex);
-
-    nav.simulate('click');
-
     const graphs = wrapper.find(GraphCard);
     const sortableBarGraphs = wrapper.find(SortableBarGraph);
     const lineChart = wrapper.find(LineChartCard);
     const table = wrapper.find(VisitsTable);
 
-    expect(graphs.length + sortableBarGraphs.length + lineChart.length).toEqual(expectedGraphics);
-    expect(table).toHaveLength(expectedTables);
+    expect(graphs.length + sortableBarGraphs.length + lineChart.length).toEqual(6);
+    expect(table).toHaveLength(1);
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {

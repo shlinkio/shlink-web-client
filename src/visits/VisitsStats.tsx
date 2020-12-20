@@ -4,6 +4,8 @@ import { Button, Card, Nav, NavLink, Progress } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
+import { Location } from 'history';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
 import { formatIsoDate } from '../utils/helpers/date';
@@ -22,16 +24,18 @@ export interface VisitsStatsProps {
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
   visitsInfo: VisitsInfo;
   cancelGetVisits: () => void;
+  baseUrl: string;
+  domain?: string;
 }
 
 type HighlightableProps = 'referer' | 'country' | 'city';
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
-const sections: Record<Section, { title: string; icon: IconDefinition }> = {
-  byTime: { title: 'By time', icon: faCalendarAlt },
-  byContext: { title: 'By context', icon: faChartPie },
-  byLocation: { title: 'By location', icon: faMapMarkedAlt },
-  list: { title: 'List', icon: faList },
+const sections: Record<Section, { title: string; subPath: string; icon: IconDefinition }> = {
+  byTime: { title: 'By time', subPath: '', icon: faCalendarAlt },
+  byContext: { title: 'By context', subPath: '/by-context', icon: faChartPie },
+  byLocation: { title: 'By location', subPath: '/by-location', icon: faMapMarkedAlt },
+  list: { title: 'List', subPath: '/list', icon: faList },
 };
 
 const highlightedVisitsToStats = (
@@ -49,13 +53,16 @@ const highlightedVisitsToStats = (
 let selectedBar: string | undefined;
 const initialInterval: DateInterval = 'last30Days';
 
-const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits }) => {
+const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain }) => {
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
-  const [ activeSection, setActiveSection ] = useState<Section>('byTime');
-  const onSectionChange = (section: Section) => () => setActiveSection(section);
 
+  const buildSectionUrl = (subPath?: string) => {
+    const query = domain ? `?domain=${domain}` : '';
+
+    return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
+  };
   const { visits, loading, loadingLarge, error, progress } = visitsInfo;
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
@@ -120,12 +127,14 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
         <Card className="visits-stats__nav p-0 mt-4 overflow-hidden" body>
           <Nav pills justified>
             {Object.entries(sections).map(
-              ([ section, { title, icon }]) => (
+              ([ section, { title, icon, subPath }]) => (
                 <NavLink
                   key={section}
-                  active={activeSection === section}
+                  tag={RouterNavLink}
                   className="visits-stats__nav-link"
-                  onClick={onSectionChange(section as Section)}
+                  to={buildSectionUrl(subPath)}
+                  isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
+                  replace
                 >
                   <FontAwesomeIcon icon={icon} />
                   <span className="ml-2 d-none d-sm-inline">{title}</span>
@@ -135,19 +144,20 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
           </Nav>
         </Card>
         <div className="row">
-          {activeSection === 'byTime' && (
-            <div className="col-12 mt-4">
-              <LineChartCard
-                title="Visits during time"
-                visits={normalizedVisits}
-                highlightedVisits={highlightedVisits}
-                highlightedLabel={highlightedLabel}
-                setSelectedVisits={setSelectedVisits}
-              />
-            </div>
-          )}
-          {activeSection === 'byContext' && (
-            <>
+          <Switch>
+            <Route exact path={baseUrl}>
+              <div className="col-12 mt-4">
+                <LineChartCard
+                  title="Visits during time"
+                  visits={normalizedVisits}
+                  highlightedVisits={highlightedVisits}
+                  highlightedLabel={highlightedLabel}
+                  setSelectedVisits={setSelectedVisits}
+                />
+              </div>
+            </Route>
+
+            <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
               <div className="col-xl-4 col-lg-6 mt-4">
                 <GraphCard title="Operating systems" stats={os} />
               </div>
@@ -168,10 +178,9 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
                   onClick={highlightVisitsForProp('referer')}
                 />
               </div>
-            </>
-          )}
-          {activeSection === 'byLocation' && (
-            <>
+            </Route>
+
+            <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
               <div className="col-lg-6 mt-4">
                 <SortableBarGraph
                   title="Countries"
@@ -202,18 +211,20 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
                   onClick={highlightVisitsForProp('city')}
                 />
               </div>
-            </>
-          )}
-          {activeSection === 'list' && (
-            <div className="col-12">
-              <VisitsTable
-                visits={normalizedVisits}
-                selectedVisits={highlightedVisits}
-                setSelectedVisits={setSelectedVisits}
-                isSticky
-              />
-            </div>
-          )}
+            </Route>
+
+            <Route exact path={`${baseUrl}${sections.list.subPath}`}>
+              <div className="col-12">
+                <VisitsTable
+                  visits={normalizedVisits}
+                  selectedVisits={highlightedVisits}
+                  setSelectedVisits={setSelectedVisits}
+                />
+              </div>
+            </Route>
+
+            <Redirect to={baseUrl} />
+          </Switch>
         </div>
       </>
     );
@@ -241,7 +252,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
                 className="btn-md-block"
                 onClick={() => setSelectedVisits([])}
               >
-                Reset selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+                Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
               </Button>
             </div>
           )}

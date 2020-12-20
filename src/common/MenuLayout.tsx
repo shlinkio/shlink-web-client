@@ -65,8 +65,8 @@ const MenuLayout = (
                 <Route exact path="/server/:serverId/overview" component={Overview} />
                 <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
-                <Route exact path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
-                {addTagsVisitsRoute && <Route exact path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
+                <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
+                {addTagsVisitsRoute && <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
                 <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                 <Route
                   render={() => <NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}

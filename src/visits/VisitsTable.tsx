@@ -19,7 +19,6 @@ interface VisitsTableProps {
   visits: NormalizedVisit[];
   selectedVisits?: NormalizedVisit[];
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
-  isSticky?: boolean;
   matchMedia?: (query: string) => MediaQueryList;
 }
 
@@ -56,12 +55,9 @@ const VisitsTable = ({
   visits,
   selectedVisits = [],
   setSelectedVisits,
-  isSticky = false,
   matchMedia = window.matchMedia,
 }: VisitsTableProps) => {
-  const headerCellsClass = classNames('visits-table__header-cell', {
-    'visits-table__sticky': isSticky,
-  });
+  const headerCellsClass = 'visits-table__header-cell visits-table__sticky';
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
 
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
@@ -105,9 +101,7 @@ const VisitsTable = ({
       <thead className="visits-table__header">
         <tr>
           <th
-            className={classNames('visits-table__header-cell text-center', {
-              'visits-table__sticky': isSticky,
-            })}
+            className="visits-table__header-cell visits-table__sticky text-center"
             onClick={() => setSelectedVisits(
               selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : [],
             )}
@@ -183,7 +177,7 @@ const VisitsTable = ({
       {resultSet.total > PAGE_SIZE && (
         <tfoot>
           <tr>
-            <td colSpan={7} className={classNames('visits-table__footer-cell', { 'visits-table__sticky': isSticky })}>
+            <td colSpan={7} className="visits-table__footer-cell visits-table__sticky">
               <div className="row">
                 <div className="col-md-6">
                   <SimplePaginator

@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import qs from 'qs';
 import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../utils/services/types';
+import { parseQuery } from '../utils/helpers/query';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
@@ -18,7 +18,7 @@ export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: st
 
 const ShortUrlVisits = boundToMercureHub(({
   history: { goBack },
-  match,
+  match: { params, url },
   location: { search },
   shortUrlVisits,
   shortUrlDetail,
@@ -26,10 +26,8 @@ const ShortUrlVisits = boundToMercureHub(({
   getShortUrlDetail,
   cancelGetShortUrlVisits,
 }: ShortUrlVisitsProps) => {
-  const { params } = match;
   const { shortCode } = params;
-  const { domain } = qs.parse(search, { ignoreQueryPrefix: true }) as { domain?: string };
-
+  const { domain } = parseQuery<{ domain?: string }>(search);
   const loadVisits = (params: Partial<ShlinkVisitsParams>) => getShortUrlVisits(shortCode, { ...params, domain });
 
   useEffect(() => {
@@ -37,7 +35,13 @@ const ShortUrlVisits = boundToMercureHub(({
   }, []);
 
   return (
-    <VisitsStats getVisits={loadVisits} cancelGetVisits={cancelGetShortUrlVisits} visitsInfo={shortUrlVisits}>
+    <VisitsStats
+      getVisits={loadVisits}
+      cancelGetVisits={cancelGetShortUrlVisits}
+      visitsInfo={shortUrlVisits}
+      baseUrl={url}
+      domain={domain}
+    >
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
