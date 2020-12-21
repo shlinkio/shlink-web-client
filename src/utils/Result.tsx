@@ -3,8 +3,10 @@ import { Row } from 'reactstrap';
 import classNames from 'classnames';
 import { SimpleCard } from './SimpleCard';
 
-interface ResultProps {
-  type: 'success' | 'error' | 'warning';
+export type ResultType = 'success' | 'error' | 'warning';
+
+export interface ResultProps {
+  type: ResultType;
   className?: string;
   small?: boolean;
 }
