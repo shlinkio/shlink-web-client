@@ -5,6 +5,7 @@ import { Mock } from 'ts-mockery';
 import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
+import { Result } from '../../../src/utils/Result';
 
 describe('<CreateShortUrlResult />', () => {
   let wrapper: ShallowWrapper;
@@ -24,7 +25,7 @@ describe('<CreateShortUrlResult />', () => {
 
   it('renders an error when error is true', () => {
     const wrapper = createWrapper(Mock.all<ShortUrl>(), true);
-    const errorCard = wrapper.find('.bg-danger');
+    const errorCard = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(errorCard).toHaveLength(1);
     expect(errorCard.html()).toContain('An error occurred while creating the URL :(');

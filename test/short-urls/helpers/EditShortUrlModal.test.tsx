@@ -4,6 +4,7 @@ import { Mock } from 'ts-mockery';
 import EditShortUrlModal from '../../../src/short-urls/helpers/EditShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlEdition } from '../../../src/short-urls/reducers/shortUrlEdition';
+import { Result } from '../../../src/utils/Result';
 
 describe('<EditShortUrlModal />', () => {
   let wrapper: ShallowWrapper;
@@ -31,7 +32,7 @@ describe('<EditShortUrlModal />', () => {
     [ true, 1 ],
   ])('properly renders form with expected components', (error, expectedErrorLength) => {
     const wrapper = createWrapper({}, { saving: false, error });
-    const errorElement = wrapper.find('.bg-danger');
+    const errorElement = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
     const form = wrapper.find('form');
     const formGroup = form.find(FormGroup);
 

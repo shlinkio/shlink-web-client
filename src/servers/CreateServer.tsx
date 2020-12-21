@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { v4 as uuid } from 'uuid';
 import { RouterProps } from 'react-router';
-import classNames from 'classnames';
+import { Result } from '../utils/Result';
 import NoMenuLayout from '../common/NoMenuLayout';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
@@ -15,19 +15,11 @@ interface CreateServerProps extends RouterProps {
   createServer: (server: ServerWithId) => void;
 }
 
-const Result: FC<{ type: 'success' | 'error' }> = ({ children, type }) => (
-  <div className="row">
-    <div className="col-md-10 offset-md-1">
-      <div
-        className={classNames('p-2 mt-3 text-white text-center', {
-          'bg-main': type === 'success',
-          'bg-danger': type === 'error',
-        })}
-      >
-        {children}
-      </div>
-    </div>
-  </div>
+const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
+  <Result type={type}>
+    {type === 'success' && 'Servers properly imported. You can now select one from the list :)'}
+    {type === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
+  </Result>
 );
 
 const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
@@ -49,8 +41,12 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
         <button className="btn btn-outline-primary">Create server</button>
       </ServerForm>
 
-      {serversImported && <Result type="success">Servers properly imported. You can now select one from the list :)</Result>}
-      {errorImporting && <Result type="error">The servers could not be imported. Make sure the format is correct.</Result>}
+      {(serversImported || errorImporting) && (
+        <div className="mt-4">
+          {serversImported && <ImportResult type="success" />}
+          {errorImporting && <ImportResult type="error" />}
+        </div>
+      )}
     </NoMenuLayout>
   );
 };

@@ -10,6 +10,7 @@ import DateInput from '../../utils/DateInput';
 import { formatIsoDate } from '../../utils/helpers/date';
 import { ShortUrl, ShortUrlMeta, ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, Nullable, OptionalString } from '../../utils/utils';
+import { Result } from '../../utils/Result';
 
 interface EditMetaModalConnectProps extends ShortUrlModalProps {
   shortUrlMeta: ShortUrlMetaEdition;
@@ -78,9 +79,9 @@ const EditMetaModal = (
             />
           </FormGroup>
           {error && (
-            <div className="p-2 mt-2 bg-danger text-white text-center">
+            <Result type="error" small className="mt-2">
               Something went wrong while saving the metadata :(
-            </div>
+            </Result>
           )}
         </ModalBody>
         <ModalFooter>

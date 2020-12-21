@@ -5,6 +5,7 @@ import { ShortUrlTags } from '../reducers/shortUrlTags';
 import { ShortUrlModalProps } from '../data';
 import { OptionalString } from '../../utils/utils';
 import { TagsSelectorProps } from '../../tags/helpers/TagsSelector';
+import { Result } from '../../utils/Result';
 
 interface EditTagsModalProps extends ShortUrlModalProps {
   shortUrlTags: ShortUrlTags;
@@ -32,9 +33,9 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
       <ModalBody>
         <TagsSelector tags={selectedTags} onChange={setSelectedTags} />
         {shortUrlTags.error && (
-          <div className="p-2 mt-2 bg-danger text-white text-center">
+          <Result type="error" small className="mt-2">
             Something went wrong while saving the tags :(
-          </div>
+          </Result>
         )}
       </ModalBody>
       <ModalFooter>

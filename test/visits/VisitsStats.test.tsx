@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Card, NavLink, Progress } from 'reactstrap';
+import { Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
@@ -8,6 +8,7 @@ import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import { Visit, VisitsInfo } from '../../src/visits/types';
 import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
+import { Result } from '../../src/utils/Result';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -53,7 +54,7 @@ describe('<VisitStats />', () => {
 
   it('renders an error message when visits could not be loaded', () => {
     const wrapper = createComponent({ loading: false, error: true, visits: [] });
-    const errorMessage = wrapper.find(Card);
+    const errorMessage = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(errorMessage).toHaveLength(1);
     expect(errorMessage.html()).toContain('An error occurred while loading visits :(');
@@ -80,10 +81,6 @@ describe('<VisitStats />', () => {
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const locationNav = wrapper.find(NavLink).at(2);
-
-    locationNav.simulate('click');
-
     const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
     const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
 

@@ -30,12 +30,12 @@ describe('<CreateServer />', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(ServerForm)).toHaveLength(1);
-    expect(wrapper.find('Result')).toHaveLength(0);
+    expect(wrapper.find('ImportResult')).toHaveLength(0);
   });
 
   it('shows success message when imported is true', () => {
     const wrapper = createWrapper(true);
-    const result = wrapper.find('Result');
+    const result = wrapper.find('ImportResult');
 
     expect(result).toHaveLength(1);
     expect(result.prop('type')).toEqual('success');
@@ -43,7 +43,7 @@ describe('<CreateServer />', () => {
 
   it('shows error message when import failed', () => {
     const wrapper = createWrapper(false, true);
-    const result = wrapper.find('Result');
+    const result = wrapper.find('ImportResult');
 
     expect(result).toHaveLength(1);
     expect(result.prop('type')).toEqual('error');

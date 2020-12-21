@@ -7,6 +7,7 @@ import SearchField from '../../src/utils/SearchField';
 import { rangeOf } from '../../src/utils/utils';
 import { TagsList } from '../../src/tags/reducers/tagsList';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { Result } from '../../src/utils/Result';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
@@ -41,7 +42,7 @@ describe('<TagsList />', () => {
 
   it('shows an error when tags failed to be loaded', () => {
     const wrapper = createWrapper({ error: true });
-    const errorMsg = wrapper.find('.bg-danger');
+    const errorMsg = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(errorMsg).toHaveLength(1);
     expect(errorMsg.html()).toContain('Error loading tags :(');

@@ -4,9 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil } from 'ramda';
 import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Card, CardBody, Tooltip } from 'reactstrap';
+import { Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
+import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
@@ -25,9 +26,10 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
 
   if (error) {
     return (
-      <Card body color="danger" inverse className="bg-danger mt-3">
+      <Result type="error" className="mt-3">
+        {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
         An error occurred while creating the URL :(
-      </Card>
+      </Result>
     );
   }
 
@@ -38,26 +40,24 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
   const { shortUrl } = result;
 
   return (
-    <Card inverse className="bg-main mt-3">
-      <CardBody>
-        {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
-        <b>Great!</b> The short URL is <b>{shortUrl}</b>
+    <Result type="success" className="mt-3">
+      {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
+      <b>Great!</b> The short URL is <b>{shortUrl}</b>
 
-        <CopyToClipboard text={shortUrl} onCopy={setShowCopyTooltip}>
-          <button
-            className="btn btn-light btn-sm create-short-url-result__copy-btn"
-            id="copyBtn"
-            type="button"
-          >
-            <FontAwesomeIcon icon={copyIcon} /> Copy
-          </button>
-        </CopyToClipboard>
+      <CopyToClipboard text={shortUrl} onCopy={setShowCopyTooltip}>
+        <button
+          className="btn btn-light btn-sm create-short-url-result__copy-btn"
+          id="copyBtn"
+          type="button"
+        >
+          <FontAwesomeIcon icon={copyIcon} /> Copy
+        </button>
+      </CopyToClipboard>
 
-        <Tooltip placement="left" isOpen={showCopyTooltip} target="copyBtn">
-          Copied!
-        </Tooltip>
-      </CardBody>
-    </Card>
+      <Tooltip placement="left" isOpen={showCopyTooltip} target="copyBtn">
+        Copied!
+      </Tooltip>
+    </Result>
   );
 };
 

@@ -17,17 +17,15 @@ export const ServerError = (DeleteServerButton: FC<DeleteServerButtonProps>): FC
 ) => (
   <NoMenuLayout>
     <div className="server-error__container flex-column">
-      <div className="row w-100 mb-3 mb-md-5">
-        <Message type="error" fullWidth noMargin>
-          {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
-          {isServerWithId(selectedServer) && (
-            <>
-              <p>Oops! Could not connect to this Shlink server.</p>
-              Make sure you have internet connection, and the server is properly configured and on-line.
-            </>
-          )}
-        </Message>
-      </div>
+      <Message className="w-100 mb-3 mb-md-5" type="error" fullWidth>
+        {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
+        {isServerWithId(selectedServer) && (
+          <>
+            <p>Oops! Could not connect to this Shlink server.</p>
+            Make sure you have internet connection, and the server is properly configured and on-line.
+          </>
+        )}
+      </Message>
 
       <ServersListGroup servers={Object.values(servers)}>
         These are the Shlink servers currently configured. Choose one of

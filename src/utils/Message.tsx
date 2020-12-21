@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Card } from 'reactstrap';
+import { Card, Row } from 'reactstrap';
 import classNames from 'classnames';
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,32 +23,31 @@ const getTextClassForType = (type: MessageType) => {
   return map[type];
 };
 
-interface MessageProps {
-  noMargin?: boolean;
+export interface MessageProps {
+  className?: string;
   loading?: boolean;
   fullWidth?: boolean;
   type?: MessageType;
 }
 
-const Message: FC<MessageProps> = (
-  { children, loading = false, noMargin = false, type = 'default', fullWidth = false },
-) => {
-  const cardClasses = classNames(getClassForType(type), { 'mt-4': !noMargin });
+const Message: FC<MessageProps> = ({ className, children, loading = false, type = 'default', fullWidth = false }) => {
   const classes = classNames({
     'col-md-12': fullWidth,
     'col-md-10 offset-md-1': !fullWidth,
   });
 
   return (
-    <div className={classes}>
-      <Card className={cardClasses} body>
-        <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>
-          {loading && <FontAwesomeIcon icon={preloader} spin />}
-          {loading && <span className="ml-2">{children ?? 'Loading...'}</span>}
-          {!loading && children}
-        </h3>
-      </Card>
-    </div>
+    <Row noGutters className={className}>
+      <div className={classes}>
+        <Card className={getClassForType(type)} body>
+          <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>
+            {loading && <FontAwesomeIcon icon={preloader} spin />}
+            {loading && <span className="ml-2">{children ?? 'Loading...'}</span>}
+            {!loading && children}
+          </h3>
+        </Card>
+      </div>
+    </Row>
   );
 };
 

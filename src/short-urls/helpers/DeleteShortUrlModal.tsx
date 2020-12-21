@@ -4,6 +4,7 @@ import { identity, pipe } from 'ramda';
 import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, OptionalString } from '../../utils/utils';
+import { Result } from '../../utils/Result';
 
 const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
 
@@ -42,25 +43,26 @@ const DeleteShortUrlModal = (
         <ModalBody>
           <p><b className="text-danger">Caution!</b> You are about to delete a short URL.</p>
           <p>This action cannot be undone. Once you have deleted it, all the visits stats will be lost.</p>
+          <p>Write <b>{shortUrl.shortCode}</b> to confirm deletion.</p>
 
           <input
             type="text"
             className="form-control"
-            placeholder="Insert the short code of the URL"
+            placeholder={`Insert the short code (${shortUrl.shortCode})`}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
 
           {hasThresholdError && (
-            <div className="p-2 mt-2 bg-warning text-center">
+            <Result type="warning" small className="mt-2">
               {errorData?.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
               {!errorData?.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
-            </div>
+            </Result>
           )}
           {hasErrorOtherThanThreshold && (
-            <div className="p-2 mt-2 bg-danger text-white text-center">
+            <Result type="error" small className="mt-2">
               Something went wrong while deleting the URL :(
-            </div>
+            </Result>
           )}
         </ModalBody>
         <ModalFooter>
