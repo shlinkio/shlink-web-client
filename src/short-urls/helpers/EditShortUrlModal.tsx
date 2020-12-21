@@ -4,6 +4,7 @@ import { ExternalLink } from 'react-external-link';
 import { ShortUrlEdition } from '../reducers/shortUrlEdition';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../../utils/utils';
 import { ShortUrlModalProps } from '../data';
+import { Result } from '../../utils/Result';
 
 interface EditShortUrlModalProps extends ShortUrlModalProps {
   shortUrlEdition: ShortUrlEdition;
@@ -34,9 +35,9 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
             />
           </FormGroup>
           {error && (
-            <div className="p-2 mt-2 bg-danger text-white text-center">
+            <Result type="error" small textCentered className="mt-2">
               Something went wrong while saving the long URL :(
-            </div>
+            </Result>
           )}
         </ModalBody>
         <ModalFooter>

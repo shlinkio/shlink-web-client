@@ -11,6 +11,7 @@ import Message from '../utils/Message';
 import { formatIsoDate } from '../utils/helpers/date';
 import { ShlinkVisitsParams } from '../utils/services/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
+import { Result } from '../utils/Result';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -130,11 +131,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
     }
 
     if (error) {
-      return (
-        <Card body inverse color="danger">
-          An error occurred while loading visits :(
-        </Card>
-      );
+      return <Result type="error">An error occurred while loading visits :(</Result>;
     }
 
     if (isEmpty(visits)) {

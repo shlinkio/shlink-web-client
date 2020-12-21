@@ -5,6 +5,7 @@ import DeleteShortUrlModal from '../../../src/short-urls/helpers/DeleteShortUrlM
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { ProblemDetailsError } from '../../../src/utils/services/types';
+import { Result } from '../../../src/utils/Result';
 
 describe('<DeleteShortUrlModal />', () => {
   let wrapper: ShallowWrapper;
@@ -48,7 +49,7 @@ describe('<DeleteShortUrlModal />', () => {
       shortCode: 'abc123',
       errorData: Mock.of<ProblemDetailsError>(errorData),
     });
-    const warning = wrapper.find('.bg-warning');
+    const warning = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'warning');
 
     expect(warning).toHaveLength(1);
     expect(warning.html()).toContain(expectedMessage);
@@ -61,7 +62,7 @@ describe('<DeleteShortUrlModal />', () => {
       shortCode: 'abc123',
       errorData: Mock.of<ProblemDetailsError>({ type: 'OTHER_ERROR' }),
     });
-    const error = wrapper.find('.bg-danger');
+    const error = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(error).toHaveLength(1);
     expect(error.html()).toContain('Something went wrong while deleting the URL :(');

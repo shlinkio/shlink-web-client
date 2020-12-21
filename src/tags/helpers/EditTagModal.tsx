@@ -9,6 +9,7 @@ import ColorGenerator from '../../utils/services/ColorGenerator';
 import { TagModalProps } from '../data';
 import { TagEdition } from '../reducers/tagEdit';
 import './EditTagModal.scss';
+import { Result } from '../../utils/Result';
 
 interface EditTagModalProps extends TagModalProps {
   tagEdit: TagEdition;
@@ -55,9 +56,9 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
           </div>
 
           {tagEdit.error && (
-            <div className="p-2 mt-2 bg-danger text-white text-center">
+            <Result type="error" small textCentered className="mt-2">
               Something went wrong while editing the tag :(
-            </div>
+            </Result>
           )}
         </ModalBody>
         <ModalFooter>

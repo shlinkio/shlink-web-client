@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Card, Progress } from 'reactstrap';
+import { Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
@@ -8,6 +8,7 @@ import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import { Visit, VisitsInfo } from '../../src/visits/types';
 import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
+import { Result } from '../../src/utils/Result';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -53,7 +54,7 @@ describe('<VisitStats />', () => {
 
   it('renders an error message when visits could not be loaded', () => {
     const wrapper = createComponent({ loading: false, error: true, visits: [] });
-    const errorMessage = wrapper.find(Card);
+    const errorMessage = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(errorMessage).toHaveLength(1);
     expect(errorMessage.html()).toContain('An error occurred while loading visits :(');

@@ -1,6 +1,7 @@
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { TagDeletion } from '../reducers/tagDelete';
 import { TagModalProps } from '../data';
+import { Result } from '../../utils/Result';
 
 interface DeleteTagConfirmModalProps extends TagModalProps {
   deleteTag: (tag: string) => Promise<void>;
@@ -25,9 +26,9 @@ const DeleteTagConfirmModal = (
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?
         {tagDelete.error && (
-          <div className="p-2 mt-2 bg-danger text-white text-center">
+          <Result type="error" small textCentered className="mt-2">
             Something went wrong while deleting the tag :(
-          </div>
+          </Result>
         )}
       </ModalBody>
       <ModalFooter>

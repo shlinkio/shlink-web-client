@@ -4,6 +4,7 @@ import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
 import { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { Result } from '../utils/Result';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagCardProps } from './TagCard';
 
@@ -32,7 +33,7 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     }
 
     if (tagsList.error) {
-      return <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>;
+      return <Result type="error">Error loading tags :(</Result>;
     }
 
     const tagsCount = tagsList.filteredTags.length;

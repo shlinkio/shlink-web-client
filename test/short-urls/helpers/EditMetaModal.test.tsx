@@ -4,6 +4,7 @@ import { Mock } from 'ts-mockery';
 import EditMetaModal from '../../../src/short-urls/helpers/EditMetaModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlMetaEdition } from '../../../src/short-urls/reducers/shortUrlMeta';
+import { Result } from '../../../src/utils/Result';
 
 describe('<EditMetaModal />', () => {
   let wrapper: ShallowWrapper;
@@ -30,7 +31,7 @@ describe('<EditMetaModal />', () => {
 
   it('properly renders form with components', () => {
     const wrapper = createWrapper({ saving: false, error: false });
-    const error = wrapper.find('.bg-danger');
+    const error = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
     const form = wrapper.find('form');
     const formGroup = form.find(FormGroup);
 
@@ -52,7 +53,7 @@ describe('<EditMetaModal />', () => {
 
   it('renders error message on error', () => {
     const wrapper = createWrapper({ saving: false, error: true });
-    const error = wrapper.find('.bg-danger');
+    const error = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
 
     expect(error).toHaveLength(1);
   });
