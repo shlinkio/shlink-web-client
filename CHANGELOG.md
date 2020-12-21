@@ -24,7 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 * [#267](https://github.com/shlinkio/shlink-web-client/issues/267) Added some subtle but important improvements on UI/UX.
 * [#352](https://github.com/shlinkio/shlink-web-client/issues/352) Moved from Scrutinizer to Codecov as the code coverage backend.
-* [#217](https://github.com/shlinkio/shlink-web-client/issues/217) Improved how messages are displayed, by centralizing it in the `Message` and `Result` components..
+* [#217](https://github.com/shlinkio/shlink-web-client/issues/217) Improved how messages are displayed, by centralizing it in the `Message` and `Result` components.
+* [#219](https://github.com/shlinkio/shlink-web-client/issues/219) Improved error messages when something fails while interacting with Shlink's API.
 
 ### Deprecated
 * *Nothing*
