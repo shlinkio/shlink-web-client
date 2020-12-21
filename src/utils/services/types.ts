@@ -77,10 +77,18 @@ export interface ProblemDetailsError {
   [extraProps: string]: any;
 }
 
-export interface InvalidArgumentError extends ProblemDetailsError {
+interface InvalidArgumentError extends ProblemDetailsError {
   type: 'INVALID_ARGUMENT';
   invalidElements: string[];
 }
 
+interface InvalidShortUrlDeletion extends ProblemDetailsError {
+  type: 'INVALID_SHORTCODE_DELETION';
+  threshold?: number;
+}
+
 export const isInvalidArgumentError = (error?: ProblemDetailsError): error is InvalidArgumentError =>
   error?.type === 'INVALID_ARGUMENT';
+
+export const isInvalidDeletionError = (error?: ProblemDetailsError): error is InvalidShortUrlDeletion =>
+  error?.type === 'INVALID_SHORTCODE_DELETION';
