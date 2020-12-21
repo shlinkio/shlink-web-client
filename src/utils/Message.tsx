@@ -23,7 +23,7 @@ const getTextClassForType = (type: MessageType) => {
   return map[type];
 };
 
-interface MessageProps {
+export interface MessageProps {
   className?: string;
   loading?: boolean;
   fullWidth?: boolean;
