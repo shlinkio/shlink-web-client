@@ -4,6 +4,8 @@ import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -17,10 +19,15 @@ export interface ShortUrlTags {
   tags: string[];
   saving: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
 }
 
 export interface EditShortUrlTagsAction extends Action<string>, ShortUrlIdentifier {
   tags: string[];
+}
+
+export interface EditShortUrlTagsFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
 }
 
 const initialState: ShortUrlTags = {
@@ -30,9 +37,9 @@ const initialState: ShortUrlTags = {
   error: false,
 };
 
-export default buildReducer<ShortUrlTags, EditShortUrlTagsAction>({
+export default buildReducer<ShortUrlTags, EditShortUrlTagsAction & EditShortUrlTagsFailedAction>({
   [EDIT_SHORT_URL_TAGS_START]: (state) => ({ ...state, saving: true, error: false }),
-  [EDIT_SHORT_URL_TAGS_ERROR]: (state) => ({ ...state, saving: false, error: true }),
+  [EDIT_SHORT_URL_TAGS_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
   [SHORT_URL_TAGS_EDITED]: (_, { shortCode, tags }) => ({ shortCode, tags, saving: false, error: false }),
   [RESET_EDIT_SHORT_URL_TAGS]: () => initialState,
 }, initialState);
@@ -50,7 +57,7 @@ export const editShortUrlTags = (buildShlinkApiClient: ShlinkApiClientBuilder) =
 
     dispatch<EditShortUrlTagsAction>({ tags: normalizedTags, shortCode, domain, type: SHORT_URL_TAGS_EDITED });
   } catch (e) {
-    dispatch({ type: EDIT_SHORT_URL_TAGS_ERROR });
+    dispatch<EditShortUrlTagsFailedAction>({ type: EDIT_SHORT_URL_TAGS_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

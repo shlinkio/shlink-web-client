@@ -18,6 +18,8 @@ import {
   ShlinkVisitsOverview,
 } from './types';
 
+// TODO Move this file to api module
+
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
 

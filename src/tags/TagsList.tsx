@@ -5,6 +5,7 @@ import SearchField from '../utils/SearchField';
 import { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Result } from '../utils/Result';
+import { ShlinkApiError } from '../api/ShlinkApiError';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagCardProps } from './TagCard';
 
@@ -33,7 +34,11 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     }
 
     if (tagsList.error) {
-      return <Result type="error">Error loading tags :(</Result>;
+      return (
+        <Result type="error">
+          <ShlinkApiError errorData={tagsList.errorData} fallbackMessage="Error loading tags :(" />
+        </Result>
+      );
     }
 
     const tagsCount = tagsList.filteredTags.length;

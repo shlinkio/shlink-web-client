@@ -11,6 +11,7 @@ import { formatIsoDate } from '../../utils/helpers/date';
 import { ShortUrl, ShortUrlMeta, ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, Nullable, OptionalString } from '../../utils/utils';
 import { Result } from '../../utils/Result';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface EditMetaModalConnectProps extends ShortUrlModalProps {
   shortUrlMeta: ShortUrlMetaEdition;
@@ -27,7 +28,7 @@ const dateOrNull = (shortUrl: ShortUrl | undefined, dateName: 'validSince' | 'va
 const EditMetaModal = (
   { isOpen, toggle, shortUrl, shortUrlMeta, editShortUrlMeta, resetShortUrlMeta }: EditMetaModalConnectProps,
 ) => {
-  const { saving, error } = shortUrlMeta;
+  const { saving, error, errorData } = shortUrlMeta;
   const url = shortUrl && (shortUrl.shortUrl || '');
   const [ validSince, setValidSince ] = useState(dateOrNull(shortUrl, 'validSince'));
   const [ validUntil, setValidUntil ] = useState(dateOrNull(shortUrl, 'validUntil'));
@@ -78,9 +79,13 @@ const EditMetaModal = (
               onChange={(e: ChangeEvent<HTMLInputElement>) => setMaxVisits(Number(e.target.value))}
             />
           </FormGroup>
+
           {error && (
             <Result type="error" small className="mt-2">
-              Something went wrong while saving the metadata :(
+              <ShlinkApiError
+                errorData={errorData}
+                fallbackMessage="Something went wrong while saving the metadata :("
+              />
             </Result>
           )}
         </ModalBody>

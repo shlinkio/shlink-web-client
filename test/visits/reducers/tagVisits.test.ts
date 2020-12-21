@@ -103,7 +103,7 @@ describe('tagVisitsReducer', () => {
     beforeEach(jest.resetAllMocks);
 
     it('dispatches start and error when promise is rejected', async () => {
-      const ShlinkApiClient = buildApiClientMock(Promise.reject());
+      const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
       await getTagVisits(() => ShlinkApiClient)('foo')(dispatchMock, getState);
 

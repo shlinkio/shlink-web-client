@@ -1,17 +1,23 @@
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
+import { ProblemDetailsError } from '../../utils/services/types';
 
 export interface VisitsInfo {
   visits: Visit[];
   loading: boolean;
   loadingLarge: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
   progress: number;
   cancelLoad: boolean;
 }
 
 export interface VisitsLoadProgressChangedAction extends Action<string> {
   progress: number;
+}
+
+export interface VisitsLoadFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
 }
 
 interface VisitLocation {

@@ -2,6 +2,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { TagDeletion } from '../reducers/tagDelete';
 import { TagModalProps } from '../data';
 import { Result } from '../../utils/Result';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteTagConfirmModalProps extends TagModalProps {
   deleteTag: (tag: string) => Promise<void>;
@@ -12,6 +13,7 @@ interface DeleteTagConfirmModalProps extends TagModalProps {
 const DeleteTagConfirmModal = (
   { tag, toggle, isOpen, deleteTag, tagDelete, tagDeleted }: DeleteTagConfirmModalProps,
 ) => {
+  const { deleting, error, errorData } = tagDelete;
   const doDelete = async () => {
     await deleteTag(tag);
     tagDeleted(tag);
@@ -25,16 +27,16 @@ const DeleteTagConfirmModal = (
       </ModalHeader>
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?
-        {tagDelete.error && (
+        {error && (
           <Result type="error" small className="mt-2">
-            Something went wrong while deleting the tag :(
+            <ShlinkApiError errorData={errorData} fallbackMessage="Something went wrong while deleting the tag :(" />
           </Result>
         )}
       </ModalBody>
       <ModalFooter>
         <button className="btn btn-link" onClick={toggle}>Cancel</button>
-        <button className="btn btn-danger" disabled={tagDelete.deleting} onClick={doDelete}>
-          {tagDelete.deleting ? 'Deleting tag...' : 'Delete tag'}
+        <button className="btn btn-danger" disabled={deleting} onClick={doDelete}>
+          {deleting ? 'Deleting tag...' : 'Delete tag'}
         </button>
       </ModalFooter>
     </Modal>

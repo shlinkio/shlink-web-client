@@ -5,8 +5,8 @@ import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, OptionalString } from '../../utils/utils';
 import { Result } from '../../utils/Result';
-
-const THRESHOLD_REACHED = 'INVALID_SHORTCODE_DELETION';
+import { isInvalidDeletionError } from '../../utils/services/types';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;
@@ -22,9 +22,6 @@ const DeleteShortUrlModal = (
   useEffect(() => resetDeleteShortUrl, []);
 
   const { error, errorData } = shortUrlDeletion;
-  const errorCode = error && errorData?.type;
-  const hasThresholdError = errorCode === THRESHOLD_REACHED;
-  const hasErrorOtherThanThreshold = error && errorCode !== THRESHOLD_REACHED;
   const close = pipe(resetDeleteShortUrl, toggle);
   const handleDeleteUrl = handleEventPreventingDefault(() => {
     const { shortCode, domain } = shortUrl;
@@ -53,15 +50,9 @@ const DeleteShortUrlModal = (
             onChange={(e) => setInputValue(e.target.value)}
           />
 
-          {hasThresholdError && (
-            <Result type="warning" small className="mt-2">
-              {errorData?.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
-              {!errorData?.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
-            </Result>
-          )}
-          {hasErrorOtherThanThreshold && (
-            <Result type="error" small className="mt-2">
-              Something went wrong while deleting the URL :(
+          {error && (
+            <Result type={isInvalidDeletionError(errorData) ? 'warning' : 'error'} small className="mt-2">
+              <ShlinkApiError errorData={errorData} fallbackMessage="Something went wrong while deleting the URL :(" />
             </Result>
           )}
         </ModalBody>

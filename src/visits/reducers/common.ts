@@ -1,7 +1,8 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { ShlinkPaginator, ShlinkVisits } from '../../utils/services/types';
-import { Visit } from '../types';
+import { Visit, VisitsLoadFailedAction } from '../types';
+import { parseApiError } from '../../api/util';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;
@@ -71,6 +72,6 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 
     dispatch({ ...extraFinishActionData, visits, type: actionMap.finish });
   } catch (e) {
-    dispatch({ type: actionMap.error });
+    dispatch<VisitsLoadFailedAction>({ type: actionMap.error, errorData: parseApiError(e) });
   }
 };

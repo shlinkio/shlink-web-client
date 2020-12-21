@@ -5,6 +5,7 @@ import { ShortUrlEdition } from '../reducers/shortUrlEdition';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../../utils/utils';
 import { ShortUrlModalProps } from '../data';
 import { Result } from '../../utils/Result';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface EditShortUrlModalProps extends ShortUrlModalProps {
   shortUrlEdition: ShortUrlEdition;
@@ -12,7 +13,7 @@ interface EditShortUrlModalProps extends ShortUrlModalProps {
 }
 
 const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl }: EditShortUrlModalProps) => {
-  const { saving, error } = shortUrlEdition;
+  const { saving, error, errorData } = shortUrlEdition;
   const url = shortUrl?.shortUrl ?? '';
   const [ longUrl, setLongUrl ] = useState(shortUrl.longUrl);
 
@@ -36,7 +37,10 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
           </FormGroup>
           {error && (
             <Result type="error" small className="mt-2">
-              Something went wrong while saving the long URL :(
+              <ShlinkApiError
+                errorData={errorData}
+                fallbackMessage="Something went wrong while saving the long URL :("
+              />
             </Result>
           )}
         </ModalBody>

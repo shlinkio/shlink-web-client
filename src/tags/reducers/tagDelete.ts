@@ -2,6 +2,8 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
@@ -13,10 +15,15 @@ export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
 export interface TagDeletion {
   deleting: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
 }
 
 export interface DeleteTagAction extends Action<string> {
   tag: string;
+}
+
+export interface DeleteTagFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
 }
 
 const initialState: TagDeletion = {
@@ -24,9 +31,9 @@ const initialState: TagDeletion = {
   error: false,
 };
 
-export default buildReducer({
+export default buildReducer<TagDeletion, DeleteTagFailedAction>({
   [DELETE_TAG_START]: () => ({ deleting: true, error: false }),
-  [DELETE_TAG_ERROR]: () => ({ deleting: false, error: true }),
+  [DELETE_TAG_ERROR]: (_, { errorData }) => ({ deleting: false, error: true, errorData }),
   [DELETE_TAG]: () => ({ deleting: false, error: false }),
 }, initialState);
 
@@ -41,7 +48,7 @@ export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag:
     await deleteTags([ tag ]);
     dispatch({ type: DELETE_TAG });
   } catch (e) {
-    dispatch({ type: DELETE_TAG_ERROR });
+    dispatch<DeleteTagFailedAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

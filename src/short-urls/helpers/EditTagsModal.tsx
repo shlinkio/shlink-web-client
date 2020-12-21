@@ -6,6 +6,7 @@ import { ShortUrlModalProps } from '../data';
 import { OptionalString } from '../../utils/utils';
 import { TagsSelectorProps } from '../../tags/helpers/TagsSelector';
 import { Result } from '../../utils/Result';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface EditTagsModalProps extends ShortUrlModalProps {
   shortUrlTags: ShortUrlTags;
@@ -20,6 +21,7 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
 
   useEffect(() => resetShortUrlsTags, []);
 
+  const { saving, error, errorData } = shortUrlTags;
   const url = shortUrl?.shortUrl ?? '';
   const saveTags = async () => editShortUrlTags(shortUrl.shortCode, shortUrl.domain, selectedTags)
     .then(toggle)
@@ -32,16 +34,16 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
       </ModalHeader>
       <ModalBody>
         <TagsSelector tags={selectedTags} onChange={setSelectedTags} />
-        {shortUrlTags.error && (
+        {error && (
           <Result type="error" small className="mt-2">
-            Something went wrong while saving the tags :(
+            <ShlinkApiError errorData={errorData} fallbackMessage="Something went wrong while saving the tags :(" />
           </Result>
         )}
       </ModalBody>
       <ModalFooter>
         <button className="btn btn-link" onClick={toggle}>Cancel</button>
-        <button className="btn btn-primary" type="button" disabled={shortUrlTags.saving} onClick={saveTags}>
-          {shortUrlTags.saving ? 'Saving tags...' : 'Save tags'}
+        <button className="btn btn-primary" type="button" disabled={saving} onClick={saveTags}>
+          {saving ? 'Saving tags...' : 'Save tags'}
         </button>
       </ModalFooter>
     </Modal>

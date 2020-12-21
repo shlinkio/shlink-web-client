@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAction } from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -24,6 +24,11 @@ export interface TagVisitsAction extends Action<string> {
   tag: string;
 }
 
+type TagsVisitsCombinedAction = TagVisitsAction
+& VisitsLoadProgressChangedAction
+& CreateVisitsAction
+& VisitsLoadFailedAction;
+
 const initialState: TagVisits = {
   visits: [],
   tag: '',
@@ -34,9 +39,9 @@ const initialState: TagVisits = {
   progress: 0,
 };
 
-export default buildReducer<TagVisits, TagVisitsAction & VisitsLoadProgressChangedAction & CreateVisitsAction>({
+export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
-  [GET_TAG_VISITS_ERROR]: () => ({ ...initialState, error: true }),
+  [GET_TAG_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [GET_TAG_VISITS]: (_, { visits, tag }) => ({ ...initialState, visits, tag }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),

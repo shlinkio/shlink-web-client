@@ -2,13 +2,14 @@ import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ShlinkTags } from '../../utils/services/types';
+import { ProblemDetailsError, ShlinkTags } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { TagStats } from '../data';
 import { CreateVisit, Stats } from '../../visits/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -25,6 +26,7 @@ export interface TagsList {
   stats: TagsStatsMap;
   loading: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
 }
 
 interface ListTagsAction extends Action<string> {
@@ -32,11 +34,21 @@ interface ListTagsAction extends Action<string> {
   stats: TagsStatsMap;
 }
 
+
+interface ListTagsFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
+}
+
 interface FilterTagsAction extends Action<string> {
   searchTerm: string;
 }
 
-type ListTagsCombinedAction = ListTagsAction & DeleteTagAction & CreateVisitsAction & EditTagAction & FilterTagsAction;
+type ListTagsCombinedAction = ListTagsAction
+  & DeleteTagAction
+  & CreateVisitsAction
+  & EditTagAction
+  & FilterTagsAction
+  & ListTagsFailedAction;
 
 const initialState = {
   tags: [],
@@ -74,7 +86,7 @@ const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => O
 
 export default buildReducer<TagsList, ListTagsCombinedAction>({
   [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
-  [LIST_TAGS_ERROR]: () => ({ ...initialState, error: true }),
+  [LIST_TAGS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [LIST_TAGS]: (_, { tags, stats }) => ({ ...initialState, stats, tags, filteredTags: tags }),
   [TAG_DELETED]: (state, { tag }) => ({
     ...state,
@@ -119,7 +131,7 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
 
     dispatch<ListTagsAction>({ tags, stats: processedStats, type: LIST_TAGS });
   } catch (e) {
-    dispatch({ type: LIST_TAGS_ERROR });
+    dispatch<ListTagsFailedAction>({ type: LIST_TAGS_ERROR, errorData: parseApiError(e) });
   }
 };
 
