@@ -20,7 +20,7 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
     if (!selectedServer) {
       return (
         <NoMenuLayout>
-          <Message loading noMargin />
+          <Message loading />
         </NoMenuLayout>
       );
     }

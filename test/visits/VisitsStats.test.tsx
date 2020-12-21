@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Card, NavLink, Progress } from 'reactstrap';
+import { Card, Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
@@ -80,10 +80,6 @@ describe('<VisitStats />', () => {
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const locationNav = wrapper.find(NavLink).at(2);
-
-    locationNav.simulate('click');
-
     const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
     const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
 

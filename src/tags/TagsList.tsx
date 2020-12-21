@@ -28,15 +28,11 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
 
   const renderContent = () => {
     if (tagsList.loading) {
-      return <Message noMargin loading />;
+      return <Message loading />;
     }
 
     if (tagsList.error) {
-      return (
-        <div className="col-12">
-          <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>
-        </div>
-      );
+      return <div className="bg-danger p-2 text-white text-center">Error loading tags :(</div>;
     }
 
     const tagsCount = tagsList.filteredTags.length;
@@ -48,7 +44,7 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
 
     return (
-      <>
+      <div className="row">
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
             {group.map((tag) => (
@@ -63,16 +59,14 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
             ))}
           </div>
         ))}
-      </>
+      </div>
     );
   };
 
   return (
     <>
       {!tagsList.loading && <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />}
-      <div className="row">
-        {renderContent()}
-      </div>
+      {renderContent()}
     </>
   );
 }, () => 'https://shlink.io/new-visit');

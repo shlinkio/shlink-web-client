@@ -28,10 +28,16 @@ export interface VisitsStatsProps {
   domain?: string;
 }
 
+interface VisitsNavLinkProps {
+  title: string;
+  subPath: string;
+  icon: IconDefinition;
+}
+
 type HighlightableProps = 'referer' | 'country' | 'city';
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
-const sections: Record<Section, { title: string; subPath: string; icon: IconDefinition }> = {
+const sections: Record<Section, VisitsNavLinkProps> = {
   byTime: { title: 'By time', subPath: '', icon: faCalendarAlt },
   byContext: { title: 'By context', subPath: '/by-context', icon: faChartPie },
   byLocation: { title: 'By location', subPath: '/by-location', icon: faMapMarkedAlt },
@@ -52,6 +58,19 @@ const highlightedVisitsToStats = (
 }, {});
 let selectedBar: string | undefined;
 const initialInterval: DateInterval = 'last30Days';
+
+const VisitsNavLink: FC<VisitsNavLinkProps> = ({ subPath, title, icon, children }) => (
+  <NavLink
+    tag={RouterNavLink}
+    className="visits-stats__nav-link"
+    to={children}
+    isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
+    replace
+  >
+    <FontAwesomeIcon icon={icon} />
+    <span className="ml-2 d-none d-sm-inline">{title}</span>
+  </NavLink>
+);
 
 const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain }) => {
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
@@ -112,7 +131,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
 
     if (error) {
       return (
-        <Card className="mt-4" body inverse color="danger">
+        <Card body inverse color="danger">
           An error occurred while loading visits :(
         </Card>
       );
@@ -124,23 +143,10 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
 
     return (
       <>
-        <Card className="visits-stats__nav p-0 mt-4 overflow-hidden" body>
+        <Card className="visits-stats__nav p-0 overflow-hidden" body>
           <Nav pills justified>
-            {Object.entries(sections).map(
-              ([ section, { title, icon, subPath }]) => (
-                <NavLink
-                  key={section}
-                  tag={RouterNavLink}
-                  className="visits-stats__nav-link"
-                  to={buildSectionUrl(subPath)}
-                  isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
-                  replace
-                >
-                  <FontAwesomeIcon icon={icon} />
-                  <span className="ml-2 d-none d-sm-inline">{title}</span>
-                </NavLink>
-              ),
-            )}
+            {Object.entries(sections).map(([ section, props ]) =>
+              <VisitsNavLink key={section} {...props}>{buildSectionUrl(props.subPath)}</VisitsNavLink>)}
           </Nav>
         </Card>
         <div className="row">
@@ -259,7 +265,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
         </div>
       </section>
 
-      <section>
+      <section className="mt-4">
         {renderVisitsContent()}
       </section>
     </>
