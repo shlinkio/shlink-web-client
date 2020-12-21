@@ -9,7 +9,7 @@ import { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
 import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
-import { isInvalidArgumentError } from '../../utils/services/types';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
   resetCreateShortUrl: () => void;
@@ -29,8 +29,7 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
     return (
       <Result type="error" className="mt-3">
         {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
-        {errorData?.detail ?? 'An error occurred while creating the URL :('}
-        {isInvalidArgumentError(errorData) && <p>Invalid elements: [{errorData.invalidElements.join(', ')}]</p>}
+        <ShlinkApiError errorData={errorData} fallbackMessage="An error occurred while creating the URL :(" />
       </Result>
     );
   }

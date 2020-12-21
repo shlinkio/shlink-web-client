@@ -4,6 +4,8 @@ import { hasServerData, SelectedServer, ServerWithId } from '../../servers/data'
 import { GetState } from '../../container/types';
 import ShlinkApiClient from './ShlinkApiClient';
 
+// TODO Move this file to api module
+
 const apiClients: Record<string, ShlinkApiClient> = {};
 
 const isGetState = (getStateOrSelectedServer: GetState | ServerWithId): getStateOrSelectedServer is GetState =>

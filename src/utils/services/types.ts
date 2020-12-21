@@ -2,6 +2,8 @@ import { Visit } from '../../visits/types'; // FIXME Should be defined as part o
 import { ShortUrl, ShortUrlMeta } from '../../short-urls/data'; // FIXME Should be defined as part of this module
 import { OptionalString } from '../utils';
 
+// TODO Move this file to api module
+
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
   pagination: ShlinkPaginator;
