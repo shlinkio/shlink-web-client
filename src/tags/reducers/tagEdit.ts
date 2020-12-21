@@ -4,6 +4,7 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ProblemDetailsError } from '../../utils/services/types';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
@@ -18,12 +19,17 @@ export interface TagEdition {
   newName: string;
   editing: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
 }
 
 export interface EditTagAction extends Action<string> {
   oldName: string;
   newName: string;
   color: string;
+}
+
+export interface EditTagFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
 }
 
 const initialState: TagEdition = {
@@ -33,9 +39,9 @@ const initialState: TagEdition = {
   error: false,
 };
 
-export default buildReducer<TagEdition, EditTagAction>({
+export default buildReducer<TagEdition, EditTagAction & EditTagFailedAction>({
   [EDIT_TAG_START]: (state) => ({ ...state, editing: true, error: false }),
-  [EDIT_TAG_ERROR]: (state) => ({ ...state, editing: false, error: true }),
+  [EDIT_TAG_ERROR]: (state, { errorData }) => ({ ...state, editing: false, error: true, errorData }),
   [EDIT_TAG]: (_, action) => ({
     ...pick([ 'oldName', 'newName' ], action),
     editing: false,
@@ -56,7 +62,7 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
     colorGenerator.setColorForKey(newName, color);
     dispatch({ type: EDIT_TAG, oldName, newName });
   } catch (e) {
-    dispatch({ type: EDIT_TAG_ERROR });
+    dispatch<EditTagFailedAction>({ type: EDIT_TAG_ERROR, errorData: e.response?.data });
 
     throw e;
   }

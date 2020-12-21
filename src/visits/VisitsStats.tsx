@@ -12,6 +12,7 @@ import { formatIsoDate } from '../utils/helpers/date';
 import { ShlinkVisitsParams } from '../utils/services/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
+import { ShlinkApiError } from '../api/ShlinkApiError';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -83,7 +84,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
 
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
-  const { visits, loading, loadingLarge, error, progress } = visitsInfo;
+  const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
@@ -131,7 +132,11 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
     }
 
     if (error) {
-      return <Result type="error">An error occurred while loading visits :(</Result>;
+      return (
+        <Result type="error">
+          <ShlinkApiError errorData={errorData} fallbackMessage="An error occurred while loading visits :(" />
+        </Result>
+      );
     }
 
     if (isEmpty(visits)) {

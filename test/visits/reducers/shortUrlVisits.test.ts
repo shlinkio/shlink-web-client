@@ -103,7 +103,7 @@ describe('shortUrlVisitsReducer', () => {
     beforeEach(() => dispatchMock.mockReset());
 
     it('dispatches start and error when promise is rejected', async () => {
-      const ShlinkApiClient = buildApiClientMock(Promise.reject() as any);
+      const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
       await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
 

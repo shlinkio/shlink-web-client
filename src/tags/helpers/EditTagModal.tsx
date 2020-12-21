@@ -8,8 +8,9 @@ import { handleEventPreventingDefault } from '../../utils/utils';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { TagModalProps } from '../data';
 import { TagEdition } from '../reducers/tagEdit';
-import './EditTagModal.scss';
 import { Result } from '../../utils/Result';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
+import './EditTagModal.scss';
 
 interface EditTagModalProps extends TagModalProps {
   tagEdit: TagEdition;
@@ -23,6 +24,7 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   const [ newTagName, setNewTagName ] = useState(tag);
   const [ color, setColor ] = useState(getColorForKey(tag));
   const [ showColorPicker, toggleColorPicker, , hideColorPicker ] = useToggle();
+  const { editing, error, errorData } = tagEdit;
   const saveTag = handleEventPreventingDefault(async () => editTag(tag, newTagName, color)
     .then(() => tagEdited(tag, newTagName, color))
     .then(toggle)
@@ -55,17 +57,15 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
             />
           </div>
 
-          {tagEdit.error && (
+          {error && (
             <Result type="error" small className="mt-2">
-              Something went wrong while editing the tag :(
+              <ShlinkApiError errorData={errorData} fallbackMessage="Something went wrong while editing the tag :(" />
             </Result>
           )}
         </ModalBody>
         <ModalFooter>
           <button type="button" className="btn btn-link" onClick={toggle}>Cancel</button>
-          <button type="submit" className="btn btn-primary" disabled={tagEdit.editing}>
-            {tagEdit.editing ? 'Saving...' : 'Save'}
-          </button>
+          <button type="submit" className="btn btn-primary" disabled={editing}>{editing ? 'Saving...' : 'Save'}</button>
         </ModalFooter>
       </form>
     </Modal>
