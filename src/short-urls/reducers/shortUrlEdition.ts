@@ -5,6 +5,7 @@ import { OptionalString } from '../../utils/utils';
 import { ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
@@ -53,7 +54,7 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
     await updateShortUrlMeta(shortCode, domain, { longUrl });
     dispatch<ShortUrlEditedAction>({ shortCode, longUrl, domain, type: SHORT_URL_EDITED });
   } catch (e) {
-    dispatch<ShortUrlEditionFailedAction>({ type: EDIT_SHORT_URL_ERROR, errorData: e.response?.data });
+    dispatch<ShortUrlEditionFailedAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

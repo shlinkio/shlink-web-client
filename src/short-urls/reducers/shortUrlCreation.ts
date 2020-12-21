@@ -4,6 +4,7 @@ import { ShortUrl, ShortUrlData } from '../data';
 import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
@@ -52,7 +53,7 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
 
     dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
   } catch (e) {
-    dispatch<CreateShortUrlFailedAction>({ type: CREATE_SHORT_URL_ERROR, errorData: e.response?.data });
+    dispatch<CreateShortUrlFailedAction>({ type: CREATE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

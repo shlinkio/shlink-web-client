@@ -5,6 +5,7 @@ import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { OptionalString } from '../../utils/utils';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_META_START = 'shlink/shortUrlMeta/EDIT_SHORT_URL_META_START';
@@ -55,7 +56,7 @@ export const editShortUrlMeta = (buildShlinkApiClient: ShlinkApiClientBuilder) =
     await updateShortUrlMeta(shortCode, domain, meta);
     dispatch<ShortUrlMetaEditedAction>({ shortCode, meta, domain, type: SHORT_URL_META_EDITED });
   } catch (e) {
-    dispatch<ShortUrlMetaEditionFailedAction>({ type: EDIT_SHORT_URL_META_ERROR, errorData: e.response?.data });
+    dispatch<ShortUrlMetaEditionFailedAction>({ type: EDIT_SHORT_URL_META_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

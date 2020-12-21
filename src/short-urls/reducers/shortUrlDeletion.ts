@@ -3,6 +3,7 @@ import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ProblemDetailsError } from '../../utils/services/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
@@ -24,7 +25,7 @@ export interface DeleteShortUrlAction extends Action<string> {
 }
 
 interface DeleteShortUrlErrorAction extends Action<string> {
-  errorData: ProblemDetailsError;
+  errorData?: ProblemDetailsError;
 }
 
 const initialState: ShortUrlDeletion = {
@@ -51,7 +52,7 @@ export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
     await deleteShortUrl(shortCode, domain);
     dispatch<DeleteShortUrlAction>({ type: SHORT_URL_DELETED, shortCode, domain });
   } catch (e) {
-    dispatch<DeleteShortUrlErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: e.response.data });
+    dispatch<DeleteShortUrlErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

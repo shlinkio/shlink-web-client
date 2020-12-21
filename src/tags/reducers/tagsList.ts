@@ -9,6 +9,7 @@ import { TagStats } from '../data';
 import { CreateVisit, Stats } from '../../visits/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -130,7 +131,7 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
 
     dispatch<ListTagsAction>({ tags, stats: processedStats, type: LIST_TAGS });
   } catch (e) {
-    dispatch<ListTagsFailedAction>({ type: LIST_TAGS_ERROR, errorData: e.response?.data });
+    dispatch<ListTagsFailedAction>({ type: LIST_TAGS_ERROR, errorData: parseApiError(e) });
   }
 };
 

@@ -5,6 +5,7 @@ import { GetState } from '../../container/types';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../utils/services/types';
+import { parseApiError } from '../../api/util';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
@@ -62,7 +63,7 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
     colorGenerator.setColorForKey(newName, color);
     dispatch({ type: EDIT_TAG, oldName, newName });
   } catch (e) {
-    dispatch<EditTagFailedAction>({ type: EDIT_TAG_ERROR, errorData: e.response?.data });
+    dispatch<EditTagFailedAction>({ type: EDIT_TAG_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }
