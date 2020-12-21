@@ -16,7 +16,7 @@ interface CreateServerProps extends RouterProps {
 }
 
 const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
-  <Result type={type} textCentered>
+  <Result type={type}>
     {type === 'success' && 'Servers properly imported. You can now select one from the list :)'}
     {type === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
   </Result>

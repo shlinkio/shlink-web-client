@@ -54,13 +54,13 @@ const DeleteShortUrlModal = (
           />
 
           {hasThresholdError && (
-            <Result type="warning" textCentered small className="mt-2">
+            <Result type="warning" small className="mt-2">
               {errorData?.threshold && `This short URL has received more than ${errorData.threshold} visits, and therefore, it cannot be deleted.`}
               {!errorData?.threshold && 'This short URL has received too many visits, and therefore, it cannot be deleted.'}
             </Result>
           )}
           {hasErrorOtherThanThreshold && (
-            <Result type="error" textCentered small className="mt-2">
+            <Result type="error" small className="mt-2">
               Something went wrong while deleting the URL :(
             </Result>
           )}

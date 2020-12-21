@@ -26,7 +26,7 @@ const DeleteTagConfirmModal = (
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?
         {tagDelete.error && (
-          <Result type="error" small textCentered className="mt-2">
+          <Result type="error" small className="mt-2">
             Something went wrong while deleting the tag :(
           </Result>
         )}

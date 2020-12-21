@@ -35,7 +35,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
             />
           </FormGroup>
           {error && (
-            <Result type="error" small textCentered className="mt-2">
+            <Result type="error" small className="mt-2">
               Something went wrong while saving the long URL :(
             </Result>
           )}

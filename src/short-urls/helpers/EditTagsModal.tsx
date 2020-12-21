@@ -33,7 +33,7 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
       <ModalBody>
         <TagsSelector tags={selectedTags} onChange={setSelectedTags} />
         {shortUrlTags.error && (
-          <Result type="error" small textCentered className="mt-2">
+          <Result type="error" small className="mt-2">
             Something went wrong while saving the tags :(
           </Result>
         )}
