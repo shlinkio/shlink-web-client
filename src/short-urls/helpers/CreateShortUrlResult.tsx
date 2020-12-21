@@ -9,6 +9,7 @@ import { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
 import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
+import { isInvalidArgumentError } from '../../utils/services/types';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
   resetCreateShortUrl: () => void;
@@ -16,7 +17,7 @@ export interface CreateShortUrlResultProps extends ShortUrlCreation {
 }
 
 const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
-  { error, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
+  { error, errorData, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
   const [ showCopyTooltip, setShowCopyTooltip ] = useStateFlagTimeout();
 
@@ -28,7 +29,8 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
     return (
       <Result type="error" className="mt-3">
         {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-right pointer" onClick={resetCreateShortUrl} />}
-        An error occurred while creating the URL :(
+        {errorData?.detail ?? 'An error occurred while creating the URL :('}
+        {isInvalidArgumentError(errorData) && <p>Invalid elements: [{errorData.invalidElements.join(', ')}]</p>}
       </Result>
     );
   }

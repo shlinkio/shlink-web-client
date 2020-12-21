@@ -25,12 +25,12 @@ interface ShlinkTagsStats {
 
 export interface ShlinkTags {
   tags: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in old Shlink versions
+  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
 }
 
 export interface ShlinkTagsResponse {
   data: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in old Shlink versions
+  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
 }
 
 export interface ShlinkPaginator {
@@ -41,7 +41,7 @@ export interface ShlinkPaginator {
 
 export interface ShlinkVisits {
   data: Visit[];
-  pagination?: ShlinkPaginator; // Is only optional in old Shlink versions
+  pagination: ShlinkPaginator;
 }
 
 export interface ShlinkVisitsOverview {
@@ -60,14 +60,6 @@ export interface ShlinkShortUrlMeta extends ShortUrlMeta {
   longUrl?: string;
 }
 
-export interface ProblemDetailsError {
-  type: string;
-  detail: string;
-  title: string;
-  status: number;
-  [extraProps: string]: any;
-}
-
 export interface ShlinkDomain {
   domain: string;
   isDefault: boolean;
@@ -76,3 +68,19 @@ export interface ShlinkDomain {
 export interface ShlinkDomainsResponse {
   data: ShlinkDomain[];
 }
+
+export interface ProblemDetailsError {
+  type: string;
+  detail: string;
+  title: string;
+  status: number;
+  [extraProps: string]: any;
+}
+
+export interface InvalidArgumentError extends ProblemDetailsError {
+  type: 'INVALID_ARGUMENT';
+  invalidElements: string[];
+}
+
+export const isInvalidArgumentError = (error?: ProblemDetailsError): error is InvalidArgumentError =>
+  error?.type === 'INVALID_ARGUMENT';
