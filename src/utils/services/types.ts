@@ -86,7 +86,7 @@ interface InvalidArgumentError extends ProblemDetailsError {
 
 interface InvalidShortUrlDeletion extends ProblemDetailsError {
   type: 'INVALID_SHORTCODE_DELETION';
-  threshold?: number;
+  threshold: number;
 }
 
 export const isInvalidArgumentError = (error?: ProblemDetailsError): error is InvalidArgumentError =>
