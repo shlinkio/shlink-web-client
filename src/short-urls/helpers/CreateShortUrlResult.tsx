@@ -7,8 +7,8 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
-import './CreateShortUrlResult.scss';
 import { Result } from '../../utils/Result';
+import './CreateShortUrlResult.scss';
 
 export interface CreateShortUrlResultProps extends ShortUrlCreation {
   resetCreateShortUrl: () => void;
