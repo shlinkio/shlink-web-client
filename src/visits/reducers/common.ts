@@ -2,7 +2,7 @@ import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { ShlinkPaginator, ShlinkVisits } from '../../utils/services/types';
 import { Visit, VisitsLoadFailedAction } from '../types';
-import { parseApiError } from '../../api/util';
+import { parseApiError } from '../../api/utils';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;

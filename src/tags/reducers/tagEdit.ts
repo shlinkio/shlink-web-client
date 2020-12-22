@@ -5,7 +5,7 @@ import { GetState } from '../../container/types';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../utils/services/types';
-import { parseApiError } from '../../api/util';
+import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
