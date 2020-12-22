@@ -1,7 +1,7 @@
 import { Action, Dispatch } from 'redux';
-import { ShlinkDomain } from '../../utils/services/types';
+import { ShlinkDomain } from '../../api/types';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 
 /* eslint-disable padding-line-between-statements */

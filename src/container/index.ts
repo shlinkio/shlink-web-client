@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { connect as reduxConnect } from 'react-redux';
 import { pick } from 'ramda';
 import App from '../App';
+import provideApiServices from '../api/services/provideServices';
 import provideCommonServices from '../common/services/provideServices';
 import provideShortUrlsServices from '../short-urls/services/provideServices';
 import provideServersServices from '../servers/services/provideServices';
@@ -45,6 +46,7 @@ bottle.serviceFactory(
 bottle.decorator('App', connect([ 'servers' ], [ 'fetchServers' ]));
 
 provideCommonServices(bottle, connect, withRouter);
+provideApiServices(bottle);
 provideShortUrlsServices(bottle, connect);
 provideServersServices(bottle, connect, withRouter);
 provideTagsServices(bottle, connect);

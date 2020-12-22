@@ -2,14 +2,14 @@ import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ProblemDetailsError, ShlinkTags } from '../../utils/services/types';
+import { ProblemDetailsError, ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { TagStats } from '../data';
 import { CreateVisit, Stats } from '../../visits/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
-import { parseApiError } from '../../api/util';
+import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';

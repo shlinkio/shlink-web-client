@@ -1,9 +1,9 @@
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../utils/services/types';
-import { parseApiError } from '../../api/util';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import { ProblemDetailsError } from '../../api/types';
+import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';

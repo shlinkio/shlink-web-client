@@ -1,6 +1,7 @@
-import { isInvalidArgumentError, ProblemDetailsError } from '../utils/services/types';
+import { ProblemDetailsError } from './types';
+import { isInvalidArgumentError } from './utils';
 
-interface ShlinkApiErrorProps {
+export interface ShlinkApiErrorProps {
   errorData?: ProblemDetailsError;
   fallbackMessage?: string;
 }

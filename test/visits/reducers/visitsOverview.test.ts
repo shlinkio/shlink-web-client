@@ -8,8 +8,8 @@ import reducer, {
   loadVisitsOverview,
 } from '../../../src/visits/reducers/visitsOverview';
 import { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
-import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
-import { ShlinkVisitsOverview } from '../../../src/utils/services/types';
+import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('visitsOverview', () => {

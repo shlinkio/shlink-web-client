@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { pageIsEllipsis, keyForPage, progressivePagination, prettifyPageNumber } from '../utils/helpers/pagination';
-import { ShlinkPaginator } from '../utils/services/types';
+import { ShlinkPaginator } from '../api/types';
 import './Paginator.scss';
 
 interface PaginatorProps {

@@ -3,9 +3,9 @@ import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrlIdentifier } from '../data';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../utils/services/types';
-import { parseApiError } from '../../api/util';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import { ProblemDetailsError } from '../../api/types';
+import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';

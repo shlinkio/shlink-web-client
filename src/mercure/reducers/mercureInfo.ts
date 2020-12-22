@@ -1,8 +1,8 @@
 import { Action, Dispatch } from 'redux';
-import { ShlinkMercureInfo } from '../../utils/services/types';
+import { ShlinkMercureInfo } from '../../api/types';
 import { GetState } from '../../container/types';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_MERCURE_INFO_START = 'shlink/mercure/GET_MERCURE_INFO_START';

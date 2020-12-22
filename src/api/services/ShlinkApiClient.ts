@@ -3,7 +3,7 @@ import { isEmpty, isNil, reject } from 'ramda';
 import { AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrlsListParams } from '../../short-urls/reducers/shortUrlsListParams';
 import { ShortUrl, ShortUrlData } from '../../short-urls/data';
-import { OptionalString } from '../utils';
+import { OptionalString } from '../../utils/utils';
 import {
   ShlinkHealth,
   ShlinkMercureInfo,
@@ -16,9 +16,7 @@ import {
   ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
-} from './types';
-
-// TODO Move this file to api module
+} from '../types';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);

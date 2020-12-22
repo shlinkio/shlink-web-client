@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Bottle, { Decorator } from 'bottlejs';
 import ScrollToTop from '../ScrollToTop';
 import MainHeader from '../MainHeader';
@@ -12,6 +13,7 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
+  bottle.constant('axios', axios);
 
   bottle.serviceFactory('ScrollToTop', ScrollToTop);
   bottle.decorator('ScrollToTop', withRouter);
