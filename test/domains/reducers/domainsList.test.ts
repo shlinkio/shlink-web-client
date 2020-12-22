@@ -7,7 +7,7 @@ import reducer, {
   listDomains as listDomainsAction,
 } from '../../../src/domains/reducers/domainsList';
 import { ShlinkDomain } from '../../../src/api/types';
-import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 
 describe('domainsList', () => {
   const domains = [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ];

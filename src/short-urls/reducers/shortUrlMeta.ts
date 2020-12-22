@@ -3,7 +3,7 @@ import { ShortUrlIdentifier, ShortUrlMeta } from '../data';
 import { GetState } from '../../container/types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { OptionalString } from '../../utils/utils';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 

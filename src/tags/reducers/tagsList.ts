@@ -4,7 +4,7 @@ import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCr
 import { buildReducer } from '../../utils/helpers/redux';
 import { ProblemDetailsError, ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { TagStats } from '../data';
 import { CreateVisit, Stats } from '../../visits/types';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';

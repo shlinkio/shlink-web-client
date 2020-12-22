@@ -1,5 +1,5 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
-import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { Mock } from 'ts-mockery';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';

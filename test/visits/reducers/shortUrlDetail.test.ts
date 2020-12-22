@@ -7,7 +7,7 @@ import reducer, {
   ShortUrlDetailAction,
 } from '../../../src/visits/reducers/shortUrlDetail';
 import { ShortUrl } from '../../../src/short-urls/data';
-import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
+import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlDetailReducer', () => {

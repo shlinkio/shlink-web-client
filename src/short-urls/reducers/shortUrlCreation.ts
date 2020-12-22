@@ -2,7 +2,7 @@ import { Action, Dispatch } from 'redux';
 import { GetState } from '../../container/types';
 import { ShortUrl, ShortUrlData } from '../data';
 import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 

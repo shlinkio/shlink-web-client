@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { AxiosInstance } from 'axios';
-import buildShlinkApiClient from '../../../src/utils/services/ShlinkApiClientBuilder';
+import buildShlinkApiClient from '../../../src/api/services/ShlinkApiClientBuilder';
 import { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import { ShlinkState } from '../../../src/container/types';
 

@@ -1,7 +1,7 @@
 import { Action, Dispatch } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { OptionalString } from '../../utils/utils';
 import { GetState } from '../../container/types';
 

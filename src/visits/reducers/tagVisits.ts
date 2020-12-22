@@ -1,7 +1,7 @@
 import { Action, Dispatch } from 'redux';
 import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAction } from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
+import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
