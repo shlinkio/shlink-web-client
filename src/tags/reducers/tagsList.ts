@@ -2,7 +2,7 @@ import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ProblemDetailsError, ShlinkTags } from '../../utils/services/types';
+import { ProblemDetailsError, ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { TagStats } from '../data';

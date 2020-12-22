@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
-import { ProblemDetailsError } from '../../utils/services/types';
+import { ProblemDetailsError } from '../../api/types';
 
 export interface VisitsInfo {
   visits: Visit[];

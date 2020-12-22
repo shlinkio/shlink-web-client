@@ -4,7 +4,7 @@ import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../utils/services/types';
+import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */

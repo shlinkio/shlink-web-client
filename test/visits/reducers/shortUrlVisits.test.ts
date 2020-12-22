@@ -13,7 +13,7 @@ import reducer, {
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
-import { ShlinkVisits } from '../../../src/utils/services/types';
+import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 

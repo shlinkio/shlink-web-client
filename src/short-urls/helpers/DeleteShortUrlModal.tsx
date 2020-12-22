@@ -5,7 +5,7 @@ import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, OptionalString } from '../../utils/utils';
 import { Result } from '../../utils/Result';
-import { isInvalidDeletionError } from '../../utils/services/types';
+import { isInvalidDeletionError } from '../../api/utils';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {

@@ -4,7 +4,7 @@ import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListPara
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 import { SelectedServer } from '../data';
 import { GetState } from '../../container/types';
-import { ShlinkHealth } from '../../utils/services/types';
+import { ShlinkHealth } from '../../api/types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 

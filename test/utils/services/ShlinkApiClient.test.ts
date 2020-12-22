@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { Mock } from 'ts-mockery';
-import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/utils/services/types';
+import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;

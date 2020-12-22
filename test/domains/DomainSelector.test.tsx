@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { DropdownItem, DropdownMenu, InputGroup } from 'reactstrap';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
-import { ShlinkDomain } from '../../src/utils/services/types';
+import { ShlinkDomain } from '../../src/api/types';
 
 describe('<DomainSelector />', () => {
   let wrapper: ShallowWrapper;

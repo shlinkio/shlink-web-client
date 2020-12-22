@@ -11,7 +11,7 @@ import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrl
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
-import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/utils/services/types';
+import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
 import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { SHORT_URL_EDITED } from '../../../src/short-urls/reducers/shortUrlEdition';
 

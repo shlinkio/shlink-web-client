@@ -2,7 +2,7 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../utils/services/types';
+import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */

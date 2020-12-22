@@ -1,6 +1,6 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { ShlinkPaginator, ShlinkVisits } from '../../utils/services/types';
+import { ShlinkPaginator, ShlinkVisits } from '../../api/types';
 import { Visit, VisitsLoadFailedAction } from '../types';
 import { parseApiError } from '../../api/utils';
 

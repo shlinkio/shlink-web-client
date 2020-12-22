@@ -6,7 +6,7 @@ import reducer, {
   loadMercureInfo,
   GetMercureInfoAction,
 } from '../../../src/mercure/reducers/mercureInfo';
-import { ShlinkMercureInfo } from '../../../src/utils/services/types';
+import { ShlinkMercureInfo } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 import { GetState } from '../../../src/container/types';
 

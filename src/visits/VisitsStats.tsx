@@ -9,7 +9,7 @@ import { Location } from 'history';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
 import { formatIsoDate } from '../utils/helpers/date';
-import { ShlinkVisitsParams } from '../utils/services/types';
+import { ShlinkVisitsParams } from '../api/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';

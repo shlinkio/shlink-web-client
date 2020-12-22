@@ -1,8 +1,6 @@
-import { Visit } from '../../visits/types'; // FIXME Should be defined as part of this module
-import { ShortUrl, ShortUrlMeta } from '../../short-urls/data'; // FIXME Should be defined as part of this module
-import { OptionalString } from '../utils';
-
-// TODO Move this file to api module
+import { Visit } from '../../visits/types';
+import { OptionalString } from '../../utils/utils';
+import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -76,21 +74,16 @@ export interface ProblemDetailsError {
   detail: string;
   title: string;
   status: number;
+
   [extraProps: string]: any;
 }
 
-interface InvalidArgumentError extends ProblemDetailsError {
+export interface InvalidArgumentError extends ProblemDetailsError {
   type: 'INVALID_ARGUMENT';
   invalidElements: string[];
 }
 
-interface InvalidShortUrlDeletion extends ProblemDetailsError {
+export interface InvalidShortUrlDeletion extends ProblemDetailsError {
   type: 'INVALID_SHORTCODE_DELETION';
   threshold: number;
 }
-
-export const isInvalidArgumentError = (error?: ProblemDetailsError): error is InvalidArgumentError =>
-  error?.type === 'INVALID_ARGUMENT';
-
-export const isInvalidDeletionError = (error?: ProblemDetailsError): error is InvalidShortUrlDeletion =>
-  error?.type === 'INVALID_SHORTCODE_DELETION';

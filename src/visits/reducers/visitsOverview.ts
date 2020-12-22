@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { ShlinkVisitsOverview } from '../../utils/services/types';
+import { ShlinkVisitsOverview } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { buildReducer } from '../../utils/helpers/redux';

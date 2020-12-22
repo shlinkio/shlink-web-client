@@ -7,7 +7,7 @@ import reducer, {
   resetDeleteShortUrl,
   deleteShortUrl,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ProblemDetailsError } from '../../../src/utils/services/types';
+import { ProblemDetailsError } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('shortUrlDeletionReducer', () => {

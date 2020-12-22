@@ -6,7 +6,7 @@ import { ShortUrl, ShortUrlIdentifier } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../utils/services/ShlinkApiClientBuilder';
-import { ShlinkShortUrlsResponse } from '../../utils/services/types';
+import { ShlinkShortUrlsResponse } from '../../api/types';
 import { EditShortUrlTagsAction, SHORT_URL_TAGS_EDITED } from './shortUrlTags';
 import { DeleteShortUrlAction, SHORT_URL_DELETED } from './shortUrlDeletion';
 import { SHORT_URL_META_EDITED, ShortUrlMetaEditedAction } from './shortUrlMeta';

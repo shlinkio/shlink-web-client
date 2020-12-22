@@ -16,7 +16,7 @@ import {
   ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
-} from './types';
+} from '../../api/types';
 
 // TODO Move this file to api module
 

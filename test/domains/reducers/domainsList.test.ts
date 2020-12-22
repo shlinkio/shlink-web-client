@@ -6,7 +6,7 @@ import reducer, {
   ListDomainsAction,
   listDomains as listDomainsAction,
 } from '../../../src/domains/reducers/domainsList';
-import { ShlinkDomain } from '../../../src/utils/services/types';
+import { ShlinkDomain } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/utils/services/ShlinkApiClient';
 
 describe('domainsList', () => {

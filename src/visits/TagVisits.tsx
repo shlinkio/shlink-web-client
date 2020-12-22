@@ -1,7 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import ColorGenerator from '../utils/services/ColorGenerator';
-import { ShlinkVisitsParams } from '../utils/services/types';
+import { ShlinkVisitsParams } from '../api/types';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
 import VisitsStats from './VisitsStats';
