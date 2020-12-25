@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { useToggle } from './helpers/hooks';
-import './Dropdown.scss';
+import './DropdownBtn.scss';
 
 export interface DropdownBtnProps {
   text: string;
