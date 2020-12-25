@@ -3,14 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, keys, values } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/utils';
-import { SelectedServer } from '../servers/data';
+import { isReachableServer, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
+import Paginator from './Paginator';
 import './ShortUrlsList.scss';
 
 interface RouteParams {
@@ -40,6 +42,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
     orderField: orderBy && (head(keys(orderBy)) as OrderableFields),
     orderDir: orderBy && head(values(orderBy)),
   });
+  const { pagination } = shortUrlsList?.shortUrls ?? {};
   const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
   const handleOrderBy = (orderField?: OrderableFields, orderDir?: OrderDir) => {
     setOrder({ orderField, orderDir });
@@ -83,13 +86,16 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
           onChange={handleOrderBy}
         />
       </div>
-      <ShortUrlsTable
-        orderByColumn={orderByColumn}
-        renderOrderIcon={renderOrderIcon}
-        selectedServer={selectedServer}
-        shortUrlsList={shortUrlsList}
-        onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
-      />
+      <Card body className="pb-1">
+        <ShortUrlsTable
+          orderByColumn={orderByColumn}
+          renderOrderIcon={renderOrderIcon}
+          selectedServer={selectedServer}
+          shortUrlsList={shortUrlsList}
+          onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
+        />
+        <Paginator paginator={pagination} serverId={isReachableServer(selectedServer) ? selectedServer.id : ''} />
+      </Card>
     </>
   );
 }, () => 'https://shlink.io/new-visit');

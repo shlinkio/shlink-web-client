@@ -1,7 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import shortUrlsCreator from '../../src/short-urls/ShortUrls';
-import Paginator from '../../src/short-urls/Paginator';
 import { ShortUrlsListProps } from '../../src/short-urls/ShortUrlsList';
 
 describe('<ShortUrls />', () => {
@@ -18,9 +17,8 @@ describe('<ShortUrls />', () => {
   });
   afterEach(() => wrapper.unmount());
 
-  it('wraps a SearchBar, ShortUrlsList as Paginator', () => {
+  it('wraps a SearchBar and ShortUrlsList', () => {
     expect(wrapper.find(SearchBar)).toHaveLength(1);
     expect(wrapper.find(ShortUrlsList)).toHaveLength(1);
-    expect(wrapper.find(Paginator)).toHaveLength(1);
   });
 });
