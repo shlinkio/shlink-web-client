@@ -1,18 +1,18 @@
 @import '../utils/mixins/vertical-align';
 
-.dropdown__btn.dropdown__btn,
-.dropdown__btn.dropdown__btn:not(:disabled):not(.disabled).active,
-.dropdown__btn.dropdown__btn:not(:disabled):not(.disabled):active,
-.dropdown__btn.dropdown__btn:not(:disabled):not(.disabled):focus,
-.dropdown__btn.dropdown__btn:not(:disabled):not(.disabled):hover,
-.show > .dropdown__btn.dropdown__btn.dropdown-toggle {
+.dropdown-btn__toggle.dropdown-btn__toggle,
+.dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled).active,
+.dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):active,
+.dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):focus,
+.dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):hover,
+.show > .dropdown-btn__toggle.dropdown-btn__toggle.dropdown-toggle {
   color: #6c757d;
   background-color: white;
   text-align: left;
   border-color: rgba(0, 0, 0, .125);
 }
 
-.dropdown__btn.dropdown__btn:after {
+.dropdown-btn__toggle.dropdown-btn__toggle:after {
   @include vertical-align();
 
   right: .75rem;

@@ -11,7 +11,7 @@ export interface DropdownBtnProps {
 
 export const DropdownBtn: FC<DropdownBtnProps> = ({ text, disabled = false, className = '', children }) => {
   const [ isOpen, toggle ] = useToggle();
-  const toggleClasses = `dropdown__btn btn-block ${className}`;
+  const toggleClasses = `dropdown-btn__toggle btn-block ${className}`;
 
   return (
     <Dropdown isOpen={isOpen} toggle={toggle} disabled={disabled}>

@@ -28,10 +28,10 @@ describe('<DropdownBtn />', () => {
   });
 
   it.each([
-    [ undefined, 'dropdown__btn btn-block' ],
-    [ '', 'dropdown__btn btn-block' ],
-    [ 'foo', 'dropdown__btn btn-block foo' ],
-    [ 'bar', 'dropdown__btn btn-block bar' ],
+    [ undefined, 'dropdown-btn__toggle btn-block' ],
+    [ '', 'dropdown-btn__toggle btn-block' ],
+    [ 'foo', 'dropdown-btn__toggle btn-block foo' ],
+    [ 'bar', 'dropdown-btn__toggle btn-block bar' ],
   ])('includes provided classes', (className, expectedClasses) => {
     const wrapper = createWrapper({ text: '', className });
     const toggle = wrapper.find(DropdownToggle);
