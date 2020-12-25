@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { Dropdown } from '../Dropdown';
+import { DropdownBtn } from '../DropdownBtn';
 import {
   DateInterval,
   DateRange,
@@ -39,7 +39,7 @@ export const DateRangeSelector = (
   };
 
   return (
-    <Dropdown disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>
+    <DropdownBtn disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>
       <DropdownItem
         active={activeInterval === undefined && dateRangeIsEmpty(activeDateRange)}
         onClick={updateInterval(undefined)}
@@ -63,6 +63,6 @@ export const DateRangeSelector = (
           onEndDateChange={(endDate) => updateDateRange({ ...activeDateRange, endDate })}
         />
       </DropdownItem>
-    </Dropdown>
+    </DropdownBtn>
   );
 };

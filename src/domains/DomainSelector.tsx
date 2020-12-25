@@ -4,7 +4,7 @@ import { InputProps } from 'reactstrap/lib/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { isEmpty, pipe } from 'ramda';
-import { Dropdown } from '../utils/Dropdown';
+import { DropdownBtn } from '../utils/DropdownBtn';
 import { useToggle } from '../utils/helpers/hooks';
 import { DomainsList } from './reducers/domainsList';
 import './DomainSelector.scss';
@@ -52,7 +52,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
       </InputGroupAddon>
     </InputGroup>
   ) : (
-    <Dropdown
+    <DropdownBtn
       text={valueIsEmpty ? 'Domain' : `Domain: ${value}`}
       className={!valueIsEmpty ? 'domains-dropdown__toggle-btn--active' : ''}
     >
@@ -70,6 +70,6 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
       <DropdownItem onClick={pipe(unselectDomain, showInput)}>
         <i>New domain</i>
       </DropdownItem>
-    </Dropdown>
+    </DropdownBtn>
   );
 };

@@ -1,12 +1,12 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownMenu, DropdownToggle } from 'reactstrap';
 import { PropsWithChildren } from 'react';
-import { Dropdown, DropdownProps } from '../../src/utils/Dropdown';
+import { DropdownBtn, DropdownBtnProps } from '../../src/utils/DropdownBtn';
 
-describe('<Dropdown />', () => {
+describe('<DropdownBtn />', () => {
   let wrapper: ShallowWrapper;
-  const createWrapper = (props: PropsWithChildren<DropdownProps>) => {
-    wrapper = shallow(<Dropdown {...props} />);
+  const createWrapper = (props: PropsWithChildren<DropdownBtnProps>) => {
+    wrapper = shallow(<DropdownBtn {...props} />);
 
     return wrapper;
   };
