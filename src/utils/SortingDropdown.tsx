@@ -33,7 +33,7 @@ export default function SortingDropdown<T extends string = string>(
       >
         {!isButton && <>Order by</>}
         {isButton && !orderField && <>Order by...</>}
-        {isButton && orderField && <>Order by: {items[orderField]} - {orderDir}</>}
+        {isButton && orderField && `Order by: "${items[orderField]}" - "${orderDir ?? 'DESC'}"`}
       </DropdownToggle>
       <DropdownMenu
         right={right}
