@@ -6,7 +6,7 @@ module.exports = {
   tsconfigFile: 'tsconfig.json',
   testRunner: 'jest',
   reporters: [ 'progress', 'clear-text' ],
-  coverageAnalysis: 'off',
+  coverageAnalysis: 'perTest',
   jest: {
     projectType: 'custom',
     config: jestConfig,
