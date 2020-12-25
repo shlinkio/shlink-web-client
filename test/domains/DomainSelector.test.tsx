@@ -1,9 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { DropdownItem, DropdownMenu, InputGroup } from 'reactstrap';
+import { DropdownItem, InputGroup } from 'reactstrap';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ShlinkDomain } from '../../src/api/types';
+import { Dropdown } from '../../src/utils/Dropdown';
 
 describe('<DomainSelector />', () => {
   let wrapper: ShallowWrapper;
@@ -23,7 +24,7 @@ describe('<DomainSelector />', () => {
 
   it('shows dropdown by default', () => {
     const input = wrapper.find(InputGroup);
-    const dropdown = wrapper.find(DropdownMenu);
+    const dropdown = wrapper.find(Dropdown);
 
     expect(input).toHaveLength(0);
     expect(dropdown).toHaveLength(1);
@@ -33,10 +34,10 @@ describe('<DomainSelector />', () => {
   it('allows to toggle between dropdown and input', () => {
     wrapper.find(DropdownItem).last().simulate('click');
     expect(wrapper.find(InputGroup)).toHaveLength(1);
-    expect(wrapper.find(DropdownMenu)).toHaveLength(0);
+    expect(wrapper.find(Dropdown)).toHaveLength(0);
 
     wrapper.find('.domains-dropdown__back-btn').simulate('click');
     expect(wrapper.find(InputGroup)).toHaveLength(0);
-    expect(wrapper.find(DropdownMenu)).toHaveLength(1);
+    expect(wrapper.find(Dropdown)).toHaveLength(1);
   });
 });
