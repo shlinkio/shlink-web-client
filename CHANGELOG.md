@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#364](https://github.com/shlinkio/shlink-web-client/issues/364) Fixed all dropdowns so that they are consistently styled.
+
+
 ## [3.0.0] - 2020-12-22
 ### Added
 * [#340](https://github.com/shlinkio/shlink-web-client/issues/340) Added new "overview" page, showing basic information of the active server.

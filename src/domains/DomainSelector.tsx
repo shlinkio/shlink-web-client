@@ -1,20 +1,10 @@
 import { useEffect } from 'react';
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  UncontrolledTooltip,
-} from 'reactstrap';
+import { Button, DropdownItem, Input, InputGroup, InputGroupAddon, UncontrolledTooltip } from 'reactstrap';
 import { InputProps } from 'reactstrap/lib/Input';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { isEmpty, pipe } from 'ramda';
-import classNames from 'classnames';
+import { DropdownBtn } from '../utils/DropdownBtn';
 import { useToggle } from '../utils/helpers/hooks';
 import { DomainsList } from './reducers/domainsList';
 import './DomainSelector.scss';
@@ -31,7 +21,6 @@ interface DomainSelectorConnectProps extends DomainSelectorProps {
 
 export const DomainSelector = ({ listDomains, value, domainsList, onChange }: DomainSelectorConnectProps) => {
   const [ inputDisplayed,, showInput, hideInput ] = useToggle();
-  const [ isDropdownOpen, toggleDropdown ] = useToggle();
   const { domains } = domainsList;
   const valueIsEmpty = isEmpty(value);
   const unselectDomain = () => onChange('');
@@ -63,33 +52,24 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
       </InputGroupAddon>
     </InputGroup>
   ) : (
-    <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-      <DropdownToggle
-        caret
-        className={classNames(
-          'domains-dropdown__toggle-btn btn-block',
-          { 'domains-dropdown__toggle-btn--active': !valueIsEmpty },
-        )}
-      >
-        {valueIsEmpty && <>Domain</>}
-        {!valueIsEmpty && <>Domain: {value}</>}
-      </DropdownToggle>
-      <DropdownMenu className="domains-dropdown__menu">
-        {domains.map(({ domain, isDefault }) => (
-          <DropdownItem
-            key={domain}
-            active={value === domain || isDefault && valueIsEmpty}
-            onClick={() => onChange(domain)}
-          >
-            {domain}
-            {isDefault && <span className="float-right text-muted">default</span>}
-          </DropdownItem>
-        ))}
-        <DropdownItem divider />
-        <DropdownItem onClick={pipe(unselectDomain, showInput)}>
-          <i>New domain</i>
+    <DropdownBtn
+      text={valueIsEmpty ? 'Domain' : `Domain: ${value}`}
+      className={!valueIsEmpty ? 'domains-dropdown__toggle-btn--active' : ''}
+    >
+      {domains.map(({ domain, isDefault }) => (
+        <DropdownItem
+          key={domain}
+          active={value === domain || isDefault && valueIsEmpty}
+          onClick={() => onChange(domain)}
+        >
+          {domain}
+          {isDefault && <span className="float-right text-muted">default</span>}
         </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+      ))}
+      <DropdownItem divider />
+      <DropdownItem onClick={pipe(unselectDomain, showInput)}>
+        <i>New domain</i>
+      </DropdownItem>
+    </DropdownBtn>
   );
 };

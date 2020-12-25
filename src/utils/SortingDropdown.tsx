@@ -28,10 +28,12 @@ export default function SortingDropdown<T extends string = string>(
     <UncontrolledDropdown>
       <DropdownToggle
         caret
-        color={isButton ? 'secondary' : 'link'}
-        className={classNames({ 'btn-block': isButton, 'btn-sm p-0': !isButton })}
+        color={isButton ? 'primary' : 'link'}
+        className={classNames({ 'dropdown-btn__toggle btn-block': isButton, 'btn-sm p-0': !isButton })}
       >
-        Order by
+        {!isButton && <>Order by</>}
+        {isButton && !orderField && <>Order by...</>}
+        {isButton && orderField && `Order by: "${items[orderField]}" - "${orderDir ?? 'DESC'}"`}
       </DropdownToggle>
       <DropdownMenu
         right={right}

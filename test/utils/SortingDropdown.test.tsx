@@ -1,9 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { DropdownItem, DropdownToggle } from 'reactstrap';
 import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
 import SortingDropdown, { SortingDropdownProps } from '../../src/utils/SortingDropdown';
+import { OrderDir } from '../../src/utils/utils';
 
 describe('<SortingDropdown />', () => {
   let wrapper: ShallowWrapper;
@@ -72,5 +73,24 @@ describe('<SortingDropdown />', () => {
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith('foo', 'DESC');
+  });
+
+  it.each([
+    [{ isButton: false }, '>Order by<' ],
+    [{ isButton: true }, '>Order by...<' ],
+    [
+      { isButton: true, orderField: 'foo', orderDir: 'ASC' as OrderDir },
+      'Order by: &quot;Foo&quot; - &quot;ASC&quot;',
+    ],
+    [
+      { isButton: true, orderField: 'baz', orderDir: 'DESC' as OrderDir },
+      'Order by: &quot;Hello World&quot; - &quot;DESC&quot;',
+    ],
+    [{ isButton: true, orderField: 'baz' }, 'Order by: &quot;Hello World&quot; - &quot;DESC&quot;' ],
+  ])('displays expected text in toggle', (props, expectedText) => {
+    const wrapper = createWrapper(props);
+    const toggle = wrapper.find(DropdownToggle);
+
+    expect(toggle.html()).toContain(expectedText);
   });
 });
