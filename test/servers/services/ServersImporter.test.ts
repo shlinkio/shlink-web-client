@@ -29,8 +29,12 @@ describe('ServersImporter', () => {
       );
     });
 
-    it('reads file when a CSV is provided', async () => {
-      await importer.importServersFromFile(Mock.of<File>({ type: 'text/csv' }));
+    it.each([
+      [ 'text/csv' ],
+      [ 'text/comma-separated-values' ],
+      [ 'application/csv' ],
+    ])('reads file when a CSV is provided', async (type) => {
+      await importer.importServersFromFile(Mock.of<File>({ type }));
 
       expect(readAsText).toHaveBeenCalledTimes(1);
       expect(toObject).toHaveBeenCalledTimes(1);
