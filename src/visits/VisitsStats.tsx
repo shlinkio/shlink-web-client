@@ -1,6 +1,6 @@
 import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
-import { Button, Card, Nav, NavLink, Progress } from 'reactstrap';
+import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
@@ -61,11 +61,11 @@ const highlightedVisitsToStats = (
 let selectedBar: string | undefined;
 const initialInterval: DateInterval = 'last30Days';
 
-const VisitsNavLink: FC<VisitsNavLinkProps> = ({ subPath, title, icon, children }) => (
+const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (
   <NavLink
     tag={RouterNavLink}
     className="visits-stats__nav-link"
-    to={children}
+    to={to}
     isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
     replace
   >
@@ -146,12 +146,12 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
     return (
       <>
         <Card className="visits-stats__nav p-0 overflow-hidden" body>
-          <Nav pills justified>
+          <Nav pills fill>
             {Object.entries(sections).map(([ section, props ]) =>
-              <VisitsNavLink key={section} {...props}>{buildSectionUrl(props.subPath)}</VisitsNavLink>)}
+              <VisitsNavLink key={section} {...props} to={buildSectionUrl(props.subPath)} />)}
           </Nav>
         </Card>
-        <div className="row">
+        <Row>
           <Switch>
             <Route exact path={baseUrl}>
               <div className="col-12 mt-4">
@@ -233,7 +233,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, ca
 
             <Redirect to={baseUrl} />
           </Switch>
-        </div>
+        </Row>
       </>
     );
   };

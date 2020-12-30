@@ -13,6 +13,10 @@
   color: #5d6778;
   font-weight: 700;
   cursor: pointer;
+
+  @media (min-width: $smMin) and (max-width: $mdMax) {
+    font-size: 89%;
+  }
 }
 
 .visits-stats__nav-link:hover {
