@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#364](https://github.com/shlinkio/shlink-web-client/issues/364) Fixed all dropdowns so that they are consistently styled.
 * [#366](https://github.com/shlinkio/shlink-web-client/issues/366) Fixed text in visits menu jumping to next line in some tablet resolutions.
 * [#367](https://github.com/shlinkio/shlink-web-client/issues/367) Removed conflicting overflow in visits table for mobile devices.
+* [#365](https://github.com/shlinkio/shlink-web-client/issues/365) Fixed weird rendering of short URLs list in tablets.
 
 
 ## [3.0.0] - 2020-12-22
