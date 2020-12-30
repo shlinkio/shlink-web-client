@@ -78,7 +78,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
 
   return (
     <>
-      <div className="d-block d-md-none mb-3">
+      <div className="d-block d-lg-none mb-3">
         <SortingDropdown
           items={SORTABLE_FIELDS}
           orderField={order.orderField}

@@ -2,7 +2,7 @@
 @import '../../utils/mixins/vertical-align';
 
 .short-urls-row {
-  @media (max-width: $smMax) {
+  @media (max-width: $responsiveTableBreakpoint) {
     display: block;
     margin-bottom: 10px;
     border-bottom: 1px solid $lightGrey;
@@ -13,7 +13,7 @@
 .short-urls-row__cell.short-urls-row__cell {
   vertical-align: middle !important;
 
-  @media (max-width: $smMax) {
+  @media (max-width: $responsiveTableBreakpoint) {
     display: block;
     width: 100%;
     position: relative;
@@ -22,7 +22,7 @@
 
     &:before {
       content: attr(data-th);
-      font-weight: bold;
+      font-weight: 700;
     }
 
     &:last-child {
@@ -55,9 +55,10 @@
 
 .short-urls-row__copy-hint {
   @include vertical-align(translateX(10px));
+
   box-shadow: 0 3px 15px rgba(0, 0, 0, .25);
 
-  @media (max-width: $smMax) {
+  @media (max-width: $responsiveTableBreakpoint) {
     @include vertical-align(translateX(calc(-100% - 20px)));
   }
 }

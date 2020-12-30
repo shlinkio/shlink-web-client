@@ -1,7 +1,7 @@
 @import '../utils/base';
 
 .short-urls-table__header {
-  @media (max-width: $smMax) {
+  @media (max-width: $responsiveTableBreakpoint) {
     display: none;
   }
 }
