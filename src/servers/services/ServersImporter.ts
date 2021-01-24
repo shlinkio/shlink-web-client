@@ -1,7 +1,6 @@
 import { CsvJson } from 'csvjson';
 import { ServerData } from '../data';
 
-
 interface CsvFile extends File {
   type: 'text/csv' | 'text/comma-separated-values' | 'application/csv';
 }

@@ -4,13 +4,13 @@ import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { ExternalLink } from 'react-external-link';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import Tag from '../../../src/tags/helpers/Tag';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
+import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 
 describe('<ShortUrlsRow />', () => {
   let wrapper: ShallowWrapper;
@@ -98,7 +98,7 @@ describe('<ShortUrlsRow />', () => {
 
   it('updates state when copied to clipboard', () => {
     const col = wrapper.find('td').at(1);
-    const menu = col.find(CopyToClipboard);
+    const menu = col.find(CopyToClipboardIcon);
 
     expect(menu).toHaveLength(1);
     expect(stateFlagTimeout).not.toHaveBeenCalled();

@@ -2,7 +2,6 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { ButtonDropdown, DropdownItem } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createShortUrlsRowMenu from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
-import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ReachableServer } from '../../../src/servers/data';
 import { ShortUrl } from '../../../src/short-urls/data';
 
@@ -12,6 +11,7 @@ describe('<ShortUrlsRowMenu />', () => {
   const EditTagsModal = () => null;
   const EditMetaModal = () => null;
   const EditShortUrlModal = () => null;
+  const QrCodeModal = () => null;
   const selectedServer = Mock.of<ReachableServer>({ id: 'abc123' });
   const shortUrl = Mock.of<ShortUrl>({
     shortCode: 'abc123',
@@ -23,6 +23,7 @@ describe('<ShortUrlsRowMenu />', () => {
       EditTagsModal,
       EditMetaModal,
       EditShortUrlModal,
+      QrCodeModal,
       () => null,
     );
 

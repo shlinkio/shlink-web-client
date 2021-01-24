@@ -2,13 +2,11 @@ import { isEmpty } from 'ramda';
 import { FC, useEffect, useRef } from 'react';
 import Moment from 'react-moment';
 import { ExternalLink } from 'react-external-link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
 import Tag from '../../tags/helpers/Tag';
 import { SelectedServer } from '../../servers/data';
+import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { ShortUrl } from '../data';
 import ShortUrlVisitsCount from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
@@ -60,9 +58,7 @@ const ShortUrlsRow = (
       <td className="short-urls-row__cell" data-th="Short URL: ">
         <span className="indivisible short-urls-row__cell--relative">
           <ExternalLink href={shortUrl.shortUrl} />
-          <CopyToClipboard text={shortUrl.shortUrl} onCopy={setCopiedToClipboard}>
-            <FontAwesomeIcon icon={copyIcon} className="ml-2 short-urls-row__copy-btn" />
-          </CopyToClipboard>
+          <CopyToClipboardIcon text={shortUrl.shortUrl} onCopy={setCopiedToClipboard} />
           <span className="badge badge-warning short-urls-row__copy-hint" hidden={!copiedToClipboard}>
             Copied short URL!
           </span>
