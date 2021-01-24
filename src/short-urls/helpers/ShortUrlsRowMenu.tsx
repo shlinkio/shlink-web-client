@@ -14,7 +14,6 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { ShortUrl, ShortUrlModalProps } from '../data';
 import { Versions } from '../../utils/helpers/version';
 import { SelectedServer } from '../../servers/data';
-import QrCodeModal from './QrCodeModal';
 import VisitStatsLink from './VisitStatsLink';
 import './ShortUrlsRowMenu.scss';
 
@@ -29,6 +28,7 @@ const ShortUrlsRowMenu = (
   EditTagsModal: ShortUrlModal,
   EditMetaModal: ShortUrlModal,
   EditShortUrlModal: ShortUrlModal,
+  QrCodeModal: ShortUrlModal,
   ForServerVersion: FC<Versions>,
 ) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
   const [ isOpen, toggle ] = useToggle();

@@ -6,7 +6,7 @@ import { DropdownBtn, DropdownBtnProps } from '../../src/utils/DropdownBtn';
 describe('<DropdownBtn />', () => {
   let wrapper: ShallowWrapper;
   const createWrapper = (props: PropsWithChildren<DropdownBtnProps>) => {
-    wrapper = shallow(<DropdownBtn {...props} />);
+    wrapper = shallow(<DropdownBtn children={'foo'} {...props} />);
 
     return wrapper;
   };
@@ -17,7 +17,7 @@ describe('<DropdownBtn />', () => {
     const wrapper = createWrapper({ text });
     const toggle = wrapper.find(DropdownToggle);
 
-    expect(toggle.html()).toContain(text);
+    expect(toggle.prop('children')).toContain(text);
   });
 
   it.each([[ 'foo' ], [ 'bar' ], [ 'baz' ]])('displays provided children', (children) => {

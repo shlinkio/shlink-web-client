@@ -19,6 +19,7 @@ import { resetShortUrlParams } from '../reducers/shortUrlsListParams';
 import { editShortUrl } from '../reducers/shortUrlEdition';
 import { ConnectDecorator } from '../../container/types';
 import { ShortUrlsTable } from '../ShortUrlsTable';
+import QrCodeModal from '../helpers/QrCodeModal';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -40,6 +41,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'EditTagsModal',
     'EditMetaModal',
     'EditShortUrlModal',
+    'QrCodeModal',
     'ForServerVersion',
   );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
@@ -68,6 +70,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('EditShortUrlModal', () => EditShortUrlModal);
   bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
+
+  bottle.serviceFactory('QrCodeModal', () => QrCodeModal);
+  bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
 
   // Services
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
