@@ -1,3 +1,5 @@
+import { always, cond } from 'ramda';
+
 export interface QrCodeCapabilities {
   useSizeInPath: boolean;
   svgIsSupported: boolean;
@@ -13,7 +15,11 @@ export const buildQrCodeUrl = (
 ): string => {
   const sizeFragment = useSizeInPath ? `/${size}` : `?size=${size}`;
   const formatFragment = !svgIsSupported ? '' : `format=${format}`;
-  const joinSymbol = useSizeInPath && svgIsSupported ? '?' : !useSizeInPath && svgIsSupported ? '&' : '';
+  const joinSymbolResolver = cond([
+    [ () => useSizeInPath && svgIsSupported, always('?') ],
+    [ () => !useSizeInPath && svgIsSupported, always('&') ],
+  ]);
+  const joinSymbol = joinSymbolResolver() ?? '';
 
   return `${shortUrl}/qr-code${sizeFragment}${joinSymbol}${formatFragment}`;
 };
