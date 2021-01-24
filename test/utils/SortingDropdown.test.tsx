@@ -76,21 +76,22 @@ describe('<SortingDropdown />', () => {
   });
 
   it.each([
-    [{ isButton: false }, '>Order by<' ],
-    [{ isButton: true }, '>Order by...<' ],
+    [{ isButton: false }, <>Order by</> ],
+    [{ isButton: true }, <>Order by...</> ],
     [
       { isButton: true, orderField: 'foo', orderDir: 'ASC' as OrderDir },
-      'Order by: &quot;Foo&quot; - &quot;ASC&quot;',
+      'Order by: "Foo" - "ASC"',
     ],
     [
       { isButton: true, orderField: 'baz', orderDir: 'DESC' as OrderDir },
-      'Order by: &quot;Hello World&quot; - &quot;DESC&quot;',
+      'Order by: "Hello World" - "DESC"',
     ],
-    [{ isButton: true, orderField: 'baz' }, 'Order by: &quot;Hello World&quot; - &quot;DESC&quot;' ],
+    [{ isButton: true, orderField: 'baz' }, 'Order by: "Hello World" - "DESC"' ],
   ])('displays expected text in toggle', (props, expectedText) => {
     const wrapper = createWrapper(props);
     const toggle = wrapper.find(DropdownToggle);
+    const [ children ] = (toggle.prop('children') as any[]).filter(Boolean);
 
-    expect(toggle.html()).toContain(expectedText);
+    expect(children).toEqual(expectedText);
   });
 });
