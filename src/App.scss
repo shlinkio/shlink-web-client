@@ -27,12 +27,14 @@
 
 html:not([data-theme='dark']) {
   --primary-color: #{$lightPrimaryColor};
+  --primary-color-alfa: #{$lightPrimaryColorAlfa};
   --secondary-color: #{$lightSecondaryColor};
   --text-color: #{$lightTextColor};
 }
 
 html[data-theme='dark'] {
   --primary-color: #{$darkPrimaryColor};
+  --primary-color-alfa: #{$darkPrimaryColorAlfa};
   --secondary-color: #{$darkSecondaryColor};
   --text-color: #{$darkTextColor};
 }

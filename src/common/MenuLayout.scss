@@ -22,7 +22,7 @@
   z-index: 1035;
   font-size: 1.5rem;
   cursor: pointer;
-  color: rgba(255, 255, 255, .5);
+  color: var(--primary-color-alfa);
 
   @media (max-width: $smMax) {
     display: inline-block;
