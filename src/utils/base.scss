@@ -16,6 +16,14 @@ $lightGrey: #dddddd;
 $dangerColor: #dc3545;
 $mediumGrey: #dee2e6;
 
+// Themes
+$lightPrimaryColor: #ffffff;
+$lightSecondaryColor: $lightColor;
+$lightTextColor: #212529;
+$darkPrimaryColor: #161b22;
+$darkSecondaryColor: #0d1117;
+$darkTextColor: #ffffff;
+
 // Misc
 $headerHeight: 57px;
 $asideMenuWidth: 260px;
@@ -23,6 +31,6 @@ $footer-height: 2.3rem;
 $footer-margin: .8rem;
 
 // Bootstrap overwrites
-//$theme-colors: (
-//  'primary': $mainColor
-//);
+$theme-colors: (
+  'primary': $mainColor
+);

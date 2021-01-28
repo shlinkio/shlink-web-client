@@ -18,7 +18,7 @@
 }
 
 .servers-list__server-item:hover {
-  background-color: $lightColor;
+  background-color: var(--secondary-color);
 }
 
 .servers-list__server-item-icon {

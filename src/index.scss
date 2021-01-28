@@ -2,15 +2,16 @@
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import './common/react-tagsinput.scss';
 
+* {
+  outline: none !important;
+}
+
 html,
 body,
 #root {
   height: 100%;
-  background: $lightColor;
-}
-
-* {
-  outline: none !important;
+  background: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .bg-main {
@@ -21,8 +22,10 @@ body,
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
 }
 
-.card-header {
-  background-color: white;
+.card,
+.card-header,
+.card-body {
+  background-color: var(--primary-color);
 }
 
 .card-footer {
@@ -56,7 +59,7 @@ body,
 }
 
 .table-hover tbody tr:hover {
-  background-color: $lightColor;
+  background-color: var(--secondary-color);
 }
 
 .react-datepicker__input-container,
