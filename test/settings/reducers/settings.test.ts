@@ -1,4 +1,9 @@
-import reducer, { SET_SETTINGS, toggleRealTimeUpdates, setRealTimeUpdatesInterval } from '../../../src/settings/reducers/settings';
+import reducer, {
+  SET_SETTINGS,
+  toggleRealTimeUpdates,
+  setRealTimeUpdatesInterval,
+  setShortUrlCreationSettings,
+} from '../../../src/settings/reducers/settings';
 
 describe('settingsReducer', () => {
   const realTimeUpdates = { enabled: true };
@@ -6,7 +11,7 @@ describe('settingsReducer', () => {
   const settings = { realTimeUpdates, shortUrlCreation };
 
   describe('reducer', () => {
-    it('returns realTimeUpdates when action is SET_REAL_TIME_UPDATES', () => {
+    it('returns realTimeUpdates when action is SET_SETTINGS', () => {
       expect(reducer(undefined, { type: SET_SETTINGS, realTimeUpdates })).toEqual(settings);
     });
   });
@@ -24,6 +29,14 @@ describe('settingsReducer', () => {
       const result = setRealTimeUpdatesInterval(interval);
 
       expect(result).toEqual({ type: SET_SETTINGS, realTimeUpdates: { interval } });
+    });
+  });
+
+  describe('setShortUrlCreationSettings', () => {
+    it('creates action to set shortUrlCreation settings', () => {
+      const result = setShortUrlCreationSettings({ validateUrls: true });
+
+      expect(result).toEqual({ type: SET_SETTINGS, shortUrlCreation: { validateUrls: true } });
     });
   });
 });
