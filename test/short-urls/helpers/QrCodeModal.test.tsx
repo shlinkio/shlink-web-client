@@ -11,7 +11,7 @@ import { DropdownBtn } from '../../../src/utils/DropdownBtn';
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
   const shortUrl = 'https://doma.in/abc123';
-  const createWrapper = (version = '2.5.0') => {
+  const createWrapper = (version = '2.6.0') => {
     const selectedServer = Mock.of<ReachableServer>({ version });
 
     wrapper = shallow(
@@ -37,11 +37,20 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ '2.3.0', '/qr-code/300' ],
-    [ '2.4.0', '/qr-code/300?format=png' ],
-    [ '2.5.0', '/qr-code?size=300&format=png' ],
-  ])('displays an image with the QR code of the URL', (version, expectedUrl) => {
+    [ '2.3.0', 0, '/qr-code/300' ],
+    [ '2.4.0', 0, '/qr-code/300?format=png' ],
+    [ '2.4.0', 10, '/qr-code/300?format=png' ],
+    [ '2.5.0', 0, '/qr-code?size=300&format=png' ],
+    [ '2.6.0', 0, '/qr-code?size=300&format=png' ],
+    [ '2.6.0', 10, '/qr-code?size=300&format=png&margin=10' ],
+  ])('displays an image with the QR code of the URL', (version, margin, expectedUrl) => {
     const wrapper = createWrapper(version);
+    const formControls = wrapper.find('.form-control-range');
+
+    if (formControls.length > 1) {
+      formControls.at(1).simulate('change', { target: { value: `${margin}` } });
+    }
+
     const modalBody = wrapper.find(ModalBody);
     const img = modalBody.find('img');
     const linkInBody = modalBody.find(ExternalLink);
@@ -53,23 +62,31 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ 530, 'lg' ],
-    [ 200, undefined ],
-    [ 830, 'xl' ],
-  ])('renders expected size', (size, modalSize) => {
+    [ 530, 0, 'lg' ],
+    [ 200, 0, undefined ],
+    [ 830, 0, 'xl' ],
+    [ 430, 80, 'lg' ],
+    [ 200, 50, undefined ],
+    [ 720, 100, 'xl' ],
+  ])('renders expected size', (size, margin, modalSize) => {
     const wrapper = createWrapper();
-    const sizeInput = wrapper.find('.form-control-range');
+    const formControls = wrapper.find('.form-control-range');
+    const sizeInput = formControls.at(0);
+    const marginInput = formControls.at(1);
 
     sizeInput.simulate('change', { target: { value: `${size}` } });
+    marginInput.simulate('change', { target: { value: `${margin}` } });
 
     expect(wrapper.find('.mt-2').text()).toEqual(`${size}x${size}`);
-    expect(wrapper.find('label').text()).toEqual(`Size: ${size}px`);
+    expect(wrapper.find('label').at(0).text()).toEqual(`Size: ${size}px`);
+    expect(wrapper.find('label').at(1).text()).toEqual(`Margin: ${margin}px`);
     expect(wrapper.find(Modal).prop('size')).toEqual(modalSize);
   });
 
   it.each([
     [ '2.3.0', 0, 'col-12' ],
     [ '2.4.0', 1, 'col-md-6' ],
+    [ '2.6.0', 1, 'col-md-4' ],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
     const wrapper = createWrapper(version);
     const dropdown = wrapper.find(DropdownBtn);

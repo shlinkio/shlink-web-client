@@ -1,25 +1,31 @@
-import { always, cond } from 'ramda';
+import { isEmpty } from 'ramda';
+import { stringifyQuery } from './query';
 
 export interface QrCodeCapabilities {
   useSizeInPath: boolean;
   svgIsSupported: boolean;
+  marginIsSupported: boolean;
 }
 
 export type QrCodeFormat = 'svg' | 'png';
 
+export interface QrCodeOptions {
+  size: number;
+  format: QrCodeFormat;
+  margin: number;
+}
+
 export const buildQrCodeUrl = (
   shortUrl: string,
-  size: number,
-  format: QrCodeFormat,
-  { useSizeInPath, svgIsSupported }: QrCodeCapabilities,
+  { size, format, margin }: QrCodeOptions,
+  { useSizeInPath, svgIsSupported, marginIsSupported }: QrCodeCapabilities,
 ): string => {
-  const sizeFragment = useSizeInPath ? `/${size}` : `?size=${size}`;
-  const formatFragment = !svgIsSupported ? '' : `format=${format}`;
-  const joinSymbolResolver = cond([
-    [ () => useSizeInPath && svgIsSupported, always('?') ],
-    [ () => !useSizeInPath && svgIsSupported, always('&') ],
-  ]);
-  const joinSymbol = joinSymbolResolver() ?? '';
+  const baseUrl = `${shortUrl}/qr-code${useSizeInPath ? `/${size}` : ''}`;
+  const query = stringifyQuery({
+    size: useSizeInPath ? undefined : size,
+    format: svgIsSupported ? format : undefined,
+    margin: marginIsSupported && margin > 0 ? margin : undefined,
+  });
 
-  return `${shortUrl}/qr-code${sizeFragment}${joinSymbol}${formatFragment}`;
+  return `${baseUrl}${isEmpty(query) ? '' : `?${query}`}`;
 };
