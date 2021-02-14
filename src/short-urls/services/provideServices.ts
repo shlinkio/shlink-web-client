@@ -56,7 +56,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   );
   bottle.decorator(
     'CreateShortUrl',
-    connect([ 'shortUrlCreationResult', 'selectedServer' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),
+    connect([ 'shortUrlCreationResult', 'selectedServer', 'settings' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),
   );
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);

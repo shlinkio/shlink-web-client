@@ -6,10 +6,12 @@ import { Input } from 'reactstrap';
 import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
 import DateInput from '../../src/utils/DateInput';
 import { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
+import { Settings } from '../../src/settings/reducers/settings';
 
 describe('<CreateShortUrl />', () => {
   let wrapper: ShallowWrapper;
   const TagsSelector = () => null;
+  const shortUrlCreation = { validateUrls: true };
   const shortUrlCreationResult = Mock.all<ShortUrlCreation>();
   const createShortUrl = jest.fn(async () => Promise.resolve());
 
@@ -22,6 +24,7 @@ describe('<CreateShortUrl />', () => {
         createShortUrl={createShortUrl}
         selectedServer={null}
         resetCreateShortUrl={() => {}}
+        settings={Mock.of<Settings>({ shortUrlCreation })}
       />,
     );
   });

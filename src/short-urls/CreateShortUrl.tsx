@@ -1,5 +1,5 @@
 import { isEmpty, pipe, replace, trim } from 'ramda';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Button, FormGroup, Input } from 'reactstrap';
 import { InputType } from 'reactstrap/lib/Input';
 import * as m from 'moment';
@@ -12,6 +12,7 @@ import { formatIsoDate } from '../utils/helpers/date';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DomainSelectorProps } from '../domains/DomainSelector';
 import { SimpleCard } from '../utils/SimpleCard';
+import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
 import { ShortUrlData } from './data';
 import { ShortUrlCreation } from './reducers/shortUrlCreation';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
@@ -23,6 +24,7 @@ export interface CreateShortUrlProps {
 }
 
 interface CreateShortUrlConnectProps extends CreateShortUrlProps {
+  settings: Settings;
   shortUrlCreationResult: ShortUrlCreation;
   selectedServer: SelectedServer;
   createShortUrl: (data: ShortUrlData) => Promise<void>;
@@ -31,7 +33,7 @@ interface CreateShortUrlConnectProps extends CreateShortUrlProps {
 
 export const normalizeTag = pipe(trim, replace(/ /g, '-'));
 
-const initialState: ShortUrlData = {
+const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => ({
   longUrl: '',
   tags: [],
   customSlug: '',
@@ -41,8 +43,8 @@ const initialState: ShortUrlData = {
   validUntil: undefined,
   maxVisits: undefined,
   findIfExists: false,
-  validateUrl: true,
-};
+  validateUrl: settings?.validateUrls ?? false,
+});
 
 type NonDateFields = 'longUrl' | 'customSlug' | 'shortCodeLength' | 'domain' | 'maxVisits';
 type DateFields = 'validSince' | 'validUntil';
@@ -58,9 +60,10 @@ const CreateShortUrl = (
   resetCreateShortUrl,
   selectedServer,
   basicMode = false,
+  settings: { shortUrlCreation: shortUrlCreationSettings },
 }: CreateShortUrlConnectProps) => {
+  const initialState = useMemo(() => getInitialState(shortUrlCreationSettings), [ shortUrlCreationSettings ]);
   const [ shortUrlCreation, setShortUrlCreation ] = useState(initialState);
-
   const changeTags = (tags: string[]) => setShortUrlCreation({ ...shortUrlCreation, tags: tags.map(normalizeTag) });
   const reset = () => setShortUrlCreation(initialState);
   const save = handleEventPreventingDefault(() => {
