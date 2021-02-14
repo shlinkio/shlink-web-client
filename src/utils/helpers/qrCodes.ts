@@ -24,7 +24,7 @@ export const buildQrCodeUrl = (
   const query = stringifyQuery({
     size: useSizeInPath ? undefined : size,
     format: svgIsSupported ? format : undefined,
-    margin: marginIsSupported ? margin : undefined,
+    margin: marginIsSupported && margin > 0 ? margin : undefined,
   });
 
   return `${baseUrl}${isEmpty(query) ? '' : `?${query}`}`;

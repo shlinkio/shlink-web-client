@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { DropdownItem, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
+import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
 import { ReachableServer } from '../../servers/data';
 import { versionMatch } from '../../utils/helpers/version';
@@ -15,7 +16,7 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
 
 const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps) => {
   const [ size, setSize ] = useState(300);
-  const [ margin ] = useState(0);
+  const [ margin, setMargin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !versionMatch(selectedServer.version, { minVersion: '2.5.0' }),
@@ -24,15 +25,16 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
   }), [ selectedServer ]);
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin }, capabilities),
-    [ shortUrl, size, format, capabilities ],
+    [ shortUrl, size, format, margin, capabilities ],
   );
+  const totalSize = useMemo(() => size + margin, [ size, margin ]);
   const modalSize = useMemo(() => {
-    if (size < 500) {
+    if (totalSize < 500) {
       return undefined;
     }
 
-    return size < 800 ? 'lg' : 'xl';
-  }, [ size ]);
+    return totalSize < 800 ? 'lg' : 'xl';
+  }, [ totalSize ]);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size={modalSize}>
@@ -41,7 +43,13 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
       </ModalHeader>
       <ModalBody>
         <Row className="mb-2">
-          <div className={capabilities.svgIsSupported ? 'col-md-6' : 'col-12'}>
+          <div
+            className={classNames({
+              'col-md-4': capabilities.marginIsSupported && capabilities.svgIsSupported,
+              'col-md-6': (!capabilities.marginIsSupported && capabilities.svgIsSupported) || (capabilities.marginIsSupported && !capabilities.svgIsSupported),
+              'col-12': !capabilities.marginIsSupported && !capabilities.svgIsSupported,
+            })}
+          >
             <FormGroup>
               <label className="mb-0">Size: {size}px</label>
               <input
@@ -55,8 +63,24 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
               />
             </FormGroup>
           </div>
+          {capabilities.marginIsSupported && (
+            <div className={capabilities.svgIsSupported ? 'col-md-4' : 'col-md-6'}>
+              <FormGroup>
+                <label className="mb-0">Margin: {margin}px</label>
+                <input
+                  type="range"
+                  className="form-control-range"
+                  value={margin}
+                  step={1}
+                  min={0}
+                  max={100}
+                  onChange={(e) => setMargin(Number(e.target.value))}
+                />
+              </FormGroup>
+            </div>
+          )}
           {capabilities.svgIsSupported && (
-            <div className="col-md-6">
+            <div className={capabilities.marginIsSupported ? 'col-md-4' : 'col-md-6'}>
               <DropdownBtn text={`Format (${format})`}>
                 <DropdownItem active={format === 'png'} onClick={() => setFormat('png')}>PNG</DropdownItem>
                 <DropdownItem active={format === 'svg'} onClick={() => setFormat('svg')}>SVG</DropdownItem>

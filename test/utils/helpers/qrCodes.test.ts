@@ -57,6 +57,12 @@ describe('qrCodes', () => {
         { useSizeInPath: true, svgIsSupported: true, marginIsSupported: true },
         'shlink.io/qr-code/456?format=png&margin=10',
       ],
+      [
+        'shlink.io',
+        { size: 456, format: 'png' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: true, svgIsSupported: true, marginIsSupported: true },
+        'shlink.io/qr-code/456?format=png',
+      ],
     ])('builds expected URL based in params', (shortUrl, options, capabilities, expectedUrl) => {
       expect(buildQrCodeUrl(shortUrl, options, capabilities)).toEqual(expectedUrl);
     });
