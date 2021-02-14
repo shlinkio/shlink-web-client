@@ -15,13 +15,15 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
 
 const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps) => {
   const [ size, setSize ] = useState(300);
+  const [ margin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !versionMatch(selectedServer.version, { minVersion: '2.5.0' }),
     svgIsSupported: versionMatch(selectedServer.version, { minVersion: '2.4.0' }),
+    marginIsSupported: versionMatch(selectedServer.version, { minVersion: '2.6.0' }),
   }), [ selectedServer ]);
   const qrCodeUrl = useMemo(
-    () => buildQrCodeUrl(shortUrl, size, format, capabilities),
+    () => buildQrCodeUrl(shortUrl, { size, format, margin }, capabilities),
     [ shortUrl, size, format, capabilities ],
   );
   const modalSize = useMemo(() => {

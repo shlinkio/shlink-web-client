@@ -3,15 +3,62 @@ import { buildQrCodeUrl, QrCodeFormat } from '../../../src/utils/helpers/qrCodes
 describe('qrCodes', () => {
   describe('buildQrCodeUrl', () => {
     test.each([
-      [ 'foo.com', 530, 'svg', { useSizeInPath: true, svgIsSupported: true }, 'foo.com/qr-code/530?format=svg' ],
-      [ 'foo.com', 530, 'png', { useSizeInPath: true, svgIsSupported: true }, 'foo.com/qr-code/530?format=png' ],
-      [ 'bar.io', 870, 'svg', { useSizeInPath: false, svgIsSupported: false }, 'bar.io/qr-code?size=870' ],
-      [ 'bar.io', 200, 'png', { useSizeInPath: false, svgIsSupported: true }, 'bar.io/qr-code?size=200&format=png' ],
-      [ 'bar.io', 200, 'svg', { useSizeInPath: false, svgIsSupported: true }, 'bar.io/qr-code?size=200&format=svg' ],
-      [ 'foo.net', 480, 'png', { useSizeInPath: true, svgIsSupported: false }, 'foo.net/qr-code/480' ],
-      [ 'foo.net', 480, 'svg', { useSizeInPath: true, svgIsSupported: false }, 'foo.net/qr-code/480' ],
-    ])('builds expected URL based in params', (shortUrl, size, format, capabilities, expectedUrl) => {
-      expect(buildQrCodeUrl(shortUrl, size, format as QrCodeFormat, capabilities)).toEqual(expectedUrl);
+      [
+        'foo.com',
+        { size: 530, format: 'svg' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: true, svgIsSupported: true, marginIsSupported: false },
+        'foo.com/qr-code/530?format=svg',
+      ],
+      [
+        'foo.com',
+        { size: 530, format: 'png' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: true, svgIsSupported: true, marginIsSupported: false },
+        'foo.com/qr-code/530?format=png',
+      ],
+      [
+        'bar.io',
+        { size: 870, format: 'svg' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: false, svgIsSupported: false, marginIsSupported: false },
+        'bar.io/qr-code?size=870',
+      ],
+      [
+        'bar.io',
+        { size: 200, format: 'png' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: false, svgIsSupported: true, marginIsSupported: false },
+        'bar.io/qr-code?size=200&format=png',
+      ],
+      [
+        'bar.io',
+        { size: 200, format: 'svg' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: false, svgIsSupported: true, marginIsSupported: false },
+        'bar.io/qr-code?size=200&format=svg',
+      ],
+      [
+        'foo.net',
+        { size: 480, format: 'png' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: true, svgIsSupported: false, marginIsSupported: false },
+        'foo.net/qr-code/480',
+      ],
+      [
+        'foo.net',
+        { size: 480, format: 'svg' as QrCodeFormat, margin: 0 },
+        { useSizeInPath: true, svgIsSupported: false, marginIsSupported: false },
+        'foo.net/qr-code/480',
+      ],
+      [
+        'shlink.io',
+        { size: 123, format: 'svg' as QrCodeFormat, margin: 10 },
+        { useSizeInPath: true, svgIsSupported: false, marginIsSupported: false },
+        'shlink.io/qr-code/123',
+      ],
+      [
+        'shlink.io',
+        { size: 456, format: 'png' as QrCodeFormat, margin: 10 },
+        { useSizeInPath: true, svgIsSupported: true, marginIsSupported: true },
+        'shlink.io/qr-code/456?format=png&margin=10',
+      ],
+    ])('builds expected URL based in params', (shortUrl, options, capabilities, expectedUrl) => {
+      expect(buildQrCodeUrl(shortUrl, options, capabilities)).toEqual(expectedUrl);
     });
   });
 });
