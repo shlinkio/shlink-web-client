@@ -1,9 +1,17 @@
 import { FC } from 'react';
+import { Row } from 'reactstrap';
 import NoMenuLayout from '../common/NoMenuLayout';
 
-const Settings = (RealTimeUpdates: FC) => () => (
+const Settings = (RealTimeUpdates: FC, ShortUrlCreation: FC) => () => (
   <NoMenuLayout>
-    <RealTimeUpdates />
+    <Row>
+      <div className="col-lg-6">
+        <RealTimeUpdates />
+      </div>
+      <div className="col-lg-6">
+        <ShortUrlCreation />
+      </div>
+    </Row>
   </NoMenuLayout>
 );
 

@@ -1,22 +1,35 @@
 import { Action } from 'redux';
-import { mergeDeepRight } from 'ramda';
+import { dissoc, mergeDeepRight } from 'ramda';
 import { buildReducer } from '../../utils/helpers/redux';
 import { RecursivePartial } from '../../utils/utils';
 
-export const SET_REAL_TIME_UPDATES = 'shlink/realTimeUpdates/SET_REAL_TIME_UPDATES';
+export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
-interface RealTimeUpdates {
+/**
+ * Important! When adding new props in the main Settings interface or any of the nested props, they have to be set as
+ * optional, as old instances of the app will load partial objects from local storage until it is saved again.
+ */
+
+interface RealTimeUpdatesSettings {
   enabled: boolean;
   interval?: number;
 }
 
+export interface ShortUrlCreationSettings {
+  validateUrls: boolean;
+}
+
 export interface Settings {
-  realTimeUpdates: RealTimeUpdates;
+  realTimeUpdates: RealTimeUpdatesSettings;
+  shortUrlCreation?: ShortUrlCreationSettings;
 }
 
 const initialState: Settings = {
   realTimeUpdates: {
     enabled: true,
+  },
+  shortUrlCreation: {
+    validateUrls: false,
   },
 };
 
@@ -25,15 +38,20 @@ type SettingsAction = Action & Settings;
 type PartialSettingsAction = Action & RecursivePartial<Settings>;
 
 export default buildReducer<Settings, SettingsAction>({
-  [SET_REAL_TIME_UPDATES]: (state, { realTimeUpdates }) => mergeDeepRight(state, { realTimeUpdates }),
+  [SET_SETTINGS]: (state, action) => mergeDeepRight(state, dissoc('type', action)),
 }, initialState);
 
 export const toggleRealTimeUpdates = (enabled: boolean): PartialSettingsAction => ({
-  type: SET_REAL_TIME_UPDATES,
+  type: SET_SETTINGS,
   realTimeUpdates: { enabled },
 });
 
 export const setRealTimeUpdatesInterval = (interval: number): PartialSettingsAction => ({
-  type: SET_REAL_TIME_UPDATES,
+  type: SET_SETTINGS,
   realTimeUpdates: { interval },
+});
+
+export const setShortUrlCreationSettings = (settings: ShortUrlCreationSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  shortUrlCreation: settings,
 });
