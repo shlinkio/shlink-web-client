@@ -1,6 +1,7 @@
 @import './utils/base';
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import './common/react-tagsinput.scss';
+@import './theme/theme';
 
 * {
   outline: none !important;
@@ -14,22 +15,67 @@ body,
   color: var(--text-color);
 }
 
+@media (min-width: $smMin) {
+  #root {
+    transition: filter 300ms;
+  }
+
+  .modal-open #root {
+    filter: blur(1.5px);
+  }
+}
+
 .bg-main {
   background-color: $mainColor !important;
 }
 
-.card {
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
-}
-
-.card,
+.card-body,
 .card-header,
-.card-body {
-  background-color: var(--primary-color);
+.list-group-item {
+  background-color: transparent;
 }
 
 .card-footer {
   background-color: var(--primary-color-alfa);
+}
+
+.card {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  background-color: var(--primary-color);
+}
+
+.modal-content,
+.page-link,
+.page-item.disabled .page-link,
+.dropdown-menu {
+  background-color: var(--primary-color);
+}
+
+.modal-header,
+.modal-footer,
+.card-header,
+.card-footer,
+.table thead th,
+.table th,
+.table td,
+.page-link,
+.page-link:hover,
+.page-item.disabled .page-link,
+.dropdown-divider {
+  border-color: var(--border-color);
+}
+
+.page-link:hover {
+  background-color: var(--secondary-color);
+}
+
+.page-item.active .page-link {
+  background-color: var(--brand-color);
+  border-color: var(--brand-color);
+}
+
+.pagination .page-link {
+  cursor: pointer;
 }
 
 .container-xl {
@@ -43,22 +89,29 @@ body,
   }
 }
 
+.dropdown-item {
+  color: var(--text-color);
+}
+
 .dropdown-item:not(:disabled) {
   cursor: pointer;
 }
 
+.dropdown-item:focus:not(:disabled),
+.dropdown-item:hover:not(:disabled),
 .dropdown-item.active:not(:disabled),
 .dropdown-item:active:not(:disabled) {
-  background-color: $lightGrey !important;
-  color: inherit !important;
+  background-color: var(--active-color) !important;
+  color: var(--text-color) !important;
 }
 
 .badge-main {
   color: #ffffff;
-  background-color: $mainColor;
+  background-color: var(--brand-color);
 }
 
-.table {
+.table,
+.table-hover tbody tr:hover {
   color: var(--text-color);
 }
 
@@ -66,23 +119,16 @@ body,
   background-color: var(--secondary-color);
 }
 
-.react-datepicker__input-container,
-.react-datepicker-wrapper {
-  display: block !important;
-}
-
-.react-datepicker-popper {
-  z-index: 2;
+.form-control,
+.form-control:focus {
+  background-color: var(--input-color);
+  border-color: var(--input-border-color);
 }
 
 .navbar-brand {
   @media (max-width: $smMax) {
     margin: 0 auto !important;
   }
-}
-
-.pagination .page-link {
-  cursor: pointer;
 }
 
 .indivisible {
@@ -97,14 +143,6 @@ body,
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-.react-datepicker__day--keyboard-selected {
-  background-color: $mainColor;
-
-  &:hover {
-    background-color: darken($mainColor, 12%);
-  }
 }
 
 .progress-bar {

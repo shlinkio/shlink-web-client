@@ -1,3 +1,5 @@
+@import '../utils/base';
+
 .tag-card.tag-card {
   margin-bottom: .5rem;
 }
@@ -26,11 +28,11 @@
 }
 
 .tag-card__tag-name {
-  color: #007bff;
+  color: $mainColor;
   cursor: pointer;
 }
 
 .tag-card__tag-name:hover {
-  color: #0056b3;
+  color: darken($mainColor, 15%);
   text-decoration: underline;
 }

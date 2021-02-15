@@ -32,3 +32,20 @@
   background-color: #333333;
   font-size: 14px;
 }
+
+.react-datepicker__input-container,
+.react-datepicker-wrapper {
+  display: block !important;
+}
+
+.react-datepicker-popper {
+  z-index: 2;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: $mainColor;
+
+  &:hover {
+    background-color: darken($mainColor, 12%);
+  }
+}

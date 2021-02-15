@@ -52,14 +52,10 @@
   background-color: var(--secondary-color);
 }
 
-.aside-menu__item--selected {
-  color: #ffffff;
-  background-color: $mainColor;
-}
-
+.aside-menu__item--selected,
 .aside-menu__item--selected:hover {
   color: #ffffff;
-  background-color: $mainColor;
+  background-color: var(--brand-color);
 }
 
 .aside-menu__item--divider {

@@ -1,8 +1,8 @@
 @import '../utils/base';
 
 .main-header.main-header {
-  background-color: $mainColor !important;
   color: white;
+  background-color: var(--brand-color) !important;
 
   .navbar-brand {
     color: inherit !important;

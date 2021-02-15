@@ -1,0 +1,47 @@
+@import '../utils/base';
+
+// Light theme colors
+$lightPrimaryColor: #ffffff;
+$lightPrimaryColorAlfa: rgba($lightPrimaryColor, .5);
+$lightSecondaryColor: $lightColor;
+$lightTextColor: #212529;
+$lightBorderColor: rgba(0, 0, 0, .125);
+$lightActiveColor: $lightGrey;
+$lightBrandColor: $mainColor;
+$lightInputColor: $lightPrimaryColor;
+$lightBorderInputColor: rgba(0, 0, 0, .19);
+
+// Dark theme colors
+$darkPrimaryColor: #161b22;
+$darkPrimaryColorAlfa: rgba($darkPrimaryColor, .7);
+$darkSecondaryColor: #0f131a;
+$darkTextColor: rgb(201, 209, 217);
+$darkBorderColor: rgba(0, 0, 0, .2);
+$darkActiveColor: $darkSecondaryColor;
+$darkBrandColor: #0b2d4e;
+$darkInputColor: darken($darkPrimaryColor, 2%);
+$darkBorderInputColor: rgba(0, 0, 0, .3);
+
+html:not([data-theme='dark']) {
+  --primary-color: #{$lightPrimaryColor};
+  --primary-color-alfa: #{$lightPrimaryColorAlfa};
+  --secondary-color: #{$lightSecondaryColor};
+  --text-color: #{$lightTextColor};
+  --border-color: #{$lightBorderColor};
+  --active-color: #{$lightActiveColor};
+  --brand-color: #{$lightBrandColor};
+  --input-color: #{$lightInputColor};
+  --input-border-color: #{$lightBorderInputColor};
+}
+
+html[data-theme='dark'] {
+  --primary-color: #{$darkPrimaryColor};
+  --primary-color-alfa: #{$darkPrimaryColorAlfa};
+  --secondary-color: #{$darkSecondaryColor};
+  --text-color: #{$darkTextColor};
+  --border-color: #{$darkBorderColor};
+  --active-color: #{$darkActiveColor};
+  --brand-color: #{$darkBrandColor};
+  --input-color: #{$darkInputColor};
+  --input-border-color: #{$darkBorderInputColor};
+}

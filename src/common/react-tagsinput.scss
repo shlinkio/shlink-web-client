@@ -1,6 +1,6 @@
 .react-tagsinput {
-  background-color: #ffffff;
-  border: 1px solid #cccccc;
+  background-color: var(--input-color);
+  border: 1px solid var(--input-border-color);
   border-radius: .25rem;
   overflow: hidden;
   min-height: 2.6rem;
@@ -10,7 +10,7 @@
 
 .react-tagsinput--focused {
   border-color: #80bdff;
-  box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+  box-shadow: 0 0 0 .2rem rgb(70 150 229 / 25%);
 }
 
 .react-tagsinput-tag {
@@ -45,4 +45,8 @@
   margin-bottom: 6px;
   font-size: 1.25rem;
   color: #495057;
+}
+
+.react-autosuggest__suggestion--highlighted {
+  background-color: var(--active-color);
 }
