@@ -2,6 +2,7 @@ import { Action } from 'redux';
 import { dissoc, mergeDeepRight } from 'ramda';
 import { buildReducer } from '../../utils/helpers/redux';
 import { RecursivePartial } from '../../utils/utils';
+import { Theme } from '../../utils/theme';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
@@ -19,9 +20,14 @@ export interface ShortUrlCreationSettings {
   validateUrls: boolean;
 }
 
+export interface UiSettings {
+  theme: Theme;
+}
+
 export interface Settings {
   realTimeUpdates: RealTimeUpdatesSettings;
   shortUrlCreation?: ShortUrlCreationSettings;
+  ui?: UiSettings;
 }
 
 const initialState: Settings = {
@@ -30,6 +36,9 @@ const initialState: Settings = {
   },
   shortUrlCreation: {
     validateUrls: false,
+  },
+  ui: {
+    theme: 'light',
   },
 };
 
@@ -54,4 +63,9 @@ export const setRealTimeUpdatesInterval = (interval: number): PartialSettingsAct
 export const setShortUrlCreationSettings = (settings: ShortUrlCreationSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   shortUrlCreation: settings,
+});
+
+export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  ui: settings,
 });

@@ -43,7 +43,7 @@ bottle.serviceFactory(
   'Settings',
   'ShlinkVersionsContainer',
 );
-bottle.decorator('App', connect([ 'servers' ], [ 'fetchServers' ]));
+bottle.decorator('App', connect([ 'servers', 'settings' ], [ 'fetchServers' ]));
 
 provideCommonServices(bottle, connect, withRouter);
 provideApiServices(bottle);

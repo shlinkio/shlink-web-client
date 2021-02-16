@@ -5,3 +5,11 @@ export const MAIN_COLOR_ALPHA = 'rgba(70, 150, 229, 0.4)';
 export const HIGHLIGHTED_COLOR = '#F77F28';
 
 export const HIGHLIGHTED_COLOR_ALPHA = 'rgba(247, 127, 40, 0.4)';
+
+export type Theme = 'dark' | 'light';
+
+export const changeThemeInMarkup = (theme: Theme) => {
+  const html = document.getElementsByTagName('html');
+
+  html?.[0]?.setAttribute('data-theme', theme);
+};

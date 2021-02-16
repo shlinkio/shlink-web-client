@@ -2,11 +2,14 @@ import { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import NotFound from './common/NotFound';
 import { ServersMap } from './servers/data';
+import { Settings } from './settings/reducers/settings';
+import { changeThemeInMarkup } from './utils/theme';
 import './App.scss';
 
 interface AppProps {
   fetchServers: Function;
   servers: ServersMap;
+  settings: Settings;
 }
 
 const App = (
@@ -17,12 +20,14 @@ const App = (
   EditServer: FC,
   Settings: FC,
   ShlinkVersionsContainer: FC,
-) => ({ fetchServers, servers }: AppProps) => {
-  // On first load, try to fetch the remote servers if the list is empty
+) => ({ fetchServers, servers, settings }: AppProps) => {
   useEffect(() => {
+    // On first load, try to fetch the remote servers if the list is empty
     if (Object.keys(servers).length === 0) {
       fetchServers();
     }
+
+    changeThemeInMarkup(settings.ui?.theme ?? 'light');
   }, []);
 
   return (

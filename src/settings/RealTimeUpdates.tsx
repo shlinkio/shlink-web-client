@@ -19,6 +19,9 @@ const RealTimeUpdates = (
     <FormGroup>
       <ToggleSwitch checked={realTimeUpdates.enabled} onChange={toggleRealTimeUpdates}>
         Enable or disable real-time updates, when using Shlink v2.2.0 or newer.
+        <small className="form-text text-muted">
+          Real-time updates are currently being <b>{realTimeUpdates.enabled ? 'processed' : 'ignored'}</b>.
+        </small>
       </ToggleSwitch>
     </FormGroup>
     <FormGroup className="mb-0">
