@@ -20,7 +20,7 @@ export const UserInterface: FC<UserInterfaceProps> = ({ settings: { ui }, setUiS
         changeThemeInMarkup(theme);
       }}
     >
-      Use dark theme
+      Use dark theme.
     </ToggleSwitch>
   </SimpleCard>
 );
