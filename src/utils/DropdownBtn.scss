@@ -21,6 +21,11 @@
   background-color: var(--input-color);
 }
 
+.dropdown-btn__toggle.dropdown-btn__toggle.disabled,
+.dropdown-btn__toggle.dropdown-btn__toggle:disabled {
+  background-color: var(--input-disabled-color);
+}
+
 .dropdown-btn__toggle.dropdown-btn__toggle:after {
   @include vertical-align();
 

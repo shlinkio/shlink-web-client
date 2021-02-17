@@ -129,8 +129,14 @@ body,
   border-color: var(--input-border-color);
 }
 
-.card .form-control,
-.card .form-control:hover {
+.form-control.disabled,
+.form-control:disabled {
+  background-color: var(--input-disabled-color);
+  cursor: not-allowed;
+}
+
+.card .form-control:not(:disabled),
+.card .form-control:not(:disabled):hover {
   background-color: var(--input-color);
 }
 

@@ -9,6 +9,7 @@ $lightBorderColor: rgba(0, 0, 0, .125);
 $lightActiveColor: $lightGrey;
 $lightBrandColor: $mainColor;
 $lightInputColor: $lightPrimaryColor;
+$lightDisabledInputColor: $lightColor;
 $lightBorderInputColor: rgba(0, 0, 0, .19);
 
 // Dark theme colors
@@ -20,6 +21,7 @@ $darkBorderColor: rgba(0, 0, 0, .2);
 $darkActiveColor: $darkSecondaryColor;
 $darkBrandColor: #0b2d4e;
 $darkInputColor: darken($darkPrimaryColor, 2%);
+$darkDisabledInputColor: lighten($darkPrimaryColor, 2%);
 $darkBorderInputColor: rgba(0, 0, 0, .3);
 
 html:not([data-theme='dark']) {
@@ -31,6 +33,7 @@ html:not([data-theme='dark']) {
   --active-color: #{$lightActiveColor};
   --brand-color: #{$lightBrandColor};
   --input-color: #{$lightInputColor};
+  --input-disabled-color: #{$lightDisabledInputColor};
   --input-border-color: #{$lightBorderInputColor};
 }
 
@@ -43,5 +46,6 @@ html[data-theme='dark'] {
   --active-color: #{$darkActiveColor};
   --brand-color: #{$darkBrandColor};
   --input-color: #{$darkInputColor};
+  --input-disabled-color: #{$darkDisabledInputColor};
   --input-border-color: #{$darkBorderInputColor};
 }
