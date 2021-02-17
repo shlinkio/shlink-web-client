@@ -10,7 +10,11 @@
 }
 
 .date-input-container__input:not(:disabled) {
-  background-color: #ffffff !important;
+  background-color: var(--primary-color) !important;
+}
+
+.card .date-input-container__input:not(:disabled) {
+  background-color: var(--input-color) !important;
 }
 
 .date-input-container__icon {

@@ -44,6 +44,10 @@ body,
   background-color: var(--primary-color);
 }
 
+.list-group {
+  background-color: var(--primary-color);
+}
+
 .modal-content,
 .page-link,
 .page-item.disabled .page-link,
@@ -121,8 +125,13 @@ body,
 
 .form-control,
 .form-control:focus {
-  background-color: var(--input-color);
+  background-color: var(--primary-color);
   border-color: var(--input-border-color);
+}
+
+.card .form-control,
+.card .form-control:hover {
+  background-color: var(--input-color);
 }
 
 .navbar-brand {

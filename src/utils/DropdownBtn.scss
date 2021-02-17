@@ -6,10 +6,19 @@
 .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):focus,
 .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):hover,
 .show > .dropdown-btn__toggle.dropdown-btn__toggle.dropdown-toggle {
-  color: #6c757d;
-  background-color: var(--input-color);
   text-align: left;
+  color: #6c757d;
+  background-color: var(--primary-color);
   border-color: var(--input-border-color);
+}
+
+.card .dropdown-btn__toggle.dropdown-btn__toggle,
+.card .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled).active,
+.card .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):active,
+.card .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):focus,
+.card .dropdown-btn__toggle.dropdown-btn__toggle:not(:disabled):not(.disabled):hover,
+.show > .card .dropdown-btn__toggle.dropdown-btn__toggle.dropdown-toggle {
+  background-color: var(--input-color);
 }
 
 .dropdown-btn__toggle.dropdown-btn__toggle:after {
