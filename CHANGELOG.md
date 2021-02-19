@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#379](https://github.com/shlinkio/shlink-web-client/issues/379) and [#384](https://github.com/shlinkio/shlink-web-client/issues/384) Improved QR code modal, including controls to customize size, format and margin, as well as a button to copy the link to the clipboard.
 * [#385](https://github.com/shlinkio/shlink-web-client/issues/385) Added setting to determine if "validate URL" should be enabled or disabled by default.
 * [#386](https://github.com/shlinkio/shlink-web-client/issues/386) Added new card in overview section to display amount of orphan visits when using Shlink 2.6.0 or higher.
+* [#177](https://github.com/shlinkio/shlink-web-client/issues/177) Added dark theme. **[BETA]**
 
 ### Changed
 * *Nothing*
