@@ -85,7 +85,7 @@ describe('<VisitsTable />', () => {
     );
 
     expect(wrapper.find('.text-primary')).toHaveLength(3);
-    expect(wrapper.find('.table-primary')).toHaveLength(2);
+    expect(wrapper.find('.table-active')).toHaveLength(2);
 
     // Select one extra
     wrapper.find('tr').at(5).simulate('click');

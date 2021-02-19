@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Row } from 'reactstrap';
 import NoMenuLayout from '../common/NoMenuLayout';
 
-const Settings = (RealTimeUpdates: FC, ShortUrlCreation: FC, UserInterface:FC) => () => (
+const Settings = (RealTimeUpdates: FC, ShortUrlCreation: FC, UserInterface: FC) => () => (
   <NoMenuLayout>
     <Row>
       <div className="col-lg-6">

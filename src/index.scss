@@ -1,3 +1,5 @@
+/* stylelint-disable no-descending-specificity */
+
 @import './utils/base';
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import './common/react-tagsinput.scss';
@@ -65,7 +67,7 @@ body,
 .page-link,
 .page-link:hover,
 .page-item.disabled .page-link,
-.dropdown-divider{
+.dropdown-divider {
   border-color: var(--border-color);
 }
 
@@ -144,6 +146,12 @@ body,
 .card .form-control:not(:disabled),
 .card .form-control:not(:disabled):hover {
   background-color: var(--input-color);
+}
+
+.table-active,
+.table-active > th,
+.table-active > td {
+  background-color: var(--table-highlight-color) !important;
 }
 
 .navbar-brand {

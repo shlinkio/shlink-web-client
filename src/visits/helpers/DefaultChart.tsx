@@ -7,7 +7,15 @@ import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
-import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../utils/theme';
+import {
+  HIGHLIGHTED_COLOR,
+  HIGHLIGHTED_COLOR_ALPHA,
+  isDarkThemeEnabled,
+  MAIN_COLOR,
+  MAIN_COLOR_ALPHA,
+  PRIMARY_DARK_COLOR,
+  PRIMARY_LIGHT_COLOR,
+} from '../../utils/theme';
 import './DefaultChart.scss';
 
 export interface DefaultChartProps {
@@ -47,7 +55,7 @@ const generateGraphData = (
         '#DCDCDC',
         '#463730',
       ],
-      borderColor: isBarChart ? MAIN_COLOR : 'white',
+      borderColor: isBarChart ? MAIN_COLOR : (isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR),
       borderWidth: 2,
     },
     highlightedData && {
