@@ -1,5 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Settings, UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterface } from '../../src/settings/UserInterface';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
@@ -26,11 +28,22 @@ describe('<UserInterface />', () => {
     [{ theme: 'dark' as Theme }, true ],
     [{ theme: 'light' as Theme }, false ],
     [ undefined, false ],
-  ])('switch is toggled if theme is dark', (ui, expectedChecked) => {
+  ])('toggles switch if theme is dark', (ui, expectedChecked) => {
     const wrapper = createWrapper(ui);
     const toggle = wrapper.find(ToggleSwitch);
 
     expect(toggle.prop('checked')).toEqual(expectedChecked);
+  });
+
+  it.each([
+    [{ theme: 'dark' as Theme }, faMoon ],
+    [{ theme: 'light' as Theme }, faSun ],
+    [ undefined, faSun ],
+  ])('shows different icons based on theme', (ui, expectedIcon) => {
+    const wrapper = createWrapper(ui);
+    const icon = wrapper.find(FontAwesomeIcon);
+
+    expect(icon.prop('icon')).toEqual(expectedIcon);
   });
 
   it.each([
