@@ -65,8 +65,14 @@ body,
 .page-link,
 .page-link:hover,
 .page-item.disabled .page-link,
-.dropdown-divider {
+.dropdown-divider{
   border-color: var(--border-color);
+}
+
+.table-bordered,
+.table-bordered thead th,
+.table-bordered thead td {
+  border-color: var(--table-border-color);
 }
 
 .page-link:hover {

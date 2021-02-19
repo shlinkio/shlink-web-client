@@ -13,7 +13,8 @@
   background-color: var(--primary-color) !important;
 }
 
-.card .date-input-container__input:not(:disabled) {
+.card .date-input-container__input:not(:disabled),
+.dropdown .date-input-container__input:not(:disabled) {
   background-color: var(--input-color) !important;
 }
 
