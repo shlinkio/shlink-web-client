@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlTags } from '../reducers/shortUrlTags';
 import { ShortUrlModalProps } from '../data';
@@ -7,6 +7,7 @@ import { OptionalString } from '../../utils/utils';
 import { TagsSelectorProps } from '../../tags/helpers/TagsSelector';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { BlurredModal } from '../../utils/BlurredModal';
 
 interface EditTagsModalProps extends ShortUrlModalProps {
   shortUrlTags: ShortUrlTags;
@@ -28,7 +29,7 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
     .catch(() => {});
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <BlurredModal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}>
         Edit tags for <ExternalLink href={url} />
       </ModalHeader>
@@ -46,7 +47,7 @@ const EditTagsModal = (TagsSelector: FC<TagsSelectorProps>) => (
           {saving ? 'Saving tags...' : 'Save tags'}
         </button>
       </ModalFooter>
-    </Modal>
+    </BlurredModal>
   );
 };
 

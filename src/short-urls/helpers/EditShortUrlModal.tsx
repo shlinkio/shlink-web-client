@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } from 'reactstrap';
+import { ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlEdition } from '../reducers/shortUrlEdition';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../../utils/utils';
 import { ShortUrlModalProps } from '../data';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { BlurredModal } from '../../utils/BlurredModal';
 
 interface EditShortUrlModalProps extends ShortUrlModalProps {
   shortUrlEdition: ShortUrlEdition;
@@ -20,7 +21,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
   const doEdit = async () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
+    <BlurredModal isOpen={isOpen} toggle={toggle} centered size="lg">
       <ModalHeader toggle={toggle}>
         Edit long URL for <ExternalLink href={url} />
       </ModalHeader>
@@ -49,7 +50,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
           <Button color="primary" disabled={saving || !hasValue(longUrl)}>{saving ? 'Saving...' : 'Save'}</Button>
         </ModalFooter>
       </form>
-    </Modal>
+    </BlurredModal>
   );
 };
 

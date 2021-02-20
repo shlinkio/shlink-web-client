@@ -17,16 +17,6 @@ body,
   color: var(--text-color);
 }
 
-@media (min-width: $smMin) {
-  #root {
-    transition: filter 300ms;
-  }
-
-  .modal-open #root {
-    filter: blur(1.5px);
-  }
-}
-
 .bg-main {
   background-color: $mainColor !important;
 }

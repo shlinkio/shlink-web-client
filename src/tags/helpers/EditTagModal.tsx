@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
+import { ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ChromePicker } from 'react-color';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import { TagModalProps } from '../data';
 import { TagEdition } from '../reducers/tagEdit';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { BlurredModal } from '../../utils/BlurredModal';
 import './EditTagModal.scss';
 
 interface EditTagModalProps extends TagModalProps {
@@ -31,7 +32,7 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
     .catch(() => {}));
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
+    <BlurredModal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
       <form onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>
@@ -68,7 +69,7 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
           <button type="submit" className="btn btn-primary" disabled={editing}>{editing ? 'Saving...' : 'Save'}</button>
         </ModalFooter>
       </form>
-    </Modal>
+    </BlurredModal>
   );
 };
 

@@ -1,9 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { History } from 'history';
 import { Mock } from 'ts-mockery';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
 import { ServerWithId } from '../../src/servers/data';
+import { BlurredModal } from '../../src/utils/BlurredModal';
 
 describe('<DeleteServerModal />', () => {
   let wrapper: ShallowWrapper;
@@ -27,7 +28,7 @@ describe('<DeleteServerModal />', () => {
   afterEach(jest.clearAllMocks);
 
   it('renders a modal window', () => {
-    expect(wrapper.find(Modal)).toHaveLength(1);
+    expect(wrapper.find(BlurredModal)).toHaveLength(1);
     expect(wrapper.find(ModalHeader)).toHaveLength(1);
     expect(wrapper.find(ModalBody)).toHaveLength(1);
     expect(wrapper.find(ModalFooter)).toHaveLength(1);

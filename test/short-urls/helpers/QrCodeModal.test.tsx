@@ -1,12 +1,13 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
-import { Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { ModalBody, ModalHeader, Row } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { BlurredModal } from '../../../src/utils/BlurredModal';
 
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
@@ -80,7 +81,7 @@ describe('<QrCodeModal />', () => {
     expect(wrapper.find('.mt-2').text()).toEqual(`${size}x${size}`);
     expect(wrapper.find('label').at(0).text()).toEqual(`Size: ${size}px`);
     expect(wrapper.find('label').at(1).text()).toEqual(`Margin: ${margin}px`);
-    expect(wrapper.find(Modal).prop('size')).toEqual(modalSize);
+    expect(wrapper.find(BlurredModal).prop('size')).toEqual(modalSize);
   });
 
   it.each([

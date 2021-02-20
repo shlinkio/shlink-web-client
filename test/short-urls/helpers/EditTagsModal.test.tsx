@@ -1,10 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Modal } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlTags } from '../../../src/short-urls/reducers/shortUrlTags';
 import { OptionalString } from '../../../src/utils/utils';
+import { BlurredModal } from '../../../src/utils/BlurredModal';
 
 describe('<EditTagsModal />', () => {
   let wrapper: ShallowWrapper;
@@ -98,7 +98,7 @@ describe('<EditTagsModal />', () => {
       saving: false,
       error: false,
     });
-    const modal = wrapper.find(Modal);
+    const modal = wrapper.find(BlurredModal);
 
     modal.simulate('closed');
     expect(editShortUrlTags).not.toHaveBeenCalled();

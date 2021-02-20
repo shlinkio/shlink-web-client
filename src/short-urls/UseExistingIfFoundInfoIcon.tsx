@@ -1,11 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import './UseExistingIfFoundInfoIcon.scss';
+import { ModalBody, ModalHeader } from 'reactstrap';
 import { useToggle } from '../utils/helpers/hooks';
+import { BlurredModal } from '../utils/BlurredModal';
+import './UseExistingIfFoundInfoIcon.scss';
 
 const InfoModal = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => (
-  <Modal isOpen={isOpen} toggle={toggle} centered size="lg">
+  <BlurredModal isOpen={isOpen} toggle={toggle} centered size="lg">
     <ModalHeader toggle={toggle}>Info</ModalHeader>
     <ModalBody>
       <p>
@@ -33,7 +34,7 @@ const InfoModal = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) 
         </li>
       </ul>
     </ModalBody>
-  </Modal>
+  </BlurredModal>
 );
 
 const UseExistingIfFoundInfoIcon = () => {

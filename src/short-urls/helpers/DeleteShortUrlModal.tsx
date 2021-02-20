@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { identity, pipe } from 'ramda';
 import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
@@ -7,6 +7,7 @@ import { handleEventPreventingDefault, OptionalString } from '../../utils/utils'
 import { Result } from '../../utils/Result';
 import { isInvalidDeletionError } from '../../api/utils';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { BlurredModal } from '../../utils/BlurredModal';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;
@@ -32,7 +33,7 @@ const DeleteShortUrlModal = (
   });
 
   return (
-    <Modal isOpen={isOpen} toggle={close} centered>
+    <BlurredModal isOpen={isOpen} toggle={close} centered>
       <form onSubmit={handleDeleteUrl}>
         <ModalHeader toggle={close}>
           <span className="text-danger">Delete short URL</span>
@@ -67,7 +68,7 @@ const DeleteShortUrlModal = (
           </button>
         </ModalFooter>
       </form>
-    </Modal>
+    </BlurredModal>
   );
 };
 
