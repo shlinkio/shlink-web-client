@@ -13,6 +13,7 @@ export const GET_OVERVIEW = 'shlink/visitsOverview/GET_OVERVIEW';
 
 export interface VisitsOverview {
   visitsCount: number;
+  orphanVisitsCount?: number;
   loading: boolean;
   error: boolean;
 }
@@ -21,6 +22,7 @@ export type GetVisitsOverviewAction = ShlinkVisitsOverview & Action<string>;
 
 const initialState: VisitsOverview = {
   visitsCount: 0,
+  orphanVisitsCount: 0,
   loading: false,
   error: false,
 };
@@ -28,7 +30,7 @@ const initialState: VisitsOverview = {
 export default buildReducer<VisitsOverview, GetVisitsOverviewAction & CreateVisitsAction>({
   [GET_OVERVIEW_START]: () => ({ ...initialState, loading: true }),
   [GET_OVERVIEW_ERROR]: () => ({ ...initialState, error: true }),
-  [GET_OVERVIEW]: (_, { visitsCount }) => ({ ...initialState, visitsCount }),
+  [GET_OVERVIEW]: (_, { visitsCount, orphanVisitsCount }) => ({ ...initialState, visitsCount, orphanVisitsCount }),
   [CREATE_VISITS]: ({ visitsCount, ...rest }, { createdVisits }) => ({
     ...rest,
     visitsCount: visitsCount + createdVisits.length,

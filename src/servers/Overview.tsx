@@ -38,7 +38,7 @@ export const Overview = (
 }: OverviewConnectProps) => {
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
-  const { loading: loadingVisits, visitsCount } = visitsOverview;
+  const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
   const history = useHistory();
 
@@ -51,7 +51,7 @@ export const Overview = (
   return (
     <>
       <div className="row mb-3">
-        <div className="col-md-6 col-lg-4">
+        <div className="col-md-6 col-xl-3">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
             <CardText tag="h2">
@@ -64,7 +64,20 @@ export const Overview = (
             </CardText>
           </Card>
         </div>
-        <div className="col-md-6 col-lg-4">
+        <div className="col-md-6 col-xl-3">
+          <Card className="overview__card mb-2" body>
+            <CardTitle tag="h5" className="overview__card-title">Orphan visits</CardTitle>
+            <CardText tag="h2">
+              <ForServerVersion minVersion="2.6.0">
+                {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
+              </ForServerVersion>
+              <ForServerVersion maxVersion="2.5.*">
+                <small className="text-muted"><i>Shlink 2.6 is needed</i></small>
+              </ForServerVersion>
+            </CardText>
+          </Card>
+        </div>
+        <div className="col-md-6 col-xl-3">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
@@ -72,7 +85,7 @@ export const Overview = (
             </CardText>
           </Card>
         </div>
-        <div className="col-md-12 col-lg-4">
+        <div className="col-md-6 col-xl-3">
           <Card className="overview__card mb-2" body>
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
             <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>
