@@ -32,7 +32,7 @@ describe('<Overview />', () => {
         loadVisitsOverview={loadVisitsOverview}
         shortUrlsList={Mock.of<ShortUrlsListState>({ loading, shortUrls })}
         tagsList={Mock.of<TagsList>({ loading, tags: [ 'foo', 'bar', 'baz' ] })}
-        visitsOverview={Mock.of<VisitsOverview>({ loading, visitsCount: 3456 })}
+        visitsOverview={Mock.of<VisitsOverview>({ loading, visitsCount: 3456, orphanVisitsCount: 28 })}
         selectedServer={Mock.of<ReachableServer>({ id: serverId })}
         createNewVisits={jest.fn()}
         loadMercureInfo={jest.fn()}
@@ -49,7 +49,7 @@ describe('<Overview />', () => {
     const wrapper = createWrapper(true);
     const cards = wrapper.find(CardText);
 
-    expect(cards).toHaveLength(3);
+    expect(cards).toHaveLength(4);
     cards.forEach((card) => expect(card.html()).toContain('Loading...'));
   });
 
@@ -57,10 +57,11 @@ describe('<Overview />', () => {
     const wrapper = createWrapper();
     const cards = wrapper.find(CardText);
 
-    expect(cards).toHaveLength(3);
+    expect(cards).toHaveLength(4);
     expect(cards.at(0).html()).toContain(prettify(3456));
-    expect(cards.at(1).html()).toContain(prettify(83710));
-    expect(cards.at(2).html()).toContain(prettify(3));
+    expect(cards.at(1).html()).toContain(prettify(28));
+    expect(cards.at(2).html()).toContain(prettify(83710));
+    expect(cards.at(3).html()).toContain(prettify(3));
   });
 
   test('first card displays warning for old shlink versions', () => {
