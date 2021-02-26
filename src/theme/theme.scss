@@ -25,7 +25,7 @@ $darkActiveColor: $darkSecondaryColor;
 $darkBrandColor: #0b2d4e;
 $darkInputColor: darken($darkPrimaryColor, 2%);
 $darkDisabledInputColor: lighten($darkPrimaryColor, 2%);
-$darkBorderInputColor: rgba(0, 0, 0, .3);
+$darkBorderInputColor: $darkBorderColor;
 $darkTableHighlightColor: $darkBorderColor;
 
 html:not([data-theme='dark']) {
