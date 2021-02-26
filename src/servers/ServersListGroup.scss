@@ -29,7 +29,7 @@
 
 .servers-list__list-group--embedded.servers-list__list-group--embedded {
   border-radius: 0;
-  border-top: 1px solid rgba(0, 0, 0, .125);
+  border-top: 1px solid var(--border-color);
 
   @media (min-width: $mdMin) {
     max-height: 220px;
@@ -40,6 +40,6 @@
 
   .servers-list__server-item {
     border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    border-bottom: 1px solid var(--border-color);
   }
 }

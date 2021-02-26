@@ -34,6 +34,7 @@ body,
 .card {
   box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
   background-color: var(--primary-color);
+  border-color: var(--border-color);
 }
 
 .list-group {
@@ -57,7 +58,9 @@ body,
 .page-link,
 .page-link:hover,
 .page-item.disabled .page-link,
-.dropdown-divider {
+.dropdown-divider,
+.dropdown-menu,
+.list-group-item {
   border-color: var(--border-color);
 }
 
