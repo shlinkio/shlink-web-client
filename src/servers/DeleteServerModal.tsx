@@ -1,6 +1,5 @@
-import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { RouterProps } from 'react-router';
-import { BlurredModal } from '../utils/BlurredModal';
 import { ServerWithId } from './data';
 
 export interface DeleteServerModalProps {
@@ -21,7 +20,7 @@ const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }: De
   };
 
   return (
-    <BlurredModal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered>
       <ModalHeader toggle={toggle}><span className="text-danger">Remove server</span></ModalHeader>
       <ModalBody>
         <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
@@ -36,7 +35,7 @@ const DeleteServerModal = ({ server, toggle, isOpen, deleteServer, history }: De
         <button className="btn btn-link" onClick={toggle}>Cancel</button>
         <button className="btn btn-danger" onClick={() => closeModal()}>Delete</button>
       </ModalFooter>
-    </BlurredModal>
+    </Modal>
   );
 };
 

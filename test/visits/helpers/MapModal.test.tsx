@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Marker, Popup } from 'react-leaflet';
 import MapModal from '../../../src/visits/helpers/MapModal';
 import { CityStats } from '../../../src/visits/types';
-import { BlurredModal } from '../../../src/utils/BlurredModal';
+import { Modal } from 'reactstrap';
 
 describe('<MapModal />', () => {
   let wrapper: ShallowWrapper;
@@ -33,7 +33,7 @@ describe('<MapModal />', () => {
   afterEach(() => wrapper.unmount());
 
   it('renders modal with provided props', () => {
-    const modal = wrapper.find(BlurredModal);
+    const modal = wrapper.find(Modal);
     const header = wrapper.find('.map-modal__modal-title');
 
     expect(modal.prop('toggle')).toEqual(toggle);

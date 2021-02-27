@@ -67,7 +67,7 @@ describe('<EditShortUrlModal />', () => {
 
   it.each([
     [ '[color="link"]', 'onClick' ],
-    [ 'BlurredModal', 'toggle' ],
+    [ 'Modal', 'toggle' ],
     [ 'ModalHeader', 'toggle' ],
   ])('toggles modal with different mechanisms', (componentToFind, propToCall) => {
     const wrapper = createWrapper({}, { saving: false, error: false });

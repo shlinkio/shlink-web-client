@@ -4,7 +4,7 @@ import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlTags } from '../../../src/short-urls/reducers/shortUrlTags';
 import { OptionalString } from '../../../src/utils/utils';
-import { BlurredModal } from '../../../src/utils/BlurredModal';
+import { Modal } from 'reactstrap';
 
 describe('<EditTagsModal />', () => {
   let wrapper: ShallowWrapper;
@@ -98,7 +98,7 @@ describe('<EditTagsModal />', () => {
       saving: false,
       error: false,
     });
-    const modal = wrapper.find(BlurredModal);
+    const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
     expect(editShortUrlTags).not.toHaveBeenCalled();

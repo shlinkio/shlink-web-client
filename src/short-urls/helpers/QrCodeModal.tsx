@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
@@ -9,7 +9,6 @@ import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat } from '../../utils/helpers/qrCodes';
 import './QrCodeModal.scss';
-import { BlurredModal } from '../../utils/BlurredModal';
 
 interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: ReachableServer;
@@ -38,7 +37,7 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
   }, [ totalSize ]);
 
   return (
-    <BlurredModal isOpen={isOpen} toggle={toggle} centered size={modalSize}>
+    <Modal isOpen={isOpen} toggle={toggle} centered size={modalSize}>
       <ModalHeader toggle={toggle}>
         QR code for <ExternalLink href={shortUrl}>{shortUrl}</ExternalLink>
       </ModalHeader>
@@ -99,7 +98,7 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
           <div className="mt-2">{size}x{size}</div>
         </div>
       </ModalBody>
-    </BlurredModal>
+    </Modal>
   );
 };
 

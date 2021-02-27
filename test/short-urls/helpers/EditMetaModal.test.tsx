@@ -71,7 +71,7 @@ describe('<EditMetaModal />', () => {
 
   it.each([
     [ '.btn-link', 'onClick' ],
-    [ 'BlurredModal', 'toggle' ],
+    [ 'Modal', 'toggle' ],
     [ 'ModalHeader', 'toggle' ],
   ])('resets meta when modal is toggled in any way', (componentToFind, propToCall) => {
     const wrapper = createWrapper({ saving: false, error: false });

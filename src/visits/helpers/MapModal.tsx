@@ -1,9 +1,8 @@
 import { FC } from 'react';
-import { ModalBody } from 'reactstrap';
+import { Modal, ModalBody } from 'reactstrap';
 import { MapContainer, TileLayer, Marker, Popup, MapContainerProps } from 'react-leaflet';
 import { prop } from 'ramda';
 import { CityStats } from '../types';
-import { BlurredModal } from '../../utils/BlurredModal';
 import './MapModal.scss';
 
 interface MapModalProps {
@@ -37,7 +36,7 @@ const calculateMapProps = (locations: CityStats[]): MapContainerProps => {
 };
 
 const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
-  <BlurredModal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
+  <Modal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
     <ModalBody className="map-modal__modal-body">
       <h3 className="map-modal__modal-title">
         {title}
@@ -52,7 +51,7 @@ const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
         ))}
       </MapContainer>
     </ModalBody>
-  </BlurredModal>
+  </Modal>
 );
 
 export default MapModal;

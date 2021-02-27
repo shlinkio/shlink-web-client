@@ -1,9 +1,8 @@
-import { ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { TagDeletion } from '../reducers/tagDelete';
 import { TagModalProps } from '../data';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import { BlurredModal } from '../../utils/BlurredModal';
 
 interface DeleteTagConfirmModalProps extends TagModalProps {
   deleteTag: (tag: string) => Promise<void>;
@@ -22,7 +21,7 @@ const DeleteTagConfirmModal = (
   };
 
   return (
-    <BlurredModal toggle={toggle} isOpen={isOpen} centered>
+    <Modal toggle={toggle} isOpen={isOpen} centered>
       <ModalHeader toggle={toggle}>
         <span className="text-danger">Delete tag</span>
       </ModalHeader>
@@ -40,7 +39,7 @@ const DeleteTagConfirmModal = (
           {deleting ? 'Deleting tag...' : 'Delete tag'}
         </button>
       </ModalFooter>
-    </BlurredModal>
+    </Modal>
   );
 };
 

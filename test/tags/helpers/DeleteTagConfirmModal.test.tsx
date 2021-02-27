@@ -1,8 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DeleteTagConfirmModal from '../../../src/tags/helpers/DeleteTagConfirmModal';
 import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
-import { BlurredModal } from '../../../src/utils/BlurredModal';
 
 describe('<DeleteTagConfirmModal />', () => {
   let wrapper: ShallowWrapper;
@@ -69,7 +68,7 @@ describe('<DeleteTagConfirmModal />', () => {
 
   it('does no further actions when modal is closed without deleting tag', () => {
     wrapper = createWrapper({ error: false, deleting: false });
-    const modal = wrapper.find(BlurredModal);
+    const modal = wrapper.find(Modal);
 
     modal.simulate('closed');
     expect(deleteTag).not.toHaveBeenCalled();

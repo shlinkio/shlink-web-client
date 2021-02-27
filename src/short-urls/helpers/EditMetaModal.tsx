@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-import { ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
@@ -12,7 +12,6 @@ import { ShortUrl, ShortUrlMeta, ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault, Nullable, OptionalString } from '../../utils/utils';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import { BlurredModal } from '../../utils/BlurredModal';
 
 interface EditMetaModalConnectProps extends ShortUrlModalProps {
   shortUrlMeta: ShortUrlMetaEdition;
@@ -43,7 +42,7 @@ const EditMetaModal = (
   }).then(close);
 
   return (
-    <BlurredModal isOpen={isOpen} toggle={close} centered>
+    <Modal isOpen={isOpen} toggle={close} centered>
       <ModalHeader toggle={close}>
         <FontAwesomeIcon icon={infoIcon} id="metaTitleInfo" /> Edit metadata for <ExternalLink href={url} />
         <UncontrolledTooltip target="metaTitleInfo" placement="bottom">
@@ -95,7 +94,7 @@ const EditMetaModal = (
           <button className="btn btn-primary" type="submit" disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
         </ModalFooter>
       </form>
-    </BlurredModal>
+    </Modal>
   );
 };
 
