@@ -54,7 +54,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
   ) : (
     <DropdownBtn
       text={valueIsEmpty ? 'Domain' : `Domain: ${value}`}
-      className={!valueIsEmpty ? 'domains-dropdown__toggle-btn--active' : ''}
+      className={!valueIsEmpty ? 'domains-dropdown__toggle-btn--active' : 'domains-dropdown__toggle-btn'}
     >
       {domains.map(({ domain, isDefault }) => (
         <DropdownItem

@@ -10,13 +10,14 @@ $lightTableBorderColor: $mediumGrey;
 $lightActiveColor: $lightGrey;
 $lightBrandColor: $mainColor;
 $lightInputColor: $lightPrimaryColor;
+$lightInputTextColor: #495057;
 $lightDisabledInputColor: $lightColor;
 $lightBorderInputColor: rgba(0, 0, 0, .19);
 $lightTableHighlightColor: rgba(0, 0, 0, .075);
 
 // Dark theme colors
 $darkPrimaryColor: #161b22;
-$darkPrimaryColorAlfa: rgba($darkPrimaryColor, .7);
+$darkPrimaryColorAlfa: rgba($darkPrimaryColor, .8);
 $darkSecondaryColor: #0f131a;
 $darkTextColor: rgb(201, 209, 217);
 $darkBorderColor: rgba(255, 255, 255, .15);
@@ -24,6 +25,7 @@ $darkTableBorderColor: #393d43;
 $darkActiveColor: $darkSecondaryColor;
 $darkBrandColor: #0b2d4e;
 $darkInputColor: darken($darkPrimaryColor, 2%);
+$darkInputTextColor: $darkTextColor;
 $darkDisabledInputColor: lighten($darkPrimaryColor, 2%);
 $darkBorderInputColor: $darkBorderColor;
 $darkTableHighlightColor: $darkBorderColor;
@@ -39,6 +41,7 @@ html:not([data-theme='dark']) {
   --input-color: #{$lightInputColor};
   --input-disabled-color: #{$lightDisabledInputColor};
   --input-border-color: #{$lightBorderInputColor};
+  --input-text-color: #{$lightInputTextColor};
   --table-border-color: #{$lightTableBorderColor};
   --table-highlight-color: #{$lightTableHighlightColor};
 }
@@ -54,6 +57,7 @@ html[data-theme='dark'] {
   --input-color: #{$darkInputColor};
   --input-disabled-color: #{$darkDisabledInputColor};
   --input-border-color: #{$darkBorderInputColor};
+  --input-text-color: #{$darkInputTextColor};
   --table-border-color: #{$darkTableBorderColor};
   --table-highlight-color: #{$darkTableHighlightColor};
 }

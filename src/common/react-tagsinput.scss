@@ -1,3 +1,5 @@
+@import '../utils/base';
+
 .react-tagsinput {
   background-color: var(--input-color);
   border: 1px solid var(--input-border-color);
@@ -44,7 +46,11 @@
   width: 100%;
   margin-bottom: 6px;
   font-size: 1.25rem;
-  color: #495057;
+  color: var(--input-text-color);
+}
+
+.react-tagsinput-input::placeholder {
+  color: $textPlaceholder;
 }
 
 .react-autosuggest__suggestion--highlighted {

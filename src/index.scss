@@ -60,7 +60,8 @@ body,
 .page-item.disabled .page-link,
 .dropdown-divider,
 .dropdown-menu,
-.list-group-item {
+.list-group-item,
+.modal-content {
   border-color: var(--border-color);
 }
 
@@ -116,6 +117,8 @@ body,
   background-color: var(--brand-color);
 }
 
+.close,
+.close:hover,
 .table,
 .table-hover tbody tr:hover {
   color: var(--text-color);
@@ -129,6 +132,7 @@ body,
 .form-control:focus {
   background-color: var(--primary-color);
   border-color: var(--input-border-color);
+  color: var(--input-text-color);
 }
 
 .form-control.disabled,
