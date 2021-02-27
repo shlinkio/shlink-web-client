@@ -3,7 +3,7 @@ import { Visit, OrphanVisit, CreateVisit } from './index';
 
 export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => visit.hasOwnProperty('visitedUrl');
 
-interface GroupedNewVisits {
+export interface GroupedNewVisits {
   orphanVisits: CreateVisit[];
   regularVisits: CreateVisit[];
 }
