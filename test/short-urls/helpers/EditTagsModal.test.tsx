@@ -1,10 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
+import { Modal } from 'reactstrap';
 import createEditTagsModal from '../../../src/short-urls/helpers/EditTagsModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlTags } from '../../../src/short-urls/reducers/shortUrlTags';
 import { OptionalString } from '../../../src/utils/utils';
-import { Modal } from 'reactstrap';
 
 describe('<EditTagsModal />', () => {
   let wrapper: ShallowWrapper;

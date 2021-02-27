@@ -1,4 +1,5 @@
 import { Action, Dispatch } from 'redux';
+import { prop } from 'ramda';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
@@ -6,6 +7,8 @@ import { ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
+import { isReachableServer } from '../../servers/data';
+import { versionMatch } from '../../utils/helpers/version';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -50,10 +53,19 @@ export const editShortUrlTags = (buildShlinkApiClient: ShlinkApiClientBuilder) =
   tags: string[],
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
-  const { updateShortUrlTags } = buildShlinkApiClient(getState);
+  const { selectedServer } = getState();
+  const supportsTagsInPatch = isReachableServer(selectedServer) && versionMatch(
+    selectedServer.version,
+    { minVersion: '2.6.0' },
+  );
+  const { updateShortUrlTags, updateShortUrlMeta } = buildShlinkApiClient(getState);
 
   try {
-    const normalizedTags = await updateShortUrlTags(shortCode, domain, tags);
+    const normalizedTags = await (
+      supportsTagsInPatch
+        ? updateShortUrlMeta(shortCode, domain, { tags }).then(prop('tags'))
+        : updateShortUrlTags(shortCode, domain, tags)
+    );
 
     dispatch<EditShortUrlTagsAction>({ tags: normalizedTags, shortCode, domain, type: SHORT_URL_TAGS_EDITED });
   } catch (e) {

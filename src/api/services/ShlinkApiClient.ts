@@ -63,6 +63,7 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
+  /* @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrlMeta instead */
   public readonly updateShortUrlTags = async (
     shortCode: string,
     domain: OptionalString,
@@ -75,9 +76,9 @@ export default class ShlinkApiClient {
     shortCode: string,
     domain: OptionalString,
     meta: ShlinkShortUrlMeta,
-  ): Promise<ShlinkShortUrlMeta> =>
-    this.performRequest(`/short-urls/${shortCode}`, 'PATCH', { domain }, meta)
-      .then(() => meta);
+  ): Promise<ShortUrl> =>
+    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, meta)
+      .then(({ data }) => data);
 
   public readonly listTags = async (): Promise<ShlinkTags> =>
     this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })

@@ -9,6 +9,7 @@ import reducer, {
   EditShortUrlTagsAction,
 } from '../../../src/short-urls/reducers/shortUrlTags';
 import { ShlinkState } from '../../../src/container/types';
+import { ReachableServer, SelectedServer } from '../../../src/servers/data';
 
 describe('shortUrlTagsReducer', () => {
   const tags = [ 'foo', 'bar', 'baz' ];
@@ -60,9 +61,10 @@ describe('shortUrlTagsReducer', () => {
 
   describe('editShortUrlTags', () => {
     const updateShortUrlTags = jest.fn();
-    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags });
+    const updateShortUrlMeta = jest.fn();
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags, updateShortUrlMeta });
     const dispatch = jest.fn();
-    const getState = () => Mock.all<ShlinkState>();
+    const buildGetState = (selectedServer?: SelectedServer) => () => Mock.of<ShlinkState>({ selectedServer });
 
     afterEach(jest.clearAllMocks);
 
@@ -71,16 +73,39 @@ describe('shortUrlTagsReducer', () => {
 
       updateShortUrlTags.mockResolvedValue(normalizedTags);
 
-      await editShortUrlTags(buildShlinkApiClient)(shortCode, domain, tags)(dispatch, getState);
+      await editShortUrlTags(buildShlinkApiClient)(shortCode, domain, tags)(dispatch, buildGetState());
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, domain, tags);
+      expect(updateShortUrlMeta).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
       expect(dispatch).toHaveBeenNthCalledWith(
         2,
         { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode, domain },
+      );
+    });
+
+    it('calls updateShortUrlMeta when server is version 2.6.0 or above', async () => {
+      const normalizedTags = [ 'bar', 'foo' ];
+
+      updateShortUrlMeta.mockResolvedValue({ tags: normalizedTags });
+
+      await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(
+        dispatch,
+        buildGetState(Mock.of<ReachableServer>({ printableVersion: '', version: '2.6.0' })),
+      );
+
+      expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
+      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
+      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, { tags });
+      expect(updateShortUrlTags).not.toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
+      expect(dispatch).toHaveBeenNthCalledWith(
+        2,
+        { type: SHORT_URL_TAGS_EDITED, tags: normalizedTags, shortCode },
       );
     });
 
@@ -90,7 +115,7 @@ describe('shortUrlTagsReducer', () => {
       updateShortUrlTags.mockRejectedValue(error);
 
       try {
-        await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(dispatch, getState);
+        await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(dispatch, buildGetState());
       } catch (e) {
         expect(e).toBe(error);
       }
