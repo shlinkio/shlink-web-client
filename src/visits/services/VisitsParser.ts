@@ -2,6 +2,7 @@ import { isNil, map } from 'ramda';
 import { extractDomain, parseUserAgent } from '../../utils/helpers/visits';
 import { hasValue } from '../../utils/utils';
 import { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
+import { isOrphanVisit } from '../types/helpers';
 
 const visitHasProperty = (visit: NormalizedVisit, propertyName: keyof NormalizedVisit) =>
   !isNil(visit) && hasValue(visit[propertyName]);
@@ -68,15 +69,24 @@ export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.redu
   { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} },
 );
 
-export const normalizeVisits = map(({ userAgent, date, referer, visitLocation }: Visit): NormalizedVisit => ({
-  date,
-  ...parseUserAgent(userAgent),
-  referer: extractDomain(referer),
-  country: visitLocation?.countryName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-  city: visitLocation?.cityName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
-  latitude: visitLocation?.latitude,
-  longitude: visitLocation?.longitude,
-}));
+export const normalizeVisits = map((visit: Visit): NormalizedVisit => {
+  const { userAgent, date, referer, visitLocation } = visit;
+  const common = {
+    date,
+    ...parseUserAgent(userAgent),
+    referer: extractDomain(referer),
+    country: visitLocation?.countryName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+    city: visitLocation?.cityName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+    latitude: visitLocation?.latitude,
+    longitude: visitLocation?.longitude,
+  };
+
+  if (!isOrphanVisit(visit)) {
+    return common;
+  }
+
+  return { ...common, type: visit.type, visitedUrl: visit.visitedUrl };
+});
 
 export interface VisitsParser {
   processStatsFromVisits: (normalizedVisits: NormalizedVisit[]) => VisitsStats;

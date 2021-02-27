@@ -19,6 +19,7 @@ const MenuLayout = (
   CreateShortUrl: FC,
   ShortUrlVisits: FC,
   TagVisits: FC,
+  OrphanVisits: FC,
   ServerError: FC,
   Overview: FC,
 ) => withSelectedServer(({ location, selectedServer }) => {
@@ -31,6 +32,7 @@ const MenuLayout = (
   }
 
   const addTagsVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.2.0' });
+  const addOrphanVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.6.0' });
   const burgerClasses = classNames('menu-layout__burger-icon', {
     'menu-layout__burger-icon--active': sidebarVisible,
   });
@@ -67,6 +69,7 @@ const MenuLayout = (
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                 <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
                 {addTagsVisitsRoute && <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
+                {addOrphanVisitsRoute && <Route path="/server/:serverId/orphan-visits" component={OrphanVisits} />}
                 <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                 <Route
                   render={() => <NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}

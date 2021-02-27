@@ -22,6 +22,7 @@
       "ignoreComments": true
     }],
     "no-mixed-operators": "off",
+    "object-shorthand": "off",
     "react/display-name": "off",
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/require-array-sort-compare": "off"

@@ -3,6 +3,7 @@ import { ShlinkVisitsOverview } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { buildReducer } from '../../utils/helpers/redux';
+import { groupNewVisitsByType } from '../types/helpers';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
@@ -31,10 +32,15 @@ export default buildReducer<VisitsOverview, GetVisitsOverviewAction & CreateVisi
   [GET_OVERVIEW_START]: () => ({ ...initialState, loading: true }),
   [GET_OVERVIEW_ERROR]: () => ({ ...initialState, error: true }),
   [GET_OVERVIEW]: (_, { visitsCount, orphanVisitsCount }) => ({ ...initialState, visitsCount, orphanVisitsCount }),
-  [CREATE_VISITS]: ({ visitsCount, ...rest }, { createdVisits }) => ({
-    ...rest,
-    visitsCount: visitsCount + createdVisits.length,
-  }),
+  [CREATE_VISITS]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { createdVisits }) => {
+    const { regularVisits, orphanVisits } = groupNewVisitsByType(createdVisits);
+
+    return {
+      ...rest,
+      visitsCount: visitsCount + regularVisits.length,
+      orphanVisitsCount: orphanVisitsCount + orphanVisits.length,
+    };
+  },
 }, initialState);
 
 export const loadVisitsOverview = (buildShlinkApiClient: ShlinkApiClientBuilder) => () => async (

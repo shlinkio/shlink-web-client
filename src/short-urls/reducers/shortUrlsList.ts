@@ -83,10 +83,14 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       (currentShortUrl) => {
         // Find the last of the new visit for this short URL, and pick the amount of visits from it
         const lastVisit = last(
-          createdVisits.filter(({ shortUrl }) => shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain)),
+          createdVisits.filter(
+            ({ shortUrl }) => shortUrl && shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain),
+          ),
         );
 
-        return lastVisit ? assoc('visitsCount', lastVisit.shortUrl.visitsCount, currentShortUrl) : currentShortUrl;
+        return lastVisit?.shortUrl
+          ? assoc('visitsCount', lastVisit.shortUrl.visitsCount, currentShortUrl)
+          : currentShortUrl;
       },
     ),
     state,

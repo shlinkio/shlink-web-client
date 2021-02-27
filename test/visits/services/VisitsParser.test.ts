@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { processStatsFromVisits, normalizeVisits } from '../../../src/visits/services/VisitsParser';
-import { Visit, VisitsStats } from '../../../src/visits/types';
+import { OrphanVisit, Visit, VisitsStats } from '../../../src/visits/types';
 
 describe('VisitsParser', () => {
   const visits: Visit[] = [
@@ -43,6 +43,36 @@ describe('VisitsParser', () => {
     }),
     Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
+    }),
+  ];
+  const orphanVisits: OrphanVisit[] = [
+    Mock.of<OrphanVisit>({
+      type: 'base_url',
+      visitedUrl: 'foo',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0',
+      referer: 'https://google.com',
+      visitLocation: {
+        countryName: 'United States',
+        cityName: 'New York',
+        latitude: 1029,
+        longitude: 6758,
+      },
+    }),
+    Mock.of<OrphanVisit>({
+      type: 'regular_404',
+      visitedUrl: 'bar',
+    }),
+    Mock.of<OrphanVisit>({
+      type: 'invalid_short_url',
+      visitedUrl: 'baz',
+      userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
+      referer: 'https://m.facebook.com',
+      visitLocation: {
+        countryName: 'Spain',
+        cityName: 'Zaragoza',
+        latitude: 123.45,
+        longitude: -543.21,
+      },
     }),
   ];
 
@@ -177,6 +207,47 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: undefined,
           longitude: undefined,
+        },
+      ]);
+    });
+
+    it('properly parses the list of orphan visits', () => {
+      expect(normalizeVisits(orphanVisits)).toEqual([
+        {
+          browser: 'Firefox',
+          os: 'macOS',
+          referer: 'google.com',
+          country: 'United States',
+          city: 'New York',
+          date: undefined,
+          latitude: 1029,
+          longitude: 6758,
+          type: 'base_url',
+          visitedUrl: 'foo',
+        },
+        {
+          type: 'regular_404',
+          visitedUrl: 'bar',
+          browser: 'Others',
+          city: 'Unknown',
+          country: 'Unknown',
+          date: undefined,
+          latitude: undefined,
+          longitude: undefined,
+          os: 'Others',
+          referer: 'Direct',
+        },
+        {
+          browser: 'Chrome',
+          os: 'Linux',
+          referer: 'm.facebook.com',
+          country: 'Spain',
+          city: 'Zaragoza',
+          date: undefined,
+          latitude: 123.45,
+          longitude: -543.21,
+          type: 'invalid_short_url',
+          visitedUrl: 'baz',
         },
       ]);
     });

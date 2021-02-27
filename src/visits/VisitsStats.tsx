@@ -66,7 +66,7 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
     tag={RouterNavLink}
     className="visits-stats__nav-link"
     to={to}
-    isActive={(_: null, { pathname }: Location) => pathname.endsWith(`/visits${subPath}`)}
+    isActive={(_: null, { pathname }: Location) => pathname.endsWith(`visits${subPath}`)}
     replace
   >
     <FontAwesomeIcon icon={icon} />

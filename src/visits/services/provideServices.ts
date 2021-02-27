@@ -4,8 +4,10 @@ import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrl
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 import MapModal from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
-import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import TagVisits from '../TagVisits';
+import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
+import { OrphanVisits } from '../OrphanVisits';
+import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits';
 import { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
@@ -13,15 +15,23 @@ import * as visitsParser from './VisitsParser';
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
+
   bottle.serviceFactory('ShortUrlVisits', () => ShortUrlVisits);
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
+
   bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo' ],
+  ));
+
+  bottle.serviceFactory('OrphanVisits', () => OrphanVisits);
+  bottle.decorator('OrphanVisits', connect(
+    [ 'orphanVisits', 'mercureInfo' ],
+    [ 'getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
   // Services
@@ -34,6 +44,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
+
+  bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('cancelGetOrphanVisits', () => cancelGetOrphanVisits);
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
   bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'buildShlinkApiClient');
