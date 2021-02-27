@@ -59,6 +59,7 @@ export interface ShlinkVisitsParams {
 
 export interface ShlinkShortUrlMeta extends ShortUrlMeta {
   longUrl?: string;
+  tags?: string[];
 }
 
 export interface ShlinkDomain {

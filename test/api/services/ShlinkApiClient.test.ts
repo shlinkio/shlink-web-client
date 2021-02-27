@@ -3,6 +3,7 @@ import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { Mock } from 'ts-mockery';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
@@ -139,16 +140,17 @@ describe('ShlinkApiClient', () => {
 
   describe('updateShortUrlMeta', () => {
     it.each(shortCodesWithDomainCombinations)('properly updates short URL meta', async (shortCode, domain) => {
-      const expectedMeta = {
+      const meta = {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
       };
-      const axiosSpy = createAxiosMock();
+      const expectedResp = Mock.of<ShortUrl>()
+      const axiosSpy = createAxiosMock({ data: expectedResp });
       const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy, '', '');
 
-      const result = await updateShortUrlMeta(shortCode, domain, expectedMeta);
+      const result = await updateShortUrlMeta(shortCode, domain, meta);
 
-      expect(expectedMeta).toEqual(result);
+      expect(expectedResp).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
         url: `/short-urls/${shortCode}`,
         method: 'PATCH',
