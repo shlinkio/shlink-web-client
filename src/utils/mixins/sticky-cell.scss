@@ -12,7 +12,7 @@
     left: 0;
     bottom: -1px;
     right: -1px;
-    background: $mediumGrey;
+    background: var(--table-border-color);
     z-index: -2;
   }
 
@@ -27,7 +27,7 @@
     left: 1px;
     bottom: 0;
     right: 0;
-    background: white;
+    background: var(--primary-color);
     z-index: -1;
   }
 

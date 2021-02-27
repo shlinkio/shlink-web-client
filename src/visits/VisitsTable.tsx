@@ -154,7 +154,7 @@ const VisitsTable = ({
             <tr
               key={index}
               style={{ cursor: 'pointer' }}
-              className={classNames({ 'table-primary': isSelected })}
+              className={classNames({ 'table-active': isSelected })}
               onClick={() => setSelectedVisits(
                 isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ],
               )}

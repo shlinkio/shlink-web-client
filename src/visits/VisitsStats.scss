@@ -25,6 +25,6 @@
 
 .visits-stats__nav-link.active {
   border-color: $mainColor;
-  background-color: white !important;
+  background-color: var(--primary-color) !important;
   color: $mainColor !important;
 }

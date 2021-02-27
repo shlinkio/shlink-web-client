@@ -35,10 +35,10 @@ const TagCard = (
   return (
     <Card className="tag-card">
       <CardHeader className="tag-card__header">
-        <Button color="light" size="sm" className="tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
+        <Button color="link" size="sm" className="tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
           <FontAwesomeIcon icon={deleteIcon} />
         </Button>
-        <Button color="light" size="sm" className="tag-card__btn" onClick={toggleEdit}>
+        <Button color="link" size="sm" className="tag-card__btn" onClick={toggleEdit}>
           <FontAwesomeIcon icon={editIcon} />
         </Button>
         <h5 className="tag-card__tag-title text-ellipsis">
@@ -57,14 +57,14 @@ const TagCard = (
           <CardBody className="tag-card__body">
             <Link
               to={shortUrlsLink}
-              className="btn btn-light btn-block d-flex justify-content-between align-items-center mb-1"
+              className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
             >
               <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>
               <b>{prettify(tagStats.shortUrlsCount)}</b>
             </Link>
             <Link
               to={`/server/${serverId}/tag/${tag}/visits`}
-              className="btn btn-light btn-block d-flex justify-content-between align-items-center"
+              className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center"
             >
               <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
               <b>{prettify(tagStats.visitsCount)}</b>

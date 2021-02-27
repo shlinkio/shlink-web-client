@@ -25,7 +25,7 @@ describe('<ShortUrlCreation />', () => {
     [{ validateUrls: true }, true ],
     [{ validateUrls: false }, false ],
     [ undefined, false ],
-  ])('switch is toggled if option is tru', (shortUrlCreation, expectedChecked) => {
+  ])('switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
     const wrapper = createWrapper(shortUrlCreation);
     const toggle = wrapper.find(ToggleSwitch);
 

@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { Modal, ModalBody, ModalHeader } from 'reactstrap';
-import './UseExistingIfFoundInfoIcon.scss';
 import { useToggle } from '../utils/helpers/hooks';
+import './UseExistingIfFoundInfoIcon.scss';
 
 const InfoModal = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) => (
   <Modal isOpen={isOpen} toggle={toggle} centered size="lg">

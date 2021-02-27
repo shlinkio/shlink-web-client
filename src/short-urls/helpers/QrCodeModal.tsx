@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { DropdownItem, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';

@@ -36,6 +36,6 @@
 
 .home__servers-container {
   @media (min-width: $mdMin) {
-    border-left: 1px solid rgba(0, 0, 0, .125);
+    border-left: 1px solid var(--border-color);
   }
 }

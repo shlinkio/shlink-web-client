@@ -12,9 +12,10 @@ $responsiveTableBreakpoint: $mdMax;
 // Colors
 $mainColor: #4696e5;
 $lightColor: #f5f6fe;
-$lightGrey: #dddddd;
+$lightGrey: #eeeeee;
 $dangerColor: #dc3545;
 $mediumGrey: #dee2e6;
+$textPlaceholder: #6c757d;
 
 // Misc
 $headerHeight: 57px;
@@ -23,6 +24,6 @@ $footer-height: 2.3rem;
 $footer-margin: .8rem;
 
 // Bootstrap overwrites
-//$theme-colors: (
-//  'primary': $mainColor
-//);
+$theme-colors: (
+  'primary': $mainColor
+);

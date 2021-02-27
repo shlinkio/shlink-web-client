@@ -3,12 +3,14 @@ import reducer, {
   toggleRealTimeUpdates,
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
+  setUiSettings,
 } from '../../../src/settings/reducers/settings';
 
 describe('settingsReducer', () => {
   const realTimeUpdates = { enabled: true };
   const shortUrlCreation = { validateUrls: false };
-  const settings = { realTimeUpdates, shortUrlCreation };
+  const ui = { theme: 'light' };
+  const settings = { realTimeUpdates, shortUrlCreation, ui };
 
   describe('reducer', () => {
     it('returns realTimeUpdates when action is SET_SETTINGS', () => {
@@ -37,6 +39,14 @@ describe('settingsReducer', () => {
       const result = setShortUrlCreationSettings({ validateUrls: true });
 
       expect(result).toEqual({ type: SET_SETTINGS, shortUrlCreation: { validateUrls: true } });
+    });
+  });
+
+  describe('setUiSettings', () => {
+    it('creates action to set ui settings', () => {
+      const result = setUiSettings({ theme: 'dark' });
+
+      expect(result).toEqual({ type: SET_SETTINGS, ui: { theme: 'dark' } });
     });
   });
 });

@@ -1,8 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Modal } from 'reactstrap';
 import { Marker, Popup } from 'react-leaflet';
 import MapModal from '../../../src/visits/helpers/MapModal';
 import { CityStats } from '../../../src/visits/types';
+import { Modal } from 'reactstrap';
 
 describe('<MapModal />', () => {
   let wrapper: ShallowWrapper;

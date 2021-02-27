@@ -1,6 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Route } from 'react-router-dom';
 import { identity } from 'ramda';
+import { Mock } from 'ts-mockery';
+import { Settings } from '../src/settings/reducers/settings';
 import appFactory from '../src/App';
 
 describe('<App />', () => {
@@ -10,7 +12,7 @@ describe('<App />', () => {
   beforeEach(() => {
     const App = appFactory(MainHeader, () => null, () => null, () => null, () => null, () => null, () => null);
 
-    wrapper = shallow(<App fetchServers={identity} servers={{}} />);
+    wrapper = shallow(<App fetchServers={identity} servers={{}} settings={Mock.all<Settings>()} />);
   });
   afterEach(() => wrapper.unmount());
 

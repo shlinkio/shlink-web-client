@@ -3,7 +3,7 @@
 
 .aside-menu {
   width: $asideMenuWidth;
-  background-color: white;
+  background-color: var(--primary-color);
   box-shadow: rgba(0, 0, 0, .05) 0 8px 15px;
   position: fixed !important;
   padding-top: 13px;
@@ -18,7 +18,6 @@
 
   @media (min-width: $mdMin) {
     padding: 30px 15px 15px;
-    border-right: 1px solid #eeeeee;
   }
 
   @media (max-width: $smMax) {
@@ -50,17 +49,13 @@
 }
 
 .aside-menu__item:hover {
-  background-color: $lightColor;
+  background-color: var(--secondary-color);
 }
 
-.aside-menu__item--selected {
-  color: #ffffff;
-  background-color: $mainColor;
-}
-
+.aside-menu__item--selected,
 .aside-menu__item--selected:hover {
   color: #ffffff;
-  background-color: $mainColor;
+  background-color: var(--brand-color);
 }
 
 .aside-menu__item--divider {
