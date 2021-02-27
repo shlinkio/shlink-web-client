@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#177](https://github.com/shlinkio/shlink-web-client/issues/177) Added dark theme.
 
 ### Changed
-* *Nothing*
+* [#382](https://github.com/shlinkio/shlink-web-client/issues/382) Ensured short URL tags are edited through the `PATCH /short-urls/{shortCode}` endpoint when using Shlink 2.6.0 or higher.
 
 ### Deprecated
 * *Nothing*
