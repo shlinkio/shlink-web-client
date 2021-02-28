@@ -60,7 +60,7 @@ describe('<ShortUrlsRowMenu />', () => {
       const wrapper = createWrapper();
 
       expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(false);
-      wrapper.find(modalComponent).prop('toggle')();
+      (wrapper.find(modalComponent).prop('toggle') as Function)();
       expect(wrapper.find(modalComponent).prop('isOpen')).toEqual(true);
     };
 

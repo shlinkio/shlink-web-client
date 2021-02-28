@@ -26,5 +26,5 @@ export const renderDoughnutChartLabel = (
     && datasets?.[datasetIndex]?.data?.[index]
     || '';
 
-  return `${datasetLabel}: ${prettify(Number(value))}`;
+  return `${datasetLabel}: ${prettify(Number(value))}`; // eslint-disable-line @typescript-eslint/no-base-to-string
 };

@@ -7,7 +7,7 @@ import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons
 import { ServerWithId } from './data';
 import './ServersListGroup.scss';
 
-interface ServersListGroup {
+interface ServersListGroupProps {
   servers: ServerWithId[];
   embedded?: boolean;
 }
@@ -19,7 +19,7 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   </ListGroupItem>
 );
 
-const ServersListGroup: FC<ServersListGroup> = ({ servers, children, embedded = false }) => (
+const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, embedded = false }) => (
   <>
     {children && <h5 className="mb-md-3">{children}</h5>}
     {servers.length > 0 && (

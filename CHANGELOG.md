@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#335](https://github.com/shlinkio/shlink-web-client/issues/335) Fixed linting errors.
 
 
 ## [3.0.1] - 2020-12-30

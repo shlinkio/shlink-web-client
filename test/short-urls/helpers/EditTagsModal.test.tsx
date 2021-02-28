@@ -69,7 +69,7 @@ describe('<EditTagsModal />', () => {
     [ undefined ],
     [ null ],
     [ 'example.com' ],
-    // @ts-expect-error
+    // @ts-expect-error Type declaration is not correct, which makes "done" function not being properly detected
   ])('saves tags when save button is clicked', (domain: OptionalString, done: jest.DoneCallback) => {
     const wrapper = createWrapper({
       shortCode,

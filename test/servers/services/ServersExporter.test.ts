@@ -9,16 +9,15 @@ describe('ServersExporter', () => {
     click: jest.fn(),
     style: {},
   });
+  const appendChild = jest.fn();
+  const removeChild = jest.fn();
   const createWindowMock = (isIe10 = true) => Mock.of<Window>({
     navigator: {
       msSaveBlob: isIe10 ? jest.fn() : undefined,
     },
     document: {
       createElement: jest.fn(() => createLinkMock()),
-      body: {
-        appendChild: jest.fn(),
-        removeChild: jest.fn(),
-      },
+      body: { appendChild, removeChild },
     },
   });
   const storageMock = Mock.of<LocalStorage>({
@@ -33,15 +32,14 @@ describe('ServersExporter', () => {
       },
     })),
   });
-  const createCsvjsonMock = (throwError = false) => Mock.of<CsvJson>({
-    toCSV: jest.fn(() => {
-      if (throwError) {
-        throw new Error('');
-      }
-
-      return '';
-    }),
+  const erroneousToCsv = jest.fn(() => {
+    throw new Error('');
   });
+  const createCsvjsonMock = (throwError = false) => Mock.of<CsvJson>({
+    toCSV: throwError ? erroneousToCsv : jest.fn(() => ''),
+  });
+
+  beforeEach(jest.clearAllMocks);
 
   describe('exportServers', () => {
     let originalConsole: Console;
@@ -61,12 +59,11 @@ describe('ServersExporter', () => {
     it('logs an error if something fails', () => {
       const csvjsonMock = createCsvjsonMock(true);
       const exporter = new ServersExporter(storageMock, createWindowMock(), csvjsonMock);
-      const { toCSV } = csvjsonMock;
 
       exporter.exportServers();
 
       expect(error).toHaveBeenCalledTimes(1);
-      expect(toCSV).toHaveBeenCalledTimes(1);
+      expect(erroneousToCsv).toHaveBeenCalledTimes(1);
     });
 
     it('makes use of msSaveBlob API when available', () => {
@@ -84,8 +81,7 @@ describe('ServersExporter', () => {
     it('makes use of download link API when available', () => {
       const windowMock = createWindowMock(false);
       const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
-      const { document: { createElement, body } } = windowMock;
-      const { appendChild, removeChild } = body;
+      const { document: { createElement } } = windowMock;
 
       exporter.exportServers();
 

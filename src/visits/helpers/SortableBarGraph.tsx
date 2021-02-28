@@ -9,7 +9,7 @@ import { Stats, StatsRow } from '../types';
 import GraphCard from './GraphCard';
 import { DefaultChartProps } from './DefaultChart';
 
-const toLowerIfString = (value: any) => type(value) === 'String' ? toLower(value) : value;
+const toLowerIfString = (value: any) => type(value) === 'String' ? toLower(value) : value; // eslint-disable-line @typescript-eslint/no-unsafe-return
 const pickKeyFromPair = ([ key ]: StatsRow) => key;
 const pickValueFromPair = ([ , value ]: StatsRow) => value;
 

@@ -6,7 +6,7 @@ import { bindToMercureTopic } from './index';
 
 export interface MercureBoundProps {
   createNewVisits: (createdVisits: CreateVisit[]) => void;
-  loadMercureInfo: Function;
+  loadMercureInfo: () => void;
   mercureInfo: MercureInfo;
 }
 

@@ -10,7 +10,9 @@ describe('ServersImporter', () => {
   const readAsText = jest.fn();
   const fileReaderMock = Mock.of<FileReader>({
     readAsText,
-    addEventListener: (_eventName: string, listener: Function) => listener({ target: { result: '' } }),
+    addEventListener: (_eventName: string, listener: (e: ProgressEvent<FileReader>) => void) => listener(
+      Mock.of<ProgressEvent<FileReader>>({ target: { result: '' } }),
+    ),
   });
   const importer = new ServersImporter(csvjsonMock, () => fileReaderMock);
 

@@ -1,7 +1,7 @@
 import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
 import { MercureInfo } from '../reducers/mercureInfo';
 
-export const bindToMercureTopic = <T>(mercureInfo: MercureInfo, topics: string[], onMessage: (message: T) => void, onTokenExpired: Function) => { // eslint-disable-line max-len
+export const bindToMercureTopic = <T>(mercureInfo: MercureInfo, topics: string[], onMessage: (message: T) => void, onTokenExpired: () => void) => { // eslint-disable-line max-len
   const { mercureHubUrl, token, loading, error } = mercureInfo;
 
   if (loading || error || !mercureHubUrl) {
@@ -11,7 +11,7 @@ export const bindToMercureTopic = <T>(mercureInfo: MercureInfo, topics: string[]
   const onEventSourceMessage = ({ data }: { data: string }) => onMessage(JSON.parse(data) as T);
   const onEventSourceError = ({ status }: { status: number }) => status === 401 && onTokenExpired();
 
-  const subscriptions: EventSource[] = topics.map((topic) => {
+  const subscriptions = topics.map((topic) => {
     const hubUrl = new URL(mercureHubUrl);
 
     hubUrl.searchParams.append('topic', topic);

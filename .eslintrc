@@ -15,16 +15,10 @@
     "setImmediate": true
   },
   "rules": {
-    "max-len": ["error", {
-      "code": 120,
-      "ignoreStrings": true,
-      "ignoreTemplateLiterals": true,
-      "ignoreComments": true
-    }],
-    "no-mixed-operators": "off",
-    "object-shorthand": "off",
-    "react/display-name": "off",
-    "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/require-array-sort-compare": "off"
+    "no-nonoctal-decimal-escape": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/naming-convention": "off"
   }
 }

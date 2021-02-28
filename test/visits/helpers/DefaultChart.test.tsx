@@ -25,7 +25,7 @@ describe('<DefaultChart />', () => {
 
     const { labels, datasets } = doughnut.prop('data') as any;
     const [{ title, data, backgroundColor, borderColor }] = datasets;
-    const { legend, legendCallback, scales } = doughnut.prop('options') ?? {};
+    const { legend, scales, ...options } = doughnut.prop('options') ?? {};
 
     expect(title).toEqual('The chart');
     expect(labels).toEqual(keys(stats));
@@ -46,7 +46,7 @@ describe('<DefaultChart />', () => {
     ]);
     expect(borderColor).toEqual('white');
     expect(legend).toEqual({ display: false });
-    expect(typeof legendCallback).toEqual('function');
+    expect(typeof options.legendCallback).toEqual('function');
     expect(scales).toBeUndefined();
     expect(cols).toHaveLength(2);
   });
@@ -61,12 +61,12 @@ describe('<DefaultChart />', () => {
     expect(horizontal).toHaveLength(1);
 
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data') as any;
-    const { legend, legendCallback, scales } = horizontal.prop('options') ?? {};
+    const { legend, scales, ...options } = horizontal.prop('options') ?? {};
 
     expect(backgroundColor).toEqual(MAIN_COLOR_ALPHA);
     expect(borderColor).toEqual(MAIN_COLOR);
     expect(legend).toEqual({ display: false });
-    expect(legendCallback).toEqual(false);
+    expect(typeof options.legendCallback).toEqual('boolean');
     expect(scales).toEqual({
       xAxes: [
         {

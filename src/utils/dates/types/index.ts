@@ -61,7 +61,7 @@ export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
     case 'today':
       return { startDate: moment().startOf('day'), endDate: moment() };
     case 'yesterday':
-      const yesterday = moment().subtract(1, 'day');
+      const yesterday = moment().subtract(1, 'day'); // eslint-disable-line no-case-declarations
 
       return { startDate: yesterday.startOf('day'), endDate: yesterday.endOf('day') };
     case 'last7Days':

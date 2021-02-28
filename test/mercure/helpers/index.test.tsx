@@ -1,4 +1,4 @@
-import { EventSourcePolyfill as EventSource } from 'event-source-polyfill';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 import { Mock } from 'ts-mockery';
 import { identity } from 'ramda';
 import { bindToMercureTopic } from '../../../src/mercure/helpers';
@@ -20,9 +20,9 @@ describe('helpers', () => {
       [ Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined }) ],
       [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined }) ],
     ])('does not bind an EventSource when loading, error or no hub URL', (mercureInfo) => {
-      bindToMercureTopic(mercureInfo, [ '' ], identity, identity);
+      bindToMercureTopic(mercureInfo, [ '' ], identity, () => {});
 
-      expect(EventSource).not.toHaveBeenCalled();
+      expect(EventSourcePolyfill).not.toHaveBeenCalled();
       expect(onMessage).not.toHaveBeenCalled();
       expect(onTokenExpired).not.toHaveBeenCalled();
     });
@@ -42,16 +42,16 @@ describe('helpers', () => {
         token,
       }, [ topic ], onMessage, onTokenExpired);
 
-      expect(EventSource).toHaveBeenCalledWith(hubUrl, {
+      expect(EventSourcePolyfill).toHaveBeenCalledWith(hubUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const [ es ] = EventSource.mock.instances;
+      const [ es ] = (EventSourcePolyfill as any).mock.instances as EventSourcePolyfill[];
 
-      es.onmessage({ data: '{"foo": "bar"}' });
-      es.onerror({ status: 401 });
+      es.onmessage?.({ data: '{"foo": "bar"}' });
+      es.onerror?.({ status: 401 });
       expect(onMessage).toHaveBeenCalledWith({ foo: 'bar' });
       expect(onTokenExpired).toHaveBeenCalled();
 
