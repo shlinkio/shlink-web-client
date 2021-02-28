@@ -12,7 +12,7 @@ export interface MercureBoundProps {
 
 export function boundToMercureHub<T = {}>(
   WrappedComponent: FC<MercureBoundProps & T>,
-  getTopicForProps: (props: T) => string,
+  getTopicsForProps: (props: T) => string[],
 ) {
   const pendingUpdates = new Set<CreateVisit>();
 
@@ -22,7 +22,7 @@ export function boundToMercureHub<T = {}>(
 
     useEffect(() => {
       const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisits([ visit ]);
-      const closeEventSource = bindToMercureTopic(mercureInfo, getTopicForProps(props), onMessage, loadMercureInfo);
+      const closeEventSource = bindToMercureTopic(mercureInfo, getTopicsForProps(props), onMessage, loadMercureInfo);
 
       if (!interval) {
         return closeEventSource;

@@ -1,6 +1,7 @@
 import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../api/types';
+import { Topics } from '../mercure/helpers/Topics';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import VisitsStats from './VisitsStats';
 import { OrphanVisitsHeader } from './OrphanVisitsHeader';
@@ -26,4 +27,4 @@ export const OrphanVisits = boundToMercureHub(({
   >
     <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
   </VisitsStats>
-), () => 'https://shlink.io/new-orphan-visit');
+), () => [ Topics.orphanVisits() ]);

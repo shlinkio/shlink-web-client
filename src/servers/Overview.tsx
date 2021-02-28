@@ -10,6 +10,7 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Versions } from '../utils/helpers/version';
+import { Topics } from '../mercure/helpers/Topics';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
 
@@ -119,4 +120,4 @@ export const Overview = (
       </Card>
     </>
   );
-}, () => 'https://shlink.io/new-visit');
+}, () => [ Topics.visits(), Topics.orphanVisits() ]);

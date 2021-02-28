@@ -3,6 +3,7 @@ import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../api/types';
 import { parseQuery } from '../utils/helpers/query';
+import { Topics } from '../mercure/helpers/Topics';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
@@ -45,6 +46,6 @@ const ShortUrlVisits = boundToMercureHub(({
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, ({ match }) => `https://shlink.io/new-visit/${match.params.shortCode}`);
+}, ({ match }) => [ Topics.shortUrlVisits(match.params.shortCode) ]);
 
 export default ShortUrlVisits;

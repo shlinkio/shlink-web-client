@@ -2,6 +2,7 @@ import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import { ShlinkVisitsParams } from '../api/types';
+import { Topics } from '../mercure/helpers/Topics';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
 import VisitsStats from './VisitsStats';
@@ -27,6 +28,6 @@ const TagVisits = (colorGenerator: ColorGenerator) => boundToMercureHub(({
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />
     </VisitsStats>
   );
-}, () => 'https://shlink.io/new-visit');
+}, () => [ Topics.visits() ]);
 
 export default TagVisits;
