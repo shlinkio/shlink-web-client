@@ -2,13 +2,13 @@ import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
-import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import VisitsStats from './VisitsStats';
 import { OrphanVisitsHeader } from './OrphanVisitsHeader';
+import { VisitsInfo } from './types';
 
-export interface OrphanVisitsProps extends RouteComponentProps<{ tag: string }> {
+export interface OrphanVisitsProps extends RouteComponentProps {
   getOrphanVisits: (params: ShlinkVisitsParams) => void;
-  orphanVisits: TagVisitsState;
+  orphanVisits: VisitsInfo;
   cancelGetOrphanVisits: () => void;
 }
 
