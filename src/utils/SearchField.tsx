@@ -7,7 +7,7 @@ import './SearchField.scss';
 const DEFAULT_SEARCH_INTERVAL = 500;
 let timer: NodeJS.Timeout | null;
 
-interface SearchField {
+interface SearchFieldProps {
   onChange: (value: string) => void;
   className?: string;
   placeholder?: string;
@@ -16,7 +16,7 @@ interface SearchField {
 }
 
 const SearchField = (
-  { onChange, className, placeholder = 'Search...', large = true, noBorder = false }: SearchField,
+  { onChange, className, placeholder = 'Search...', large = true, noBorder = false }: SearchFieldProps,
 ) => {
   const [ searchTerm, setSearchTerm ] = useState('');
 

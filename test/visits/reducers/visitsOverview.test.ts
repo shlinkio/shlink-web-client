@@ -91,14 +91,14 @@ describe('visitsOverviewReducer', () => {
 
     it('dispatches start and success when promise is resolved', async () => {
       const resolvedOverview = Mock.of<ShlinkVisitsOverview>({ visitsCount: 50 });
-      const ShlinkApiClient = buildApiClientMock(Promise.resolve(resolvedOverview));
+      const shlinkApiClient = buildApiClientMock(Promise.resolve(resolvedOverview));
 
-      await loadVisitsOverview(() => ShlinkApiClient)()(dispatchMock, getState);
+      await loadVisitsOverview(() => shlinkApiClient)()(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_OVERVIEW_START });
       expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_OVERVIEW, visitsCount: 50 });
-      expect(ShlinkApiClient.getVisitsOverview).toHaveBeenCalledTimes(1);
+      expect(shlinkApiClient.getVisitsOverview).toHaveBeenCalledTimes(1);
     });
   });
 });

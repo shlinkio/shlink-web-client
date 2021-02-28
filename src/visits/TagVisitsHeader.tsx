@@ -4,13 +4,13 @@ import VisitsHeader from './VisitsHeader';
 import { TagVisits } from './reducers/tagVisits';
 import './ShortUrlVisitsHeader.scss';
 
-interface TagVisitsHeader {
+interface TagVisitsHeaderProps {
   tagVisits: TagVisits;
   goBack: () => void;
   colorGenerator: ColorGenerator;
 }
 
-const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }: TagVisitsHeader) => {
+const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }: TagVisitsHeaderProps) => {
   const { visits, tag } = tagVisits;
 
   const visitsStatsTitle = (

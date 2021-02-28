@@ -1,6 +1,6 @@
+import { Mock } from 'ts-mockery';
 import { GroupedNewVisits, groupNewVisitsByType } from '../../../src/visits/types/helpers';
 import { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
-import { Mock } from 'ts-mockery';
 
 describe('visitsTypeHelpers', () => {
   describe('groupNewVisitsByType', () => {

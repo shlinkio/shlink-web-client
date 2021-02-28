@@ -39,7 +39,7 @@ const DateInput = (props: DateInputProps) => {
         {...transformProps(props)}
         dateFormat="yyyy-MM-dd"
         className={classNames('date-input-container__input form-control', className)}
-        // @ts-expect-error
+        // @ts-expect-error The DatePicker type definition is wrong. It has a ref prop
         ref={ref}
       />
       {showCalendarIcon && (

@@ -46,7 +46,7 @@ describe('ShlinkApiClientBuilder', () => {
     const apiKey = 'apiKey';
     const apiClient = buildShlinkApiClient(axiosMock)(server({ url, apiKey }));
 
-    expect(apiClient['baseUrl']).toEqual(url); // eslint-disable-line dot-notation
-    expect(apiClient['apiKey']).toEqual(apiKey); // eslint-disable-line dot-notation
+    expect(apiClient['baseUrl']).toEqual(url); // eslint-disable-line @typescript-eslint/dot-notation
+    expect(apiClient['apiKey']).toEqual(apiKey); // eslint-disable-line @typescript-eslint/dot-notation
   });
 });

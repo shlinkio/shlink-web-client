@@ -55,7 +55,7 @@ const generateGraphData = (
         '#DCDCDC',
         '#463730',
       ],
-      borderColor: isBarChart ? MAIN_COLOR : (isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR),
+      borderColor: isBarChart ? MAIN_COLOR : isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR,
       borderWidth: 2,
     },
     highlightedData && {
@@ -127,7 +127,7 @@ const DefaultChart = (
     }, { ...stats }),
   );
   const highlightedData = statsAreDefined(highlightedStats) ? fillTheGaps(highlightedStats, labels) : undefined;
-  const [ chartRef, setChartRef ] = useState<HorizontalBar | Doughnut | undefined>()
+  const [ chartRef, setChartRef ] = useState<HorizontalBar | Doughnut | undefined>();
 
   const options: ChartOptions = {
     legend: { display: false },
@@ -137,7 +137,6 @@ const DefaultChart = (
         {
           ticks: {
             beginAtZero: true,
-            // @ts-expect-error
             precision: 0,
             callback: prettify,
             max,

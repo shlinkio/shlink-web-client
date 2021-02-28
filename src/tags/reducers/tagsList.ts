@@ -5,11 +5,11 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { ProblemDetailsError, ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { TagStats } from '../data';
 import { CreateVisit, Stats } from '../../visits/types';
+import { parseApiError } from '../../api/utils';
+import { TagStats } from '../data';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
-import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -34,7 +34,6 @@ interface ListTagsAction extends Action<string> {
   stats: TagsStatsMap;
 }
 
-
 interface ListTagsFailedAction extends Action<string> {
   errorData?: ProblemDetailsError;
 }
@@ -44,11 +43,11 @@ interface FilterTagsAction extends Action<string> {
 }
 
 type ListTagsCombinedAction = ListTagsAction
-  & DeleteTagAction
-  & CreateVisitsAction
-  & EditTagAction
-  & FilterTagsAction
-  & ListTagsFailedAction;
+& DeleteTagAction
+& CreateVisitsAction
+& EditTagAction
+& FilterTagsAction
+& ListTagsFailedAction;
 
 const initialState = {
   tags: [],
@@ -75,13 +74,13 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
   return stats;
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
-  createdVisits.reduce((acc, { shortUrl }) => {
+  createdVisits.reduce<Stats>((acc, { shortUrl }) => {
     shortUrl?.tags.forEach((tag) => {
       acc[tag] = (acc[tag] || 0) + 1;
     });
 
     return acc;
-  }, {} as Stats),
+  }, {}),
 );
 
 export default buildReducer<TagsList, ListTagsCombinedAction>({

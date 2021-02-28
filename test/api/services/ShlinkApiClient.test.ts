@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { Mock } from 'ts-mockery';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
-import { Mock } from 'ts-mockery';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { Visit } from '../../../src/visits/types';
@@ -49,7 +49,7 @@ describe('ShlinkApiClient', () => {
       const { createShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
       await createShortUrl(
-        // @ts-expect-error
+        // @ts-expect-error in case maxVisits is null, it needs to be ignored as if it was undefined
         { longUrl: 'bar', customSlug: undefined, maxVisits: null },
       );
 
@@ -145,7 +145,7 @@ describe('ShlinkApiClient', () => {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
       };
-      const expectedResp = Mock.of<ShortUrl>()
+      const expectedResp = Mock.of<ShortUrl>();
       const axiosSpy = createAxiosMock({ data: expectedResp });
       const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy, '', '');
 
@@ -259,7 +259,7 @@ describe('ShlinkApiClient', () => {
 
   describe('listDomains', () => {
     it('returns domains', async () => {
-      const expectedData = [Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>()];
+      const expectedData = [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ];
       const resp = {
         domains: { data: expectedData },
       };

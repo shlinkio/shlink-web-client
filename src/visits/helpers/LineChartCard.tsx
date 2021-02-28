@@ -81,17 +81,18 @@ const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => visi
   {},
 );
 
-const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) => visits.reduce(
-  (acc, visit) => {
-    const key = STEP_TO_DATE_FORMAT[step](visit.date);
+const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) =>
+  visits.reduce<Record<string, NormalizedVisit[]>>(
+    (acc, visit) => {
+      const key = STEP_TO_DATE_FORMAT[step](visit.date);
 
-    acc[key] = acc[key] ?? [];
-    acc[key].push(visit);
+      acc[key] = acc[key] ?? [];
+      acc[key].push(visit);
 
-    return acc;
-  },
-  {} as Record<string, NormalizedVisit[]>,
-);
+      return acc;
+    },
+    {},
+  );
 
 const generateLabels = (step: Step, visits: NormalizedVisit[]): string[] => {
   const unit = STEP_TO_DATE_UNIT_MAP[step];
@@ -186,7 +187,6 @@ const LineChartCard = (
         {
           ticks: {
             beginAtZero: true,
-            // @ts-expect-error
             precision: 0,
             callback: prettify,
           },
