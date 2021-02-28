@@ -19,6 +19,7 @@ interface DatePropsInterface {
 export type DateInputProps = DatePropsInterface & Omit<ReactDatePickerProps, keyof DatePropsInterface>;
 
 const transformProps = (props: DateInputProps): ReactDatePickerProps => ({
+  // @ts-expect-error The DatePicker type definition is wrong. It has a ref prop
   ...dissoc('ref', props),
   endDate: props.endDate?.toDate(),
   maxDate: props.maxDate?.toDate(),

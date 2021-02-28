@@ -10,5 +10,6 @@ export interface GroupedNewVisits {
 
 export const groupNewVisitsByType = pipe(
   groupBy((newVisit: CreateVisit) => isOrphanVisit(newVisit.visit) ? 'orphanVisits' : 'regularVisits'),
+  // @ts-ignore-error Type declaration on groupBy is not correct. It can return undefined props
   (result): GroupedNewVisits => ({ orphanVisits: [], regularVisits: [], ...result }),
 );
