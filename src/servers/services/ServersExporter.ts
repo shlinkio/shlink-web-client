@@ -35,7 +35,7 @@ export default class ServersExporter {
   ) {}
 
   public readonly exportServers = async () => {
-    const servers = values(this.storage.get<ServersMap>('servers') || {}).map(dissoc('id'));
+    const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(dissoc('id'));
 
     try {
       const csv = this.csvjson.toCSV(servers, {

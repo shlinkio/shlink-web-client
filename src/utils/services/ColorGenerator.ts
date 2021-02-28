@@ -11,7 +11,7 @@ export default class ColorGenerator {
   private readonly colors: Record<string, string>;
 
   public constructor(private readonly storage: LocalStorage) {
-    this.colors = this.storage.get<Record<string, string>>('colors') || {};
+    this.colors = this.storage.get<Record<string, string>>('colors') ?? {};
   }
 
   public readonly getColorForKey = (key: string) => {
