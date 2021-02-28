@@ -20,6 +20,8 @@ export interface VisitsLoadFailedAction extends Action<string> {
   errorData?: ProblemDetailsError;
 }
 
+type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
+
 interface VisitLocation {
   countryCode: string | null;
   countryName: string | null;
@@ -31,19 +33,26 @@ interface VisitLocation {
   isEmpty: boolean;
 }
 
-export interface Visit {
+export interface RegularVisit {
   referer: string;
   date: string;
   userAgent: string;
   visitLocation: VisitLocation | null;
 }
 
+export interface OrphanVisit extends RegularVisit {
+  visitedUrl: string;
+  type: OrphanVisitType;
+}
+
+export type Visit = RegularVisit | OrphanVisit;
+
 export interface UserAgent {
   browser: string;
   os: string;
 }
 
-export interface NormalizedVisit extends UserAgent {
+export interface NormalizedRegularVisit extends UserAgent {
   date: string;
   referer: string;
   country: string;
@@ -52,8 +61,15 @@ export interface NormalizedVisit extends UserAgent {
   longitude?: number | null;
 }
 
+export interface NormalizedOrphanVisit extends NormalizedRegularVisit {
+  visitedUrl: string;
+  type: OrphanVisitType;
+}
+
+export type NormalizedVisit = NormalizedRegularVisit | NormalizedOrphanVisit;
+
 export interface CreateVisit {
-  shortUrl: ShortUrl;
+  shortUrl?: ShortUrl;
   visit: Visit;
 }
 

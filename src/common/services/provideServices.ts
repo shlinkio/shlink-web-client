@@ -34,6 +34,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'CreateShortUrl',
     'ShortUrlVisits',
     'TagVisits',
+    'OrphanVisits',
     'ServerError',
     'Overview',
   );

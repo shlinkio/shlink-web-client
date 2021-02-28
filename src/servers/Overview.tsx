@@ -10,6 +10,7 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Versions } from '../utils/helpers/version';
+import { Topics } from '../mercure/helpers/Topics';
 import { isServerWithId, SelectedServer } from './data';
 import './Overview.scss';
 
@@ -65,7 +66,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/orphan-visits`}>
             <CardTitle tag="h5" className="overview__card-title">Orphan visits</CardTitle>
             <CardText tag="h2">
               <ForServerVersion minVersion="2.6.0">
@@ -78,7 +79,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/list-short-urls/1`}>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
               {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
@@ -86,7 +87,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/manage-tags`}>
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
             <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>
           </Card>
@@ -119,4 +120,4 @@ export const Overview = (
       </Card>
     </>
   );
-}, () => 'https://shlink.io/new-visit');
+}, () => [ Topics.visits(), Topics.orphanVisits() ]);

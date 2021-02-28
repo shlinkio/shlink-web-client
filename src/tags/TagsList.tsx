@@ -8,6 +8,7 @@ import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagCardProps } from './TagCard';
+import { Topics } from '../mercure/helpers/Topics';
 
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
@@ -75,6 +76,6 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
       {renderContent()}
     </>
   );
-}, () => 'https://shlink.io/new-visit');
+}, () => [ Topics.visits() ]);
 
 export default TagsList;

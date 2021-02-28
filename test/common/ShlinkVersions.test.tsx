@@ -14,11 +14,11 @@ describe('<ShlinkVersions />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ '1.2.3', Mock.of<ReachableServer>({ printableVersion: 'foo' }), 'v1.2.3', 'foo' ],
-    [ 'foo', Mock.of<ReachableServer>({ printableVersion: '1.2.3' }), 'latest', '1.2.3' ],
-    [ 'latest', Mock.of<ReachableServer>({ printableVersion: 'latest' }), 'latest', 'latest' ],
-    [ '5.5.0', Mock.of<ReachableServer>({ printableVersion: '0.2.8' }), 'v5.5.0', '0.2.8' ],
-    [ 'not-semver', Mock.of<ReachableServer>({ printableVersion: 'something' }), 'latest', 'something' ],
+    [ '1.2.3', Mock.of<ReachableServer>({ version: '', printableVersion: 'foo' }), 'v1.2.3', 'foo' ],
+    [ 'foo', Mock.of<ReachableServer>({ version: '', printableVersion: '1.2.3' }), 'latest', '1.2.3' ],
+    [ 'latest', Mock.of<ReachableServer>({ version: '', printableVersion: 'latest' }), 'latest', 'latest' ],
+    [ '5.5.0', Mock.of<ReachableServer>({ version: '', printableVersion: '0.2.8' }), 'v5.5.0', '0.2.8' ],
+    [ 'not-semver', Mock.of<ReachableServer>({ version: '', printableVersion: 'something' }), 'latest', 'something' ],
   ])(
     'displays expected versions when selected server is reachable',
     (clientVersion, selectedServer, expectedClientVersion, expectedServerVersion) => {

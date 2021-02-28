@@ -52,11 +52,10 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [CREATE_VISITS]: (state, { createdVisits }) => { // eslint-disable-line object-shorthand
+  [CREATE_VISITS]: (state, { createdVisits }) => {
     const { shortCode, domain, visits } = state;
-
     const newVisits = createdVisits
-      .filter(({ shortUrl }) => shortUrlMatches(shortUrl, shortCode, domain))
+      .filter(({ shortUrl }) => shortUrl && shortUrlMatches(shortUrl, shortCode, domain))
       .map(({ visit }) => visit);
 
     return { ...state, visits: [ ...visits, ...newVisits ] };

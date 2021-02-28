@@ -150,12 +150,18 @@ describe('shortUrlsListReducer', () => {
       });
     });
 
-    it('updates visits count on CREATE_VISIT', () => {
+    const createNewShortUrlVisit = (visitsCount: number) => ({
+      shortUrl: { shortCode: 'abc123', visitsCount },
+    });
+
+    it.each([
+      [[ createNewShortUrlVisit(11) ], 11 ],
+      [[ createNewShortUrlVisit(30) ], 30 ],
+      [[ createNewShortUrlVisit(20), createNewShortUrlVisit(40) ], 40 ],
+      [[{}], 10 ],
+      [[], 10 ],
+    ])('updates visits count on CREATE_VISITS', (createdVisits, expectedCount) => {
       const shortCode = 'abc123';
-      const shortUrl = {
-        shortCode,
-        visitsCount: 11,
-      };
       const state = {
         shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
@@ -168,11 +174,11 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_VISITS, createdVisits: [{ shortUrl }] } as any)).toEqual({
+      expect(reducer(state, { type: CREATE_VISITS, createdVisits } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },
-            { shortCode, visitsCount: 11 },
+            { shortCode, visitsCount: expectedCount },
             { shortCode: 'foo', visitsCount: 8 },
           ],
         },

@@ -51,6 +51,10 @@ export default class ShlinkApiClient {
     this.performRequest<{ visits: ShlinkVisits }>(`/tags/${tag}/visits`, 'GET', query)
       .then(({ data }) => data.visits);
 
+  public readonly getOrphanVisits = async (query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
+    this.performRequest<{ visits: ShlinkVisits }>('/visits/orphan', 'GET', query)
+      .then(({ data }) => data.visits);
+
   public readonly getVisitsOverview = async (): Promise<ShlinkVisitsOverview> =>
     this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits', 'GET')
       .then(({ data }) => data.visits);

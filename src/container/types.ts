@@ -16,6 +16,7 @@ import { ShortUrlVisits } from '../visits/reducers/shortUrlVisits';
 import { TagVisits } from '../visits/reducers/tagVisits';
 import { DomainsList } from '../domains/reducers/domainsList';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
+import { VisitsInfo } from '../visits/types';
 
 export interface ShlinkState {
   servers: ServersMap;
@@ -29,6 +30,7 @@ export interface ShlinkState {
   shortUrlEdition: ShortUrlEdition;
   shortUrlVisits: ShortUrlVisits;
   tagVisits: TagVisits;
+  orphanVisits: VisitsInfo;
   shortUrlDetail: ShortUrlDetail;
   tagsList: TagsList;
   tagDelete: TagDeletion;

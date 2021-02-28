@@ -76,7 +76,7 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
   createdVisits.reduce((acc, { shortUrl }) => {
-    shortUrl.tags.forEach((tag) => {
+    shortUrl?.tags.forEach((tag) => {
       acc[tag] = (acc[tag] || 0) + 1;
     });
 

@@ -7,12 +7,13 @@ import reducer, {
   VisitsOverview,
   loadVisitsOverview,
 } from '../../../src/visits/reducers/visitsOverview';
-import { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
+import { CREATE_VISITS, CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShlinkState } from '../../../src/container/types';
+import { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
 
-describe('visitsOverview', () => {
+describe('visitsOverviewReducer', () => {
   describe('reducer', () => {
     const action = (type: string) =>
       Mock.of<GetVisitsOverviewAction>({ type }) as GetVisitsOverviewAction & CreateVisitsAction;
@@ -40,6 +41,31 @@ describe('visitsOverview', () => {
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
       expect(visitsCount).toEqual(100);
+    });
+
+    it('returns updated amounts on CREATE_VISITS', () => {
+      const { visitsCount, orphanVisitsCount } = reducer(
+        state({ visitsCount: 100, orphanVisitsCount: 50 }),
+        {
+          type: CREATE_VISITS,
+          createdVisits: [
+            Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+            Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+            Mock.of<CreateVisit>({
+              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+            }),
+            Mock.of<CreateVisit>({
+              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+            }),
+            Mock.of<CreateVisit>({
+              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+            }),
+          ],
+        } as unknown as GetVisitsOverviewAction & CreateVisitsAction,
+      );
+
+      expect(visitsCount).toEqual(102);
+      expect(orphanVisitsCount).toEqual(53);
     });
   });
 

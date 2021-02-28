@@ -46,10 +46,10 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [CREATE_VISITS]: (state, { createdVisits }) => { // eslint-disable-line object-shorthand
+  [CREATE_VISITS]: (state, { createdVisits }) => {
     const { tag, visits } = state;
     const newVisits = createdVisits
-      .filter(({ shortUrl }) => shortUrl.tags.includes(tag))
+      .filter(({ shortUrl }) => shortUrl?.tags.includes(tag))
       .map(({ visit }) => visit);
 
     return { ...state, visits: [ ...visits, ...newVisits ] };

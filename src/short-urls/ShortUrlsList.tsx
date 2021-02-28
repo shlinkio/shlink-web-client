@@ -9,6 +9,7 @@ import { determineOrderDir, OrderDir } from '../utils/utils';
 import { isReachableServer, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
+import { Topics } from '../mercure/helpers/Topics';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
@@ -98,6 +99,6 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
       </Card>
     </>
   );
-}, () => 'https://shlink.io/new-visit');
+}, () => [ Topics.visits() ]);
 
 export default ShortUrlsList;
