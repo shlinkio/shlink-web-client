@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useSwipeable } from 'react-swipeable';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
-import { useToggle } from '../utils/helpers/hooks';
+import { useSwipeable, useToggle } from '../utils/helpers/hooks';
 import { versionMatch } from '../utils/helpers/version';
 import { isReachableServer } from '../servers/data';
 import NotFound from './NotFound';
@@ -33,25 +32,8 @@ const MenuLayout = (
 
   const addTagsVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.2.0' });
   const addOrphanVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.6.0' });
-  const burgerClasses = classNames('menu-layout__burger-icon', {
-    'menu-layout__burger-icon--active': sidebarVisible,
-  });
-  const swipeMenuIfNoModalExists = (callback: () => void) => (e: any) => {
-    const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some(
-      ({ classList }) => classList?.contains('visits-table'),
-    );
-
-    if (swippedOnVisitsTable || document.querySelector('.modal')) {
-      return;
-    }
-
-    callback();
-  };
-  const swipeableProps = useSwipeable({
-    delta: 40,
-    onSwipedLeft: swipeMenuIfNoModalExists(hideSidebar),
-    onSwipedRight: swipeMenuIfNoModalExists(showSidebar),
-  });
+  const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
+  const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 
   return (
     <>

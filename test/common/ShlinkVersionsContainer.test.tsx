@@ -18,7 +18,7 @@ describe('<ShlinkVersionsContainer />', () => {
     [ null, 'text-center' ],
     [ Mock.of<NotFoundServer>({ serverNotFound: true }), 'text-center' ],
     [ Mock.of<NonReachableServer>({ serverNotReachable: true }), 'text-center' ],
-    [ Mock.of<ReachableServer>({ printableVersion: 'v1.0.0' }), 'text-center shlink-versions-container--with-server' ],
+    [ Mock.of<ReachableServer>({ version: '1.0.0' }), 'text-center shlink-versions-container--with-server' ],
   ])('renders proper col classes based on type of selected server', (selectedServer, expectedClasses) => {
     const wrapper = createWrapper(selectedServer);
 
