@@ -7,13 +7,12 @@ import { prettify } from '../../utils/helpers/numbers';
 import VisitStatsLink, { VisitStatsLinkProps } from './VisitStatsLink';
 import './ShortUrlVisitsCount.scss';
 
-// TODO This interface should be called ShortUrlVisitsCountProps, and the component should not have the Comp suffix
-export interface ShortUrlVisitsCount extends VisitStatsLinkProps {
+interface ShortUrlVisitsCountProps extends VisitStatsLinkProps {
   visitsCount: number;
   active?: boolean;
 }
 
-const ShortUrlVisitsCountComp = ({ visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCount) => {
+const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCountProps) => {
   const maxVisits = shortUrl?.meta?.maxVisits;
   const visitsLink = (
     <VisitStatsLink selectedServer={selectedServer} shortUrl={shortUrl}>
@@ -55,4 +54,4 @@ const ShortUrlVisitsCountComp = ({ visitsCount, shortUrl, selectedServer, active
   );
 };
 
-export default ShortUrlVisitsCountComp;
+export default ShortUrlVisitsCount;
