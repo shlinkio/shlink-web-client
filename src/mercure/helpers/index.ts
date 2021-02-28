@@ -11,7 +11,7 @@ export const bindToMercureTopic = <T>(mercureInfo: MercureInfo, topics: string[]
   const onEventSourceMessage = ({ data }: { data: string }) => onMessage(JSON.parse(data) as T);
   const onEventSourceError = ({ status }: { status: number }) => status === 401 && onTokenExpired();
 
-  const subscriptions: EventSource[] = topics.map((topic) => {
+  const subscriptions = topics.map((topic) => {
     const hubUrl = new URL(mercureHubUrl);
 
     hubUrl.searchParams.append('topic', topic);
