@@ -9,7 +9,6 @@ interface OrphanVisitsHeader {
 
 export const OrphanVisitsHeader = ({ orphanVisits, goBack }: OrphanVisitsHeader) => {
   const { visits } = orphanVisits;
-  const visitsStatsTitle = <span className="mr-2">Orphan visits</span>;
 
-  return <VisitsHeader title={visitsStatsTitle} goBack={goBack} visits={visits} />;
+  return <VisitsHeader title="Orphan visits" goBack={goBack} visits={visits} />;
 };
