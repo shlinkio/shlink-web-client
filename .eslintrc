@@ -15,11 +15,6 @@
     "setImmediate": true
   },
   "rules": {
-    "comma-dangle": "off",
-    "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-    "@typescript-eslint/method-signature-style": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/unbound-method": "off",
