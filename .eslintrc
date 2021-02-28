@@ -15,11 +15,10 @@
     "setImmediate": true
   },
   "rules": {
+    "no-nonoctal-decimal-escape": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unsafe-member-access": "off",
     "@typescript-eslint/ban-types": "off",
-    "no-nonoctal-decimal-escape": "off",
-
     "@typescript-eslint/naming-convention": "off"
   }
 }
