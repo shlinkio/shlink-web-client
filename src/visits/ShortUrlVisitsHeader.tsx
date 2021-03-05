@@ -17,6 +17,7 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
   const { visits } = shortUrlVisits;
   const shortLink = shortUrl?.shortUrl ?? '';
   const longLink = shortUrl?.longUrl ?? '';
+  const title = shortUrl?.title;
 
   const renderDate = () => !shortUrl ? <small>Loading...</small> : (
     <span>
@@ -39,9 +40,9 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
       <hr />
       <div>Created: {renderDate()}</div>
       <div>
-        Long URL:{' '}
+        {`${title ? 'Title' : 'Long URL'}: `}
         {loading && <small>Loading...</small>}
-        {!loading && <ExternalLink href={longLink} />}
+        {!loading && <ExternalLink href={longLink}>{title ?? longLink}</ExternalLink>}
       </div>
     </VisitsHeader>
   );

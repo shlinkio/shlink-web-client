@@ -23,6 +23,7 @@ export interface ShortUrl {
   meta: Required<Nullable<ShortUrlMeta>>;
   tags: string[];
   domain: string | null;
+  title?: string | null;
 }
 
 export interface ShortUrlMeta {
