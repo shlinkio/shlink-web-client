@@ -8,35 +8,48 @@ import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 
 describe('<ShortUrlVisitsHeader />', () => {
   let wrapper: ShallowWrapper;
-  const shortUrlDetail = Mock.of<ShortUrlDetail>({
-    shortUrl: {
-      shortUrl: 'https://doma.in/abc123',
-      longUrl: 'https://foo.bar/bar/foo',
-      dateCreated: '2018-01-01T10:00:00+01:00',
-    },
-    loading: false,
-  });
+  const dateCreated = '2018-01-01T10:00:00+01:00';
+  const longUrl = 'https://foo.bar/bar/foo';
   const shortUrlVisits = Mock.of<ShortUrlVisits>({
     visits: [{}, {}, {}],
   });
   const goBack = jest.fn();
+  const createWrapper = (title?: string | null) => {
+    const shortUrlDetail = Mock.of<ShortUrlDetail>({
+      shortUrl: {
+        shortUrl: 'https://doma.in/abc123',
+        longUrl,
+        dateCreated,
+        title,
+      },
+      loading: false,
+    });
 
-  beforeEach(() => {
     wrapper = shallow(
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />,
     );
-  });
+
+    return wrapper;
+  };
+
+  beforeEach(() => createWrapper());
   afterEach(() => wrapper.unmount());
 
   it('shows when the URL was created', () => {
     const moment = wrapper.find(Moment).first();
 
-    expect(moment.prop('children')).toEqual(shortUrlDetail.shortUrl?.dateCreated);
+    expect(moment.prop('children')).toEqual(dateCreated);
   });
 
-  it('shows the long URL', () => {
+  it.each([
+    [ null, longUrl ],
+    [ undefined, longUrl ],
+    [ 'My cool title', 'My cool title' ],
+  ])('shows the long URL and title', (title, expectedContent) => {
+    const wrapper = createWrapper(title);
     const longUrlLink = wrapper.find(ExternalLink).last();
 
-    expect(longUrlLink.prop('href')).toEqual(shortUrlDetail.shortUrl?.longUrl);
+    expect(longUrlLink.prop('href')).toEqual(longUrl);
+    expect(longUrlLink.prop('children')).toEqual(expectedContent);
   });
 });
