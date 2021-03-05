@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { ShortUrl } from '../../short-urls/data';
+import { ShortUrl } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { OptionalString } from '../../utils/utils';

@@ -5,7 +5,7 @@ import reducer, {
   GET_SHORT_URL_DETAIL_ERROR,
   GET_SHORT_URL_DETAIL,
   ShortUrlDetailAction,
-} from '../../../src/visits/reducers/shortUrlDetail';
+} from '../../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';

@@ -1,7 +1,7 @@
 import { UncontrolledTooltip } from 'reactstrap';
 import Moment from 'react-moment';
 import { ExternalLink } from 'react-external-link';
-import { ShortUrlDetail } from './reducers/shortUrlDetail';
+import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';

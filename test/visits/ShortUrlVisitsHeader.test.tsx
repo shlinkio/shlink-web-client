@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import { ExternalLink } from 'react-external-link';
 import { Mock } from 'ts-mockery';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
-import { ShortUrlDetail } from '../../src/visits/reducers/shortUrlDetail';
+import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 
 describe('<ShortUrlVisitsHeader />', () => {

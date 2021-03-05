@@ -11,7 +11,7 @@ import { ShortUrlsList } from '../short-urls/reducers/shortUrlsList';
 import { TagDeletion } from '../tags/reducers/tagDelete';
 import { TagEdition } from '../tags/reducers/tagEdit';
 import { TagsList } from '../tags/reducers/tagsList';
-import { ShortUrlDetail } from '../visits/reducers/shortUrlDetail';
+import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from '../visits/reducers/shortUrlVisits';
 import { TagVisits } from '../visits/reducers/tagVisits';
 import { DomainsList } from '../domains/reducers/domainsList';
