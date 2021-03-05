@@ -1,7 +1,7 @@
 import Bottle from 'bottlejs';
 import ShortUrlVisits from '../ShortUrlVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
-import { getShortUrlDetail } from '../reducers/shortUrlDetail';
+import { getShortUrlDetail } from '../../short-urls/reducers/shortUrlDetail';
 import MapModal from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
 import TagVisits from '../TagVisits';

@@ -1,9 +1,10 @@
 import { Action, Dispatch } from 'redux';
-import { ShortUrl } from '../../short-urls/data';
+import { ShortUrl } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { OptionalString } from '../../utils/utils';
 import { GetState } from '../../container/types';
+import { shortUrlMatches } from '../helpers';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
@@ -37,10 +38,12 @@ export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   domain: OptionalString,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: GET_SHORT_URL_DETAIL_START });
-  const { getShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    const shortUrl = await getShortUrl(shortCode, domain);
+    const { shortUrlsList } = getState();
+    const shortUrl = shortUrlsList?.shortUrls?.data.find(
+      (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain),
+    ) ?? await buildShlinkApiClient(getState).getShortUrl(shortCode, domain);
 
     dispatch<ShortUrlDetailAction>({ shortUrl, type: GET_SHORT_URL_DETAIL });
   } catch (e) {

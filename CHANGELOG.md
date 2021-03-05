@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#382](https://github.com/shlinkio/shlink-web-client/issues/382) Ensured short URL tags are edited through the `PATCH /short-urls/{shortCode}` endpoint when using Shlink 2.6.0 or higher.
+* [#398](https://github.com/shlinkio/shlink-web-client/issues/398) Improved performance when loading short URL details by avoiding API calls if the short URL is already present in local state.
 
 ### Deprecated
 * *Nothing*

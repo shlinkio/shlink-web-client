@@ -11,7 +11,7 @@ import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
-import shortUrlDetailReducer from '../visits/reducers/shortUrlDetail';
+import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';

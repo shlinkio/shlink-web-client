@@ -6,7 +6,7 @@ import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/
 import ShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
-import { ShortUrlDetail } from '../../src/visits/reducers/shortUrlDetail';
+import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 
