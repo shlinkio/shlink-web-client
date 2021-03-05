@@ -64,9 +64,14 @@ const ShortUrlsRow = (
           </span>
         </span>
       </td>
-      <td className="short-urls-row__cell short-urls-row__cell--break" data-th="Long URL: ">
-        <ExternalLink href={shortUrl.longUrl} />
+      <td className="short-urls-row__cell short-urls-row__cell--break" data-th={`${shortUrl.title ? 'Title' : 'Long URL'}: `}>
+        <ExternalLink href={shortUrl.longUrl}>{shortUrl.title ?? shortUrl.longUrl}</ExternalLink>
       </td>
+      {shortUrl.title && (
+        <td className="short-urls-row__cell d-lg-none" data-th="Long URL: ">
+          <ExternalLink href={shortUrl.longUrl} />
+        </td>
+      )}
       <td className="short-urls-row__cell" data-th="Tags: ">{renderTags(shortUrl.tags)}</td>
       <td className="short-urls-row__cell text-md-right" data-th="Visits: ">
         <ShortUrlVisitsCount

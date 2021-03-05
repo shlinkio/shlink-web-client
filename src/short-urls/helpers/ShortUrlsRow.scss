@@ -44,10 +44,6 @@
   position: relative;
 }
 
-.short-urls-row__cell--big {
-  transform: scale(1.5);
-}
-
 .short-urls-row__copy-hint {
   @include vertical-align(translateX(10px));
 

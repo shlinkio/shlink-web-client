@@ -2,23 +2,26 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
-import { SORTABLE_FIELDS } from '../../src/short-urls/reducers/shortUrlsListParams';
+import { OrderableFields, SORTABLE_FIELDS } from '../../src/short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
+import { ReachableServer, SelectedServer } from '../../src/servers/data';
 
 describe('<ShortUrlsTable />', () => {
   let wrapper: ShallowWrapper;
   const shortUrlsList = Mock.all<ShortUrlsList>();
   const orderByColumn = jest.fn();
   const ShortUrlsRow = () => null;
-
   const ShortUrlsTable = shortUrlsTableCreator(ShortUrlsRow);
 
-  beforeEach(() => {
+  const createWrapper = (server: SelectedServer = null) => {
     wrapper = shallow(
-      <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={null} orderByColumn={() => orderByColumn} />,
+      <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
     );
-  });
 
+    return wrapper;
+  };
+
+  beforeEach(() => createWrapper());
   afterEach(jest.resetAllMocks);
   afterEach(() => wrapper?.unmount());
 
@@ -42,18 +45,32 @@ describe('<ShortUrlsTable />', () => {
     });
   });
 
-  it('should render 6 table header cells with conditional order by icon', () => {
-    const getThElementForSortableField = (sortableField: string) => wrapper.find('table')
+  it('should render table header cells with conditional order by icon', () => {
+    const getThElementForSortableField = (orderableField: string) => wrapper.find('table')
       .find('thead')
       .find('tr')
       .find('th')
-      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[sortableField as keyof typeof SORTABLE_FIELDS]));
-    const sortableFields = Object.keys(SORTABLE_FIELDS);
+      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[orderableField as OrderableFields]));
+    const sortableFields = Object.keys(SORTABLE_FIELDS).filter((sortableField) => sortableField !== 'title');
 
     expect.assertions(sortableFields.length);
     sortableFields.forEach((sortableField) => {
       getThElementForSortableField(sortableField).simulate('click');
       expect(orderByColumn).toHaveBeenCalled();
     });
+  });
+
+  it.each([
+    [ '2.6.0' ],
+    [ '2.6.1' ],
+    [ '2.7.0' ],
+    [ '3.0.0' ],
+  ])('should render composed column when server supports title', (version) => {
+    const wrapper = createWrapper(Mock.of<ReachableServer>({ version }));
+    const composedColumn = wrapper.find('table').find('th').at(2);
+    const text = composedColumn.text();
+
+    expect(text).toContain('Title');
+    expect(text).toContain('Long URL');
   });
 });

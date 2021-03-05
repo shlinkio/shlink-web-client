@@ -8,6 +8,7 @@ export const SORTABLE_FIELDS = {
   dateCreated: 'Created at',
   shortCode: 'Short URL',
   longUrl: 'Long URL',
+  title: 'Title',
   visits: 'Visits',
 };
 
