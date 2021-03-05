@@ -22,9 +22,7 @@ describe('<ShortUrlsRow />', () => {
     getColorForKey: jest.fn(),
     setColorForKey: jest.fn(),
   });
-  const server = Mock.of<ReachableServer>({
-    url: 'https://doma.in',
-  });
+  const server = Mock.of<ReachableServer>({ url: 'https://doma.in' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
     shortUrl: 'http://doma.in/abc123',
@@ -39,13 +37,28 @@ describe('<ShortUrlsRow />', () => {
       maxVisits: null,
     },
   };
+  const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
+  const createWrapper = (title?: string | null) => {
+    wrapper = shallow(
+      <ShortUrlsRow selectedServer={server} shortUrl={{ ...shortUrl, title }} onTagClick={mockFunction} />,
+    );
 
-  beforeEach(() => {
-    const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
+    return wrapper;
+  };
 
-    wrapper = shallow(<ShortUrlsRow selectedServer={server} shortUrl={shortUrl} onTagClick={mockFunction} />);
-  });
+  beforeEach(() => createWrapper());
   afterEach(() => wrapper.unmount());
+
+  it.each([
+    [ null, 6 ],
+    [ undefined, 6 ],
+    [ 'The title', 7 ],
+  ])('renders expected amount of columns', (title, expectedAmount) => {
+    const wrapper = createWrapper(title);
+    const cols = wrapper.find('td');
+
+    expect(cols).toHaveLength(expectedAmount);
+  });
 
   it('renders date in first column', () => {
     const col = wrapper.find('td').first();
@@ -66,6 +79,20 @@ describe('<ShortUrlsRow />', () => {
     const link = col.find(ExternalLink);
 
     expect(link.prop('href')).toEqual(shortUrl.longUrl);
+  });
+
+  it('renders title when short URL has it', () => {
+    const wrapper = createWrapper('My super cool title');
+    const cols = wrapper.find('td');
+    const titleSharedCol = cols.at(2).find(ExternalLink);
+    const dedicatedShortUrlCol = cols.at(3).find(ExternalLink);
+
+    expect(titleSharedCol).toHaveLength(1);
+    expect(dedicatedShortUrlCol).toHaveLength(1);
+    expect(titleSharedCol.prop('href')).toEqual(shortUrl.longUrl);
+    expect(dedicatedShortUrlCol.prop('href')).toEqual(shortUrl.longUrl);
+    expect(titleSharedCol.html()).toContain('My super cool title');
+    expect(dedicatedShortUrlCol.prop('children')).not.toBeDefined();
   });
 
   describe('renders list of tags in fourth row', () => {
