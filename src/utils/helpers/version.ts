@@ -2,12 +2,20 @@ import { compare } from 'compare-versions';
 import { identity, memoizeWith } from 'ramda';
 import { Empty, hasValue } from '../utils';
 
+type SemVerPatternFragment = `${bigint | '*'}`;
+
+export type SemVerPattern = SemVerPatternFragment
+| `${SemVerPatternFragment}.${SemVerPatternFragment}`
+| `${SemVerPatternFragment}.${SemVerPatternFragment}.${SemVerPatternFragment}`;
+
 export interface Versions {
-  maxVersion?: string;
-  minVersion?: string;
+  maxVersion?: SemVerPattern;
+  minVersion?: SemVerPattern;
 }
 
-export const versionMatch = (versionToMatch: string | Empty, { maxVersion, minVersion }: Versions): boolean => {
+export type SemVer = `${bigint}.${bigint}.${bigint}`;
+
+export const versionMatch = (versionToMatch: SemVer | Empty, { maxVersion, minVersion }: Versions): boolean => {
   if (!hasValue(versionToMatch)) {
     return false;
   }
@@ -18,7 +26,7 @@ export const versionMatch = (versionToMatch: string | Empty, { maxVersion, minVe
   return matchesMaxVersion && matchesMinVersion;
 };
 
-const versionIsValidSemVer = memoizeWith(identity, (version: string) => {
+const versionIsValidSemVer = memoizeWith(identity, (version: string): version is SemVerPattern => {
   try {
     return compare(version, version, '=');
   } catch (e) {

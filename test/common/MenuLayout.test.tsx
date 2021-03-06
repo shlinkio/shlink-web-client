@@ -6,6 +6,7 @@ import { Mock } from 'ts-mockery';
 import createMenuLayout from '../../src/common/MenuLayout';
 import { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';
 import NoMenuLayout from '../../src/common/NoMenuLayout';
+import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<MenuLayout />', () => {
   const ServerError = jest.fn();
@@ -48,11 +49,11 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    [ '2.1.0', 6 ],
-    [ '2.2.0', 7 ],
-    [ '2.5.0', 7 ],
-    [ '2.6.0', 8 ],
-    [ '2.7.0', 8 ],
+    [ '2.1.0' as SemVer, 6 ],
+    [ '2.2.0' as SemVer, 7 ],
+    [ '2.5.0' as SemVer, 7 ],
+    [ '2.6.0' as SemVer, 8 ],
+    [ '2.7.0' as SemVer, 8 ],
   ])('has expected amount of routes based on selected server\'s version', (version, expectedAmountOfRoutes) => {
     const selectedServer = Mock.of<ReachableServer>({ version });
     const wrapper = createWrapper(selectedServer).dive();

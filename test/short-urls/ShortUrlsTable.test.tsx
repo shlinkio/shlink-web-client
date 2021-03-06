@@ -5,6 +5,7 @@ import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/Sh
 import { OrderableFields, SORTABLE_FIELDS } from '../../src/short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<ShortUrlsTable />', () => {
   let wrapper: ShallowWrapper;
@@ -61,10 +62,10 @@ describe('<ShortUrlsTable />', () => {
   });
 
   it.each([
-    [ '2.6.0' ],
-    [ '2.6.1' ],
-    [ '2.7.0' ],
-    [ '3.0.0' ],
+    [ '2.6.0' as SemVer ],
+    [ '2.6.1' as SemVer ],
+    [ '2.7.0' as SemVer ],
+    [ '3.0.0' as SemVer ],
   ])('should render composed column when server supports title', (version) => {
     const wrapper = createWrapper(Mock.of<ReachableServer>({ version }));
     const composedColumn = wrapper.find('table').find('th').at(2);

@@ -1,3 +1,5 @@
+import { SemVer } from '../../utils/helpers/version';
+
 export interface ServerData {
   name: string;
   url: string;
@@ -9,7 +11,7 @@ export interface ServerWithId extends ServerData {
 }
 
 export interface ReachableServer extends ServerWithId {
-  version: string;
+  version: SemVer;
   printableVersion: string;
 }
 
