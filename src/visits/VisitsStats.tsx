@@ -13,6 +13,7 @@ import { ShlinkVisitsParams } from '../api/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
+import { Settings } from '../settings/reducers/settings';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -25,6 +26,7 @@ import './VisitsStats.scss';
 export interface VisitsStatsProps {
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
   visitsInfo: VisitsInfo;
+  settings: Settings;
   cancelGetVisits: () => void;
   baseUrl: string;
   domain?: string;
@@ -59,7 +61,6 @@ const highlightedVisitsToStats = (
   return acc;
 }, {});
 let selectedBar: string | undefined;
-const initialInterval: DateInterval = 'last30Days';
 
 const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (
   <NavLink
@@ -74,7 +75,10 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
   </NavLink>
 );
 
-const VisitsStats: FC<VisitsStatsProps> = ({ children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain }) => {
+const VisitsStats: FC<VisitsStatsProps> = (
+  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings },
+) => {
+  const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();

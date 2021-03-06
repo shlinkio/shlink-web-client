@@ -5,6 +5,7 @@ import { ShlinkVisitsParams } from '../api/types';
 import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
 import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
+import { Settings } from '../settings/reducers/settings';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import VisitsStats from './VisitsStats';
@@ -15,6 +16,7 @@ export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: st
   getShortUrlDetail: Function;
   shortUrlDetail: ShortUrlDetail;
   cancelGetShortUrlVisits: () => void;
+  settings: Settings;
 }
 
 const ShortUrlVisits = boundToMercureHub(({
@@ -26,6 +28,7 @@ const ShortUrlVisits = boundToMercureHub(({
   getShortUrlVisits,
   getShortUrlDetail,
   cancelGetShortUrlVisits,
+  settings,
 }: ShortUrlVisitsProps) => {
   const { shortCode } = params;
   const { domain } = parseQuery<{ domain?: string }>(search);
@@ -42,6 +45,7 @@ const ShortUrlVisits = boundToMercureHub(({
       visitsInfo={shortUrlVisits}
       baseUrl={url}
       domain={domain}
+      settings={settings}
     >
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>

@@ -3,6 +3,7 @@ import { dissoc, mergeDeepRight } from 'ramda';
 import { buildReducer } from '../../utils/helpers/redux';
 import { RecursivePartial } from '../../utils/utils';
 import { Theme } from '../../utils/theme';
+import { DateInterval } from '../../utils/dates/types';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
@@ -24,10 +25,15 @@ export interface UiSettings {
   theme: Theme;
 }
 
+export interface VisitsSettings {
+  defaultInterval: DateInterval;
+}
+
 export interface Settings {
   realTimeUpdates: RealTimeUpdatesSettings;
   shortUrlCreation?: ShortUrlCreationSettings;
   ui?: UiSettings;
+  visits?: VisitsSettings;
 }
 
 const initialState: Settings = {
@@ -39,6 +45,9 @@ const initialState: Settings = {
   },
   ui: {
     theme: 'light',
+  },
+  visits: {
+    defaultInterval: 'last30Days',
   },
 };
 

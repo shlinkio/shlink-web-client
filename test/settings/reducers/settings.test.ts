@@ -10,7 +10,8 @@ describe('settingsReducer', () => {
   const realTimeUpdates = { enabled: true };
   const shortUrlCreation = { validateUrls: false };
   const ui = { theme: 'light' };
-  const settings = { realTimeUpdates, shortUrlCreation, ui };
+  const visits = { defaultInterval: 'last30Days' };
+  const settings = { realTimeUpdates, shortUrlCreation, ui, visits };
 
   describe('reducer', () => {
     it('returns realTimeUpdates when action is SET_SETTINGS', () => {
