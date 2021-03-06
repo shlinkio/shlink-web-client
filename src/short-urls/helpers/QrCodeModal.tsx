@@ -3,15 +3,15 @@ import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'rea
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
-import { ReachableServer } from '../../servers/data';
-import { versionMatch } from '../../utils/helpers/version';
+import { SelectedServer } from '../../servers/data';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat } from '../../utils/helpers/qrCodes';
+import { supportsQrCodeSizeInQuery, supportsQrCodeSvgFormat, supportsQrCodeMargin } from '../../utils/helpers/features';
 import './QrCodeModal.scss';
 
 interface QrCodeModalConnectProps extends ShortUrlModalProps {
-  selectedServer: ReachableServer;
+  selectedServer: SelectedServer;
 }
 
 const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps) => {
@@ -19,9 +19,9 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
   const [ margin, setMargin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
-    useSizeInPath: !versionMatch(selectedServer.version, { minVersion: '2.5.0' }),
-    svgIsSupported: versionMatch(selectedServer.version, { minVersion: '2.4.0' }),
-    marginIsSupported: versionMatch(selectedServer.version, { minVersion: '2.6.0' }),
+    useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
+    svgIsSupported: supportsQrCodeSvgFormat(selectedServer),
+    marginIsSupported: supportsQrCodeMargin(selectedServer),
   }), [ selectedServer ]);
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin }, capabilities),

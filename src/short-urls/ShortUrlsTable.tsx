@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 import { isEmpty } from 'ramda';
 import classNames from 'classnames';
 import { SelectedServer } from '../servers/data';
-import { titleIsSupported } from '../utils/helpers/features';
+import { supportsShortUrlTitle } from '../utils/helpers/features';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
 import { OrderableFields } from './reducers/shortUrlsListParams';
@@ -29,7 +29,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   const actionableFieldClasses = classNames({ 'short-urls-table__header-cell--with-action': !!orderByColumn });
   const orderableColumnsClasses = classNames('short-urls-table__header-cell', actionableFieldClasses);
   const tableClasses = classNames('table table-hover', className);
-  const supportsTitle = titleIsSupported(selectedServer);
+  const supportsTitle = supportsShortUrlTitle(selectedServer);
 
   const renderShortUrls = () => {
     if (error) {

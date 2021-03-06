@@ -5,9 +5,10 @@ import { InputType } from 'reactstrap/lib/Input';
 import * as m from 'moment';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import Checkbox from '../utils/Checkbox';
-import { versionMatch, Versions } from '../utils/helpers/version';
+import { Versions } from '../utils/helpers/version';
+import { supportsListingDomains, supportsSettingShortCodeLength } from '../utils/helpers/features';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { SelectedServer } from '../servers/data';
 import { formatIsoDate } from '../utils/helpers/date';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DomainSelectorProps } from '../domains/DomainSelector';
@@ -117,9 +118,8 @@ const CreateShortUrl = (
     </>
   );
 
-  const currentServerVersion = isReachableServer(selectedServer) ? selectedServer.version : '';
-  const showDomainSelector = versionMatch(currentServerVersion, { minVersion: '2.4.0' });
-  const disableShortCodeLength = !versionMatch(currentServerVersion, { minVersion: '2.1.0' });
+  const showDomainSelector = supportsListingDomains(selectedServer);
+  const disableShortCodeLength = !supportsSettingShortCodeLength(selectedServer);
 
   return (
     <form className="create-short-url" onSubmit={save}>

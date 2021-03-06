@@ -7,11 +7,12 @@ import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { SemVer } from '../../../src/utils/helpers/version';
 
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
   const shortUrl = 'https://doma.in/abc123';
-  const createWrapper = (version = '2.6.0') => {
+  const createWrapper = (version: SemVer = '2.6.0') => {
     const selectedServer = Mock.of<ReachableServer>({ version });
 
     wrapper = shallow(
@@ -37,12 +38,12 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ '2.3.0', 0, '/qr-code/300' ],
-    [ '2.4.0', 0, '/qr-code/300?format=png' ],
-    [ '2.4.0', 10, '/qr-code/300?format=png' ],
-    [ '2.5.0', 0, '/qr-code?size=300&format=png' ],
-    [ '2.6.0', 0, '/qr-code?size=300&format=png' ],
-    [ '2.6.0', 10, '/qr-code?size=300&format=png&margin=10' ],
+    [ '2.3.0' as SemVer, 0, '/qr-code/300' ],
+    [ '2.4.0' as SemVer, 0, '/qr-code/300?format=png' ],
+    [ '2.4.0' as SemVer, 10, '/qr-code/300?format=png' ],
+    [ '2.5.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
+    [ '2.6.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
+    [ '2.6.0' as SemVer, 10, '/qr-code?size=300&format=png&margin=10' ],
   ])('displays an image with the QR code of the URL', (version, margin, expectedUrl) => {
     const wrapper = createWrapper(version);
     const formControls = wrapper.find('.form-control-range');
@@ -84,9 +85,9 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ '2.3.0', 0, 'col-12' ],
-    [ '2.4.0', 1, 'col-md-6' ],
-    [ '2.6.0', 1, 'col-md-4' ],
+    [ '2.3.0' as SemVer, 0, 'col-12' ],
+    [ '2.4.0' as SemVer, 1, 'col-md-6' ],
+    [ '2.6.0' as SemVer, 1, 'col-md-4' ],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
     const wrapper = createWrapper(version);
     const dropdown = wrapper.find(DropdownBtn);
