@@ -7,8 +7,8 @@ const SettingsSections: FC<{ items: ReactNode[][] }> = ({ items }) => (
     {items.map((child, index) => (
       <Row key={index}>
         {child.map((subChild, subIndex) => (
-          <div key={subIndex} className="col-lg-6">
-            <div className="mb-3 mb-md-4">{subChild}</div>
+          <div key={subIndex} className="col-lg-6 mb-3 mb-md-4">
+            {subChild}
           </div>
         ))}
       </Row>

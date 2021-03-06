@@ -13,7 +13,7 @@ interface UserInterfaceProps {
 }
 
 export const UserInterface: FC<UserInterfaceProps> = ({ settings: { ui }, setUiSettings }) => (
-  <SimpleCard title="User interface">
+  <SimpleCard title="User interface" className="h-100">
     <FontAwesomeIcon icon={ui?.theme === 'dark' ? faMoon : faSun} className="user-interface__theme-icon" />
     <ToggleSwitch
       checked={ui?.theme === 'dark'}

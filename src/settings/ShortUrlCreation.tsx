@@ -12,7 +12,7 @@ interface ShortUrlCreationProps {
 export const ShortUrlCreation: FC<ShortUrlCreationProps> = (
   { settings: { shortUrlCreation }, setShortUrlCreationSettings },
 ) => (
-  <SimpleCard title="Short URLs creation">
+  <SimpleCard title="Short URLs creation" className="h-100">
     <FormGroup className="mb-0">
       <ToggleSwitch
         checked={shortUrlCreation?.validateUrls ?? false}

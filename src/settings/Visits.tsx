@@ -10,7 +10,7 @@ interface VisitsProps {
 }
 
 export const Visits: FC<VisitsProps> = ({ settings, setVisitsSettings }) => (
-  <SimpleCard title="Visits">
+  <SimpleCard title="Visits" className="h-100">
     <FormGroup className="mb-0">
       <label>Default interval to load on visits sections:</label>
       <DateIntervalSelector
