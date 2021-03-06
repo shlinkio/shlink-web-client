@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
+import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
 
 describe('<DateRangeSelector />', () => {
   let wrapper: ShallowWrapper;
@@ -17,42 +18,52 @@ describe('<DateRangeSelector />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('proper amount of items is rendered', () => {
+  it('renders proper amount of items', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
+    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
 
-    expect(items).toHaveLength(12);
+    expect(items).toHaveLength(5);
+    expect(dateIntervalItems).toHaveLength(1);
     expect(items.filter('[divider]')).toHaveLength(2);
     expect(items.filter('[header]')).toHaveLength(1);
     expect(items.filter('[text]')).toHaveLength(1);
-    expect(items.filter('[active]')).toHaveLength(8);
+    expect(items.filter('[active]')).toHaveLength(1);
   });
 
-  test.each([
-    [ undefined, 0 ],
-    [ 'today' as DateInterval, 1 ],
-    [ 'yesterday' as DateInterval, 2 ],
-    [ 'last7Days' as DateInterval, 3 ],
-    [ 'last30Days' as DateInterval, 4 ],
-    [ 'last90Days' as DateInterval, 5 ],
-    [ 'last180days' as DateInterval, 6 ],
-    [ 'last365Days' as DateInterval, 7 ],
-    [{ startDate: moment() }, 8 ],
-  ])('proper element is active based on provided date range', (initialDateRange, expectedActiveIndex) => {
+  it.each([
+    [ undefined, 1, 0 ],
+    [ 'today' as DateInterval, 0, 1 ],
+    [ 'yesterday' as DateInterval, 0, 1 ],
+    [ 'last7Days' as DateInterval, 0, 1 ],
+    [ 'last30Days' as DateInterval, 0, 1 ],
+    [ 'last90Days' as DateInterval, 0, 1 ],
+    [ 'last180days' as DateInterval, 0, 1 ],
+    [ 'last365Days' as DateInterval, 0, 1 ],
+    [{ startDate: moment() }, 0, 0 ],
+  ])('sets proper element as active based on provided date range', (
+    initialDateRange,
+    expectedActiveItems,
+    expectedActiveIntervalItems,
+  ) => {
     const wrapper = createWrapper({ initialDateRange });
-    const items = wrapper.find(DropdownItem).filter('[active]');
+    const items = wrapper.find(DropdownItem).filterWhere((item) => item.prop('active') === true);
+    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems).filterWhere(
+      (item) => item.prop('active') !== undefined,
+    );
 
-    expect.assertions(8);
-    items.forEach((item, index) => expect(item.prop('active')).toEqual(index === expectedActiveIndex));
+    expect(items).toHaveLength(expectedActiveItems);
+    expect(dateIntervalItems).toHaveLength(expectedActiveIntervalItems);
   });
 
-  test('selecting an element triggers onDatesChange callback', () => {
+  it('triggers onDatesChange callback when selecting an element', () => {
     const wrapper = createWrapper();
-    const items = wrapper.find(DropdownItem).filter('[active]');
+    const item = wrapper.find(DropdownItem).at(0);
+    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
 
-    items.at(2).simulate('click');
-    items.at(4).simulate('click');
-    items.at(1).simulate('click');
+    item.simulate('click');
+    item.simulate('click');
+    dateIntervalItems.simulate('change');
     expect(onDatesChange).toHaveBeenCalledTimes(3);
   });
 });

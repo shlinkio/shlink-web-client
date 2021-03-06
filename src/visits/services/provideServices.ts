@@ -18,19 +18,19 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ShortUrlVisits', () => ShortUrlVisits);
   bottle.decorator('ShortUrlVisits', connect(
-    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo' ],
+    [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
   bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator');
   bottle.decorator('TagVisits', connect(
-    [ 'tagVisits', 'mercureInfo' ],
+    [ 'tagVisits', 'mercureInfo', 'settings' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
   bottle.serviceFactory('OrphanVisits', () => OrphanVisits);
   bottle.decorator('OrphanVisits', connect(
-    [ 'orphanVisits', 'mercureInfo' ],
+    [ 'orphanVisits', 'mercureInfo', 'settings' ],
     [ 'getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 

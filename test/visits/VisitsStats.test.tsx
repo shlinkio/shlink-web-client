@@ -9,6 +9,7 @@ import { Visit, VisitsInfo } from '../../src/visits/types';
 import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
 import { Result } from '../../src/utils/Result';
+import { Settings } from '../../src/settings/reducers/settings';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -23,6 +24,7 @@ describe('<VisitStats />', () => {
         visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
         cancelGetVisits={() => {}}
         baseUrl={''}
+        settings={Mock.all<Settings>()}
       />,
     );
 

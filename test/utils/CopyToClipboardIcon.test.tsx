@@ -13,7 +13,7 @@ describe('<CopyToClipboardIcon />', () => {
   });
   afterEach(() => wrapper?.unmount());
 
-  test('expected components are wrapped', () => {
+  it('wraps expected components', () => {
     const copyToClipboard = wrapper.find(CopyToClipboard);
     const icon = wrapper.find(FontAwesomeIcon);
 

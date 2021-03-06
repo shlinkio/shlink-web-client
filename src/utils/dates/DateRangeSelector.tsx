@@ -10,6 +10,7 @@ import {
   rangeIsInterval,
 } from './types';
 import DateRangeRow from './DateRangeRow';
+import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
 
 export interface DateRangeSelectorProps {
   initialDateRange?: DateInterval | DateRange;
@@ -47,13 +48,7 @@ export const DateRangeSelector = (
         {defaultText}
       </DropdownItem>
       <DropdownItem divider />
-      {([ 'today', 'yesterday', 'last7Days', 'last30Days', 'last90Days', 'last180days', 'last365Days' ] as DateInterval[]).map(
-        (interval) => (
-          <DropdownItem key={interval} active={activeInterval === interval} onClick={updateInterval(interval)}>
-            {rangeOrIntervalToString(interval)}
-          </DropdownItem>
-        ),
-      )}
+      <DateIntervalDropdownItems active={activeInterval} onChange={(interval) => updateInterval(interval)()} />
       <DropdownItem divider />
       <DropdownItem header>Custom:</DropdownItem>
       <DropdownItem text>

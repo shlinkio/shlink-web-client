@@ -24,6 +24,8 @@ const INTERVAL_TO_STRING_MAP: Record<DateInterval, string> = {
   last365Days: 'Last 365 days',
 };
 
+export const DATE_INTERVALS: DateInterval[] = Object.keys(INTERVAL_TO_STRING_MAP) as DateInterval[];
+
 const dateRangeToString = (range?: DateRange): string | undefined => {
   if (!range || dateRangeIsEmpty(range)) {
     return undefined;

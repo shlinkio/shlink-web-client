@@ -15,7 +15,7 @@ const intervalValue = (interval?: number) => !interval ? '' : `${interval}`;
 const RealTimeUpdates = (
   { settings: { realTimeUpdates }, toggleRealTimeUpdates, setRealTimeUpdatesInterval }: RealTimeUpdatesProps,
 ) => (
-  <SimpleCard title="Real-time updates">
+  <SimpleCard title="Real-time updates" className="h-100">
     <FormGroup>
       <ToggleSwitch checked={realTimeUpdates.enabled} onChange={toggleRealTimeUpdates}>
         Enable or disable real-time updates, when using Shlink v2.2.0 or newer.
