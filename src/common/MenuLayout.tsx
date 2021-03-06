@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import { versionMatch } from '../utils/helpers/version';
+import { supportsOrphanVisits, supportsTagVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
 import NotFound from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
@@ -30,8 +30,8 @@ const MenuLayout = (
     return <ServerError />;
   }
 
-  const addTagsVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.2.0' });
-  const addOrphanVisitsRoute = versionMatch(selectedServer.version, { minVersion: '2.6.0' });
+  const addTagsVisitsRoute = supportsTagVisits(selectedServer);
+  const addOrphanVisitsRoute = supportsOrphanVisits(selectedServer);
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 

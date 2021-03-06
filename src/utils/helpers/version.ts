@@ -13,7 +13,7 @@ export interface Versions {
   minVersion?: SemVerPattern;
 }
 
-export type SemVer = `${bigint}.${bigint}.${bigint}`;
+export type SemVer = `${bigint}.${bigint}.${bigint}` | 'latest';
 
 export const versionMatch = (versionToMatch: SemVer | Empty, { maxVersion, minVersion }: Versions): boolean => {
   if (!hasValue(versionToMatch)) {
@@ -26,7 +26,7 @@ export const versionMatch = (versionToMatch: SemVer | Empty, { maxVersion, minVe
   return matchesMaxVersion && matchesMinVersion;
 };
 
-const versionIsValidSemVer = memoizeWith(identity, (version: string): version is SemVerPattern => {
+const versionIsValidSemVer = memoizeWith(identity, (version: string): version is SemVer => {
   try {
     return compare(version, version, '=');
   } catch (e) {
@@ -36,5 +36,5 @@ const versionIsValidSemVer = memoizeWith(identity, (version: string): version is
 
 export const versionToPrintable = (version: string) => !versionIsValidSemVer(version) ? version : `v${version}`;
 
-export const versionToSemVer = (defaultValue = 'latest') =>
-  (version: string) => versionIsValidSemVer(version) ? version : defaultValue;
+export const versionToSemVer = (defaultValue: SemVer = 'latest') =>
+  (version: string): SemVer => versionIsValidSemVer(version) ? version : defaultValue;

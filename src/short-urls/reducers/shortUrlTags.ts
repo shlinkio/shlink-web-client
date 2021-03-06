@@ -7,8 +7,7 @@ import { ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
-import { isReachableServer } from '../../servers/data';
-import { versionMatch } from '../../utils/helpers/version';
+import { supportsTagsInPatch } from '../../utils/helpers/features';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_TAGS_START = 'shlink/shortUrlTags/EDIT_SHORT_URL_TAGS_START';
@@ -54,15 +53,12 @@ export const editShortUrlTags = (buildShlinkApiClient: ShlinkApiClientBuilder) =
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
   const { selectedServer } = getState();
-  const supportsTagsInPatch = isReachableServer(selectedServer) && versionMatch(
-    selectedServer.version,
-    { minVersion: '2.6.0' },
-  );
+  const tagsInPatch = supportsTagsInPatch(selectedServer);
   const { updateShortUrlTags, updateShortUrlMeta } = buildShlinkApiClient(getState);
 
   try {
     const normalizedTags = await (
-      supportsTagsInPatch
+      tagsInPatch
         ? updateShortUrlMeta(shortCode, domain, { tags }).then(prop('tags'))
         : updateShortUrlTags(shortCode, domain, tags)
     );
