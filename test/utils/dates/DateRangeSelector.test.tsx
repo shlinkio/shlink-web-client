@@ -18,7 +18,7 @@ describe('<DateRangeSelector />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('proper amount of items is rendered', () => {
+  it('renders proper amount of items', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
     const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
@@ -31,7 +31,7 @@ describe('<DateRangeSelector />', () => {
     expect(items.filter('[active]')).toHaveLength(1);
   });
 
-  test.each([
+  it.each([
     [ undefined, 1, 0 ],
     [ 'today' as DateInterval, 0, 1 ],
     [ 'yesterday' as DateInterval, 0, 1 ],
@@ -41,7 +41,7 @@ describe('<DateRangeSelector />', () => {
     [ 'last180days' as DateInterval, 0, 1 ],
     [ 'last365Days' as DateInterval, 0, 1 ],
     [{ startDate: moment() }, 0, 0 ],
-  ])('proper element is active based on provided date range', (
+  ])('sets proper element as active based on provided date range', (
     initialDateRange,
     expectedActiveItems,
     expectedActiveIntervalItems,
@@ -56,7 +56,7 @@ describe('<DateRangeSelector />', () => {
     expect(dateIntervalItems).toHaveLength(expectedActiveIntervalItems);
   });
 
-  test('selecting an element triggers onDatesChange callback', () => {
+  it('triggers onDatesChange callback when selecting an element', () => {
     const wrapper = createWrapper();
     const item = wrapper.find(DropdownItem).at(0);
     const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);

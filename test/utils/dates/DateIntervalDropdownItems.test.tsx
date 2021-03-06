@@ -14,13 +14,13 @@ describe('<DateIntervalDropdownItems />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('expected amount of items is rendered', () => {
+  it('renders expected amount of items', () => {
     const items = wrapper.find(DropdownItem);
 
     expect(items).toHaveLength(DATE_INTERVALS.length);
   });
 
-  test('expected item is active', () => {
+  it('sets expected item as active', () => {
     const items = wrapper.find(DropdownItem);
     const EXPECTED_ACTIVE_INDEX = 5;
 
@@ -28,7 +28,7 @@ describe('<DateIntervalDropdownItems />', () => {
     items.forEach((item, index) => expect(item.prop('active')).toEqual(index === EXPECTED_ACTIVE_INDEX));
   });
 
-  test('selecting an element triggers onChange callback', () => {
+  it('triggers onChange callback when selecting an element', () => {
     const items = wrapper.find(DropdownItem);
 
     items.at(2).simulate('click');

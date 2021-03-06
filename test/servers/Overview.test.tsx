@@ -45,7 +45,7 @@ describe('<Overview />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  test('cards display loading messages when still loading', () => {
+  it('displays loading messages when still loading', () => {
     const wrapper = createWrapper(true);
     const cards = wrapper.find(CardText);
 
@@ -53,7 +53,7 @@ describe('<Overview />', () => {
     cards.forEach((card) => expect(card.html()).toContain('Loading...'));
   });
 
-  test('amounts are displayed in cards after finishing loading', () => {
+  it('displays amounts in cards after finishing loading', () => {
     const wrapper = createWrapper();
     const cards = wrapper.find(CardText);
 
@@ -64,21 +64,21 @@ describe('<Overview />', () => {
     expect(cards.at(3).html()).toContain(prettify(3));
   });
 
-  test('first card displays warning for old shlink versions', () => {
+  it('displays warning in first card for old shlink versions', () => {
     const wrapper = createWrapper();
     const firstCard = wrapper.find(CardText).first();
 
     expect(firstCard.html()).toContain('Shlink 2.2 is needed');
   });
 
-  test('nests complex components', () => {
+  it('nests complex components', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(CreateShortUrl)).toHaveLength(1);
     expect(wrapper.find(ShortUrlsTable)).toHaveLength(1);
   });
 
-  test('links to other sections are displayed', () => {
+  it('displays links to other sections', () => {
     const wrapper = createWrapper();
     const links = wrapper.find(Link);
 

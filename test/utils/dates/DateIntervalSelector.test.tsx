@@ -14,7 +14,7 @@ describe('<DateIntervalSelector />', () => {
   });
   afterEach(() => wrapper?.unmount());
 
-  test('props are passed down to nested DateIntervalDropdownItems', () => {
+  it('passes props down to nested DateIntervalDropdownItems', () => {
     const items = wrapper.find(DateIntervalDropdownItems);
     const dropdown = wrapper.find(DropdownBtn);
 
