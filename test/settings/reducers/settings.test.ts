@@ -4,6 +4,7 @@ import reducer, {
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
   setUiSettings,
+  setVisitsSettings,
 } from '../../../src/settings/reducers/settings';
 
 describe('settingsReducer', () => {
@@ -48,6 +49,14 @@ describe('settingsReducer', () => {
       const result = setUiSettings({ theme: 'dark' });
 
       expect(result).toEqual({ type: SET_SETTINGS, ui: { theme: 'dark' } });
+    });
+  });
+
+  describe('setVisitsSettings', () => {
+    it('creates action to set visits settings', () => {
+      const result = setVisitsSettings({ defaultInterval: 'last180days' });
+
+      expect(result).toEqual({ type: SET_SETTINGS, visits: { defaultInterval: 'last180days' } });
     });
   });
 });

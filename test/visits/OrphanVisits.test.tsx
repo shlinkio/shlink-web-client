@@ -7,6 +7,7 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { VisitsInfo } from '../../src/visits/types';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { OrphanVisitsHeader } from '../../src/visits/OrphanVisitsHeader';
+import { Settings } from '../../src/settings/reducers/settings';
 
 describe('<OrphanVisits />', () => {
   it('wraps visits stats and header', () => {
@@ -24,6 +25,7 @@ describe('<OrphanVisits />', () => {
         history={Mock.of<History>({ goBack })}
         location={Mock.all<Location>()}
         match={Mock.of<match>({ url: 'the_base_url' })}
+        settings={Mock.all<Settings>()}
       />,
     ).dive();
     const stats = wrapper.find(VisitsStats);

@@ -78,3 +78,8 @@ export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   ui: settings,
 });
+
+export const setVisitsSettings = (settings: VisitsSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  visits: settings,
+});
