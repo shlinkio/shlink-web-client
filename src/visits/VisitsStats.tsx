@@ -2,7 +2,7 @@ import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
 import { Location } from 'history';
@@ -30,6 +30,7 @@ export interface VisitsStatsProps {
   cancelGetVisits: () => void;
   baseUrl: string;
   domain?: string;
+  exportCsv: (visits: NormalizedVisit[]) => void;
 }
 
 interface VisitsNavLinkProps {
@@ -76,7 +77,7 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
 );
 
 const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings },
+  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv },
 ) => {
   const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
@@ -258,14 +259,24 @@ const VisitsStats: FC<VisitsStatsProps> = (
           </div>
           {visits.length > 0 && (
             <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
-              <Button
-                outline
-                disabled={highlightedVisits.length === 0}
-                className="btn-md-block"
-                onClick={() => setSelectedVisits([])}
-              >
-                Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
-              </Button>
+              <div className="d-flex">
+                <Button
+                  outline
+                  disabled={highlightedVisits.length === 0}
+                  className="btn-md-block mr-2"
+                  onClick={() => setSelectedVisits([])}
+                >
+                  Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+                </Button>
+                <Button
+                  outline
+                  color="primary"
+                  className="btn-md-block"
+                  onClick={() => exportCsv(normalizedVisits)}
+                >
+                  <FontAwesomeIcon icon={faFileDownload} /> Export ({normalizedVisits.length})
+                </Button>
+              </div>
             </div>
           )}
         </div>

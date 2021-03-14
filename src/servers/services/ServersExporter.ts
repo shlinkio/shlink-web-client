@@ -1,31 +1,10 @@
-import { dissoc, head, keys, values } from 'ramda';
+import { dissoc, values } from 'ramda';
 import { CsvJson } from 'csvjson';
 import LocalStorage from '../../utils/services/LocalStorage';
 import { ServersMap } from '../data';
+import { saveCsv } from '../../utils/helpers/csv';
 
-const saveCsv = (window: Window, csv: string) => {
-  const { navigator, document } = window;
-  const filename = 'shlink-servers.csv';
-  const blob = new Blob([ csv ], { type: 'text/csv;charset=utf-8;' });
-
-  // IE10 and IE11
-  if (navigator.msSaveBlob) {
-    navigator.msSaveBlob(blob, filename);
-
-    return;
-  }
-
-  // Modern browsers
-  const link = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
+const SERVERS_FILENAME = 'shlink-servers.csv';
 
 export default class ServersExporter {
   public constructor(
@@ -38,15 +17,12 @@ export default class ServersExporter {
     const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(dissoc('id'));
 
     try {
-      const csv = this.csvjson.toCSV(servers, {
-        headers: keys(head(servers)).join(','),
-      });
+      const csv = this.csvjson.toCSV(servers, { headers: 'key' });
 
-      saveCsv(this.window, csv);
+      saveCsv(this.window, csv, SERVERS_FILENAME);
     } catch (e) {
       // FIXME Handle error
-      /* eslint no-console: "off" */
-      console.error(e);
+      console.error(e); // eslint-disable-line no-console
     }
   };
 }

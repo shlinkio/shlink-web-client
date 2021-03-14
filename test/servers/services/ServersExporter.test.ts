@@ -11,12 +11,9 @@ describe('ServersExporter', () => {
   });
   const appendChild = jest.fn();
   const removeChild = jest.fn();
-  const createWindowMock = (isIe10 = true) => Mock.of<Window>({
-    navigator: {
-      msSaveBlob: isIe10 ? jest.fn() : undefined,
-    },
+  const windowMock = Mock.of<Window>({
     document: {
-      createElement: jest.fn(() => createLinkMock()),
+      createElement: jest.fn(createLinkMock),
       body: { appendChild, removeChild },
     },
   });
@@ -53,12 +50,11 @@ describe('ServersExporter', () => {
     });
     afterEach(() => {
       global.console = originalConsole;
-      jest.clearAllMocks();
     });
 
     it('logs an error if something fails', () => {
       const csvjsonMock = createCsvjsonMock(true);
-      const exporter = new ServersExporter(storageMock, createWindowMock(), csvjsonMock);
+      const exporter = new ServersExporter(storageMock, windowMock, csvjsonMock);
 
       exporter.exportServers();
 
@@ -66,20 +62,7 @@ describe('ServersExporter', () => {
       expect(erroneousToCsv).toHaveBeenCalledTimes(1);
     });
 
-    it('makes use of msSaveBlob API when available', () => {
-      const windowMock = createWindowMock();
-      const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
-      const { navigator: { msSaveBlob }, document: { createElement } } = windowMock;
-
-      exporter.exportServers();
-
-      expect(storageMock.get).toHaveBeenCalledTimes(1);
-      expect(msSaveBlob).toHaveBeenCalledTimes(1);
-      expect(createElement).not.toHaveBeenCalled();
-    });
-
-    it('makes use of download link API when available', () => {
-      const windowMock = createWindowMock(false);
+    it('makes use of download link API', () => {
       const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
       const { document: { createElement } } = windowMock;
 
