@@ -5,7 +5,8 @@ import { Topics } from '../mercure/helpers/Topics';
 import { Settings } from '../settings/reducers/settings';
 import VisitsStats from './VisitsStats';
 import { OrphanVisitsHeader } from './OrphanVisitsHeader';
-import { VisitsInfo } from './types';
+import { NormalizedVisit, VisitsInfo } from './types';
+import { VisitsExporter } from './services/VisitsExporter';
 
 export interface OrphanVisitsProps extends RouteComponentProps {
   getOrphanVisits: (params: ShlinkVisitsParams) => void;
@@ -14,21 +15,26 @@ export interface OrphanVisitsProps extends RouteComponentProps {
   settings: Settings;
 }
 
-export const OrphanVisits = boundToMercureHub(({
+export const OrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub(({
   history: { goBack },
   match: { url },
   getOrphanVisits,
   orphanVisits,
   cancelGetOrphanVisits,
   settings,
-}: OrphanVisitsProps) => (
-  <VisitsStats
-    getVisits={getOrphanVisits}
-    cancelGetVisits={cancelGetOrphanVisits}
-    visitsInfo={orphanVisits}
-    baseUrl={url}
-    settings={settings}
-  >
-    <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
-  </VisitsStats>
-), () => [ Topics.orphanVisits() ]);
+}: OrphanVisitsProps) => {
+  const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
+
+  return (
+    <VisitsStats
+      getVisits={getOrphanVisits}
+      cancelGetVisits={cancelGetOrphanVisits}
+      visitsInfo={orphanVisits}
+      baseUrl={url}
+      settings={settings}
+      exportCsv={exportCsv}
+    >
+      <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
+    </VisitsStats>
+  );
+}, () => [ Topics.orphanVisits() ]);

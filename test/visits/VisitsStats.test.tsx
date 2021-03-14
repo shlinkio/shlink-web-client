@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Progress } from 'reactstrap';
+import { Button, Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
@@ -16,6 +16,7 @@ describe('<VisitStats />', () => {
 
   let wrapper: ShallowWrapper;
   const getVisitsMock = jest.fn();
+  const exportCsv = jest.fn();
 
   const createComponent = (visitsInfo: Partial<VisitsInfo>) => {
     wrapper = shallow(
@@ -25,6 +26,7 @@ describe('<VisitStats />', () => {
         cancelGetVisits={() => {}}
         baseUrl={''}
         settings={Mock.all<Settings>()}
+        exportCsv={exportCsv}
       />,
     );
 
@@ -88,5 +90,14 @@ describe('<VisitStats />', () => {
 
     expect(extraHeaderContent).toHaveLength(1);
     expect(typeof extraHeaderContent).toEqual('function');
+  });
+
+  it('exports CSV when export btn is clicked', () => {
+    const wrapper = createComponent({ visits });
+    const exportBtn = wrapper.find(Button).last();
+
+    expect(exportBtn).toHaveLength(1);
+    exportBtn.simulate('click');
+    expect(exportCsv).toHaveBeenCalled();
   });
 });

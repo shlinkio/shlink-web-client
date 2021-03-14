@@ -7,6 +7,8 @@ import { Settings } from '../settings/reducers/settings';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
 import VisitsStats from './VisitsStats';
+import { VisitsExporter } from './services/VisitsExporter';
+import { NormalizedVisit } from './types';
 
 export interface TagVisitsProps extends RouteComponentProps<{ tag: string }> {
   getTagVisits: (tag: string, query: any) => void;
@@ -15,7 +17,7 @@ export interface TagVisitsProps extends RouteComponentProps<{ tag: string }> {
   settings: Settings;
 }
 
-const TagVisits = (colorGenerator: ColorGenerator) => boundToMercureHub(({
+const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: VisitsExporter) => boundToMercureHub(({
   history: { goBack },
   match: { params, url },
   getTagVisits,
@@ -25,6 +27,7 @@ const TagVisits = (colorGenerator: ColorGenerator) => boundToMercureHub(({
 }: TagVisitsProps) => {
   const { tag } = params;
   const loadVisits = (params: ShlinkVisitsParams) => getTagVisits(tag, params);
+  const exportCsv = (visits: NormalizedVisit[]) => exportVisits(`tag_${tag}_visits.csv`, visits);
 
   return (
     <VisitsStats
@@ -33,6 +36,7 @@ const TagVisits = (colorGenerator: ColorGenerator) => boundToMercureHub(({
       visitsInfo={tagVisits}
       baseUrl={url}
       settings={settings}
+      exportCsv={exportCsv}
     >
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />
     </VisitsStats>

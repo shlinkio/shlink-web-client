@@ -3,12 +3,13 @@ import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
-import ShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
+import createShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
 
 describe('<ShortUrlVisits />', () => {
   let wrapper: ShallowWrapper;
@@ -20,6 +21,7 @@ describe('<ShortUrlVisits />', () => {
   const history = Mock.of<History>({
     goBack: jest.fn(),
   });
+  const ShortUrlVisits = createShortUrlVisits(Mock.all<VisitsExporter>());
 
   beforeEach(() => {
     wrapper = shallow(

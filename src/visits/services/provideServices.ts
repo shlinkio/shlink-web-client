@@ -11,24 +11,25 @@ import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits
 import { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
+import { VisitsExporter } from './VisitsExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
 
-  bottle.serviceFactory('ShortUrlVisits', () => ShortUrlVisits);
+  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsExporter');
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
-  bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator');
+  bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator', 'VisitsExporter');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo', 'settings' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
-  bottle.serviceFactory('OrphanVisits', () => OrphanVisits);
+  bottle.serviceFactory('OrphanVisits', OrphanVisits, 'VisitsExporter');
   bottle.decorator('OrphanVisits', connect(
     [ 'orphanVisits', 'mercureInfo', 'settings' ],
     [ 'getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo' ],
@@ -36,6 +37,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Services
   bottle.serviceFactory('VisitsParser', () => visitsParser);
+  bottle.service('VisitsExporter', VisitsExporter, 'window', 'csvjson');
 
   // Actions
   bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');

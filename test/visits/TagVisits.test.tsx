@@ -8,6 +8,7 @@ import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
 
 describe('<TagVisits />', () => {
   let wrapper: ShallowWrapper;
@@ -20,7 +21,7 @@ describe('<TagVisits />', () => {
   });
 
   beforeEach(() => {
-    const TagVisits = createTagVisits(Mock.of<ColorGenerator>());
+    const TagVisits = createTagVisits(Mock.all<ColorGenerator>(), Mock.all<VisitsExporter>());
 
     wrapper = shallow(
       <TagVisits
