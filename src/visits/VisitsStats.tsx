@@ -259,17 +259,24 @@ const VisitsStats: FC<VisitsStatsProps> = (
           </div>
           {visits.length > 0 && (
             <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
-              <Button
-                outline
-                disabled={highlightedVisits.length === 0}
-                className="btn-md-block"
-                onClick={() => setSelectedVisits([])}
-              >
-                Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
-              </Button>
-              <Button outline color="primary" onClick={() => exportCsv(normalizedVisits)}>
-                Export <FontAwesomeIcon icon={faFileExport} />
-              </Button>
+              <div className="d-flex">
+                <Button
+                  outline
+                  disabled={highlightedVisits.length === 0}
+                  className="btn-md-block mr-2"
+                  onClick={() => setSelectedVisits([])}
+                >
+                  Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+                </Button>
+                <Button
+                  outline
+                  color="primary"
+                  className="btn-md-block"
+                  onClick={() => exportCsv(normalizedVisits)}
+                >
+                  Export <FontAwesomeIcon icon={faFileExport} />
+                </Button>
+              </div>
             </div>
           )}
         </div>
