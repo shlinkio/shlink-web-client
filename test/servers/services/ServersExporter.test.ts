@@ -11,9 +11,9 @@ describe('ServersExporter', () => {
   });
   const appendChild = jest.fn();
   const removeChild = jest.fn();
-  const createWindowMock = () => Mock.of<Window>({
+  const windowMock = Mock.of<Window>({
     document: {
-      createElement: jest.fn(() => createLinkMock()),
+      createElement: jest.fn(createLinkMock),
       body: { appendChild, removeChild },
     },
   });
@@ -50,12 +50,11 @@ describe('ServersExporter', () => {
     });
     afterEach(() => {
       global.console = originalConsole;
-      jest.clearAllMocks();
     });
 
     it('logs an error if something fails', () => {
       const csvjsonMock = createCsvjsonMock(true);
-      const exporter = new ServersExporter(storageMock, createWindowMock(), csvjsonMock);
+      const exporter = new ServersExporter(storageMock, windowMock, csvjsonMock);
 
       exporter.exportServers();
 
@@ -64,7 +63,6 @@ describe('ServersExporter', () => {
     });
 
     it('makes use of download link API', () => {
-      const windowMock = createWindowMock();
       const exporter = new ServersExporter(storageMock, windowMock, createCsvjsonMock());
       const { document: { createElement } } = windowMock;
 
