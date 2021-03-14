@@ -274,7 +274,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   className="btn-md-block"
                   onClick={() => exportCsv(normalizedVisits)}
                 >
-                  Export <FontAwesomeIcon icon={faFileExport} />
+                  Export ({normalizedVisits.length}) <FontAwesomeIcon icon={faFileExport} />
                 </Button>
               </div>
             </div>
