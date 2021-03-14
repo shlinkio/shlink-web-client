@@ -1,4 +1,4 @@
-import { dissoc, head, keys, values } from 'ramda';
+import { dissoc, values } from 'ramda';
 import { CsvJson } from 'csvjson';
 import LocalStorage from '../../utils/services/LocalStorage';
 import { ServersMap } from '../data';
@@ -17,9 +17,7 @@ export default class ServersExporter {
     const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(dissoc('id'));
 
     try {
-      const csv = this.csvjson.toCSV(servers, {
-        headers: keys(head(servers)).join(','),
-      });
+      const csv = this.csvjson.toCSV(servers, { headers: 'key' });
 
       saveCsv(this.window, csv, SERVERS_FILENAME);
     } catch (e) {

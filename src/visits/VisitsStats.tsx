@@ -2,7 +2,7 @@ import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileExport } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
 import { Location } from 'history';
@@ -274,7 +274,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   className="btn-md-block"
                   onClick={() => exportCsv(normalizedVisits)}
                 >
-                  Export ({normalizedVisits.length}) <FontAwesomeIcon icon={faFileExport} />
+                  <FontAwesomeIcon icon={faFileDownload} /> Export ({normalizedVisits.length})
                 </Button>
               </div>
             </div>

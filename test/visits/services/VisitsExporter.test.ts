@@ -44,9 +44,7 @@ describe('VisitsExporter', () => {
 
       exporter.exportVisits('my_visits.csv', visits);
 
-      expect(toCSV).toHaveBeenCalledWith(visits, {
-        headers: 'browser,city,country,date,latitude,longitude,os,referer',
-      });
+      expect(toCSV).toHaveBeenCalledWith(visits, { headers: 'key' });
     });
 
     it('skips execution when list of visits is empty', () => {

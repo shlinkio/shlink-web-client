@@ -13,10 +13,7 @@ export class VisitsExporter {
       return;
     }
 
-    const [ firstVisit ] = visits;
-    const csv = this.csvjson.toCSV(visits, {
-      headers: Object.keys(firstVisit).join(','),
-    });
+    const csv = this.csvjson.toCSV(visits, { headers: 'key' });
 
     saveCsv(this.window, csv, filename);
   };
