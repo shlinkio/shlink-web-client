@@ -5,6 +5,7 @@ export interface ShortUrlData {
   longUrl: string;
   tags?: string[];
   customSlug?: string;
+  title?: string;
   shortCodeLength?: number;
   domain?: string;
   validSince?: m.Moment | string;

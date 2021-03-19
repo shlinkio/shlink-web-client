@@ -20,6 +20,7 @@ import { editShortUrl } from '../reducers/shortUrlEdition';
 import { ConnectDecorator } from '../../container/types';
 import { ShortUrlsTable } from '../ShortUrlsTable';
 import QrCodeModal from '../helpers/QrCodeModal';
+import { ShortUrlForm } from '../ShortUrlForm';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -45,15 +46,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ForServerVersion',
   );
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
+  bottle.serviceFactory('ShortUrlForm', ShortUrlForm, 'TagsSelector', 'ForServerVersion', 'DomainSelector');
 
-  bottle.serviceFactory(
-    'CreateShortUrl',
-    CreateShortUrl,
-    'TagsSelector',
-    'CreateShortUrlResult',
-    'ForServerVersion',
-    'DomainSelector',
-  );
+  bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
     connect([ 'shortUrlCreationResult', 'selectedServer', 'settings' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),

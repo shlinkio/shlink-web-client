@@ -1,0 +1,6 @@
+@import '../utils/base';
+
+.short-url-form .form-group:last-child,
+.short-url-form p:last-child {
+  margin-bottom: 0;
+}
