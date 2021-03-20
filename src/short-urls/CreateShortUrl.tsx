@@ -1,4 +1,3 @@
-import { pipe, replace, trim } from 'ramda';
 import { FC, useMemo } from 'react';
 import { SelectedServer } from '../servers/data';
 import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
@@ -18,8 +17,6 @@ interface CreateShortUrlConnectProps extends CreateShortUrlProps {
   createShortUrl: (data: ShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
 }
-
-export const normalizeTag = pipe(trim, replace(/ /g, '-'));
 
 const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => ({
   longUrl: '',

@@ -1,7 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
-import { isEmpty } from 'ramda';
+import { isEmpty, pipe, replace, trim } from 'ramda';
 import * as m from 'moment';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
@@ -18,7 +18,6 @@ import { Versions } from '../utils/helpers/version';
 import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
-import { normalizeTag } from './CreateShortUrl';
 import { ShortUrlData } from './data';
 import './ShortUrlForm.scss';
 
@@ -34,19 +33,26 @@ export interface ShortUrlFormProps {
   selectedServer: SelectedServer;
 }
 
+const normalizeTag = pipe(trim, replace(/ /g, '-'));
+
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   ForServerVersion: FC<Versions>,
   DomainSelector: FC<DomainSelectorProps>,
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer, children }) => { // eslint-disable-line complexity
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
+  const isEdit = mode === 'edit';
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
   const reset = () => setShortUrlData(initialState);
   const submit = handleEventPreventingDefault(async () => onSave({
     ...shortUrlData,
     validSince: formatIsoDate(shortUrlData.validSince) ?? undefined,
     validUntil: formatIsoDate(shortUrlData.validUntil) ?? undefined,
-  }).then(reset).catch(() => {}));
+  }).then(() => !isEdit && reset()).catch(() => {}));
+
+  useEffect(() => {
+    setShortUrlData(initialState);
+  }, [ initialState ]);
 
   const renderOptionalInput = (id: NonDateFields, placeholder: string, type: InputType = 'text', props = {}) => (
     <FormGroup>
@@ -54,7 +60,7 @@ export const ShortUrlForm = (
         id={id}
         type={type}
         placeholder={placeholder}
-        value={shortUrlData[id]}
+        value={shortUrlData[id] ?? ''}
         onChange={(e) => setShortUrlData({ ...shortUrlData, [id]: e.target.value })}
         {...props}
       />
@@ -93,7 +99,6 @@ export const ShortUrlForm = (
   const showDomainSelector = supportsListingDomains(selectedServer);
   const disableShortCodeLength = !supportsSettingShortCodeLength(selectedServer);
   const supportsTitle = supportsShortUrlTitle(selectedServer);
-  const isEdit = mode === 'edit';
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -191,7 +196,7 @@ export const ShortUrlForm = (
           disabled={saving || isEmpty(shortUrlData.longUrl)}
           className="btn-xs-block"
         >
-          {saving ? 'Creating...' : 'Create'}
+          {saving ? 'Saving...' : 'Save'}
         </Button>
       </div>
 

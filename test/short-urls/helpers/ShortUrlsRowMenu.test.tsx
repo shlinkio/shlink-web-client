@@ -51,7 +51,7 @@ describe('<ShortUrlsRowMenu />', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(7);
+    expect(items).toHaveLength(8);
     expect(items.find('[divider]')).toHaveLength(1);
   });
 

@@ -21,6 +21,8 @@ import { ConnectDecorator } from '../../container/types';
 import { ShortUrlsTable } from '../ShortUrlsTable';
 import QrCodeModal from '../helpers/QrCodeModal';
 import { ShortUrlForm } from '../ShortUrlForm';
+import { EditShortUrl } from '../EditShortUrl';
+import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -52,6 +54,12 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator(
     'CreateShortUrl',
     connect([ 'shortUrlCreationResult', 'selectedServer', 'settings' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),
+  );
+
+  bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');
+  bottle.decorator(
+    'EditShortUrl',
+    connect([ 'shortUrlDetail', 'selectedServer', 'settings' ], [ 'getShortUrlDetail' ]),
   );
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
@@ -88,6 +96,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('editShortUrlMeta', editShortUrlMeta, 'buildShlinkApiClient');
   bottle.serviceFactory('resetShortUrlMeta', () => resetShortUrlMeta);
+
+  bottle.serviceFactory('getShortUrlDetail', getShortUrlDetail, 'buildShlinkApiClient');
 
   bottle.serviceFactory('editShortUrl', editShortUrl, 'buildShlinkApiClient');
 };

@@ -1,7 +1,6 @@
 import Bottle from 'bottlejs';
 import ShortUrlVisits from '../ShortUrlVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
-import { getShortUrlDetail } from '../../short-urls/reducers/shortUrlDetail';
 import MapModal from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
 import TagVisits from '../TagVisits';
@@ -41,7 +40,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Actions
   bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getShortUrlDetail', getShortUrlDetail, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetShortUrlVisits', () => cancelGetShortUrlVisits);
 
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');

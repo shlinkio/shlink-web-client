@@ -14,7 +14,7 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { ShortUrl, ShortUrlModalProps } from '../data';
 import { Versions } from '../../utils/helpers/version';
 import { SelectedServer } from '../../servers/data';
-import VisitStatsLink from './VisitStatsLink';
+import ShortUrlDetailLink from './ShortUrlDetailLink';
 import './ShortUrlsRowMenu.scss';
 
 export interface ShortUrlsRowMenuProps {
@@ -44,8 +44,12 @@ const ShortUrlsRowMenu = (
         &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem tag={VisitStatsLink} selectedServer={selectedServer} shortUrl={shortUrl}>
+        <DropdownItem tag={ShortUrlDetailLink} selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
           <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
+        </DropdownItem>
+
+        <DropdownItem tag={ShortUrlDetailLink} selectedServer={selectedServer} shortUrl={shortUrl} suffix="edit">
+          <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit short URL
         </DropdownItem>
 
         <DropdownItem onClick={toggleTags}>
