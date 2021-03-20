@@ -1,10 +1,14 @@
 import { FC, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
-import { Button, FormGroup, Input } from 'reactstrap';
+import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { isEmpty } from 'ramda';
 import * as m from 'moment';
 import DateInput, { DateInputProps } from '../utils/DateInput';
-import { supportsListingDomains, supportsSettingShortCodeLength } from '../utils/helpers/features';
+import {
+  supportsListingDomains,
+  supportsSettingShortCodeLength,
+  supportsShortUrlTitle,
+} from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
@@ -34,7 +38,7 @@ export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   ForServerVersion: FC<Versions>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer, children }) => {
+): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer, children }) => { // eslint-disable-line complexity
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
   const reset = () => setShortUrlData(initialState);
@@ -88,6 +92,8 @@ export const ShortUrlForm = (
 
   const showDomainSelector = supportsListingDomains(selectedServer);
   const disableShortCodeLength = !supportsSettingShortCodeLength(selectedServer);
+  const supportsTitle = supportsShortUrlTitle(selectedServer);
+  const isEdit = mode === 'edit';
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -98,27 +104,38 @@ export const ShortUrlForm = (
             {basicComponents}
           </SimpleCard>
 
-          <div className="row">
+          <Row>
             <div className="col-sm-6 mb-3">
               <SimpleCard title="Customize the short URL">
-                {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-                  disabled: hasValue(shortUrlData.shortCodeLength),
-                })}
-                {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-                  min: 4,
-                  disabled: disableShortCodeLength || hasValue(shortUrlData.customSlug),
-                  ...disableShortCodeLength && {
-                    title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
-                  },
-                })}
-                {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
-                {showDomainSelector && (
-                  <FormGroup>
-                    <DomainSelector
-                      value={shortUrlData.domain}
-                      onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                    />
-                  </FormGroup>
+                {supportsTitle && renderOptionalInput('title', 'Title')}
+                {!isEdit && (
+                  <>
+                    <Row>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                          disabled: hasValue(shortUrlData.shortCodeLength),
+                        })}
+                      </div>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                          min: 4,
+                          disabled: disableShortCodeLength || hasValue(shortUrlData.customSlug),
+                          ...disableShortCodeLength && {
+                            title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
+                          },
+                        })}
+                      </div>
+                    </Row>
+                    {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
+                    {showDomainSelector && (
+                      <FormGroup>
+                        <DomainSelector
+                          value={shortUrlData.domain}
+                          onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                        />
+                      </FormGroup>
+                    )}
+                  </>
                 )}
               </SimpleCard>
             </div>
@@ -130,13 +147,15 @@ export const ShortUrlForm = (
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince as m.Moment | undefined })}
               </SimpleCard>
             </div>
-          </div>
+          </Row>
 
           <SimpleCard title="Extra validations" className="mb-3">
-            <p>
-              Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
-              provided data.
-            </p>
+            {!isEdit && (
+              <p>
+                Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
+                provided data.
+              </p>
+            )}
             <ForServerVersion minVersion="2.4.0">
               <p>
                 <Checkbox
@@ -148,17 +167,19 @@ export const ShortUrlForm = (
                 </Checkbox>
               </p>
             </ForServerVersion>
-            <p>
-              <Checkbox
-                inline
-                className="mr-2"
-                checked={shortUrlData.findIfExists}
-                onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
-              >
-                Use existing URL if found
-              </Checkbox>
-              <UseExistingIfFoundInfoIcon />
-            </p>
+            {!isEdit && (
+              <p>
+                <Checkbox
+                  inline
+                  className="mr-2"
+                  checked={shortUrlData.findIfExists}
+                  onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
+                >
+                  Use existing URL if found
+                </Checkbox>
+                <UseExistingIfFoundInfoIcon />
+              </p>
+            )}
           </SimpleCard>
         </>
       )}
