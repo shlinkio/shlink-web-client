@@ -49,6 +49,7 @@ export const ShortUrlForm = (
     validSince: formatIsoDate(shortUrlData.validSince) ?? null,
     validUntil: formatIsoDate(shortUrlData.validUntil) ?? null,
     maxVisits: !hasValue(shortUrlData.maxVisits) ? null : Number(shortUrlData.maxVisits),
+    title: !hasValue(shortUrlData.title) ? undefined : shortUrlData.title,
   }).then(() => !isEdit && reset()).catch(() => {}));
 
   useEffect(() => {
