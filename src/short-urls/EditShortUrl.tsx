@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Button, Card } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -58,6 +58,10 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
   const { saving, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
+  const initialState = useMemo(
+    () => getInitialState(shortUrl, shortUrlCreationSettings),
+    [ shortUrl, shortUrlCreationSettings ],
+  );
 
   useEffect(() => {
     getShortUrlDetail(params.shortCode, domain);
@@ -91,7 +95,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
         </Card>
       </header>
       <ShortUrlForm
-        initialState={getInitialState(shortUrl, shortUrlCreationSettings)}
+        initialState={initialState}
         saving={saving}
         selectedServer={selectedServer}
         mode="edit"
