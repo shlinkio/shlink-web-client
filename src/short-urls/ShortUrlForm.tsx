@@ -3,25 +3,27 @@ import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { isEmpty, pipe, replace, trim } from 'ramda';
 import m from 'moment';
+import classNames from 'classnames';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
   supportsListingDomains,
   supportsSettingShortCodeLength,
   supportsShortUrlTitle,
+  supportsValidateUrl,
 } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
 import { SelectedServer } from '../servers/data';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
-import { Versions } from '../utils/helpers/version';
 import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 import { ShortUrlData } from './data';
 import './ShortUrlForm.scss';
 
-type Mode = 'create' | 'create-basic' | 'edit';
+export type Mode = 'create' | 'create-basic' | 'edit';
+
 type DateFields = 'validSince' | 'validUntil';
 type NonDateFields = 'longUrl' | 'customSlug' | 'shortCodeLength' | 'domain' | 'maxVisits' | 'title';
 
@@ -37,7 +39,6 @@ const normalizeTag = pipe(trim, replace(/ /g, '-'));
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
-  ForServerVersion: FC<Versions>,
   DomainSelector: FC<DomainSelectorProps>,
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => { // eslint-disable-line complexity
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
@@ -101,6 +102,13 @@ export const ShortUrlForm = (
   const showDomainSelector = supportsListingDomains(selectedServer);
   const disableShortCodeLength = !supportsSettingShortCodeLength(selectedServer);
   const supportsTitle = supportsShortUrlTitle(selectedServer);
+  const showCustomizeCard = supportsTitle || !isEdit;
+  const limitAccessCardClasses = classNames('mb-3', {
+    'col-sm-6': showCustomizeCard,
+    'col-sm-12': !showCustomizeCard,
+  });
+  const showValidateUrl = supportsValidateUrl(selectedServer);
+  const showExtraValidationsCard = showValidateUrl || !isEdit;
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -112,42 +120,44 @@ export const ShortUrlForm = (
           </SimpleCard>
 
           <Row>
-            <div className="col-sm-6 mb-3">
-              <SimpleCard title="Customize the short URL">
-                {supportsTitle && renderOptionalInput('title', 'Title')}
-                {!isEdit && (
-                  <>
-                    <Row>
-                      <div className="col-lg-6">
-                        {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-                          disabled: hasValue(shortUrlData.shortCodeLength),
-                        })}
-                      </div>
-                      <div className="col-lg-6">
-                        {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-                          min: 4,
-                          disabled: disableShortCodeLength || hasValue(shortUrlData.customSlug),
-                          ...disableShortCodeLength && {
-                            title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
-                          },
-                        })}
-                      </div>
-                    </Row>
-                    {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
-                    {showDomainSelector && (
-                      <FormGroup>
-                        <DomainSelector
-                          value={shortUrlData.domain}
-                          onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                        />
-                      </FormGroup>
-                    )}
-                  </>
-                )}
-              </SimpleCard>
-            </div>
+            {showCustomizeCard && (
+              <div className="col-sm-6 mb-3">
+                <SimpleCard title="Customize the short URL">
+                  {supportsTitle && renderOptionalInput('title', 'Title')}
+                  {!isEdit && (
+                    <>
+                      <Row>
+                        <div className="col-lg-6">
+                          {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                            disabled: hasValue(shortUrlData.shortCodeLength),
+                          })}
+                        </div>
+                        <div className="col-lg-6">
+                          {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                            min: 4,
+                            disabled: disableShortCodeLength || hasValue(shortUrlData.customSlug),
+                            ...disableShortCodeLength && {
+                              title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
+                            },
+                          })}
+                        </div>
+                      </Row>
+                      {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
+                      {showDomainSelector && (
+                        <FormGroup>
+                          <DomainSelector
+                            value={shortUrlData.domain}
+                            onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                          />
+                        </FormGroup>
+                      )}
+                    </>
+                  )}
+                </SimpleCard>
+              </div>
+            )}
 
-            <div className="col-sm-6 mb-3">
+            <div className={limitAccessCardClasses}>
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
                 {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? m(shortUrlData.validUntil) : undefined })}
@@ -156,38 +166,40 @@ export const ShortUrlForm = (
             </div>
           </Row>
 
-          <SimpleCard title="Extra validations" className="mb-3">
-            {!isEdit && (
-              <p>
-                Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
-                provided data.
-              </p>
-            )}
-            <ForServerVersion minVersion="2.4.0">
-              <p>
-                <Checkbox
-                  inline
-                  checked={shortUrlData.validateUrl}
-                  onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
-                >
-                  Validate URL
-                </Checkbox>
-              </p>
-            </ForServerVersion>
-            {!isEdit && (
-              <p>
-                <Checkbox
-                  inline
-                  className="mr-2"
-                  checked={shortUrlData.findIfExists}
-                  onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
-                >
-                  Use existing URL if found
-                </Checkbox>
-                <UseExistingIfFoundInfoIcon />
-              </p>
-            )}
-          </SimpleCard>
+          {showExtraValidationsCard && (
+            <SimpleCard title="Extra validations" className="mb-3">
+              {!isEdit && (
+                <p>
+                  Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
+                  provided data.
+                </p>
+              )}
+              {showValidateUrl && (
+                <p>
+                  <Checkbox
+                    inline
+                    checked={shortUrlData.validateUrl}
+                    onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
+                  >
+                    Validate URL
+                  </Checkbox>
+                </p>
+              )}
+              {!isEdit && (
+                <p>
+                  <Checkbox
+                    inline
+                    className="mr-2"
+                    checked={shortUrlData.findIfExists}
+                    onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
+                  >
+                    Use existing URL if found
+                  </Checkbox>
+                  <UseExistingIfFoundInfoIcon />
+                </p>
+              )}
+            </SimpleCard>
+          )}
         </>
       )}
 

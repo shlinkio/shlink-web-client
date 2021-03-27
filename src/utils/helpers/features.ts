@@ -12,6 +12,8 @@ export const supportsListingDomains = serverMatchesVersions({ minVersion: '2.4.0
 
 export const supportsQrCodeSvgFormat = supportsListingDomains;
 
+export const supportsValidateUrl = supportsListingDomains;
+
 export const supportsQrCodeSizeInQuery = serverMatchesVersions({ minVersion: '2.5.0' });
 
 export const supportsShortUrlTitle = serverMatchesVersions({ minVersion: '2.6.0' });
