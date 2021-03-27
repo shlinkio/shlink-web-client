@@ -1,5 +1,9 @@
 import { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Button, Card } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { ExternalLink } from 'react-external-link';
 import { SelectedServer } from '../servers/data';
 import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
 import { OptionalString } from '../utils/utils';
@@ -41,6 +45,7 @@ const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSetting
 };
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
+  history: { goBack },
   match: { params },
   location: { search },
   settings: { shortUrlCreation: shortUrlCreationSettings },
@@ -70,8 +75,21 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
     );
   }
 
+  const title = <small>Edit <ExternalLink href={shortUrl?.shortUrl ?? ''} /></small>;
+
   return (
     <>
+      <header className="mb-3">
+        <Card body>
+          <h2 className="d-sm-flex justify-content-between align-items-center mb-0">
+            <Button color="link" size="lg" className="p-0 mr-3" onClick={goBack}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </Button>
+            <span className="text-center">{title}</span>
+            <span />
+          </h2>
+        </Card>
+      </header>
       <ShortUrlForm
         initialState={getInitialState(shortUrl, shortUrlCreationSettings)}
         saving={saving}
