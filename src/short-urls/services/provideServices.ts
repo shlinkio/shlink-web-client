@@ -57,10 +57,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   );
 
   bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');
-  bottle.decorator(
-    'EditShortUrl',
-    connect([ 'shortUrlDetail', 'selectedServer', 'settings' ], [ 'getShortUrlDetail', 'editShortUrl' ]),
-  );
+  bottle.decorator('EditShortUrl', connect(
+    [ 'shortUrlDetail', 'shortUrlEdition', 'selectedServer', 'settings' ],
+    [ 'getShortUrlDetail', 'editShortUrl' ],
+  ));
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
   bottle.decorator('DeleteShortUrlModal', connect([ 'shortUrlDeletion' ], [ 'deleteShortUrl', 'resetDeleteShortUrl' ]));
