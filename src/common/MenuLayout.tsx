@@ -21,6 +21,7 @@ const MenuLayout = (
   OrphanVisits: FC,
   ServerError: FC,
   Overview: FC,
+  EditShortUrl: FC,
 ) => withSelectedServer(({ location, selectedServer }) => {
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
 
@@ -50,6 +51,7 @@ const MenuLayout = (
                 <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                 <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
+                <Route path="/server/:serverId/short-code/:shortCode/edit" component={EditShortUrl} />
                 {addTagsVisitsRoute && <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
                 {addOrphanVisitsRoute && <Route path="/server/:serverId/orphan-visits" component={OrphanVisits} />}
                 <Route exact path="/server/:serverId/manage-tags" component={TagsList} />

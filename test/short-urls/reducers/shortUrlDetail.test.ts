@@ -51,7 +51,7 @@ describe('shortUrlDetailReducer', () => {
     const buildGetState = (shortUrlsList?: ShortUrlsList) => () => Mock.of<ShlinkState>({ shortUrlsList });
 
     it('dispatches start and error when promise is rejected', async () => {
-      const ShlinkApiClient = buildApiClientMock(Promise.reject());
+      const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
       await getShortUrlDetail(() => ShlinkApiClient)('abc123', '')(dispatchMock, buildGetState());
 

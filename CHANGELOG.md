@@ -14,6 +14,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#383](https://github.com/shlinkio/shlink-web-client/issues/383) Added title to short URLs list, displayed when consuming Shlink >=2.6.0.
 * [#368](https://github.com/shlinkio/shlink-web-client/issues/368) Added new settings to define the default interval for visits pages.
 * [#349](https://github.com/shlinkio/shlink-web-client/issues/349) Added support to export visits to CSV.
+* [#397](https://github.com/shlinkio/shlink-web-client/issues/397) New section to edit all data for short URLs, including title when using Shlink v2.6 or newer.
+
+  This new section replaces the old modals to edit short URL meta, short URL tags and the long URL. Everything is now together in the same section.
 
 ### Changed
 * [#382](https://github.com/shlinkio/shlink-web-client/issues/382) Ensured short URL tags are edited through the `PATCH /short-urls/{shortCode}` endpoint when using Shlink 2.6.0 or higher.

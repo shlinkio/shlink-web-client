@@ -12,7 +12,7 @@ import {
   ShlinkTagsResponse,
   ShlinkVisits,
   ShlinkVisitsParams,
-  ShlinkShortUrlMeta,
+  ShlinkShortUrlData,
   ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
@@ -67,7 +67,7 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
-  /* @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrlMeta instead */
+  /* @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead */
   public readonly updateShortUrlTags = async (
     shortCode: string,
     domain: OptionalString,
@@ -76,12 +76,12 @@ export default class ShlinkApiClient {
     this.performRequest<{ tags: string[] }>(`/short-urls/${shortCode}/tags`, 'PUT', { domain }, { tags })
       .then(({ data }) => data.tags);
 
-  public readonly updateShortUrlMeta = async (
+  public readonly updateShortUrl = async (
     shortCode: string,
     domain: OptionalString,
-    meta: ShlinkShortUrlMeta,
+    data: ShlinkShortUrlData,
   ): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, meta)
+    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, data)
       .then(({ data }) => data);
 
   public readonly listTags = async (): Promise<ShlinkTags> =>

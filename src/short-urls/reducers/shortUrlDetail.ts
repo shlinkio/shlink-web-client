@@ -5,6 +5,8 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { OptionalString } from '../../utils/utils';
 import { GetState } from '../../container/types';
 import { shortUrlMatches } from '../helpers';
+import { ProblemDetailsError } from '../../api/types';
+import { parseApiError } from '../../api/utils';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
@@ -16,10 +18,15 @@ export interface ShortUrlDetail {
   shortUrl?: ShortUrl;
   loading: boolean;
   error: boolean;
+  errorData?: ProblemDetailsError;
 }
 
 export interface ShortUrlDetailAction extends Action<string> {
   shortUrl: ShortUrl;
+}
+
+export interface ShortUrlDetailFailedAction extends Action<string> {
+  errorData?: ProblemDetailsError;
 }
 
 const initialState: ShortUrlDetail = {
@@ -27,9 +34,9 @@ const initialState: ShortUrlDetail = {
   error: false,
 };
 
-export default buildReducer<ShortUrlDetail, ShortUrlDetailAction>({
+export default buildReducer<ShortUrlDetail, ShortUrlDetailAction & ShortUrlDetailFailedAction>({
   [GET_SHORT_URL_DETAIL_START]: () => ({ loading: true, error: false }),
-  [GET_SHORT_URL_DETAIL_ERROR]: () => ({ loading: false, error: true }),
+  [GET_SHORT_URL_DETAIL_ERROR]: (_, { errorData }) => ({ loading: false, error: true, errorData }),
   [GET_SHORT_URL_DETAIL]: (_, { shortUrl }) => ({ shortUrl, ...initialState }),
 }, initialState);
 
@@ -47,6 +54,6 @@ export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) 
 
     dispatch<ShortUrlDetailAction>({ shortUrl, type: GET_SHORT_URL_DETAIL });
   } catch (e) {
-    dispatch({ type: GET_SHORT_URL_DETAIL_ERROR });
+    dispatch<ShortUrlDetailFailedAction>({ type: GET_SHORT_URL_DETAIL_ERROR, errorData: parseApiError(e) });
   }
 };

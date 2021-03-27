@@ -11,7 +11,7 @@ import { SemVer } from '../../src/utils/helpers/version';
 describe('<MenuLayout />', () => {
   const ServerError = jest.fn();
   const C = jest.fn();
-  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, ServerError, C);
+  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, ServerError, C, C);
   let wrapper: ShallowWrapper;
   const createWrapper = (selectedServer: SelectedServer) => {
     wrapper = shallow(
@@ -49,11 +49,11 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    [ '2.1.0' as SemVer, 6 ],
-    [ '2.2.0' as SemVer, 7 ],
-    [ '2.5.0' as SemVer, 7 ],
-    [ '2.6.0' as SemVer, 8 ],
-    [ '2.7.0' as SemVer, 8 ],
+    [ '2.1.0' as SemVer, 7 ],
+    [ '2.2.0' as SemVer, 8 ],
+    [ '2.5.0' as SemVer, 8 ],
+    [ '2.6.0' as SemVer, 9 ],
+    [ '2.7.0' as SemVer, 9 ],
   ])('has expected amount of routes based on selected server\'s version', (version, expectedAmountOfRoutes) => {
     const selectedServer = Mock.of<ReachableServer>({ version });
     const wrapper = createWrapper(selectedServer).dive();

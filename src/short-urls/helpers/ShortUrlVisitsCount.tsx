@@ -4,10 +4,14 @@ import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import classNames from 'classnames';
 import { prettify } from '../../utils/helpers/numbers';
-import VisitStatsLink, { VisitStatsLinkProps } from './VisitStatsLink';
+import { ShortUrl } from '../data';
+import { SelectedServer } from '../../servers/data';
+import ShortUrlDetailLink from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
 
-interface ShortUrlVisitsCountProps extends VisitStatsLinkProps {
+interface ShortUrlVisitsCountProps {
+  shortUrl?: ShortUrl | null;
+  selectedServer?: SelectedServer;
   visitsCount: number;
   active?: boolean;
 }
@@ -15,13 +19,13 @@ interface ShortUrlVisitsCountProps extends VisitStatsLinkProps {
 const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCountProps) => {
   const maxVisits = shortUrl?.meta?.maxVisits;
   const visitsLink = (
-    <VisitStatsLink selectedServer={selectedServer} shortUrl={shortUrl}>
+    <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
       <strong
         className={classNames('short-url-visits-count__amount', { 'short-url-visits-count__amount--big': active })}
       >
         {prettify(visitsCount)}
       </strong>
-    </VisitStatsLink>
+    </ShortUrlDetailLink>
   );
 
   if (!maxVisits) {

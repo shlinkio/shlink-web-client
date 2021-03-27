@@ -1,17 +1,22 @@
 import * as m from 'moment';
 import { Nullable, OptionalString } from '../../utils/utils';
 
-export interface ShortUrlData {
-  longUrl: string;
+export interface EditShortUrlData {
+  longUrl?: string;
   tags?: string[];
+  title?: string;
+  validSince?: m.Moment | string | null;
+  validUntil?: m.Moment | string | null;
+  maxVisits?: number | null;
+  validateUrl?: boolean;
+}
+
+export interface ShortUrlData extends EditShortUrlData {
+  longUrl: string;
   customSlug?: string;
   shortCodeLength?: number;
   domain?: string;
-  validSince?: m.Moment | string;
-  validUntil?: m.Moment | string;
-  maxVisits?: number;
   findIfExists?: boolean;
-  validateUrl?: boolean;
 }
 
 export interface ShortUrl {
