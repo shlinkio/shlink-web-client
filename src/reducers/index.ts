@@ -5,8 +5,6 @@ import shortUrlsListReducer from '../short-urls/reducers/shortUrlsList';
 import shortUrlsListParamsReducer from '../short-urls/reducers/shortUrlsListParams';
 import shortUrlCreationReducer from '../short-urls/reducers/shortUrlCreation';
 import shortUrlDeletionReducer from '../short-urls/reducers/shortUrlDeletion';
-import shortUrlTagsReducer from '../short-urls/reducers/shortUrlTags';
-import shortUrlMetaReducer from '../short-urls/reducers/shortUrlMeta';
 import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
@@ -28,8 +26,6 @@ export default combineReducers<ShlinkState>({
   shortUrlsListParams: shortUrlsListParamsReducer,
   shortUrlCreationResult: shortUrlCreationReducer,
   shortUrlDeletion: shortUrlDeletionReducer,
-  shortUrlTags: shortUrlTagsReducer,
-  shortUrlMeta: shortUrlMetaReducer,
   shortUrlEdition: shortUrlEditionReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,

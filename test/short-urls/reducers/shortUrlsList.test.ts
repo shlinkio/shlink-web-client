@@ -5,15 +5,12 @@ import reducer, {
   LIST_SHORT_URLS_START,
   listShortUrls,
 } from '../../../src/short-urls/reducers/shortUrlsList';
-import { SHORT_URL_TAGS_EDITED } from '../../../src/short-urls/reducers/shortUrlTags';
 import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { SHORT_URL_META_EDITED } from '../../../src/short-urls/reducers/shortUrlMeta';
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
 import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
-import { SHORT_URL_EDITED } from '../../../src/short-urls/reducers/shortUrlEdition';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
@@ -36,66 +33,6 @@ describe('shortUrlsListReducer', () => {
         error: true,
       }));
 
-    it('updates tags on matching URL on SHORT_URL_TAGS_EDITED', () => {
-      const shortCode = 'abc123';
-      const tags = [ 'foo', 'bar', 'baz' ];
-      const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
-          data: [
-            Mock.of<ShortUrl>({ shortCode, tags: [] }),
-            Mock.of<ShortUrl>({ shortCode, tags: [], domain: 'example.com' }),
-            Mock.of<ShortUrl>({ shortCode: 'foo', tags: [] }),
-          ],
-        }),
-        loading: false,
-        error: false,
-      };
-
-      expect(reducer(state, { type: SHORT_URL_TAGS_EDITED, shortCode, tags, domain: null } as any)).toEqual({
-        shortUrls: {
-          data: [
-            { shortCode, tags },
-            { shortCode, tags: [], domain: 'example.com' },
-            { shortCode: 'foo', tags: [] },
-          ],
-        },
-        loading: false,
-        error: false,
-      });
-    });
-
-    it('updates meta on matching URL on SHORT_URL_META_EDITED', () => {
-      const shortCode = 'abc123';
-      const domain = 'example.com';
-      const meta = {
-        maxVisits: 5,
-        validSince: '2020-05-05',
-      };
-      const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
-          data: [
-            Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 10 }, domain }),
-            Mock.of<ShortUrl>({ shortCode, meta: { maxVisits: 50 } }),
-            Mock.of<ShortUrl>({ shortCode: 'foo', meta: {} }),
-          ],
-        }),
-        loading: false,
-        error: false,
-      };
-
-      expect(reducer(state, { type: SHORT_URL_META_EDITED, shortCode, meta, domain } as any)).toEqual({
-        shortUrls: {
-          data: [
-            { shortCode, meta, domain: 'example.com' },
-            { shortCode, meta: { maxVisits: 50 } },
-            { shortCode: 'foo', meta: {} },
-          ],
-        },
-        loading: false,
-        error: false,
-      });
-    });
-
     it('removes matching URL and reduces total on SHORT_URL_DELETED', () => {
       const shortCode = 'abc123';
       const state = {
@@ -117,33 +54,6 @@ describe('shortUrlsListReducer', () => {
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
           pagination: { totalItems: 9 },
-        },
-        loading: false,
-        error: false,
-      });
-    });
-
-    it('updates edited short URL on SHORT_URL_EDITED', () => {
-      const shortCode = 'abc123';
-      const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
-          data: [
-            Mock.of<ShortUrl>({ shortCode, longUrl: 'old' }),
-            Mock.of<ShortUrl>({ shortCode, domain: 'example.com', longUrl: 'foo' }),
-            Mock.of<ShortUrl>({ shortCode: 'foo', longUrl: 'bar' }),
-          ],
-        }),
-        loading: false,
-        error: false,
-      };
-
-      expect(reducer(state, { type: SHORT_URL_EDITED, shortCode, longUrl: 'newValue' } as any)).toEqual({
-        shortUrls: {
-          data: [
-            { shortCode, longUrl: 'newValue' },
-            { shortCode, longUrl: 'foo', domain: 'example.com' },
-            { shortCode: 'foo', longUrl: 'bar' },
-          ],
         },
         loading: false,
         error: false,

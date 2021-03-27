@@ -2,10 +2,11 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
-import { EditShortUrlData, ShortUrlIdentifier } from '../data';
+import { EditShortUrlData, ShortUrl } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
+import { supportsTagsInPatch } from '../../utils/helpers/features';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
@@ -14,15 +15,14 @@ export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
 /* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlEdition {
-  shortCode: string | null;
-  longUrl: string | null;
+  shortUrl?: ShortUrl;
   saving: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
 }
 
-export interface ShortUrlEditedAction extends Action<string>, ShortUrlIdentifier {
-  longUrl: string;
+export interface ShortUrlEditedAction extends Action<string> {
+  shortUrl: ShortUrl;
 }
 
 export interface ShortUrlEditionFailedAction extends Action<string> {
@@ -30,8 +30,6 @@ export interface ShortUrlEditionFailedAction extends Action<string> {
 }
 
 const initialState: ShortUrlEdition = {
-  shortCode: null,
-  longUrl: null,
   saving: false,
   error: false,
 };
@@ -39,7 +37,7 @@ const initialState: ShortUrlEdition = {
 export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ShortUrlEditionFailedAction>({
   [EDIT_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
-  [SHORT_URL_EDITED]: (_, { shortCode, longUrl }) => ({ shortCode, longUrl, saving: false, error: false }),
+  [SHORT_URL_EDITED]: (_, { shortUrl }) => ({ shortUrl, saving: false, error: false }),
 }, initialState);
 
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
@@ -49,13 +47,17 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_START });
 
-  // TODO Pass tags to the updateTags function if server version is lower than 2.6
-  const { updateShortUrl } = buildShlinkApiClient(getState);
+  const { selectedServer } = getState();
+  const sendTagsSeparately = !supportsTagsInPatch(selectedServer);
+  const { updateShortUrl, updateShortUrlTags } = buildShlinkApiClient(getState);
 
   try {
-    const { longUrl } = await updateShortUrl(shortCode, domain, data as any); // FIXME Parse dates
+    const [ shortUrl ] = await Promise.all([
+      updateShortUrl(shortCode, domain, data as any), // FIXME Parse dates
+      sendTagsSeparately && data.tags ? updateShortUrlTags(shortCode, domain, data.tags) : undefined,
+    ]);
 
-    dispatch<ShortUrlEditedAction>({ shortCode, longUrl, domain, type: SHORT_URL_EDITED });
+    dispatch<ShortUrlEditedAction>({ shortUrl, type: SHORT_URL_EDITED });
   } catch (e) {
     dispatch<ShortUrlEditionFailedAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
