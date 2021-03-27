@@ -56,8 +56,8 @@ describe('shortUrlMetaReducer', () => {
   });
 
   describe('editShortUrlMeta', () => {
-    const updateShortUrlMeta = jest.fn().mockResolvedValue({});
-    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlMeta });
+    const updateShortUrl = jest.fn().mockResolvedValue({});
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
     const dispatch = jest.fn();
     const getState = () => Mock.all<ShlinkState>();
 
@@ -67,8 +67,8 @@ describe('shortUrlMetaReducer', () => {
       await editShortUrlMeta(buildShlinkApiClient)(shortCode, domain, meta)(dispatch, getState);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, domain, meta);
+      expect(updateShortUrl).toHaveBeenCalledTimes(1);
+      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, domain, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_META_EDITED, meta, shortCode, domain });
@@ -77,7 +77,7 @@ describe('shortUrlMetaReducer', () => {
     it('dispatches error on failure', async () => {
       const error = new Error();
 
-      updateShortUrlMeta.mockRejectedValue(error);
+      updateShortUrl.mockRejectedValue(error);
 
       try {
         await editShortUrlMeta(buildShlinkApiClient)(shortCode, undefined, meta)(dispatch, getState);
@@ -86,8 +86,8 @@ describe('shortUrlMetaReducer', () => {
       }
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, meta);
+      expect(updateShortUrl).toHaveBeenCalledTimes(1);
+      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, undefined, meta);
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_META_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_META_ERROR });

@@ -3,13 +3,13 @@ import { Modal, ModalBody, ModalFooter, ModalHeader, FormGroup, Input, Button } 
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlEdition } from '../reducers/shortUrlEdition';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../../utils/utils';
-import { ShortUrlModalProps } from '../data';
+import { EditShortUrlData, ShortUrlModalProps } from '../data';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface EditShortUrlModalProps extends ShortUrlModalProps {
   shortUrlEdition: ShortUrlEdition;
-  editShortUrl: (shortUrl: string, domain: OptionalString, longUrl: string) => Promise<void>;
+  editShortUrl: (shortUrl: string, domain: OptionalString, data: EditShortUrlData) => Promise<void>;
 }
 
 const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShortUrl }: EditShortUrlModalProps) => {
@@ -17,7 +17,7 @@ const EditShortUrlModal = ({ isOpen, toggle, shortUrl, shortUrlEdition, editShor
   const url = shortUrl?.shortUrl ?? '';
   const [ longUrl, setLongUrl ] = useState(shortUrl.longUrl);
 
-  const doEdit = async () => editShortUrl(shortUrl.shortCode, shortUrl.domain, longUrl).then(toggle);
+  const doEdit = async () => editShortUrl(shortUrl.shortCode, shortUrl.domain, { longUrl }).then(toggle);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size="lg">

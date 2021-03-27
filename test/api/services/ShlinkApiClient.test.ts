@@ -48,10 +48,7 @@ describe('ShlinkApiClient', () => {
       const axiosSpy = createAxiosMock({ data: shortUrl });
       const { createShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
-      await createShortUrl(
-        // @ts-expect-error in case maxVisits is null, it needs to be ignored as if it was undefined
-        { longUrl: 'bar', customSlug: undefined, maxVisits: null },
-      );
+      await createShortUrl({ longUrl: 'bar', customSlug: undefined, maxVisits: null });
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { longUrl: 'bar' } }));
     });
@@ -139,7 +136,7 @@ describe('ShlinkApiClient', () => {
     });
   });
 
-  describe('updateShortUrlMeta', () => {
+  describe('updateShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly updates short URL meta', async (shortCode, domain) => {
       const meta = {
         maxVisits: 50,
@@ -147,9 +144,9 @@ describe('ShlinkApiClient', () => {
       };
       const expectedResp = Mock.of<ShortUrl>();
       const axiosSpy = createAxiosMock({ data: expectedResp });
-      const { updateShortUrlMeta } = new ShlinkApiClient(axiosSpy, '', '');
+      const { updateShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
 
-      const result = await updateShortUrlMeta(shortCode, domain, meta);
+      const result = await updateShortUrl(shortCode, domain, meta);
 
       expect(expectedResp).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({

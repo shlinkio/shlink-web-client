@@ -42,19 +42,19 @@ describe('shortUrlEditionReducer', () => {
   });
 
   describe('editShortUrl', () => {
-    const updateShortUrlMeta = jest.fn().mockResolvedValue({});
-    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlMeta });
+    const updateShortUrl = jest.fn().mockResolvedValue({ longUrl });
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
     const dispatch = jest.fn();
     const getState = () => Mock.of<ShlinkState>();
 
     afterEach(jest.clearAllMocks);
 
     it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches long URL on success', async (domain) => {
-      await editShortUrl(buildShlinkApiClient)(shortCode, domain, longUrl)(dispatch, getState);
+      await editShortUrl(buildShlinkApiClient)(shortCode, domain, { longUrl })(dispatch, getState);
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, domain, { longUrl });
+      expect(updateShortUrl).toHaveBeenCalledTimes(1);
+      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, domain, { longUrl });
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_EDITED, longUrl, shortCode, domain });
@@ -63,17 +63,17 @@ describe('shortUrlEditionReducer', () => {
     it('dispatches error on failure', async () => {
       const error = new Error();
 
-      updateShortUrlMeta.mockRejectedValue(error);
+      updateShortUrl.mockRejectedValue(error);
 
       try {
-        await editShortUrl(buildShlinkApiClient)(shortCode, undefined, longUrl)(dispatch, getState);
+        await editShortUrl(buildShlinkApiClient)(shortCode, undefined, { longUrl })(dispatch, getState);
       } catch (e) {
         expect(e).toBe(error);
       }
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, { longUrl });
+      expect(updateShortUrl).toHaveBeenCalledTimes(1);
+      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, undefined, { longUrl });
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_SHORT_URL_ERROR });

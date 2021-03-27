@@ -54,12 +54,12 @@ export const editShortUrlTags = (buildShlinkApiClient: ShlinkApiClientBuilder) =
   dispatch({ type: EDIT_SHORT_URL_TAGS_START });
   const { selectedServer } = getState();
   const tagsInPatch = supportsTagsInPatch(selectedServer);
-  const { updateShortUrlTags, updateShortUrlMeta } = buildShlinkApiClient(getState);
+  const { updateShortUrlTags, updateShortUrl } = buildShlinkApiClient(getState);
 
   try {
     const normalizedTags = await (
       tagsInPatch
-        ? updateShortUrlMeta(shortCode, domain, { tags }).then(prop('tags'))
+        ? updateShortUrl(shortCode, domain, { tags }).then(prop('tags'))
         : updateShortUrlTags(shortCode, domain, tags)
     );
 

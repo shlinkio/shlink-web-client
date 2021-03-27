@@ -9,13 +9,14 @@ import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
-import { ShortUrl, ShortUrlData } from './data';
+import { EditShortUrlData, ShortUrl, ShortUrlData } from './data';
 
 interface EditShortUrlConnectProps extends RouteComponentProps<{ shortCode: string }> {
   settings: Settings;
   selectedServer: SelectedServer;
   shortUrlDetail: ShortUrlDetail;
   getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
+  editShortUrl: (shortUrl: string, domain: OptionalString, data: EditShortUrlData) => Promise<void>;
 }
 
 const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSettings): ShortUrlData => {
@@ -44,6 +45,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   selectedServer,
   shortUrlDetail,
   getShortUrlDetail,
+  editShortUrl,
 }: EditShortUrlConnectProps) => {
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
   const { domain } = parseQuery<{ domain?: string }>(search);
@@ -70,7 +72,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
       saving={false}
       selectedServer={selectedServer}
       mode="edit"
-      onSave={async (shortUrlData) => Promise.resolve(console.log(shortUrlData))}
+      onSave={async (shortUrlData) => shortUrl && editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)}
     />
   );
 };

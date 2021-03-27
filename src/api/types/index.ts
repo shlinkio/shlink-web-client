@@ -57,8 +57,10 @@ export interface ShlinkVisitsParams {
   endDate?: string;
 }
 
-export interface ShlinkShortUrlMeta extends ShortUrlMeta {
+export interface ShlinkShortUrlData extends ShortUrlMeta {
   longUrl?: string;
+  title?: string;
+  validateUrl?: boolean;
   tags?: string[];
 }
 

@@ -50,7 +50,7 @@ describe('<ShortUrlForm />', () => {
       domain: 'example.com',
       validSince: validSince.format(),
       validUntil: validUntil.format(),
-      maxVisits: '20',
+      maxVisits: 20,
       findIfExists: false,
       shortCodeLength: 15,
       validateUrl: true,

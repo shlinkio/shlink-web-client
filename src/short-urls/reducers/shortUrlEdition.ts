@@ -2,7 +2,7 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
-import { ShortUrlIdentifier } from '../data';
+import { EditShortUrlData, ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
@@ -45,13 +45,16 @@ export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ShortUrlEdit
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   shortCode: string,
   domain: OptionalString,
-  longUrl: string,
+  data: EditShortUrlData,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_START });
-  const { updateShortUrlMeta } = buildShlinkApiClient(getState);
+
+  // TODO Pass tags to the updateTags function if server version is lower than 2.6
+  const { updateShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    await updateShortUrlMeta(shortCode, domain, { longUrl });
+    const { longUrl } = await updateShortUrl(shortCode, domain, data as any); // FIXME Parse dates
+
     dispatch<ShortUrlEditedAction>({ shortCode, longUrl, domain, type: SHORT_URL_EDITED });
   } catch (e) {
     dispatch<ShortUrlEditionFailedAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });

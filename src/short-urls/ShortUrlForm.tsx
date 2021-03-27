@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { isEmpty, pipe, replace, trim } from 'ramda';
-import * as m from 'moment';
+import m from 'moment';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
   supportsListingDomains,
@@ -46,8 +46,9 @@ export const ShortUrlForm = (
   const reset = () => setShortUrlData(initialState);
   const submit = handleEventPreventingDefault(async () => onSave({
     ...shortUrlData,
-    validSince: formatIsoDate(shortUrlData.validSince) ?? undefined,
-    validUntil: formatIsoDate(shortUrlData.validUntil) ?? undefined,
+    validSince: formatIsoDate(shortUrlData.validSince) ?? null,
+    validUntil: formatIsoDate(shortUrlData.validUntil) ?? null,
+    maxVisits: !hasValue(shortUrlData.maxVisits) ? null : Number(shortUrlData.maxVisits),
   }).then(() => !isEdit && reset()).catch(() => {}));
 
   useEffect(() => {
@@ -69,7 +70,7 @@ export const ShortUrlForm = (
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateInputProps> = {}) => (
     <div className="form-group">
       <DateInput
-        selected={shortUrlData[id] as m.Moment | null}
+        selected={shortUrlData[id] ? m(shortUrlData[id]) : null}
         placeholderText={placeholder}
         isClearable
         onChange={(date) => setShortUrlData({ ...shortUrlData, [id]: date })}
@@ -148,8 +149,8 @@ export const ShortUrlForm = (
             <div className="col-sm-6 mb-3">
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil as m.Moment | undefined })}
-                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince as m.Moment | undefined })}
+                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? m(shortUrlData.validUntil) : undefined })}
+                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? m(shortUrlData.validSince) : undefined })}
               </SimpleCard>
             </div>
           </Row>

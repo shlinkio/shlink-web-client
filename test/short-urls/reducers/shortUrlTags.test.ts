@@ -61,8 +61,8 @@ describe('shortUrlTagsReducer', () => {
 
   describe('editShortUrlTags', () => {
     const updateShortUrlTags = jest.fn();
-    const updateShortUrlMeta = jest.fn();
-    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags, updateShortUrlMeta });
+    const updateShortUrl = jest.fn();
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrlTags, updateShortUrl });
     const dispatch = jest.fn();
     const buildGetState = (selectedServer?: SelectedServer) => () => Mock.of<ShlinkState>({ selectedServer });
 
@@ -78,7 +78,7 @@ describe('shortUrlTagsReducer', () => {
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledTimes(1);
       expect(updateShortUrlTags).toHaveBeenCalledWith(shortCode, domain, tags);
-      expect(updateShortUrlMeta).not.toHaveBeenCalled();
+      expect(updateShortUrl).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
       expect(dispatch).toHaveBeenNthCalledWith(
@@ -87,10 +87,10 @@ describe('shortUrlTagsReducer', () => {
       );
     });
 
-    it('calls updateShortUrlMeta when server is version 2.6.0 or above', async () => {
+    it('calls updateShortUrl when server is version 2.6.0 or above', async () => {
       const normalizedTags = [ 'bar', 'foo' ];
 
-      updateShortUrlMeta.mockResolvedValue({ tags: normalizedTags });
+      updateShortUrl.mockResolvedValue({ tags: normalizedTags });
 
       await editShortUrlTags(buildShlinkApiClient)(shortCode, undefined, tags)(
         dispatch,
@@ -98,8 +98,8 @@ describe('shortUrlTagsReducer', () => {
       );
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledTimes(1);
-      expect(updateShortUrlMeta).toHaveBeenCalledWith(shortCode, undefined, { tags });
+      expect(updateShortUrl).toHaveBeenCalledTimes(1);
+      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, undefined, { tags });
       expect(updateShortUrlTags).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_TAGS_START });
