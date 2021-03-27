@@ -71,18 +71,19 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   }
 
   return (
-    <ShortUrlForm
-      initialState={getInitialState(shortUrl, shortUrlCreationSettings)}
-      saving={saving}
-      selectedServer={selectedServer}
-      mode="edit"
-      onSave={async (shortUrlData) => shortUrl && editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)}
-    >
+    <>
+      <ShortUrlForm
+        initialState={getInitialState(shortUrl, shortUrlCreationSettings)}
+        saving={saving}
+        selectedServer={selectedServer}
+        mode="edit"
+        onSave={async (shortUrlData) => shortUrl && editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)}
+      />
       {savingError && (
         <Result type="error" className="mt-3">
           <ShlinkApiError errorData={savingErrorData} fallbackMessage="An error occurred while updating short URL :(" />
         </Result>
       )}
-    </ShortUrlForm>
+    </>
   );
 };

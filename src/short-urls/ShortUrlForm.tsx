@@ -39,7 +39,7 @@ export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   ForServerVersion: FC<Versions>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer, children }) => { // eslint-disable-line complexity
+): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => { // eslint-disable-line complexity
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const isEdit = mode === 'edit';
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
@@ -201,8 +201,6 @@ export const ShortUrlForm = (
           {saving ? 'Saving...' : 'Save'}
         </Button>
       </div>
-
-      {children}
     </form>
   );
 };

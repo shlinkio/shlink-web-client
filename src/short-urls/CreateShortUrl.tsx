@@ -43,19 +43,20 @@ const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResul
   const initialState = useMemo(() => getInitialState(shortUrlCreationSettings), [ shortUrlCreationSettings ]);
 
   return (
-    <ShortUrlForm
-      initialState={initialState}
-      saving={shortUrlCreationResult.saving}
-      selectedServer={selectedServer}
-      mode={basicMode ? 'create-basic' : 'create'}
-      onSave={createShortUrl}
-    >
+    <>
+      <ShortUrlForm
+        initialState={initialState}
+        saving={shortUrlCreationResult.saving}
+        selectedServer={selectedServer}
+        mode={basicMode ? 'create-basic' : 'create'}
+        onSave={createShortUrl}
+      />
       <CreateShortUrlResult
         {...shortUrlCreationResult}
         resetCreateShortUrl={resetCreateShortUrl}
         canBeClosed={basicMode}
       />
-    </ShortUrlForm>
+    </>
   );
 };
 
