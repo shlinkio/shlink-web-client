@@ -8,9 +8,6 @@ import { ShortUrl } from '../../../src/short-urls/data';
 describe('<ShortUrlsRowMenu />', () => {
   let wrapper: ShallowWrapper;
   const DeleteShortUrlModal = () => null;
-  const EditTagsModal = () => null;
-  const EditMetaModal = () => null;
-  const EditShortUrlModal = () => null;
   const QrCodeModal = () => null;
   const selectedServer = Mock.of<ReachableServer>({ id: 'abc123' });
   const shortUrl = Mock.of<ShortUrl>({
@@ -18,14 +15,7 @@ describe('<ShortUrlsRowMenu />', () => {
     shortUrl: 'https://doma.in/abc123',
   });
   const createWrapper = () => {
-    const ShortUrlsRowMenu = createShortUrlsRowMenu(
-      DeleteShortUrlModal,
-      EditTagsModal,
-      EditMetaModal,
-      EditShortUrlModal,
-      QrCodeModal,
-      () => null,
-    );
+    const ShortUrlsRowMenu = createShortUrlsRowMenu(DeleteShortUrlModal, QrCodeModal);
 
     wrapper = shallow(<ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />);
 
@@ -37,21 +27,17 @@ describe('<ShortUrlsRowMenu />', () => {
   it('renders modal windows', () => {
     const wrapper = createWrapper();
     const deleteShortUrlModal = wrapper.find(DeleteShortUrlModal);
-    const editTagsModal = wrapper.find(EditTagsModal);
     const qrCodeModal = wrapper.find(QrCodeModal);
-    const editModal = wrapper.find(EditShortUrlModal);
 
     expect(deleteShortUrlModal).toHaveLength(1);
-    expect(editTagsModal).toHaveLength(1);
     expect(qrCodeModal).toHaveLength(1);
-    expect(editModal).toHaveLength(1);
   });
 
   it('renders correct amount of menu items', () => {
     const wrapper = createWrapper();
     const items = wrapper.find(DropdownItem);
 
-    expect(items).toHaveLength(8);
+    expect(items).toHaveLength(5);
     expect(items.find('[divider]')).toHaveLength(1);
   });
 
@@ -65,9 +51,7 @@ describe('<ShortUrlsRowMenu />', () => {
     };
 
     it('DeleteShortUrlModal', () => assert(DeleteShortUrlModal));
-    it('EditTagsModal', () => assert(EditTagsModal));
     it('QrCodeModal', () => assert(QrCodeModal));
-    it('EditShortUrlModal', () => assert(EditShortUrlModal));
-    it('EditShortUrlModal', () => assert(ButtonDropdown));
+    it('ShortUrlRowMenu', () => assert(ButtonDropdown));
   });
 });

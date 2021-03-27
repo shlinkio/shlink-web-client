@@ -6,9 +6,6 @@ import ShortUrlsRow from '../helpers/ShortUrlsRow';
 import ShortUrlsRowMenu from '../helpers/ShortUrlsRowMenu';
 import CreateShortUrl from '../CreateShortUrl';
 import DeleteShortUrlModal from '../helpers/DeleteShortUrlModal';
-import EditTagsModal from '../helpers/EditTagsModal';
-import EditMetaModal from '../helpers/EditMetaModal';
-import EditShortUrlModal from '../helpers/EditShortUrlModal';
 import CreateShortUrlResult from '../helpers/CreateShortUrlResult';
 import { listShortUrls } from '../reducers/shortUrlsList';
 import { createShortUrl, resetCreateShortUrl } from '../reducers/shortUrlCreation';
@@ -37,16 +34,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ShortUrlsTable', ShortUrlsTable, 'ShortUrlsRow');
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');
-  bottle.serviceFactory(
-    'ShortUrlsRowMenu',
-    ShortUrlsRowMenu,
-    'DeleteShortUrlModal',
-    'EditTagsModal',
-    'EditMetaModal',
-    'EditShortUrlModal',
-    'QrCodeModal',
-    'ForServerVersion',
-  );
+  bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'QrCodeModal');
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
   bottle.serviceFactory('ShortUrlForm', ShortUrlForm, 'TagsSelector', 'ForServerVersion', 'DomainSelector');
 
@@ -64,15 +52,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
   bottle.decorator('DeleteShortUrlModal', connect([ 'shortUrlDeletion' ], [ 'deleteShortUrl', 'resetDeleteShortUrl' ]));
-
-  bottle.serviceFactory('EditTagsModal', EditTagsModal, 'TagsSelector');
-  bottle.decorator('EditTagsModal', connect([ 'shortUrlTags' ], [ 'editShortUrlTags', 'resetShortUrlsTags' ]));
-
-  bottle.serviceFactory('EditMetaModal', () => EditMetaModal);
-  bottle.decorator('EditMetaModal', connect([ 'shortUrlMeta' ], [ 'editShortUrlMeta', 'resetShortUrlMeta' ]));
-
-  bottle.serviceFactory('EditShortUrlModal', () => EditShortUrlModal);
-  bottle.decorator('EditShortUrlModal', connect([ 'shortUrlEdition' ], [ 'editShortUrl' ]));
 
   bottle.serviceFactory('QrCodeModal', () => QrCodeModal);
   bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
