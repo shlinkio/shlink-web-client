@@ -20,7 +20,7 @@ export interface VisitsLoadFailedAction extends Action<string> {
   errorData?: ProblemDetailsError;
 }
 
-type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
+export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
 
 interface VisitLocation {
   countryCode: string | null;
@@ -90,4 +90,5 @@ export interface VisitsStats {
   countries: Stats;
   cities: Stats;
   citiesForMap: Record<string, CityStats>;
+  visitedUrls: Stats;
 }

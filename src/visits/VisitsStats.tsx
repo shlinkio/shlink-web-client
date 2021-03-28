@@ -6,6 +6,7 @@ import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } fro
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
 import { Location } from 'history';
+import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
 import { formatIsoDate } from '../utils/helpers/date';
@@ -18,10 +19,12 @@ import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedVisit, Stats, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, VisitsInfo } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
-import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
+import { processStatsFromVisits } from './services/VisitsParser';
+import { OrphanVisitTypeDropdown } from './helpers/OrphanVisitTypeDropdown';
 import './VisitsStats.scss';
+import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
 
 export interface VisitsStatsProps {
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
@@ -31,6 +34,7 @@ export interface VisitsStatsProps {
   baseUrl: string;
   domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
+  isOrphanVisits?: boolean;
 }
 
 interface VisitsNavLinkProps {
@@ -39,7 +43,6 @@ interface VisitsNavLinkProps {
   icon: IconDefinition;
 }
 
-type HighlightableProps = 'referer' | 'country' | 'city';
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
 const sections: Record<Section, VisitsNavLinkProps> = {
@@ -49,18 +52,6 @@ const sections: Record<Section, VisitsNavLinkProps> = {
   list: { title: 'List', subPath: '/list', icon: faList },
 };
 
-const highlightedVisitsToStats = (
-  highlightedVisits: NormalizedVisit[],
-  prop: HighlightableProps,
-): Stats => highlightedVisits.reduce<Stats>((acc, highlightedVisit) => {
-  if (!acc[highlightedVisit[prop]]) {
-    acc[highlightedVisit[prop]] = 0;
-  }
-
-  acc[highlightedVisit[prop]] += 1;
-
-  return acc;
-}, {});
 let selectedBar: string | undefined;
 
 const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (
@@ -77,12 +68,13 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
 );
 
 const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv },
+  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv, isOrphanVisits = false },
 ) => {
   const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
+  const [ orphanVisitType, setOrphanVisitType ] = useState<OrphanVisitType | undefined>();
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
@@ -90,8 +82,11 @@ const VisitsStats: FC<VisitsStatsProps> = (
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
   const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
-  const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
-  const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
+  const normalizedVisits = useMemo(
+    () => normalizeAndFilterVisits(visits, orphanVisitType),
+    [ visits, orphanVisitType ],
+  );
+  const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
     [ normalizedVisits ],
   );
@@ -101,7 +96,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     selectedBar = undefined;
     setHighlightedVisits(selectedVisits);
   };
-  const highlightVisitsForProp = (prop: HighlightableProps) => (value: string) => {
+  const highlightVisitsForProp = (prop: HighlightableProps<NormalizedOrphanVisit>) => (value: string) => {
     const newSelectedBar = `${prop}_${value}`;
 
     if (selectedBar === newSelectedBar) {
@@ -109,7 +104,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
       setHighlightedLabel(undefined);
       selectedBar = undefined;
     } else {
-      setHighlightedVisits(normalizedVisits.filter(propEq(prop, value)));
+      setHighlightedVisits((normalizedVisits as NormalizedOrphanVisit[]).filter(propEq(prop, value)));
       setHighlightedLabel(value);
       selectedBar = newSelectedBar;
     }
@@ -171,13 +166,13 @@ const VisitsStats: FC<VisitsStatsProps> = (
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
-              <div className="col-xl-4 col-lg-6 mt-4">
+              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Operating systems" stats={os} />
               </div>
-              <div className="col-xl-4 col-lg-6 mt-4">
+              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Browsers" stats={browsers} />
               </div>
-              <div className="col-xl-4 mt-4">
+              <div className={classNames('mt-4', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
                 <SortableBarGraph
                   title="Referrers"
                   stats={referrers}
@@ -191,6 +186,21 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   onClick={highlightVisitsForProp('referer')}
                 />
               </div>
+              {isOrphanVisits && (
+                <div className="mt-4 col-lg-6">
+                  <SortableBarGraph
+                    title="Visited URLs"
+                    stats={visitedUrls}
+                    highlightedLabel={highlightedLabel}
+                    highlightedStats={highlightedVisitsToStats(highlightedVisits, 'visitedUrl')}
+                    sortingItems={{
+                      visitedUrl: 'Visited URL',
+                      amount: 'Visits amount',
+                    }}
+                    onClick={highlightVisitsForProp('visitedUrl')}
+                  />
+                </div>
+              )}
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
@@ -232,6 +242,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   visits={normalizedVisits}
                   selectedVisits={highlightedVisits}
                   setSelectedVisits={setSelectedVisits}
+                  isOrphanVisits={isOrphanVisits}
                 />
               </div>
             </Route>
@@ -250,12 +261,24 @@ const VisitsStats: FC<VisitsStatsProps> = (
       <section className="mt-4">
         <div className="row flex-md-row-reverse">
           <div className="col-lg-7 col-xl-6">
-            <DateRangeSelector
-              disabled={loading}
-              initialDateRange={initialInterval}
-              defaultText="All visits"
-              onDatesChange={setDateRange}
-            />
+            <div className="d-md-flex">
+              <div className="flex-fill">
+                <DateRangeSelector
+                  disabled={loading}
+                  initialDateRange={initialInterval}
+                  defaultText="All visits"
+                  onDatesChange={setDateRange}
+                />
+              </div>
+              {isOrphanVisits && (
+                <OrphanVisitTypeDropdown
+                  text="Filter by type"
+                  className="ml-0 ml-md-2 mt-4 mt-md-0"
+                  selected={orphanVisitType}
+                  onChange={setOrphanVisitType}
+                />
+              )}
+            </div>
           </div>
           {visits.length > 0 && (
             <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">

@@ -2,7 +2,7 @@ import { isNil, map } from 'ramda';
 import { extractDomain, parseUserAgent } from '../../utils/helpers/visits';
 import { hasValue } from '../../utils/utils';
 import { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
-import { isOrphanVisit } from '../types/helpers';
+import { isNormalizedOrphanVisit, isOrphanVisit } from '../types/helpers';
 
 const visitHasProperty = (visit: NormalizedVisit, propertyName: keyof NormalizedVisit) =>
   !isNil(visit) && hasValue(visit[propertyName]);
@@ -54,6 +54,16 @@ const updateCitiesForMapForVisit = (citiesForMapStats: Record<string, CityStats>
   citiesForMapStats[city] = currentCity;
 };
 
+const updateVisitedUrlsForVisit = (visitedUrlsStats: Stats, visit: NormalizedVisit) => {
+  if (!isNormalizedOrphanVisit(visit)) {
+    return;
+  }
+
+  const { visitedUrl } = visit;
+
+  visitedUrlsStats[visitedUrl] = (visitedUrlsStats[visitedUrl] || 0) + 1;
+};
+
 export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.reduce(
   (stats: VisitsStats, visit: NormalizedVisit) => {
     // We mutate the original object because it has a big performance impact when large data sets are processed
@@ -63,10 +73,11 @@ export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.redu
     updateCountriesStatsForVisit(stats.countries, visit);
     updateCitiesStatsForVisit(stats.cities, visit);
     updateCitiesForMapForVisit(stats.citiesForMap, visit);
+    updateVisitedUrlsForVisit(stats.visitedUrls, visit);
 
     return stats;
   },
-  { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {} },
+  { os: {}, browsers: {}, referrers: {}, countries: {}, cities: {}, citiesForMap: {}, visitedUrls: {} },
 );
 
 export const normalizeVisits = map((visit: Visit): NormalizedVisit => {
