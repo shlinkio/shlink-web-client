@@ -93,11 +93,8 @@ const VisitsTable = ({
   useEffect(() => {
     setPage(1);
 
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-    } else {
-      setSelectedVisits([]);
-    }
+    !isFirstLoad.current && setSelectedVisits([]);
+    isFirstLoad.current = false;
   }, [ searchTerm ]);
 
   return (
@@ -157,7 +154,7 @@ const VisitsTable = ({
             </td>
           </tr>
         )}
-        {resultSet.visitsGroups[page - 1] && resultSet.visitsGroups[page - 1].map((visit, index) => {
+        {resultSet.visitsGroups[page - 1]?.map((visit, index) => {
           const isSelected = selectedVisits.includes(visit);
 
           return (

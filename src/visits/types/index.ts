@@ -90,4 +90,5 @@ export interface VisitsStats {
   countries: Stats;
   cities: Stats;
   citiesForMap: Record<string, CityStats>;
+  visitedUrls: Stats;
 }

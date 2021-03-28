@@ -1,4 +1,4 @@
-import { countBy, filter, isEmpty, pipe, prop, propEq, values } from 'ramda';
+import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,11 +19,12 @@ import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, Stats, Visit, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, VisitsInfo } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
-import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
+import { processStatsFromVisits } from './services/VisitsParser';
 import { OrphanVisitTypeDropdown } from './helpers/OrphanVisitTypeDropdown';
 import './VisitsStats.scss';
+import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
 
 export interface VisitsStatsProps {
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
@@ -42,7 +43,6 @@ interface VisitsNavLinkProps {
   icon: IconDefinition;
 }
 
-type HighlightableProps = 'referer' | 'country' | 'city';
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
 const sections: Record<Section, VisitsNavLinkProps> = {
@@ -51,14 +51,6 @@ const sections: Record<Section, VisitsNavLinkProps> = {
   byLocation: { title: 'By location', subPath: '/by-location', icon: faMapMarkedAlt },
   list: { title: 'List', subPath: '/list', icon: faList },
 };
-
-const highlightedVisitsToStats = (highlightedVisits: NormalizedVisit[], property: HighlightableProps): Stats =>
-  countBy(prop(property), highlightedVisits);
-
-const normalizeAndFilterVisits = (visits: Visit[], type: OrphanVisitType | undefined) => pipe(
-  normalizeVisits,
-  filter((normalizedVisit) => type === undefined || (normalizedVisit as NormalizedOrphanVisit).type === type),
-)(visits);
 
 let selectedBar: string | undefined;
 
@@ -94,7 +86,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     () => normalizeAndFilterVisits(visits, orphanVisitType),
     [ visits, orphanVisitType ],
   );
-  const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
+  const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
     [ normalizedVisits ],
   );
@@ -104,7 +96,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     selectedBar = undefined;
     setHighlightedVisits(selectedVisits);
   };
-  const highlightVisitsForProp = (prop: HighlightableProps) => (value: string) => {
+  const highlightVisitsForProp = (prop: HighlightableProps<NormalizedOrphanVisit>) => (value: string) => {
     const newSelectedBar = `${prop}_${value}`;
 
     if (selectedBar === newSelectedBar) {
@@ -112,7 +104,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
       setHighlightedLabel(undefined);
       selectedBar = undefined;
     } else {
-      setHighlightedVisits(normalizedVisits.filter(propEq(prop, value)));
+      setHighlightedVisits((normalizedVisits as NormalizedOrphanVisit[]).filter(propEq(prop, value)));
       setHighlightedLabel(value);
       selectedBar = newSelectedBar;
     }
@@ -198,11 +190,14 @@ const VisitsStats: FC<VisitsStatsProps> = (
                 <div className="mt-4 col-lg-6">
                   <SortableBarGraph
                     title="Visited URLs"
-                    stats={{}}
+                    stats={visitedUrls}
+                    highlightedLabel={highlightedLabel}
+                    highlightedStats={highlightedVisitsToStats(highlightedVisits, 'visitedUrl')}
                     sortingItems={{
                       visitedUrl: 'Visited URL',
                       amount: 'Visits amount',
                     }}
+                    onClick={highlightVisitsForProp('visitedUrl')}
                   />
                 </div>
               )}
