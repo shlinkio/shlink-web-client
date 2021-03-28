@@ -64,7 +64,7 @@ describe('VisitsParser', () => {
     }),
     Mock.of<OrphanVisit>({
       type: 'invalid_short_url',
-      visitedUrl: 'baz',
+      visitedUrl: 'bar',
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
       referer: 'https://m.facebook.com',
       visitLocation: {
@@ -151,6 +151,15 @@ describe('VisitsParser', () => {
           count: 1,
           latLong: [ newYorkLat, newYorkLong ],
         },
+      });
+    });
+
+    it('properly parses visited URL stats', () => {
+      const { visitedUrls } = processStatsFromVisits(normalizeVisits(orphanVisits));
+
+      expect(visitedUrls).toEqual({
+        foo: 1,
+        bar: 2,
       });
     });
   });
@@ -247,7 +256,7 @@ describe('VisitsParser', () => {
           latitude: 123.45,
           longitude: -543.21,
           type: 'invalid_short_url',
-          visitedUrl: 'baz',
+          visitedUrl: 'bar',
         },
       ]);
     });
