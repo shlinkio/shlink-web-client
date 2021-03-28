@@ -12,7 +12,7 @@ import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
 import { determineOrderDir, OrderDir } from '../utils/utils';
 import { prettify } from '../utils/helpers/numbers';
-import { NormalizedVisit } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
 interface VisitsTableProps {
@@ -20,9 +20,10 @@ interface VisitsTableProps {
   selectedVisits?: NormalizedVisit[];
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
   matchMedia?: (query: string) => MediaQueryList;
+  isOrphanVisits?: boolean;
 }
 
-type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer';
+type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer' | 'visitedUrl';
 
 interface Order {
   field?: OrderableFields;
@@ -30,8 +31,10 @@ interface Order {
 }
 
 const PAGE_SIZE = 20;
-const visitMatchesSearch = ({ browser, os, referer, country, city }: NormalizedVisit, searchTerm: string) =>
-  `${browser} ${os} ${referer} ${country} ${city}`.toLowerCase().includes(searchTerm.toLowerCase());
+const visitMatchesSearch = ({ browser, os, referer, country, city, ...rest }: NormalizedVisit, searchTerm: string) =>
+  `${browser} ${os} ${referer} ${country} ${city} ${(rest as NormalizedOrphanVisit).visitedUrl}`.toLowerCase().includes(
+    searchTerm.toLowerCase(),
+  );
 const searchVisits = (searchTerm: string, visits: NormalizedVisit[]) =>
   visits.filter((visit) => visitMatchesSearch(visit, searchTerm));
 const sortVisits = ({ field, dir }: Order, visits: NormalizedVisit[]) => !field || !dir ? visits : visits.sort(
@@ -39,7 +42,7 @@ const sortVisits = ({ field, dir }: Order, visits: NormalizedVisit[]) => !field 
     const greaterThan = dir === 'ASC' ? 1 : -1;
     const smallerThan = dir === 'ASC' ? -1 : 1;
 
-    return a[field] > b[field] ? greaterThan : smallerThan;
+    return (a as NormalizedOrphanVisit)[field] > (b as NormalizedOrphanVisit)[field] ? greaterThan : smallerThan;
   },
 );
 const calculateVisits = (allVisits: NormalizedVisit[], searchTerm: string | undefined, order: Order) => {
@@ -56,6 +59,7 @@ const VisitsTable = ({
   selectedVisits = [],
   setSelectedVisits,
   matchMedia = window.matchMedia,
+  isOrphanVisits = false,
 }: VisitsTableProps) => {
   const headerCellsClass = 'visits-table__header-cell visits-table__sticky';
   const matchMobile = () => matchMedia('(max-width: 767px)').matches;
@@ -132,9 +136,15 @@ const VisitsTable = ({
             Referrer
             {renderOrderIcon('referer')}
           </th>
+          {isOrphanVisits && (
+            <th className={headerCellsClass} onClick={orderByColumn('visitedUrl')}>
+              Visited URL
+              {renderOrderIcon('visitedUrl')}
+            </th>
+          )}
         </tr>
         <tr>
-          <td colSpan={7} className="p-0">
+          <td colSpan={isOrphanVisits ? 8 : 7} className="p-0">
             <SearchField noBorder large={false} onChange={setSearchTerm} />
           </td>
         </tr>
@@ -142,7 +152,7 @@ const VisitsTable = ({
       <tbody>
         {(!resultSet.visitsGroups[page - 1] || resultSet.visitsGroups[page - 1].length === 0) && (
           <tr>
-            <td colSpan={7} className="text-center">
+            <td colSpan={isOrphanVisits ? 8 : 7} className="text-center">
               No visits found with current filtering
             </td>
           </tr>
@@ -170,6 +180,7 @@ const VisitsTable = ({
               <td>{visit.browser}</td>
               <td>{visit.os}</td>
               <td>{visit.referer}</td>
+              {isOrphanVisits && <td>{(visit as NormalizedOrphanVisit).visitedUrl}</td>}
             </tr>
           );
         })}
@@ -177,7 +188,7 @@ const VisitsTable = ({
       {resultSet.total > PAGE_SIZE && (
         <tfoot>
           <tr>
-            <td colSpan={7} className="visits-table__footer-cell visits-table__sticky">
+            <td colSpan={isOrphanVisits ? 8 : 7} className="visits-table__footer-cell visits-table__sticky">
               <div className="row">
                 <div className="col-md-6">
                   <SimplePaginator

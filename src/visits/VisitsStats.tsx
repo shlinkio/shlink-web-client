@@ -6,6 +6,7 @@ import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } fro
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
 import { Location } from 'history';
+import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
 import { formatIsoDate } from '../utils/helpers/date';
@@ -31,6 +32,7 @@ export interface VisitsStatsProps {
   baseUrl: string;
   domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
+  isOrphanVisits?: boolean;
 }
 
 interface VisitsNavLinkProps {
@@ -77,7 +79,7 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
 );
 
 const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv },
+  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv, isOrphanVisits = false },
 ) => {
   const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
@@ -171,13 +173,13 @@ const VisitsStats: FC<VisitsStatsProps> = (
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
-              <div className="col-xl-4 col-lg-6 mt-4">
+              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Operating systems" stats={os} />
               </div>
-              <div className="col-xl-4 col-lg-6 mt-4">
+              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Browsers" stats={browsers} />
               </div>
-              <div className="col-xl-4 mt-4">
+              <div className={classNames('mt-4', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
                 <SortableBarGraph
                   title="Referrers"
                   stats={referrers}
@@ -191,6 +193,18 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   onClick={highlightVisitsForProp('referer')}
                 />
               </div>
+              {isOrphanVisits && (
+                <div className="mt-4 col-lg-6">
+                  <SortableBarGraph
+                    title="Visited URLs"
+                    stats={{}}
+                    sortingItems={{
+                      visitedUrl: 'Visited URL',
+                      amount: 'Visits amount',
+                    }}
+                  />
+                </div>
+              )}
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
@@ -232,6 +246,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   visits={normalizedVisits}
                   selectedVisits={highlightedVisits}
                   setSelectedVisits={setSelectedVisits}
+                  isOrphanVisits={isOrphanVisits}
                 />
               </div>
             </Route>

@@ -33,6 +33,7 @@ export const OrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercure
       baseUrl={url}
       settings={settings}
       exportCsv={exportCsv}
+      isOrphanVisits
     >
       <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
     </VisitsStats>
