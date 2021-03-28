@@ -1,4 +1,4 @@
-import { isEmpty, propEq, values } from 'ramda';
+import { countBy, isEmpty, prop, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -51,18 +51,9 @@ const sections: Record<Section, VisitsNavLinkProps> = {
   list: { title: 'List', subPath: '/list', icon: faList },
 };
 
-const highlightedVisitsToStats = (
-  highlightedVisits: NormalizedVisit[],
-  prop: HighlightableProps,
-): Stats => highlightedVisits.reduce<Stats>((acc, highlightedVisit) => {
-  if (!acc[highlightedVisit[prop]]) {
-    acc[highlightedVisit[prop]] = 0;
-  }
+const highlightedVisitsToStats = (highlightedVisits: NormalizedVisit[], property: HighlightableProps): Stats =>
+  countBy(prop(property), highlightedVisits);
 
-  acc[highlightedVisit[prop]] += 1;
-
-  return acc;
-}, {});
 let selectedBar: string | undefined;
 
 const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (

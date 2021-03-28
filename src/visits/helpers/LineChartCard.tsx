@@ -9,7 +9,7 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
-import { always, cond, reverse } from 'ramda';
+import { always, cond, countBy, reverse } from 'ramda';
 import moment from 'moment';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
@@ -70,15 +70,9 @@ const determineInitialStep = (oldestVisitDate: string): Step => {
   return matcher() ?? 'monthly';
 };
 
-const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => visits.reduce<Stats>(
-  (acc, visit) => {
-    const key = STEP_TO_DATE_FORMAT[step](visit.date);
-
-    acc[key] = (acc[key] || 0) + 1;
-
-    return acc;
-  },
-  {},
+const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => countBy(
+  (visit) => STEP_TO_DATE_FORMAT[step](visit.date),
+  visits,
 );
 
 const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) =>
