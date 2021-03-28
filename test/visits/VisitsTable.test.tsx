@@ -10,13 +10,14 @@ describe('<VisitsTable />', () => {
   const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
   const setSelectedVisits = jest.fn();
   let wrapper: ShallowWrapper;
-  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => {
+  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = [], isOrphanVisits = false) => {
     wrapper = shallow(
       <VisitsTable
         visits={visits}
         selectedVisits={selectedVisits}
         setSelectedVisits={setSelectedVisits}
         matchMedia={matchMedia}
+        isOrphanVisits={isOrphanVisits}
       />,
     );
 
@@ -133,5 +134,18 @@ describe('<VisitsTable />', () => {
     expect(wrapper.find('tbody').find('tr')).toHaveLength(2);
     searchField.simulate('change', '');
     expect(wrapper.find('tbody').find('tr')).toHaveLength(7 + 2);
+  });
+
+  it.each([
+    [ true, 8 ],
+    [ false, 7 ],
+  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, expectedCols) => {
+    const wrapper = createWrapper([], [], isOrphanVisits);
+    const rowsWithColspan = wrapper.find('[colSpan]');
+    const cols = wrapper.find('th');
+
+    expect(cols).toHaveLength(expectedCols);
+    expect(rowsWithColspan).toHaveLength(2);
+    rowsWithColspan.forEach((row) => expect(row.prop('colSpan')).toEqual(expectedCols));
   });
 });

@@ -150,7 +150,7 @@ const VisitsTable = ({
         </tr>
       </thead>
       <tbody>
-        {(!resultSet.visitsGroups[page - 1] || resultSet.visitsGroups[page - 1].length === 0) && (
+        {!resultSet.visitsGroups[page - 1]?.length && (
           <tr>
             <td colSpan={isOrphanVisits ? 8 : 7} className="text-center">
               No visits found with current filtering
