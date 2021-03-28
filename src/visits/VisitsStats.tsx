@@ -1,4 +1,4 @@
-import { countBy, isEmpty, prop, propEq, values } from 'ramda';
+import { countBy, filter, isEmpty, pipe, prop, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,9 +19,10 @@ import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedVisit, Stats, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, Stats, Visit, VisitsInfo } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
+import { OrphanVisitTypeDropdown } from './helpers/OrphanVisitTypeDropdown';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
@@ -54,6 +55,11 @@ const sections: Record<Section, VisitsNavLinkProps> = {
 const highlightedVisitsToStats = (highlightedVisits: NormalizedVisit[], property: HighlightableProps): Stats =>
   countBy(prop(property), highlightedVisits);
 
+const normalizeAndFilterVisits = (visits: Visit[], type: OrphanVisitType | undefined) => pipe(
+  normalizeVisits,
+  filter((normalizedVisit) => type === undefined || (normalizedVisit as NormalizedOrphanVisit).type === type),
+)(visits);
+
 let selectedBar: string | undefined;
 
 const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (
@@ -76,6 +82,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
+  const [ orphanVisitType, setOrphanVisitType ] = useState<OrphanVisitType | undefined>();
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
@@ -83,7 +90,10 @@ const VisitsStats: FC<VisitsStatsProps> = (
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
   const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
-  const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
+  const normalizedVisits = useMemo(
+    () => normalizeAndFilterVisits(visits, orphanVisitType),
+    [ visits, orphanVisitType ],
+  );
   const { os, browsers, referrers, countries, cities, citiesForMap } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
     [ normalizedVisits ],
@@ -256,12 +266,24 @@ const VisitsStats: FC<VisitsStatsProps> = (
       <section className="mt-4">
         <div className="row flex-md-row-reverse">
           <div className="col-lg-7 col-xl-6">
-            <DateRangeSelector
-              disabled={loading}
-              initialDateRange={initialInterval}
-              defaultText="All visits"
-              onDatesChange={setDateRange}
-            />
+            <div className="d-md-flex">
+              <div className="flex-fill">
+                <DateRangeSelector
+                  disabled={loading}
+                  initialDateRange={initialInterval}
+                  defaultText="All visits"
+                  onDatesChange={setDateRange}
+                />
+              </div>
+              {isOrphanVisits && (
+                <OrphanVisitTypeDropdown
+                  text="Filter by type"
+                  className="ml-0 ml-md-2 mt-4 mt-md-0"
+                  selected={orphanVisitType}
+                  onChange={setOrphanVisitType}
+                />
+              )}
+            </div>
           </div>
           {visits.length > 0 && (
             <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
