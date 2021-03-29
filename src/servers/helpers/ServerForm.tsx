@@ -25,7 +25,7 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
 
   return (
     <form className="server-form" onSubmit={handleSubmit}>
-      <SimpleCard className="mb-4" title={title}>
+      <SimpleCard className="mb-3" title={title}>
         <FormGroupContainer value={name} onChange={setName}>Name</FormGroupContainer>
         <FormGroupContainer type="url" value={url} onChange={setUrl}>URL</FormGroupContainer>
         <FormGroupContainer value={apiKey} onChange={setApiKey}>API key</FormGroupContainer>

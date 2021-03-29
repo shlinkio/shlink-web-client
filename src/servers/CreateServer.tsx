@@ -42,7 +42,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
       </ServerForm>
 
       {(serversImported || errorImporting) && (
-        <div className="mt-4">
+        <div className="mt-3">
           {serversImported && <ImportResult type="success" />}
           {errorImporting && <ImportResult type="error" />}
         </div>

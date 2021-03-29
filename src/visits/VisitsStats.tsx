@@ -154,7 +154,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
         <Row>
           <Switch>
             <Route exact path={baseUrl}>
-              <div className="col-12 mt-4">
+              <div className="col-12 mt-3">
                 <LineChartCard
                   title="Visits during time"
                   visits={normalizedVisits}
@@ -166,13 +166,13 @@ const VisitsStats: FC<VisitsStatsProps> = (
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
-              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
+              <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Operating systems" stats={os} />
               </div>
-              <div className={classNames('mt-4 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
+              <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
                 <GraphCard title="Browsers" stats={browsers} />
               </div>
-              <div className={classNames('mt-4', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
+              <div className={classNames('mt-3', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
                 <SortableBarGraph
                   title="Referrers"
                   stats={referrers}
@@ -187,7 +187,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                 />
               </div>
               {isOrphanVisits && (
-                <div className="mt-4 col-lg-6">
+                <div className="mt-3 col-lg-6">
                   <SortableBarGraph
                     title="Visited URLs"
                     stats={visitedUrls}
@@ -204,7 +204,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
             </Route>
 
             <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
-              <div className="col-lg-6 mt-4">
+              <div className="col-lg-6 mt-3">
                 <SortableBarGraph
                   title="Countries"
                   stats={countries}
@@ -217,7 +217,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   onClick={highlightVisitsForProp('country')}
                 />
               </div>
-              <div className="col-lg-6 mt-4">
+              <div className="col-lg-6 mt-3">
                 <SortableBarGraph
                   title="Cities"
                   stats={cities}
@@ -258,7 +258,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     <>
       {children}
 
-      <section className="mt-4">
+      <section className="mt-3">
         <div className="row flex-md-row-reverse">
           <div className="col-lg-7 col-xl-6">
             <div className="d-md-flex">
@@ -273,7 +273,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
               {isOrphanVisits && (
                 <OrphanVisitTypeDropdown
                   text="Filter by type"
-                  className="ml-0 ml-md-2 mt-4 mt-md-0"
+                  className="ml-0 ml-md-2 mt-3 mt-md-0"
                   selected={orphanVisitType}
                   onChange={setOrphanVisitType}
                 />
@@ -281,7 +281,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
             </div>
           </div>
           {visits.length > 0 && (
-            <div className="col-lg-5 col-xl-6 mt-4 mt-lg-0">
+            <div className="col-lg-5 col-xl-6 mt-3 mt-lg-0">
               <div className="d-flex">
                 <Button
                   outline
@@ -305,7 +305,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
         </div>
       </section>
 
-      <section className="mt-4">
+      <section className="mt-3">
         {renderVisitsContent()}
       </section>
     </>
