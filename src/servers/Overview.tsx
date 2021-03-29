@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Card, CardBody, CardHeader, CardText, CardTitle } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardText, CardTitle, Row } from 'reactstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
@@ -51,9 +51,9 @@ export const Overview = (
 
   return (
     <>
-      <div className="row mb-3">
+      <Row>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body>
+          <Card className="overview__card mb-3" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
             <CardText tag="h2">
               <ForServerVersion minVersion="2.2.0">
@@ -66,7 +66,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/orphan-visits`}>
+          <Card className="overview__card mb-3" body tag={Link} to={`/server/${serverId}/orphan-visits`}>
             <CardTitle tag="h5" className="overview__card-title">Orphan visits</CardTitle>
             <CardText tag="h2">
               <ForServerVersion minVersion="2.6.0">
@@ -79,7 +79,7 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/list-short-urls/1`}>
+          <Card className="overview__card mb-3" body tag={Link} to={`/server/${serverId}/list-short-urls/1`}>
             <CardTitle tag="h5" className="overview__card-title">Short URLs</CardTitle>
             <CardText tag="h2">
               {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
@@ -87,13 +87,13 @@ export const Overview = (
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
-          <Card className="overview__card mb-2" body tag={Link} to={`/server/${serverId}/manage-tags`}>
+          <Card className="overview__card mb-3" body tag={Link} to={`/server/${serverId}/manage-tags`}>
             <CardTitle tag="h5" className="overview__card-title">Tags</CardTitle>
             <CardText tag="h2">{loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}</CardText>
           </Card>
         </div>
-      </div>
-      <Card className="mb-4">
+      </Row>
+      <Card className="mb-3">
         <CardHeader>
           <span className="d-sm-none">Create a short URL</span>
           <h5 className="d-none d-sm-inline">Create a short URL</h5>

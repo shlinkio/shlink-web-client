@@ -71,6 +71,11 @@
   color: inherit;
 }
 
+.react-datepicker__day--disabled.react-datepicker__day--disabled {
+  cursor: default;
+  color: var(--border-color) !important;
+}
+
 .react-datepicker__day--keyboard-selected.react-datepicker__day--keyboard-selected,
 .react-datepicker__month-text--keyboard-selected.react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected.react-datepicker__quarter-text--keyboard-selected,
