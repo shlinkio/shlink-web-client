@@ -11,6 +11,7 @@ import { ShortUrl } from '../../../src/short-urls/data';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
 import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { SHORT_URL_EDITED } from '../../../src/short-urls/reducers/shortUrlEdition';
 
 describe('shortUrlsListReducer', () => {
   describe('reducer', () => {
@@ -123,6 +124,40 @@ describe('shortUrlsListReducer', () => {
         loading: false,
         error: false,
       });
+    });
+
+    it.each([
+      ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
+        const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'notMatching' });
+        const list = [ Mock.of<ShortUrl>({ shortCode: 'foo' }), Mock.of<ShortUrl>({ shortCode: 'bar' }) ];
+
+        return [ editedShortUrl, list, list ];
+      })(),
+      ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
+        const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
+        const list = [
+          Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'old_one' }),
+          Mock.of<ShortUrl>({ shortCode: 'bar' }),
+        ];
+        const expectedList = [ editedShortUrl, list[1] ];
+
+        return [ editedShortUrl, list, expectedList ];
+      })(),
+    ])('updates matching short URL on SHORT_URL_EDITED', (editedShortUrl, initialList, expectedList) => {
+      const state = {
+        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
+          data: initialList,
+          pagination: Mock.of<ShlinkPaginator>({
+            totalItems: 15,
+          }),
+        }),
+        loading: false,
+        error: false,
+      };
+
+      const result = reducer(state, { type: SHORT_URL_EDITED, shortUrl: editedShortUrl } as any);
+
+      expect(result.shortUrls?.data).toEqual(expectedList);
     });
   });
 

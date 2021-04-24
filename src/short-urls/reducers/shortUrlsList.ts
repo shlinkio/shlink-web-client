@@ -9,6 +9,7 @@ import { ShlinkShortUrlsResponse } from '../../api/types';
 import { DeleteShortUrlAction, SHORT_URL_DELETED } from './shortUrlDeletion';
 import { ShortUrlsListParams } from './shortUrlsListParams';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from './shortUrlCreation';
+import { SHORT_URL_EDITED, ShortUrlEditedAction } from './shortUrlEdition';
 
 /* eslint-disable padding-line-between-statements */
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
@@ -32,6 +33,7 @@ export type ListShortUrlsCombinedAction = (
   & CreateVisitsAction
   & CreateShortUrlAction
   & DeleteShortUrlAction
+  & ShortUrlEditedAction
 );
 
 const initialState: ShortUrlsList = {
@@ -86,6 +88,15 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state.shortUrls.pagination.totalItems + 1,
       state,
     ),
+  ),
+  [SHORT_URL_EDITED]: (state, { shortUrl: editedShortUrl }) => !state.shortUrls ? state : assocPath(
+    [ 'shortUrls', 'data' ],
+    state.shortUrls.data.map((shortUrl) => {
+      const { shortCode, domain } = editedShortUrl;
+
+      return shortUrlMatches(shortUrl, shortCode, domain) ? editedShortUrl : shortUrl;
+    }),
+    state,
   ),
 }, initialState);
 
