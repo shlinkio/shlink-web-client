@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#413](https://github.com/shlinkio/shlink-web-client/issues/413) Fixed edit short URL form reflecting outdated info after navigating back from other section.
+
+
 ## [3.1.0] - 2021-03-29
 ### Added
 * [#379](https://github.com/shlinkio/shlink-web-client/issues/379) and [#384](https://github.com/shlinkio/shlink-web-client/issues/384) Improved QR code modal, including controls to customize size, format and margin, as well as a button to copy the link to the clipboard.
