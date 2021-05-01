@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [#413](https://github.com/shlinkio/shlink-web-client/issues/413) Fixed edit short URL form reflecting outdated info after navigating back from other section.
+* [#412](https://github.com/shlinkio/shlink-web-client/issues/412) Ensured new visits coming from mercure hub are prepended and not appended, to keep proper sorting.
 
 
 ## [3.1.0] - 2021-03-29
