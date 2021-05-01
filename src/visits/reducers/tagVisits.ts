@@ -52,7 +52,7 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
       .filter(({ shortUrl }) => shortUrl?.tags.includes(tag))
       .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...visits, ...newVisits ] };
+    return { ...state, visits: [ ...newVisits, ...visits ] };
   },
 }, initialState);
 

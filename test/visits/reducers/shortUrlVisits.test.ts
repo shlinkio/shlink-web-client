@@ -66,9 +66,9 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it.each([
-      [{ shortCode: 'abc123' }, [ ...visitsMocks, {}]],
+      [{ shortCode: 'abc123' }, [{}, ...visitsMocks ]],
       [{ shortCode: 'def456' }, visitsMocks ],
-    ])('appends a new visit on CREATE_VISIT', (state, expectedVisits) => {
+    ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         shortCode: 'abc123',
       };

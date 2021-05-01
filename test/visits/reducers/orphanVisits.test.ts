@@ -64,7 +64,7 @@ describe('orphanVisitsReducer', () => {
       expect(visits).toEqual(actionVisits);
     });
 
-    it('appends a new visits on CREATE_VISIT', () => {
+    it('prepends new visits on CREATE_VISIT', () => {
       const prevState = buildState({ visits: visitsMocks });
 
       const { visits } = reducer(
@@ -72,7 +72,7 @@ describe('orphanVisitsReducer', () => {
         { type: CREATE_VISITS, createdVisits: [{ visit: {} }, { visit: {} }] } as any,
       );
 
-      expect(visits).toEqual([ ...visitsMocks, {}, {}]);
+      expect(visits).toEqual([{}, {}, ...visitsMocks ]);
     });
 
     it('returns new progress on GET_ORPHAN_VISITS_PROGRESS_CHANGED', () => {

@@ -58,7 +58,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
       .filter(({ shortUrl }) => shortUrl && shortUrlMatches(shortUrl, shortCode, domain))
       .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...visits, ...newVisits ] };
+    return { ...state, visits: [ ...newVisits, ...visits ] };
   },
 }, initialState);
 

@@ -44,7 +44,7 @@ export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
     const { visits } = state;
     const newVisits = createdVisits.map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...visits, ...newVisits ] };
+    return { ...state, visits: [ ...newVisits, ...visits ] };
   },
 }, initialState);
 
