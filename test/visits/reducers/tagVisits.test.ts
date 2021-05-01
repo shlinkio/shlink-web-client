@@ -66,9 +66,9 @@ describe('tagVisitsReducer', () => {
     });
 
     it.each([
-      [{ tag: 'foo' }, [ ...visitsMocks, {}]],
+      [{ tag: 'foo' }, [{}, ...visitsMocks ]],
       [{ tag: 'bar' }, visitsMocks ],
-    ])('appends a new visit on CREATE_VISIT', (state, expectedVisits) => {
+    ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         tags: [ 'foo', 'baz' ],
       };
