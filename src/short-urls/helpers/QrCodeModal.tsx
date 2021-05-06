@@ -91,7 +91,7 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
         <div className="text-center">
           <div className="mb-3">
             <div>QR code URL:</div>
-            <ExternalLink className="indivisible" href={qrCodeUrl} />
+            <ExternalLink href={qrCodeUrl} />
             <CopyToClipboardIcon text={qrCodeUrl} />
           </div>
           <img src={qrCodeUrl} className="qr-code-modal__img" alt="QR code" />
