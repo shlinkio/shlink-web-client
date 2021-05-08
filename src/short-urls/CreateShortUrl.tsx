@@ -49,7 +49,11 @@ const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResul
         saving={shortUrlCreationResult.saving}
         selectedServer={selectedServer}
         mode={basicMode ? 'create-basic' : 'create'}
-        onSave={createShortUrl}
+        onSave={async (data: ShortUrlData) => {
+          resetCreateShortUrl();
+
+          return createShortUrl(data);
+        }}
       />
       <CreateShortUrlResult
         {...shortUrlCreationResult}
