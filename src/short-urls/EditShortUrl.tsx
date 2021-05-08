@@ -11,6 +11,7 @@ import { parseQuery } from '../utils/helpers/query';
 import Message from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
+import { useToggle } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import { EditShortUrlData, ShortUrl, ShortUrlData } from './data';
@@ -62,6 +63,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
     () => getInitialState(shortUrl, shortUrlCreationSettings),
     [ shortUrl, shortUrlCreationSettings ],
   );
+  const [ savingSucceeded,, isSuccessful, isNotSuccessful ] = useToggle();
 
   useEffect(() => {
     getShortUrlDetail(params.shortCode, domain);
@@ -79,8 +81,6 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
     );
   }
 
-  const title = <small>Edit <ExternalLink href={shortUrl?.shortUrl ?? ''} /></small>;
-
   return (
     <>
       <header className="mb-3">
@@ -89,7 +89,9 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
             <Button color="link" size="lg" className="p-0 mr-3" onClick={goBack}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </Button>
-            <span className="text-center">{title}</span>
+            <span className="text-center">
+              <small>Edit <ExternalLink href={shortUrl?.shortUrl ?? ''} /></small>
+            </span>
             <span />
           </h2>
         </Card>
@@ -99,13 +101,23 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
         saving={saving}
         selectedServer={selectedServer}
         mode="edit"
-        onSave={async (shortUrlData) => shortUrl && editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)}
+        onSave={async (shortUrlData) => {
+          if (!shortUrl) {
+            return;
+          }
+
+          isNotSuccessful();
+          editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)
+            .then(isSuccessful)
+            .catch(isNotSuccessful);
+        }}
       />
       {savingError && (
         <Result type="error" className="mt-3">
           <ShlinkApiError errorData={savingErrorData} fallbackMessage="An error occurred while updating short URL :(" />
         </Result>
       )}
+      {savingSucceeded && <Result type="success" className="mt-3">Short URL properly edited.</Result>}
     </>
   );
 };
