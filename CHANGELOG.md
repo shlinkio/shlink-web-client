@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#413](https://github.com/shlinkio/shlink-web-client/issues/413) Fixed edit short URL form reflecting outdated info after navigating back from other section.
 * [#412](https://github.com/shlinkio/shlink-web-client/issues/412) Ensured new visits coming from mercure hub are prepended and not appended, to keep proper sorting.
 * [#417](https://github.com/shlinkio/shlink-web-client/issues/417) Fixed link spanning out of QR code modal.
+* [#411](https://github.com/shlinkio/shlink-web-client/issues/411) Added missing feedback when editing a short URL to know if everything went right.
 
 
 ## [3.1.0] - 2021-03-29
