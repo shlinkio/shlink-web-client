@@ -1,7 +1,7 @@
 name: Deploy preview
 
 on:
-  pull_request: null
+  pull_request_target: null
 
 jobs:
   deploy:
@@ -25,7 +25,6 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
-          token: ${{ secrets.PREVIEW_DEPLOY_TOKEN }}
           branch: preview-env
           folder: build
           target-folder: ${{ steps.generate_slug.outputs.slug }}
