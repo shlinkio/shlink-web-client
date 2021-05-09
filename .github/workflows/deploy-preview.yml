@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-20.04
+    continue-on-error: true
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,15 +17,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.15
-      - name: Build
-        run: |
-          npm ci && \
-          npm install json && \
-          node_modules/.bin/json -I -f package.json -e "this.homepage=\"/shlink-web-client/${{ steps.generate_slug.outputs.slug }}\"" && \
-          npm run build
       - name: Generate slug
         id: generate_slug
         run: echo "##[set-output name=slug;]$(echo ${GITHUB_REF#refs/heads/} | sed -r 's/[~\^]+//g' | sed -r 's/[^a-zA-Z0-9]+/-/g' | sed -r 's/^-+\|-+$//g' | tr A-Z a-z)"
+      - name: Build
+        run: |
+          npm ci && \
+          node ./scripts/set-homepage.js /shlink-web-client/${{ steps.generate_slug.outputs.slug }} && \
+          npm run build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
