@@ -25,6 +25,7 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           branch: preview-env
           folder: build
           target-folder: ${{ steps.generate_slug.outputs.slug }}
