@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Use node.js 14.15
         uses: actions/setup-node@v1
         with:
