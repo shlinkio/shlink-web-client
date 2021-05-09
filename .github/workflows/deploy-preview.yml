@@ -2,9 +2,6 @@ name: Deploy preview
 
 on:
   pull_request: null
-  push:
-    branches:
-      - main
 
 jobs:
   deploy:
@@ -19,7 +16,7 @@ jobs:
           node-version: 14.15
       - name: Generate slug
         id: generate_slug
-        run: echo "##[set-output name=slug;]$(echo ${GITHUB_REF#refs/heads/} | sed -r 's/[~\^]+//g' | sed -r 's/[^a-zA-Z0-9]+/-/g' | sed -r 's/^-+\|-+$//g' | tr A-Z a-z)"
+        run: echo "##[set-output name=slug;]$(echo ${GITHUB_HEAD_REF#refs/heads/} | sed -r 's/[~\^]+//g' | sed -r 's/[^a-zA-Z0-9]+/-/g' | sed -r 's/^-+\|-+$//g' | tr A-Z a-z)"
       - name: Build
         run: |
           npm ci && \
