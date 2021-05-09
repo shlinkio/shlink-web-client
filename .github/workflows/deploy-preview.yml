@@ -10,6 +10,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request_target.head.repo.full_name }}
       - name: Use node.js 14.15
         uses: actions/setup-node@v1
         with:
@@ -32,4 +34,6 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: Preview environment
-          message: "**Preview environment**: https://shlinkio.github.io/shlink-web-client/${{ steps.generate_slug.outputs.slug }}"
+          message: |
+            ## Preview environment
+            https://shlinkio.github.io/shlink-web-client/${{ steps.generate_slug.outputs.slug }}/
