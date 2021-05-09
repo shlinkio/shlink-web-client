@@ -26,7 +26,7 @@ const Home = ({ servers }: HomeProps) => {
           </div>
           <div className="col-md-7 home__servers-container">
             <div className="p-4">
-              <h1 className="home__title" style={{ background: 'red' }}>Edited nine times!</h1>
+              <h1 className="home__title" style={{ background: 'red' }}>Edited ten times!</h1>
             </div>
             <ServersListGroup embedded servers={serversList}>
               {!hasServers && (
