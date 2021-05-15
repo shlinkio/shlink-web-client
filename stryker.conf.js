@@ -6,7 +6,16 @@ module.exports = {
   tsconfigFile: 'tsconfig.json',
   testRunner: 'jest',
   reporters: [ 'progress', 'clear-text' ],
-  coverageAnalysis: 'perTest',
+  ignorePatterns: [
+    'coverage',
+    'reports',
+    'build',
+    'dist',
+    'home',
+    'scripts',
+    'docker-compose.*',
+    'public/servers.json*',
+  ],
   jest: {
     projectType: 'custom',
     config: jestConfig,
