@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:
+
+    * `SHLINK_SERVER_URL`: The URL of the Shlink server to configure by default.
+    * `SHLINK_SERVER_API_KEY`: The API key of the Shlink server.
+    * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
 ### Changed
 * [#428](https://github.com/shlinkio/shlink-web-client/issues/428) Updated to StrykerJS 5.
