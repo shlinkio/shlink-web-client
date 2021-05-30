@@ -12,6 +12,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `SHLINK_SERVER_API_KEY`: The API key of the Shlink server.
     * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
+* [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a a `conf.d` folder.
+
 ### Changed
 * [#428](https://github.com/shlinkio/shlink-web-client/issues/428) Updated to StrykerJS 5.
 
