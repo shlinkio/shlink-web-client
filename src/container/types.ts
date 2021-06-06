@@ -35,6 +35,7 @@ export interface ShlinkState {
   settings: Settings;
   domainsList: DomainsList;
   visitsOverview: VisitsOverview;
+  appUpdated: boolean;
 }
 
 export type ConnectDecorator = (props: string[] | null, actions?: string[]) => any;

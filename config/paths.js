@@ -83,6 +83,7 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   publicUrl: getPublicUrl(resolveApp('package.json')),
   servedPath: getServedPath(resolveApp('package.json')),
+  swSrc: resolveModule(resolveApp, 'src/service-worker'),
 };
 
 module.exports.moduleFileExtensions = moduleFileExtensions;

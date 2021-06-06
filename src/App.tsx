@@ -1,15 +1,19 @@
 import { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { Alert } from 'reactstrap';
 import NotFound from './common/NotFound';
 import { ServersMap } from './servers/data';
 import { Settings } from './settings/reducers/settings';
 import { changeThemeInMarkup } from './utils/theme';
+import { SimpleCard } from './utils/SimpleCard';
 import './App.scss';
 
 interface AppProps {
-  fetchServers: Function;
+  fetchServers: () => void;
   servers: ServersMap;
   settings: Settings;
+  resetAppUpdate: () => void;
+  appUpdated: boolean;
 }
 
 const App = (
@@ -20,7 +24,7 @@ const App = (
   EditServer: FC,
   Settings: FC,
   ShlinkVersionsContainer: FC,
-) => ({ fetchServers, servers, settings }: AppProps) => {
+) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
   useEffect(() => {
     // On first load, try to fetch the remote servers if the list is empty
     if (Object.keys(servers).length === 0) {
@@ -50,6 +54,17 @@ const App = (
           <ShlinkVersionsContainer />
         </div>
       </div>
+
+      <Alert
+        className="app__update-banner"
+        tag={SimpleCard}
+        color="secondary"
+        isOpen={appUpdated}
+        toggle={resetAppUpdate}
+      >
+        <h4 className="mb-4">This app has just been updated!</h4>
+        <p className="mb-0">Restart it to enjoy the new features.</p>
+      </Alert>
     </div>
   );
 };
