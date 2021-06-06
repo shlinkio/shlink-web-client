@@ -24,6 +24,7 @@ jobs:
         run: |
           npm ci && \
           node ./scripts/set-homepage.js /shlink-web-client/${{ steps.generate_slug.outputs.slug }} && \
+          rm src/service-worker.ts && \
           npm run build
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1

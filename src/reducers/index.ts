@@ -17,6 +17,7 @@ import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
 import domainsListReducer from '../domains/reducers/domainsList';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
+import appUpdatesReducer from '../app/reducers/appUpdates';
 import { ShlinkState } from '../container/types';
 
 export default combineReducers<ShlinkState>({
@@ -38,4 +39,5 @@ export default combineReducers<ShlinkState>({
   settings: settingsReducer,
   domainsList: domainsListReducer,
   visitsOverview: visitsOverviewReducer,
+  appUpdated: appUpdatesReducer,
 });

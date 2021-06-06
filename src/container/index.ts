@@ -2,7 +2,6 @@ import Bottle, { IContainer } from 'bottlejs';
 import { withRouter } from 'react-router-dom';
 import { connect as reduxConnect } from 'react-redux';
 import { pick } from 'ramda';
-import App from '../App';
 import provideApiServices from '../api/services/provideServices';
 import provideCommonServices from '../common/services/provideServices';
 import provideShortUrlsServices from '../short-urls/services/provideServices';
@@ -13,6 +12,7 @@ import provideUtilsServices from '../utils/services/provideServices';
 import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
 import provideDomainsServices from '../domains/services/provideServices';
+import provideAppServices from '../app/services/provideServices';
 import { ConnectDecorator } from './types';
 
 type LazyActionMap = Record<string, Function>;
@@ -33,19 +33,7 @@ const connect: ConnectDecorator = (propsFromState: string[] | null, actionServic
     actionServiceNames.reduce(mapActionService, {}),
   );
 
-bottle.serviceFactory(
-  'App',
-  App,
-  'MainHeader',
-  'Home',
-  'MenuLayout',
-  'CreateServer',
-  'EditServer',
-  'Settings',
-  'ShlinkVersionsContainer',
-);
-bottle.decorator('App', connect([ 'servers', 'settings' ], [ 'fetchServers' ]));
-
+provideAppServices(bottle, connect);
 provideCommonServices(bottle, connect, withRouter);
 provideApiServices(bottle);
 provideShortUrlsServices(bottle, connect);

@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { Card, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import ServersListGroup from '../servers/ServersListGroup';
-import './Home.scss';
 import { ServersMap } from '../servers/data';
 import { ShlinkLogo } from './img/ShlinkLogo';
+import './Home.scss';
 
 export interface HomeProps {
   servers: ServersMap;

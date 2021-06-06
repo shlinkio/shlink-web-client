@@ -13,5 +13,6 @@
   "globals": {
     "process": true,
     "setImmediate": true
-  }
+  },
+  "ignorePatterns": ["src/service*.ts"]
 }
