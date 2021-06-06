@@ -57,7 +57,12 @@
     "redux": "^4.0.5",
     "redux-localstorage-simple": "^2.4.0",
     "redux-thunk": "^2.3.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "workbox-core": "^6.1.5",
+    "workbox-expiration": "^6.1.5",
+    "workbox-precaching": "^6.1.5",
+    "workbox-routing": "^6.1.5",
+    "workbox-strategies": "^6.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
