@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [3.1.2] - 2021-06-06
+## [Unreleased]
 ### Added
 * [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:
 
@@ -13,6 +13,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
 * [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a a `conf.d` folder.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
+## [3.1.2] - 2021-06-06
+### Added
+* *Nothing*
 
 ### Changed
 * [#428](https://github.com/shlinkio/shlink-web-client/issues/428) Updated to StrykerJS 5.
