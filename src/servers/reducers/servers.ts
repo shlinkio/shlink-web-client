@@ -1,5 +1,5 @@
+import { sha256 } from 'js-sha256';
 import { assoc, dissoc, map, pipe, reduce } from 'ramda';
-import { v4 as uuid } from 'uuid';
 import { Action } from 'redux';
 import { ServerData, ServersMap, ServerWithId } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
@@ -21,7 +21,7 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
     return server as ServerWithId;
   }
 
-  return assoc('id', uuid(), server);
+  return assoc('id', sha256(`${server.url}-${server.apiKey}`), server);
 };
 
 export default buildReducer<ServersMap, CreateServersAction>({
@@ -40,7 +40,7 @@ export const createServers = pipe(
   (newServers: ServersMap) => ({ type: CREATE_SERVERS, newServers }),
 );
 
-export const createServer = (server: ServerWithId) => createServers([ server ]);
+export const createServer = (server: ServerData) => createServers([ server ]);
 
 export const editServer = (serverId: string, serverData: Partial<ServerData>) => ({
   type: EDIT_SERVER,

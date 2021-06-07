@@ -1,18 +1,17 @@
 import { FC } from 'react';
-import { v4 as uuid } from 'uuid';
 import { RouterProps } from 'react-router';
 import { Result } from '../utils/Result';
 import NoMenuLayout from '../common/NoMenuLayout';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
-import { ServerData, ServerWithId } from './data';
+import { ServerData, ServersMap } from './data';
 import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
 interface CreateServerProps extends RouterProps {
-  createServer: (server: ServerWithId) => void;
+  createServer: (server: ServerData) => { type: string, newServers: ServersMap};
 }
 
 const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
@@ -28,10 +27,11 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const handleSubmit = (serverData: ServerData) => {
-    const id = uuid();
+    const { newServers } = createServer({ ...serverData });
 
-    createServer({ ...serverData, id });
-    push(`/server/${id}`);
+    const newServer = Object.values(newServers)[0];
+    
+    push(`/server/${newServer.id}`);
   };
 
   return (
