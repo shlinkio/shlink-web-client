@@ -6,24 +6,29 @@ import {
   faCaretDown as caretDownIcon,
   faCaretUp as caretUpIcon,
   faCheck as checkIcon,
+  faRobot as botIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { UncontrolledTooltip } from 'reactstrap';
 import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
 import { determineOrderDir, OrderDir } from '../utils/utils';
 import { prettify } from '../utils/helpers/numbers';
+import { supportsBotVisits } from '../utils/helpers/features';
+import { SelectedServer } from '../servers/data';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
-interface VisitsTableProps {
+export interface VisitsTableProps {
   visits: NormalizedVisit[];
   selectedVisits?: NormalizedVisit[];
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
   matchMedia?: (query: string) => MediaQueryList;
   isOrphanVisits?: boolean;
+  selectedServer: SelectedServer;
 }
 
-type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer' | 'visitedUrl';
+type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer' | 'visitedUrl' | 'potentialBot';
 
 interface Order {
   field?: OrderableFields;
@@ -58,6 +63,7 @@ const VisitsTable = ({
   visits,
   selectedVisits = [],
   setSelectedVisits,
+  selectedServer,
   matchMedia = window.matchMedia,
   isOrphanVisits = false,
 }: VisitsTableProps) => {
@@ -69,10 +75,11 @@ const VisitsTable = ({
   const [ order, setOrder ] = useState<Order>({ field: undefined, dir: undefined });
   const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
   const isFirstLoad = useRef(true);
-
   const [ page, setPage ] = useState(1);
   const end = page * PAGE_SIZE;
   const start = end - PAGE_SIZE;
+  const supportsBots = supportsBotVisits(selectedServer);
+  const fullSizeColSpan = 7 + Number(supportsBots) + Number(isOrphanVisits);
 
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
@@ -102,13 +109,19 @@ const VisitsTable = ({
       <thead className="visits-table__header">
         <tr>
           <th
-            className="visits-table__header-cell visits-table__sticky text-center"
+            className={`${headerCellsClass} text-center`}
             onClick={() => setSelectedVisits(
               selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : [],
             )}
           >
             <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
           </th>
+          {supportsBots && (
+            <th className={`${headerCellsClass} text-center`} onClick={orderByColumn('potentialBot')}>
+              <FontAwesomeIcon icon={botIcon} />
+              {renderOrderIcon('potentialBot')}
+            </th>
+          )}
           <th className={headerCellsClass} onClick={orderByColumn('date')}>
             Date
             {renderOrderIcon('date')}
@@ -141,7 +154,7 @@ const VisitsTable = ({
           )}
         </tr>
         <tr>
-          <td colSpan={isOrphanVisits ? 8 : 7} className="p-0">
+          <td colSpan={fullSizeColSpan} className="p-0">
             <SearchField noBorder large={false} onChange={setSearchTerm} />
           </td>
         </tr>
@@ -149,7 +162,7 @@ const VisitsTable = ({
       <tbody>
         {!resultSet.visitsGroups[page - 1]?.length && (
           <tr>
-            <td colSpan={isOrphanVisits ? 8 : 7} className="text-center">
+            <td colSpan={fullSizeColSpan} className="text-center">
               No visits found with current filtering
             </td>
           </tr>
@@ -169,6 +182,18 @@ const VisitsTable = ({
               <td className="text-center">
                 {isSelected && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
               </td>
+              {supportsBots && (
+                <td className="text-center">
+                  {visit.potentialBot && (
+                    <>
+                      <FontAwesomeIcon icon={botIcon} id={`botIcon${index}`} />
+                      <UncontrolledTooltip placement="right" target={`botIcon${index}`}>
+                        Potentially a visit from a bot or crawler
+                      </UncontrolledTooltip>
+                    </>
+                  )}
+                </td>
+              )}
               <td>
                 <Moment format="YYYY-MM-DD HH:mm">{visit.date}</Moment>
               </td>
@@ -185,7 +210,7 @@ const VisitsTable = ({
       {resultSet.total > PAGE_SIZE && (
         <tfoot>
           <tr>
-            <td colSpan={isOrphanVisits ? 8 : 7} className="visits-table__footer-cell visits-table__sticky">
+            <td colSpan={fullSizeColSpan} className="visits-table__footer-cell visits-table__sticky">
               <div className="row">
                 <div className="col-md-6">
                   <SimplePaginator

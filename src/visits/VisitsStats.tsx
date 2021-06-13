@@ -15,6 +15,7 @@ import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/typ
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
+import { SelectedServer } from '../servers/data';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -23,13 +24,14 @@ import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, VisitsInfo } f
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 import { processStatsFromVisits } from './services/VisitsParser';
 import { OrphanVisitTypeDropdown } from './helpers/OrphanVisitTypeDropdown';
-import './VisitsStats.scss';
 import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
+import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
   getVisits: (params: Partial<ShlinkVisitsParams>) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
+  selectedServer: SelectedServer;
   cancelGetVisits: () => void;
   baseUrl: string;
   domain?: string;
@@ -67,9 +69,18 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
   </NavLink>
 );
 
-const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv, isOrphanVisits = false },
-) => {
+const VisitsStats: FC<VisitsStatsProps> = ({
+  children,
+  visitsInfo,
+  getVisits,
+  cancelGetVisits,
+  baseUrl,
+  domain,
+  settings,
+  exportCsv,
+  selectedServer,
+  isOrphanVisits = false,
+}) => {
   const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
@@ -243,6 +254,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   selectedVisits={highlightedVisits}
                   setSelectedVisits={setSelectedVisits}
                   isOrphanVisits={isOrphanVisits}
+                  selectedServer={selectedServer}
                 />
               </div>
             </Route>

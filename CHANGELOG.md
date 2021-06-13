@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
 * [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a a `conf.d` folder.
+* [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
 
 ### Changed
 * *Nothing*

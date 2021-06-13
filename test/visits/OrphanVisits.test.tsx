@@ -9,6 +9,7 @@ import VisitsStats from '../../src/visits/VisitsStats';
 import { OrphanVisitsHeader } from '../../src/visits/OrphanVisitsHeader';
 import { Settings } from '../../src/settings/reducers/settings';
 import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
+import { SelectedServer } from '../../src/servers/data';
 
 describe('<OrphanVisits />', () => {
   it('wraps visits stats and header', () => {
@@ -28,6 +29,7 @@ describe('<OrphanVisits />', () => {
         location={Mock.all<Location>()}
         match={Mock.of<match>({ url: 'the_base_url' })}
         settings={Mock.all<Settings>()}
+        selectedServer={Mock.all<SelectedServer>()}
       />,
     ).dive();
     const stats = wrapper.find(VisitsStats);

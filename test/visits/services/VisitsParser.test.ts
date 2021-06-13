@@ -43,6 +43,7 @@ describe('VisitsParser', () => {
     }),
     Mock.of<Visit>({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
+      potentialBot: true,
     }),
   ];
   const orphanVisits: OrphanVisit[] = [
@@ -61,6 +62,7 @@ describe('VisitsParser', () => {
     Mock.of<OrphanVisit>({
       type: 'regular_404',
       visitedUrl: 'bar',
+      potentialBot: true,
     }),
     Mock.of<OrphanVisit>({
       type: 'invalid_short_url',
@@ -73,6 +75,7 @@ describe('VisitsParser', () => {
         latitude: 123.45,
         longitude: -543.21,
       },
+      potentialBot: false,
     }),
   ];
 
@@ -176,6 +179,7 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: 123.45,
           longitude: -543.21,
+          potentialBot: false,
         },
         {
           browser: 'Firefox',
@@ -186,6 +190,7 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: 1029,
           longitude: 6758,
+          potentialBot: false,
         },
         {
           browser: 'Chrome',
@@ -196,6 +201,7 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: undefined,
           longitude: undefined,
+          potentialBot: false,
         },
         {
           browser: 'Chrome',
@@ -206,6 +212,7 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: 123.45,
           longitude: -543.21,
+          potentialBot: false,
         },
         {
           browser: 'Opera',
@@ -216,6 +223,7 @@ describe('VisitsParser', () => {
           date: undefined,
           latitude: undefined,
           longitude: undefined,
+          potentialBot: true,
         },
       ]);
     });
@@ -233,6 +241,7 @@ describe('VisitsParser', () => {
           longitude: 6758,
           type: 'base_url',
           visitedUrl: 'foo',
+          potentialBot: false,
         },
         {
           type: 'regular_404',
@@ -245,6 +254,7 @@ describe('VisitsParser', () => {
           longitude: undefined,
           os: 'Others',
           referer: 'Direct',
+          potentialBot: true,
         },
         {
           browser: 'Chrome',
@@ -257,6 +267,7 @@ describe('VisitsParser', () => {
           longitude: -543.21,
           type: 'invalid_short_url',
           visitedUrl: 'bar',
+          potentialBot: false,
         },
       ]);
     });

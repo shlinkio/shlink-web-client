@@ -1,43 +1,62 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import VisitsTable from '../../src/visits/VisitsTable';
+import VisitsTable, { VisitsTableProps } from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import SearchField from '../../src/utils/SearchField';
 import { NormalizedVisit } from '../../src/visits/types';
+import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<VisitsTable />', () => {
   const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
   const setSelectedVisits = jest.fn();
   let wrapper: ShallowWrapper;
-  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = [], isOrphanVisits = false) => {
+  const wrapperFactory = (props: Partial<VisitsTableProps> = {}) => {
     wrapper = shallow(
       <VisitsTable
-        visits={visits}
-        selectedVisits={selectedVisits}
-        setSelectedVisits={setSelectedVisits}
+        visits={[]}
+        selectedServer={Mock.all<SelectedServer>()}
+        {...props}
         matchMedia={matchMedia}
-        isOrphanVisits={isOrphanVisits}
+        setSelectedVisits={setSelectedVisits}
       />,
     );
 
     return wrapper;
   };
+  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => wrapperFactory(
+    { visits, selectedVisits },
+  );
+  const createOrphanVisitsWrapper = (isOrphanVisits: boolean, version: SemVer) => wrapperFactory({
+    isOrphanVisits,
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
+  });
+  const createServerVersionWrapper = (version: SemVer) => wrapperFactory({
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
+  });
+  const createWrapperWithBots = () => wrapperFactory({
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: '2.7.0', version: '2.7.0' }),
+    visits: [
+      Mock.of<NormalizedVisit>({ potentialBot: false }),
+      Mock.of<NormalizedVisit>({ potentialBot: true }),
+    ],
+  });
 
   afterEach(jest.resetAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  it('renders columns as expected', () => {
-    const wrapper = createWrapper([]);
+  it.each([
+    [ '2.6.0' as SemVer, [ 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
+    [ '2.7.0' as SemVer, [ 'fa-robot', 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
+  ])('renders columns as expected', (version, expectedColumns) => {
+    const wrapper = createServerVersionWrapper(version);
     const th = wrapper.find('thead').find('th');
 
-    expect(th).toHaveLength(7);
-    expect(th.at(1).text()).toContain('Date');
-    expect(th.at(2).text()).toContain('Country');
-    expect(th.at(3).text()).toContain('City');
-    expect(th.at(4).text()).toContain('Browser');
-    expect(th.at(5).text()).toContain('OS');
-    expect(th.at(6).text()).toContain('Referrer');
+    expect(th).toHaveLength(expectedColumns.length + 1);
+    expectedColumns.forEach((column, index) => {
+      expect(th.at(index + 1).html()).toContain(column);
+    });
   });
 
   it('shows warning when no visits are found', () => {
@@ -137,15 +156,25 @@ describe('<VisitsTable />', () => {
   });
 
   it.each([
-    [ true, 8 ],
-    [ false, 7 ],
-  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, expectedCols) => {
-    const wrapper = createWrapper([], [], isOrphanVisits);
+    [ true, '2.6.0' as SemVer, 8 ],
+    [ false, '2.6.0' as SemVer, 7 ],
+    [ true, '2.7.0' as SemVer, 9 ],
+    [ false, '2.7.0' as SemVer, 8 ],
+  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, version, expectedCols) => {
+    const wrapper = createOrphanVisitsWrapper(isOrphanVisits, version);
     const rowsWithColspan = wrapper.find('[colSpan]');
     const cols = wrapper.find('th');
 
     expect(cols).toHaveLength(expectedCols);
     expect(rowsWithColspan).toHaveLength(2);
     rowsWithColspan.forEach((row) => expect(row.prop('colSpan')).toEqual(expectedCols));
+  });
+
+  it('displays bots icon when a visit is a potential bot', () => {
+    const wrapper = createWrapperWithBots();
+    const rows = wrapper.find('tbody').find('tr');
+
+    expect(rows.at(0).find('td').at(1).text()).not.toContain('FontAwesomeIcon');
+    expect(rows.at(1).find('td').at(1).text()).toContain('FontAwesomeIcon');
   });
 });
