@@ -81,9 +81,10 @@ export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.redu
 );
 
 export const normalizeVisits = map((visit: Visit): NormalizedVisit => {
-  const { userAgent, date, referer, visitLocation } = visit;
+  const { userAgent, date, referer, visitLocation, potentialBot = false } = visit;
   const common = {
     date,
+    potentialBot,
     ...parseUserAgent(userAgent),
     referer: extractDomain(referer),
     country: visitLocation?.countryName || 'Unknown', // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing

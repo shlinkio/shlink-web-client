@@ -38,6 +38,7 @@ export interface RegularVisit {
   date: string;
   userAgent: string;
   visitLocation: VisitLocation | null;
+  potentialBot?: boolean; // Optional only when using Shlink older than v2.7
 }
 
 export interface OrphanVisit extends RegularVisit {
@@ -59,6 +60,7 @@ export interface NormalizedRegularVisit extends UserAgent {
   city: string;
   latitude?: number | null;
   longitude?: number | null;
+  potentialBot: boolean;
 }
 
 export interface NormalizedOrphanVisit extends NormalizedRegularVisit {

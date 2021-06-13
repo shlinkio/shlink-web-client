@@ -5,6 +5,7 @@ import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import SearchField from '../../src/utils/SearchField';
 import { NormalizedVisit } from '../../src/visits/types';
+import { SelectedServer } from '../../src/servers/data';
 
 describe('<VisitsTable />', () => {
   const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
@@ -18,6 +19,7 @@ describe('<VisitsTable />', () => {
         setSelectedVisits={setSelectedVisits}
         matchMedia={matchMedia}
         isOrphanVisits={isOrphanVisits}
+        selectedServer={Mock.all<SelectedServer>()}
       />,
     );
 
