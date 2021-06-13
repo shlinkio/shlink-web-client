@@ -24,7 +24,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#438](https://github.com/shlinkio/shlink-web-client/pull/438) Fixed horizontal scrolling in short URLs list on mobile devices when the long URL didn't have words to break.
 
 
 ## [3.1.2] - 2021-06-06
