@@ -10,6 +10,7 @@ import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
 import { Result } from '../../src/utils/Result';
 import { Settings } from '../../src/settings/reducers/settings';
+import { SelectedServer } from '../../src/servers/data';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -27,6 +28,7 @@ describe('<VisitStats />', () => {
         baseUrl={''}
         settings={Mock.all<Settings>()}
         exportCsv={exportCsv}
+        selectedServer={Mock.all<SelectedServer>()}
       />,
     );
 

@@ -39,6 +39,7 @@ describe('VisitsExporter', () => {
           longitude: 0,
           os: 'os',
           referer: 'referer',
+          potentialBot: false,
         },
       ];
 
