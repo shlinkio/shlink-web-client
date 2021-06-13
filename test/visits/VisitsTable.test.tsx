@@ -28,9 +28,19 @@ describe('<VisitsTable />', () => {
   const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => wrapperFactory(
     { visits, selectedVisits },
   );
-  const createOrphanVisitsWrapper = (isOrphanVisits: boolean) => wrapperFactory({ isOrphanVisits });
+  const createOrphanVisitsWrapper = (isOrphanVisits: boolean, version: SemVer) => wrapperFactory({
+    isOrphanVisits,
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
+  });
   const createServerVersionWrapper = (version: SemVer) => wrapperFactory({
     selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
+  });
+  const createWrapperWithBots = () => wrapperFactory({
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: '2.7.0', version: '2.7.0' }),
+    visits: [
+      Mock.of<NormalizedVisit>({ potentialBot: false }),
+      Mock.of<NormalizedVisit>({ potentialBot: true }),
+    ],
   });
 
   afterEach(jest.resetAllMocks);
@@ -146,15 +156,25 @@ describe('<VisitsTable />', () => {
   });
 
   it.each([
-    [ true, 8 ],
-    [ false, 7 ],
-  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, expectedCols) => {
-    const wrapper = createOrphanVisitsWrapper(isOrphanVisits);
+    [ true, '2.6.0' as SemVer, 8 ],
+    [ false, '2.6.0' as SemVer, 7 ],
+    [ true, '2.7.0' as SemVer, 9 ],
+    [ false, '2.7.0' as SemVer, 8 ],
+  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, version, expectedCols) => {
+    const wrapper = createOrphanVisitsWrapper(isOrphanVisits, version);
     const rowsWithColspan = wrapper.find('[colSpan]');
     const cols = wrapper.find('th');
 
     expect(cols).toHaveLength(expectedCols);
     expect(rowsWithColspan).toHaveLength(2);
     rowsWithColspan.forEach((row) => expect(row.prop('colSpan')).toEqual(expectedCols));
+  });
+
+  it('displays bots icon when a visit is a potential bot', () => {
+    const wrapper = createWrapperWithBots();
+    const rows = wrapper.find('tbody').find('tr');
+
+    expect(rows.at(0).find('td').at(1).text()).not.toContain('FontAwesomeIcon');
+    expect(rows.at(1).find('td').at(1).text()).toContain('FontAwesomeIcon');
   });
 });
