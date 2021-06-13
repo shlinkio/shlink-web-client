@@ -1,45 +1,52 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import VisitsTable from '../../src/visits/VisitsTable';
+import VisitsTable, { VisitsTableProps } from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import SearchField from '../../src/utils/SearchField';
 import { NormalizedVisit } from '../../src/visits/types';
-import { SelectedServer } from '../../src/servers/data';
+import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<VisitsTable />', () => {
   const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
   const setSelectedVisits = jest.fn();
   let wrapper: ShallowWrapper;
-  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = [], isOrphanVisits = false) => {
+  const wrapperFactory = (props: Partial<VisitsTableProps> = {}) => {
     wrapper = shallow(
       <VisitsTable
-        visits={visits}
-        selectedVisits={selectedVisits}
-        setSelectedVisits={setSelectedVisits}
-        matchMedia={matchMedia}
-        isOrphanVisits={isOrphanVisits}
+        visits={[]}
         selectedServer={Mock.all<SelectedServer>()}
+        {...props}
+        matchMedia={matchMedia}
+        setSelectedVisits={setSelectedVisits}
       />,
     );
 
     return wrapper;
   };
+  const createWrapper = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => wrapperFactory(
+    { visits, selectedVisits },
+  );
+  const createOrphanVisitsWrapper = (isOrphanVisits: boolean) => wrapperFactory({ isOrphanVisits });
+  const createServerVersionWrapper = (version: SemVer) => wrapperFactory({
+    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
+  });
 
   afterEach(jest.resetAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  it('renders columns as expected', () => {
-    const wrapper = createWrapper([]);
+  it.each([
+    [ '2.6.0' as SemVer, [ 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
+    [ '2.7.0' as SemVer, [ 'fa-robot', 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
+  ])('renders columns as expected', (version, expectedColumns) => {
+    const wrapper = createServerVersionWrapper(version);
     const th = wrapper.find('thead').find('th');
 
-    expect(th).toHaveLength(7);
-    expect(th.at(1).text()).toContain('Date');
-    expect(th.at(2).text()).toContain('Country');
-    expect(th.at(3).text()).toContain('City');
-    expect(th.at(4).text()).toContain('Browser');
-    expect(th.at(5).text()).toContain('OS');
-    expect(th.at(6).text()).toContain('Referrer');
+    expect(th).toHaveLength(expectedColumns.length + 1);
+    expectedColumns.forEach((column, index) => {
+      expect(th.at(index + 1).html()).toContain(column);
+    });
   });
 
   it('shows warning when no visits are found', () => {
@@ -142,7 +149,7 @@ describe('<VisitsTable />', () => {
     [ true, 8 ],
     [ false, 7 ],
   ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, expectedCols) => {
-    const wrapper = createWrapper([], [], isOrphanVisits);
+    const wrapper = createOrphanVisitsWrapper(isOrphanVisits);
     const rowsWithColspan = wrapper.find('[colSpan]');
     const cols = wrapper.find('th');
 

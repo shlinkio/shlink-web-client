@@ -19,7 +19,7 @@ import { SelectedServer } from '../servers/data';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
-interface VisitsTableProps {
+export interface VisitsTableProps {
   visits: NormalizedVisit[];
   selectedVisits?: NormalizedVisit[];
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
@@ -75,11 +75,10 @@ const VisitsTable = ({
   const [ order, setOrder ] = useState<Order>({ field: undefined, dir: undefined });
   const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
   const isFirstLoad = useRef(true);
-  const supportsBots = supportsBotVisits(selectedServer);
-
   const [ page, setPage ] = useState(1);
   const end = page * PAGE_SIZE;
   const start = end - PAGE_SIZE;
+  const supportsBots = supportsBotVisits(selectedServer);
   const fullSizeColSpan = 7 + Number(supportsBots) + Number(isOrphanVisits);
 
   const orderByColumn = (field: OrderableFields) =>
