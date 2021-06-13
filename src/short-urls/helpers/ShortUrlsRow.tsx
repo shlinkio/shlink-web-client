@@ -68,7 +68,7 @@ const ShortUrlsRow = (
         <ExternalLink href={shortUrl.longUrl}>{shortUrl.title ?? shortUrl.longUrl}</ExternalLink>
       </td>
       {shortUrl.title && (
-        <td className="short-urls-row__cell d-lg-none" data-th="Long URL: ">
+        <td className="short-urls-row__cell short-urls-row__cell--break d-lg-none" data-th="Long URL: ">
           <ExternalLink href={shortUrl.longUrl} />
         </td>
       )}
