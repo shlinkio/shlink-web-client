@@ -16,6 +16,7 @@ import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
+import { supportsBotVisits } from '../utils/helpers/features';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
@@ -86,6 +87,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
   const [ visitsFilter, setVisitsFilter ] = useState<VisitsFilter>({});
+  const botsSupported = supportsBotVisits(selectedServer);
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
@@ -282,6 +284,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
               <VisitsFilterDropdown
                 className="ml-0 ml-md-2 mt-3 mt-md-0"
                 isOrphanVisits={isOrphanVisits}
+                botsSupported={botsSupported}
                 selected={visitsFilter}
                 onChange={setVisitsFilter}
               />

@@ -14,7 +14,7 @@ describe('<EditShortUrl />', () => {
   const ShortUrlForm = () => null;
   const goBack = jest.fn();
   const getShortUrlDetail = jest.fn();
-  const editShortUrl = jest.fn();
+  const editShortUrl = jest.fn(async () => Promise.resolve());
   const shortUrlCreation = { validateUrls: true };
   const createWrapper = (detail: Partial<ShortUrlDetail> = {}, edition: Partial<ShortUrlEdition> = {}) => {
     const EditSHortUrl = createEditShortUrl(ShortUrlForm);

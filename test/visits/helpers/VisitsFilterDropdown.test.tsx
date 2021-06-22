@@ -8,7 +8,12 @@ describe('<VisitsFilterDropdown />', () => {
   const onChange = jest.fn();
   const createWrapper = (selected: VisitsFilter = {}, isOrphanVisits = true) => {
     wrapper = shallow(
-      <VisitsFilterDropdown isOrphanVisits={isOrphanVisits} selected={selected} onChange={onChange} />,
+      <VisitsFilterDropdown
+        isOrphanVisits={isOrphanVisits}
+        botsSupported={true}
+        selected={selected}
+        onChange={onChange}
+      />,
     );
 
     return wrapper;
@@ -67,5 +72,18 @@ describe('<VisitsFilterDropdown />', () => {
     itemToClick.simulate('click');
 
     expect(onChange).toHaveBeenCalledWith(expectedSelection);
+  });
+
+  it('does not render the component when neither orphan visits or bots filtering will be displayed', () => {
+    const wrapper = shallow(
+      <VisitsFilterDropdown
+        isOrphanVisits={false}
+        botsSupported={false}
+        selected={{}}
+        onChange={onChange}
+      />,
+    );
+
+    expect(wrapper.text()).toEqual('');
   });
 });

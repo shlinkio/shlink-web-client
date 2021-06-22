@@ -12,7 +12,7 @@ import { SimpleCard } from '../../src/utils/SimpleCard';
 describe('<ShortUrlForm />', () => {
   let wrapper: ShallowWrapper;
   const TagsSelector = () => null;
-  const createShortUrl = jest.fn();
+  const createShortUrl = jest.fn(async () => Promise.resolve());
   const createWrapper = (selectedServer: SelectedServer = null, mode: Mode = 'create') => {
     const ShortUrlForm = createShortUrlForm(TagsSelector, () => null);
 

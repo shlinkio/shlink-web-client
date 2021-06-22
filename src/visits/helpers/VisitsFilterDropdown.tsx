@@ -13,28 +13,36 @@ interface VisitsFilterDropdownProps {
   selected?: VisitsFilter;
   className?: string;
   isOrphanVisits: boolean;
+  botsSupported: boolean;
 }
 
 export const VisitsFilterDropdown = (
-  { onChange, selected = {}, className, isOrphanVisits }: VisitsFilterDropdownProps,
+  { onChange, selected = {}, className, isOrphanVisits, botsSupported }: VisitsFilterDropdownProps,
 ) => {
+  if (!botsSupported && !isOrphanVisits) {
+    return null;
+  }
+
   const { orphanVisitsType, excludeBots = false } = selected;
   const propsForOrphanVisitsTypeItem = (type: OrphanVisitType): DropdownItemProps => ({
     active: orphanVisitsType === type,
     onClick: () => onChange({ ...selected, orphanVisitsType: type }),
   });
+  const onBotsClick = () => onChange({ ...selected, excludeBots: !selected?.excludeBots });
 
   return (
     <DropdownBtn text="Filters" dropdownClassName={className} className="mr-3" right minWidth={250}>
-      <DropdownItem header>Bots:</DropdownItem>
-      <DropdownItem active={excludeBots} onClick={() => onChange({ ...selected, excludeBots: !selected?.excludeBots })}>
-        Exclude potential bots
-      </DropdownItem>
+      {botsSupported && (
+        <>
+          <DropdownItem header>Bots:</DropdownItem>
+          <DropdownItem active={excludeBots} onClick={onBotsClick}>Exclude potential bots</DropdownItem>
+        </>
+      )}
+
+      {botsSupported && isOrphanVisits && <DropdownItem divider />}
 
       {isOrphanVisits && (
         <>
-          <DropdownItem divider />
-
           <DropdownItem header>Orphan visits type:</DropdownItem>
           <DropdownItem {...propsForOrphanVisitsTypeItem('base_url')}>Base URL</DropdownItem>
           <DropdownItem {...propsForOrphanVisitsTypeItem('invalid_short_url')}>Invalid short URL</DropdownItem>
