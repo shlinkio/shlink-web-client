@@ -38,4 +38,15 @@ describe('<DropdownBtn />', () => {
 
     expect(toggle.prop('className')?.trim()).toEqual(expectedClasses);
   });
+
+  it.each([
+    [ 100, { minWidth: '100px' }],
+    [ 250, { minWidth: '250px' }],
+    [ undefined, {}],
+  ])('renders proper styles when minWidth is provided', (minWidth, expectedStyle) => {
+    const wrapper = createWrapper({ text: '', minWidth });
+    const style = wrapper.find(DropdownMenu).prop('style');
+
+    expect(style).toEqual(expectedStyle);
+  });
 });
