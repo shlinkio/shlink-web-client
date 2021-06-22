@@ -1,14 +1,8 @@
 import { countBy, filter, groupBy, pipe, prop } from 'ramda';
 import { normalizeVisits } from '../services/VisitsParser';
-import {
-  Visit,
-  OrphanVisit,
-  CreateVisit,
-  NormalizedVisit,
-  NormalizedOrphanVisit,
-  Stats,
-  OrphanVisitType,
-} from './index';
+import { VisitsFilter } from '../helpers/VisitsFilterDropdown';
+import { hasValue } from '../../utils/utils';
+import { Visit, OrphanVisit, CreateVisit, NormalizedVisit, NormalizedOrphanVisit, Stats } from './index';
 
 export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => visit.hasOwnProperty('visitedUrl');
 
@@ -35,7 +29,19 @@ export const highlightedVisitsToStats = <T extends NormalizedVisit>(
   property: HighlightableProps<T>,
 ): Stats => countBy(prop(property) as any, highlightedVisits);
 
-export const normalizeAndFilterVisits = (visits: Visit[], type: OrphanVisitType | undefined) => pipe(
+export const normalizeAndFilterVisits = (visits: Visit[], filters: VisitsFilter) => pipe(
   normalizeVisits,
-  filter((normalizedVisit) => type === undefined || (normalizedVisit as NormalizedOrphanVisit).type === type),
+  filter((normalizedVisit: NormalizedVisit) => {
+    if (!hasValue(filters)) {
+      return true;
+    }
+
+    const { orphanVisitsType, excludeBots } = filters;
+
+    if (orphanVisitsType && orphanVisitsType !== (normalizedVisit as NormalizedOrphanVisit).type) {
+      return false;
+    }
+
+    return !(excludeBots && normalizedVisit.potentialBot);
+  }),
 )(visits);
