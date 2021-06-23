@@ -25,3 +25,5 @@ export const supportsQrCodeMargin = supportsShortUrlTitle;
 export const supportsTagsInPatch = supportsShortUrlTitle;
 
 export const supportsBotVisits = serverMatchesVersions({ minVersion: '2.7.0' });
+
+export const supportsCrawlableVisits = supportsBotVisits;

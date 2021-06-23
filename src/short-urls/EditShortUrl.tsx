@@ -41,6 +41,7 @@ const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSetting
     validSince: shortUrl.meta.validSince ?? undefined,
     validUntil: shortUrl.meta.validUntil ?? undefined,
     maxVisits: shortUrl.meta.maxVisits ?? undefined,
+    crawlable: shortUrl.crawlable,
     validateUrl,
   };
 };
