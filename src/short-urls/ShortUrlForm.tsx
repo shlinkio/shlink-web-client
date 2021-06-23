@@ -6,6 +6,7 @@ import m from 'moment';
 import classNames from 'classnames';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
+  supportsCrawlableVisits,
   supportsListingDomains,
   supportsSettingShortCodeLength,
   supportsShortUrlTitle,
@@ -20,6 +21,7 @@ import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 import { ShortUrlData } from './data';
+import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import './ShortUrlForm.scss';
 
 export type Mode = 'create' | 'create-basic' | 'edit';
@@ -108,7 +110,8 @@ export const ShortUrlForm = (
     'col-sm-12': !showCustomizeCard,
   });
   const showValidateUrl = supportsValidateUrl(selectedServer);
-  const showExtraValidationsCard = showValidateUrl || !isEdit;
+  const showCrawlableControl = supportsCrawlableVisits(selectedServer);
+  const showExtraValidationsCard = showValidateUrl || showCrawlableControl || !isEdit;
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -167,23 +170,24 @@ export const ShortUrlForm = (
           </Row>
 
           {showExtraValidationsCard && (
-            <SimpleCard title="Extra validations" className="mb-3">
-              {!isEdit && (
-                <p>
-                  Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
-                  provided data.
-                </p>
-              )}
+            <SimpleCard title="Extra checks" className="mb-3">
               {showValidateUrl && (
-                <p>
-                  <Checkbox
-                    inline
-                    checked={shortUrlData.validateUrl}
-                    onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
-                  >
-                    Validate URL
-                  </Checkbox>
-                </p>
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
+                  checked={shortUrlData.validateUrl}
+                  onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
+                >
+                  Validate URL
+                </ShortUrlFormCheckboxGroup>
+              )}
+              {showCrawlableControl && (
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
+                  checked={shortUrlData.crawlable}
+                  onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
+                >
+                  Make it crawlable
+                </ShortUrlFormCheckboxGroup>
               )}
               {!isEdit && (
                 <p>

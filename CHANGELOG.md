@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a a `conf.d` folder.
 * [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
 * [#431](https://github.com/shlinkio/shlink-web-client/pull/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
+* [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
 
 ### Changed
 * *Nothing*
