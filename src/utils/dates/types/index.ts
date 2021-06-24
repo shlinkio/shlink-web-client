@@ -1,10 +1,10 @@
-import moment from 'moment';
+import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { filter, isEmpty } from 'ramda';
 import { formatInternational } from '../../helpers/date';
 
 export interface DateRange {
-  startDate?: moment.Moment | null;
-  endDate?: moment.Moment | null;
+  startDate?: Date | null;
+  endDate?: Date | null;
 }
 
 export type DateInterval = 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'last90Days' | 'last180days' | 'last365Days';
@@ -54,6 +54,8 @@ export const rangeOrIntervalToString = (range?: DateRange | DateInterval): strin
   return INTERVAL_TO_STRING_MAP[range];
 };
 
+const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(new Date(), daysAgo));
+
 export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
   if (!dateInterval) {
     return {};
@@ -61,21 +63,19 @@ export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
 
   switch (dateInterval) {
     case 'today':
-      return { startDate: moment().startOf('day'), endDate: moment() };
+      return { startDate: startOfDay(new Date()), endDate: new Date() };
     case 'yesterday':
-      const yesterday = moment().subtract(1, 'day'); // eslint-disable-line no-case-declarations
-
-      return { startDate: yesterday.startOf('day'), endDate: yesterday.endOf('day') };
+      return { startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(new Date(), 1)) };
     case 'last7Days':
-      return { startDate: moment().subtract(7, 'days').startOf('day'), endDate: moment() };
+      return { startDate: startOfDaysAgo(7), endDate: new Date() };
     case 'last30Days':
-      return { startDate: moment().subtract(30, 'days').startOf('day'), endDate: moment() };
+      return { startDate: startOfDaysAgo(30), endDate: new Date() };
     case 'last90Days':
-      return { startDate: moment().subtract(90, 'days').startOf('day'), endDate: moment() };
+      return { startDate: startOfDaysAgo(90), endDate: new Date() };
     case 'last180days':
-      return { startDate: moment().subtract(180, 'days').startOf('day'), endDate: moment() };
+      return { startDate: startOfDaysAgo(180), endDate: new Date() };
     case 'last365Days':
-      return { startDate: moment().subtract(365, 'days').startOf('day'), endDate: moment() };
+      return { startDate: startOfDaysAgo(365), endDate: new Date() };
   }
 
   return {};

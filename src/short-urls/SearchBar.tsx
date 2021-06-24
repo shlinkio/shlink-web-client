@@ -1,7 +1,7 @@
 import { faTags as tagsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, pipe } from 'ramda';
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 import SearchField from '../utils/SearchField';
 import Tag from '../tags/helpers/Tag';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
@@ -16,7 +16,7 @@ interface SearchBarProps {
   shortUrlsListParams: ShortUrlsListParams;
 }
 
-const dateOrNull = (date?: string) => date ? moment(date) : null;
+const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
 const SearchBar = (colorGenerator: ColorGenerator) => ({ listShortUrls, shortUrlsListParams }: SearchBarProps) => {
   const selectedTags = shortUrlsListParams.tags ?? [];

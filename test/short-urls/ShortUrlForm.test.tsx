@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import moment from 'moment';
+import { formatISO, parse } from 'date-fns';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { Input } from 'reactstrap';
@@ -34,8 +34,8 @@ describe('<ShortUrlForm />', () => {
 
   it('saves short URL with data set in form controls', () => {
     const wrapper = createWrapper();
-    const validSince = moment('2017-01-01');
-    const validUntil = moment('2017-01-06');
+    const validSince = parse('2017-01-01', 'yyyy-MM-dd', new Date());
+    const validUntil = parse('2017-01-06', 'yyyy-MM-dd', new Date());
 
     wrapper.find(Input).first().simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
     wrapper.find('TagsSelector').simulate('change', [ 'tag_foo', 'tag_bar' ]);
@@ -53,8 +53,8 @@ describe('<ShortUrlForm />', () => {
       tags: [ 'tag_foo', 'tag_bar' ],
       customSlug: 'my-slug',
       domain: 'example.com',
-      validSince: validSince.format(),
-      validUntil: validUntil.format(),
+      validSince: formatISO(validSince),
+      validUntil: formatISO(validUntil),
       maxVisits: 20,
       findIfExists: false,
       shortCodeLength: 15,

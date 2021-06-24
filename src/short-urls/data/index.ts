@@ -1,12 +1,11 @@
-import * as m from 'moment';
 import { Nullable, OptionalString } from '../../utils/utils';
 
 export interface EditShortUrlData {
   longUrl?: string;
   tags?: string[];
   title?: string;
-  validSince?: m.Moment | string | null;
-  validUntil?: m.Moment | string | null;
+  validSince?: Date | string | null;
+  validUntil?: Date | string | null;
   maxVisits?: number | null;
   validateUrl?: boolean;
   crawlable?: boolean;

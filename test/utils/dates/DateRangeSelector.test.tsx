@@ -1,6 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
-import moment from 'moment';
 import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
@@ -40,7 +39,7 @@ describe('<DateRangeSelector />', () => {
     [ 'last90Days' as DateInterval, 0, 1 ],
     [ 'last180days' as DateInterval, 0, 1 ],
     [ 'last365Days' as DateInterval, 0, 1 ],
-    [{ startDate: moment() }, 0, 0 ],
+    [{ startDate: new Date() }, 0, 0 ],
   ])('sets proper element as active based on provided date range', (
     initialDateRange,
     expectedActiveItems,

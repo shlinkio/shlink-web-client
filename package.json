@@ -33,6 +33,7 @@
     "classnames": "^2.2.6",
     "compare-versions": "^3.6.0",
     "csvjson": "^5.1.0",
+    "date-fns": "^2.22.1",
     "event-source-polyfill": "^1.0.22",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
