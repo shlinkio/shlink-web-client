@@ -49,11 +49,11 @@ const STEPS_MAP: Record<Step, string> = {
   hourly: 'Hour',
 };
 
-const STEP_TO_DURATION_MAP: Record<Step, Duration> = {
-  hourly: { hours: 1 },
-  daily: { days: 1 },
-  weekly: { weeks: 1 },
-  monthly: { months: 1 },
+const STEP_TO_DURATION_MAP: Record<Step, (amount: number) => Duration> = {
+  hourly: (hours: number) => ({ hours }),
+  daily: (days: number) => ({ days }),
+  weekly: (weeks: number) => ({ weeks }),
+  monthly: (months: number) => ({ months }),
 };
 
 const STEP_TO_DIFF_FUNC_MAP: Record<Step, (dateLeft: Date, dateRight: Date) => number> = {
@@ -115,7 +115,7 @@ const generateLabels = (step: Step, visits: NormalizedVisit[]): string[] => {
 
   return [
     formatter(oldestDate),
-    ...rangeOf(size, () => formatter(add(oldestDate, duration))),
+    ...rangeOf(size, (num) => formatter(add(oldestDate, duration(num)))),
   ];
 };
 
