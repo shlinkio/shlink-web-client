@@ -10,7 +10,17 @@ import {
 } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import { always, cond, countBy, reverse } from 'ramda';
-import moment from 'moment';
+import {
+  add,
+  differenceInDays,
+  differenceInHours,
+  differenceInMonths,
+  differenceInWeeks,
+  parseISO,
+  format,
+  startOfISOWeek,
+  endOfISOWeek,
+} from 'date-fns';
 import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
@@ -39,46 +49,53 @@ const STEPS_MAP: Record<Step, string> = {
   hourly: 'Hour',
 };
 
-const STEP_TO_DATE_UNIT_MAP: Record<Step, moment.unitOfTime.Diff> = {
-  hourly: 'hour',
-  daily: 'day',
-  weekly: 'week',
-  monthly: 'month',
+const STEP_TO_DURATION_MAP: Record<Step, Duration> = {
+  hourly: { hours: 1 },
+  daily: { days: 1 },
+  weekly: { weeks: 1 },
+  monthly: { months: 1 },
 };
 
-const STEP_TO_DATE_FORMAT: Record<Step, (date: moment.Moment | string) => string> = {
-  hourly: (date) => moment(date).format('YYYY-MM-DD HH:00'),
-  daily: (date) => moment(date).format('YYYY-MM-DD'),
+const STEP_TO_DIFF_FUNC_MAP: Record<Step, (dateLeft: Date, dateRight: Date) => number> = {
+  hourly: differenceInHours,
+  daily: differenceInDays,
+  weekly: differenceInWeeks,
+  monthly: differenceInMonths,
+};
+
+const STEP_TO_DATE_FORMAT: Record<Step, (date: Date) => string> = {
+  hourly: (date) => format(date, 'yyyy-MM-dd HH:00'),
+  daily: (date) => format(date, 'yyyy-MM-dd'),
   weekly(date) {
-    const firstWeekDay = moment(date).isoWeekday(1).format('YYYY-MM-DD');
-    const lastWeekDay = moment(date).isoWeekday(7).format('YYYY-MM-DD');
+    const firstWeekDay = format(startOfISOWeek(date), 'yyyy-MM-dd');
+    const lastWeekDay = format(endOfISOWeek(date), 'yyyy-MM-dd');
 
     return `${firstWeekDay} - ${lastWeekDay}`;
   },
-  monthly: (date) => moment(date).format('YYYY-MM'),
+  monthly: (date) => format(date, 'yyyy-MM'),
 };
 
 const determineInitialStep = (oldestVisitDate: string): Step => {
-  const now = moment();
-  const oldestDate = moment(oldestVisitDate);
+  const now = new Date();
+  const oldestDate = parseISO(oldestVisitDate);
   const matcher = cond<never, Step | undefined>([
-    [ () => now.diff(oldestDate, 'day') <= 2, always<Step>('hourly') ], // Less than 2 days
-    [ () => now.diff(oldestDate, 'month') <= 1, always<Step>('daily') ], // Between 2 days and 1 month
-    [ () => now.diff(oldestDate, 'month') <= 6, always<Step>('weekly') ], // Between 1 and 6 months
+    [ () => differenceInDays(now, oldestDate) <= 2, always<Step>('hourly') ], // Less than 2 days
+    [ () => differenceInMonths(now, oldestDate) <= 1, always<Step>('daily') ], // Between 2 days and 1 month
+    [ () => differenceInMonths(now, oldestDate) <= 6, always<Step>('weekly') ], // Between 1 and 6 months
   ]);
 
   return matcher() ?? 'monthly';
 };
 
 const groupVisitsByStep = (step: Step, visits: NormalizedVisit[]): Stats => countBy(
-  (visit) => STEP_TO_DATE_FORMAT[step](visit.date),
+  (visit) => STEP_TO_DATE_FORMAT[step](parseISO(visit.date)),
   visits,
 );
 
 const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) =>
   visits.reduce<Record<string, NormalizedVisit[]>>(
     (acc, visit) => {
-      const key = STEP_TO_DATE_FORMAT[step](visit.date);
+      const key = STEP_TO_DATE_FORMAT[step](parseISO(visit.date));
 
       acc[key] = acc[key] ?? [];
       acc[key].push(visit);
@@ -89,15 +106,16 @@ const visitsToDatasetGroups = (step: Step, visits: NormalizedVisit[]) =>
   );
 
 const generateLabels = (step: Step, visits: NormalizedVisit[]): string[] => {
-  const unit = STEP_TO_DATE_UNIT_MAP[step];
+  const diffFunc = STEP_TO_DIFF_FUNC_MAP[step];
   const formatter = STEP_TO_DATE_FORMAT[step];
-  const newerDate = moment(visits[0].date);
-  const oldestDate = moment(visits[visits.length - 1].date);
-  const size = newerDate.diff(oldestDate, unit);
+  const newerDate = parseISO(visits[0].date);
+  const oldestDate = parseISO(visits[visits.length - 1].date);
+  const size = diffFunc(newerDate, oldestDate);
+  const duration = STEP_TO_DURATION_MAP[step];
 
   return [
     formatter(oldestDate),
-    ...rangeOf(size, () => formatter(oldestDate.add(1, unit))),
+    ...rangeOf(size, () => formatter(add(oldestDate, duration))),
   ];
 };
 

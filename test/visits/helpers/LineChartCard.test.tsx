@@ -75,8 +75,8 @@ describe('<LineChartCard />', () => {
   });
 
   it.each([
-    [[ Mock.of<NormalizedVisit>({}) ], [], 1 ],
-    [[ Mock.of<NormalizedVisit>({}) ], [ Mock.of<NormalizedVisit>({}) ], 2 ],
+    [[ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], [], 1 ],
+    [[ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], [ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], 2 ],
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);
