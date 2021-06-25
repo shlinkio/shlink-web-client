@@ -1,10 +1,9 @@
-import moment from 'moment';
 import DateInput from '../DateInput';
 import { DateRange } from './types';
 
 interface DateRangeRowProps extends DateRange {
-  onStartDateChange: (date: moment.Moment | null) => void;
-  onEndDateChange: (date: moment.Moment | null) => void;
+  onStartDateChange: (date: Date | null) => void;
+  onEndDateChange: (date: Date | null) => void;
   disabled?: boolean;
 }
 

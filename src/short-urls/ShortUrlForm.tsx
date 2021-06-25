@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { isEmpty, pipe, replace, trim } from 'ramda';
-import m from 'moment';
 import classNames from 'classnames';
+import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
   supportsCrawlableVisits,
@@ -38,6 +38,7 @@ export interface ShortUrlFormProps {
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
+const toDate = (date?: string | Date): Date | undefined => typeof date === 'string' ? parseISO(date) : date;
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
@@ -74,7 +75,7 @@ export const ShortUrlForm = (
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateInputProps> = {}) => (
     <div className="form-group">
       <DateInput
-        selected={shortUrlData[id] ? m(shortUrlData[id]) : null}
+        selected={shortUrlData[id] ? toDate(shortUrlData[id] as string | Date) : null}
         placeholderText={placeholder}
         isClearable
         onChange={(date) => setShortUrlData({ ...shortUrlData, [id]: date })}
@@ -163,8 +164,8 @@ export const ShortUrlForm = (
             <div className={limitAccessCardClasses}>
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? m(shortUrlData.validUntil) : undefined })}
-                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? m(shortUrlData.validSince) : undefined })}
+                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? toDate(shortUrlData.validUntil) : undefined })}
+                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? toDate(shortUrlData.validSince) : undefined })}
               </SimpleCard>
             </div>
           </Row>

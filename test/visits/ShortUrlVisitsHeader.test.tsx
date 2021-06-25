@@ -1,10 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import Moment from 'react-moment';
 import { ExternalLink } from 'react-external-link';
 import { Mock } from 'ts-mockery';
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
+import { Time } from '../../src/utils/Time';
 
 describe('<ShortUrlVisitsHeader />', () => {
   let wrapper: ShallowWrapper;
@@ -36,9 +36,9 @@ describe('<ShortUrlVisitsHeader />', () => {
   afterEach(() => wrapper.unmount());
 
   it('shows when the URL was created', () => {
-    const moment = wrapper.find(Moment).first();
+    const time = wrapper.find(Time).first();
 
-    expect(moment.prop('children')).toEqual(dateCreated);
+    expect(time.prop('date')).toEqual(dateCreated);
   });
 
   it.each([

@@ -1,6 +1,5 @@
-import { isEmpty } from 'ramda';
 import { FC, useEffect, useRef } from 'react';
-import Moment from 'react-moment';
+import { isEmpty } from 'ramda';
 import { ExternalLink } from 'react-external-link';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
@@ -8,6 +7,7 @@ import Tag from '../../tags/helpers/Tag';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { ShortUrl } from '../data';
+import { Time } from '../../utils/Time';
 import ShortUrlVisitsCount from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
@@ -53,7 +53,7 @@ const ShortUrlsRow = (
   return (
     <tr className="short-urls-row">
       <td className="indivisible short-urls-row__cell" data-th="Created at: ">
-        <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
+        <Time date={shortUrl.dateCreated} />
       </td>
       <td className="short-urls-row__cell" data-th="Short URL: ">
         <span className="indivisible short-urls-row__cell--relative">

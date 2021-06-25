@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
-import Moment from 'react-moment';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
 import {
@@ -16,6 +15,7 @@ import { determineOrderDir, OrderDir } from '../utils/utils';
 import { prettify } from '../utils/helpers/numbers';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
+import { Time } from '../utils/Time';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
@@ -194,9 +194,7 @@ const VisitsTable = ({
                   )}
                 </td>
               )}
-              <td>
-                <Moment format="YYYY-MM-DD HH:mm">{visit.date}</Moment>
-              </td>
+              <td><Time date={visit.date} /></td>
               <td>{visit.country}</td>
               <td>{visit.city}</td>
               <td>{visit.browser}</td>
