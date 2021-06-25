@@ -1,4 +1,4 @@
-import { format, parse, subDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import {
   DateInterval,
   dateRangeIsEmpty,
@@ -6,6 +6,7 @@ import {
   rangeIsInterval,
   rangeOrIntervalToString,
 } from '../../../../src/utils/dates/types';
+import { parseDate } from '../../../../src/utils/helpers/date';
 
 describe('date-types', () => {
   describe('dateRangeIsEmpty', () => {
@@ -58,13 +59,10 @@ describe('date-types', () => {
       [{ startDate: undefined, endDate: undefined }, undefined ],
       [{ startDate: undefined, endDate: null }, undefined ],
       [{ startDate: null, endDate: undefined }, undefined ],
-      [{ startDate: parse('2020-01-01', 'yyyy-MM-dd', new Date()) }, 'Since 2020-01-01' ],
-      [{ endDate: parse('2020-01-01', 'yyyy-MM-dd', new Date()) }, 'Until 2020-01-01' ],
+      [{ startDate: parseDate('2020-01-01', 'yyyy-MM-dd') }, 'Since 2020-01-01' ],
+      [{ endDate: parseDate('2020-01-01', 'yyyy-MM-dd') }, 'Until 2020-01-01' ],
       [
-        {
-          startDate: parse('2020-01-01', 'yyyy-MM-dd', new Date()),
-          endDate: parse('2021-02-02', 'yyyy-MM-dd', new Date()),
-        },
+        { startDate: parseDate('2020-01-01', 'yyyy-MM-dd'), endDate: parseDate('2021-02-02', 'yyyy-MM-dd') },
         '2020-01-01 - 2021-02-02',
       ],
     ])('proper result is returned', (range, expectedValue) => {

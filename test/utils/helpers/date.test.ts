@@ -1,12 +1,12 @@
-import { formatISO, parse } from 'date-fns';
-import { formatDate, formatIsoDate } from '../../../src/utils/helpers/date';
+import { formatISO } from 'date-fns';
+import { formatDate, formatIsoDate, parseDate } from '../../../src/utils/helpers/date';
 
 describe('date', () => {
   describe('formatDate', () => {
     it.each([
-      [ parse('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss', new Date()), 'dd/MM/yyyy', '05/03/2020' ],
-      [ parse('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss', new Date()), 'yyyy-MM', '2020-03' ],
-      [ parse('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss', new Date()), undefined, '2020-03-05' ],
+      [ parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), 'dd/MM/yyyy', '05/03/2020' ],
+      [ parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), 'yyyy-MM', '2020-03' ],
+      [ parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), undefined, '2020-03-05' ],
       [ '2020-03-05 10:00:10', 'dd-MM-yyyy', '2020-03-05 10:00:10' ],
       [ '2020-03-05 10:00:10', undefined, '2020-03-05 10:00:10' ],
       [ undefined, undefined, undefined ],
@@ -19,8 +19,8 @@ describe('date', () => {
   describe('formatIsoDate', () => {
     it.each([
       [
-        parse('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss', new Date()),
-        formatISO(parse('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss', new Date())),
+        parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'),
+        formatISO(parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss')),
       ],
       [ '2020-03-05 10:00:10', '2020-03-05 10:00:10' ],
       [ 'foo', 'foo' ],

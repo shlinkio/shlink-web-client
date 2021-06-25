@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { assoc, toString } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { ExternalLink } from 'react-external-link';
-import { formatISO, parse } from 'date-fns';
+import { formatISO } from 'date-fns';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import Tag from '../../../src/tags/helpers/Tag';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
@@ -11,6 +11,7 @@ import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { Time } from '../../../src/utils/Time';
+import { parseDate } from '../../../src/utils/helpers/date';
 
 describe('<ShortUrlsRow />', () => {
   let wrapper: ShallowWrapper;
@@ -27,7 +28,7 @@ describe('<ShortUrlsRow />', () => {
     shortCode: 'abc123',
     shortUrl: 'http://doma.in/abc123',
     longUrl: 'http://foo.com/bar',
-    dateCreated: formatISO(parse('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss', new Date())),
+    dateCreated: formatISO(parseDate('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss')),
     tags: [ 'nodejs', 'reactjs' ],
     visitsCount: 45,
     domain: null,

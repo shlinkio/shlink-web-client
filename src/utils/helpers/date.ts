@@ -1,4 +1,4 @@
-import { format, formatISO } from 'date-fns';
+import { format, formatISO, parse } from 'date-fns';
 import { OptionalString } from '../utils';
 
 type DateOrString = Date | string;
@@ -19,3 +19,5 @@ export const formatDate = (format = 'yyyy-MM-dd') => (date?: NullableDate) => fo
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
 
 export const formatInternational = formatDate();
+
+export const parseDate = (date: string, format: string) => parse(date, format, new Date());
