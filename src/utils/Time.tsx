@@ -1,7 +1,7 @@
 import { parseISO, format as formatDate, getUnixTime, formatDistance } from 'date-fns';
 import { isDateObject } from './helpers/date';
 
-interface DateProps {
+export interface DateProps {
   date: Date | string;
   format?: string;
   relative?: boolean;
