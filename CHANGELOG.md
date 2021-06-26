@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#337](https://github.com/shlinkio/shlink-web-client/pull/337) Replaced moment.js with date-fns.
+* [#360](https://github.com/shlinkio/shlink-web-client/pull/360) Changed component used to generate a tags selector, switching from `react-tagsinput`, which is no longer maintained, to `react-tag-autocomplete`.
 
 ### Deprecated
 * *Nothing*
