@@ -25,9 +25,9 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
     listTags();
   }, []);
 
-  const renderTag = ({ tag, onDelete }: TagComponentProps) =>
+  const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
     <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
-  const renderSuggestion = ({ item }: SuggestionComponentProps) => (
+  const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (
     <>
       <TagBullet tag={`${item.name}`} colorGenerator={colorGenerator} />
       {item.name}
@@ -37,23 +37,20 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
   return (
     <ReactTags
       tags={selectedTags.map(toComponentTag)}
-      tagComponent={renderTag}
+      tagComponent={ReactTagsTag}
       suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
-      suggestionComponent={renderSuggestion}
+      suggestionComponent={ReactTagsSuggestion}
       allowNew
       addOnBlur
       placeholderText={placeholder}
       minQueryLength={1}
       onDelete={(removedTagIndex) => {
-        selectedTags.splice(removedTagIndex, 1);
+        const tagsCopy = [ ...selectedTags ];
 
-        onChange(selectedTags);
+        tagsCopy.splice(removedTagIndex, 1);
+        onChange(tagsCopy);
       }}
-      onAddition={({ name: newTag }) => {
-        const tags = [ ...selectedTags, newTag.toLowerCase() ]; // eslint-disable-line @typescript-eslint/no-unsafe-call
-
-        onChange(tags);
-      }}
+      onAddition={({ name: newTag }) => onChange([ ...selectedTags, newTag.toLowerCase() ])}
     />
   );
 };
