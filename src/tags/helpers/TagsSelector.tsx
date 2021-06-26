@@ -41,6 +41,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
       suggestionComponent={renderSuggestion}
       allowNew
+      addOnBlur
       placeholderText={placeholder}
       minQueryLength={1}
       onDelete={(removedTagIndex) => {
