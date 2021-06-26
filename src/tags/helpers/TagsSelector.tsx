@@ -42,6 +42,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       suggestionComponent={renderSuggestion}
       allowNew
       placeholderText={placeholder}
+      minQueryLength={1}
       onDelete={(removedTagIndex) => {
         selectedTags.splice(removedTagIndex, 1);
 
