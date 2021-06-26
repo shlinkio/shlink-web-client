@@ -97,7 +97,7 @@ export const ShortUrlForm = (
       </FormGroup>
 
       <FormGroup>
-        <TagsSelector tags={shortUrlData.tags ?? []} onChange={changeTags} />
+        <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
       </FormGroup>
     </>
   );
