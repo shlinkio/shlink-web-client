@@ -21,15 +21,15 @@ import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 import { processStatsFromVisits } from './services/VisitsParser';
-import { VisitsFilter, VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
+import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
-  getVisits: (params: Partial<ShlinkVisitsParams>) => void;
+  getVisits: (params: ShlinkVisitsParams) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
   selectedServer: SelectedServer;

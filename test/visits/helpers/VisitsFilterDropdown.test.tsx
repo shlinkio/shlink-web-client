@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
-import { OrphanVisitType } from '../../../src/visits/types';
-import { VisitsFilter, VisitsFilterDropdown } from '../../../src/visits/helpers/VisitsFilterDropdown';
+import { OrphanVisitType, VisitsFilter } from '../../../src/visits/types';
+import { VisitsFilterDropdown } from '../../../src/visits/helpers/VisitsFilterDropdown';
 
 describe('<VisitsFilterDropdown />', () => {
   let wrapper: ShallowWrapper;

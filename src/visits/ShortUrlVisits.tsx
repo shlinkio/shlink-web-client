@@ -34,7 +34,7 @@ const ShortUrlVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub((
 }: ShortUrlVisitsProps) => {
   const { shortCode } = params;
   const { domain } = parseQuery<{ domain?: string }>(search);
-  const loadVisits = (params: Partial<ShlinkVisitsParams>) => getShortUrlVisits(shortCode, { ...params, domain });
+  const loadVisits = (params: ShlinkVisitsParams) => getShortUrlVisits(shortCode, { ...params, domain });
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(
     `short-url_${shortUrlDetail.shortUrl?.shortUrl.replace(/https?:\/\//g, '')}_visits.csv`,
     visits,

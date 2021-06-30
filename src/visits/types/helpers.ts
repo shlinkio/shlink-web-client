@@ -1,8 +1,7 @@
 import { countBy, filter, groupBy, pipe, prop } from 'ramda';
 import { normalizeVisits } from '../services/VisitsParser';
-import { VisitsFilter } from '../helpers/VisitsFilterDropdown';
 import { hasValue } from '../../utils/utils';
-import { Visit, OrphanVisit, CreateVisit, NormalizedVisit, NormalizedOrphanVisit, Stats } from './index';
+import { Visit, OrphanVisit, CreateVisit, NormalizedVisit, NormalizedOrphanVisit, Stats, VisitsFilter } from './index';
 
 export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => visit.hasOwnProperty('visitedUrl');
 

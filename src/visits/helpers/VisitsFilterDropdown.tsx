@@ -1,12 +1,7 @@
 import { DropdownItem, DropdownItemProps } from 'reactstrap'; // eslint-disable-line import/named
-import { OrphanVisitType } from '../types';
+import { OrphanVisitType, VisitsFilter } from '../types';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
-
-export interface VisitsFilter {
-  orphanVisitsType?: OrphanVisitType | undefined;
-  excludeBots?: boolean;
-}
 
 interface VisitsFilterDropdownProps {
   onChange: (filters: VisitsFilter) => void;

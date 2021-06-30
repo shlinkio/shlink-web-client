@@ -94,3 +94,8 @@ export interface VisitsStats {
   citiesForMap: Record<string, CityStats>;
   visitedUrls: Stats;
 }
+
+export interface VisitsFilter {
+  orphanVisitsType?: OrphanVisitType | undefined;
+  excludeBots?: boolean;
+}
