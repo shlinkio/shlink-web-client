@@ -1,8 +1,17 @@
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAction } from '../types';
+import {
+  OrphanVisit,
+  OrphanVisitType,
+  Visit,
+  VisitsInfo,
+  VisitsLoadFailedAction,
+  VisitsLoadProgressChangedAction,
+} from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
+import { ShlinkVisitsParams } from '../../api/types';
+import { isOrphanVisit } from '../types/helpers';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -48,12 +57,20 @@ export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
   },
 }, initialState);
 
-export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (query = {}) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
+const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
+  !orphanVisitsType || orphanVisitsType === visit.type;
+
+export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
+  query: ShlinkVisitsParams = {},
+  orphanVisitsType?: OrphanVisitType,
+) => async (dispatch: Dispatch, getState: GetState) => {
   const { getOrphanVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = async (page: number, itemsPerPage: number) => getOrphanVisits({ ...query, page, itemsPerPage });
+  const visitsLoader = async (page: number, itemsPerPage: number) => getOrphanVisits({ ...query, page, itemsPerPage })
+    .then((result) => {
+      const visits = result.data.filter((visit) => isOrphanVisit(visit) && matchesType(visit, orphanVisitsType));
+
+      return { ...result, data: visits };
+    });
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
   const actionMap = {
     start: GET_ORPHAN_VISITS_START,

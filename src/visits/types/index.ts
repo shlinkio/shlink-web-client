@@ -1,6 +1,7 @@
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
 import { ProblemDetailsError } from '../../api/types';
+import { DateRange } from '../../utils/dates/types';
 
 export interface VisitsInfo {
   visits: Visit[];
@@ -98,4 +99,11 @@ export interface VisitsStats {
 export interface VisitsFilter {
   orphanVisitsType?: OrphanVisitType | undefined;
   excludeBots?: boolean;
+}
+
+export interface VisitsParams {
+  page?: number;
+  itemsPerPage?: number;
+  dateRange?: DateRange;
+  filter?: VisitsFilter;
 }

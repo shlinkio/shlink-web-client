@@ -9,8 +9,6 @@ import { Location } from 'history';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
-import { formatIsoDate } from '../utils/helpers/date';
-import { ShlinkVisitsParams } from '../api/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
@@ -21,15 +19,15 @@ import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
-import { processStatsFromVisits } from './services/VisitsParser';
+import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
 import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
-import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
+import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
-  getVisits: (params: ShlinkVisitsParams) => void;
+  getVisits: (params: VisitsParams) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
   selectedServer: SelectedServer;
@@ -95,7 +93,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
   const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
-  const normalizedVisits = useMemo(() => normalizeAndFilterVisits(visits, visitsFilter), [ visits, visitsFilter ]);
+  const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
     [ normalizedVisits ],
@@ -122,10 +120,8 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
-    const { startDate, endDate } = dateRange;
-
-    getVisits({ startDate: formatIsoDate(startDate) ?? undefined, endDate: formatIsoDate(endDate) ?? undefined });
-  }, [ dateRange ]);
+    getVisits({ dateRange, filter: visitsFilter });
+  }, [ dateRange, visitsFilter ]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {

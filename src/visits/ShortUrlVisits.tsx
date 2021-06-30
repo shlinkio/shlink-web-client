@@ -9,8 +9,9 @@ import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import VisitsStats from './VisitsStats';
 import { VisitsExporter } from './services/VisitsExporter';
-import { NormalizedVisit } from './types';
+import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
+import { toApiParams } from './types/helpers';
 
 export interface ShortUrlVisitsProps extends CommonVisitsProps, RouteComponentProps<{ shortCode: string }> {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams) => void;
@@ -34,7 +35,7 @@ const ShortUrlVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub((
 }: ShortUrlVisitsProps) => {
   const { shortCode } = params;
   const { domain } = parseQuery<{ domain?: string }>(search);
-  const loadVisits = (params: ShlinkVisitsParams) => getShortUrlVisits(shortCode, { ...params, domain });
+  const loadVisits = (params: VisitsParams) => getShortUrlVisits(shortCode, { ...toApiParams(params), domain });
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(
     `short-url_${shortUrlDetail.shortUrl?.shortUrl.replace(/https?:\/\//g, '')}_visits.csv`,
     visits,
