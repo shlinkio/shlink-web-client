@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
 
 ### Changed
+* [#442](https://github.com/shlinkio/shlink-web-client/pull/442) Visits filtering now goes through the corresponding reducer.
 * [#337](https://github.com/shlinkio/shlink-web-client/pull/337) Replaced moment.js with date-fns.
 * [#360](https://github.com/shlinkio/shlink-web-client/pull/360) Changed component used to generate a tags selector, switching from `react-tagsinput`, which is no longer maintained, to `react-tag-autocomplete`.
 
