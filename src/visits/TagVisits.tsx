@@ -9,9 +9,10 @@ import VisitsStats from './VisitsStats';
 import { VisitsExporter } from './services/VisitsExporter';
 import { NormalizedVisit } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
+import { toApiParams } from './types/helpers';
 
 export interface TagVisitsProps extends CommonVisitsProps, RouteComponentProps<{ tag: string }> {
-  getTagVisits: (tag: string, query: any) => void;
+  getTagVisits: (tag: string, query?: ShlinkVisitsParams) => void;
   tagVisits: TagVisitsState;
   cancelGetTagVisits: () => void;
 }
@@ -26,7 +27,7 @@ const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: VisitsExpor
   selectedServer,
 }: TagVisitsProps) => {
   const { tag } = params;
-  const loadVisits = (params: ShlinkVisitsParams) => getTagVisits(tag, params);
+  const loadVisits = (params: ShlinkVisitsParams) => getTagVisits(tag, toApiParams(params));
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(`tag_${tag}_visits.csv`, visits);
 
   return (

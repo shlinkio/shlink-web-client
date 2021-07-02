@@ -110,9 +110,9 @@ describe('orphanVisitsReducer', () => {
       [ undefined ],
       [{}],
     ])('dispatches start and success when promise is resolved', async (query) => {
-      const visits = visitsMocks;
+      const visits = visitsMocks.map((visit) => ({ ...visit, visitedUrl: '' }));
       const ShlinkApiClient = buildApiClientMock(Promise.resolve({
-        data: visitsMocks,
+        data: visits,
         pagination: {
           currentPage: 1,
           pagesCount: 1,

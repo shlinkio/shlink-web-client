@@ -37,7 +37,6 @@ describe('<OrphanVisits />', () => {
 
     expect(stats).toHaveLength(1);
     expect(header).toHaveLength(1);
-    expect(stats.prop('getVisits')).toEqual(getOrphanVisits);
     expect(stats.prop('cancelGetVisits')).toEqual(cancelGetOrphanVisits);
     expect(stats.prop('visitsInfo')).toEqual(orphanVisits);
     expect(stats.prop('baseUrl')).toEqual('the_base_url');
