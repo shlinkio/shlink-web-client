@@ -21,7 +21,7 @@ export const VisitsFilterDropdown = (
   const { orphanVisitsType, excludeBots = false } = selected;
   const propsForOrphanVisitsTypeItem = (type: OrphanVisitType): DropdownItemProps => ({
     active: orphanVisitsType === type,
-    onClick: () => onChange({ ...selected, orphanVisitsType: type }),
+    onClick: () => onChange({ ...selected, orphanVisitsType: type === selected?.orphanVisitsType ? undefined : type }),
   });
   const onBotsClick = () => onChange({ ...selected, excludeBots: !selected?.excludeBots });
 
