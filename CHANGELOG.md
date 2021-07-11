@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
 * [#431](https://github.com/shlinkio/shlink-web-client/pull/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
 * [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
+* [#450](https://github.com/shlinkio/shlink-web-client/pull/450) Improved landing page design.
 
 ### Changed
 * [#442](https://github.com/shlinkio/shlink-web-client/pull/442) Visits filtering now goes through the corresponding reducer.
