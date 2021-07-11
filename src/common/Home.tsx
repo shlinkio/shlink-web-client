@@ -31,11 +31,12 @@ const Home = ({ servers }: HomeProps) => {
             <ServersListGroup embedded servers={serversList}>
               {!hasServers && (
                 <div className="p-4">
-                  <p>This application will help you to manage your Shlink servers.</p>
-                  <p>To start, please, <Link to="/server/create">add your first server</Link>.</p>
-                  <p className="m-0">
-                    You still don&lsquo;t have a Shlink server?
-                    Learn how to <ExternalLink href="https://shlink.io/documentation">get started</ExternalLink>.
+                  <p className="mb-4">This application will help you manage your Shlink servers.</p>
+                  <p className="text-center mb-0">
+                    <Link to="/server/create" className="btn btn-outline-primary btn-lg mr-2">Add a server</Link>
+                    <ExternalLink href="https://shlink.io/documentation" className="btn btn-outline-secondary btn-lg">
+                      Learn more
+                    </ExternalLink>
                   </p>
                 </div>
               )}
