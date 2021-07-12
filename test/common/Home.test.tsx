@@ -35,7 +35,7 @@ describe('<Home />', () => {
       },
       0,
     ],
-    [{}, 2 ],
+    [{}, 3 ],
   ])('shows link to create or set-up server only when no servers exist', (servers, expectedParagraphs) => {
     const wrapped = createComponent({ servers });
     const p = wrapped.find('p');

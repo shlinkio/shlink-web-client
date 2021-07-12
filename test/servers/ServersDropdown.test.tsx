@@ -43,6 +43,6 @@ describe('<ServersDropdown />', () => {
 
     expect(item).toHaveLength(1);
     expect(item.prop('to')).toEqual('/server/create');
-    expect(item.find('span').text()).toContain('Add server');
+    expect(item.find('span').text()).toContain('Add a server');
   });
 });

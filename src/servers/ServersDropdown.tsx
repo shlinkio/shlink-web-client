@@ -15,7 +15,7 @@ const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, select
   const serversList = values(servers);
   const createServerItem = (
     <DropdownItem tag={Link} to="/server/create">
-      <FontAwesomeIcon icon={plusIcon} /> <span className="ml-1">Add server</span>
+      <FontAwesomeIcon icon={plusIcon} /> <span className="ml-1">Add a server</span>
     </DropdownItem>
   );
 
