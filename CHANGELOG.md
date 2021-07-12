@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.2.0] - 2021-07-12
 ### Added
 * [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:
 
@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `SHLINK_SERVER_API_KEY`: The API key of the Shlink server.
     * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
-* [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a a `conf.d` folder.
+* [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a `conf.d` folder.
 * [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
 * [#431](https://github.com/shlinkio/shlink-web-client/pull/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
 * [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
