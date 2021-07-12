@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Route } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { Alert } from 'reactstrap';
 import { Settings } from '../src/settings/reducers/settings';
 import appFactory from '../src/App';
+import { AppUpdateBanner } from '../src/common/AppUpdateBanner';
 
 describe('<App />', () => {
   let wrapper: ShallowWrapper;
@@ -29,7 +29,7 @@ describe('<App />', () => {
 
   it('renders versions', () => expect(wrapper.find(ShlinkVersions)).toHaveLength(1));
 
-  it('renders an Alert', () => expect(wrapper.find(Alert)).toHaveLength(1));
+  it('renders an update banner', () => expect(wrapper.find(AppUpdateBanner)).toHaveLength(1));
 
   it('renders app main routes', () => {
     const routes = wrapper.find(Route);

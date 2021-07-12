@@ -1,11 +1,11 @@
 import { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { Alert } from 'reactstrap';
 import NotFound from './common/NotFound';
 import { ServersMap } from './servers/data';
 import { Settings } from './settings/reducers/settings';
 import { changeThemeInMarkup } from './utils/theme';
-import { SimpleCard } from './utils/SimpleCard';
+import { AppUpdateBanner } from './common/AppUpdateBanner';
+import { forceUpdate } from './utils/helpers/sw';
 import './App.scss';
 
 interface AppProps {
@@ -55,16 +55,7 @@ const App = (
         </div>
       </div>
 
-      <Alert
-        className="app__update-banner"
-        tag={SimpleCard}
-        color="secondary"
-        isOpen={appUpdated}
-        toggle={resetAppUpdate}
-      >
-        <h4 className="mb-4">This app has just been updated!</h4>
-        <p className="mb-0">Restart it to enjoy the new features.</p>
-      </Alert>
+      <AppUpdateBanner isOpen={appUpdated} toggle={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>
   );
 };
