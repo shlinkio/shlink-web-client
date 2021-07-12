@@ -5,6 +5,7 @@ import { ServersMap } from './servers/data';
 import { Settings } from './settings/reducers/settings';
 import { changeThemeInMarkup } from './utils/theme';
 import { AppUpdateBanner } from './common/AppUpdateBanner';
+import { forceUpdate } from './utils/helpers/sw';
 import './App.scss';
 
 interface AppProps {
@@ -54,7 +55,7 @@ const App = (
         </div>
       </div>
 
-      <AppUpdateBanner isOpen={appUpdated} toggle={resetAppUpdate} />
+      <AppUpdateBanner isOpen={appUpdated} toggle={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>
   );
 };
