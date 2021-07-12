@@ -1,18 +1,19 @@
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import './Tag.scss';
 
 interface TagProps {
   colorGenerator: ColorGenerator;
   text: string;
+  className?: string;
   clearable?: boolean;
-  onClick?: () => void;
-  onClose?: () => void;
+  onClick?: MouseEventHandler;
+  onClose?: MouseEventHandler;
 }
 
-const Tag: FC<TagProps> = ({ text, children, clearable, colorGenerator, onClick, onClose }) => (
+const Tag: FC<TagProps> = ({ text, children, clearable, className = '', colorGenerator, onClick, onClose }) => (
   <span
-    className="badge tag"
+    className={`badge tag ${className}`}
     style={{ backgroundColor: colorGenerator.getColorForKey(text), cursor: clearable || !onClick ? 'auto' : 'pointer' }}
     onClick={onClick}
   >

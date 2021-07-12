@@ -1,14 +1,7 @@
-import { countBy, filter, groupBy, pipe, prop } from 'ramda';
-import { normalizeVisits } from '../services/VisitsParser';
-import {
-  Visit,
-  OrphanVisit,
-  CreateVisit,
-  NormalizedVisit,
-  NormalizedOrphanVisit,
-  Stats,
-  OrphanVisitType,
-} from './index';
+import { countBy, groupBy, pipe, prop } from 'ramda';
+import { formatIsoDate } from '../../utils/helpers/date';
+import { ShlinkVisitsParams } from '../../api/types';
+import { CreateVisit, NormalizedOrphanVisit, NormalizedVisit, OrphanVisit, Stats, Visit, VisitsParams } from './index';
 
 export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => visit.hasOwnProperty('visitedUrl');
 
@@ -35,7 +28,10 @@ export const highlightedVisitsToStats = <T extends NormalizedVisit>(
   property: HighlightableProps<T>,
 ): Stats => countBy(prop(property) as any, highlightedVisits);
 
-export const normalizeAndFilterVisits = (visits: Visit[], type: OrphanVisitType | undefined) => pipe(
-  normalizeVisits,
-  filter((normalizedVisit) => type === undefined || (normalizedVisit as NormalizedOrphanVisit).type === type),
-)(visits);
+export const toApiParams = ({ page, itemsPerPage, filter, dateRange }: VisitsParams): ShlinkVisitsParams => {
+  const startDate = (dateRange?.startDate && formatIsoDate(dateRange?.startDate)) ?? undefined;
+  const endDate = (dateRange?.endDate && formatIsoDate(dateRange?.endDate)) ?? undefined;
+  const excludeBots = filter?.excludeBots || undefined; // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+
+  return { page, itemsPerPage, startDate, endDate, excludeBots };
+};

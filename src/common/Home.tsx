@@ -2,6 +2,8 @@ import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
 import { Card, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import ServersListGroup from '../servers/ServersListGroup';
 import { ServersMap } from '../servers/data';
 import { ShlinkLogo } from './img/ShlinkLogo';
@@ -30,12 +32,19 @@ const Home = ({ servers }: HomeProps) => {
             </div>
             <ServersListGroup embedded servers={serversList}>
               {!hasServers && (
-                <div className="p-4">
-                  <p>This application will help you to manage your Shlink servers.</p>
-                  <p>To start, please, <Link to="/server/create">add your first server</Link>.</p>
-                  <p className="m-0">
-                    You still don&lsquo;t have a Shlink server?
-                    Learn how to <ExternalLink href="https://shlink.io/documentation">get started</ExternalLink>.
+                <div className="p-4 text-center">
+                  <p className="mb-5">This application will help you manage your Shlink servers.</p>
+                  <p>
+                    <Link to="/server/create" className="btn btn-outline-primary btn-lg mr-2">
+                      <FontAwesomeIcon icon={faPlus} /> <span className="ml-1">Add a server</span>
+                    </Link>
+                  </p>
+                  <p className="mb-0 mt-5">
+                    <ExternalLink href="https://shlink.io/documentation">
+                      <small>
+                        <span className="mr-1">Learn more about Shlink</span> <FontAwesomeIcon icon={faExternalLinkAlt} />
+                      </small>
+                    </ExternalLink>
                   </p>
                 </div>
               )}

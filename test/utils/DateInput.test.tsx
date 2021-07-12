@@ -1,6 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import moment from 'moment';
 import { Mock } from 'ts-mockery';
 import DateInput, { DateInputProps } from '../../src/utils/DateInput';
 
@@ -30,7 +29,7 @@ describe('<DateInput />', () => {
   });
 
   it('does not show calendar icon when input is clearable', () => {
-    wrapped = createComponent({ isClearable: true, selected: moment() });
+    wrapped = createComponent({ isClearable: true, selected: new Date() });
     expect(wrapped.find(FontAwesomeIcon)).toHaveLength(0);
   });
 });

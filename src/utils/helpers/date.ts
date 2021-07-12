@@ -1,16 +1,23 @@
-import * as moment from 'moment';
+import { format, formatISO, parse } from 'date-fns';
 import { OptionalString } from '../utils';
 
-type MomentOrString = moment.Moment | string;
-type NullableDate = MomentOrString | null;
+type DateOrString = Date | string;
+type NullableDate = DateOrString | null;
 
-const isMomentObject = (date: MomentOrString): date is moment.Moment => typeof (date as moment.Moment).format === 'function';
+export const isDateObject = (date: DateOrString): date is Date => typeof date !== 'string';
 
-const formatDateFromFormat = (date?: NullableDate, format?: string): OptionalString =>
-  !date || !isMomentObject(date) ? date : date.format(format);
+const formatDateFromFormat = (date?: NullableDate, theFormat?: string): OptionalString => {
+  if (!date || !isDateObject(date)) {
+    return date;
+  }
 
-export const formatDate = (format = 'YYYY-MM-DD') => (date?: NullableDate) => formatDateFromFormat(date, format);
+  return theFormat ? format(date, theFormat) : formatISO(date);
+};
+
+export const formatDate = (format = 'yyyy-MM-dd') => (date?: NullableDate) => formatDateFromFormat(date, format);
 
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
 
 export const formatInternational = formatDate();
+
+export const parseDate = (date: string, format: string) => parse(date, format, new Date());

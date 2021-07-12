@@ -5,12 +5,12 @@ set -ex
 PLATFORMS="linux/arm/v7,linux/arm64/v8,linux/amd64"
 DOCKER_IMAGE="shlinkio/shlink-web-client"
 
-if [[ "$GITHUB_REF" == *"main"* ]]; then
+if [[ "$GITHUB_REF" == *"develop"* ]]; then
   docker buildx build --push \
     --platform ${PLATFORMS} \
     -t ${DOCKER_IMAGE}:latest .
 
-# If ref is not main, then this is a tag. Build that docker tag and also "stable"
+# If ref is not develop, then this is a tag. Build that docker tag and also "stable"
 else
   VERSION=${GITHUB_REF#refs/tags/v}
   TAGS="-t ${DOCKER_IMAGE}:${VERSION}"

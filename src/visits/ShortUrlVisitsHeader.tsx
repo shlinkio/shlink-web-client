@@ -1,7 +1,7 @@
 import { UncontrolledTooltip } from 'reactstrap';
-import Moment from 'react-moment';
 import { ExternalLink } from 'react-external-link';
 import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
+import { Time } from '../utils/Time';
 import { ShortUrlVisits } from './reducers/shortUrlVisits';
 import VisitsHeader from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';
@@ -22,18 +22,14 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
   const renderDate = () => !shortUrl ? <small>Loading...</small> : (
     <span>
       <b id="created" className="short-url-visits-header__created-at">
-        <Moment fromNow>{shortUrl.dateCreated}</Moment>
+        <Time date={shortUrl.dateCreated} relative />
       </b>
       <UncontrolledTooltip placement="bottom" target="created">
-        <Moment format="YYYY-MM-DD HH:mm">{shortUrl.dateCreated}</Moment>
+        <Time date={shortUrl.dateCreated} />
       </UncontrolledTooltip>
     </span>
   );
-  const visitsStatsTitle = (
-    <>
-      Visits for <ExternalLink href={shortLink} />
-    </>
-  );
+  const visitsStatsTitle = <>Visits for <ExternalLink href={shortLink} /></>;
 
   return (
     <VisitsHeader title={visitsStatsTitle} goBack={goBack} visits={visits} shortUrl={shortUrl}>

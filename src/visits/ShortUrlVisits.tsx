@@ -5,20 +5,20 @@ import { ShlinkVisitsParams } from '../api/types';
 import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
 import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
-import { Settings } from '../settings/reducers/settings';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
 import VisitsStats from './VisitsStats';
 import { VisitsExporter } from './services/VisitsExporter';
-import { NormalizedVisit } from './types';
+import { NormalizedVisit, VisitsParams } from './types';
+import { CommonVisitsProps } from './types/CommonVisitsProps';
+import { toApiParams } from './types/helpers';
 
-export interface ShortUrlVisitsProps extends RouteComponentProps<{ shortCode: string }> {
+export interface ShortUrlVisitsProps extends CommonVisitsProps, RouteComponentProps<{ shortCode: string }> {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams) => void;
   shortUrlVisits: ShortUrlVisitsState;
   getShortUrlDetail: Function;
   shortUrlDetail: ShortUrlDetail;
   cancelGetShortUrlVisits: () => void;
-  settings: Settings;
 }
 
 const ShortUrlVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub(({
@@ -31,10 +31,11 @@ const ShortUrlVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub((
   getShortUrlDetail,
   cancelGetShortUrlVisits,
   settings,
+  selectedServer,
 }: ShortUrlVisitsProps) => {
   const { shortCode } = params;
   const { domain } = parseQuery<{ domain?: string }>(search);
-  const loadVisits = (params: Partial<ShlinkVisitsParams>) => getShortUrlVisits(shortCode, { ...params, domain });
+  const loadVisits = (params: VisitsParams) => getShortUrlVisits(shortCode, { ...toApiParams(params), domain });
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(
     `short-url_${shortUrlDetail.shortUrl?.shortUrl.replace(/https?:\/\//g, '')}_visits.csv`,
     visits,
@@ -53,6 +54,7 @@ const ShortUrlVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub((
       domain={domain}
       settings={settings}
       exportCsv={exportCsv}
+      selectedServer={selectedServer}
     >
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>

@@ -1,9 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import moment from 'moment';
-import Moment from 'react-moment';
 import { assoc, toString } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { ExternalLink } from 'react-external-link';
+import { formatISO } from 'date-fns';
 import createShortUrlsRow from '../../../src/short-urls/helpers/ShortUrlsRow';
 import Tag from '../../../src/tags/helpers/Tag';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
@@ -11,6 +10,8 @@ import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
+import { Time } from '../../../src/utils/Time';
+import { parseDate } from '../../../src/utils/helpers/date';
 
 describe('<ShortUrlsRow />', () => {
   let wrapper: ShallowWrapper;
@@ -27,7 +28,7 @@ describe('<ShortUrlsRow />', () => {
     shortCode: 'abc123',
     shortUrl: 'http://doma.in/abc123',
     longUrl: 'http://foo.com/bar',
-    dateCreated: moment('2018-05-23 18:30:41').format(),
+    dateCreated: formatISO(parseDate('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss')),
     tags: [ 'nodejs', 'reactjs' ],
     visitsCount: 45,
     domain: null,
@@ -62,9 +63,9 @@ describe('<ShortUrlsRow />', () => {
 
   it('renders date in first column', () => {
     const col = wrapper.find('td').first();
-    const moment = col.find(Moment);
+    const date = col.find(Time);
 
-    expect(moment.html()).toContain('>2018-05-23 18:30</time>');
+    expect(date.html()).toContain('>2018-05-23 18:30</time>');
   });
 
   it('renders short URL in second row', () => {

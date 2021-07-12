@@ -1,5 +1,4 @@
 @import './utils/base';
-@import './utils/mixins/horizontal-align';
 
 .app-container {
   height: 100%;
@@ -24,19 +23,4 @@
   @media (min-width: $mdMin) {
     padding: 0 15px;
   }
-}
-
-.app__update-banner.app__update-banner {
-  @include horizontal-align();
-
-  position: fixed;
-  top: $headerHeight - 25px;
-  padding: 0 4rem 0 0;
-  z-index: 1040;
-  margin: 0;
-  color: var(--text-color);
-  text-align: center;
-  width: 700px;
-  max-width: calc(100% - 30px);
-  box-shadow: 0 0 1rem var(--brand-color);
 }

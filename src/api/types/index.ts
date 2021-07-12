@@ -55,6 +55,7 @@ export interface ShlinkVisitsParams {
   itemsPerPage?: number;
   startDate?: string;
   endDate?: string;
+  excludeBots?: boolean;
 }
 
 export interface ShlinkShortUrlData extends ShortUrlMeta {

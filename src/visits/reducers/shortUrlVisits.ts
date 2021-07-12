@@ -5,7 +5,7 @@ import { ShortUrlIdentifier } from '../../short-urls/data';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
-import { OptionalString } from '../../utils/utils';
+import { ShlinkVisitsParams } from '../../api/types';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -64,7 +64,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
 
 export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   shortCode: string,
-  query: { domain?: OptionalString } = {},
+  query: ShlinkVisitsParams = {},
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getShortUrlVisits(

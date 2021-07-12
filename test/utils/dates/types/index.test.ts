@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { format, subDays } from 'date-fns';
 import {
   DateInterval,
   dateRangeIsEmpty,
@@ -6,6 +6,7 @@ import {
   rangeIsInterval,
   rangeOrIntervalToString,
 } from '../../../../src/utils/dates/types';
+import { parseDate } from '../../../../src/utils/helpers/date';
 
 describe('date-types', () => {
   describe('dateRangeIsEmpty', () => {
@@ -20,9 +21,9 @@ describe('date-types', () => {
       [{ startDate: undefined, endDate: undefined }, true ],
       [{ startDate: undefined, endDate: null }, true ],
       [{ startDate: null, endDate: undefined }, true ],
-      [{ startDate: moment() }, false ],
-      [{ endDate: moment() }, false ],
-      [{ startDate: moment(), endDate: moment() }, false ],
+      [{ startDate: new Date() }, false ],
+      [{ endDate: new Date() }, false ],
+      [{ startDate: new Date(), endDate: new Date() }, false ],
     ])('proper result is returned', (dateRange, expectedResult) => {
       expect(dateRangeIsEmpty(dateRange)).toEqual(expectedResult);
     });
@@ -58,31 +59,36 @@ describe('date-types', () => {
       [{ startDate: undefined, endDate: undefined }, undefined ],
       [{ startDate: undefined, endDate: null }, undefined ],
       [{ startDate: null, endDate: undefined }, undefined ],
-      [{ startDate: moment('2020-01-01') }, 'Since 2020-01-01' ],
-      [{ endDate: moment('2020-01-01') }, 'Until 2020-01-01' ],
-      [{ startDate: moment('2020-01-01'), endDate: moment('2021-02-02') }, '2020-01-01 - 2021-02-02' ],
+      [{ startDate: parseDate('2020-01-01', 'yyyy-MM-dd') }, 'Since 2020-01-01' ],
+      [{ endDate: parseDate('2020-01-01', 'yyyy-MM-dd') }, 'Until 2020-01-01' ],
+      [
+        { startDate: parseDate('2020-01-01', 'yyyy-MM-dd'), endDate: parseDate('2021-02-02', 'yyyy-MM-dd') },
+        '2020-01-01 - 2021-02-02',
+      ],
     ])('proper result is returned', (range, expectedValue) => {
       expect(rangeOrIntervalToString(range)).toEqual(expectedValue);
     });
   });
 
   describe('intervalToDateRange', () => {
-    const now = () => moment();
+    const now = () => new Date();
+    const daysBack = (days: number) => subDays(new Date(), days);
+    const formatted = (date?: Date | null): string | undefined => !date ? undefined : format(date, 'yyyy-MM-dd');
 
     test.each([
       [ undefined, undefined, undefined ],
       [ 'today' as DateInterval, now(), now() ],
-      [ 'yesterday' as DateInterval, now().subtract(1, 'day'), now().subtract(1, 'day') ],
-      [ 'last7Days' as DateInterval, now().subtract(7, 'day'), now() ],
-      [ 'last30Days' as DateInterval, now().subtract(30, 'day'), now() ],
-      [ 'last90Days' as DateInterval, now().subtract(90, 'day'), now() ],
-      [ 'last180days' as DateInterval, now().subtract(180, 'day'), now() ],
-      [ 'last365Days' as DateInterval, now().subtract(365, 'day'), now() ],
+      [ 'yesterday' as DateInterval, daysBack(1), daysBack(1) ],
+      [ 'last7Days' as DateInterval, daysBack(7), now() ],
+      [ 'last30Days' as DateInterval, daysBack(30), now() ],
+      [ 'last90Days' as DateInterval, daysBack(90), now() ],
+      [ 'last180days' as DateInterval, daysBack(180), now() ],
+      [ 'last365Days' as DateInterval, daysBack(365), now() ],
     ])('proper result is returned', (interval, expectedStartDate, expectedEndDate) => {
       const { startDate, endDate } = intervalToDateRange(interval);
 
-      expect(expectedStartDate?.format('YYYY-MM-DD')).toEqual(startDate?.format('YYYY-MM-DD'));
-      expect(expectedEndDate?.format('YYYY-MM-DD')).toEqual(endDate?.format('YYYY-MM-DD'));
+      expect(formatted(expectedStartDate)).toEqual(formatted(startDate));
+      expect(formatted(expectedEndDate)).toEqual(formatted(endDate));
     });
   });
 });

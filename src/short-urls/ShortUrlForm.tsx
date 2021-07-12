@@ -2,10 +2,11 @@ import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { isEmpty, pipe, replace, trim } from 'ramda';
-import m from 'moment';
 import classNames from 'classnames';
+import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import {
+  supportsCrawlableVisits,
   supportsListingDomains,
   supportsSettingShortCodeLength,
   supportsShortUrlTitle,
@@ -20,6 +21,7 @@ import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
 import { ShortUrlData } from './data';
+import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import './ShortUrlForm.scss';
 
 export type Mode = 'create' | 'create-basic' | 'edit';
@@ -36,6 +38,7 @@ export interface ShortUrlFormProps {
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
+const toDate = (date?: string | Date): Date | undefined => typeof date === 'string' ? parseISO(date) : date;
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
@@ -72,7 +75,7 @@ export const ShortUrlForm = (
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateInputProps> = {}) => (
     <div className="form-group">
       <DateInput
-        selected={shortUrlData[id] ? m(shortUrlData[id]) : null}
+        selected={shortUrlData[id] ? toDate(shortUrlData[id] as string | Date) : null}
         placeholderText={placeholder}
         isClearable
         onChange={(date) => setShortUrlData({ ...shortUrlData, [id]: date })}
@@ -94,7 +97,7 @@ export const ShortUrlForm = (
       </FormGroup>
 
       <FormGroup>
-        <TagsSelector tags={shortUrlData.tags ?? []} onChange={changeTags} />
+        <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
       </FormGroup>
     </>
   );
@@ -108,7 +111,8 @@ export const ShortUrlForm = (
     'col-sm-12': !showCustomizeCard,
   });
   const showValidateUrl = supportsValidateUrl(selectedServer);
-  const showExtraValidationsCard = showValidateUrl || !isEdit;
+  const showCrawlableControl = supportsCrawlableVisits(selectedServer);
+  const showExtraValidationsCard = showValidateUrl || showCrawlableControl || !isEdit;
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -160,30 +164,31 @@ export const ShortUrlForm = (
             <div className={limitAccessCardClasses}>
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? m(shortUrlData.validUntil) : undefined })}
-                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? m(shortUrlData.validSince) : undefined })}
+                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? toDate(shortUrlData.validUntil) : undefined })}
+                {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? toDate(shortUrlData.validSince) : undefined })}
               </SimpleCard>
             </div>
           </Row>
 
           {showExtraValidationsCard && (
-            <SimpleCard title="Extra validations" className="mb-3">
-              {!isEdit && (
-                <p>
-                  Make sure the long URL is valid, or ensure an existing short URL is returned if it matches all
-                  provided data.
-                </p>
-              )}
+            <SimpleCard title="Extra checks" className="mb-3">
               {showValidateUrl && (
-                <p>
-                  <Checkbox
-                    inline
-                    checked={shortUrlData.validateUrl}
-                    onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
-                  >
-                    Validate URL
-                  </Checkbox>
-                </p>
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
+                  checked={shortUrlData.validateUrl}
+                  onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
+                >
+                  Validate URL
+                </ShortUrlFormCheckboxGroup>
+              )}
+              {showCrawlableControl && (
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
+                  checked={shortUrlData.crawlable}
+                  onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
+                >
+                  Make it crawlable
+                </ShortUrlFormCheckboxGroup>
               )}
               {!isEdit && (
                 <p>

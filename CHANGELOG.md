@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.2.0] - 2021-07-12
+### Added
+* [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:
+
+    * `SHLINK_SERVER_URL`: The URL of the Shlink server to configure by default.
+    * `SHLINK_SERVER_API_KEY`: The API key of the Shlink server.
+    * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
+
+* [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a `conf.d` folder.
+* [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
+* [#431](https://github.com/shlinkio/shlink-web-client/pull/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
+* [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
+* [#450](https://github.com/shlinkio/shlink-web-client/pull/450) Improved landing page design.
+* [#449](https://github.com/shlinkio/shlink-web-client/pull/449) Improved PWA update banner, allowing to restart the app directly from it without having to close the tab.
+
+### Changed
+* [#442](https://github.com/shlinkio/shlink-web-client/pull/442) Visits filtering now goes through the corresponding reducer.
+* [#337](https://github.com/shlinkio/shlink-web-client/pull/337) Replaced moment.js with date-fns.
+* [#360](https://github.com/shlinkio/shlink-web-client/pull/360) Changed component used to generate a tags selector, switching from `react-tagsinput`, which is no longer maintained, to `react-tag-autocomplete`.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#438](https://github.com/shlinkio/shlink-web-client/pull/438) Fixed horizontal scrolling in short URLs list on mobile devices when the long URL didn't have words to break.
+
+
 ## [3.1.2] - 2021-06-06
 ### Added
 * *Nothing*

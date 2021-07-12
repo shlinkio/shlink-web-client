@@ -9,27 +9,28 @@ import { Location } from 'history';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
-import { formatIsoDate } from '../utils/helpers/date';
-import { ShlinkVisitsParams } from '../api/types';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
+import { SelectedServer } from '../servers/data';
+import { supportsBotVisits } from '../utils/helpers/features';
 import SortableBarGraph from './helpers/SortableBarGraph';
 import GraphCard from './helpers/GraphCard';
 import LineChartCard from './helpers/LineChartCard';
 import VisitsTable from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, OrphanVisitType, VisitsInfo } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
-import { processStatsFromVisits } from './services/VisitsParser';
-import { OrphanVisitTypeDropdown } from './helpers/OrphanVisitTypeDropdown';
+import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
+import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
+import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import './VisitsStats.scss';
-import { HighlightableProps, highlightedVisitsToStats, normalizeAndFilterVisits } from './types/helpers';
 
 export interface VisitsStatsProps {
-  getVisits: (params: Partial<ShlinkVisitsParams>) => void;
+  getVisits: (params: VisitsParams) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
+  selectedServer: SelectedServer;
   cancelGetVisits: () => void;
   baseUrl: string;
   domain?: string;
@@ -67,14 +68,24 @@ const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title
   </NavLink>
 );
 
-const VisitsStats: FC<VisitsStatsProps> = (
-  { children, visitsInfo, getVisits, cancelGetVisits, baseUrl, domain, settings, exportCsv, isOrphanVisits = false },
-) => {
+const VisitsStats: FC<VisitsStatsProps> = ({
+  children,
+  visitsInfo,
+  getVisits,
+  cancelGetVisits,
+  baseUrl,
+  domain,
+  settings,
+  exportCsv,
+  selectedServer,
+  isOrphanVisits = false,
+}) => {
   const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
-  const [ orphanVisitType, setOrphanVisitType ] = useState<OrphanVisitType | undefined>();
+  const [ visitsFilter, setVisitsFilter ] = useState<VisitsFilter>({});
+  const botsSupported = supportsBotVisits(selectedServer);
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
@@ -82,10 +93,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
   const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
-  const normalizedVisits = useMemo(
-    () => normalizeAndFilterVisits(visits, orphanVisitType),
-    [ visits, orphanVisitType ],
-  );
+  const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
     [ normalizedVisits ],
@@ -112,10 +120,8 @@ const VisitsStats: FC<VisitsStatsProps> = (
 
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
-    const { startDate, endDate } = dateRange;
-
-    getVisits({ startDate: formatIsoDate(startDate) ?? undefined, endDate: formatIsoDate(endDate) ?? undefined });
-  }, [ dateRange ]);
+    getVisits({ dateRange, filter: visitsFilter });
+  }, [ dateRange, visitsFilter ]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
@@ -243,6 +249,7 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   selectedVisits={highlightedVisits}
                   setSelectedVisits={setSelectedVisits}
                   isOrphanVisits={isOrphanVisits}
+                  selectedServer={selectedServer}
                 />
               </div>
             </Route>
@@ -270,14 +277,13 @@ const VisitsStats: FC<VisitsStatsProps> = (
                   onDatesChange={setDateRange}
                 />
               </div>
-              {isOrphanVisits && (
-                <OrphanVisitTypeDropdown
-                  text="Filter by type"
-                  className="ml-0 ml-md-2 mt-3 mt-md-0"
-                  selected={orphanVisitType}
-                  onChange={setOrphanVisitType}
-                />
-              )}
+              <VisitsFilterDropdown
+                className="ml-0 ml-md-2 mt-3 mt-md-0"
+                isOrphanVisits={isOrphanVisits}
+                botsSupported={botsSupported}
+                selected={visitsFilter}
+                onChange={setVisitsFilter}
+              />
             </div>
           </div>
           {visits.length > 0 && (

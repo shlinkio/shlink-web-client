@@ -3,6 +3,7 @@ import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAct
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
+import { ShlinkVisitsParams } from '../../api/types';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -56,10 +57,10 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   },
 }, initialState);
 
-export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag: string, query = {}) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
+export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
+  tag: string,
+  query: ShlinkVisitsParams = {},
+) => async (dispatch: Dispatch, getState: GetState) => {
   const { getTagVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getTagVisits(
     tag,
