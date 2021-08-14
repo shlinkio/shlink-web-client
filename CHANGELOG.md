@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* [#460](https://github.com/shlinkio/shlink-web-client/pull/460) Added dynamic title on hover for tags with a very long title.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [3.2.0] - 2021-07-12
 ### Added
 * [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:
