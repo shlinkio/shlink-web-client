@@ -1,7 +1,7 @@
 import { Card, CardHeader, CardBody, Button, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as deleteIcon, faPencilAlt as editIcon, faLink, faEye } from '@fortawesome/free-solid-svg-icons';
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
@@ -20,6 +20,8 @@ export interface TagCardProps {
   toggle: () => void;
 }
 
+const isTruncated = (el: HTMLElement | undefined): boolean => !!el && el.scrollWidth > el.clientWidth;
+
 const TagCard = (
   DeleteTagConfirmModal: FC<TagModalProps>,
   EditTagModal: FC<TagModalProps>,
@@ -28,9 +30,17 @@ const TagCard = (
 ) => ({ tag, tagStats, selectedServer, displayed, toggle }: TagCardProps) => {
   const [ isDeleteModalOpen, toggleDelete ] = useToggle();
   const [ isEditModalOpen, toggleEdit ] = useToggle();
+  const [ hasTitle,, displayTitle ] = useToggle();
+  const titleRef = useRef<HTMLElement>();
 
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
   const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${tag}`;
+
+  useEffect(() => {
+    if (isTruncated(titleRef.current)) {
+      displayTitle();
+    }
+  }, [ titleRef.current ]);
 
   return (
     <Card className="tag-card">
@@ -41,7 +51,13 @@ const TagCard = (
         <Button color="link" size="sm" className="tag-card__btn" onClick={toggleEdit}>
           <FontAwesomeIcon icon={editIcon} />
         </Button>
-        <h5 className="tag-card__tag-title text-ellipsis">
+        <h5
+          className="tag-card__tag-title text-ellipsis"
+          title={hasTitle ? tag : undefined}
+          ref={(el) => {
+            titleRef.current = el ?? undefined;
+          }}
+        >
           <TagBullet tag={tag} colorGenerator={colorGenerator} />
           <ForServerVersion minVersion="2.2.0">
             <span className="tag-card__tag-name" onClick={toggle}>{tag}</span>
