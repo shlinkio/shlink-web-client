@@ -1,10 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
+import { DropdownItem } from 'reactstrap';
 import { ShortUrlCreationSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreation } from '../../src/settings/ShortUrlCreation';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { DropdownBtn } from '../../src/utils/DropdownBtn';
-import { DropdownItem } from 'reactstrap';
 
 describe('<ShortUrlCreation />', () => {
   let wrapper: ShallowWrapper;

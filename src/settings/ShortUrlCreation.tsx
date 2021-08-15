@@ -59,4 +59,4 @@ export const ShortUrlCreation: FC<ShortUrlCreationProps> = ({ settings, setShort
       </FormGroup>
     </SimpleCard>
   );
-}
+};

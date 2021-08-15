@@ -21,7 +21,7 @@ export type TagFilteringMode = 'startsWith' | 'includes';
 
 export interface ShortUrlCreationSettings {
   validateUrls: boolean;
-  tagFilteringMode?: TagFilteringMode
+  tagFilteringMode?: TagFilteringMode;
 }
 
 export interface UiSettings {
