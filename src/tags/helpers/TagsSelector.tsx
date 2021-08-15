@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import ReactTags, { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
 import ColorGenerator from '../../utils/services/ColorGenerator';
+import { Settings } from '../../settings/reducers/settings';
 import { TagsList } from '../reducers/tagsList';
 import TagBullet from './TagBullet';
 import Tag from './Tag';
@@ -14,17 +15,19 @@ export interface TagsSelectorProps {
 interface TagsSelectorConnectProps extends TagsSelectorProps {
   listTags: Function;
   tagsList: TagsList;
+  settings: Settings;
 }
 
 const toComponentTag = (tag: string) => ({ id: tag, name: tag });
 
 const TagsSelector = (colorGenerator: ColorGenerator) => (
-  { selectedTags, onChange, listTags, tagsList, placeholder = 'Add tags to the URL' }: TagsSelectorConnectProps,
+  { selectedTags, onChange, placeholder, listTags, tagsList, settings }: TagsSelectorConnectProps,
 ) => {
   useEffect(() => {
     listTags();
   }, []);
 
+  const searchMode = settings.shortUrlCreation?.tagFilteringMode ?? 'startsWith';
   const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
     <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
   const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (
@@ -42,9 +45,14 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       suggestionComponent={ReactTagsSuggestion}
       allowNew
       addOnBlur
-      placeholderText={placeholder}
+      placeholderText={placeholder ?? 'Add tags to the URL'}
       minQueryLength={1}
       delimiters={[ 'Enter', 'Tab', ',' ]}
+      suggestionsTransform={
+        searchMode === 'includes'
+          ? (query, suggestions) => suggestions.filter(({ name }) => name.includes(query))
+          : undefined
+      }
       onDelete={(removedTagIndex) => {
         const tagsCopy = [ ...selectedTags ];
 

@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 * [#460](https://github.com/shlinkio/shlink-web-client/pull/460) Added dynamic title on hover for tags with a very long title.
 * [#462](https://github.com/shlinkio/shlink-web-client/pull/462) Now it is possible to paste multiple comma-separated tags in the tags selector, making all of them to be added as individual tags.
+* [#463](https://github.com/shlinkio/shlink-web-client/pull/463) The strategy to determine which tags to suggest in the TagsSelector during short URL creation, can now be configured:
+
+    * `startsWith`: Suggests tags that start with the input. This is the default behavior for keep it as it was so far.
+    * `includes`: Suggests tags that contain the input.
 
 ### Changed
 * *Nothing*

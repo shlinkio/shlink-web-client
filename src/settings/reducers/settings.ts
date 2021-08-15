@@ -17,8 +17,11 @@ interface RealTimeUpdatesSettings {
   interval?: number;
 }
 
+export type TagFilteringMode = 'startsWith' | 'includes';
+
 export interface ShortUrlCreationSettings {
   validateUrls: boolean;
+  tagFilteringMode?: TagFilteringMode;
 }
 
 export interface UiSettings {
