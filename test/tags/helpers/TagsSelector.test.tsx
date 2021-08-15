@@ -49,10 +49,14 @@ describe('<TagsSelector />', () => {
     ]);
   });
 
-  it('invokes onChange when new tags are added', () => {
-    wrapper.simulate('addition', { name: 'The-New-Tag' });
+  it.each([
+    [ 'The-New-Tag', [ ...tags, 'the-new-tag' ]],
+    [ 'comma,separated,tags', [ ...tags, 'comma', 'separated', 'tags' ]],
+    [ 'foo', tags ],
+  ])('invokes onChange when new tags are added', (newTag, expectedTags) => {
+    wrapper.simulate('addition', { name: newTag });
 
-    expect(onChange).toHaveBeenCalledWith([ ...tags, 'the-new-tag' ]);
+    expect(onChange).toHaveBeenCalledWith(expectedTags);
   });
 
   it.each([
