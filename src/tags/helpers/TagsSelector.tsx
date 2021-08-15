@@ -44,13 +44,18 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       addOnBlur
       placeholderText={placeholder}
       minQueryLength={1}
+      delimiters={[ 'Enter', 'Tab', ',' ]}
       onDelete={(removedTagIndex) => {
         const tagsCopy = [ ...selectedTags ];
 
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
       }}
-      onAddition={({ name: newTag }) => onChange([ ...selectedTags, newTag.toLowerCase() ])}
+      onAddition={({ name: newTag }) => onChange(
+        // * Avoid duplicated tags (thanks to the Set),
+        // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
+        [ ...new Set([ ...selectedTags, ...newTag.toLowerCase().split(',') ]) ],
+      )}
     />
   );
 };
