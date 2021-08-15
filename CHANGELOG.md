@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#460](https://github.com/shlinkio/shlink-web-client/pull/460) Added dynamic title on hover for tags with a very long title.
+* [#462](https://github.com/shlinkio/shlink-web-client/pull/462) Now it is possible to paste multiple comma-separated tags in the tags selector, making all of them to be added as individual tags.
 
 ### Changed
 * *Nothing*
