@@ -3,6 +3,7 @@ import { Mock } from 'ts-mockery';
 import createTagsSelector from '../../../src/tags/helpers/TagsSelector';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import { TagsList } from '../../../src/tags/reducers/tagsList';
+import { Settings } from '../../../src/settings/reducers/settings';
 
 describe('<TagsSelector />', () => {
   const onChange = jest.fn();
@@ -14,7 +15,13 @@ describe('<TagsSelector />', () => {
   beforeEach(jest.clearAllMocks);
   beforeEach(() => {
     wrapper = shallow(
-      <TagsSelector selectedTags={tags} tagsList={tagsList} listTags={jest.fn()} onChange={onChange} />,
+      <TagsSelector
+        selectedTags={tags}
+        tagsList={tagsList}
+        settings={Mock.all<Settings>()}
+        listTags={jest.fn()}
+        onChange={onChange}
+      />,
     );
   });
 

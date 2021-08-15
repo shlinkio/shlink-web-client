@@ -17,8 +17,12 @@ interface RealTimeUpdatesSettings {
   interval?: number;
 }
 
+type TagFilteringMode = 'startsWith' | 'includes';
+
 export interface ShortUrlCreationSettings {
   validateUrls: boolean;
+  tagFilteringMode?: TagFilteringMode;
+  maxTagSuggestions?: number;
 }
 
 export interface UiSettings {

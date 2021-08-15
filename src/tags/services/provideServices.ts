@@ -12,7 +12,7 @@ import { ConnectDecorator } from '../../container/types';
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
-  bottle.decorator('TagsSelector', connect([ 'tagsList' ], [ 'listTags' ]));
+  bottle.decorator('TagsSelector', connect([ 'tagsList', 'settings' ], [ 'listTags' ]));
 
   bottle.serviceFactory(
     'TagCard',
