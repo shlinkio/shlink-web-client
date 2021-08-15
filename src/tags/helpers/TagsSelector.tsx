@@ -28,7 +28,6 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
   }, []);
 
   const searchMode = settings.shortUrlCreation?.tagFilteringMode ?? 'startsWith';
-  const maxSuggestions = settings.shortUrlCreation?.maxTagSuggestions;
   const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
     <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
   const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (
@@ -48,7 +47,6 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       addOnBlur
       placeholderText={placeholder ?? 'Add tags to the URL'}
       minQueryLength={1}
-      maxSuggestionsLength={maxSuggestions}
       delimiters={[ 'Enter', 'Tab', ',' ]}
       suggestionsTransform={
         searchMode === 'includes'
