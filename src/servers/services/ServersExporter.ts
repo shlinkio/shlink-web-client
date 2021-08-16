@@ -2,7 +2,7 @@ import { dissoc, values } from 'ramda';
 import { CsvJson } from 'csvjson';
 import LocalStorage from '../../utils/services/LocalStorage';
 import { ServersMap } from '../data';
-import { saveCsv } from '../../utils/helpers/csv';
+import { saveCsv } from '../../utils/helpers/files';
 
 const SERVERS_FILENAME = 'shlink-servers.csv';
 

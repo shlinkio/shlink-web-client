@@ -1,6 +1,6 @@
 import { CsvJson } from 'csvjson';
 import { NormalizedVisit } from '../types';
-import { saveCsv } from '../../utils/helpers/csv';
+import { saveCsv } from '../../utils/helpers/files';
 
 export class VisitsExporter {
   public constructor(
