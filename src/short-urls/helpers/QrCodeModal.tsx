@@ -36,7 +36,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
     svgIsSupported: supportsQrCodeSvgFormat(selectedServer),
     marginIsSupported: supportsQrCodeMargin(selectedServer),
     errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
-  }) as QrCodeCapabilities, [ selectedServer ]);
+  }), [ selectedServer ]);
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
     [ shortUrl, size, format, margin, errorCorrection, capabilities ],
