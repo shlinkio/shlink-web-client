@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `includes`: Suggests tags that contain the input.
 
 * [#464](https://github.com/shlinkio/shlink-web-client/pull/464) Added support to download QR codes. This feature requires an unreleased version of Shlink, so it comes disabled, and will get enabled as soon as Shlink v2.9 is released.
+* [#469](https://github.com/shlinkio/shlink-web-client/pull/469) Added support `errorCorrection` in QR codes, when consuming Shlink 2.8 or higher.
 
 ### Changed
 * *Nothing*
