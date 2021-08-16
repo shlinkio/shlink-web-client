@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `startsWith`: Suggests tags that start with the input. This is the default behavior for keep it as it was so far.
     * `includes`: Suggests tags that contain the input.
 
+* [#464](https://github.com/shlinkio/shlink-web-client/pull/464) Added support to download QR codes. This feature requires an unreleased version of Shlink, so it comes disabled, and will get enabled as soon as Shlink v2.9 is released.
+
 ### Changed
 * *Nothing*
 
