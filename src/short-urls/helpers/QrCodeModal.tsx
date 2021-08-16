@@ -8,8 +8,13 @@ import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
-import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat } from '../../utils/helpers/qrCodes';
-import { supportsQrCodeSizeInQuery, supportsQrCodeSvgFormat, supportsQrCodeMargin } from '../../utils/helpers/features';
+import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
+import {
+  supportsQrCodeSizeInQuery,
+  supportsQrCodeSvgFormat,
+  supportsQrCodeMargin,
+  supportsQrErrorCorrection,
+} from '../../utils/helpers/features';
 import { ImageDownloader } from '../../common/services/ImageDownloader';
 import { Versions } from '../../utils/helpers/version';
 import './QrCodeModal.scss';
@@ -18,20 +23,22 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => (
+const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => ( // eslint-disable-line
   { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
 ) => {
   const [ size, setSize ] = useState(300);
   const [ margin, setMargin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
+  const [ errorCorrection, setErrorCorrection ] = useState<QrErrorCorrection>('L');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
     svgIsSupported: supportsQrCodeSvgFormat(selectedServer),
     marginIsSupported: supportsQrCodeMargin(selectedServer),
-  }), [ selectedServer ]);
+    errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
+  }) as QrCodeCapabilities, [ selectedServer ]);
   const qrCodeUrl = useMemo(
-    () => buildQrCodeUrl(shortUrl, { size, format, margin }, capabilities),
-    [ shortUrl, size, format, margin, capabilities ],
+    () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
+    [ shortUrl, size, format, margin, errorCorrection, capabilities ],
   );
   const totalSize = useMemo(() => size + margin, [ size, margin ]);
   const modalSize = useMemo(() => {
@@ -48,50 +55,64 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
         QR code for <ExternalLink href={shortUrl}>{shortUrl}</ExternalLink>
       </ModalHeader>
       <ModalBody>
-        <Row className="mb-2">
-          <div
+        <Row>
+          <FormGroup
             className={classNames({
-              'col-md-4': capabilities.marginIsSupported && capabilities.svgIsSupported,
-              'col-md-6': (!capabilities.marginIsSupported && capabilities.svgIsSupported) || (capabilities.marginIsSupported && !capabilities.svgIsSupported),
-              'col-12': !capabilities.marginIsSupported && !capabilities.svgIsSupported,
+              'col-md-4': capabilities.marginIsSupported && capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported,
+              'col-md-6': capabilities.errorCorrectionIsSupported || (!capabilities.marginIsSupported && capabilities.svgIsSupported) || (capabilities.marginIsSupported && !capabilities.svgIsSupported),
+              'col-12': !capabilities.marginIsSupported && !capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported,
             })}
           >
-            <FormGroup>
-              <label className="mb-0">Size: {size}px</label>
+            <label className="mb-0">Size: {size}px</label>
+            <input
+              type="range"
+              className="form-control-range"
+              value={size}
+              step={10}
+              min={50}
+              max={1000}
+              onChange={(e) => setSize(Number(e.target.value))}
+            />
+          </FormGroup>
+          {capabilities.marginIsSupported && (
+            <FormGroup className={capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported ? 'col-md-4' : 'col-md-6'}>
+              <label className="mb-0">Margin: {margin}px</label>
               <input
                 type="range"
                 className="form-control-range"
-                value={size}
-                step={10}
-                min={50}
-                max={1000}
-                onChange={(e) => setSize(Number(e.target.value))}
+                value={margin}
+                step={1}
+                min={0}
+                max={100}
+                onChange={(e) => setMargin(Number(e.target.value))}
               />
             </FormGroup>
-          </div>
-          {capabilities.marginIsSupported && (
-            <div className={capabilities.svgIsSupported ? 'col-md-4' : 'col-md-6'}>
-              <FormGroup>
-                <label className="mb-0">Margin: {margin}px</label>
-                <input
-                  type="range"
-                  className="form-control-range"
-                  value={margin}
-                  step={1}
-                  min={0}
-                  max={100}
-                  onChange={(e) => setMargin(Number(e.target.value))}
-                />
-              </FormGroup>
-            </div>
           )}
           {capabilities.svgIsSupported && (
-            <div className={capabilities.marginIsSupported ? 'col-md-4' : 'col-md-6'}>
+            <FormGroup className={capabilities.marginIsSupported && !capabilities.errorCorrectionIsSupported ? 'col-md-4' : 'col-md-6'}>
               <DropdownBtn text={`Format (${format})`}>
                 <DropdownItem active={format === 'png'} onClick={() => setFormat('png')}>PNG</DropdownItem>
                 <DropdownItem active={format === 'svg'} onClick={() => setFormat('svg')}>SVG</DropdownItem>
               </DropdownBtn>
-            </div>
+            </FormGroup>
+          )}
+          {capabilities.errorCorrectionIsSupported && (
+            <FormGroup className="col-md-6">
+              <DropdownBtn text={`Error correction (${errorCorrection})`}>
+                <DropdownItem active={errorCorrection === 'L'} onClick={() => setErrorCorrection('L')}>
+                  <b>L</b>ow
+                </DropdownItem>
+                <DropdownItem active={errorCorrection === 'M'} onClick={() => setErrorCorrection('M')}>
+                  <b>M</b>edium
+                </DropdownItem>
+                <DropdownItem active={errorCorrection === 'Q'} onClick={() => setErrorCorrection('Q')}>
+                  <b>Q</b>uartile
+                </DropdownItem>
+                <DropdownItem active={errorCorrection === 'H'} onClick={() => setErrorCorrection('H')}>
+                  <b>H</b>igh
+                </DropdownItem>
+              </DropdownBtn>
+            </FormGroup>
           )}
         </Row>
         <div className="text-center">

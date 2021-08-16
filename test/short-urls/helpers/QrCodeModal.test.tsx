@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
-import { Button, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { Button, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createQrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
@@ -48,6 +48,7 @@ describe('<QrCodeModal />', () => {
     [ '2.5.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
     [ '2.6.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
     [ '2.6.0' as SemVer, 10, '/qr-code?size=300&format=png&margin=10' ],
+    [ '2.8.0' as SemVer, 0, '/qr-code?size=300&format=png&errorCorrection=L' ],
   ])('displays an image with the QR code of the URL', (version, margin, expectedUrl) => {
     const wrapper = createWrapper(version);
     const formControls = wrapper.find('.form-control-range');
@@ -91,10 +92,11 @@ describe('<QrCodeModal />', () => {
     [ '2.3.0' as SemVer, 0, 'col-12' ],
     [ '2.4.0' as SemVer, 1, 'col-md-6' ],
     [ '2.6.0' as SemVer, 1, 'col-md-4' ],
+    [ '2.8.0' as SemVer, 2, 'col-md-6' ],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
     const wrapper = createWrapper(version);
     const dropdown = wrapper.find(DropdownBtn);
-    const firstCol = wrapper.find(Row).find('div').first();
+    const firstCol = wrapper.find(Row).find(FormGroup).first();
 
     expect(dropdown).toHaveLength(expectedAmountOfDropdowns);
     expect(firstCol.prop('className')).toEqual(expectedRangeClass);
