@@ -9,12 +9,17 @@ import ErrorHandler from '../ErrorHandler';
 import ShlinkVersionsContainer from '../ShlinkVersionsContainer';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
+import { ImageDownloader } from './ImageDownloader';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
+  // Services
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
   bottle.constant('axios', axios);
 
+  bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
+
+  // Components
   bottle.serviceFactory('ScrollToTop', ScrollToTop);
   bottle.decorator('ScrollToTop', withRouter);
 

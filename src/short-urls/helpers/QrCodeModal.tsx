@@ -1,5 +1,7 @@
-import { useMemo, useState } from 'react';
-import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { FC, useMemo, useState } from 'react';
+import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
@@ -8,13 +10,17 @@ import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat } from '../../utils/helpers/qrCodes';
 import { supportsQrCodeSizeInQuery, supportsQrCodeSvgFormat, supportsQrCodeMargin } from '../../utils/helpers/features';
+import { ImageDownloader } from '../../common/services/ImageDownloader';
+import { Versions } from '../../utils/helpers/version';
 import './QrCodeModal.scss';
 
 interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps) => {
+const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => (
+  { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
+) => {
   const [ size, setSize ] = useState(300);
   const [ margin, setMargin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
@@ -90,12 +96,21 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
         </Row>
         <div className="text-center">
           <div className="mb-3">
-            <div>QR code URL:</div>
             <ExternalLink href={qrCodeUrl} />
             <CopyToClipboardIcon text={qrCodeUrl} />
           </div>
           <img src={qrCodeUrl} className="qr-code-modal__img" alt="QR code" />
-          <div className="mt-2">{size}x{size}</div>
+          <ForServerVersion minVersion="2.9.0">
+            <div className="mt-3">
+              <Button
+                block
+                color="primary"
+                onClick={async () => imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`)}
+              >
+                Download <FontAwesomeIcon icon={downloadIcon} className="ml-1" />
+              </Button>
+            </div>
+          </ForServerVersion>
         </div>
       </ModalBody>
     </Modal>

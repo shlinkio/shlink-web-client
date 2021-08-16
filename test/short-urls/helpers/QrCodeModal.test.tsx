@@ -1,16 +1,19 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
-import { Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import QrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
+import createQrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { DropdownBtn } from '../../../src/utils/DropdownBtn';
 import { SemVer } from '../../../src/utils/helpers/version';
+import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
 
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
+  const saveImage = jest.fn();
+  const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }), () => null);
   const shortUrl = 'https://doma.in/abc123';
   const createWrapper = (version: SemVer = '2.6.0') => {
     const selectedServer = Mock.of<ReachableServer>({ version });
@@ -28,6 +31,7 @@ describe('<QrCodeModal />', () => {
   };
 
   afterEach(() => wrapper?.unmount());
+  afterEach(jest.clearAllMocks);
 
   it('shows an external link to the URL in the header', () => {
     const wrapper = createWrapper();
@@ -78,7 +82,6 @@ describe('<QrCodeModal />', () => {
     sizeInput.simulate('change', { target: { value: `${size}` } });
     marginInput.simulate('change', { target: { value: `${margin}` } });
 
-    expect(wrapper.find('.mt-2').text()).toEqual(`${size}x${size}`);
     expect(wrapper.find('label').at(0).text()).toEqual(`Size: ${size}px`);
     expect(wrapper.find('label').at(1).text()).toEqual(`Margin: ${margin}px`);
     expect(wrapper.find(Modal).prop('size')).toEqual(modalSize);
@@ -95,5 +98,14 @@ describe('<QrCodeModal />', () => {
 
     expect(dropdown).toHaveLength(expectedAmountOfDropdowns);
     expect(firstCol.prop('className')).toEqual(expectedRangeClass);
+  });
+
+  it('saves the QR code image when clicking the Download button', () => {
+    const wrapper = createWrapper();
+    const downloadBtn = wrapper.find(Button);
+
+    expect(saveImage).not.toHaveBeenCalled();
+    downloadBtn.simulate('click');
+    expect(saveImage).toHaveBeenCalledTimes(1);
   });
 });
