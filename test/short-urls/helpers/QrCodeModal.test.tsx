@@ -6,9 +6,10 @@ import createQrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
-import { DropdownBtn } from '../../../src/utils/DropdownBtn';
 import { SemVer } from '../../../src/utils/helpers/version';
 import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
+import { QrFormatDropdown } from '../../../src/short-urls/helpers/qr-codes/QrFormatDropdown';
+import { QrErrorCorrectionDropdown } from '../../../src/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
 
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
@@ -95,10 +96,10 @@ describe('<QrCodeModal />', () => {
     [ '2.8.0' as SemVer, 2, 'col-md-6' ],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
     const wrapper = createWrapper(version);
-    const dropdown = wrapper.find(DropdownBtn);
+    const dropdownsLength = wrapper.find(QrFormatDropdown).length + wrapper.find(QrErrorCorrectionDropdown).length;
     const firstCol = wrapper.find(Row).find(FormGroup).first();
 
-    expect(dropdown).toHaveLength(expectedAmountOfDropdowns);
+    expect(dropdownsLength).toEqual(expectedAmountOfDropdowns);
     expect(firstCol.prop('className')).toEqual(expectedRangeClass);
   });
 

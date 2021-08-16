@@ -1,12 +1,11 @@
 import { FC, useMemo, useState } from 'react';
-import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstrap';
+import { Modal, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
-import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
 import {
@@ -17,7 +16,9 @@ import {
 } from '../../utils/helpers/features';
 import { ImageDownloader } from '../../common/services/ImageDownloader';
 import { Versions } from '../../utils/helpers/version';
+import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import './QrCodeModal.scss';
+import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 
 interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
@@ -90,28 +91,12 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
           )}
           {capabilities.svgIsSupported && (
             <FormGroup className={capabilities.marginIsSupported && !capabilities.errorCorrectionIsSupported ? 'col-md-4' : 'col-md-6'}>
-              <DropdownBtn text={`Format (${format})`}>
-                <DropdownItem active={format === 'png'} onClick={() => setFormat('png')}>PNG</DropdownItem>
-                <DropdownItem active={format === 'svg'} onClick={() => setFormat('svg')}>SVG</DropdownItem>
-              </DropdownBtn>
+              <QrFormatDropdown format={format} setFormat={setFormat} />
             </FormGroup>
           )}
           {capabilities.errorCorrectionIsSupported && (
             <FormGroup className="col-md-6">
-              <DropdownBtn text={`Error correction (${errorCorrection})`}>
-                <DropdownItem active={errorCorrection === 'L'} onClick={() => setErrorCorrection('L')}>
-                  <b>L</b>ow
-                </DropdownItem>
-                <DropdownItem active={errorCorrection === 'M'} onClick={() => setErrorCorrection('M')}>
-                  <b>M</b>edium
-                </DropdownItem>
-                <DropdownItem active={errorCorrection === 'Q'} onClick={() => setErrorCorrection('Q')}>
-                  <b>Q</b>uartile
-                </DropdownItem>
-                <DropdownItem active={errorCorrection === 'H'} onClick={() => setErrorCorrection('H')}>
-                  <b>H</b>igh
-                </DropdownItem>
-              </DropdownBtn>
+              <QrErrorCorrectionDropdown errorCorrection={errorCorrection} setErrorCorrection={setErrorCorrection} />
             </FormGroup>
           )}
         </Row>
