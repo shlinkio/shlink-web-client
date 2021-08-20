@@ -6,8 +6,8 @@ import Message from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';
-import { DomainsList } from './reducers/domainsList';
 import SearchField from '../utils/SearchField';
+import { DomainsList } from './reducers/domainsList';
 
 interface ManageDomainsProps {
   listDomains: Function;
@@ -63,7 +63,7 @@ export const ManageDomains: FC<ManageDomainsProps> = ({ listDomains, domainsList
                 <td>{domain.redirects?.baseUrlRedirect ?? <Na />}</td>
                 <td>{domain.redirects?.regular404Redirect ?? <Na />}</td>
                 <td>{domain.redirects?.invalidShortUrlRedirect ?? <Na />}</td>
-                <td>
+                <td className="text-right">
                   <span id={`domainEdit${domain.domain.replace('.', '')}`}>
                     <Button outline size="sm" disabled={domain.isDefault}>
                       <FontAwesomeIcon icon={domain.isDefault ? forbiddenIcon : editIcon} />
