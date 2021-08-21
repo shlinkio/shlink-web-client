@@ -8,12 +8,14 @@ interface FormGroupContainerProps {
   id?: string;
   type?: InputType;
   required?: boolean;
+  placeholder?: string;
+  className?: string;
 }
 
 export const FormGroupContainer: FC<FormGroupContainerProps> = (
-  { children, value, onChange, id = uuid(), type = 'text', required = true },
+  { children, value, onChange, id = uuid(), type = 'text', required = true, placeholder, className = '' },
 ) => (
-  <div className="form-group">
+  <div className={`form-group ${className}`}>
     <label htmlFor={id} className="create-server__label">
       {children}:
     </label>
@@ -23,6 +25,7 @@ export const FormGroupContainer: FC<FormGroupContainerProps> = (
       id={id}
       value={value}
       required={required}
+      placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
     />
   </div>

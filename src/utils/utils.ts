@@ -43,3 +43,5 @@ export type OptionalString = Optional<string>;
 export type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
+
+export const nonEmptyValueOrNull = <T>(value: T): T | null => isEmpty(value) ? null : value;

@@ -1,43 +1,41 @@
 import { FC, useEffect } from 'react';
-import { faCheck as defaultDomainIcon, faEdit as editIcon, faBan as forbiddenIcon } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, UncontrolledTooltip } from 'reactstrap';
 import Message from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';
 import SearchField from '../utils/SearchField';
+import { ShlinkDomainRedirects } from '../api/types';
 import { DomainsList } from './reducers/domainsList';
+import { DomainRow } from './DomainRow';
 
 interface ManageDomainsProps {
   listDomains: Function;
+  filterDomains: (searchTerm: string) => void;
+  editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
   domainsList: DomainsList;
 }
 
-const Na: FC = () => <i><small>N/A</small></i>;
-const DefaultDomain: FC = () => (
-  <>
-    <FontAwesomeIcon icon={defaultDomainIcon} className="text-primary" id="defaultDomainIcon" />
-    <UncontrolledTooltip target="defaultDomainIcon" placement="right">Default domain</UncontrolledTooltip>
-  </>
-);
+const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '' ];
 
-export const ManageDomains: FC<ManageDomainsProps> = ({ listDomains, domainsList }) => {
-  const { domains, loading, error } = domainsList;
+export const ManageDomains: FC<ManageDomainsProps> = (
+  { listDomains, domainsList, filterDomains, editDomainRedirects },
+) => {
+  const { filteredDomains: domains, loading, error, errorData } = domainsList;
+  const defaultRedirects = domains.find(({ isDefault }) => isDefault)?.redirects;
 
   useEffect(() => {
     listDomains();
   }, []);
 
-  const renderContent = () => {
-    if (loading) {
-      return <Message loading />;
-    }
+  if (loading) {
+    return <Message loading />;
+  }
 
+  const renderContent = () => {
     if (error) {
       return (
         <Result type="error">
-          <ShlinkApiError fallbackMessage="Error loading domains :(" />
+          <ShlinkApiError errorData={errorData} fallbackMessage="Error loading domains :(" />
         </Result>
       );
     }
@@ -46,36 +44,17 @@ export const ManageDomains: FC<ManageDomainsProps> = ({ listDomains, domainsList
       <SimpleCard>
         <table className="table table-hover mb-0">
           <thead>
-            <tr>
-              <th />
-              <th>Domain</th>
-              <th>Base path redirect</th>
-              <th>Regular 404 redirect</th>
-              <th>Invalid short URL redirect</th>
-              <th />
-            </tr>
+            <tr>{headers.map((column, index) => <th key={index}>{column}</th>)}</tr>
           </thead>
           <tbody>
+            {domains.length < 1 && <tr><td colSpan={headers.length} className="text-center">No results found</td></tr>}
             {domains.map((domain) => (
-              <tr key={domain.domain}>
-                <td>{domain.isDefault ? <DefaultDomain /> : ''}</td>
-                <th>{domain.domain}</th>
-                <td>{domain.redirects?.baseUrlRedirect ?? <Na />}</td>
-                <td>{domain.redirects?.regular404Redirect ?? <Na />}</td>
-                <td>{domain.redirects?.invalidShortUrlRedirect ?? <Na />}</td>
-                <td className="text-right">
-                  <span id={`domainEdit${domain.domain.replace('.', '')}`}>
-                    <Button outline size="sm" disabled={domain.isDefault}>
-                      <FontAwesomeIcon icon={domain.isDefault ? forbiddenIcon : editIcon} />
-                    </Button>
-                  </span>
-                  {domain.isDefault && (
-                    <UncontrolledTooltip target={`domainEdit${domain.domain.replace('.', '')}`} placement="left">
-                      Redirects for default domain cannot be edited here.
-                    </UncontrolledTooltip>
-                  )}
-                </td>
-              </tr>
+              <DomainRow
+                key={domain.domain}
+                domain={domain}
+                editDomainRedirects={editDomainRedirects}
+                defaultRedirects={defaultRedirects}
+              />
             ))}
           </tbody>
         </table>
@@ -85,7 +64,7 @@ export const ManageDomains: FC<ManageDomainsProps> = ({ listDomains, domainsList
 
   return (
     <>
-      <SearchField className="mb-3" onChange={() => {}} />
+      <SearchField className="mb-3" onChange={filterDomains} />
       {renderContent()}
     </>
   );

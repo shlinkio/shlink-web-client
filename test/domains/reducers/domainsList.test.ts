@@ -13,20 +13,26 @@ describe('domainsList', () => {
   const domains = [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ];
 
   describe('reducer', () => {
-    const action = (type: string, args: Partial<ListDomainsAction> = {}) => Mock.of<ListDomainsAction>(
+    const action = (type: string, args: Partial<ListDomainsAction> = {}): any => Mock.of<ListDomainsAction>(
       { type, ...args },
     );
 
     it('returns loading on LIST_DOMAINS_START', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS_START))).toEqual({ domains: [], loading: true, error: false });
+      expect(reducer(undefined, action(LIST_DOMAINS_START))).toEqual(
+        { domains: [], filteredDomains: [], loading: true, error: false },
+      );
     });
 
     it('returns error on LIST_DOMAINS_ERROR', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS_ERROR))).toEqual({ domains: [], loading: false, error: true });
+      expect(reducer(undefined, action(LIST_DOMAINS_ERROR))).toEqual(
+        { domains: [], filteredDomains: [], loading: false, error: true },
+      );
     });
 
     it('returns domains on LIST_DOMAINS', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS, { domains }))).toEqual({ domains, loading: false, error: false });
+      expect(reducer(undefined, action(LIST_DOMAINS, { domains }))).toEqual(
+        { domains, filteredDomains: domains, loading: false, error: false },
+      );
     });
   });
 

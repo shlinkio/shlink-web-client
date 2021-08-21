@@ -16,6 +16,8 @@ import {
   ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
+  ShlinkEditDomainRedirects,
+  ShlinkDomainRedirects,
 } from '../types';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
@@ -107,6 +109,11 @@ export default class ShlinkApiClient {
 
   public readonly listDomains = async (): Promise<ShlinkDomain[]> =>
     this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains.data);
+
+  public readonly editDomainRedirects = async (
+    domainRedirects: ShlinkEditDomainRedirects,
+  ): Promise<ShlinkDomainRedirects> =>
+    this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects).then(({ data }) => data);
 
   private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> => {
     try {

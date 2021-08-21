@@ -4,6 +4,7 @@ import { ProblemDetailsError } from '../../api/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
+import { ApiErrorAction } from '../../api/types/actions';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
@@ -24,17 +25,13 @@ export interface DeleteShortUrlAction extends Action<string> {
   domain?: string | null;
 }
 
-interface DeleteShortUrlErrorAction extends Action<string> {
-  errorData?: ProblemDetailsError;
-}
-
 const initialState: ShortUrlDeletion = {
   shortCode: '',
   loading: false,
   error: false,
 };
 
-export default buildReducer<ShortUrlDeletion, DeleteShortUrlAction & DeleteShortUrlErrorAction>({
+export default buildReducer<ShortUrlDeletion, DeleteShortUrlAction & ApiErrorAction>({
   [DELETE_SHORT_URL_START]: (state) => ({ ...state, loading: true, error: false }),
   [DELETE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, errorData, loading: false, error: true }),
   [SHORT_URL_DELETED]: (state, { shortCode }) => ({ ...state, shortCode, loading: false, error: false }),
@@ -52,7 +49,7 @@ export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
     await deleteShortUrl(shortCode, domain);
     dispatch<DeleteShortUrlAction>({ type: SHORT_URL_DELETED, shortCode, domain });
   } catch (e) {
-    dispatch<DeleteShortUrlErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });
+    dispatch<ApiErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

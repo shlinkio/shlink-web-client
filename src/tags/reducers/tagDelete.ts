@@ -4,6 +4,7 @@ import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
+import { ApiErrorAction } from '../../api/types/actions';
 
 /* eslint-disable padding-line-between-statements */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
@@ -22,16 +23,12 @@ export interface DeleteTagAction extends Action<string> {
   tag: string;
 }
 
-export interface DeleteTagFailedAction extends Action<string> {
-  errorData?: ProblemDetailsError;
-}
-
 const initialState: TagDeletion = {
   deleting: false,
   error: false,
 };
 
-export default buildReducer<TagDeletion, DeleteTagFailedAction>({
+export default buildReducer<TagDeletion, ApiErrorAction>({
   [DELETE_TAG_START]: () => ({ deleting: true, error: false }),
   [DELETE_TAG_ERROR]: (_, { errorData }) => ({ deleting: false, error: true, errorData }),
   [DELETE_TAG]: () => ({ deleting: false, error: false }),
@@ -48,7 +45,7 @@ export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag:
     await deleteTags([ tag ]);
     dispatch({ type: DELETE_TAG });
   } catch (e) {
-    dispatch<DeleteTagFailedAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });
+    dispatch<ApiErrorAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

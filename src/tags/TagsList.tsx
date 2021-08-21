@@ -30,11 +30,11 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     forceListTags();
   }, []);
 
-  const renderContent = () => {
-    if (tagsList.loading) {
-      return <Message loading />;
-    }
+  if (tagsList.loading) {
+    return <Message loading />;
+  }
 
+  const renderContent = () => {
     if (tagsList.error) {
       return (
         <Result type="error">
@@ -73,7 +73,7 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
 
   return (
     <>
-      {!tagsList.loading && <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />}
+      <SearchField className="mb-3" onChange={filterTags} />
       {renderContent()}
     </>
   );

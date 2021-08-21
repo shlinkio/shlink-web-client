@@ -1,4 +1,4 @@
-import { determineOrderDir, rangeOf } from '../../src/utils/utils';
+import { determineOrderDir, nonEmptyValueOrNull, rangeOf } from '../../src/utils/utils';
 
 describe('utils', () => {
   describe('determineOrderDir', () => {
@@ -45,6 +45,19 @@ describe('utils', () => {
         'result_4',
         'result_5',
       ]);
+    });
+  });
+
+  describe('nonEmptyValueOrNull', () => {
+    it.each([
+      [ '', null ],
+      [ 'Hello', 'Hello' ],
+      [[], null ],
+      [[ 1, 2, 3 ], [ 1, 2, 3 ]],
+      [{}, null ],
+      [{ foo: 'bar' }, { foo: 'bar' }],
+    ])('returns expected value based on input', (value, expected) => {
+      expect(nonEmptyValueOrNull(value)).toEqual(expected);
     });
   });
 });
