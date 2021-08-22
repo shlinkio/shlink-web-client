@@ -43,7 +43,7 @@ export const ManageDomains: FC<ManageDomainsProps> = (
     return (
       <SimpleCard>
         <table className="table table-hover mb-0">
-          <thead>
+          <thead className="responsive-table__header">
             <tr>{headers.map((column, index) => <th key={index}>{column}</th>)}</tr>
           </thead>
           <tbody>

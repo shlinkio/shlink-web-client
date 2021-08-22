@@ -36,15 +36,19 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
   const domainId = `domainEdit${authority.replace('.', '')}`;
 
   return (
-    <tr>
-      <td>{isDefault ? <DefaultDomain /> : ''}</td>
-      <th>{authority}</th>
-      <td>{redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}</td>
-      <td>{redirects?.regular404Redirect ?? <Nr fallback={defaultRedirects?.regular404Redirect} />}</td>
-      <td>
+    <tr className="responsive-table__row">
+      <td className="responsive-table__cell" data-th="Is default domain">{isDefault ? <DefaultDomain /> : ''}</td>
+      <th className="responsive-table__cell" data-th="Domain">{authority}</th>
+      <td className="responsive-table__cell" data-th="Base path redirect">
+        {redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}
+      </td>
+      <td className="responsive-table__cell" data-th="Regular 404 redirect">
+        {redirects?.regular404Redirect ?? <Nr fallback={defaultRedirects?.regular404Redirect} />}
+      </td>
+      <td className="responsive-table__cell" data-th="Invalid short URL redirect">
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
-      <td className="text-right">
+      <td className="responsive-table__cell text-right">
         <span id={domainId}>
           <Button outline size="sm" disabled={isDefault} onClick={isDefault ? undefined : toggle}>
             <FontAwesomeIcon icon={isDefault ? forbiddenIcon : editIcon} />
