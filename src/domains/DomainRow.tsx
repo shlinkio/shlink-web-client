@@ -32,24 +32,26 @@ const DefaultDomain: FC = () => (
 
 export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects }) => {
   const [ isOpen, toggle ] = useToggle();
+  const { domain: authority, isDefault, redirects } = domain;
+  const domainId = `domainEdit${authority.replace('.', '')}`;
 
   return (
     <tr>
-      <td>{domain.isDefault ? <DefaultDomain /> : ''}</td>
-      <th>{domain.domain}</th>
-      <td>{domain.redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}</td>
-      <td>{domain.redirects?.regular404Redirect ?? <Nr fallback={defaultRedirects?.regular404Redirect} />}</td>
+      <td>{isDefault ? <DefaultDomain /> : ''}</td>
+      <th>{authority}</th>
+      <td>{redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}</td>
+      <td>{redirects?.regular404Redirect ?? <Nr fallback={defaultRedirects?.regular404Redirect} />}</td>
       <td>
-        {domain.redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
+        {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
       <td className="text-right">
-        <span id={`domainEdit${domain.domain.replace('.', '')}`}>
-          <Button outline size="sm" disabled={domain.isDefault} onClick={domain.isDefault ? undefined : toggle}>
-            <FontAwesomeIcon icon={domain.isDefault ? forbiddenIcon : editIcon} />
+        <span id={domainId}>
+          <Button outline size="sm" disabled={isDefault} onClick={isDefault ? undefined : toggle}>
+            <FontAwesomeIcon icon={isDefault ? forbiddenIcon : editIcon} />
           </Button>
         </span>
-        {domain.isDefault && (
-          <UncontrolledTooltip target={`domainEdit${domain.domain.replace('.', '')}`} placement="left">
+        {isDefault && (
+          <UncontrolledTooltip target={domainId} placement="left">
             Redirects for default domain cannot be edited here.
             <br />
             Use config options or env vars.

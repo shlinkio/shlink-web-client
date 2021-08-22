@@ -37,12 +37,12 @@ const initialState: DomainsList = {
   error: false,
 };
 
-type DomainsCombinedAction = ListDomainsAction
+export type DomainsCombinedAction = ListDomainsAction
 & ApiErrorAction
 & FilterDomainsAction
 & EditDomainRedirectsAction;
 
-const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
+export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
   (d: ShlinkDomain): ShlinkDomain => d.domain !== domain ? d : { ...d, redirects };
 
 export default buildReducer<DomainsList, DomainsCombinedAction>({
