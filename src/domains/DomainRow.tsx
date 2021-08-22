@@ -58,7 +58,7 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
           <UncontrolledTooltip target={domainId} placement="left">
             Redirects for default domain cannot be edited here.
             <br />
-            Use config options or env vars.
+            Use config options or env vars directly on the server.
           </UncontrolledTooltip>
         )}
       </td>
