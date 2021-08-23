@@ -10,16 +10,14 @@ interface InfoTooltipProps {
 }
 
 export const InfoTooltip: FC<InfoTooltipProps> = ({ className = '', placement, children }) => {
-  const ref = useRef<HTMLElement | null>();
+  const ref = useRef<HTMLSpanElement | null>();
+  const refCallback = (el: HTMLSpanElement) => {
+    ref.current = el;
+  };
 
   return (
     <>
-      <span
-        className={className}
-        ref={(el) => {
-          ref.current = el;
-        }}
-      >
+      <span className={className} ref={refCallback}>
         <FontAwesomeIcon icon={infoIcon} />
       </span>
       <UncontrolledTooltip target={(() => ref.current) as any} placement={placement}>{children}</UncontrolledTooltip>
