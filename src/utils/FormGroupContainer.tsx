@@ -2,7 +2,7 @@ import { FC, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { InputType } from 'reactstrap/lib/Input';
 
-interface FormGroupContainerProps {
+export interface FormGroupContainerProps {
   value: string;
   onChange: (newValue: string) => void;
   id?: string;
