@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { InputType } from 'reactstrap/lib/Input';
 
@@ -10,23 +10,28 @@ interface FormGroupContainerProps {
   required?: boolean;
   placeholder?: string;
   className?: string;
+  labelClassName?: string;
 }
 
 export const FormGroupContainer: FC<FormGroupContainerProps> = (
-  { children, value, onChange, id = uuid(), type = 'text', required = true, placeholder, className = '' },
-) => (
-  <div className={`form-group ${className}`}>
-    <label htmlFor={id} className="create-server__label">
-      {children}:
-    </label>
-    <input
-      className="form-control"
-      type={type}
-      id={id}
-      value={value}
-      required={required}
-      placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
-    />
-  </div>
-);
+  { children, value, onChange, id, type, required, placeholder, className, labelClassName },
+) => {
+  const forId = useRef<string>(id ?? uuid());
+
+  return (
+    <div className={`form-group ${className ?? ''}`}>
+      <label htmlFor={forId.current} className={labelClassName ?? ''}>
+        {children}:
+      </label>
+      <input
+        className="form-control"
+        type={type ?? 'text'}
+        id={forId.current}
+        value={value}
+        required={required ?? true}
+        placeholder={placeholder}
+        onChange={(e) => onChange(e.target.value)}
+      />
+    </div>
+  );
+};
