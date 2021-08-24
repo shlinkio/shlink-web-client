@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
-import { InfoTooltip } from '../../src/utils/InfoTooltip';
 import Popper from 'popper.js';
+import { InfoTooltip } from '../../src/utils/InfoTooltip';
 
 describe('<InfoTooltip />', () => {
   it.each([
