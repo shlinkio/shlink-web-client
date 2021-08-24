@@ -9,7 +9,12 @@ describe('<EditDomainRedirectsModal />', () => {
   let wrapper: ShallowWrapper;
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
   const toggle = jest.fn();
-  const domain = Mock.of<ShlinkDomain>({ domain: 'foo.com' });
+  const domain = Mock.of<ShlinkDomain>({
+    domain: 'foo.com',
+    redirects: {
+      baseUrlRedirect: 'baz',
+    },
+  });
 
   beforeEach(() => {
     wrapper = shallow(
@@ -51,7 +56,7 @@ describe('<EditDomainRedirectsModal />', () => {
 
     wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
     expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
-      baseUrlRedirect: null,
+      baseUrlRedirect: 'baz',
       regular404Redirect: null,
       invalidShortUrlRedirect: null,
     });
@@ -73,6 +78,17 @@ describe('<EditDomainRedirectsModal />', () => {
     expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
       baseUrlRedirect: 'new_base_url',
       regular404Redirect: 'new_regular_404',
+      invalidShortUrlRedirect: null,
+    });
+
+    formGroups.at(0).simulate('change', '');
+    formGroups.at(1).simulate('change', '');
+    formGroups.at(2).simulate('change', '');
+
+    wrapper.find('form').simulate('submit', { preventDefault: jest.fn() });
+    expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
+      baseUrlRedirect: null,
+      regular404Redirect: null,
       invalidShortUrlRedirect: null,
     });
   });
