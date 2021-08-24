@@ -11,7 +11,7 @@ import { SemVer } from '../../src/utils/helpers/version';
 describe('<MenuLayout />', () => {
   const ServerError = jest.fn();
   const C = jest.fn();
-  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, ServerError, C, C);
+  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, ServerError, C, C, C);
   let wrapper: ShallowWrapper;
   const createWrapper = (selectedServer: SelectedServer) => {
     wrapper = shallow(

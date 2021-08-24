@@ -120,4 +120,4 @@ export const Overview = (
       </Card>
     </>
   );
-}, () => [ Topics.visits(), Topics.orphanVisits() ]);
+}, () => [ Topics.visits, Topics.orphanVisits ]);

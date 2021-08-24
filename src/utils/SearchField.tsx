@@ -10,14 +10,11 @@ let timer: NodeJS.Timeout | null;
 interface SearchFieldProps {
   onChange: (value: string) => void;
   className?: string;
-  placeholder?: string;
   large?: boolean;
   noBorder?: boolean;
 }
 
-const SearchField = (
-  { onChange, className, placeholder = 'Search...', large = true, noBorder = false }: SearchFieldProps,
-) => {
+const SearchField = ({ onChange, className, large = true, noBorder = false }: SearchFieldProps) => {
   const [ searchTerm, setSearchTerm ] = useState('');
 
   const resetTimer = () => {
@@ -43,7 +40,7 @@ const SearchField = (
           'form-control-lg': large,
           'search-field__input--no-border': noBorder,
         })}
-        placeholder={placeholder}
+        placeholder="Search..."
         value={searchTerm}
         onChange={(e) => searchTermChanged(e.target.value)}
       />

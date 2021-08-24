@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
+* [#465](https://github.com/shlinkio/shlink-web-client/pull/465) Added new page to manage domains and their redirects, when consuming Shlink 2.8 or higher.
 * [#460](https://github.com/shlinkio/shlink-web-client/pull/460) Added dynamic title on hover for tags with a very long title.
 * [#462](https://github.com/shlinkio/shlink-web-client/pull/462) Now it is possible to paste multiple comma-separated tags in the tags selector, making all of them to be added as individual tags.
 * [#463](https://github.com/shlinkio/shlink-web-client/pull/463) The strategy to determine which tags to suggest in the TagsSelector during short URL creation, can now be configured:

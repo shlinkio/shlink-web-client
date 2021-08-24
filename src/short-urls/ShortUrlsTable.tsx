@@ -60,7 +60,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
 
   return (
     <table className={tableClasses}>
-      <thead className="short-urls-table__header">
+      <thead className="responsive-table__header short-urls-table__header">
         <tr>
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('dateCreated')}>
             Created at

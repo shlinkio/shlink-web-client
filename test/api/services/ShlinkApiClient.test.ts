@@ -297,4 +297,17 @@ describe('ShlinkApiClient', () => {
       expect(result).toEqual(expectedData);
     });
   });
+
+  describe('editDomainRedirects', () => {
+    it('returns the redirects', async () => {
+      const resp = { baseUrlRedirect: null, regular404Redirect: 'foo', invalidShortUrlRedirect: 'bar' };
+      const axiosSpy = createAxiosMock({ data: resp });
+      const { editDomainRedirects } = new ShlinkApiClient(axiosSpy, '', '');
+
+      const result = await editDomainRedirects({ domain: 'foo' });
+
+      expect(axiosSpy).toHaveBeenCalled();
+      expect(result).toEqual(resp);
+    });
+  });
 });

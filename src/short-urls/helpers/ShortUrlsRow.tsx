@@ -51,11 +51,11 @@ const ShortUrlsRow = (
   }, [ shortUrl.visitsCount ]);
 
   return (
-    <tr className="short-urls-row">
-      <td className="indivisible short-urls-row__cell" data-th="Created at: ">
+    <tr className="responsive-table__row">
+      <td className="indivisible short-urls-row__cell responsive-table__cell" data-th="Created at">
         <Time date={shortUrl.dateCreated} />
       </td>
-      <td className="short-urls-row__cell" data-th="Short URL: ">
+      <td className="responsive-table__cell short-urls-row__cell" data-th="Short URL">
         <span className="indivisible short-urls-row__cell--relative">
           <ExternalLink href={shortUrl.shortUrl} />
           <CopyToClipboardIcon text={shortUrl.shortUrl} onCopy={setCopiedToClipboard} />
@@ -64,16 +64,16 @@ const ShortUrlsRow = (
           </span>
         </span>
       </td>
-      <td className="short-urls-row__cell short-urls-row__cell--break" data-th={`${shortUrl.title ? 'Title' : 'Long URL'}: `}>
+      <td className="responsive-table__cell short-urls-row__cell short-urls-row__cell--break" data-th={`${shortUrl.title ? 'Title' : 'Long URL'}`}>
         <ExternalLink href={shortUrl.longUrl}>{shortUrl.title ?? shortUrl.longUrl}</ExternalLink>
       </td>
       {shortUrl.title && (
-        <td className="short-urls-row__cell short-urls-row__cell--break d-lg-none" data-th="Long URL: ">
+        <td className="short-urls-row__cell responsive-table__cell short-urls-row__cell--break d-lg-none" data-th="Long URL">
           <ExternalLink href={shortUrl.longUrl} />
         </td>
       )}
-      <td className="short-urls-row__cell" data-th="Tags: ">{renderTags(shortUrl.tags)}</td>
-      <td className="short-urls-row__cell text-md-right" data-th="Visits: ">
+      <td className="responsive-table__cell short-urls-row__cell" data-th="Tags">{renderTags(shortUrl.tags)}</td>
+      <td className="responsive-table__cell short-urls-row__cell text-lg-right" data-th="Visits">
         <ShortUrlVisitsCount
           visitsCount={shortUrl.visitsCount}
           shortUrl={shortUrl}
@@ -81,7 +81,7 @@ const ShortUrlsRow = (
           active={active}
         />
       </td>
-      <td className="short-urls-row__cell">
+      <td className="responsive-table__cell short-urls-row__cell">
         <ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />
       </td>
     </tr>

@@ -7,6 +7,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { supportsTagsInPatch } from '../../utils/helpers/features';
+import { ApiErrorAction } from '../../api/types/actions';
 
 /* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
@@ -25,16 +26,12 @@ export interface ShortUrlEditedAction extends Action<string> {
   shortUrl: ShortUrl;
 }
 
-export interface ShortUrlEditionFailedAction extends Action<string> {
-  errorData?: ProblemDetailsError;
-}
-
 const initialState: ShortUrlEdition = {
   saving: false,
   error: false,
 };
 
-export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ShortUrlEditionFailedAction>({
+export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ApiErrorAction>({
   [EDIT_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
   [SHORT_URL_EDITED]: (_, { shortUrl }) => ({ shortUrl, saving: false, error: false }),
@@ -59,7 +56,7 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
 
     dispatch<ShortUrlEditedAction>({ shortUrl, type: SHORT_URL_EDITED });
   } catch (e) {
-    dispatch<ShortUrlEditionFailedAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
+    dispatch<ApiErrorAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
   }

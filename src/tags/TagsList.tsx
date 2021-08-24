@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { splitEvery } from 'ramda';
+import { Row } from 'reactstrap';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
 import { SelectedServer } from '../servers/data';
@@ -29,11 +30,11 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     forceListTags();
   }, []);
 
-  const renderContent = () => {
-    if (tagsList.loading) {
-      return <Message loading />;
-    }
+  if (tagsList.loading) {
+    return <Message loading />;
+  }
 
+  const renderContent = () => {
     if (tagsList.error) {
       return (
         <Result type="error">
@@ -51,7 +52,7 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
     const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
 
     return (
-      <div className="row">
+      <Row>
         {tagsGroups.map((group, index) => (
           <div key={index} className="col-md-6 col-xl-3">
             {group.map((tag) => (
@@ -66,16 +67,16 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
             ))}
           </div>
         ))}
-      </div>
+      </Row>
     );
   };
 
   return (
     <>
-      {!tagsList.loading && <SearchField className="mb-3" placeholder="Search tags..." onChange={filterTags} />}
+      <SearchField className="mb-3" onChange={filterTags} />
       {renderContent()}
     </>
   );
-}, () => [ Topics.visits() ]);
+}, () => [ Topics.visits ]);
 
 export default TagsList;
