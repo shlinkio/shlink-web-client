@@ -20,10 +20,10 @@ jobs:
       - name: Build
         run: |
           npm ci && \
-          node ./scripts/set-homepage.js /shlink-web-client/${{ steps.generate_slug.outputs.slug }} && \
+          node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
           rm src/service-worker.ts && \
           npm run build
       - name: Deploy preview
-        uses: shlinkio/deploy-preview-action@v1.0.0
+        uses: shlinkio/deploy-preview-action@v1.0.1
         with:
           folder: build
