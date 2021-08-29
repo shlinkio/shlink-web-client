@@ -21,7 +21,7 @@ import {
   startOfISOWeek,
   endOfISOWeek,
 } from 'date-fns';
-import { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -146,15 +146,15 @@ const generateDataset = (data: number[], label: string, color: string): ChartDat
 let selectedLabel: string | null = null;
 
 const chartElementAtEvent = (
+  labels: string[],
   datasetsByPoint: Record<string, NormalizedVisit[]>,
   setSelectedVisits?: (visits: NormalizedVisit[]) => void,
-) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
+) => ([ chart ]: [{ index: number }]) => {
   if (!setSelectedVisits || !chart) {
     return;
   }
 
-  const { _index: index, _chart: { data } } = chart;
-  const { labels } = data as { labels: string[] };
+  const { index } = chart;
 
   if (selectedLabel === labels[index]) {
     setSelectedVisits([]);
@@ -244,7 +244,7 @@ const LineChartCard = (
         <Line
           data={data}
           options={options}
-          getElementAtEvent={chartElementAtEvent(datasetsByPoint, setSelectedVisits) as any} // TODO
+          getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
         />
       </CardBody>
     </Card>

@@ -79,16 +79,15 @@ const determineHeight = (isBarChart: boolean, labels: string[]): number | undefi
   return isBarChart && labels.length > 20 ? labels.length * 8 : undefined;
 };
 
-const chartElementAtEvent = (onClick?: (label: string) => void) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
-  // TODO Check this function actually works with Chart.js 3
+const chartElementAtEvent = (
+  labels: string[],
+  onClick?: (label: string) => void,
+) => ([ chart ]: [{ index: number }]) => {
   if (!onClick || !chart) {
     return;
   }
 
-  const { _index, _chart: { data } } = chart;
-  const { labels } = data;
-
-  onClick(labels?.[_index] as string);
+  onClick(labels[chart.index]);
 };
 
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
@@ -97,7 +96,7 @@ const DefaultChart = (
   { title, isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
 ) => {
   const Component = isBarChart ? Bar : Doughnut;
-  const [ chartRef, setChartRef ] = useState<Chart | undefined>();
+  const [ chartRef, setChartRef ] = useState<Chart | undefined>(); // Cannot use useRef here
   const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(
     !statsAreDefined(highlightedStats) ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
@@ -152,7 +151,7 @@ const DefaultChart = (
           data={graphData}
           options={options}
           height={height}
-          getElementAtEvent={chartElementAtEvent(onClick) as any} /* TODO */
+          getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
         />
       </div>
       {!isBarChart && (
