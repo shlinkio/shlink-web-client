@@ -6,7 +6,7 @@ import { Chart, ChartData, ChartDataset, ChartOptions, LegendItem } from 'chart.
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
-import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
+import { pointerOnHover, renderChartLabel, renderPieChartLabel } from '../../utils/helpers/charts';
 import {
   HIGHLIGHTED_COLOR,
   HIGHLIGHTED_COLOR_ALPHA,
@@ -149,7 +149,7 @@ const DefaultChart = (
         // Do not show tooltip on items with empty label when in a bar chart
         filter: ({ label }) => !isBarChart || label !== '',
         callbacks: {
-          label: renderChartLabel,
+          label: isBarChart ? renderChartLabel : renderPieChartLabel,
         },
       },
     },
