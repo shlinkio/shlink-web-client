@@ -21,14 +21,14 @@ import {
   startOfISOWeek,
   endOfISOWeek,
 } from 'date-fns';
-import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
-import { pointerOnHover, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
+import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
 import './LineChartCard.scss';
 
@@ -134,11 +134,11 @@ const generateLabelsAndGroupedVisits = (
   return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
 };
 
-const generateDataset = (data: number[], label: string, color: string): ChartDataSets => ({
+const generateDataset = (data: number[], label: string, color: string): ChartDataset => ({
   label,
   data,
   fill: false,
-  lineTension: 0.2,
+  tension: 0.2,
   borderColor: color,
   backgroundColor: color,
 });
@@ -189,32 +189,28 @@ const LineChartCard = (
     datasets: [
       generateDataset(groupedVisits, 'Visits', MAIN_COLOR),
       highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR),
-    ].filter(Boolean) as ChartDataSets[],
+    ].filter(Boolean) as ChartDataset[],
   };
   const options: ChartOptions = {
     maintainAspectRatio: false,
-    legend: { display: false },
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            precision: 0,
-            callback: prettify,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          scaleLabel: { display: true, labelString: STEPS_MAP[step] },
-        },
-      ],
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        intersect: false,
+        axis: 'x',
+        callbacks: { label: renderChartLabel },
+      },
     },
-    tooltips: {
-      intersect: false,
-      axis: 'x',
-      callbacks: {
-        label: renderNonDoughnutChartLabel('yLabel'),
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0,
+          callback: prettify,
+        },
+      },
+      x: {
+        title: { display: true, text: STEPS_MAP[step] },
       },
     },
     onHover: (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
@@ -248,7 +244,7 @@ const LineChartCard = (
         <Line
           data={data}
           options={options}
-          getElementAtEvent={chartElementAtEvent(datasetsByPoint, setSelectedVisits)}
+          getElementAtEvent={chartElementAtEvent(datasetsByPoint, setSelectedVisits) as any} // TODO
         />
       </CardBody>
     </Card>
