@@ -1,8 +1,8 @@
-import { useRef } from 'react';
+import { useState } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
-import { Chart, ChartData, ChartDataset, ChartOptions, LegendItem } from 'chart.js';
+import { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
@@ -16,7 +16,7 @@ import {
   PRIMARY_DARK_COLOR,
   PRIMARY_LIGHT_COLOR,
 } from '../../utils/theme';
-import './DefaultChart.scss';
+import { PieChartLegend } from './PieChartLegend';
 
 export interface DefaultChartProps {
   title: Function | string;
@@ -79,32 +79,6 @@ const determineHeight = (isBarChart: boolean, labels: string[]): number | undefi
   return isBarChart && labels.length > 20 ? labels.length * 8 : undefined;
 };
 
-const renderPieChartLegend = ({ config }: Chart): LegendItem[] => {
-  const { labels = [] /* , datasets = [] */ } = config.data ?? {};
-  // const { defaultColor } = config.options ?? {} as any;
-  // const [{ backgroundColor: colors }] = datasets;
-
-  return labels.map((label, datasetIndex) => ({
-    datasetIndex,
-    text: label as string,
-  }));
-
-  // TODO
-  // return (
-  //   <ul className="default-chart__pie-chart-legend">
-  //     {labels.map((label, index) => (
-  //       <li key={label as string} className="default-chart__pie-chart-legend-item d-flex">
-  //         <div
-  //           className="default-chart__pie-chart-legend-item-color"
-  //           style={{ backgroundColor: (colors as string[])[index] || defaultColor }}
-  //         />
-  //         <small className="default-chart__pie-chart-legend-item-text flex-fill">{label}</small>
-  //       </li>
-  //     ))}
-  //   </ul>
-  // );
-};
-
 const chartElementAtEvent = (onClick?: (label: string) => void) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
   // TODO Check this function actually works with Chart.js 3
   if (!onClick || !chart) {
@@ -123,7 +97,7 @@ const DefaultChart = (
   { title, isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
 ) => {
   const Component = isBarChart ? Bar : Doughnut;
-  const chartRef = useRef<typeof Component | undefined>();
+  const [ chartRef, setChartRef ] = useState<Chart | undefined>();
   const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(
     !statsAreDefined(highlightedStats) ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
@@ -138,12 +112,7 @@ const DefaultChart = (
 
   const options: ChartOptions = {
     plugins: {
-      legend: {
-        display: false,
-        labels: isBarChart ? undefined : {
-          generateLabels: renderPieChartLegend,
-        },
-      },
+      legend: { display: false },
       tooltip: {
         intersect: !isBarChart,
         // Do not show tooltip on items with empty label when in a bar chart
@@ -177,7 +146,7 @@ const DefaultChart = (
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
         <Component
           ref={(element) => {
-            chartRef.current = element ?? undefined;
+            setChartRef(element ?? undefined);
           }}
           key={height}
           data={graphData}
@@ -188,8 +157,7 @@ const DefaultChart = (
       </div>
       {!isBarChart && (
         <div className="col-sm-12 col-md-5">
-          No Legend in v3.0 unfortunately :(
-          {/* {chartRef?.chartInstance.generateLegend()} */}
+          {chartRef && <PieChartLegend chart={chartRef} />}
         </div>
       )}
     </div>
