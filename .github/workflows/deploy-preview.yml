@@ -24,6 +24,6 @@ jobs:
           rm src/service-worker.ts && \
           npm run build
       - name: Deploy preview
-        uses: shlinkio/deploy-preview-action@v1
+        uses: shlinkio/deploy-preview-action@v1.0.0
         with:
           folder: build
