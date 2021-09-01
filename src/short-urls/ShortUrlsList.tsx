@@ -70,7 +70,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
 
   useEffect(() => {
     const { tag } = parseQuery<{ tag?: string }>(location.search);
-    const tags = tag ? [ tag ] : shortUrlsListParams.tags;
+    const tags = tag ? [ decodeURIComponent(tag) ] : shortUrlsListParams.tags;
 
     refreshList({ page: match.params.page, tags, itemsPerPage: undefined });
 

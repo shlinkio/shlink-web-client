@@ -30,7 +30,7 @@ const TagCard = (
   const [ isEditModalOpen, toggleEdit ] = useToggle();
 
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
-  const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${tag}`;
+  const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag)}`;
 
   return (
     <Card className="tag-card">
