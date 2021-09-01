@@ -14,30 +14,36 @@ describe('<TagCard />', () => {
   };
   const DeleteTagConfirmModal = jest.fn();
   const EditTagModal = jest.fn();
-
-  beforeEach(() => {
-    const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => null, Mock.all<ColorGenerator>());
-
+  const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => null, Mock.all<ColorGenerator>());
+  const createWrapper = (tag = 'ssr') => {
     wrapper = shallow(
       <TagCard
-        tag="ssr"
+        tag={tag}
         selectedServer={Mock.of<ReachableServer>({ id: '1' })}
         tagStats={tagStats}
         displayed={true}
         toggle={() => {}}
       />,
     );
-  });
+
+    return wrapper;
+  };
+
+  beforeEach(() => createWrapper());
 
   afterEach(() => wrapper.unmount());
   afterEach(jest.resetAllMocks);
 
-  it('shows a TagBullet and a link to the list filtering by the tag', () => {
+  it.each([
+    [ 'ssr', '/server/1/list-short-urls/1?tag=ssr' ],
+    [ 'ssr-&-foo', '/server/1/list-short-urls/1?tag=ssr-%26-foo' ],
+  ])('shows a TagBullet and a link to the list filtering by the tag', (tag, expectedLink) => {
+    const wrapper = createWrapper(tag);
     const links = wrapper.find(Link);
     const bullet = wrapper.find(TagBullet);
 
-    expect(links.at(0).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
-    expect(bullet.prop('tag')).toEqual('ssr');
+    expect(links.at(0).prop('to')).toEqual(expectedLink);
+    expect(bullet.prop('tag')).toEqual(tag);
   });
 
   it('displays delete modal when delete btn is clicked', () => {

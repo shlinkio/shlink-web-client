@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#478](https://github.com/shlinkio/shlink-web-client/pull/478) Fixed tags including special chars not being properly URL encoded before using them as query params.
 
 
 ## [3.2.0] - 2021-07-12

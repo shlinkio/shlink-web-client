@@ -34,7 +34,7 @@ const TagCard = (
   const titleRef = useRef<HTMLElement>();
 
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
-  const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${tag}`;
+  const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag)}`;
 
   useEffect(() => {
     if (isTruncated(titleRef.current)) {
