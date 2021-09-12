@@ -4,6 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.2.1] - 2021-09-12
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#478](https://github.com/shlinkio/shlink-web-client/pull/478) Fixed tags including special chars not being properly URL encoded before using them as query params.
+* [#480](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed servers import on Chromium-based browsers when using windows.
+* [#482](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed end date not being set to the end of the day when filtering visits using a "smart filter" (last 7 days, last 30 days, etc).
+
+
 ## [3.2.0] - 2021-07-12
 ### Added
 * [#433](https://github.com/shlinkio/shlink-web-client/pull/433) Added support to provide a default server to connect to via env vars:

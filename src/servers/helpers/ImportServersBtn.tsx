@@ -7,7 +7,7 @@ type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
 export interface ImportServersBtnProps {
   onImport?: () => void;
-  onImportError?: () => void;
+  onImportError?: (error: Error) => void;
 }
 
 interface ImportServersBtnConnectProps extends ImportServersBtnProps {
