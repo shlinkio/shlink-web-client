@@ -21,23 +21,70 @@ describe('ServersImporter', () => {
   describe('importServersFromFile', () => {
     it('rejects with error if no file was provided', async () => {
       await expect(importer.importServersFromFile()).rejects.toEqual(
-        new Error('No file provided or file is not a CSV'),
+        new Error('No file provided'),
       );
     });
 
-    it('rejects with error if provided file is not a CSV', async () => {
-      await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(
-        new Error('No file provided or file is not a CSV'),
-      );
+    it('rejects with error if parsing the file fails', async () => {
+      const expectedError = new Error('Error parsing file');
+
+      toObject.mockImplementation(() => {
+        throw expectedError;
+      });
+
+      await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(expectedError);
     });
 
     it.each([
-      [ 'text/csv' ],
-      [ 'text/comma-separated-values' ],
-      [ 'application/csv' ],
-    ])('reads file when a CSV is provided', async (type) => {
-      await importer.importServersFromFile(Mock.of<File>({ type }));
+      [{}],
+      [ undefined ],
+      [[{ foo: 'bar' }]],
+      [
+        [
+          {
+            url: 1,
+            apiKey: 1,
+            name: 1,
+          },
+        ],
+      ],
+      [
+        [
+          {
+            url: 'foo',
+            apiKey: 'foo',
+            name: 'foo',
+          },
+          { bar: 'foo' },
+        ],
+      ],
+    ])('rejects with error if provided file does not parse to valid list of servers', async (parsedObject) => {
+      toObject.mockReturnValue(parsedObject);
 
+      await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(
+        new Error('Provided file does not have the right format.'),
+      );
+    });
+
+    it('reads file when a CSV containing valid servers is provided', async () => {
+      const expectedServers = [
+        {
+          url: 'foo',
+          apiKey: 'foo',
+          name: 'foo',
+        },
+        {
+          url: 'bar',
+          apiKey: 'bar',
+          name: 'bar',
+        },
+      ];
+
+      toObject.mockReturnValue(expectedServers);
+
+      const result = await importer.importServersFromFile(Mock.all<File>());
+
+      expect(result).toEqual(expectedServers);
       expect(readAsText).toHaveBeenCalledTimes(1);
       expect(toObject).toHaveBeenCalledTimes(1);
     });
