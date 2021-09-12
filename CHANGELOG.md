@@ -11,8 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#462](https://github.com/shlinkio/shlink-web-client/pull/462) Now it is possible to paste multiple comma-separated tags in the tags selector, making all of them to be added as individual tags.
 * [#463](https://github.com/shlinkio/shlink-web-client/pull/463) The strategy to determine which tags to suggest in the TagsSelector during short URL creation, can now be configured:
 
-    * `startsWith`: Suggests tags that start with the input. This is the default behavior for keep it as it was so far.
-    * `includes`: Suggests tags that contain the input.
+  * `startsWith`: Suggests tags that start with the input. This is the default behavior for keep it as it was so far.
+  * `includes`: Suggests tags that contain the input.
 
 * [#464](https://github.com/shlinkio/shlink-web-client/pull/464) Added support to download QR codes. This feature requires an unreleased version of Shlink, so it comes disabled, and will get enabled as soon as Shlink v2.9 is released.
 * [#469](https://github.com/shlinkio/shlink-web-client/pull/469) Added support `errorCorrection` in QR codes, when consuming Shlink 2.8 or higher.
@@ -27,7 +27,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
+* *Nothing*
+
+
+## [3.2.1] - 2021-09-12
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
 * [#478](https://github.com/shlinkio/shlink-web-client/pull/478) Fixed tags including special chars not being properly URL encoded before using them as query params.
+* [#480](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed servers import on Chromium-based browsers when using windows.
+* [#482](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed end date not being set to the end of the day when filtering visits using a "smart filter" (last 7 days, last 30 days, etc).
 
 
 ## [3.2.0] - 2021-07-12
