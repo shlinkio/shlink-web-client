@@ -55,6 +55,7 @@ export const rangeOrIntervalToString = (range?: DateRange | DateInterval): strin
 };
 
 const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(new Date(), daysAgo));
+const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(new Date()) });
 
 export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
   if (!dateInterval) {
@@ -63,19 +64,19 @@ export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
 
   switch (dateInterval) {
     case 'today':
-      return { startDate: startOfDay(new Date()), endDate: new Date() };
+      return endingToday(startOfDay(new Date()));
     case 'yesterday':
       return { startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(new Date(), 1)) };
     case 'last7Days':
-      return { startDate: startOfDaysAgo(7), endDate: new Date() };
+      return endingToday(startOfDaysAgo(7));
     case 'last30Days':
-      return { startDate: startOfDaysAgo(30), endDate: new Date() };
+      return endingToday(startOfDaysAgo(30));
     case 'last90Days':
-      return { startDate: startOfDaysAgo(90), endDate: new Date() };
+      return endingToday(startOfDaysAgo(90));
     case 'last180days':
-      return { startDate: startOfDaysAgo(180), endDate: new Date() };
+      return endingToday(startOfDaysAgo(180));
     case 'last365Days':
-      return { startDate: startOfDaysAgo(365), endDate: new Date() };
+      return endingToday(startOfDaysAgo(365));
   }
 
   return {};
