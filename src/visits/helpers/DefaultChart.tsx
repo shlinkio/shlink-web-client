@@ -150,6 +150,7 @@ const DefaultChart = memo((
   const chartData = generateChartData(isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
 
+  // Provide a key based on the height, to force re-render every time the dataset changes (example, due to pagination)
   const renderChartComponent = (customKey: string) => (
     <Component
       ref={(element) => {
@@ -163,7 +164,6 @@ const DefaultChart = memo((
     />
   );
 
-  // Provide a key based on the height, so that every time the dataset changes, a new chart is rendered
   return (
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
