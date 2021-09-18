@@ -1,11 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Doughnut, Bar } from 'react-chartjs-2';
-import { keys, values } from 'ramda';
-import DefaultChart from '../../../src/visits/helpers/DefaultChart';
+import { Bar } from 'react-chartjs-2';
 import { prettify } from '../../../src/utils/helpers/numbers';
 import { MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../../src/utils/theme';
+import { HorizontalBarChart } from '../../../src/visits/charts/HorizontalBarChart';
 
-describe('<DefaultChart />', () => {
+describe.skip('<HorizontalBarChart />', () => {
   let wrapper: ShallowWrapper;
   const stats = {
     foo: 123,
@@ -14,48 +13,11 @@ describe('<DefaultChart />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  it('renders Doughnut when is not a bar chart', () => {
-    wrapper = shallow(<DefaultChart stats={stats} />);
-    const doughnut = wrapper.find(Doughnut);
+  it('renders Bar with expected properties', () => {
+    wrapper = shallow(<HorizontalBarChart stats={stats} />);
     const horizontal = wrapper.find(Bar);
     const cols = wrapper.find('.col-sm-12');
 
-    expect(doughnut).toHaveLength(1);
-    expect(horizontal).toHaveLength(0);
-
-    const { labels, datasets } = doughnut.prop('data');
-    const [{ data, backgroundColor, borderColor }] = datasets;
-    const { plugins, scales } = doughnut.prop('options') ?? {};
-
-    expect(labels).toEqual(keys(stats));
-    expect(data).toEqual(values(stats));
-    expect(datasets).toHaveLength(1);
-    expect(backgroundColor).toEqual([
-      '#97BBCD',
-      '#F7464A',
-      '#46BFBD',
-      '#FDB45C',
-      '#949FB1',
-      '#57A773',
-      '#414066',
-      '#08B2E3',
-      '#B6C454',
-      '#DCDCDC',
-      '#463730',
-    ]);
-    expect(borderColor).toEqual('white');
-    expect(plugins.legend).toEqual({ display: false });
-    expect(scales).toBeUndefined();
-    expect(cols).toHaveLength(2);
-  });
-
-  it('renders HorizontalBar when is not a bar chart', () => {
-    wrapper = shallow(<DefaultChart isBarChart stats={stats} />);
-    const doughnut = wrapper.find(Doughnut);
-    const horizontal = wrapper.find(Bar);
-    const cols = wrapper.find('.col-sm-12');
-
-    expect(doughnut).toHaveLength(0);
     expect(horizontal).toHaveLength(1);
 
     const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
@@ -85,7 +47,7 @@ describe('<DefaultChart />', () => {
     [{ bar: 20, foo: 13 }, [ 110, 436 ], [ 13, 20 ]],
     [ undefined, [ 123, 456 ], undefined ],
   ])('splits highlighted data from regular data', (highlightedStats, expectedData, expectedHighlightedData) => {
-    wrapper = shallow(<DefaultChart isBarChart stats={stats} highlightedStats={highlightedStats} />);
+    wrapper = shallow(<HorizontalBarChart stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(Bar);
 
     const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');

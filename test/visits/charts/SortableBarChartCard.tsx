@@ -1,13 +1,13 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { range } from 'ramda';
-import SortableBarGraph from '../../../src/visits/helpers/SortableBarGraph';
-import GraphCard from '../../../src/visits/helpers/GraphCard';
 import SortingDropdown from '../../../src/utils/SortingDropdown';
 import PaginationDropdown from '../../../src/utils/PaginationDropdown';
 import { OrderDir, rangeOf } from '../../../src/utils/utils';
 import { Stats } from '../../../src/visits/types';
+import { SortableBarChartCard } from '../../../src/visits/charts/SortableBarChartCard';
+import { HorizontalBarChart } from '../../../src/visits/charts/HorizontalBarChart';
 
-describe('<SortableBarGraph />', () => {
+describe('<SortableBarChartCard />', () => {
   let wrapper: ShallowWrapper;
   const sortingItems = {
     name: 'Name',
@@ -19,7 +19,7 @@ describe('<SortableBarGraph />', () => {
   };
   const createWrapper = (withPagination = false, extraStats = {}) => {
     wrapper = shallow(
-      <SortableBarGraph
+      <SortableBarChartCard
         title="Foo"
         stats={{ ...stats, ...extraStats }}
         sortingItems={sortingItems}
@@ -34,9 +34,9 @@ describe('<SortableBarGraph />', () => {
 
   it('renders stats unchanged when no ordering is set', () => {
     const wrapper = createWrapper();
-    const graphCard = wrapper.find(GraphCard);
+    const chart = wrapper.find(HorizontalBarChart);
 
-    expect(graphCard.prop('stats')).toEqual(stats);
+    expect(chart.prop('stats')).toEqual(stats);
   });
 
   describe('renders properly ordered stats when ordering is set', () => {
@@ -49,7 +49,7 @@ describe('<SortableBarGraph />', () => {
       assert = (sortName: string, sortDir: OrderDir, keys: string[], values: number[], done: Function) => {
         dropdown.prop('onChange')(sortName, sortDir);
         setImmediate(() => {
-          const stats = wrapper.find(GraphCard).prop('stats');
+          const stats = wrapper.find(HorizontalBarChart).prop('stats');
 
           expect(Object.keys(stats)).toEqual(keys);
           expect(Object.values(stats)).toEqual(values);
@@ -78,7 +78,7 @@ describe('<SortableBarGraph />', () => {
       assert = (itemsPerPage: number, expectedStats: string[], done: Function) => {
         dropdown.prop('setValue')(itemsPerPage);
         setImmediate(() => {
-          const stats = wrapper.find(GraphCard).prop('stats');
+          const stats = wrapper.find(HorizontalBarChart).prop('stats');
 
           expect(Object.keys(stats)).toEqual(expectedStats);
           done();
@@ -97,7 +97,7 @@ describe('<SortableBarGraph />', () => {
   it('renders extra header content', () => {
     const wrapper = shallow(
       <span>
-        <SortableBarGraph
+        <SortableBarChartCard
           title="Foo"
           stats={stats}
           sortingItems={sortingItems}
@@ -109,7 +109,7 @@ describe('<SortableBarGraph />', () => {
           )}
         />
       </span>,
-    ).find(SortableBarGraph);
+    ).find(SortableBarChartCard);
     const header = wrapper.renderProp('extraHeaderContent')();
 
     expect(header.find('.foo-span')).toHaveLength(1);
