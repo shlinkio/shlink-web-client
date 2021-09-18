@@ -1,13 +1,12 @@
 import { ReactNode } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Card, CardBody, CardHeader, CardFooter } from 'reactstrap';
-import GraphCard from '../../../src/visits/helpers/GraphCard';
-import DefaultChart from '../../../src/visits/helpers/DefaultChart';
+import { ChartCard } from '../../../src/visits/charts/ChartCard';
 
-describe('<GraphCard />', () => {
+describe('<ChartCard />', () => {
   let wrapper: ShallowWrapper;
   const createWrapper = (title: Function | string = '', footer?: ReactNode) => {
-    wrapper = shallow(<GraphCard title={title} footer={footer} stats={{}} />);
+    wrapper = shallow(<ChartCard title={title} footer={footer} />);
 
     return wrapper;
   };
@@ -19,13 +18,11 @@ describe('<GraphCard />', () => {
     const card = wrapper.find(Card);
     const header = wrapper.find(CardHeader);
     const body = wrapper.find(CardBody);
-    const chart = wrapper.find(DefaultChart);
     const footer = wrapper.find(CardFooter);
 
     expect(card).toHaveLength(1);
     expect(header).toHaveLength(1);
     expect(body).toHaveLength(1);
-    expect(chart).toHaveLength(1);
     expect(footer).toHaveLength(0);
   });
 

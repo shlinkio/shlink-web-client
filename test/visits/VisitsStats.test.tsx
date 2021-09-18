@@ -3,14 +3,14 @@ import { Button, Progress } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
-import GraphCard from '../../src/visits/helpers/GraphCard';
-import SortableBarGraph from '../../src/visits/helpers/SortableBarGraph';
 import { Visit, VisitsInfo } from '../../src/visits/types';
 import LineChartCard from '../../src/visits/helpers/LineChartCard';
 import VisitsTable from '../../src/visits/VisitsTable';
 import { Result } from '../../src/utils/Result';
 import { Settings } from '../../src/settings/reducers/settings';
 import { SelectedServer } from '../../src/servers/data';
+import { SortableBarChartCard } from '../../src/visits/charts/SortableBarChartCard';
+import { DoughnutChartCard } from '../../src/visits/charts/DoughnutChartCard';
 
 describe('<VisitStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -74,21 +74,21 @@ describe('<VisitStats />', () => {
     expect(message.html()).toContain('There are no visits matching current filter  :(');
   });
 
-  it('renders expected amount of graphics', () => {
+  it('renders expected amount of charts', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const graphs = wrapper.find(GraphCard);
-    const sortableBarGraphs = wrapper.find(SortableBarGraph);
+    const charts = wrapper.find(DoughnutChartCard);
+    const sortableCharts = wrapper.find(SortableBarChartCard);
     const lineChart = wrapper.find(LineChartCard);
     const table = wrapper.find(VisitsTable);
 
-    expect(graphs.length + sortableBarGraphs.length + lineChart.length).toEqual(6);
+    expect(charts.length + sortableCharts.length + lineChart.length).toEqual(6);
     expect(table).toHaveLength(1);
   });
 
   it('holds the map button content generator on cities graph extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const citiesGraph = wrapper.find(SortableBarGraph).find('[title="Cities"]');
-    const extraHeaderContent = citiesGraph.prop('extraHeaderContent');
+    const citiesChart = wrapper.find(SortableBarChartCard).find('[title="Cities"]');
+    const extraHeaderContent = citiesChart.prop('extraHeaderContent');
 
     expect(extraHeaderContent).toHaveLength(1);
     expect(typeof extraHeaderContent).toEqual('function');

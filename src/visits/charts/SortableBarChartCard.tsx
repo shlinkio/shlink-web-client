@@ -1,26 +1,26 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
+import { OrderDir, rangeOf } from '../../utils/utils';
+import SimplePaginator from '../../common/SimplePaginator';
+import { roundTen } from '../../utils/helpers/numbers';
 import SortingDropdown from '../../utils/SortingDropdown';
 import PaginationDropdown from '../../utils/PaginationDropdown';
-import { OrderDir, rangeOf } from '../../utils/utils';
-import { roundTen } from '../../utils/helpers/numbers';
-import SimplePaginator from '../../common/SimplePaginator';
 import { Stats, StatsRow } from '../types';
-import GraphCard from './GraphCard';
-import { DefaultChartProps } from './DefaultChart';
+import { HorizontalBarChart, HorizontalBarChartProps } from './HorizontalBarChart';
+import { ChartCard } from './ChartCard';
 
-const toLowerIfString = (value: any) => type(value) === 'String' ? toLower(value) : value; // eslint-disable-line @typescript-eslint/no-unsafe-return
-const pickKeyFromPair = ([ key ]: StatsRow) => key;
-const pickValueFromPair = ([ , value ]: StatsRow) => value;
-
-interface SortableBarGraphProps extends DefaultChartProps {
+interface SortableBarChartCardProps extends Omit<HorizontalBarChartProps, 'max'> {
   title: Function | string;
   sortingItems: Record<string, string>;
   withPagination?: boolean;
   extraHeaderContent?: Function;
 }
 
-const SortableBarGraph = ({
+const toLowerIfString = (value: any) => type(value) === 'String' ? toLower(value) : value; // eslint-disable-line @typescript-eslint/no-unsafe-return
+const pickKeyFromPair = ([ key ]: StatsRow) => key;
+const pickValueFromPair = ([ , value ]: StatsRow) => value;
+
+export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   stats,
   highlightedStats,
   title,
@@ -28,7 +28,7 @@ const SortableBarGraph = ({
   extraHeaderContent,
   withPagination = true,
   ...rest
-}: SortableBarGraphProps) => {
+}) => {
   const [ order, setOrder ] = useState<{ orderField?: string; orderDir?: OrderDir }>({
     orderField: undefined,
     orderDir: undefined,
@@ -132,16 +132,11 @@ const SortableBarGraph = ({
   );
 
   return (
-    <GraphCard
-      isBarChart
+    <ChartCard
       title={computeTitle}
-      stats={currentPageStats}
-      highlightedStats={currentPageHighlightedStats}
       footer={pagination}
-      max={max}
-      {...rest}
-    />
+    >
+      <HorizontalBarChart stats={currentPageStats} highlightedStats={currentPageHighlightedStats} max={max} {...rest} />
+    </ChartCard>
   );
 };
-
-export default SortableBarGraph;
