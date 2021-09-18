@@ -15,7 +15,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
-import LineChartCard from './helpers/LineChartCard';
+import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
