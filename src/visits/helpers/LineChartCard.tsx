@@ -1,4 +1,4 @@
-import { useState, useMemo, FC } from 'react';
+import { useState, useMemo } from 'react';
 import {
   Card,
   CardHeader,
@@ -220,7 +220,7 @@ const LineChartCard = (
     },
     onHover: pointerOnHover,
   };
-  const LineChart: FC = () => (
+  const renderLineChart = () => (
     <Line
       data={generateChartData()}
       options={options}
@@ -255,8 +255,8 @@ const LineChartCard = (
       <CardBody className="line-chart-card__body">
         {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
         {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
-        {highlightedVisits.length > 0 && <LineChart />}
-        {highlightedVisits.length === 0 && <LineChart />}
+        {highlightedVisits.length > 0 && renderLineChart()}
+        {highlightedVisits.length === 0 && renderLineChart()}
       </CardBody>
     </Card>
   );
