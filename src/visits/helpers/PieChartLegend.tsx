@@ -2,21 +2,25 @@ import { FC } from 'react';
 import { Chart } from 'chart.js';
 import './PieChartLegend.scss';
 
-export const PieChartLegend: FC<{ chart: Chart }> = ({ chart }) => {
+interface PieChartLegendProps {
+  chart: Chart;
+}
+
+export const PieChartLegend: FC<PieChartLegendProps> = ({ chart }) => {
   const { config } = chart;
   const { labels = [], datasets = [] } = config.data ?? {};
-  const { defaultColor } = config.options ?? {} as any;
   const [{ backgroundColor: colors }] = datasets;
+  const { defaultColor } = config.options ?? {} as any;
 
   return (
-    <ul className="default-chart__pie-chart-legend">
+    <ul className="pie-chart-legend">
       {(labels as string[]).map((label, index) => (
-        <li key={label} className="default-chart__pie-chart-legend-item d-flex">
+        <li key={label} className="pie-chart-legend__item d-flex">
           <div
-            className="default-chart__pie-chart-legend-item-color"
-            style={{ backgroundColor: (colors as string[])[index] || defaultColor }}
+            className="pie-chart-legend__item-color"
+            style={{ backgroundColor: (colors as string[])[index] ?? defaultColor }}
           />
-          <small className="default-chart__pie-chart-legend-item-text flex-fill">{label}</small>
+          <small className="pie-chart-legend__item-text flex-fill">{label}</small>
         </li>
       ))}
     </ul>
