@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, FC } from 'react';
 import {
   Card,
   CardHeader,
@@ -183,14 +183,19 @@ const LineChartCard = (
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),
     [ highlightedVisits, step, labels ],
   );
+  const generateChartDatasets = (): ChartDataset[] => {
+    const mainDataset = generateDataset(groupedVisits, 'Visits', MAIN_COLOR);
 
-  const data: ChartData = {
-    labels,
-    datasets: [
-      generateDataset(groupedVisits, 'Visits', MAIN_COLOR),
-      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR),
-    ].filter(Boolean) as ChartDataset[],
+    if (highlightedVisits.length === 0) {
+      return [ mainDataset ];
+    }
+
+    const highlightedDataset = generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR);
+
+    return [ mainDataset, highlightedDataset ];
   };
+  const generateChartData = (): ChartData => ({ labels, datasets: generateChartDatasets() });
+
   const options: ChartOptions = {
     maintainAspectRatio: false,
     plugins: {
@@ -213,8 +218,15 @@ const LineChartCard = (
         title: { display: true, text: STEPS_MAP[step] },
       },
     },
-    onHover: (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
+    onHover: pointerOnHover,
   };
+  const LineChart: FC = () => (
+    <Line
+      data={generateChartData()}
+      options={options}
+      getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
+    />
+  );
 
   return (
     <Card>
@@ -241,11 +253,10 @@ const LineChartCard = (
         </div>
       </CardHeader>
       <CardBody className="line-chart-card__body">
-        <Line
-          data={data}
-          options={options}
-          getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
-        />
+        {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
+        {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
+        {highlightedVisits.length > 0 && <LineChart />}
+        {highlightedVisits.length === 0 && <LineChart />}
       </CardBody>
     </Card>
   );

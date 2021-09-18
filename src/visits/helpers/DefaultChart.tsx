@@ -19,7 +19,6 @@ import {
 import { PieChartLegend } from './PieChartLegend';
 
 export interface DefaultChartProps {
-  title: Function | string;
   stats: Stats;
   isBarChart?: boolean;
   max?: number;
@@ -28,45 +27,56 @@ export interface DefaultChartProps {
   onClick?: (label: string) => void;
 }
 
-const generateGraphData = (
-  title: Function | string,
+const generateChartDatasets = (
+  isBarChart: boolean,
+  data: number[],
+  highlightedData: number[],
+  highlightedLabel?: string,
+): ChartDataset[] => {
+  const mainDataset: ChartDataset = {
+    label: highlightedLabel ? 'Non-selected' : 'Visits',
+    data,
+    backgroundColor: isBarChart ? MAIN_COLOR_ALPHA : [
+      '#97BBCD',
+      '#F7464A',
+      '#46BFBD',
+      '#FDB45C',
+      '#949FB1',
+      '#57A773',
+      '#414066',
+      '#08B2E3',
+      '#B6C454',
+      '#DCDCDC',
+      '#463730',
+    ],
+    borderColor: isBarChart ? MAIN_COLOR : isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR,
+    borderWidth: 2,
+  };
+
+  if (!isBarChart) {
+    return [ mainDataset ];
+  }
+
+  const highlightedDataset: ChartDataset = {
+    label: highlightedLabel ?? 'Selected',
+    data: highlightedData,
+    backgroundColor: HIGHLIGHTED_COLOR_ALPHA,
+    borderColor: HIGHLIGHTED_COLOR,
+    borderWidth: 2,
+  };
+
+  return [ mainDataset, highlightedDataset ];
+};
+
+const generateChartData = (
   isBarChart: boolean,
   labels: string[],
   data: number[],
-  highlightedData?: number[],
+  highlightedData: number[],
   highlightedLabel?: string,
 ): ChartData => ({
   labels,
-  datasets: [
-    {
-      title,
-      label: highlightedData ? 'Non-selected' : 'Visits',
-      data,
-      backgroundColor: isBarChart ? MAIN_COLOR_ALPHA : [
-        '#97BBCD',
-        '#F7464A',
-        '#46BFBD',
-        '#FDB45C',
-        '#949FB1',
-        '#57A773',
-        '#414066',
-        '#08B2E3',
-        '#B6C454',
-        '#DCDCDC',
-        '#463730',
-      ],
-      borderColor: isBarChart ? MAIN_COLOR : isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR,
-      borderWidth: 2,
-    },
-    highlightedData && {
-      title,
-      label: highlightedLabel ?? 'Selected',
-      data: highlightedData,
-      backgroundColor: HIGHLIGHTED_COLOR_ALPHA,
-      borderColor: HIGHLIGHTED_COLOR,
-      borderWidth: 2,
-    },
-  ].filter(Boolean) as ChartDataset[],
+  datasets: generateChartDatasets(isBarChart, data, highlightedData, highlightedLabel),
 });
 
 const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;
@@ -93,7 +103,7 @@ const chartElementAtEvent = (
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
 
 const DefaultChart = (
-  { title, isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
+  { isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
 ) => {
   const Component = isBarChart ? Bar : Doughnut;
   const [ chartRef, setChartRef ] = useState<Chart | undefined>(); // Cannot use useRef here
@@ -107,13 +117,14 @@ const DefaultChart = (
       return acc;
     }, { ...stats }),
   );
-  const highlightedData = statsAreDefined(highlightedStats) ? fillTheGaps(highlightedStats, labels) : undefined;
+  const highlightedData = fillTheGaps(highlightedStats ?? {}, labels);
 
   const options: ChartOptions = {
     plugins: {
       legend: { display: false },
       tooltip: {
         intersect: !isBarChart,
+        mode: isBarChart ? 'y' : 'index',
         // Do not show tooltip on items with empty label when in a bar chart
         filter: ({ label }) => !isBarChart || label !== '',
         callbacks: {
@@ -136,10 +147,10 @@ const DefaultChart = (
     onHover: isBarChart ? pointerOnHover : undefined,
     indexAxis: isBarChart ? 'y' : 'x',
   };
-  const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData, highlightedLabel);
+  const chartData = generateChartData(isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
 
-  // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
+  // Provide a key based on the height, so that every time the dataset changes, a new chart is rendered
   return (
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
@@ -148,7 +159,7 @@ const DefaultChart = (
             setChartRef(element ?? undefined);
           }}
           key={height}
-          data={graphData}
+          data={chartData}
           options={options}
           height={height}
           getElementAtEvent={chartElementAtEvent(labels, onClick) as any}

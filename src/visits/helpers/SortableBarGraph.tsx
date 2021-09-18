@@ -14,6 +14,7 @@ const pickKeyFromPair = ([ key ]: StatsRow) => key;
 const pickValueFromPair = ([ , value ]: StatsRow) => value;
 
 interface SortableBarGraphProps extends DefaultChartProps {
+  title: Function | string;
   sortingItems: Record<string, string>;
   withPagination?: boolean;
   extraHeaderContent?: Function;
