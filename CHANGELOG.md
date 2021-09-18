@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#469](https://github.com/shlinkio/shlink-web-client/pull/469) Added support `errorCorrection` in QR codes, when consuming Shlink 2.8 or higher.
 
 ### Changed
-* *Nothing*
+* [#408](https://github.com/shlinkio/shlink-web-client/pull/408) Updated to Chart.js 3.5
 
 ### Deprecated
 * *Nothing*
