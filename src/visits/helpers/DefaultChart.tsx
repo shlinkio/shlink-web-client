@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Doughnut, Bar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
@@ -53,7 +53,7 @@ const generateChartDatasets = (
     borderWidth: 2,
   };
 
-  if (!isBarChart) {
+  if (!isBarChart || highlightedData.every((value) => value === 0)) {
     return [ mainDataset ];
   }
 
@@ -102,7 +102,7 @@ const chartElementAtEvent = (
 
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
 
-const DefaultChart = (
+const DefaultChart = memo((
   { isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
 ) => {
   const Component = isBarChart ? Bar : Doughnut;
@@ -150,20 +150,27 @@ const DefaultChart = (
   const chartData = generateChartData(isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
 
+  const renderChartComponent = (customKey: string) => (
+    <Component
+      ref={(element) => {
+        setChartRef(element ?? undefined);
+      }}
+      key={`${height}_${customKey}`}
+      data={chartData}
+      options={options}
+      height={height}
+      getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
+    />
+  );
+
   // Provide a key based on the height, so that every time the dataset changes, a new chart is rendered
   return (
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
-        <Component
-          ref={(element) => {
-            setChartRef(element ?? undefined);
-          }}
-          key={height}
-          data={chartData}
-          options={options}
-          height={height}
-          getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
-        />
+        {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
+        {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
+        {highlightedStats !== undefined && renderChartComponent('with_stats')}
+        {highlightedStats === undefined && renderChartComponent('without_stats')}
       </div>
       {!isBarChart && (
         <div className="col-sm-12 col-md-5">
@@ -172,6 +179,6 @@ const DefaultChart = (
       )}
     </div>
   );
-};
+});
 
 export default DefaultChart;

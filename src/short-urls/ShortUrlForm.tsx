@@ -43,7 +43,7 @@ const toDate = (date?: string | Date): Date | undefined => typeof date === 'stri
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => { // eslint-disable-line complexity
+): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const isEdit = mode === 'edit';
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });

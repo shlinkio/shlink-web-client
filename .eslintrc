@@ -14,5 +14,8 @@
     "process": true,
     "setImmediate": true
   },
-  "ignorePatterns": ["src/service*.ts"]
+  "ignorePatterns": ["src/service*.ts"],
+  "rules": {
+    "complexity": "off"
+  }
 }
