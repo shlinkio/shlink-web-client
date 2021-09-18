@@ -85,7 +85,7 @@ describe('<VisitStats />', () => {
     expect(table).toHaveLength(1);
   });
 
-  it('holds the map button content generator on cities graph extraHeaderContent', () => {
+  it('holds the map button content generator on cities chart extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
     const citiesChart = wrapper.find(SortableBarChartCard).find('[title="Cities"]');
     const extraHeaderContent = citiesChart.prop('extraHeaderContent');
