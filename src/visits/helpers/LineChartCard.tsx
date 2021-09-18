@@ -21,14 +21,14 @@ import {
   startOfISOWeek,
   endOfISOWeek,
 } from 'date-fns';
-import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
 import ToggleSwitch from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
-import { pointerOnHover, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
+import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
 import './LineChartCard.scss';
 
@@ -134,11 +134,11 @@ const generateLabelsAndGroupedVisits = (
   return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
 };
 
-const generateDataset = (data: number[], label: string, color: string): ChartDataSets => ({
+const generateDataset = (data: number[], label: string, color: string): ChartDataset => ({
   label,
   data,
   fill: false,
-  lineTension: 0.2,
+  tension: 0.2,
   borderColor: color,
   backgroundColor: color,
 });
@@ -146,15 +146,15 @@ const generateDataset = (data: number[], label: string, color: string): ChartDat
 let selectedLabel: string | null = null;
 
 const chartElementAtEvent = (
+  labels: string[],
   datasetsByPoint: Record<string, NormalizedVisit[]>,
   setSelectedVisits?: (visits: NormalizedVisit[]) => void,
-) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
+) => ([ chart ]: [{ index: number }]) => {
   if (!setSelectedVisits || !chart) {
     return;
   }
 
-  const { _index: index, _chart: { data } } = chart;
-  const { labels } = data as { labels: string[] };
+  const { index } = chart;
 
   if (selectedLabel === labels[index]) {
     setSelectedVisits([]);
@@ -183,42 +183,50 @@ const LineChartCard = (
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),
     [ highlightedVisits, step, labels ],
   );
+  const generateChartDatasets = (): ChartDataset[] => {
+    const mainDataset = generateDataset(groupedVisits, 'Visits', MAIN_COLOR);
 
-  const data: ChartData = {
-    labels,
-    datasets: [
-      generateDataset(groupedVisits, 'Visits', MAIN_COLOR),
-      highlightedVisits.length > 0 && generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR),
-    ].filter(Boolean) as ChartDataSets[],
+    if (highlightedVisits.length === 0) {
+      return [ mainDataset ];
+    }
+
+    const highlightedDataset = generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR);
+
+    return [ mainDataset, highlightedDataset ];
   };
+  const generateChartData = (): ChartData => ({ labels, datasets: generateChartDatasets() });
+
   const options: ChartOptions = {
     maintainAspectRatio: false,
-    legend: { display: false },
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            precision: 0,
-            callback: prettify,
-          },
-        },
-      ],
-      xAxes: [
-        {
-          scaleLabel: { display: true, labelString: STEPS_MAP[step] },
-        },
-      ],
-    },
-    tooltips: {
-      intersect: false,
-      axis: 'x',
-      callbacks: {
-        label: renderNonDoughnutChartLabel('yLabel'),
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        intersect: false,
+        axis: 'x',
+        callbacks: { label: renderChartLabel },
       },
     },
-    onHover: (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          precision: 0,
+          callback: prettify,
+        },
+      },
+      x: {
+        title: { display: true, text: STEPS_MAP[step] },
+      },
+    },
+    onHover: pointerOnHover,
   };
+  const renderLineChart = () => (
+    <Line
+      data={generateChartData()}
+      options={options}
+      getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
+    />
+  );
 
   return (
     <Card>
@@ -245,11 +253,10 @@ const LineChartCard = (
         </div>
       </CardHeader>
       <CardBody className="line-chart-card__body">
-        <Line
-          data={data}
-          options={options}
-          getElementAtEvent={chartElementAtEvent(datasetsByPoint, setSelectedVisits)}
-        />
+        {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
+        {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
+        {highlightedVisits.length > 0 && renderLineChart()}
+        {highlightedVisits.length === 0 && renderLineChart()}
       </CardBody>
     </Card>
   );

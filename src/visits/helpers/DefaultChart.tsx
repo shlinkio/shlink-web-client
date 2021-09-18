@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { Doughnut, HorizontalBar } from 'react-chartjs-2';
+import { useState, memo } from 'react';
+import { Doughnut, Bar } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import classNames from 'classnames';
-import Chart, { ChartData, ChartDataSets, ChartOptions } from 'chart.js';
+import { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { Stats } from '../types';
 import { prettify } from '../../utils/helpers/numbers';
-import { pointerOnHover, renderDoughnutChartLabel, renderNonDoughnutChartLabel } from '../../utils/helpers/charts';
+import { pointerOnHover, renderChartLabel, renderPieChartLabel } from '../../utils/helpers/charts';
 import {
   HIGHLIGHTED_COLOR,
   HIGHLIGHTED_COLOR_ALPHA,
@@ -16,10 +16,9 @@ import {
   PRIMARY_DARK_COLOR,
   PRIMARY_LIGHT_COLOR,
 } from '../../utils/theme';
-import './DefaultChart.scss';
+import { PieChartLegend } from './PieChartLegend';
 
 export interface DefaultChartProps {
-  title: Function | string;
   stats: Stats;
   isBarChart?: boolean;
   max?: number;
@@ -28,45 +27,56 @@ export interface DefaultChartProps {
   onClick?: (label: string) => void;
 }
 
-const generateGraphData = (
-  title: Function | string,
+const generateChartDatasets = (
+  isBarChart: boolean,
+  data: number[],
+  highlightedData: number[],
+  highlightedLabel?: string,
+): ChartDataset[] => {
+  const mainDataset: ChartDataset = {
+    label: highlightedLabel ? 'Non-selected' : 'Visits',
+    data,
+    backgroundColor: isBarChart ? MAIN_COLOR_ALPHA : [
+      '#97BBCD',
+      '#F7464A',
+      '#46BFBD',
+      '#FDB45C',
+      '#949FB1',
+      '#57A773',
+      '#414066',
+      '#08B2E3',
+      '#B6C454',
+      '#DCDCDC',
+      '#463730',
+    ],
+    borderColor: isBarChart ? MAIN_COLOR : isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR,
+    borderWidth: 2,
+  };
+
+  if (!isBarChart || highlightedData.every((value) => value === 0)) {
+    return [ mainDataset ];
+  }
+
+  const highlightedDataset: ChartDataset = {
+    label: highlightedLabel ?? 'Selected',
+    data: highlightedData,
+    backgroundColor: HIGHLIGHTED_COLOR_ALPHA,
+    borderColor: HIGHLIGHTED_COLOR,
+    borderWidth: 2,
+  };
+
+  return [ mainDataset, highlightedDataset ];
+};
+
+const generateChartData = (
   isBarChart: boolean,
   labels: string[],
   data: number[],
-  highlightedData?: number[],
+  highlightedData: number[],
   highlightedLabel?: string,
 ): ChartData => ({
   labels,
-  datasets: [
-    {
-      title,
-      label: highlightedData ? 'Non-selected' : 'Visits',
-      data,
-      backgroundColor: isBarChart ? MAIN_COLOR_ALPHA : [
-        '#97BBCD',
-        '#F7464A',
-        '#46BFBD',
-        '#FDB45C',
-        '#949FB1',
-        '#57A773',
-        '#414066',
-        '#08B2E3',
-        '#B6C454',
-        '#DCDCDC',
-        '#463730',
-      ],
-      borderColor: isBarChart ? MAIN_COLOR : isDarkThemeEnabled() ? PRIMARY_DARK_COLOR : PRIMARY_LIGHT_COLOR,
-      borderWidth: 2,
-    },
-    highlightedData && {
-      title,
-      label: highlightedLabel ?? 'Selected',
-      data: highlightedData,
-      backgroundColor: HIGHLIGHTED_COLOR_ALPHA,
-      borderColor: HIGHLIGHTED_COLOR,
-      borderWidth: 2,
-    },
-  ].filter(Boolean) as ChartDataSets[],
+  datasets: generateChartDatasets(isBarChart, data, highlightedData, highlightedLabel),
 });
 
 const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;
@@ -79,43 +89,24 @@ const determineHeight = (isBarChart: boolean, labels: string[]): number | undefi
   return isBarChart && labels.length > 20 ? labels.length * 8 : undefined;
 };
 
-const renderPieChartLegend = ({ config }: Chart) => {
-  const { labels = [], datasets = [] } = config.data ?? {};
-  const { defaultColor } = config.options ?? {} as any;
-  const [{ backgroundColor: colors }] = datasets;
-
-  return (
-    <ul className="default-chart__pie-chart-legend">
-      {labels.map((label, index) => (
-        <li key={label as string} className="default-chart__pie-chart-legend-item d-flex">
-          <div
-            className="default-chart__pie-chart-legend-item-color"
-            style={{ backgroundColor: (colors as string[])[index] || defaultColor }}
-          />
-          <small className="default-chart__pie-chart-legend-item-text flex-fill">{label}</small>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const chartElementAtEvent = (onClick?: (label: string) => void) => ([ chart ]: [{ _index: number; _chart: Chart }]) => {
+const chartElementAtEvent = (
+  labels: string[],
+  onClick?: (label: string) => void,
+) => ([ chart ]: [{ index: number }]) => {
   if (!onClick || !chart) {
     return;
   }
 
-  const { _index, _chart: { data } } = chart;
-  const { labels } = data;
-
-  onClick(labels?.[_index] as string);
+  onClick(labels[chart.index]);
 };
 
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
 
-const DefaultChart = (
-  { title, isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
+const DefaultChart = memo((
+  { isBarChart = false, stats, max, highlightedStats, highlightedLabel, onClick }: DefaultChartProps,
 ) => {
-  const Component = isBarChart ? HorizontalBar : Doughnut;
+  const Component = isBarChart ? Bar : Doughnut;
+  const [ chartRef, setChartRef ] = useState<Chart | undefined>(); // Cannot use useRef here
   const labels = keys(stats).map(dropLabelIfHidden);
   const data = values(
     !statsAreDefined(highlightedStats) ? stats : keys(highlightedStats).reduce((acc, highlightedKey) => {
@@ -126,59 +117,68 @@ const DefaultChart = (
       return acc;
     }, { ...stats }),
   );
-  const highlightedData = statsAreDefined(highlightedStats) ? fillTheGaps(highlightedStats, labels) : undefined;
-  const [ chartRef, setChartRef ] = useState<HorizontalBar | Doughnut | undefined>();
+  const highlightedData = fillTheGaps(highlightedStats ?? {}, labels);
 
   const options: ChartOptions = {
-    legend: { display: false },
-    legendCallback: !isBarChart && renderPieChartLegend as any,
-    scales: !isBarChart ? undefined : {
-      xAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-            precision: 0,
-            callback: prettify,
-            max,
-          },
-          stacked: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        intersect: !isBarChart,
+        mode: isBarChart ? 'y' : 'index',
+        // Do not show tooltip on items with empty label when in a bar chart
+        filter: ({ label }) => !isBarChart || label !== '',
+        callbacks: {
+          label: isBarChart ? renderChartLabel : renderPieChartLabel,
         },
-      ],
-      yAxes: [{ stacked: true }],
-    },
-    tooltips: {
-      intersect: !isBarChart,
-      // Do not show tooltip on items with empty label when in a bar chart
-      filter: ({ yLabel }) => !isBarChart || yLabel !== '',
-      callbacks: {
-        label: isBarChart ? renderNonDoughnutChartLabel('xLabel') : renderDoughnutChartLabel,
       },
     },
-    onHover: !isBarChart ? undefined : (pointerOnHover) as any, // TODO Types seem to be incorrectly defined in @types/chart.js
+    scales: !isBarChart ? undefined : {
+      x: {
+        beginAtZero: true,
+        stacked: true,
+        max,
+        ticks: {
+          precision: 0,
+          callback: prettify,
+        },
+      },
+      y: { stacked: true },
+    },
+    onHover: isBarChart ? pointerOnHover : undefined,
+    indexAxis: isBarChart ? 'y' : 'x',
   };
-  const graphData = generateGraphData(title, isBarChart, labels, data, highlightedData, highlightedLabel);
+  const chartData = generateChartData(isBarChart, labels, data, highlightedData, highlightedLabel);
   const height = determineHeight(isBarChart, labels);
 
-  // Provide a key based on the height, so that every time the dataset changes, a new graph is rendered
+  // Provide a key based on the height, to force re-render every time the dataset changes (example, due to pagination)
+  const renderChartComponent = (customKey: string) => (
+    <Component
+      ref={(element) => {
+        setChartRef(element ?? undefined);
+      }}
+      key={`${height}_${customKey}`}
+      data={chartData}
+      options={options}
+      height={height}
+      getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
+    />
+  );
+
   return (
     <div className="row">
       <div className={classNames('col-sm-12', { 'col-md-7': !isBarChart })}>
-        <Component
-          ref={(element) => setChartRef(element ?? undefined)}
-          key={height}
-          data={graphData}
-          options={options}
-          height={height}
-          getElementAtEvent={chartElementAtEvent(onClick)}
-        />
+        {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
+        {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
+        {highlightedStats !== undefined && renderChartComponent('with_stats')}
+        {highlightedStats === undefined && renderChartComponent('without_stats')}
       </div>
       {!isBarChart && (
         <div className="col-sm-12 col-md-5">
-          {chartRef?.chartInstance.generateLegend()}
+          {chartRef && <PieChartLegend chart={chartRef} />}
         </div>
       )}
     </div>
   );
-};
+});
 
 export default DefaultChart;
