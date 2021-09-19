@@ -1,19 +1,18 @@
 module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: [
-    'src/**/*.{js,ts,tsx}',
-    '!src/registerServiceWorker.js',
-    '!src/index.ts',
+    'src/**/*.{ts,tsx}',
+    '!src/*.{ts,tsx}',
     '!src/reducers/index.ts',
     '!src/**/provideServices.ts',
     '!src/container/*.ts',
   ],
   coverageThreshold: {
     global: {
+      statements: 80,
       branches: 80,
       functions: 80,
       lines: 80,
-      statements: 80,
     },
   },
   resolver: 'jest-pnp-resolver',

@@ -4,7 +4,7 @@ import { prettify } from '../../../src/utils/helpers/numbers';
 import { MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../../src/utils/theme';
 import { HorizontalBarChart } from '../../../src/visits/charts/HorizontalBarChart';
 
-describe.skip('<HorizontalBarChart />', () => {
+describe('<HorizontalBarChart />', () => {
   let wrapper: ShallowWrapper;
   const stats = {
     foo: 123,
@@ -16,7 +16,6 @@ describe.skip('<HorizontalBarChart />', () => {
   it('renders Bar with expected properties', () => {
     wrapper = shallow(<HorizontalBarChart stats={stats} />);
     const horizontal = wrapper.find(Bar);
-    const cols = wrapper.find('.col-sm-12');
 
     expect(horizontal).toHaveLength(1);
 
@@ -37,7 +36,6 @@ describe.skip('<HorizontalBarChart />', () => {
       },
       y: { stacked: true },
     });
-    expect(cols).toHaveLength(1);
   });
 
   it.each([

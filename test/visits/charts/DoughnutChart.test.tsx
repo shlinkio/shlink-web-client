@@ -3,7 +3,7 @@ import { Doughnut } from 'react-chartjs-2';
 import { keys, values } from 'ramda';
 import { DoughnutChart } from '../../../src/visits/charts/DoughnutChart';
 
-describe.skip('<DoughnutChart />', () => {
+describe('<DoughnutChart />', () => {
   let wrapper: ShallowWrapper;
   const stats = {
     foo: 123,

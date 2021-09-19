@@ -2,19 +2,9 @@ import { Mock } from 'ts-mockery';
 import { CsvJson } from 'csvjson';
 import { VisitsExporter } from '../../../src/visits/services/VisitsExporter';
 import { NormalizedVisit } from '../../../src/visits/types';
+import { windowMock } from '../../mocks/WindowMock';
 
 describe('VisitsExporter', () => {
-  const createLinkMock = () => ({
-    setAttribute: jest.fn(),
-    click: jest.fn(),
-    style: {},
-  });
-  const windowMock = Mock.of<Window>({
-    document: {
-      createElement: jest.fn(createLinkMock),
-      body: { appendChild: jest.fn(), removeChild: jest.fn() },
-    },
-  });
   const toCSV = jest.fn();
   const csvToJsonMock = Mock.of<CsvJson>({ toCSV });
   let exporter: VisitsExporter;
