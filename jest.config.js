@@ -8,6 +8,14 @@ module.exports = {
     '!src/**/provideServices.ts',
     '!src/container/*.ts',
   ],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80,
+    },
+  },
   resolver: 'jest-pnp-resolver',
   setupFiles: [
     'react-app-polyfill/jsdom',

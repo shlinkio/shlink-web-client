@@ -1,11 +1,11 @@
 import { useEffect, FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import NotFound from './common/NotFound';
-import { ServersMap } from './servers/data';
-import { Settings } from './settings/reducers/settings';
-import { changeThemeInMarkup } from './utils/theme';
-import { AppUpdateBanner } from './common/AppUpdateBanner';
-import { forceUpdate } from './utils/helpers/sw';
+import NotFound from '../common/NotFound';
+import { ServersMap } from '../servers/data';
+import { Settings } from '../settings/reducers/settings';
+import { changeThemeInMarkup } from '../utils/theme';
+import { AppUpdateBanner } from '../common/AppUpdateBanner';
+import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
 interface AppProps {
