@@ -34,7 +34,7 @@ const RealTimeUpdates = (
         placeholder="Immediate"
         disabled={!realTimeUpdates.enabled}
         value={intervalValue(realTimeUpdates.interval)}
-        onChange={(e) => setRealTimeUpdatesInterval(Number(e.target.value))}
+        onChange={({ target }) => setRealTimeUpdatesInterval(Number(target.value))}
       />
       {realTimeUpdates.enabled && (
         <small className="form-text text-muted">

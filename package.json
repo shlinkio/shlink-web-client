@@ -16,8 +16,9 @@
     "serve:build": "serve ./build",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom --colors --verbose",
-    "test:ci": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=clover",
-    "test:pretty": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary --coverageReporters=html",
+    "test:coverage": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary",
+    "test:ci": "npm run test:coverage -- --coverageReporters=clover",
+    "test:pretty": "npm run test:coverage -- --coverageReporters=html",
     "mutate": "./node_modules/.bin/stryker run --concurrency 4"
   },
   "dependencies": {

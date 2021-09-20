@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ChromePicker } from 'react-color';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,10 +25,12 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   const [ color, setColor ] = useState(getColorForKey(tag));
   const [ showColorPicker, toggleColorPicker, , hideColorPicker ] = useToggle();
   const { editing, error, errorData } = tagEdit;
-  const saveTag = handleEventPreventingDefault(async () => editTag(tag, newTagName, color)
-    .then(() => tagEdited(tag, newTagName, color))
-    .then(toggle)
-    .catch(() => {}));
+  const saveTag = handleEventPreventingDefault(
+    async () => editTag(tag, newTagName, color)
+      .then(() => tagEdited(tag, newTagName, color))
+      .then(toggle)
+      .catch(() => {}),
+  );
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
@@ -47,13 +49,11 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
             <Popover isOpen={showColorPicker} toggle={toggleColorPicker} target="colorPickerBtn" placement="right">
               <ChromePicker color={color} disableAlpha onChange={({ hex }) => setColor(hex)} />
             </Popover>
-            <input
-              type="text"
+            <Input
               value={newTagName}
               placeholder="Tag"
               required
-              className="form-control"
-              onChange={(e) => setNewTagName(e.target.value)}
+              onChange={({ target }) => setNewTagName(target.value)}
             />
           </div>
 
@@ -64,8 +64,8 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
           )}
         </ModalBody>
         <ModalFooter>
-          <button type="button" className="btn btn-link" onClick={toggle}>Cancel</button>
-          <button type="submit" className="btn btn-primary" disabled={editing}>{editing ? 'Saving...' : 'Save'}</button>
+          <Button type="button" color="link" onClick={toggle}>Cancel</Button>
+          <Button color="primary" disabled={editing}>{editing ? 'Saving...' : 'Save'}</Button>
         </ModalFooter>
       </form>
     </Modal>

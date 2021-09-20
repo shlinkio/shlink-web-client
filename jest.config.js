@@ -1,13 +1,20 @@
 module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: [
-    'src/**/*.{js,ts,tsx}',
-    '!src/registerServiceWorker.js',
-    '!src/index.ts',
+    'src/**/*.{ts,tsx}',
+    '!src/*.{ts,tsx}',
     '!src/reducers/index.ts',
     '!src/**/provideServices.ts',
     '!src/container/*.ts',
   ],
+  coverageThreshold: {
+    global: {
+      statements: 85,
+      branches: 75,
+      functions: 80,
+      lines: 85,
+    },
+  },
   resolver: 'jest-pnp-resolver',
   setupFiles: [
     'react-app-polyfill/jsdom',

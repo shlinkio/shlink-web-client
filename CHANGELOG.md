@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 * [#408](https://github.com/shlinkio/shlink-web-client/issues/408) Updated to Chart.js 3.5
 * [#486](https://github.com/shlinkio/shlink-web-client/issues/486) Refactored components used to render visits charts, making them easier to maintain and understand.
+* [#409](https://github.com/shlinkio/shlink-web-client/issues/409) Increased required code coverage and added hard threshold check.
 
 ### Deprecated
 * *Nothing*

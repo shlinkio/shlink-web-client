@@ -4,7 +4,7 @@ import Checkbox from '../../../src/utils/Checkbox';
 import { InfoTooltip } from '../../../src/utils/InfoTooltip';
 
 describe('<ShortUrlFormCheckboxGroup />', () => {
-  test.each([
+  it.each([
     [ undefined, '', 0 ],
     [ 'This is the tooltip', 'mr-2', 1 ],
   ])('renders tooltip only when provided', (infoTooltip, expectedClassName, expectedAmountOfTooltips) => {
