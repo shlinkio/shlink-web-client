@@ -21,24 +21,24 @@ describe('<MainHeader />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  test('ServersDropdown is rendered', () => {
+  it('renders ServersDropdown', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(ServersDropdown)).toHaveLength(1);
   });
 
-  test.each([
+  it.each([
     [ '/foo', false ],
     [ '/bar', false ],
     [ '/settings', true ],
-  ])('link to settings is only active when current path is settings', (currentPath, isActive) => {
+  ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
     const wrapper = createWrapper(currentPath);
     const settingsLink = wrapper.find(NavLink);
 
     expect(settingsLink.prop('active')).toEqual(isActive);
   });
 
-  test('expected class is rendered based on the nav bar state', () => {
+  it('renders expected class based on the nav bar state', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(NavbarToggler).find(FontAwesomeIcon).prop('className')).toEqual('main-header__toggle-icon');
@@ -50,7 +50,7 @@ describe('<MainHeader />', () => {
     expect(wrapper.find(NavbarToggler).find(FontAwesomeIcon).prop('className')).toEqual('main-header__toggle-icon');
   });
 
-  test('opens Collapse when clicking toggle', () => {
+  it('opens Collapse when clicking toggle', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(Collapse).prop('isOpen')).toEqual(false);

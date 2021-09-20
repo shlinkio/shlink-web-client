@@ -60,7 +60,7 @@ describe('visitsTypeHelpers', () => {
   });
 
   describe('toApiParams', () => {
-    test.each([
+    it.each([
       [ { page: 5, itemsPerPage: 100 } as VisitsParams, { page: 5, itemsPerPage: 100 } as ShlinkVisitsParams ],
       [
         {

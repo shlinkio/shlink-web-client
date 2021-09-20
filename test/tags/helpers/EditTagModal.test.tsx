@@ -28,7 +28,7 @@ describe('<EditTagModal />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('modal can be toggled with different mechanisms', () => {
+  it('allows modal to be toggled with different mechanisms', () => {
     const wrapper = createWrapper();
     const modal = wrapper.find(Modal);
     const modalHeader = wrapper.find(ModalHeader);
@@ -45,10 +45,10 @@ describe('<EditTagModal />', () => {
     expect(tagEdited).not.toHaveBeenCalled();
   });
 
-  test.each([
+  it.each([
     [ true, 'Saving...' ],
     [ false, 'Save' ],
-  ])('submit button is rendered in expected state', (editing, expectedText) => {
+  ])('renders submit button in expected state', (editing, expectedText) => {
     const wrapper = createWrapper({ editing });
     const submitBtn = wrapper.find(Button).findWhere((btn) => btn.prop('color') === 'primary');
 
@@ -56,10 +56,10 @@ describe('<EditTagModal />', () => {
     expect(submitBtn.prop('disabled')).toEqual(editing);
   });
 
-  test.each([
+  it.each([
     [ true, 1 ],
     [ false, 0 ],
-  ])('error result is displayed in case of error', (error, expectedResultCount) => {
+  ])('displays error result in case of error', (error, expectedResultCount) => {
     const wrapper = createWrapper({ error, errorData: Mock.all<ProblemDetailsError>() });
     const result = wrapper.find(Result);
     const apiError = wrapper.find(ShlinkApiError);
@@ -68,7 +68,7 @@ describe('<EditTagModal />', () => {
     expect(apiError).toHaveLength(expectedResultCount);
   });
 
-  test('tag value is updated when text changes', () => {
+  it('updates tag value when text changes', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(Input).prop('value')).toEqual('foo');
@@ -76,7 +76,7 @@ describe('<EditTagModal />', () => {
     expect(wrapper.find(Input).prop('value')).toEqual('bar');
   });
 
-  test('all functions are invoked on form submit', async () => {
+  it('invokes all functions on form submit', async () => {
     const wrapper = createWrapper();
     const form = wrapper.find('form');
 
@@ -89,7 +89,7 @@ describe('<EditTagModal />', () => {
     expect(tagEdited).toHaveBeenCalled();
   });
 
-  test('color is changed when changing on color picker', () => {
+  it('changes color when changing on color picker', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(ChromePicker).prop('color')).toEqual('red');
@@ -97,7 +97,7 @@ describe('<EditTagModal />', () => {
     expect(wrapper.find(ChromePicker).prop('color')).toEqual('blue');
   });
 
-  test('popover can be toggled with different mechanisms', () => {
+  it('allows toggling popover with different mechanisms', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);

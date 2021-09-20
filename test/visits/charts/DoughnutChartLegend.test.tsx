@@ -15,7 +15,7 @@ describe('<DoughnutChartLegend />', () => {
     },
   });
 
-  test('renders the expected amount of items with expected colors and labels', () => {
+  it('renders the expected amount of items with expected colors and labels', () => {
     const wrapper = shallow(<DoughnutChartLegend chart={chart} />);
     const items = wrapper.find('li');
 

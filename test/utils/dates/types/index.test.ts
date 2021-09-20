@@ -10,7 +10,7 @@ import { parseDate } from '../../../../src/utils/helpers/date';
 
 describe('date-types', () => {
   describe('dateRangeIsEmpty', () => {
-    test.each([
+    it.each([
       [ undefined, true ],
       [{}, true ],
       [{ startDate: null }, true ],
@@ -24,24 +24,24 @@ describe('date-types', () => {
       [{ startDate: new Date() }, false ],
       [{ endDate: new Date() }, false ],
       [{ startDate: new Date(), endDate: new Date() }, false ],
-    ])('proper result is returned', (dateRange, expectedResult) => {
+    ])('returns proper result', (dateRange, expectedResult) => {
       expect(dateRangeIsEmpty(dateRange)).toEqual(expectedResult);
     });
   });
 
   describe('rangeIsInterval', () => {
-    test.each([
+    it.each([
       [ undefined, false ],
       [{}, false ],
       [ 'today' as DateInterval, true ],
       [ 'yesterday' as DateInterval, true ],
-    ])('proper result is returned', (range, expectedResult) => {
+    ])('returns proper result', (range, expectedResult) => {
       expect(rangeIsInterval(range)).toEqual(expectedResult);
     });
   });
 
   describe('rangeOrIntervalToString', () => {
-    test.each([
+    it.each([
       [ undefined, undefined ],
       [ 'today' as DateInterval, 'Today' ],
       [ 'yesterday' as DateInterval, 'Yesterday' ],
@@ -65,7 +65,7 @@ describe('date-types', () => {
         { startDate: parseDate('2020-01-01', 'yyyy-MM-dd'), endDate: parseDate('2021-02-02', 'yyyy-MM-dd') },
         '2020-01-01 - 2021-02-02',
       ],
-    ])('proper result is returned', (range, expectedValue) => {
+    ])('returns proper result', (range, expectedValue) => {
       expect(rangeOrIntervalToString(range)).toEqual(expectedValue);
     });
   });
@@ -75,7 +75,7 @@ describe('date-types', () => {
     const daysBack = (days: number) => subDays(new Date(), days);
     const formatted = (date?: Date | null): string | undefined => !date ? undefined : format(date, 'yyyy-MM-dd');
 
-    test.each([
+    it.each([
       [ undefined, undefined, undefined ],
       [ 'today' as DateInterval, now(), now() ],
       [ 'yesterday' as DateInterval, daysBack(1), daysBack(1) ],
@@ -84,7 +84,7 @@ describe('date-types', () => {
       [ 'last90Days' as DateInterval, daysBack(90), now() ],
       [ 'last180days' as DateInterval, daysBack(180), now() ],
       [ 'last365Days' as DateInterval, daysBack(365), now() ],
-    ])('proper result is returned', (interval, expectedStartDate, expectedEndDate) => {
+    ])('returns proper result', (interval, expectedStartDate, expectedEndDate) => {
       const { startDate, endDate } = intervalToDateRange(interval);
 
       expect(formatted(expectedStartDate)).toEqual(formatted(startDate));

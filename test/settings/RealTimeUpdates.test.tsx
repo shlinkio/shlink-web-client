@@ -26,7 +26,7 @@ describe('<RealTimeUpdates />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('enabled real time updates are rendered as expected', () => {
+  it('renders enabled real time updates as expected', () => {
     const wrapper = createWrapper({ enabled: true });
     const toggle = wrapper.find(ToggleSwitch);
     const label = wrapper.find('label');
@@ -41,7 +41,7 @@ describe('<RealTimeUpdates />', () => {
     expect(small).toHaveLength(2);
   });
 
-  test('disabled real time updates are rendered as expected', () => {
+  it('renders disabled real time updates as expected', () => {
     const wrapper = createWrapper({ enabled: false });
     const toggle = wrapper.find(ToggleSwitch);
     const label = wrapper.find('label');
@@ -56,12 +56,12 @@ describe('<RealTimeUpdates />', () => {
     expect(small).toHaveLength(1);
   });
 
-  test.each([
+  it.each([
     [ 1, 'minute' ],
     [ 2, 'minutes' ],
     [ 10, 'minutes' ],
     [ 100, 'minutes' ],
-  ])('expected children are shown when interval is greater than 0', (interval, minutesWord) => {
+  ])('shows expected children when interval is greater than 0', (interval, minutesWord) => {
     const wrapper = createWrapper({ enabled: true, interval });
     const span = wrapper.find('span');
     const input = wrapper.find(Input);
@@ -73,7 +73,7 @@ describe('<RealTimeUpdates />', () => {
     expect(input.prop('value')).toEqual(`${interval}`);
   });
 
-  test.each([[ undefined ], [ 0 ]])('expected children are shown when interval is 0 or undefined', (interval) => {
+  it.each([[ undefined ], [ 0 ]])('shows expected children when interval is 0 or undefined', (interval) => {
     const wrapper = createWrapper({ enabled: true, interval });
     const span = wrapper.find('span');
     const small = wrapper.find('small').at(1);
@@ -84,7 +84,7 @@ describe('<RealTimeUpdates />', () => {
     expect(input.prop('value')).toEqual('');
   });
 
-  test('real time updates are updated on input change', () => {
+  it('updates real time updates on input change', () => {
     const wrapper = createWrapper();
     const input = wrapper.find(Input);
 
@@ -93,7 +93,7 @@ describe('<RealTimeUpdates />', () => {
     expect(setRealTimeUpdatesInterval).toHaveBeenCalledWith(10);
   });
 
-  test('real time updates are toggled on switch change', () => {
+  it('toggles real time updates on switch change', () => {
     const wrapper = createWrapper();
     const toggle = wrapper.find(ToggleSwitch);
 

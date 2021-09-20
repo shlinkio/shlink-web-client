@@ -2,7 +2,7 @@ import { buildQrCodeUrl, QrCodeFormat, QrErrorCorrection } from '../../../src/ut
 
 describe('qrCodes', () => {
   describe('buildQrCodeUrl', () => {
-    test.each([
+    it.each([
       [
         'foo.com',
         { size: 530, format: 'svg' as QrCodeFormat, margin: 0, errorCorrection: 'L' as QrErrorCorrection },

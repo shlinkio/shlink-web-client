@@ -15,7 +15,7 @@ describe('ImageDownloader', () => {
     imageDownloader = new ImageDownloader(axios, windowMock);
   });
 
-  test('calls URL with response type blob', async () => {
+  it('calls URL with response type blob', async () => {
     get.mockResolvedValue({ data: {} });
 
     await imageDownloader.saveImage('/foo/bar.png', 'my-image.png');

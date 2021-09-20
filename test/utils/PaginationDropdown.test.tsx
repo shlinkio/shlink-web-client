@@ -13,19 +13,19 @@ describe('<PaginationDropdown />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  test('expected amount of items is rendered', () => {
+  it('renders expected amount of items', () => {
     const items = wrapper.find(DropdownItem);
 
     expect(items).toHaveLength(6);
   });
 
-  test.each([
+  it.each([
     [ 0, 10 ],
     [ 1, 50 ],
     [ 2, 100 ],
     [ 3, 200 ],
     [ 5, Infinity ],
-  ])('expected value is set when an item is clicked', (index, expectedValue) => {
+  ])('sets expected value when an item is clicked', (index, expectedValue) => {
     const item = wrapper.find(DropdownItem).at(index);
 
     expect(setValue).not.toHaveBeenCalled();

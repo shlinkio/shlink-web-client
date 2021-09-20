@@ -6,7 +6,7 @@ describe('<Settings />', () => {
   const Component = () => null;
   const Settings = createSettings(Component, Component, Component, Component);
 
-  test('a no-menu layout is renders with the four settings sections', () => {
+  it('renders a no-menu layout with the expected settings sections', () => {
     const wrapper = shallow(<Settings />);
     const layout = wrapper.find(NoMenuLayout);
     const sections = wrapper.find('SettingsSections');
