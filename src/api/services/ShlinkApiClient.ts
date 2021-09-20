@@ -1,4 +1,3 @@
-import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 import { AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrlsListParams } from '../../short-urls/reducers/shortUrlsListParams';
@@ -19,6 +18,7 @@ import {
   ShlinkEditDomainRedirects,
   ShlinkDomainRedirects,
 } from '../types';
+import { stringifyQuery } from '../../utils/helpers/query';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
@@ -123,7 +123,7 @@ export default class ShlinkApiClient {
         headers: { 'X-Api-Key': this.apiKey },
         params: rejectNilProps(query),
         data: body,
-        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
+        paramsSerializer: stringifyQuery,
       });
     } catch (e) {
       const { response } = e;
