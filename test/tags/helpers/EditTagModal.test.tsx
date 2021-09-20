@@ -1,13 +1,13 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { Button, Input, Modal, ModalHeader, Popover } from 'reactstrap';
+import { ChromePicker } from 'react-color';
 import { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import createEditTagModal from '../../../src/tags/helpers/EditTagModal';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import { Result } from '../../../src/utils/Result';
 import { ProblemDetailsError } from '../../../src/api/types';
 import { ShlinkApiError } from '../../../src/api/ShlinkApiError';
-import { ChromePicker } from 'react-color';
 
 describe('<EditTagModal />', () => {
   const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'red') }));
