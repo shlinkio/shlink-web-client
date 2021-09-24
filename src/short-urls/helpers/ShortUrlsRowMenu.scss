@@ -1,13 +1,5 @@
 @import '../../utils/base';
 
-.short-urls-row-menu__dropdown-toggle:after {
-  display: none !important;
-}
-
-.short-urls-row-menu__dropdown-toggle--hidden {
-  visibility: hidden;
-}
-
 .short-urls-row-menu__dropdown-item--danger.short-urls-row-menu__dropdown-item--danger {
   color: $dangerColor;
 

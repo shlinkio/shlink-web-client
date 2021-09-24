@@ -52,29 +52,29 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
     <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
         <AsideMenuItem to={buildPath('/overview')}>
-          <FontAwesomeIcon icon={overviewIcon} />
+          <FontAwesomeIcon fixedWidth icon={overviewIcon} />
           <span className="aside-menu__item-text">Overview</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/list-short-urls/1')} isActive={shortUrlsIsActive}>
-          <FontAwesomeIcon icon={listIcon} />
+          <FontAwesomeIcon fixedWidth icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/create-short-url')}>
-          <FontAwesomeIcon icon={createIcon} flip="horizontal" />
+          <FontAwesomeIcon fixedWidth icon={createIcon} flip="horizontal" />
           <span className="aside-menu__item-text">Create short URL</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/manage-tags')}>
-          <FontAwesomeIcon icon={tagsIcon} />
+          <FontAwesomeIcon fixedWidth icon={tagsIcon} />
           <span className="aside-menu__item-text">Manage tags</span>
         </AsideMenuItem>
         {addManageDomainsLink && (
           <AsideMenuItem to={buildPath('/manage-domains')}>
-            <FontAwesomeIcon icon={domainsIcon} />
+            <FontAwesomeIcon fixedWidth icon={domainsIcon} />
             <span className="aside-menu__item-text">Manage domains</span>
           </AsideMenuItem>
         )}
         <AsideMenuItem to={buildPath('/edit')} className="aside-menu__item--push">
-          <FontAwesomeIcon icon={editIcon} />
+          <FontAwesomeIcon fixedWidth icon={editIcon} />
           <span className="aside-menu__item-text">Edit this server</span>
         </AsideMenuItem>
         {isServerWithId(selectedServer) && (
