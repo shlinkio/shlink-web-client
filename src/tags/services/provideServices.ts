@@ -8,6 +8,9 @@ import { filterTags, listTags } from '../reducers/tagsList';
 import { deleteTag, tagDeleted } from '../reducers/tagDelete';
 import { editTag, tagEdited } from '../reducers/tagEdit';
 import { ConnectDecorator } from '../../container/types';
+import { TagsCards } from '../TagsCards';
+import { TagsTable } from '../TagsTable';
+import { TagsTableRow } from '../TagsTableRow';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -29,7 +32,11 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
   bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
 
-  bottle.serviceFactory('TagsList', TagsList, 'TagCard');
+  bottle.serviceFactory('TagsCards', TagsCards, 'TagCard');
+  bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal');
+  bottle.serviceFactory('TagsTable', TagsTable, 'ColorGenerator', 'TagsTableRow');
+
+  bottle.serviceFactory('TagsList', TagsList, 'TagsCards', 'TagsTable');
   bottle.decorator('TagsList', connect(
     [ 'tagsList', 'selectedServer', 'mercureInfo' ],
     [ 'forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo' ],

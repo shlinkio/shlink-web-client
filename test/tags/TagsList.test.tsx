@@ -3,19 +3,19 @@ import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import createTagsList, { TagsListProps } from '../../src/tags/TagsList';
 import Message from '../../src/utils/Message';
-import SearchField from '../../src/utils/SearchField';
-import { rangeOf } from '../../src/utils/utils';
 import { TagsList } from '../../src/tags/reducers/tagsList';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Result } from '../../src/utils/Result';
+import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
+import SearchField from '../../src/utils/SearchField';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
   const filterTags = jest.fn();
-  const TagCard = () => null;
+  const TagsCards = () => null;
+  const TagsTable = () => null;
+  const TagsListComp = createTagsList(TagsCards, TagsTable);
   const createWrapper = (tagsList: Partial<TagsList>) => {
-    const TagsListComp = createTagsList(TagCard);
-
     wrapper = shallow(
       <TagsListComp
         {...Mock.all<TagsListProps>()}
@@ -56,28 +56,23 @@ describe('<TagsList />', () => {
     expect(msg.html()).toContain('No tags found');
   });
 
-  it('renders the proper amount of groups and cards based on the amount of tags', () => {
-    const amountOfTags = 10;
-    const amountOfGroups = 4;
-    const wrapper = createWrapper({ filteredTags: rangeOf(amountOfTags, (i) => `tag_${i}`), stats: {} });
-    const cards = wrapper.find(TagCard);
-    const groups = wrapper.find('.col-md-6');
+  it('renders proper component based on the display mode', () => {
+    const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
 
-    expect(cards).toHaveLength(amountOfTags);
-    expect(groups).toHaveLength(amountOfGroups);
+    expect(wrapper.find(TagsCards)).toHaveLength(1);
+    expect(wrapper.find(TagsTable)).toHaveLength(0);
+
+    wrapper.find(TagsModeDropdown).simulate('change');
+
+    expect(wrapper.find(TagsCards)).toHaveLength(0);
+    expect(wrapper.find(TagsTable)).toHaveLength(1);
   });
 
-  it('triggers tags filtering when search field changes', (done) => {
+  it('triggers tags filtering when search field changes', () => {
     const wrapper = createWrapper({ filteredTags: [] });
-    const searchField = wrapper.find(SearchField);
 
-    expect(searchField).toHaveLength(1);
     expect(filterTags).not.toHaveBeenCalled();
-    searchField.simulate('change');
-
-    setImmediate(() => {
-      expect(filterTags).toHaveBeenCalledTimes(1);
-      done();
-    });
+    wrapper.find(SearchField).simulate('change');
+    expect(filterTags).toHaveBeenCalledTimes(1);
   });
 });
