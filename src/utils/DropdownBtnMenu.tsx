@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV as menuIcon } from '@fortawesome/free-solid-svg-icons';
 import './DropdownBtnMenu.scss';
 
-interface DropdownBtnMenuProps {
+export interface DropdownBtnMenuProps {
   isOpen: boolean;
   toggle: () => void;
   right?: boolean;
