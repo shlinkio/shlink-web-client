@@ -7,21 +7,23 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
+import { Settings, TagsMode } from '../settings/reducers/settings';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import { TagsListChildrenProps } from './data/TagsListChildrenProps';
-import { TagsMode, TagsModeDropdown } from './TagsModeDropdown';
+import { TagsModeDropdown } from './TagsModeDropdown';
 
 export interface TagsListProps {
   filterTags: (searchTerm: string) => void;
   forceListTags: Function;
   tagsList: TagsListState;
   selectedServer: SelectedServer;
+  settings: Settings;
 }
 
 const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsListChildrenProps>) => boundToMercureHub((
-  { filterTags, forceListTags, tagsList, selectedServer }: TagsListProps,
+  { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
-  const [ mode, setMode ] = useState<TagsMode>('cards');
+  const [ mode, setMode ] = useState<TagsMode>(settings.ui?.tagsMode ?? 'cards');
 
   useEffect(() => {
     forceListTags();

@@ -8,6 +8,7 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Result } from '../../src/utils/Result';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import SearchField from '../../src/utils/SearchField';
+import { Settings } from '../../src/settings/reducers/settings';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
@@ -23,6 +24,7 @@ describe('<TagsList />', () => {
         forceListTags={identity}
         filterTags={filterTags}
         tagsList={Mock.of<TagsList>(tagsList)}
+        settings={Mock.all<Settings>()}
       />,
     ).dive(); // Dive is needed as this component is wrapped in a HOC
 

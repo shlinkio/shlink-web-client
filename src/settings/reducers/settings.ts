@@ -24,8 +24,11 @@ export interface ShortUrlCreationSettings {
   tagFilteringMode?: TagFilteringMode;
 }
 
+export type TagsMode = 'cards' | 'list';
+
 export interface UiSettings {
   theme: Theme;
+  tagsMode?: TagsMode;
 }
 
 export interface VisitsSettings {
