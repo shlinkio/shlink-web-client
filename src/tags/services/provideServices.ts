@@ -18,14 +18,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
   bottle.decorator('TagsSelector', connect([ 'tagsList', 'settings' ], [ 'listTags' ]));
 
-  bottle.serviceFactory(
-    'TagCard',
-    TagCard,
-    'DeleteTagConfirmModal',
-    'EditTagModal',
-    'ForServerVersion',
-    'ColorGenerator',
-  );
+  bottle.serviceFactory('TagCard', TagCard, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
 
   bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
   bottle.decorator('DeleteTagConfirmModal', connect([ 'tagDelete' ], [ 'deleteTag', 'tagDeleted' ]));

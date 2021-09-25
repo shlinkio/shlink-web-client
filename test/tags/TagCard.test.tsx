@@ -14,7 +14,7 @@ describe('<TagCard />', () => {
   };
   const DeleteTagConfirmModal = jest.fn();
   const EditTagModal = jest.fn();
-  const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, () => null, Mock.all<ColorGenerator>());
+  const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, Mock.all<ColorGenerator>());
   const createWrapper = (tag = 'ssr') => {
     wrapper = shallow(
       <TagCard
@@ -65,9 +65,10 @@ describe('<TagCard />', () => {
   it('shows expected tag stats', () => {
     const links = wrapper.find(Link);
 
-    expect(links.at(1).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
-    expect(links.at(1).text()).toContain('48');
-    expect(links.at(2).prop('to')).toEqual('/server/1/tag/ssr/visits');
-    expect(links.at(2).text()).toContain('23,257');
+    expect(links).toHaveLength(2);
+    expect(links.at(0).prop('to')).toEqual('/server/1/list-short-urls/1?tag=ssr');
+    expect(links.at(0).text()).toContain('48');
+    expect(links.at(1).prop('to')).toEqual('/server/1/tag/ssr/visits');
+    expect(links.at(1).text()).toContain('23,257');
   });
 });
