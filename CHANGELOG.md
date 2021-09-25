@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.3.0] - 2021-09-25
 ### Added
 * [#465](https://github.com/shlinkio/shlink-web-client/issues/465) Added new page to manage domains and their redirects, when consuming Shlink 2.8 or higher.
 * [#460](https://github.com/shlinkio/shlink-web-client/issues/460) Added dynamic title on hover for tags with a very long title.
@@ -31,7 +31,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Removed
-* *Nothing*
+* [#491](https://github.com/shlinkio/shlink-web-client/issues/491) Dropped support for Shlink older than v2.4.0.
 
 ### Fixed
 * *Nothing*
