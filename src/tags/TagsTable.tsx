@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { splitEvery } from 'ramda';
 import { RouteChildrenProps } from 'react-router';
 import { SimpleCard } from '../utils/SimpleCard';
@@ -14,16 +14,21 @@ const TAGS_PER_PAGE = 20; // TODO Allow customizing this value in settings
 export const TagsTable = (colorGenerator: ColorGenerator, TagsTableRow: FC<TagsTableRowProps>) => (
   { tagsList, selectedServer, location }: TagsListChildrenProps & RouteChildrenProps,
 ) => {
+  const isFirstLoad = useRef(true);
   const { page: pageFromQuery = 1 } = parseQuery<{ page?: number | string }>(location.search);
   const [ page, setPage ] = useQueryState<number>('page', Number(pageFromQuery));
-  const sortedTags = tagsList.filteredTags;
+  const sortedTags = tagsList.filteredTags; // TODO Support sorting tags
   const pages = splitEvery(TAGS_PER_PAGE, sortedTags);
   const showPaginator = pages.length > 1;
   const currentPage = pages[page - 1] ?? [];
 
   useEffect(() => {
-    setPage(1);
+    !isFirstLoad.current && setPage(1);
+    isFirstLoad.current = false;
   }, [ tagsList.filteredTags ]);
+  useEffect(() => {
+    scrollTo(0, 0);
+  }, [ page ]);
 
   return (
     <SimpleCard key={page} bodyClassName={showPaginator ? 'pb-1' : ''}>
