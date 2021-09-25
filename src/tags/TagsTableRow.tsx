@@ -52,8 +52,8 @@ export const TagsTableRow = (DeleteTagConfirmModal: FC<TagModalProps>, EditTagMo
         </DropdownBtnMenu>
       </td>
 
-      <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={isDeleteModalOpen} />
       <EditTagModal tag={tag} toggle={toggleEdit} isOpen={isEditModalOpen} />
+      <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={isDeleteModalOpen} />
     </tr>
   );
 };
