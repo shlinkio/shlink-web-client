@@ -10,7 +10,6 @@ import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
 import {
   supportsQrCodeSizeInQuery,
-  supportsQrCodeSvgFormat,
   supportsQrCodeMargin,
   supportsQrErrorCorrection,
 } from '../../utils/helpers/features';
@@ -33,10 +32,10 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
   const [ errorCorrection, setErrorCorrection ] = useState<QrErrorCorrection>('L');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
-    svgIsSupported: supportsQrCodeSvgFormat(selectedServer),
     marginIsSupported: supportsQrCodeMargin(selectedServer),
     errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
   }), [ selectedServer ]);
+  const willRenderThreeControls = capabilities.marginIsSupported !== capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
     [ shortUrl, size, format, margin, errorCorrection, capabilities ],
@@ -58,11 +57,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
       <ModalBody>
         <Row>
           <FormGroup
-            className={classNames({
-              'col-md-4': capabilities.marginIsSupported && capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported,
-              'col-md-6': capabilities.errorCorrectionIsSupported || (!capabilities.marginIsSupported && capabilities.svgIsSupported) || (capabilities.marginIsSupported && !capabilities.svgIsSupported),
-              'col-12': !capabilities.marginIsSupported && !capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported,
-            })}
+            className={classNames({ 'col-md-4': willRenderThreeControls, 'col-md-6': !willRenderThreeControls })}
           >
             <label className="mb-0">Size: {size}px</label>
             <input
@@ -76,7 +71,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
             />
           </FormGroup>
           {capabilities.marginIsSupported && (
-            <FormGroup className={capabilities.svgIsSupported && !capabilities.errorCorrectionIsSupported ? 'col-md-4' : 'col-md-6'}>
+            <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
               <label className="mb-0">Margin: {margin}px</label>
               <input
                 type="range"
@@ -89,11 +84,9 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
               />
             </FormGroup>
           )}
-          {capabilities.svgIsSupported && (
-            <FormGroup className={capabilities.marginIsSupported && !capabilities.errorCorrectionIsSupported ? 'col-md-4' : 'col-md-6'}>
-              <QrFormatDropdown format={format} setFormat={setFormat} />
-            </FormGroup>
-          )}
+          <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
+            <QrFormatDropdown format={format} setFormat={setFormat} />
+          </FormGroup>
           {capabilities.errorCorrectionIsSupported && (
             <FormGroup className="col-md-6">
               <QrErrorCorrectionDropdown errorCorrection={errorCorrection} setErrorCorrection={setErrorCorrection} />

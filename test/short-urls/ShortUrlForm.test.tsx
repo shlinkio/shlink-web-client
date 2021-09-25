@@ -13,9 +13,10 @@ import { parseDate } from '../../src/utils/helpers/date';
 describe('<ShortUrlForm />', () => {
   let wrapper: ShallowWrapper;
   const TagsSelector = () => null;
+  const DomainSelector = () => null;
   const createShortUrl = jest.fn(async () => Promise.resolve());
   const createWrapper = (selectedServer: SelectedServer = null, mode: Mode = 'create') => {
-    const ShortUrlForm = createShortUrlForm(TagsSelector, () => null);
+    const ShortUrlForm = createShortUrlForm(TagsSelector, DomainSelector);
 
     wrapper = shallow(
       <ShortUrlForm
@@ -41,7 +42,7 @@ describe('<ShortUrlForm />', () => {
     wrapper.find(Input).first().simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
     wrapper.find('TagsSelector').simulate('change', [ 'tag_foo', 'tag_bar' ]);
     wrapper.find('#customSlug').simulate('change', { target: { value: 'my-slug' } });
-    wrapper.find('#domain').simulate('change', { target: { value: 'example.com' } });
+    wrapper.find(DomainSelector).simulate('change', 'example.com');
     wrapper.find('#maxVisits').simulate('change', { target: { value: '20' } });
     wrapper.find('#shortCodeLength').simulate('change', { target: { value: 15 } });
     wrapper.find(DateInput).at(0).simulate('change', validSince);
@@ -68,12 +69,8 @@ describe('<ShortUrlForm />', () => {
     [ null, 'create-basic' as Mode, 0 ],
     [ Mock.of<ReachableServer>({ version: '2.6.0' }), 'create' as Mode, 4 ],
     [ Mock.of<ReachableServer>({ version: '2.5.0' }), 'create' as Mode, 4 ],
-    [ Mock.of<ReachableServer>({ version: '2.4.0' }), 'create' as Mode, 4 ],
-    [ Mock.of<ReachableServer>({ version: '2.3.0' }), 'create' as Mode, 4 ],
     [ Mock.of<ReachableServer>({ version: '2.6.0' }), 'edit' as Mode, 4 ],
     [ Mock.of<ReachableServer>({ version: '2.5.0' }), 'edit' as Mode, 3 ],
-    [ Mock.of<ReachableServer>({ version: '2.4.0' }), 'edit' as Mode, 3 ],
-    [ Mock.of<ReachableServer>({ version: '2.3.0' }), 'edit' as Mode, 2 ],
   ])(
     'renders expected amount of cards based on server capabilities and mode',
     (selectedServer, mode, expectedAmountOfCards) => {

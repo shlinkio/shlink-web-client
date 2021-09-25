@@ -3,7 +3,6 @@ import { stringifyQuery } from './query';
 
 export interface QrCodeCapabilities {
   useSizeInPath: boolean;
-  svgIsSupported: boolean;
   marginIsSupported: boolean;
   errorCorrectionIsSupported: boolean;
 }
@@ -22,12 +21,12 @@ export interface QrCodeOptions {
 export const buildQrCodeUrl = (
   shortUrl: string,
   { size, format, margin, errorCorrection }: QrCodeOptions,
-  { useSizeInPath, svgIsSupported, marginIsSupported, errorCorrectionIsSupported }: QrCodeCapabilities,
+  { useSizeInPath, marginIsSupported, errorCorrectionIsSupported }: QrCodeCapabilities,
 ): string => {
   const baseUrl = `${shortUrl}/qr-code${useSizeInPath ? `/${size}` : ''}`;
   const query = stringifyQuery({
     size: useSizeInPath ? undefined : size,
-    format: svgIsSupported ? format : undefined,
+    format,
     margin: marginIsSupported && margin > 0 ? margin : undefined,
     errorCorrection: errorCorrectionIsSupported ? errorCorrection : undefined,
   });

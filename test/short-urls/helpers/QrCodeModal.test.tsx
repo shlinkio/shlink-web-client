@@ -43,9 +43,6 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ '2.3.0' as SemVer, 0, '/qr-code/300' ],
-    [ '2.4.0' as SemVer, 0, '/qr-code/300?format=png' ],
-    [ '2.4.0' as SemVer, 10, '/qr-code/300?format=png' ],
     [ '2.5.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
     [ '2.6.0' as SemVer, 0, '/qr-code?size=300&format=png' ],
     [ '2.6.0' as SemVer, 10, '/qr-code?size=300&format=png&margin=10' ],
@@ -90,8 +87,6 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    [ '2.3.0' as SemVer, 0, 'col-12' ],
-    [ '2.4.0' as SemVer, 1, 'col-md-6' ],
     [ '2.6.0' as SemVer, 1, 'col-md-4' ],
     [ '2.8.0' as SemVer, 2, 'col-md-6' ],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {

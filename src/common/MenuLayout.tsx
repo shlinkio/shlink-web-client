@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import { supportsDomainRedirects, supportsOrphanVisits, supportsTagVisits } from '../utils/helpers/features';
+import { supportsDomainRedirects, supportsOrphanVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
 import NotFound from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
@@ -32,7 +32,6 @@ const MenuLayout = (
     return <ServerError />;
   }
 
-  const addTagsVisitsRoute = supportsTagVisits(selectedServer);
   const addOrphanVisitsRoute = supportsOrphanVisits(selectedServer);
   const addManageDomainsRoute = supportsDomainRedirects(selectedServer);
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
@@ -54,7 +53,7 @@ const MenuLayout = (
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                 <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
                 <Route path="/server/:serverId/short-code/:shortCode/edit" component={EditShortUrl} />
-                {addTagsVisitsRoute && <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />}
+                <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />
                 {addOrphanVisitsRoute && <Route path="/server/:serverId/orphan-visits" component={OrphanVisits} />}
                 <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                 {addManageDomainsRoute && <Route exact path="/server/:serverId/manage-domains" component={ManageDomains} />}
