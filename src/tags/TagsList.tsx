@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { splitEvery } from 'ramda';
 import { Row } from 'reactstrap';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
@@ -8,23 +7,23 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
+import { Settings, TagsMode } from '../settings/reducers/settings';
 import { TagsList as TagsListState } from './reducers/tagsList';
-import { TagCardProps } from './TagCard';
-
-const { ceil } = Math;
-const TAGS_GROUPS_AMOUNT = 4;
+import { TagsListChildrenProps } from './data/TagsListChildrenProps';
+import { TagsModeDropdown } from './TagsModeDropdown';
 
 export interface TagsListProps {
   filterTags: (searchTerm: string) => void;
   forceListTags: Function;
   tagsList: TagsListState;
   selectedServer: SelectedServer;
+  settings: Settings;
 }
 
-const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
-  { filterTags, forceListTags, tagsList, selectedServer }: TagsListProps,
+const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsListChildrenProps>) => boundToMercureHub((
+  { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
-  const [ displayedTag, setDisplayedTag ] = useState<string | undefined>();
+  const [ mode, setMode ] = useState<TagsMode>(settings.ui?.tagsMode ?? 'cards');
 
   useEffect(() => {
     forceListTags();
@@ -43,37 +42,23 @@ const TagsList = (TagCard: FC<TagCardProps>) => boundToMercureHub((
       );
     }
 
-    const tagsCount = tagsList.filteredTags.length;
-
-    if (tagsCount < 1) {
+    if (tagsList.filteredTags.length < 1) {
       return <Message>No tags found</Message>;
     }
 
-    const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
-
-    return (
-      <Row>
-        {tagsGroups.map((group, index) => (
-          <div key={index} className="col-md-6 col-xl-3">
-            {group.map((tag) => (
-              <TagCard
-                key={tag}
-                tag={tag}
-                tagStats={tagsList.stats[tag]}
-                selectedServer={selectedServer}
-                displayed={displayedTag === tag}
-                toggle={() => setDisplayedTag(displayedTag !== tag ? tag : undefined)}
-              />
-            ))}
-          </div>
-        ))}
-      </Row>
-    );
+    return mode === 'cards'
+      ? <TagsCards tagsList={tagsList} selectedServer={selectedServer} />
+      : <TagsTable tagsList={tagsList} selectedServer={selectedServer} />;
   };
 
   return (
     <>
       <SearchField className="mb-3" onChange={filterTags} />
+      <Row className="mb-3">
+        <div className="col-lg-6 offset-lg-6">
+          <TagsModeDropdown mode={mode} onChange={setMode} />
+        </div>
+      </Row>
       {renderContent()}
     </>
   );

@@ -16,6 +16,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#464](https://github.com/shlinkio/shlink-web-client/issues/464) Added support to download QR codes. This feature requires an unreleased version of Shlink, so it comes disabled, and will get enabled as soon as Shlink v2.9 is released.
 * [#469](https://github.com/shlinkio/shlink-web-client/issues/469) Added support `errorCorrection` in QR codes, when consuming Shlink 2.8 or higher.
+* [#459](https://github.com/shlinkio/shlink-web-client/issues/459) Added new list mode to display tags.
+
+  The mode is optional, and you can toggle between the classic cards mode or the new list mode whenever you want.
+
+  You can also configure the default mode from settings.
 
 ### Changed
 * [#408](https://github.com/shlinkio/shlink-web-client/issues/408) Updated to Chart.js 3.5

@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { pageIsEllipsis, keyForPage, progressivePagination, prettifyPageNumber } from '../utils/helpers/pagination';
 import { ShlinkPaginator } from '../api/types';
-import './Paginator.scss';
 
 interface PaginatorProps {
   paginator?: ShlinkPaginator;
@@ -33,7 +32,7 @@ const Paginator = ({ paginator, serverId }: PaginatorProps) => {
     ));
 
   return (
-    <Pagination className="short-urls-paginator" listClassName="flex-wrap justify-content-center mb-0">
+    <Pagination className="sticky-card-paginator" listClassName="flex-wrap justify-content-center mb-0">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink
           previous

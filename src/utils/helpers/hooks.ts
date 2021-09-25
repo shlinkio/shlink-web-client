@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
+import { parseQuery, stringifyQuery } from './query';
 
 const DEFAULT_DELAY = 2000;
 
@@ -50,4 +51,18 @@ export const useSwipeable = (showSidebar: () => void, hideSidebar: () => void) =
     onSwipedLeft: swipeMenuIfNoModalExists(hideSidebar),
     onSwipedRight: swipeMenuIfNoModalExists(showSidebar),
   });
+};
+
+export const useQueryState = <T>(paramName: string, initialState: T): [ T, (newValue: T) => void ] => {
+  const [ value, setValue ] = useState(initialState);
+  const setValueWithLocation = (value: T) => {
+    const { location, history } = window;
+    const query = parseQuery<any>(location.search);
+
+    query[paramName] = value;
+    history.pushState(null, '', `${location.pathname}?${stringifyQuery(query)}`);
+    setValue(value);
+  };
+
+  return [ value, setValueWithLocation ];
 };

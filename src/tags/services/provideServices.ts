@@ -1,4 +1,5 @@
 import Bottle, { IContainer } from 'bottlejs';
+import { withRouter } from 'react-router-dom';
 import TagsSelector from '../helpers/TagsSelector';
 import TagCard from '../TagCard';
 import DeleteTagConfirmModal from '../helpers/DeleteTagConfirmModal';
@@ -8,6 +9,9 @@ import { filterTags, listTags } from '../reducers/tagsList';
 import { deleteTag, tagDeleted } from '../reducers/tagDelete';
 import { editTag, tagEdited } from '../reducers/tagEdit';
 import { ConnectDecorator } from '../../container/types';
+import { TagsCards } from '../TagsCards';
+import { TagsTable } from '../TagsTable';
+import { TagsTableRow } from '../TagsTableRow';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -29,9 +33,15 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
   bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
 
-  bottle.serviceFactory('TagsList', TagsList, 'TagCard');
+  bottle.serviceFactory('TagsCards', TagsCards, 'TagCard');
+  bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal');
+
+  bottle.serviceFactory('TagsTable', TagsTable, 'ColorGenerator', 'TagsTableRow');
+  bottle.decorator('TagsTable', withRouter);
+
+  bottle.serviceFactory('TagsList', TagsList, 'TagsCards', 'TagsTable');
   bottle.decorator('TagsList', connect(
-    [ 'tagsList', 'selectedServer', 'mercureInfo' ],
+    [ 'tagsList', 'selectedServer', 'mercureInfo', 'settings' ],
     [ 'forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
