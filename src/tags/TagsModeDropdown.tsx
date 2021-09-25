@@ -13,10 +13,10 @@ interface TagsModeDropdownProps {
 
 export const TagsModeDropdown: FC<TagsModeDropdownProps> = ({ mode, onChange, renderTitle }) => (
   <DropdownBtn text={renderTitle?.(mode) ?? `Display mode: ${mode}`}>
-    <DropdownItem outline active={mode === 'cards'} onClick={() => onChange('cards')}>
+    <DropdownItem active={mode === 'cards'} onClick={() => onChange('cards')}>
       <FontAwesomeIcon icon={cardsIcon} fixedWidth className="mr-1" /> Cards
     </DropdownItem>
-    <DropdownItem outline active={mode === 'list'} onClick={() => onChange('list')}>
+    <DropdownItem active={mode === 'list'} onClick={() => onChange('list')}>
       <FontAwesomeIcon icon={listIcon} fixedWidth className="mr-1" /> List
     </DropdownItem>
   </DropdownBtn>

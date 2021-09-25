@@ -1,4 +1,5 @@
 import Bottle, { IContainer } from 'bottlejs';
+import { withRouter } from 'react-router-dom';
 import TagsSelector from '../helpers/TagsSelector';
 import TagCard from '../TagCard';
 import DeleteTagConfirmModal from '../helpers/DeleteTagConfirmModal';
@@ -34,7 +35,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('TagsCards', TagsCards, 'TagCard');
   bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal');
+
   bottle.serviceFactory('TagsTable', TagsTable, 'ColorGenerator', 'TagsTableRow');
+  bottle.decorator('TagsTable', withRouter);
 
   bottle.serviceFactory('TagsList', TagsList, 'TagsCards', 'TagsTable');
   bottle.decorator('TagsList', connect(
