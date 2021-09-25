@@ -5,7 +5,6 @@ import { FC, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
-import { Versions } from '../utils/helpers/version';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import { isServerWithId, SelectedServer } from '../servers/data';
 import TagBullet from './helpers/TagBullet';
@@ -25,16 +24,13 @@ const isTruncated = (el: HTMLElement | undefined): boolean => !!el && el.scrollW
 const TagCard = (
   DeleteTagConfirmModal: FC<TagModalProps>,
   EditTagModal: FC<TagModalProps>,
-  ForServerVersion: FC<Versions>,
   colorGenerator: ColorGenerator,
 ) => ({ tag, tagStats, selectedServer, displayed, toggle }: TagCardProps) => {
   const [ isDeleteModalOpen, toggleDelete ] = useToggle();
   const [ isEditModalOpen, toggleEdit ] = useToggle();
   const [ hasTitle,, displayTitle ] = useToggle();
   const titleRef = useRef<HTMLElement>();
-
   const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
-  const shortUrlsLink = `/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag)}`;
 
   useEffect(() => {
     if (isTruncated(titleRef.current)) {
@@ -59,12 +55,7 @@ const TagCard = (
           }}
         >
           <TagBullet tag={tag} colorGenerator={colorGenerator} />
-          <ForServerVersion minVersion="2.2.0">
-            <span className="tag-card__tag-name" onClick={toggle}>{tag}</span>
-          </ForServerVersion>
-          <ForServerVersion maxVersion="2.1.*">
-            <Link to={shortUrlsLink}>{tag}</Link>
-          </ForServerVersion>
+          <span className="tag-card__tag-name" onClick={toggle}>{tag}</span>
         </h5>
       </CardHeader>
 
@@ -72,7 +63,7 @@ const TagCard = (
         <Collapse isOpen={displayed}>
           <CardBody className="tag-card__body">
             <Link
-              to={shortUrlsLink}
+              to={`/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag)}`}
               className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
             >
               <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>

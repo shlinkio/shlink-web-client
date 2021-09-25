@@ -55,14 +55,7 @@ export const Overview = (
         <div className="col-md-6 col-xl-3">
           <Card className="overview__card mb-3" body>
             <CardTitle tag="h5" className="overview__card-title">Visits</CardTitle>
-            <CardText tag="h2">
-              <ForServerVersion minVersion="2.2.0">
-                {loadingVisits ? 'Loading...' : prettify(visitsCount)}
-              </ForServerVersion>
-              <ForServerVersion maxVersion="2.1.*">
-                <small className="text-muted"><i>Shlink 2.2 is needed</i></small>
-              </ForServerVersion>
-            </CardText>
+            <CardText tag="h2">{loadingVisits ? 'Loading...' : prettify(visitsCount)}</CardText>
           </Card>
         </div>
         <div className="col-md-6 col-xl-3">
