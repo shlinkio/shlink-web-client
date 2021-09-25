@@ -15,15 +15,15 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
-import SortableBarGraph from './helpers/SortableBarGraph';
-import GraphCard from './helpers/GraphCard';
-import LineChartCard from './helpers/LineChartCard';
+import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
 import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
+import { DoughnutChartCard } from './charts/DoughnutChartCard';
+import { SortableBarChartCard } from './charts/SortableBarChartCard';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
@@ -173,13 +173,13 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
             <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
               <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
-                <GraphCard title="Operating systems" stats={os} />
+                <DoughnutChartCard title="Operating systems" stats={os} />
               </div>
               <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
-                <GraphCard title="Browsers" stats={browsers} />
+                <DoughnutChartCard title="Browsers" stats={browsers} />
               </div>
               <div className={classNames('mt-3', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
-                <SortableBarGraph
+                <SortableBarChartCard
                   title="Referrers"
                   stats={referrers}
                   withPagination={false}
@@ -194,7 +194,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
               </div>
               {isOrphanVisits && (
                 <div className="mt-3 col-lg-6">
-                  <SortableBarGraph
+                  <SortableBarChartCard
                     title="Visited URLs"
                     stats={visitedUrls}
                     highlightedLabel={highlightedLabel}
@@ -211,7 +211,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
             <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
               <div className="col-lg-6 mt-3">
-                <SortableBarGraph
+                <SortableBarChartCard
                   title="Countries"
                   stats={countries}
                   highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
@@ -224,7 +224,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                 />
               </div>
               <div className="col-lg-6 mt-3">
-                <SortableBarGraph
+                <SortableBarChartCard
                   title="Cities"
                   stats={cities}
                   highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}

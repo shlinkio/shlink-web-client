@@ -1,11 +1,3 @@
-@import '../utils/base';
-
-.short-urls-table__header {
-  @media (max-width: $responsiveTableBreakpoint) {
-    display: none;
-  }
-}
-
 .short-urls-table__header-cell--with-action {
   cursor: pointer;
 }

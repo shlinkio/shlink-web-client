@@ -65,9 +65,20 @@ export interface ShlinkShortUrlData extends ShortUrlMeta {
   tags?: string[];
 }
 
+export interface ShlinkDomainRedirects {
+  baseUrlRedirect: string | null;
+  regular404Redirect: string | null;
+  invalidShortUrlRedirect: string | null;
+}
+
+export interface ShlinkEditDomainRedirects extends Partial<ShlinkDomainRedirects> {
+  domain: string;
+}
+
 export interface ShlinkDomain {
   domain: string;
   isDefault: boolean;
+  redirects?: ShlinkDomainRedirects; // Optional only for Shlink older than 2.8
 }
 
 export interface ShlinkDomainsResponse {

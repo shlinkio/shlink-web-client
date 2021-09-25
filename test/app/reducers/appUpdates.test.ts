@@ -17,13 +17,13 @@ describe('appUpdatesReducer', () => {
   });
 
   describe('appUpdateAvailable', () => {
-    test('creates expected action', () => {
+    it('creates expected action', () => {
       expect(appUpdateAvailable()).toEqual({ type: APP_UPDATE_AVAILABLE });
     });
   });
 
   describe('resetAppUpdate', () => {
-    test('creates expected action', () => {
+    it('creates expected action', () => {
       expect(resetAppUpdate()).toEqual({ type: RESET_APP_UPDATE });
     });
   });

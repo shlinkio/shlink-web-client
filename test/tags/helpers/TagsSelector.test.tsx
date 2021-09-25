@@ -3,6 +3,7 @@ import { Mock } from 'ts-mockery';
 import createTagsSelector from '../../../src/tags/helpers/TagsSelector';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import { TagsList } from '../../../src/tags/reducers/tagsList';
+import { Settings } from '../../../src/settings/reducers/settings';
 
 describe('<TagsSelector />', () => {
   const onChange = jest.fn();
@@ -14,7 +15,13 @@ describe('<TagsSelector />', () => {
   beforeEach(jest.clearAllMocks);
   beforeEach(() => {
     wrapper = shallow(
-      <TagsSelector selectedTags={tags} tagsList={tagsList} listTags={jest.fn()} onChange={onChange} />,
+      <TagsSelector
+        selectedTags={tags}
+        tagsList={tagsList}
+        settings={Mock.all<Settings>()}
+        listTags={jest.fn()}
+        onChange={onChange}
+      />,
     );
   });
 
@@ -49,10 +56,14 @@ describe('<TagsSelector />', () => {
     ]);
   });
 
-  it('invokes onChange when new tags are added', () => {
-    wrapper.simulate('addition', { name: 'The-New-Tag' });
+  it.each([
+    [ 'The-New-Tag', [ ...tags, 'the-new-tag' ]],
+    [ 'comma,separated,tags', [ ...tags, 'comma', 'separated', 'tags' ]],
+    [ 'foo', tags ],
+  ])('invokes onChange when new tags are added', (newTag, expectedTags) => {
+    wrapper.simulate('addition', { name: newTag });
 
-    expect(onChange).toHaveBeenCalledWith([ ...tags, 'the-new-tag' ]);
+    expect(onChange).toHaveBeenCalledWith(expectedTags);
   });
 
   it.each([

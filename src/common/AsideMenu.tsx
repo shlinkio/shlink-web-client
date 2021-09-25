@@ -4,6 +4,7 @@ import {
   faTags as tagsIcon,
   faPen as editIcon,
   faHome as overviewIcon,
+  faGlobe as domainsIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
@@ -11,11 +12,12 @@ import { NavLink, NavLinkProps } from 'react-router-dom';
 import classNames from 'classnames';
 import { Location } from 'history';
 import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
-import { ServerWithId } from '../servers/data';
+import { isServerWithId, SelectedServer } from '../servers/data';
+import { supportsDomainRedirects } from '../utils/helpers/features';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {
-  selectedServer: ServerWithId;
+  selectedServer: SelectedServer;
   className?: string;
   showOnMobile?: boolean;
 }
@@ -38,7 +40,8 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
 const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   { selectedServer, showOnMobile = false }: AsideMenuProps,
 ) => {
-  const serverId = selectedServer ? selectedServer.id : '';
+  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const addManageDomainsLink = supportsDomainRedirects(selectedServer);
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
@@ -49,30 +52,38 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
     <aside className={asideClass}>
       <nav className="nav flex-column aside-menu__nav">
         <AsideMenuItem to={buildPath('/overview')}>
-          <FontAwesomeIcon icon={overviewIcon} />
+          <FontAwesomeIcon fixedWidth icon={overviewIcon} />
           <span className="aside-menu__item-text">Overview</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/list-short-urls/1')} isActive={shortUrlsIsActive}>
-          <FontAwesomeIcon icon={listIcon} />
+          <FontAwesomeIcon fixedWidth icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/create-short-url')}>
-          <FontAwesomeIcon icon={createIcon} flip="horizontal" />
+          <FontAwesomeIcon fixedWidth icon={createIcon} flip="horizontal" />
           <span className="aside-menu__item-text">Create short URL</span>
         </AsideMenuItem>
         <AsideMenuItem to={buildPath('/manage-tags')}>
-          <FontAwesomeIcon icon={tagsIcon} />
+          <FontAwesomeIcon fixedWidth icon={tagsIcon} />
           <span className="aside-menu__item-text">Manage tags</span>
         </AsideMenuItem>
+        {addManageDomainsLink && (
+          <AsideMenuItem to={buildPath('/manage-domains')}>
+            <FontAwesomeIcon fixedWidth icon={domainsIcon} />
+            <span className="aside-menu__item-text">Manage domains</span>
+          </AsideMenuItem>
+        )}
         <AsideMenuItem to={buildPath('/edit')} className="aside-menu__item--push">
-          <FontAwesomeIcon icon={editIcon} />
+          <FontAwesomeIcon fixedWidth icon={editIcon} />
           <span className="aside-menu__item-text">Edit this server</span>
         </AsideMenuItem>
-        <DeleteServerButton
-          className="aside-menu__item aside-menu__item--danger"
-          textClassName="aside-menu__item-text"
-          server={selectedServer}
-        />
+        {isServerWithId(selectedServer) && (
+          <DeleteServerButton
+            className="aside-menu__item aside-menu__item--danger"
+            textClassName="aside-menu__item-text"
+            server={selectedServer}
+          />
+        )}
       </nav>
     </aside>
   );

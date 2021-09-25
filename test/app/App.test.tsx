@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Route } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { Settings } from '../src/settings/reducers/settings';
-import appFactory from '../src/App';
-import { AppUpdateBanner } from '../src/common/AppUpdateBanner';
+import { Settings } from '../../src/settings/reducers/settings';
+import appFactory from '../../src/app/App';
+import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
 
 describe('<App />', () => {
   let wrapper: ShallowWrapper;

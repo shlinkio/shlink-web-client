@@ -17,10 +17,6 @@ export interface VisitsLoadProgressChangedAction extends Action<string> {
   progress: number;
 }
 
-export interface VisitsLoadFailedAction extends Action<string> {
-  errorData?: ProblemDetailsError;
-}
-
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
 
 interface VisitLocation {

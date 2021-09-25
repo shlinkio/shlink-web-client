@@ -1,11 +1,12 @@
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../../short-urls/helpers';
-import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAction } from '../types';
+import { Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
 import { ShortUrlIdentifier } from '../../short-urls/data';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
+import { ApiErrorAction } from '../../api/types/actions';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -27,7 +28,7 @@ interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
 type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
 & VisitsLoadProgressChangedAction
 & CreateVisitsAction
-& VisitsLoadFailedAction;
+& ApiErrorAction;
 
 const initialState: ShortUrlVisits = {
   visits: [],

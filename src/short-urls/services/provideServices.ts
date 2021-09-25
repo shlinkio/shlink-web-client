@@ -51,7 +51,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
   bottle.decorator('DeleteShortUrlModal', connect([ 'shortUrlDeletion' ], [ 'deleteShortUrl', 'resetDeleteShortUrl' ]));
 
-  bottle.serviceFactory('QrCodeModal', () => QrCodeModal);
+  bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader', 'ForServerVersion');
   bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
 
   // Services

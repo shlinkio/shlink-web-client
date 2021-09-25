@@ -1,31 +1,44 @@
-import { useMemo, useState } from 'react';
-import { Modal, DropdownItem, FormGroup, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { FC, useMemo, useState } from 'react';
+import { Modal, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
-import { DropdownBtn } from '../../utils/DropdownBtn';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
-import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat } from '../../utils/helpers/qrCodes';
-import { supportsQrCodeSizeInQuery, supportsQrCodeSvgFormat, supportsQrCodeMargin } from '../../utils/helpers/features';
+import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
+import {
+  supportsQrCodeSizeInQuery,
+  supportsQrCodeMargin,
+  supportsQrErrorCorrection,
+} from '../../utils/helpers/features';
+import { ImageDownloader } from '../../common/services/ImageDownloader';
+import { Versions } from '../../utils/helpers/version';
+import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import './QrCodeModal.scss';
+import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 
 interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps) => {
+const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => ( // eslint-disable-line
+  { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
+) => {
   const [ size, setSize ] = useState(300);
   const [ margin, setMargin ] = useState(0);
   const [ format, setFormat ] = useState<QrCodeFormat>('png');
+  const [ errorCorrection, setErrorCorrection ] = useState<QrErrorCorrection>('L');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
-    svgIsSupported: supportsQrCodeSvgFormat(selectedServer),
     marginIsSupported: supportsQrCodeMargin(selectedServer),
+    errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
   }), [ selectedServer ]);
+  const willRenderThreeControls = capabilities.marginIsSupported !== capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
-    () => buildQrCodeUrl(shortUrl, { size, format, margin }, capabilities),
-    [ shortUrl, size, format, margin, capabilities ],
+    () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
+    [ shortUrl, size, format, margin, errorCorrection, capabilities ],
   );
   const totalSize = useMemo(() => size + margin, [ size, margin ]);
   const modalSize = useMemo(() => {
@@ -42,60 +55,61 @@ const QrCodeModal = ({ shortUrl: { shortUrl }, toggle, isOpen, selectedServer }:
         QR code for <ExternalLink href={shortUrl}>{shortUrl}</ExternalLink>
       </ModalHeader>
       <ModalBody>
-        <Row className="mb-2">
-          <div
-            className={classNames({
-              'col-md-4': capabilities.marginIsSupported && capabilities.svgIsSupported,
-              'col-md-6': (!capabilities.marginIsSupported && capabilities.svgIsSupported) || (capabilities.marginIsSupported && !capabilities.svgIsSupported),
-              'col-12': !capabilities.marginIsSupported && !capabilities.svgIsSupported,
-            })}
+        <Row>
+          <FormGroup
+            className={classNames({ 'col-md-4': willRenderThreeControls, 'col-md-6': !willRenderThreeControls })}
           >
-            <FormGroup>
-              <label className="mb-0">Size: {size}px</label>
+            <label className="mb-0">Size: {size}px</label>
+            <input
+              type="range"
+              className="form-control-range"
+              value={size}
+              step={10}
+              min={50}
+              max={1000}
+              onChange={(e) => setSize(Number(e.target.value))}
+            />
+          </FormGroup>
+          {capabilities.marginIsSupported && (
+            <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
+              <label className="mb-0">Margin: {margin}px</label>
               <input
                 type="range"
                 className="form-control-range"
-                value={size}
-                step={10}
-                min={50}
-                max={1000}
-                onChange={(e) => setSize(Number(e.target.value))}
+                value={margin}
+                step={1}
+                min={0}
+                max={100}
+                onChange={(e) => setMargin(Number(e.target.value))}
               />
             </FormGroup>
-          </div>
-          {capabilities.marginIsSupported && (
-            <div className={capabilities.svgIsSupported ? 'col-md-4' : 'col-md-6'}>
-              <FormGroup>
-                <label className="mb-0">Margin: {margin}px</label>
-                <input
-                  type="range"
-                  className="form-control-range"
-                  value={margin}
-                  step={1}
-                  min={0}
-                  max={100}
-                  onChange={(e) => setMargin(Number(e.target.value))}
-                />
-              </FormGroup>
-            </div>
           )}
-          {capabilities.svgIsSupported && (
-            <div className={capabilities.marginIsSupported ? 'col-md-4' : 'col-md-6'}>
-              <DropdownBtn text={`Format (${format})`}>
-                <DropdownItem active={format === 'png'} onClick={() => setFormat('png')}>PNG</DropdownItem>
-                <DropdownItem active={format === 'svg'} onClick={() => setFormat('svg')}>SVG</DropdownItem>
-              </DropdownBtn>
-            </div>
+          <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
+            <QrFormatDropdown format={format} setFormat={setFormat} />
+          </FormGroup>
+          {capabilities.errorCorrectionIsSupported && (
+            <FormGroup className="col-md-6">
+              <QrErrorCorrectionDropdown errorCorrection={errorCorrection} setErrorCorrection={setErrorCorrection} />
+            </FormGroup>
           )}
         </Row>
         <div className="text-center">
           <div className="mb-3">
-            <div>QR code URL:</div>
             <ExternalLink href={qrCodeUrl} />
             <CopyToClipboardIcon text={qrCodeUrl} />
           </div>
           <img src={qrCodeUrl} className="qr-code-modal__img" alt="QR code" />
-          <div className="mt-2">{size}x{size}</div>
+          <ForServerVersion minVersion="2.9.0">
+            <div className="mt-3">
+              <Button
+                block
+                color="primary"
+                onClick={async () => imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`)}
+              >
+                Download <FontAwesomeIcon icon={downloadIcon} className="ml-1" />
+              </Button>
+            </div>
+          </ForServerVersion>
         </div>
       </ModalBody>
     </Modal>

@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
-import { FormGroupContainer } from '../../utils/FormGroupContainer';
+import { FormGroupContainer, FormGroupContainerProps } from '../../utils/FormGroupContainer';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';
 import { SimpleCard } from '../../utils/SimpleCard';
@@ -10,6 +10,9 @@ interface ServerFormProps {
   initialValues?: ServerData;
   title?: ReactNode;
 }
+
+const FormGroup: FC<FormGroupContainerProps> = (props) =>
+  <FormGroupContainer {...props} labelClassName="create-server__label" />;
 
 export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
   const [ name, setName ] = useState('');
@@ -26,9 +29,9 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
   return (
     <form className="server-form" onSubmit={handleSubmit}>
       <SimpleCard className="mb-3" title={title}>
-        <FormGroupContainer value={name} onChange={setName}>Name</FormGroupContainer>
-        <FormGroupContainer type="url" value={url} onChange={setUrl}>URL</FormGroupContainer>
-        <FormGroupContainer value={apiKey} onChange={setApiKey}>API key</FormGroupContainer>
+        <FormGroup value={name} onChange={setName}>Name</FormGroup>
+        <FormGroup type="url" value={url} onChange={setUrl}>URL</FormGroup>
+        <FormGroup value={apiKey} onChange={setApiKey}>APIkey</FormGroup>
       </SimpleCard>
 
       <div className="text-right">{children}</div>

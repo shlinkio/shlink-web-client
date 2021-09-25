@@ -5,13 +5,7 @@ import { isEmpty, pipe, replace, trim } from 'ramda';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
-import {
-  supportsCrawlableVisits,
-  supportsListingDomains,
-  supportsSettingShortCodeLength,
-  supportsShortUrlTitle,
-  supportsValidateUrl,
-} from '../utils/helpers/features';
+import { supportsCrawlableVisits, supportsShortUrlTitle } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
@@ -43,7 +37,7 @@ const toDate = (date?: string | Date): Date | undefined => typeof date === 'stri
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => { // eslint-disable-line complexity
+): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const isEdit = mode === 'edit';
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
@@ -102,17 +96,13 @@ export const ShortUrlForm = (
     </>
   );
 
-  const showDomainSelector = supportsListingDomains(selectedServer);
-  const disableShortCodeLength = !supportsSettingShortCodeLength(selectedServer);
   const supportsTitle = supportsShortUrlTitle(selectedServer);
   const showCustomizeCard = supportsTitle || !isEdit;
   const limitAccessCardClasses = classNames('mb-3', {
     'col-sm-6': showCustomizeCard,
     'col-sm-12': !showCustomizeCard,
   });
-  const showValidateUrl = supportsValidateUrl(selectedServer);
   const showCrawlableControl = supportsCrawlableVisits(selectedServer);
-  const showExtraValidationsCard = showValidateUrl || showCrawlableControl || !isEdit;
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -139,22 +129,16 @@ export const ShortUrlForm = (
                         <div className="col-lg-6">
                           {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
                             min: 4,
-                            disabled: disableShortCodeLength || hasValue(shortUrlData.customSlug),
-                            ...disableShortCodeLength && {
-                              title: 'Shlink 2.1.0 or higher is required to be able to provide the short code length',
-                            },
+                            disabled: hasValue(shortUrlData.customSlug),
                           })}
                         </div>
                       </Row>
-                      {!showDomainSelector && renderOptionalInput('domain', 'Domain', 'text')}
-                      {showDomainSelector && (
-                        <FormGroup>
-                          <DomainSelector
-                            value={shortUrlData.domain}
-                            onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                          />
-                        </FormGroup>
-                      )}
+                      <FormGroup>
+                        <DomainSelector
+                          value={shortUrlData.domain}
+                          onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                        />
+                      </FormGroup>
                     </>
                   )}
                 </SimpleCard>
@@ -170,41 +154,37 @@ export const ShortUrlForm = (
             </div>
           </Row>
 
-          {showExtraValidationsCard && (
-            <SimpleCard title="Extra checks" className="mb-3">
-              {showValidateUrl && (
-                <ShortUrlFormCheckboxGroup
-                  infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
-                  checked={shortUrlData.validateUrl}
-                  onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
+          <SimpleCard title="Extra checks" className="mb-3">
+            <ShortUrlFormCheckboxGroup
+              infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
+              checked={shortUrlData.validateUrl}
+              onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
+            >
+              Validate URL
+            </ShortUrlFormCheckboxGroup>
+            {showCrawlableControl && (
+              <ShortUrlFormCheckboxGroup
+                infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
+                checked={shortUrlData.crawlable}
+                onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
+              >
+                Make it crawlable
+              </ShortUrlFormCheckboxGroup>
+            )}
+            {!isEdit && (
+              <p>
+                <Checkbox
+                  inline
+                  className="mr-2"
+                  checked={shortUrlData.findIfExists}
+                  onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
                 >
-                  Validate URL
-                </ShortUrlFormCheckboxGroup>
-              )}
-              {showCrawlableControl && (
-                <ShortUrlFormCheckboxGroup
-                  infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
-                  checked={shortUrlData.crawlable}
-                  onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
-                >
-                  Make it crawlable
-                </ShortUrlFormCheckboxGroup>
-              )}
-              {!isEdit && (
-                <p>
-                  <Checkbox
-                    inline
-                    className="mr-2"
-                    checked={shortUrlData.findIfExists}
-                    onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
-                  >
-                    Use existing URL if found
-                  </Checkbox>
-                  <UseExistingIfFoundInfoIcon />
-                </p>
-              )}
-            </SimpleCard>
-          )}
+                  Use existing URL if found
+                </Checkbox>
+                <UseExistingIfFoundInfoIcon />
+              </p>
+            )}
+          </SimpleCard>
         </>
       )}
 

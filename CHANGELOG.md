@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.3.0] - 2021-09-25
+### Added
+* [#465](https://github.com/shlinkio/shlink-web-client/issues/465) Added new page to manage domains and their redirects, when consuming Shlink 2.8 or higher.
+* [#460](https://github.com/shlinkio/shlink-web-client/issues/460) Added dynamic title on hover for tags with a very long title.
+* [#462](https://github.com/shlinkio/shlink-web-client/issues/462) Now it is possible to paste multiple comma-separated tags in the tags selector, making all of them to be added as individual tags.
+* [#463](https://github.com/shlinkio/shlink-web-client/issues/463) The strategy to determine which tags to suggest in the TagsSelector during short URL creation, can now be configured:
+
+  * `startsWith`: Suggests tags that start with the input. This is the default behavior for keep it as it was so far.
+  * `includes`: Suggests tags that contain the input.
+
+* [#464](https://github.com/shlinkio/shlink-web-client/issues/464) Added support to download QR codes. This feature requires an unreleased version of Shlink, so it comes disabled, and will get enabled as soon as Shlink v2.9 is released.
+* [#469](https://github.com/shlinkio/shlink-web-client/issues/469) Added support `errorCorrection` in QR codes, when consuming Shlink 2.8 or higher.
+* [#459](https://github.com/shlinkio/shlink-web-client/issues/459) Added new list mode to display tags.
+
+  The mode is optional, and you can toggle between the classic cards mode or the new list mode whenever you want.
+
+  You can also configure the default mode from settings.
+
+### Changed
+* [#408](https://github.com/shlinkio/shlink-web-client/issues/408) Updated to Chart.js 3.5
+* [#486](https://github.com/shlinkio/shlink-web-client/issues/486) Refactored components used to render visits charts, making them easier to maintain and understand.
+* [#409](https://github.com/shlinkio/shlink-web-client/issues/409) Increased required code coverage and added hard threshold check.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* [#491](https://github.com/shlinkio/shlink-web-client/issues/491) Dropped support for Shlink older than v2.4.0.
+
+### Fixed
+* *Nothing*
+
+
 ## [3.2.1] - 2021-09-12
 ### Added
 * *Nothing*
@@ -18,9 +51,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* [#478](https://github.com/shlinkio/shlink-web-client/pull/478) Fixed tags including special chars not being properly URL encoded before using them as query params.
-* [#480](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed servers import on Chromium-based browsers when using windows.
-* [#482](https://github.com/shlinkio/shlink-web-client/pull/480) Fixed end date not being set to the end of the day when filtering visits using a "smart filter" (last 7 days, last 30 days, etc).
+* [#478](https://github.com/shlinkio/shlink-web-client/issues/478) Fixed tags including special chars not being properly URL encoded before using them as query params.
+* [#480](https://github.com/shlinkio/shlink-web-client/issues/480) Fixed servers import on Chromium-based browsers when using windows.
+* [#482](https://github.com/shlinkio/shlink-web-client/issues/480) Fixed end date not being set to the end of the day when filtering visits using a "smart filter" (last 7 days, last 30 days, etc).
 
 
 ## [3.2.0] - 2021-07-12
@@ -32,16 +65,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
     * `SHLINK_SERVER_NAME`: A name you want to give to this server. Defaults to *Shlink* if not provided.
 
 * [#432](https://github.com/shlinkio/shlink-web-client/pull/432) Added support to provide the `servers.json` file inside a `conf.d` folder.
-* [#440](https://github.com/shlinkio/shlink-web-client/pull/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
-* [#431](https://github.com/shlinkio/shlink-web-client/pull/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
-* [#430](https://github.com/shlinkio/shlink-web-client/pull/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
-* [#450](https://github.com/shlinkio/shlink-web-client/pull/450) Improved landing page design.
-* [#449](https://github.com/shlinkio/shlink-web-client/pull/449) Improved PWA update banner, allowing to restart the app directly from it without having to close the tab.
+* [#440](https://github.com/shlinkio/shlink-web-client/issues/440) Added hint of what visits come potentially from a bot, in the visits table, when consuming Shlink >=2.7.
+* [#431](https://github.com/shlinkio/shlink-web-client/issues/431) Added support to filter out visits from potential bots in visits sections, when consuming Shlink >=2.7.
+* [#430](https://github.com/shlinkio/shlink-web-client/issues/430) Added support to set new and existing short URLs as crawlable, when consuming Shlink >=2.7.
+* [#450](https://github.com/shlinkio/shlink-web-client/issues/450) Improved landing page design.
+* [#449](https://github.com/shlinkio/shlink-web-client/issues/449) Improved PWA update banner, allowing to restart the app directly from it without having to close the tab.
 
 ### Changed
-* [#442](https://github.com/shlinkio/shlink-web-client/pull/442) Visits filtering now goes through the corresponding reducer.
-* [#337](https://github.com/shlinkio/shlink-web-client/pull/337) Replaced moment.js with date-fns.
-* [#360](https://github.com/shlinkio/shlink-web-client/pull/360) Changed component used to generate a tags selector, switching from `react-tagsinput`, which is no longer maintained, to `react-tag-autocomplete`.
+* [#442](https://github.com/shlinkio/shlink-web-client/issues/442) Visits filtering now goes through the corresponding reducer.
+* [#337](https://github.com/shlinkio/shlink-web-client/issues/337) Replaced moment.js with date-fns.
+* [#360](https://github.com/shlinkio/shlink-web-client/issues/360) Changed component used to generate a tags selector, switching from `react-tagsinput`, which is no longer maintained, to `react-tag-autocomplete`.
 
 ### Deprecated
 * *Nothing*
@@ -50,7 +83,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* [#438](https://github.com/shlinkio/shlink-web-client/pull/438) Fixed horizontal scrolling in short URLs list on mobile devices when the long URL didn't have words to break.
+* [#438](https://github.com/shlinkio/shlink-web-client/issues/438) Fixed horizontal scrolling in short URLs list on mobile devices when the long URL didn't have words to break.
 
 
 ## [3.1.2] - 2021-06-06

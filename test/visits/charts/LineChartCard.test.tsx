@@ -3,10 +3,11 @@ import { CardHeader, DropdownItem } from 'reactstrap';
 import { Line } from 'react-chartjs-2';
 import { formatISO, subDays, subMonths, subYears } from 'date-fns';
 import { Mock } from 'ts-mockery';
-import LineChartCard from '../../../src/visits/helpers/LineChartCard';
+import LineChartCard from '../../../src/visits/charts/LineChartCard';
 import ToggleSwitch from '../../../src/utils/ToggleSwitch';
 import { NormalizedVisit } from '../../../src/visits/types';
 import { prettify } from '../../../src/utils/helpers/numbers';
+import { pointerOnHover, renderChartLabel } from '../../../src/utils/helpers/charts';
 
 describe('<LineChartCard />', () => {
   let wrapper: ShallowWrapper;
@@ -54,23 +55,27 @@ describe('<LineChartCard />', () => {
 
     expect(chart.prop('options')).toEqual(expect.objectContaining({
       maintainAspectRatio: false,
-      legend: { display: false },
-      scales: {
-        yAxes: [
-          {
-            ticks: { beginAtZero: true, precision: 0, callback: prettify },
-          },
-        ],
-        xAxes: [
-          {
-            scaleLabel: { display: true, labelString: 'Month' },
-          },
-        ],
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          intersect: false,
+          axis: 'x',
+          callbacks: { label: renderChartLabel },
+        },
       },
-      tooltips: expect.objectContaining({
-        intersect: false,
-        axis: 'x',
-      }),
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            precision: 0,
+            callback: prettify,
+          },
+        },
+        x: {
+          title: { display: true, text: 'Month' },
+        },
+      },
+      onHover: pointerOnHover,
     }));
   });
 
@@ -80,7 +85,7 @@ describe('<LineChartCard />', () => {
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);
-    const { datasets } = chart.prop('data') as any;
+    const { datasets } = chart.prop('data');
 
     expect(datasets).toHaveLength(expectedLines);
   });
@@ -91,8 +96,8 @@ describe('<LineChartCard />', () => {
       Mock.of<NormalizedVisit>({ date: '2016-01-01' }),
     ]);
 
-    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(2);
+    expect(wrapper.find(Line).prop('data').labels).toHaveLength(2);
     wrapper.find(ToggleSwitch).simulate('change');
-    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(4);
+    expect(wrapper.find(Line).prop('data').labels).toHaveLength(4);
   });
 });

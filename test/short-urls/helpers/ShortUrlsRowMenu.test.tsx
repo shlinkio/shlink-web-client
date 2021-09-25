@@ -1,9 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { ButtonDropdown, DropdownItem } from 'reactstrap';
+import { DropdownItem } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import createShortUrlsRowMenu from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
 import { ReachableServer } from '../../../src/servers/data';
 import { ShortUrl } from '../../../src/short-urls/data';
+import { DropdownBtnMenu } from '../../../src/utils/DropdownBtnMenu';
 
 describe('<ShortUrlsRowMenu />', () => {
   let wrapper: ShallowWrapper;
@@ -52,6 +53,6 @@ describe('<ShortUrlsRowMenu />', () => {
 
     it('DeleteShortUrlModal', () => assert(DeleteShortUrlModal));
     it('QrCodeModal', () => assert(QrCodeModal));
-    it('ShortUrlRowMenu', () => assert(ButtonDropdown));
+    it('ShortUrlRowMenu', () => assert(DropdownBtnMenu));
   });
 });

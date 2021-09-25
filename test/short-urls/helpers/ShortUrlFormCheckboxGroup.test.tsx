@@ -1,9 +1,10 @@
 import { shallow } from 'enzyme';
 import { ShortUrlFormCheckboxGroup } from '../../../src/short-urls/helpers/ShortUrlFormCheckboxGroup';
 import Checkbox from '../../../src/utils/Checkbox';
+import { InfoTooltip } from '../../../src/utils/InfoTooltip';
 
 describe('<ShortUrlFormCheckboxGroup />', () => {
-  test.each([
+  it.each([
     [ undefined, '', 0 ],
     [ 'This is the tooltip', 'mr-2', 1 ],
   ])('renders tooltip only when provided', (infoTooltip, expectedClassName, expectedAmountOfTooltips) => {
@@ -11,6 +12,6 @@ describe('<ShortUrlFormCheckboxGroup />', () => {
     const checkbox = wrapper.find(Checkbox);
 
     expect(checkbox.prop('className')).toEqual(expectedClassName);
-    expect(wrapper.find('InfoTooltip')).toHaveLength(expectedAmountOfTooltips);
+    expect(wrapper.find(InfoTooltip)).toHaveLength(expectedAmountOfTooltips);
   });
 });

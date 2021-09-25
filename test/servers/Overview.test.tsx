@@ -64,13 +64,6 @@ describe('<Overview />', () => {
     expect(cards.at(3).html()).toContain(prettify(3));
   });
 
-  it('displays warning in first card for old shlink versions', () => {
-    const wrapper = createWrapper();
-    const firstCard = wrapper.find(CardText).first();
-
-    expect(firstCard.html()).toContain('Shlink 2.2 is needed');
-  });
-
   it('nests complex components', () => {
     const wrapper = createWrapper();
 

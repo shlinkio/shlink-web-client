@@ -14,7 +14,7 @@ describe('<ShlinkVersionsContainer />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  test.each([
+  it.each([
     [ null, 'text-center' ],
     [ Mock.of<NotFoundServer>({ serverNotFound: true }), 'text-center' ],
     [ Mock.of<NonReachableServer>({ serverNotReachable: true }), 'text-center' ],

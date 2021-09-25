@@ -30,11 +30,7 @@ const SearchBar = (colorGenerator: ColorGenerator) => ({ listShortUrls, shortUrl
 
   return (
     <div className="search-bar-container">
-      <SearchField
-        onChange={
-          (searchTerm) => listShortUrls({ ...shortUrlsListParams, searchTerm })
-        }
-      />
+      <SearchField onChange={(searchTerm) => listShortUrls({ ...shortUrlsListParams, searchTerm })} />
 
       <div className="mt-3">
         <div className="row">

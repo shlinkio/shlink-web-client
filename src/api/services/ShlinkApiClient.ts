@@ -1,4 +1,3 @@
-import qs from 'qs';
 import { isEmpty, isNil, reject } from 'ramda';
 import { AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrlsListParams } from '../../short-urls/reducers/shortUrlsListParams';
@@ -16,7 +15,10 @@ import {
   ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
+  ShlinkEditDomainRedirects,
+  ShlinkDomainRedirects,
 } from '../types';
+import { stringifyQuery } from '../../utils/helpers/query';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
@@ -108,6 +110,11 @@ export default class ShlinkApiClient {
   public readonly listDomains = async (): Promise<ShlinkDomain[]> =>
     this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains.data);
 
+  public readonly editDomainRedirects = async (
+    domainRedirects: ShlinkEditDomainRedirects,
+  ): Promise<ShlinkDomainRedirects> =>
+    this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects).then(({ data }) => data);
+
   private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> => {
     try {
       return await this.axios({
@@ -116,7 +123,7 @@ export default class ShlinkApiClient {
         headers: { 'X-Api-Key': this.apiKey },
         params: rejectNilProps(query),
         data: body,
-        paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'brackets' }),
+        paramsSerializer: stringifyQuery,
       });
     } catch (e) {
       const { response } = e;

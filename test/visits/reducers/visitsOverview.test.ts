@@ -43,9 +43,13 @@ describe('visitsOverviewReducer', () => {
       expect(visitsCount).toEqual(100);
     });
 
-    it('returns updated amounts on CREATE_VISITS', () => {
+    it.each([
+      [ 50, 53 ],
+      [ 0, 3 ],
+      [ undefined, 3 ],
+    ])('returns updated amounts on CREATE_VISITS', (providedOrphanVisitsCount, expectedOrphanVisitsCount) => {
       const { visitsCount, orphanVisitsCount } = reducer(
-        state({ visitsCount: 100, orphanVisitsCount: 50 }),
+        state({ visitsCount: 100, orphanVisitsCount: providedOrphanVisitsCount }),
         {
           type: CREATE_VISITS,
           createdVisits: [
@@ -65,7 +69,7 @@ describe('visitsOverviewReducer', () => {
       );
 
       expect(visitsCount).toEqual(102);
-      expect(orphanVisitsCount).toEqual(53);
+      expect(orphanVisitsCount).toEqual(expectedOrphanVisitsCount);
     });
   });
 

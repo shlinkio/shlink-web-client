@@ -99,6 +99,6 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
       </Card>
     </>
   );
-}, () => [ Topics.visits() ]);
+}, () => [ Topics.visits ]);
 
 export default ShortUrlsList;

@@ -2,21 +2,9 @@ import { Mock } from 'ts-mockery';
 import { CsvJson } from 'csvjson';
 import ServersExporter from '../../../src/servers/services/ServersExporter';
 import LocalStorage from '../../../src/utils/services/LocalStorage';
+import { appendChild, removeChild, windowMock } from '../../mocks/WindowMock';
 
 describe('ServersExporter', () => {
-  const createLinkMock = () => ({
-    setAttribute: jest.fn(),
-    click: jest.fn(),
-    style: {},
-  });
-  const appendChild = jest.fn();
-  const removeChild = jest.fn();
-  const windowMock = Mock.of<Window>({
-    document: {
-      createElement: jest.fn(createLinkMock),
-      body: { appendChild, removeChild },
-    },
-  });
   const storageMock = Mock.of<LocalStorage>({
     get: jest.fn(() => ({
       abc123: {

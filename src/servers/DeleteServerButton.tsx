@@ -19,7 +19,7 @@ const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<D
   return (
     <>
       <span className={className} onClick={showModal}>
-        {!children && <FontAwesomeIcon icon={deleteIcon} />}
+        {!children && <FontAwesomeIcon fixedWidth icon={deleteIcon} />}
         <span className={textClassName}>{children ?? 'Remove this server'}</span>
       </span>
 

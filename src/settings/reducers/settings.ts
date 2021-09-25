@@ -12,17 +12,23 @@ export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
  * optional, as old instances of the app will load partial objects from local storage until it is saved again.
  */
 
-interface RealTimeUpdatesSettings {
+export interface RealTimeUpdatesSettings {
   enabled: boolean;
   interval?: number;
 }
 
+export type TagFilteringMode = 'startsWith' | 'includes';
+
 export interface ShortUrlCreationSettings {
   validateUrls: boolean;
+  tagFilteringMode?: TagFilteringMode;
 }
+
+export type TagsMode = 'cards' | 'list';
 
 export interface UiSettings {
   theme: Theme;
+  tagsMode?: TagsMode;
 }
 
 export interface VisitsSettings {

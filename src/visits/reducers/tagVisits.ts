@@ -1,9 +1,10 @@
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsInfo, VisitsLoadFailedAction, VisitsLoadProgressChangedAction } from '../types';
+import { Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
+import { ApiErrorAction } from '../../api/types/actions';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -28,7 +29,7 @@ export interface TagVisitsAction extends Action<string> {
 type TagsVisitsCombinedAction = TagVisitsAction
 & VisitsLoadProgressChangedAction
 & CreateVisitsAction
-& VisitsLoadFailedAction;
+& ApiErrorAction;
 
 const initialState: TagVisits = {
   visits: [],

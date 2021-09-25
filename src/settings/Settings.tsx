@@ -20,8 +20,8 @@ const Settings = (RealTimeUpdates: FC, ShortUrlCreation: FC, UserInterface: FC, 
   <NoMenuLayout>
     <SettingsSections
       items={[
-        [ <UserInterface />, <ShortUrlCreation /> ], // eslint-disable-line react/jsx-key
-        [ <Visits />, <RealTimeUpdates /> ], // eslint-disable-line react/jsx-key
+        [ <UserInterface />, <Visits /> ], // eslint-disable-line react/jsx-key
+        [ <ShortUrlCreation />, <RealTimeUpdates /> ], // eslint-disable-line react/jsx-key
       ]}
     />
   </NoMenuLayout>
