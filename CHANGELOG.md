@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.3.1] - 2021-09-27
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#497](https://github.com/shlinkio/shlink-web-client/issues/497) Fixed crash in domains section when one of the domains have more than one dot.
+
+
 ## [3.3.0] - 2021-09-25
 ### Added
 * [#465](https://github.com/shlinkio/shlink-web-client/issues/465) Added new page to manage domains and their redirects, when consuming Shlink 2.8 or higher.
