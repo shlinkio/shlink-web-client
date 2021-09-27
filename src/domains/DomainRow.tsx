@@ -33,7 +33,7 @@ const DefaultDomain: FC = () => (
 export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects }) => {
   const [ isOpen, toggle ] = useToggle();
   const { domain: authority, isDefault, redirects } = domain;
-  const domainId = `domainEdit${authority.replace('.', '')}`;
+  const domainId = `domainEdit${authority.replace(/\./g, '')}`;
 
   return (
     <tr className="responsive-table__row">

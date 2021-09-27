@@ -17,9 +17,15 @@ describe('<DomainRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), 1 ],
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), 0 ],
-  ])('shows proper components based on the fact that provided domain is default or not', (domain, expectedComps) => {
+    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), 1, 'domainEdit' ],
+    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), 0, '' ],
+    [ Mock.of<ShlinkDomain>({ domain: 'foo.com', isDefault: true }), 1, 'domainEditfoocom' ],
+    [ Mock.of<ShlinkDomain>({ domain: 'foo.bar.com', isDefault: true }), 1, 'domainEditfoobarcom' ],
+  ])('shows proper components based on the fact that provided domain is default or not', (
+    domain,
+    expectedComps,
+    expectedDomainId,
+  ) => {
     const wrapper = createWrapper(domain);
     const defaultDomainComp = wrapper.find('td').first().find('DefaultDomain');
     const tooltip = wrapper.find(UncontrolledTooltip);
@@ -27,9 +33,13 @@ describe('<DomainRow />', () => {
     const icon = wrapper.find(FontAwesomeIcon);
 
     expect(defaultDomainComp).toHaveLength(expectedComps);
-    expect(tooltip).toHaveLength(expectedComps);
     expect(button.prop('disabled')).toEqual(domain.isDefault);
     expect(icon.prop('icon')).toEqual(domain.isDefault ? forbiddenIcon : editIcon);
+    expect(tooltip).toHaveLength(expectedComps);
+
+    if (expectedComps > 0) {
+      expect(tooltip.prop('target')).toEqual(expectedDomainId);
+    }
   });
 
   it.each([
