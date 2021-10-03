@@ -29,7 +29,7 @@ export const DateRangeSelector = (
     !rangeIsInterval(initialDateRange) ? initialDateRange : undefined,
   );
   const updateDateRange = (dateRange: DateRange) => {
-    setActiveInterval(undefined);
+    setActiveInterval(dateRangeIsEmpty(dateRange) ? 'all' : undefined);
     setActiveDateRange(dateRange);
     onDatesChange(dateRange);
   };
@@ -43,7 +43,7 @@ export const DateRangeSelector = (
     <DropdownBtn disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>
       <DateIntervalDropdownItems
         allText={defaultText}
-        active={!dateRangeIsEmpty(activeDateRange) ? undefined : activeInterval}
+        active={activeInterval}
         onChange={(interval) => updateInterval(interval)()}
       />
       <DropdownItem divider />
