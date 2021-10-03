@@ -14,6 +14,7 @@ export const Visits: FC<VisitsProps> = ({ settings, setVisitsSettings }) => (
     <FormGroup className="mb-0">
       <label>Default interval to load on visits sections:</label>
       <DateIntervalSelector
+        allText="All visits"
         active={settings.visits?.defaultInterval ?? 'last30Days'}
         onChange={(defaultInterval) => setVisitsSettings({ defaultInterval })}
       />

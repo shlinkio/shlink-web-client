@@ -7,14 +7,15 @@ export interface DateRange {
   endDate?: Date | null;
 }
 
-export type DateInterval = 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'last90Days' | 'last180days' | 'last365Days';
+export type DateInterval = 'all' | 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'last90Days' | 'last180days' | 'last365Days';
 
 export const dateRangeIsEmpty = (dateRange?: DateRange): boolean => dateRange === undefined
   || isEmpty(filter(Boolean, dateRange as any));
 
-export const rangeIsInterval = (range?: DateRange | DateInterval): range is DateInterval => typeof range === 'string';
+export const rangeIsInterval = (range?: DateRange | DateInterval): range is DateInterval =>
+  typeof range === 'string';
 
-const INTERVAL_TO_STRING_MAP: Record<DateInterval, string> = {
+const INTERVAL_TO_STRING_MAP: Record<DateInterval, string | undefined> = {
   today: 'Today',
   yesterday: 'Yesterday',
   last7Days: 'Last 7 days',
@@ -22,9 +23,10 @@ const INTERVAL_TO_STRING_MAP: Record<DateInterval, string> = {
   last90Days: 'Last 90 days',
   last180days: 'Last 180 days',
   last365Days: 'Last 365 days',
+  all: undefined,
 };
 
-export const DATE_INTERVALS: DateInterval[] = Object.keys(INTERVAL_TO_STRING_MAP) as DateInterval[];
+export const DATE_INTERVALS = Object.keys(INTERVAL_TO_STRING_MAP).filter((value) => value !== 'all') as DateInterval[];
 
 const dateRangeToString = (range?: DateRange): string | undefined => {
   if (!range || dateRangeIsEmpty(range)) {
@@ -43,7 +45,7 @@ const dateRangeToString = (range?: DateRange): string | undefined => {
 };
 
 export const rangeOrIntervalToString = (range?: DateRange | DateInterval): string | undefined => {
-  if (!range) {
+  if (!range || range === 'all') {
     return undefined;
   }
 
@@ -58,7 +60,7 @@ const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(new Date(), daysA
 const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(new Date()) });
 
 export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
-  if (!dateInterval) {
+  if (!dateInterval || dateInterval === 'all') {
     return {};
   }
 

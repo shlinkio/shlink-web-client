@@ -10,7 +10,7 @@ describe('<DateIntervalSelector />', () => {
   const onChange = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(<DateIntervalSelector active={activeInterval} onChange={onChange} />);
+    wrapper = shallow(<DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />);
   });
   afterEach(() => wrapper?.unmount());
 
@@ -22,5 +22,6 @@ describe('<DateIntervalSelector />', () => {
     expect(items).toHaveLength(1);
     expect(items.prop('onChange')).toEqual(onChange);
     expect(items.prop('active')).toEqual(activeInterval);
+    expect(items.prop('allText')).toEqual('All text');
   });
 });
