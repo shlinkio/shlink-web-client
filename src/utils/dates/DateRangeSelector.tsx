@@ -4,10 +4,10 @@ import { DropdownBtn } from '../DropdownBtn';
 import {
   DateInterval,
   DateRange,
-  dateRangeIsEmpty,
   rangeOrIntervalToString,
   intervalToDateRange,
   rangeIsInterval,
+  dateRangeIsEmpty,
 } from './types';
 import DateRangeRow from './DateRangeRow';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
@@ -33,7 +33,7 @@ export const DateRangeSelector = (
     setActiveDateRange(dateRange);
     onDatesChange(dateRange);
   };
-  const updateInterval = (dateInterval?: DateInterval) => () => {
+  const updateInterval = (dateInterval: DateInterval) => () => {
     setActiveInterval(dateInterval);
     setActiveDateRange(undefined);
     onDatesChange(intervalToDateRange(dateInterval));
@@ -41,14 +41,11 @@ export const DateRangeSelector = (
 
   return (
     <DropdownBtn disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>
-      <DropdownItem
-        active={activeInterval === undefined && dateRangeIsEmpty(activeDateRange)}
-        onClick={updateInterval(undefined)}
-      >
-        {defaultText}
-      </DropdownItem>
-      <DropdownItem divider />
-      <DateIntervalDropdownItems active={activeInterval} onChange={(interval) => updateInterval(interval)()} />
+      <DateIntervalDropdownItems
+        allText={defaultText}
+        active={!dateRangeIsEmpty(activeDateRange) ? undefined : activeInterval}
+        onChange={(interval) => updateInterval(interval)()}
+      />
       <DropdownItem divider />
       <DropdownItem header>Custom:</DropdownItem>
       <DropdownItem text>
