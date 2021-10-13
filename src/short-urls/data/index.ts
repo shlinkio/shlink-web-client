@@ -9,6 +9,7 @@ export interface EditShortUrlData {
   maxVisits?: number | null;
   validateUrl?: boolean;
   crawlable?: boolean;
+  forwardQuery?: boolean;
 }
 
 export interface ShortUrlData extends EditShortUrlData {
@@ -30,6 +31,7 @@ export interface ShortUrl {
   domain: string | null;
   title?: string | null;
   crawlable?: boolean;
+  forwardQuery?: boolean;
 }
 
 export interface ShortUrlMeta {

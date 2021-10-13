@@ -42,6 +42,7 @@ const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSetting
     validUntil: shortUrl.meta.validUntil ?? undefined,
     maxVisits: shortUrl.meta.maxVisits ?? undefined,
     crawlable: shortUrl.crawlable,
+    forwardQuery: shortUrl.forwardQuery,
     validateUrl,
   };
 };
