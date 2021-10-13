@@ -21,3 +21,5 @@ export const supportsCrawlableVisits = supportsBotVisits;
 export const supportsQrErrorCorrection = serverMatchesVersions({ minVersion: '2.8.0' });
 
 export const supportsDomainRedirects = supportsQrErrorCorrection;
+
+export const supportsForwardQuery = serverMatchesVersions({ minVersion: '2.9.0' });
