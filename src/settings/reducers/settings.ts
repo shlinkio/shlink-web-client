@@ -22,6 +22,7 @@ export type TagFilteringMode = 'startsWith' | 'includes';
 export interface ShortUrlCreationSettings {
   validateUrls: boolean;
   tagFilteringMode?: TagFilteringMode;
+  forwardQuery?: boolean;
 }
 
 export type TagsMode = 'cards' | 'list';

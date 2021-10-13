@@ -30,7 +30,7 @@ const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => (
   maxVisits: undefined,
   findIfExists: false,
   validateUrl: settings?.validateUrls ?? false,
-  forwardQuery: true,
+  forwardQuery: settings?.forwardQuery ?? true,
 });
 
 const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResult: FC<CreateShortUrlResultProps>) => ({
