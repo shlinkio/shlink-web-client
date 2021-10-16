@@ -7,52 +7,9 @@ on:
       - main
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Use node.js 14.15
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.15
-      - run: npm ci
-      - run: npm run lint
-
-  unit-tests:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Use node.js 14.15
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.15
-      - run: npm ci
-      - run: npm run test:ci
-      - name: Publish coverage
-        uses: codecov/codecov-action@v1
-        with:
-          file: ./coverage/clover.xml
-
-  mutation-tests:
-    continue-on-error: true
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # needed so that the main branch is also fetched
-      - name: Use node.js 14.15
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.15
-      - run: npm ci
-      - run: npm run mutate -- --mutate=$(git diff origin/main --name-only | grep -E 'src\/(.*).(ts|tsx)$' | paste -sd ",")
-
-  build-docker-image:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - run: docker build -t shlink-web-client:test .
+  ci:
+    uses: shlinkio/github-actions/.github/workflows/web-app-ci.yml@main
+    with:
+      node-version: 14.17
+      with-mutation-tests: true
+      publish-coverage: true
