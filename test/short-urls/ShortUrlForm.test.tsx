@@ -9,13 +9,14 @@ import { ShortUrlData } from '../../src/short-urls/data';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { SimpleCard } from '../../src/utils/SimpleCard';
 import { parseDate } from '../../src/utils/helpers/date';
+import { OptionalString } from '../../src/utils/utils';
 
 describe('<ShortUrlForm />', () => {
   let wrapper: ShallowWrapper;
   const TagsSelector = () => null;
   const DomainSelector = () => null;
   const createShortUrl = jest.fn(async () => Promise.resolve());
-  const createWrapper = (selectedServer: SelectedServer = null, mode: Mode = 'create') => {
+  const createWrapper = (selectedServer: SelectedServer = null, mode: Mode = 'create', title?: OptionalString) => {
     const ShortUrlForm = createShortUrlForm(TagsSelector, DomainSelector);
 
     wrapper = shallow(
@@ -23,7 +24,7 @@ describe('<ShortUrlForm />', () => {
         selectedServer={selectedServer}
         mode={mode}
         saving={false}
-        initialState={Mock.of<ShortUrlData>({ validateUrl: true, findIfExists: false })}
+        initialState={Mock.of<ShortUrlData>({ validateUrl: true, findIfExists: false, title })}
         onSave={createShortUrl}
       />,
     );
@@ -80,4 +81,26 @@ describe('<ShortUrlForm />', () => {
       expect(cards).toHaveLength(expectedAmountOfCards);
     },
   );
+
+  it.each([
+    [ null, 'new title', 'new title' ],
+    [ undefined, 'new title', 'new title' ],
+    [ '', 'new title', 'new title' ],
+    [ null, '', undefined ],
+    [ null, null, undefined ],
+    [ '', '', undefined ],
+    [ undefined, undefined, undefined ],
+    [ 'old title', null, null ],
+    [ 'old title', undefined, null ],
+    [ 'old title', '', null ],
+  ])('sends expected title based on original and new values', (originalTitle, newTitle, expectedSentTitle) => {
+    const wrapper = createWrapper(Mock.of<ReachableServer>({ version: '2.6.0' }), 'create', originalTitle);
+
+    wrapper.find('#title').simulate('change', { target: { value: newTitle } });
+    wrapper.find('form').simulate('submit', { preventDefault: identity });
+
+    expect(createShortUrl).toHaveBeenCalledWith(expect.objectContaining({
+      title: expectedSentTitle,
+    }));
+  });
 });
