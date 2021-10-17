@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
-import { isEmpty, pipe, replace, trim } from 'ramda';
+import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
 import { supportsCrawlableVisits, supportsShortUrlTitle } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
-import { handleEventPreventingDefault, hasValue } from '../utils/utils';
+import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
 import { SelectedServer } from '../servers/data';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
@@ -40,14 +40,25 @@ export const ShortUrlForm = (
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const isEdit = mode === 'edit';
+  const hadTitleOriginally = hasValue(initialState.title);
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
   const reset = () => setShortUrlData(initialState);
+  const resolveNewTitle = (): OptionalString => {
+    const hasNewTitle = hasValue(shortUrlData.title);
+    const matcher = cond<never, OptionalString>([
+      [ () => !hasNewTitle && !hadTitleOriginally, () => undefined ],
+      [ () => !hasNewTitle && hadTitleOriginally, () => null ],
+      [ T, () => shortUrlData.title ],
+    ]);
+
+    return matcher();
+  };
   const submit = handleEventPreventingDefault(async () => onSave({
     ...shortUrlData,
     validSince: formatIsoDate(shortUrlData.validSince) ?? null,
     validUntil: formatIsoDate(shortUrlData.validUntil) ?? null,
     maxVisits: !hasValue(shortUrlData.maxVisits) ? null : Number(shortUrlData.maxVisits),
-    title: !hasValue(shortUrlData.title) ? undefined : shortUrlData.title,
+    title: resolveNewTitle(),
   }).then(() => !isEdit && reset()).catch(() => {}));
 
   useEffect(() => {

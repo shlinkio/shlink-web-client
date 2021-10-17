@@ -3,7 +3,7 @@ import { Nullable, OptionalString } from '../../utils/utils';
 export interface EditShortUrlData {
   longUrl?: string;
   tags?: string[];
-  title?: string;
+  title?: string | null;
   validSince?: Date | string | null;
   validUntil?: Date | string | null;
   maxVisits?: number | null;
