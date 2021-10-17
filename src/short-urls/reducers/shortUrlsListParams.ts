@@ -14,6 +14,8 @@ export const SORTABLE_FIELDS = {
 
 export type OrderableFields = keyof typeof SORTABLE_FIELDS;
 
+export type OrderBy = Partial<Record<OrderableFields, OrderDir>>;
+
 export interface ShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
@@ -21,7 +23,7 @@ export interface ShortUrlsListParams {
   searchTerm?: string;
   startDate?: string;
   endDate?: string;
-  orderBy?: Partial<Record<OrderableFields, OrderDir>>;
+  orderBy?: OrderBy;
 }
 
 const initialState: ShortUrlsListParams = {

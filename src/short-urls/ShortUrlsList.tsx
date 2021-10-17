@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/utils';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
@@ -95,7 +95,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
           shortUrlsList={shortUrlsList}
           onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
         />
-        <Paginator paginator={pagination} serverId={isReachableServer(selectedServer) ? selectedServer.id : ''} />
+        <Paginator paginator={pagination} serverId={getServerId(selectedServer)} />
       </Card>
     </>
   );
