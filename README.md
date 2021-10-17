@@ -1,7 +1,7 @@
 # shlink-web-client
 
-[![Build Status](https://img.shields.io/github/workflow/status/shlinkio/shlink-web-client/Continuous%20integration/main?logo=github&style=flat-square)](https://github.com/shlinkio/shlink-web-client/actions?query=workflow%3A%22Continuous+integration%22)
-[![Code Coverage](https://img.shields.io/codecov/c/gh/shlinkio/shlink-web-client/main?style=flat-square)](https://app.codecov.io/gh/shlinkio/shlink-web-client)
+[![Build Status](https://img.shields.io/github/workflow/status/shlinkio/shlink-web-client/Continuous%20integration/develop?logo=github&style=flat-square)](https://github.com/shlinkio/shlink-web-client/actions?query=workflow%3A%22Continuous+integration%22)
+[![Code Coverage](https://img.shields.io/codecov/c/gh/shlinkio/shlink-web-client/develop?style=flat-square)](https://app.codecov.io/gh/shlinkio/shlink-web-client)
 [![GitHub release](https://img.shields.io/github/release/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/releases/latest)
 [![Docker pulls](https://img.shields.io/docker/pulls/shlinkio/shlink-web-client.svg?logo=docker&style=flat-square)](https://hub.docker.com/r/shlinkio/shlink-web-client/)
 [![GitHub license](https://img.shields.io/github/license/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/blob/main/LICENSE)
