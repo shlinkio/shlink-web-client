@@ -30,7 +30,7 @@ describe('<ImportServersBtn />', () => {
   it('renders a button, a tooltip and a file input', () => {
     expect(wrapper.find('#importBtn')).toHaveLength(1);
     expect(wrapper.find(UncontrolledTooltip)).toHaveLength(1);
-    expect(wrapper.find('.create-server__csv-select')).toHaveLength(1);
+    expect(wrapper.find('.import-servers-btn__csv-select')).toHaveLength(1);
   });
 
   it('triggers click on file ref when button is clicked', () => {
@@ -42,7 +42,7 @@ describe('<ImportServersBtn />', () => {
   });
 
   it('imports servers when file input changes', (done) => {
-    const file = wrapper.find('.create-server__csv-select');
+    const file = wrapper.find('.import-servers-btn__csv-select');
 
     file.simulate('change', { target: { files: [ '' ] } });
 

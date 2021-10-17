@@ -14,19 +14,34 @@ import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import { Overview } from '../Overview';
+import { ManageServers } from '../ManageServers';
+import { ManageServersRow } from '../ManageServersRow';
 import ServersImporter from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   // Components
+  bottle.serviceFactory(
+    'ManageServers',
+    ManageServers,
+    'ServersExporter',
+    'ImportServersBtn',
+    'useStateFlagTimeout',
+    'ManageServersRow',
+  );
+  bottle.decorator('ManageServers', connect([ 'servers' ]));
+
+  bottle.serviceFactory('ManageServersRow', ManageServersRow, 'DeleteServerModal');
+  bottle.decorator('ManageServers', connect([ 'servers' ]));
+
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', withoutSelectedServer);
-  bottle.decorator('CreateServer', connect([ 'selectedServer' ], [ 'createServer', 'resetSelectedServer' ]));
+  bottle.decorator('CreateServer', connect([ 'selectedServer', 'servers' ], [ 'createServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
   bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer' ]));
 
-  bottle.serviceFactory('ServersDropdown', ServersDropdown, 'ServersExporter');
+  bottle.serviceFactory('ServersDropdown', () => ServersDropdown);
   bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
