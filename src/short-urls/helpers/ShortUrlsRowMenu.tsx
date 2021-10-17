@@ -12,7 +12,6 @@ import { ShortUrl, ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
 import ShortUrlDetailLink from './ShortUrlDetailLink';
-import './ShortUrlsRowMenu.scss';
 
 export interface ShortUrlsRowMenuProps {
   selectedServer: SelectedServer;
@@ -45,7 +44,7 @@ const ShortUrlsRowMenu = (
 
       <DropdownItem divider />
 
-      <DropdownItem className="short-urls-row-menu__dropdown-item--danger" onClick={toggleDelete}>
+      <DropdownItem className="dropdown-item--danger" onClick={toggleDelete}>
         <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL
       </DropdownItem>
       <DeleteShortUrlModal shortUrl={shortUrl} isOpen={isDeleteModalOpen} toggle={toggleDelete} />
