@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
@@ -16,12 +17,13 @@ describe('<ImportServersBtn />', () => {
     current: Mock.of<HTMLInputElement>({ click }),
   };
   const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
-  const createWrapper = (className?: string) => {
+  const createWrapper = (className?: string, children?: ReactNode) => {
     wrapper = shallow(
       <ImportServersBtn
         createServers={createServersMock}
         className={className}
         fileRef={fileRef}
+        children={children}
         onImport={onImportMock}
       />,
     );
@@ -48,6 +50,21 @@ describe('<ImportServersBtn />', () => {
     const wrapper = createWrapper(providedClassName);
 
     expect(wrapper.find('#importBtn').prop('className')).toEqual(expectedClassName);
+  });
+
+  it.each([
+    [ undefined, true ],
+    [ 'foo', false ],
+    [ 'bar', false ],
+  ])('has expected text', (children, expectToHaveDefaultText) => {
+    const wrapper = createWrapper(undefined, children);
+
+    if (expectToHaveDefaultText) {
+      expect(wrapper.find('#importBtn').html()).toContain('Import from file');
+    } else {
+      expect(wrapper.find('#importBtn').html()).toContain(children);
+      expect(wrapper.find('#importBtn').html()).not.toContain('Import from file');
+    }
   });
 
   it('triggers click on file ref when button is clicked', () => {

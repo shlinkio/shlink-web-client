@@ -1,4 +1,4 @@
-import { useRef, RefObject, ChangeEvent, MutableRefObject } from 'react';
+import { useRef, RefObject, ChangeEvent, MutableRefObject, FC } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,14 +20,15 @@ interface ImportServersBtnConnectProps extends ImportServersBtnProps {
   fileRef: Ref<HTMLInputElement>;
 }
 
-const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
+const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
   createServers,
   fileRef,
+  children,
   onImport = () => {},
   onImportError = () => {},
   tooltipPlacement = 'bottom',
   className = '',
-}: ImportServersBtnConnectProps) => {
+}) => {
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
     importServersFromFile(target.files?.[0])
@@ -42,7 +43,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
   return (
     <>
       <Button outline id="importBtn" className={className} onClick={() => ref.current?.click()}>
-        <FontAwesomeIcon icon={importIcon} fixedWidth /> Import from file
+        <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
         You can create servers by importing a CSV file with columns <b>name</b>, <b>apiKey</b> and <b>url</b>.
