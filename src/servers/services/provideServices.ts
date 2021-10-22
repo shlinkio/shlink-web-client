@@ -16,6 +16,7 @@ import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import { Overview } from '../Overview';
 import { ManageServers } from '../ManageServers';
 import { ManageServersRow } from '../ManageServersRow';
+import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
 import ServersImporter from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
@@ -31,8 +32,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   );
   bottle.decorator('ManageServers', connect([ 'servers' ]));
 
-  bottle.serviceFactory('ManageServersRow', ManageServersRow, 'DeleteServerModal');
-  bottle.decorator('ManageServersRow', connect(null, [ 'setAutoConnect' ]));
+  bottle.serviceFactory('ManageServersRow', ManageServersRow, 'ManageServersRowDropdown');
+
+  bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
+  bottle.decorator('ManageServersRowDropdown', connect(null, [ 'setAutoConnect' ]));
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', withoutSelectedServer);
