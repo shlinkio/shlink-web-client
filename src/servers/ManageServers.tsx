@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Button } from 'reactstrap';
+import { Button, Row } from 'reactstrap';
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
@@ -41,15 +41,19 @@ export const ManageServers = (
     <NoMenuLayout>
       <SearchField className="mb-3" onChange={filterServers} />
 
-      <div className="mb-3 d-flex flex-row">
-        <ImportServersBtn onImportError={setErrorImporting} />
-        <Button outline className="ml-2" onClick={async () => serversExporter.exportServers()}>
-          <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
-        </Button>
-        <Button outline color="primary" className="ml-auto" tag={Link} to="/server/create">
-          <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
-        </Button>
-      </div>
+      <Row className="mb-3">
+        <div className="col-md-6 d-flex d-md-block mb-2 mb-md-0">
+          <ImportServersBtn className="flex-fill" onImportError={setErrorImporting} />
+          <Button outline className="ml-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
+            <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
+          </Button>
+        </div>
+        <div className="col-md-6 text-md-right d-flex d-md-block">
+          <Button outline color="primary" className="flex-fill" tag={Link} to="/server/create">
+            <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
+          </Button>
+        </div>
+      </Row>
 
       <SimpleCard title="Shlink servers">
         <table className="table table-hover mb-0">

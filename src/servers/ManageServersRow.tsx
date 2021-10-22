@@ -54,7 +54,7 @@ export const ManageServersRow = (
             <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
           </DropdownItem>
           <DropdownItem>
-            <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Unset' : 'Set'} auto-connect
+            <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem className="dropdown-item--danger" onClick={showModal}>

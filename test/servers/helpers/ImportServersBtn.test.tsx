@@ -15,25 +15,43 @@ describe('<ImportServersBtn />', () => {
   const fileRef = {
     current: Mock.of<HTMLInputElement>({ click }),
   };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-
-    const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
-
+  const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
+  const createWrapper = (className?: string) => {
     wrapper = shallow(
-      <ImportServersBtn createServers={createServersMock} fileRef={fileRef} onImport={onImportMock} />,
+      <ImportServersBtn
+        createServers={createServersMock}
+        className={className}
+        fileRef={fileRef}
+        onImport={onImportMock}
+      />,
     );
-  });
+
+    return wrapper;
+  };
+
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper.unmount());
 
   it('renders a button, a tooltip and a file input', () => {
+    const wrapper = createWrapper();
+
     expect(wrapper.find('#importBtn')).toHaveLength(1);
     expect(wrapper.find(UncontrolledTooltip)).toHaveLength(1);
     expect(wrapper.find('.import-servers-btn__csv-select')).toHaveLength(1);
   });
 
+  it.each([
+    [ undefined, '' ],
+    [ 'foo', 'foo' ],
+    [ 'bar', 'bar' ],
+  ])('allows a class name to be provided', (providedClassName, expectedClassName) => {
+    const wrapper = createWrapper(providedClassName);
+
+    expect(wrapper.find('#importBtn').prop('className')).toEqual(expectedClassName);
+  });
+
   it('triggers click on file ref when button is clicked', () => {
+    const wrapper = createWrapper();
     const btn = wrapper.find('#importBtn');
 
     btn.simulate('click');
@@ -42,6 +60,7 @@ describe('<ImportServersBtn />', () => {
   });
 
   it('imports servers when file input changes', (done) => {
+    const wrapper = createWrapper();
     const file = wrapper.find('.import-servers-btn__csv-select');
 
     file.simulate('change', { target: { files: [ '' ] } });

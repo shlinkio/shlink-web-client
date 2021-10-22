@@ -12,6 +12,7 @@ export interface ImportServersBtnProps {
   onImport?: () => void;
   onImportError?: (error: Error) => void;
   tooltipPlacement?: 'top' | 'bottom';
+  className?: string;
 }
 
 interface ImportServersBtnConnectProps extends ImportServersBtnProps {
@@ -25,6 +26,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
   onImport = () => {},
   onImportError = () => {},
   tooltipPlacement = 'bottom',
+  className = '',
 }: ImportServersBtnConnectProps) => {
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
@@ -39,7 +41,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter) => ({
 
   return (
     <>
-      <Button outline id="importBtn" onClick={() => ref.current?.click()}>
+      <Button outline id="importBtn" className={className} onClick={() => ref.current?.click()}>
         <FontAwesomeIcon icon={importIcon} fixedWidth /> Import from file
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">

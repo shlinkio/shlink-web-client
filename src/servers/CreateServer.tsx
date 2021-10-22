@@ -27,7 +27,7 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
 );
 
 const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
-  { servers, createServer, history: { push } }: CreateServerProps,
+  { servers, createServer, history: { push, goBack } }: CreateServerProps,
 ) => {
   const hasServers = !!Object.keys(servers).length;
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
@@ -44,6 +44,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
       <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={handleSubmit}>
         {!hasServers &&
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />}
+        {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
         <Button outline color="primary" className="ml-2">Create server</Button>
       </ServerForm>
 
