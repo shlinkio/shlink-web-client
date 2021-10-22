@@ -57,11 +57,11 @@ export const ManageServers = (
         </div>
       </Row>
 
-      <SimpleCard title="Shlink servers">
+      <SimpleCard>
         <table className="table table-hover mb-0">
           <thead className="responsive-table__header">
             <tr>
-              {hasAutoConnect && <th />}
+              {hasAutoConnect && <th style={{ width: '50px' }} />}
               <th>Name</th>
               <th>Base URL</th>
               <th />

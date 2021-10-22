@@ -7,7 +7,7 @@ import DeleteServerButton from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer } from '../reducers/servers';
+import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
@@ -32,7 +32,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.decorator('ManageServers', connect([ 'servers' ]));
 
   bottle.serviceFactory('ManageServersRow', ManageServersRow, 'DeleteServerModal');
-  bottle.decorator('ManageServers', connect([ 'servers' ]));
+  bottle.decorator('ManageServersRow', connect(null, [ 'setAutoConnect' ]));
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', withoutSelectedServer);
@@ -77,6 +77,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.serviceFactory('createServers', () => createServers);
   bottle.serviceFactory('deleteServer', () => deleteServer);
   bottle.serviceFactory('editServer', () => editServer);
+  bottle.serviceFactory('setAutoConnect', () => setAutoConnect);
   bottle.serviceFactory('fetchServers', fetchServers, 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);

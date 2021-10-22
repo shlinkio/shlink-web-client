@@ -7,9 +7,9 @@ import {
   faEdit as editIcon,
   faMinusCircle as deleteIcon,
   faPlug as connectIcon,
-  faToggleOn as toggleOnIcon,
-  faToggleOff as toggleOffIcon,
+  faBan as toggleOffIcon,
 } from '@fortawesome/free-solid-svg-icons';
+import { faCircle as toggleOnIcon } from '@fortawesome/free-regular-svg-icons';
 import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { useToggle } from '../utils/helpers/hooks';
 import { ServerWithId } from './data';
@@ -20,23 +20,29 @@ export interface ManageServersRowProps {
   hasAutoConnect: boolean;
 }
 
+interface ManageServersRowPropsConnectProps extends ManageServersRowProps {
+  setAutoConnect: (server: ServerWithId, autoConnect: boolean) => void;
+}
+
 export const ManageServersRow = (
   DeleteServerModal: FC<DeleteServerModalProps>,
-): FC<ManageServersRowProps> => ({ server, hasAutoConnect }) => {
+): FC<ManageServersRowPropsConnectProps> => ({ server, hasAutoConnect, setAutoConnect }) => {
   const [ isMenuOpen, toggleMenu ] = useToggle();
   const [ isModalOpen,, showModal, hideModal ] = useToggle();
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
-  const autoConnectIcon = isAutoConnect ? toggleOnIcon : toggleOffIcon;
+  const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;
 
   return (
     <tr className="responsive-table__row">
       {hasAutoConnect && (
-        <td className="responsive-table__cell text-lg-right" data-th="Auto-connect">
+        <td className="responsive-table__cell" data-th="Auto-connect">
           {isAutoConnect && (
             <>
               <FontAwesomeIcon icon={checkIcon} className="text-primary" id="autoConnectIcon" />
-              <UncontrolledTooltip target="autoConnectIcon">Auto-connect to this server</UncontrolledTooltip>
+              <UncontrolledTooltip target="autoConnectIcon" placement="right">
+                Auto-connect to this server
+              </UncontrolledTooltip>
             </>
           )}
         </td>
@@ -53,7 +59,7 @@ export const ManageServersRow = (
           <DropdownItem tag={Link} to={`${serverUrl}/edit`}>
             <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem onClick={() => setAutoConnect(server, !server.autoConnect)}>
             <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
           </DropdownItem>
           <DropdownItem divider />
