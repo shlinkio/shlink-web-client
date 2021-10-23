@@ -14,6 +14,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'CreateServer',
     'EditServer',
     'Settings',
+    'ManageServers',
     'ShlinkVersionsContainer',
   );
   bottle.decorator('App', connect([ 'servers', 'settings', 'appUpdated' ], [ 'fetchServers', 'resetAppUpdate' ]));

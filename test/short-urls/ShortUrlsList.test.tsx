@@ -77,7 +77,7 @@ describe('<ShortUrlsList />', () => {
 
   it('invokes order icon rendering', () => {
     const renderIcon = (field: OrderableFields) =>
-      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement | null)(field); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement | null)(field);
 
     expect(renderIcon('visits')).toEqual(null);
 

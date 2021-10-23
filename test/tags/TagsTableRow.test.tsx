@@ -68,11 +68,11 @@ describe('<TagsTableRow />', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(false);
-    (wrapper.find(EditTagModal).prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (wrapper.find(EditTagModal).prop('toggle') as Function)();
     expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(true);
 
     expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(false);
-    (wrapper.find(DeleteTagConfirmModal).prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (wrapper.find(DeleteTagConfirmModal).prop('toggle') as Function)();
     expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(true);
   });
 });

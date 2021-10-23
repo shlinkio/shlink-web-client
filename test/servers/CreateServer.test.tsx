@@ -3,6 +3,7 @@ import { Mock } from 'ts-mockery';
 import { History } from 'history';
 import createServerConstruct from '../../src/servers/CreateServer';
 import { ServerForm } from '../../src/servers/helpers/ServerForm';
+import { ServerWithId } from '../../src/servers/data';
 
 describe('<CreateServer />', () => {
   let wrapper: ShallowWrapper;
@@ -10,13 +11,14 @@ describe('<CreateServer />', () => {
   const createServerMock = jest.fn();
   const push = jest.fn();
   const historyMock = Mock.of<History>({ push });
+  const servers = { foo: Mock.all<ServerWithId>() };
   const createWrapper = (serversImported = false, importFailed = false) => {
     const useStateFlagTimeout = jest.fn()
       .mockReturnValueOnce([ serversImported, () => '' ])
       .mockReturnValueOnce([ importFailed, () => '' ]);
     const CreateServer = createServerConstruct(ImportServersBtn, useStateFlagTimeout);
 
-    wrapper = shallow(<CreateServer createServer={createServerMock} history={historyMock} />);
+    wrapper = shallow(<CreateServer createServer={createServerMock} history={historyMock} servers={servers} />);
 
     return wrapper;
   };

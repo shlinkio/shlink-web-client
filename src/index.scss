@@ -115,6 +115,16 @@ hr {
   color: var(--text-color) !important;
 }
 
+.dropdown-item--danger.dropdown-item--danger {
+  color: $dangerColor;
+
+  &:hover,
+  &:active,
+  &.active {
+    color: $dangerColor !important;
+  }
+}
+
 .badge-main {
   color: #ffffff;
   background-color: var(--brand-color);

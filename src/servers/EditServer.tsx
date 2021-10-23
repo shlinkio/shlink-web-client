@@ -10,7 +10,7 @@ interface EditServerProps {
 }
 
 export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProps>((
-  { editServer, selectedServer, history: { push, goBack } },
+  { editServer, selectedServer, history: { goBack } },
 ) => {
   if (!isServerWithId(selectedServer)) {
     return null;
@@ -18,7 +18,7 @@ export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProp
 
   const handleSubmit = (serverData: ServerData) => {
     editServer(selectedServer.id, serverData);
-    push(`/server/${selectedServer.id}`);
+    goBack();
   };
 
   return (
