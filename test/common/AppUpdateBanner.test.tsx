@@ -24,7 +24,7 @@ describe('<AppUpdateBanner />', () => {
   });
 
   it('invokes toggle when alert is toggled', () => {
-    (wrapper.prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (wrapper.prop('toggle') as Function)();
 
     expect(toggle).toHaveBeenCalled();
   });

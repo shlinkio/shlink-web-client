@@ -16,6 +16,7 @@
   },
   "ignorePatterns": ["src/service*.ts"],
   "rules": {
-    "complexity": "off"
+    "complexity": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": "off"
   }
 }

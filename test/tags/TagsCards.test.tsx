@@ -31,7 +31,7 @@ describe('<TagsCards />', () => {
     const card = () => wrapper.find(TagCard).at(5);
 
     expect(card().prop('displayed')).toEqual(false);
-    (card().prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (card().prop('toggle') as Function)();
     expect(card().prop('displayed')).toEqual(true);
   });
 });
