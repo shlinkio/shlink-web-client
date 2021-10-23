@@ -11,13 +11,9 @@ export interface ManageServersRowProps {
   hasAutoConnect: boolean;
 }
 
-interface ManageServersRowPropsConnectProps extends ManageServersRowProps {
-  setAutoConnect: (server: ServerWithId, autoConnect: boolean) => void;
-}
-
 export const ManageServersRow = (
   ManageServersRowDropdown: FC<ManageServersRowDropdownProps>,
-): FC<ManageServersRowPropsConnectProps> => ({ server, hasAutoConnect }) => (
+): FC<ManageServersRowProps> => ({ server, hasAutoConnect }) => (
   <tr className="responsive-table__row">
     {hasAutoConnect && (
       <td className="responsive-table__cell" data-th="Auto-connect">
