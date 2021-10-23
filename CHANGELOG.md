@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 * [#496](https://github.com/shlinkio/shlink-web-client/issues/496) Allowed to select "all visits" as the default interval for visits.
 * [#500](https://github.com/shlinkio/shlink-web-client/issues/500) Allowed to set the `forwardQuery` flag when creating/editing short URLs on a Shlink v2.9.0 server.
+* [#508](https://github.com/shlinkio/shlink-web-client/issues/508) Added new servers management section.
 
 ### Changed
 * Moved ci workflow to external repo and reused
