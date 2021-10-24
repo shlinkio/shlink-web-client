@@ -132,7 +132,7 @@ describe('tagVisitsReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_TAG_VISITS, visits, tag });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_TAG_VISITS, visits, tag, query: query ?? {} });
       expect(ShlinkApiClient.getTagVisits).toHaveBeenCalledTimes(1);
     });
   });

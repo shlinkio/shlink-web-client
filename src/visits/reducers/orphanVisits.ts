@@ -6,6 +6,7 @@ import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
 import { isOrphanVisit } from '../types/helpers';
 import { ApiErrorAction } from '../../api/types/actions';
+import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -20,6 +21,7 @@ export const GET_ORPHAN_VISITS_PROGRESS_CHANGED = 'shlink/orphanVisits/GET_ORPHA
 
 export interface OrphanVisitsAction extends Action<string> {
   visits: Visit[];
+  query?: ShlinkVisitsParams;
 }
 
 type OrphanVisitsCombinedAction = OrphanVisitsAction
@@ -39,13 +41,16 @@ const initialState: VisitsInfo = {
 export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
   [GET_ORPHAN_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_ORPHAN_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_ORPHAN_VISITS]: (_, { visits }) => ({ ...initialState, visits }),
+  [GET_ORPHAN_VISITS]: (_, { visits, query }) => ({ ...initialState, visits, query }),
   [GET_ORPHAN_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_ORPHAN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_ORPHAN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [CREATE_VISITS]: (state, { createdVisits }) => {
-    const { visits } = state;
-    const newVisits = createdVisits.map(({ visit }) => visit);
+    const { visits, query = {} } = state;
+    const { startDate, endDate } = query;
+    const newVisits = createdVisits
+      .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
+      .map(({ visit }) => visit);
 
     return { ...state, visits: [ ...newVisits, ...visits ] };
   },
@@ -66,6 +71,7 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
       return { ...result, data: visits };
     });
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
+  const extraFinishActionData: Partial<OrphanVisitsAction> = { query };
   const actionMap = {
     start: GET_ORPHAN_VISITS_START,
     large: GET_ORPHAN_VISITS_LARGE,
@@ -74,7 +80,7 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     progress: GET_ORPHAN_VISITS_PROGRESS_CHANGED,
   };
 
-  return getVisitsWithLoader(visitsLoader, {}, actionMap, dispatch, shouldCancel);
+  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
 };
 
 export const cancelGetOrphanVisits = buildActionCreator(GET_ORPHAN_VISITS_CANCEL);

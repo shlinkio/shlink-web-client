@@ -133,7 +133,10 @@ describe('shortUrlVisitsReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_VISITS, visits, shortCode, domain });
+      expect(dispatchMock).toHaveBeenNthCalledWith(
+        2,
+        { type: GET_SHORT_URL_VISITS, visits, shortCode, domain, query: query ?? {} },
+      );
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
     });
 
