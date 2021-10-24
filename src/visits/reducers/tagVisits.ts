@@ -5,9 +5,9 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
+import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
-import { isBetween } from '../../utils/helpers/date';
 
 /* eslint-disable padding-line-between-statements */
 export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';

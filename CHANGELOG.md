@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#252](https://github.com/shlinkio/shlink-web-client/issues/252) Fixed visits coming from mercure being added in real time, even when selected date interval does not match tha visit's date.
 
 
 ## [3.3.2] - 2021-10-17

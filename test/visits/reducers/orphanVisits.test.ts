@@ -1,4 +1,5 @@
 import { Mock } from 'ts-mockery';
+import { addDays, subDays } from 'date-fns';
 import reducer, {
   getOrphanVisits,
   cancelGetOrphanVisits,
@@ -15,8 +16,10 @@ import { Visit, VisitsInfo } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
+import { formatIsoDate } from '../../../src/utils/helpers/date';
 
 describe('orphanVisitsReducer', () => {
+  const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
 
   describe('reducer', () => {
@@ -64,15 +67,48 @@ describe('orphanVisitsReducer', () => {
       expect(visits).toEqual(actionVisits);
     });
 
-    it('prepends new visits on CREATE_VISIT', () => {
-      const prevState = buildState({ visits: visitsMocks });
+    it.each([
+      [{}, visitsMocks.length + 2 ],
+      [
+        Mock.of<VisitsInfo>({
+          query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<VisitsInfo>({
+          query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<VisitsInfo>({
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(subDays(now, 2)) ?? undefined,
+          },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<VisitsInfo>({
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
+          },
+        }),
+        visitsMocks.length + 2,
+      ],
+    ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
+      const prevState = buildState({ ...state, visits: visitsMocks });
+      const visit = Mock.of<Visit>({ date: formatIsoDate(now) ?? undefined });
 
       const { visits } = reducer(
         prevState,
-        { type: CREATE_VISITS, createdVisits: [{ visit: {} }, { visit: {} }] } as any,
+        { type: CREATE_VISITS, createdVisits: [{ visit }, { visit }] } as any,
       );
 
-      expect(visits).toEqual([{}, {}, ...visitsMocks ]);
+      expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_ORPHAN_VISITS_PROGRESS_CHANGED', () => {

@@ -1,4 +1,5 @@
 import { Mock } from 'ts-mockery';
+import { addDays, subDays } from 'date-fns';
 import reducer, {
   getTagVisits,
   cancelGetTagVisits,
@@ -16,8 +17,10 @@ import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
+import { formatIsoDate } from '../../../src/utils/helpers/date';
 
 describe('tagVisitsReducer', () => {
+  const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
 
   describe('reducer', () => {
@@ -66,8 +69,52 @@ describe('tagVisitsReducer', () => {
     });
 
     it.each([
-      [{ tag: 'foo' }, [{}, ...visitsMocks ]],
-      [{ tag: 'bar' }, visitsMocks ],
+      [{ tag: 'foo' }, visitsMocks.length + 1 ],
+      [{ tag: 'bar' }, visitsMocks.length ],
+      [
+        Mock.of<TagVisits>({
+          tag: 'foo',
+          query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<TagVisits>({
+          tag: 'foo',
+          query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<TagVisits>({
+          tag: 'foo',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(subDays(now, 2)) ?? undefined,
+          },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<TagVisits>({
+          tag: 'foo',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
+          },
+        }),
+        visitsMocks.length + 1,
+      ],
+      [
+        Mock.of<TagVisits>({
+          tag: 'bar',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
+          },
+        }),
+        visitsMocks.length,
+      ],
     ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         tags: [ 'foo', 'baz' ],
@@ -77,9 +124,12 @@ describe('tagVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(prevState, { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: {} }] } as any);
+      const { visits } = reducer(prevState, {
+        type: CREATE_VISITS,
+        createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }],
+      } as any);
 
-      expect(visits).toEqual(expectedVisits);
+      expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
