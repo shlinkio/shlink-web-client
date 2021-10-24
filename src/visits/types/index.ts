@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
-import { ProblemDetailsError } from '../../api/types';
+import { ProblemDetailsError, ShlinkVisitsParams } from '../../api/types';
 import { DateRange } from '../../utils/dates/types';
 
 export interface VisitsInfo {
@@ -11,6 +11,7 @@ export interface VisitsInfo {
   errorData?: ProblemDetailsError;
   progress: number;
   cancelLoad: boolean;
+  query?: ShlinkVisitsParams;
 }
 
 export interface VisitsLoadProgressChangedAction extends Action<string> {

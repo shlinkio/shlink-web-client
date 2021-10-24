@@ -7,6 +7,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
+import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -23,6 +24,7 @@ export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
 
 interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
   visits: Visit[];
+  query?: ShlinkVisitsParams;
 }
 
 type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
@@ -33,7 +35,7 @@ type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
 const initialState: ShortUrlVisits = {
   visits: [],
   shortCode: '',
-  domain: undefined,
+  domain: undefined, // Deprecated. Value from query params can be used instead
   loading: false,
   loadingLarge: false,
   error: false,
@@ -44,22 +46,27 @@ const initialState: ShortUrlVisits = {
 export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_SHORT_URL_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_SHORT_URL_VISITS]: (_, { visits, shortCode, domain }) => ({
+  [GET_SHORT_URL_VISITS]: (_, { visits, query, shortCode, domain }) => ({
     ...initialState,
     visits,
     shortCode,
     domain,
+    query,
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [CREATE_VISITS]: (state, { createdVisits }) => {
-    const { shortCode, domain, visits } = state;
+    const { shortCode, domain, visits, query = {} } = state;
+    const { startDate, endDate } = query;
     const newVisits = createdVisits
-      .filter(({ shortUrl }) => shortUrl && shortUrlMatches(shortUrl, shortCode, domain))
+      .filter(
+        ({ shortUrl, visit }) =>
+          shortUrl && shortUrlMatches(shortUrl, shortCode, domain) && isBetween(visit.date, startDate, endDate),
+      )
       .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...newVisits, ...visits ] };
+    return newVisits.length === 0 ? state : { ...state, visits: [ ...newVisits, ...visits ] };
   },
 }, initialState);
 
@@ -73,7 +80,7 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     { ...query, page, itemsPerPage },
   );
   const shouldCancel = () => getState().shortUrlVisits.cancelLoad;
-  const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, domain: query.domain };
+  const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, query, domain: query.domain };
   const actionMap = {
     start: GET_SHORT_URL_VISITS_START,
     large: GET_SHORT_URL_VISITS_LARGE,
