@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Use node.js 14.15
+      - name: Use node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 14.15
+          node-version: 16.13
       - name: Generate release assets
         run: npm ci && npm run build ${GITHUB_REF#refs/tags/v}
       - name: Publish release with assets

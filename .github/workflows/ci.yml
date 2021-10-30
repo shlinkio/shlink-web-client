@@ -11,6 +11,6 @@ jobs:
   ci:
     uses: shlinkio/github-actions/.github/workflows/web-app-ci.yml@main
     with:
-      node-version: 14.17
+      node-version: 16.13
       with-mutation-tests: true
       publish-coverage: true
