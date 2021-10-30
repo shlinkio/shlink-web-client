@@ -1,5 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
+import { RouteChildrenProps } from 'react-router-dom';
 import Home, { HomeProps } from '../../src/common/Home';
 import { ServerWithId } from '../../src/servers/data';
 import { ShlinkLogo } from '../../src/common/img/ShlinkLogo';
@@ -7,6 +8,7 @@ import { ShlinkLogo } from '../../src/common/img/ShlinkLogo';
 describe('<Home />', () => {
   let wrapped: ShallowWrapper;
   const defaultProps = {
+    ...Mock.all<RouteChildrenProps>(),
     resetSelectedServer: jest.fn(),
     servers: {},
   };

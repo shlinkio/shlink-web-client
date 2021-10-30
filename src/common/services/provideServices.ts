@@ -28,6 +28,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
+  bottle.decorator('Home', withRouter);
   bottle.decorator('Home', connect([ 'servers' ], [ 'resetSelectedServer' ]));
 
   bottle.serviceFactory(
