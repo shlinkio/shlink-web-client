@@ -59,41 +59,29 @@ describe('<DeleteShortUrlModal />', () => {
     expect(submit.html()).toContain('Deleting...');
   });
 
-  it('enables submit button when proper short code is provided', (done) => {
+  it('enables submit button when proper short code is provided', () => {
     const shortCode = 'abc123';
     const wrapper = createWrapper({
       loading: false,
       error: false,
       shortCode,
     });
-    const input = wrapper.find('.form-control');
 
-    input.simulate('change', { target: { value: shortCode } });
-    setImmediate(() => {
-      const submit = wrapper.find('.btn-danger');
-
-      expect(submit.prop('disabled')).toEqual(false);
-      done();
-    });
+    expect(wrapper.find('.btn-danger').prop('disabled')).toEqual(true);
+    wrapper.find('.form-control').simulate('change', { target: { value: shortCode } });
+    expect(wrapper.find('.btn-danger').prop('disabled')).toEqual(false);
   });
 
-  it('tries to delete short URL when form is submit', (done) => {
+  it('tries to delete short URL when form is submit', () => {
     const shortCode = 'abc123';
     const wrapper = createWrapper({
       loading: false,
       error: false,
       shortCode,
     });
-    const input = wrapper.find('.form-control');
 
-    input.simulate('change', { target: { value: shortCode } });
-    setImmediate(() => {
-      const form = wrapper.find('form');
-
-      expect(deleteShortUrl).not.toHaveBeenCalled();
-      form.simulate('submit', { preventDefault: identity });
-      expect(deleteShortUrl).toHaveBeenCalledTimes(1);
-      done();
-    });
+    expect(deleteShortUrl).not.toHaveBeenCalled();
+    wrapper.find('form').simulate('submit', { preventDefault: identity });
+    expect(deleteShortUrl).toHaveBeenCalledTimes(1);
   });
 });

@@ -44,7 +44,7 @@ export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag:
   try {
     await deleteTags([ tag ]);
     dispatch({ type: DELETE_TAG });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });
 
     throw e;

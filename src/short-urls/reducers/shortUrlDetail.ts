@@ -50,7 +50,7 @@ export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     ) ?? await buildShlinkApiClient(getState).getShortUrl(shortCode, domain);
 
     dispatch<ShortUrlDetailAction>({ shortUrl, type: GET_SHORT_URL_DETAIL });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: GET_SHORT_URL_DETAIL_ERROR, errorData: parseApiError(e) });
   }
 };

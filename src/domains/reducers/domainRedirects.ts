@@ -27,7 +27,7 @@ export const editDomainRedirects = (buildShlinkApiClient: ShlinkApiClientBuilder
     const redirects = await editDomainRedirects({ domain, ...domainRedirects });
 
     dispatch<EditDomainRedirectsAction>({ type: EDIT_DOMAIN_REDIRECTS, domain, redirects });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: EDIT_DOMAIN_REDIRECTS_ERROR, errorData: parseApiError(e) });
   }
 };

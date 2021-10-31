@@ -33,44 +33,29 @@ describe('<OpenMapModalBtn />', () => {
     expect(modal).toHaveLength(1);
   });
 
-  it('opens dropdown instead of modal when a list of active cities has been provided', (done) => {
+  it('opens dropdown instead of modal when a list of active cities has been provided', () => {
     const wrapper = createWrapper([ 'bar' ]);
-    const button = wrapper.find('.open-map-modal-btn__btn');
 
-    button.simulate('click');
+    wrapper.find('.open-map-modal-btn__btn').simulate('click');
 
-    setImmediate(() => {
-      const dropdown = wrapper.find(Dropdown);
-      const modal = wrapper.find(MapModal);
-
-      expect(dropdown.prop('isOpen')).toEqual(true);
-      expect(modal.prop('isOpen')).toEqual(false);
-      done();
-    });
+    expect(wrapper.find(Dropdown).prop('isOpen')).toEqual(true);
+    expect(wrapper.find(MapModal).prop('isOpen')).toEqual(false);
   });
 
-  it('filters out non-active cities from list of locations', (done) => {
+  it('filters out non-active cities from list of locations', () => {
     const wrapper = createWrapper([ 'bar' ]);
-    const button = wrapper.find('.open-map-modal-btn__btn');
 
-    button.simulate('click');
-    setImmediate(() => {
-      const dropdown = wrapper.find(Dropdown);
-      const item = dropdown.find(DropdownItem).at(1);
+    wrapper.find('.open-map-modal-btn__btn').simulate('click');
+    wrapper.find(Dropdown).find(DropdownItem).at(1).simulate('click');
 
-      item.simulate('click');
-      setImmediate(() => {
-        const modal = wrapper.find(MapModal);
+    const modal = wrapper.find(MapModal);
 
-        expect(modal.prop('title')).toEqual(title);
-        expect(modal.prop('locations')).toEqual([
-          {
-            cityName: 'bar',
-            count: 45,
-          },
-        ]);
-        done();
-      });
-    });
+    expect(modal.prop('title')).toEqual(title);
+    expect(modal.prop('locations')).toEqual([
+      {
+        cityName: 'bar',
+        count: 45,
+      },
+    ]);
   });
 });

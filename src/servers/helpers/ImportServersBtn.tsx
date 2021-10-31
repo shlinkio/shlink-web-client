@@ -1,5 +1,6 @@
 import { useRef, RefObject, ChangeEvent, MutableRefObject, FC } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
+import { pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ServersImporter from '../services/ServersImporter';
@@ -32,8 +33,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
     importServersFromFile(target.files?.[0])
-      .then(createServers)
-      .then(onImport)
+      .then(pipe(createServers, onImport))
       .then(() => {
         // Reset input after processing file
         (target as { value: string | null }).value = null;
