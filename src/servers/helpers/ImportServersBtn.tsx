@@ -1,11 +1,11 @@
 import { useRef, RefObject, ChangeEvent, MutableRefObject, FC } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
+import { pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ServersImporter from '../services/ServersImporter';
 import { ServerData } from '../data';
 import './ImportServersBtn.scss';
-import { pipe } from 'ramda';
 
 type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
