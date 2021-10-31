@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ServersImporter from '../services/ServersImporter';
 import { ServerData } from '../data';
 import './ImportServersBtn.scss';
+import { pipe } from 'ramda';
 
 type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
@@ -32,8 +33,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
   const ref = fileRef ?? useRef<HTMLInputElement>();
   const onChange = async ({ target }: ChangeEvent<HTMLInputElement>) =>
     importServersFromFile(target.files?.[0])
-      .then(createServers)
-      .then(onImport)
+      .then(pipe(createServers, onImport))
       .then(() => {
         // Reset input after processing file
         (target as { value: string | null }).value = null;

@@ -4,7 +4,7 @@ import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 import { CREATE_SERVERS } from '../../../src/servers/reducers/servers';
 
 describe('remoteServersReducer', () => {
-  afterEach(jest.resetAllMocks);
+  afterEach(jest.clearAllMocks);
 
   describe('fetchServers', () => {
     const get = jest.fn();
@@ -46,12 +46,12 @@ describe('remoteServersReducer', () => {
       ],
       [ Promise.resolve('<html></html>'), {}],
       [ Promise.reject({}), {}],
-    ])('tries to fetch servers from remote', async (mockedValue, expectedList) => {
-      get.mockReturnValue(mockedValue);
+    ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
+      get.mockResolvedValue(mockedValue);
 
       await fetchServers(axios)()(dispatch);
 
-      expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, newServers: expectedList });
+      expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, newServers: expectedNewServers });
       expect(get).toHaveBeenCalledTimes(1);
     });
   });

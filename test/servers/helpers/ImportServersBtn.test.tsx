@@ -9,9 +9,8 @@ describe('<ImportServersBtn />', () => {
   let wrapper: ShallowWrapper;
   const onImportMock = jest.fn();
   const createServersMock = jest.fn();
-  const serversImporterMock = Mock.of<ServersImporter>({
-    importServersFromFile: jest.fn().mockResolvedValue([]),
-  });
+  const importServersFromFile = jest.fn().mockResolvedValue([]);
+  const serversImporterMock = Mock.of<ServersImporter>({ importServersFromFile });
   const click = jest.fn();
   const fileRef = {
     current: Mock.of<HTMLInputElement>({ click }),
@@ -76,17 +75,14 @@ describe('<ImportServersBtn />', () => {
     expect(click).toHaveBeenCalledTimes(1);
   });
 
-  it('imports servers when file input changes', (done) => {
+  it('imports servers when file input changes', async () => {
     const wrapper = createWrapper();
     const file = wrapper.find('.import-servers-btn__csv-select');
 
-    file.simulate('change', { target: { files: [ '' ] } });
+    await file.simulate('change', { target: { files: [ '' ] } }); // eslint-disable-line @typescript-eslint/await-thenable
 
-    setImmediate(() => {
-      expect(serversImporterMock.importServersFromFile).toHaveBeenCalledTimes(1);
-      expect(createServersMock).toHaveBeenCalledTimes(1);
-      expect(onImportMock).toHaveBeenCalledTimes(1);
-      done();
-    });
+    expect(importServersFromFile).toHaveBeenCalledTimes(1);
+    expect(createServersMock).toHaveBeenCalledTimes(1);
+    expect(onImportMock).toHaveBeenCalledTimes(1);
   });
 });
