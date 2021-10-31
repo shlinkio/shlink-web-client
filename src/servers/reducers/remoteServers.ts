@@ -2,24 +2,17 @@ import { pipe, prop } from 'ramda';
 import { AxiosInstance } from 'axios';
 import { Dispatch } from 'redux';
 import { homepage } from '../../../package.json';
-import { ServerData } from '../data';
+import { hasServerData, ServerData } from '../data';
 import { createServers } from './servers';
 
 const responseToServersList = pipe(
   prop<any, any>('data'),
-  (data: any): ServerData[] => {
-    if (!Array.isArray(data)) {
-      throw new Error('Value is not an array');
-    }
-
-    return data as ServerData[];
-  },
+  (data: any): ServerData[] => Array.isArray(data) ? data.filter(hasServerData) : [],
 );
 
 export const fetchServers = ({ get }: AxiosInstance) => () => async (dispatch: Dispatch) => {
-  const remoteList = await get(`${homepage}/servers.json`)
-    .then(responseToServersList)
-    .catch(() => []);
+  const resp = await get(`${homepage}/servers.json`);
+  const remoteList = responseToServersList(resp);
 
   dispatch(createServers(remoteList));
 };
