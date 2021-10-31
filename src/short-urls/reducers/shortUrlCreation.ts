@@ -49,7 +49,7 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
     const result = await createShortUrl(data);
 
     dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: CREATE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;

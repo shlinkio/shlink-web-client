@@ -126,7 +126,7 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
     }, {});
 
     dispatch<ListTagsAction>({ tags, stats: processedStats, type: LIST_TAGS });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: LIST_TAGS_ERROR, errorData: parseApiError(e) });
   }
 };

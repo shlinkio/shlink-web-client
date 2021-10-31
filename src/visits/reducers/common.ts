@@ -72,7 +72,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
     const visits = await loadVisits();
 
     dispatch({ ...extraFinishActionData, visits, type: actionMap.finish });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: actionMap.error, errorData: parseApiError(e) });
   }
 };

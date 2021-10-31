@@ -125,7 +125,7 @@ export default class ShlinkApiClient {
         data: body,
         paramsSerializer: stringifyQuery,
       });
-    } catch (e) {
+    } catch (e: any) {
       const { response } = e;
 
       // Due to a bug on all previous Shlink versions, requests to non-matching URLs will always result on a CORS error

@@ -55,7 +55,7 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
     ]);
 
     dispatch<ShortUrlEditedAction>({ shortUrl, type: SHORT_URL_EDITED });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;
