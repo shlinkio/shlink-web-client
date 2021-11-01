@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
-import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
+import { determineOrderDir, Order, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
@@ -14,7 +14,6 @@ import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
-import './ShortUrlsList.scss';
 
 interface RouteParams {
   page: string;
@@ -29,6 +28,8 @@ export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
   resetShortUrlParams: () => void;
 }
 
+type ShortUrlsOrder = Order<OrderableFields>;
+
 const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
   listShortUrls,
   resetShortUrlParams,
@@ -39,34 +40,20 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
   selectedServer,
 }: ShortUrlsListProps) => {
   const { orderBy } = shortUrlsListParams;
-  const [ order, setOrder ] = useState<{ orderField?: OrderableFields; orderDir?: OrderDir }>({
-    orderField: orderBy && (head(keys(orderBy)) as OrderableFields),
-    orderDir: orderBy && head(values(orderBy)),
+  const [ order, setOrder ] = useState<ShortUrlsOrder>({
+    field: orderBy && (head(keys(orderBy)) as OrderableFields),
+    dir: orderBy && head(values(orderBy)),
   });
   const { pagination } = shortUrlsList?.shortUrls ?? {};
   const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
-  const handleOrderBy = (orderField?: OrderableFields, orderDir?: OrderDir) => {
-    setOrder({ orderField, orderDir });
-    refreshList({ orderBy: orderField ? { [orderField]: orderDir } : undefined });
+  const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => {
+    setOrder({ field, dir });
+    refreshList({ orderBy: field ? { [field]: dir } : undefined });
   };
   const orderByColumn = (field: OrderableFields) => () =>
-    handleOrderBy(field, determineOrderDir(field, order.orderField, order.orderDir));
-  const renderOrderIcon = (field: OrderableFields) => {
-    if (order.orderField !== field) {
-      return null;
-    }
-
-    if (!order.orderDir) {
-      return null;
-    }
-
-    return (
-      <FontAwesomeIcon
-        icon={order.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
-        className="short-urls-list__header-icon"
-      />
-    );
-  };
+    handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
+  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field &&
+    <FontAwesomeIcon icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
 
   useEffect(() => {
     const { tag } = parseQuery<{ tag?: string }>(location.search);
@@ -82,8 +69,8 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
       <div className="d-block d-lg-none mb-3">
         <SortingDropdown
           items={SORTABLE_FIELDS}
-          orderField={order.orderField}
-          orderDir={order.orderDir}
+          orderField={order.field}
+          orderDir={order.dir}
           onChange={handleOrderBy}
         />
       </div>
