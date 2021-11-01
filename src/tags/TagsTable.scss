@@ -1,0 +1,9 @@
+@import '../utils/base';
+@import '../utils/mixins/sticky-cell';
+
+.tags-table__header-cell.tags-table__header-cell {
+  @include sticky-cell(false);
+
+  top: $headerHeight;
+  position: sticky;
+}
