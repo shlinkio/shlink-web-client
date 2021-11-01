@@ -1,5 +1,5 @@
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { OrderDir } from '../../utils/utils';
+import { OrderDir } from '../../utils/helpers/ordering';
 import { LIST_SHORT_URLS, ListShortUrlsAction } from './shortUrlsList';
 
 export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';

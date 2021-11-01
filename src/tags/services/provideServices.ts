@@ -27,9 +27,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
 
   bottle.serviceFactory('TagsCards', TagsCards, 'TagCard');
-  bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal');
+  bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
 
-  bottle.serviceFactory('TagsTable', TagsTable, 'ColorGenerator', 'TagsTableRow');
+  bottle.serviceFactory('TagsTable', TagsTable, 'TagsTableRow');
   bottle.decorator('TagsTable', withRouter);
 
   bottle.serviceFactory('TagsList', TagsList, 'TagsCards', 'TagsTable');

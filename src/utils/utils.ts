@@ -1,25 +1,6 @@
 import { isEmpty, isNil, pipe, range } from 'ramda';
 import { SyntheticEvent } from 'react';
 
-export type OrderDir = 'ASC' | 'DESC' | undefined;
-
-export const determineOrderDir = <T extends string = string>(
-  currentField: T,
-  newField?: T,
-  currentOrderDir?: OrderDir,
-): OrderDir => {
-  if (currentField !== newField) {
-    return 'ASC';
-  }
-
-  const newOrderMap: Record<'ASC' | 'DESC', OrderDir> = {
-    ASC: 'DESC',
-    DESC: undefined,
-  };
-
-  return currentOrderDir ? newOrderMap[currentOrderDir] : 'ASC';
-};
-
 export const rangeOf = <T>(size: number, mappingFn: (value: number) => T, startAt = 1): T[] =>
   range(startAt, size + 1).map(mappingFn);
 

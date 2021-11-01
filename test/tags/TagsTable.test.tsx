@@ -2,7 +2,6 @@ import { Mock } from 'ts-mockery';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { match } from 'react-router';
 import { Location, History } from 'history';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
 import { TagsList } from '../../src/tags/reducers/tagsList';
@@ -10,9 +9,8 @@ import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 
 describe('<TagsTable />', () => {
-  const colorGenerator = Mock.all<ColorGenerator>();
   const TagsTableRow = () => null;
-  const TagsTable = createTagsTable(colorGenerator, TagsTableRow);
+  const TagsTable = createTagsTable(TagsTableRow);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   let wrapper: ShallowWrapper;
   const createWrapper = (filteredTags: string[] = [], search = '') => {
@@ -86,7 +84,7 @@ describe('<TagsTable />', () => {
 
     expect(tagRows).toHaveLength(expectedRows);
     tagRows.forEach((row, index) => {
-      expect(row.prop('tag')).toEqual(`tag_${index + offset + 1}`);
+      expect(row.prop('tag')).toEqual(expect.objectContaining({ tag: `tag_${index + offset + 1}` }));
     });
   });
 

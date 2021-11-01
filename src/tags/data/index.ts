@@ -8,3 +8,9 @@ export interface TagModalProps {
   isOpen: boolean;
   toggle: () => void;
 }
+
+export interface NormalizedTag {
+  tag: string;
+  shortUrls: number;
+  visits: number;
+}

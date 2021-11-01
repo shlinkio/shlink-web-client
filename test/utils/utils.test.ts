@@ -1,4 +1,5 @@
-import { capitalize, determineOrderDir, nonEmptyValueOrNull, rangeOf } from '../../src/utils/utils';
+import { capitalize, nonEmptyValueOrNull, rangeOf } from '../../src/utils/utils';
+import { determineOrderDir } from '../../src/utils/helpers/ordering';
 
 describe('utils', () => {
   describe('determineOrderDir', () => {
