@@ -4,7 +4,7 @@ import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
 import SortingDropdown, { SortingDropdownProps } from '../../src/utils/SortingDropdown';
-import { OrderDir } from '../../src/utils/utils';
+import { OrderDir } from '../../src/utils/helpers/ordering';
 
 describe('<SortingDropdown />', () => {
   let wrapper: ShallowWrapper;

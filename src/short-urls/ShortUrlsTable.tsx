@@ -63,34 +63,29 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
       <thead className="responsive-table__header short-urls-table__header">
         <tr>
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('dateCreated')}>
-            Created at
-            {renderOrderIcon?.('dateCreated')}
+            Created at {renderOrderIcon?.('dateCreated')}
           </th>
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('shortCode')}>
-            Short URL
-            {renderOrderIcon?.('shortCode')}
+            Short URL {renderOrderIcon?.('shortCode')}
           </th>
           {!supportsTitle && (
             <th className={orderableColumnsClasses} onClick={orderByColumn?.('longUrl')}>
-              Long URL
-              {renderOrderIcon?.('longUrl')}
+              Long URL {renderOrderIcon?.('longUrl')}
             </th>
           ) || (
             <th className="short-urls-table__header-cell">
               <span className={actionableFieldClasses} onClick={orderByColumn?.('title')}>
-                Title
-                {renderOrderIcon?.('title')}
+                Title {renderOrderIcon?.('title')}
               </span>
               &nbsp;&nbsp;/&nbsp;&nbsp;
               <span className={actionableFieldClasses} onClick={orderByColumn?.('longUrl')}>
-                <span className="indivisible">Long URL</span>
-                {renderOrderIcon?.('longUrl')}
+                <span className="indivisible">Long URL</span> {renderOrderIcon?.('longUrl')}
               </span>
             </th>
           )}
           <th className="short-urls-table__header-cell">Tags</th>
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('visits')}>
-            <span className="indivisible">Visits{renderOrderIcon?.('visits')}</span>
+            <span className="indivisible">Visits {renderOrderIcon?.('visits')}</span>
           </th>
           <th className="short-urls-table__header-cell">&nbsp;</th>
         </tr>

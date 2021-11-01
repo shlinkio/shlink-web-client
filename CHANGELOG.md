@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#500](https://github.com/shlinkio/shlink-web-client/issues/500) Allowed to set the `forwardQuery` flag when creating/editing short URLs on a Shlink v2.9.0 server.
 * [#508](https://github.com/shlinkio/shlink-web-client/issues/508) Added new servers management section.
 * [#490](https://github.com/shlinkio/shlink-web-client/issues/490) Now a server can be marked as auto-connect, skipping home screen when that happens.
+* [#492](https://github.com/shlinkio/shlink-web-client/issues/492) Improved tags table, by supporting sorting by column and making the header sticky.
 
 ### Changed
 * Moved ci workflow to external repo and reused

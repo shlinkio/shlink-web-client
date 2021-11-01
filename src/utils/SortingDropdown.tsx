@@ -3,7 +3,7 @@ import { toPairs } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountUp as sortAscIcon, faSortAmountDown as sortDescIcon } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
-import { determineOrderDir, OrderDir } from './utils';
+import { determineOrderDir, OrderDir } from './helpers/ordering';
 import './SortingDropdown.scss';
 
 export interface SortingDropdownProps<T extends string = string> {

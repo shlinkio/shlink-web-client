@@ -5,21 +5,18 @@ import { DropdownItem } from 'reactstrap';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
 import { ReachableServer } from '../../src/servers/data';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
-import { TagStats } from '../../src/tags/data';
 import { DropdownBtnMenu } from '../../src/utils/DropdownBtnMenu';
 
 describe('<TagsTableRow />', () => {
   const DeleteTagConfirmModal = () => null;
   const EditTagModal = () => null;
-  const TagsTableRow = createTagsTableRow(DeleteTagConfirmModal, EditTagModal);
+  const TagsTableRow = createTagsTableRow(DeleteTagConfirmModal, EditTagModal, Mock.all<ColorGenerator>());
   let wrapper: ShallowWrapper;
-  const createWrapper = (tagStats?: TagStats) => {
+  const createWrapper = (tagStats?: { visits?: number; shortUrls?: number }) => {
     wrapper = shallow(
       <TagsTableRow
-        tag="foo&bar"
-        tagStats={tagStats}
+        tag={{ tag: 'foo&bar', visits: tagStats?.visits ?? 0, shortUrls: tagStats?.shortUrls ?? 0 }}
         selectedServer={Mock.of<ReachableServer>({ id: 'abc123' })}
-        colorGenerator={Mock.all<ColorGenerator>()}
       />,
     );
 
@@ -30,7 +27,7 @@ describe('<TagsTableRow />', () => {
 
   it.each([
     [ undefined, '0', '0' ],
-    [ Mock.of<TagStats>({ shortUrlsCount: 10, visitsCount: 3480 }), '10', '3,480' ],
+    [{ shortUrls: 10, visits: 3480 }, '10', '3,480' ],
   ])('shows expected tag stats', (stats, expectedShortUrls, expectedVisits) => {
     const wrapper = createWrapper(stats);
     const links = wrapper.find(Link);

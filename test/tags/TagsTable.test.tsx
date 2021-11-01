@@ -2,17 +2,16 @@ import { Mock } from 'ts-mockery';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { match } from 'react-router';
 import { Location, History } from 'history';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
 import { TagsList } from '../../src/tags/reducers/tagsList';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
+import { NormalizedTag } from '../../src/tags/data';
 
 describe('<TagsTable />', () => {
-  const colorGenerator = Mock.all<ColorGenerator>();
   const TagsTableRow = () => null;
-  const TagsTable = createTagsTable(colorGenerator, TagsTableRow);
+  const TagsTable = createTagsTable(TagsTableRow);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   let wrapper: ShallowWrapper;
   const createWrapper = (filteredTags: string[] = [], search = '') => {
@@ -86,7 +85,7 @@ describe('<TagsTable />', () => {
 
     expect(tagRows).toHaveLength(expectedRows);
     tagRows.forEach((row, index) => {
-      expect(row.prop('tag')).toEqual(`tag_${index + offset + 1}`);
+      expect(row.prop('tag')).toEqual(expect.objectContaining({ tag: `tag_${index + offset + 1}` }));
     });
   });
 
@@ -96,5 +95,26 @@ describe('<TagsTable />', () => {
     expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(1);
     (wrapper.find(SimplePaginator).prop('setCurrentPage') as Function)(5);
     expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(5);
+  });
+
+  it('orders tags when column is clicked', () => {
+    const wrapper = createWrapper(tags(100));
+    const firstRowText = () => (wrapper.find('tbody').find(TagsTableRow).first().prop('tag') as NormalizedTag).tag;
+
+    expect(firstRowText()).toEqual('tag_1');
+    wrapper.find('thead').find('th').first().simulate('click'); // Tag column ASC
+    expect(firstRowText()).toEqual('tag_1');
+    wrapper.find('thead').find('th').first().simulate('click'); // Tag column DESC
+    expect(firstRowText()).toEqual('tag_99');
+    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - ASC
+    expect(firstRowText()).toEqual('tag_100');
+    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - DESC
+    expect(firstRowText()).toEqual('tag_1');
+    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - reset
+    expect(firstRowText()).toEqual('tag_1');
+    wrapper.find('thead').find('th').at(1).simulate('click'); // Short URLs column - ASC
+    expect(firstRowText()).toEqual('tag_100');
+    wrapper.find('thead').find('th').at(1).simulate('click'); // Short URLs column - DESC
+    expect(firstRowText()).toEqual('tag_1');
   });
 });
