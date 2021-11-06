@@ -12,8 +12,9 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
 import { Settings, TagsMode } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
+import SortingDropdown from '../utils/SortingDropdown';
 import { TagsList as TagsListState } from './reducers/tagsList';
-import { OrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
+import { OrderableFields, SORTABLE_FIELDS, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
 import { TagsModeDropdown } from './TagsModeDropdown';
 import { NormalizedTag } from './data';
 import { TagsTableProps } from './TagsTable';
@@ -55,6 +56,7 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
   const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field &&
     <FontAwesomeIcon icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
+
   const renderContent = () => {
     if (tagsList.error) {
       return (
@@ -84,8 +86,16 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     <>
       <SearchField className="mb-3" onChange={filterTags} />
       <Row className="mb-3">
-        <div className="col-lg-6 offset-lg-6">
+        <div className="col-lg-6">
           <TagsModeDropdown mode={mode} onChange={setMode} />
+        </div>
+        <div className="col-lg-6 mt-3 mt-lg-0">
+          <SortingDropdown
+            items={SORTABLE_FIELDS}
+            orderField={order.field}
+            orderDir={order.dir}
+            onChange={(field, dir) => setOrder({ field, dir })}
+          />
         </div>
       </Row>
       {renderContent()}
