@@ -8,19 +8,14 @@ import { ReachableServer } from '../../src/servers/data';
 
 describe('<TagCard />', () => {
   let wrapper: ShallowWrapper;
-  const tagStats = {
-    shortUrlsCount: 48,
-    visitsCount: 23257,
-  };
   const DeleteTagConfirmModal = jest.fn();
   const EditTagModal = jest.fn();
   const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, Mock.all<ColorGenerator>());
   const createWrapper = (tag = 'ssr') => {
     wrapper = shallow(
       <TagCard
-        tag={tag}
+        tag={{ tag, visits: 23257, shortUrls: 48 }}
         selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-        tagStats={tagStats}
         displayed={true}
         toggle={() => {}}
       />,

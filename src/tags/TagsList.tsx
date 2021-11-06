@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
 import { pipe } from 'ramda';
 import Message from '../utils/Message';
@@ -30,16 +30,13 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
 ) => {
   const [ mode, setMode ] = useState<TagsMode>(settings.ui?.tagsMode ?? 'cards');
   const [ order, setOrder ] = useState<TagsOrder>({});
-  const sortedTags = useMemo(
-    pipe(
-      () => tagsList.filteredTags.map((tag): NormalizedTag => ({
-        tag,
-        shortUrls: tagsList.stats[tag]?.shortUrlsCount ?? 0,
-        visits: tagsList.stats[tag]?.visitsCount ?? 0,
-      })),
-      (normalizedTags) => sortList<NormalizedTag>(normalizedTags, order),
-    ),
-    [ tagsList.filteredTags, order ],
+  const resolveSortedTags = pipe(
+    () => tagsList.filteredTags.map((tag): NormalizedTag => ({
+      tag,
+      shortUrls: tagsList.stats[tag]?.shortUrlsCount ?? 0,
+      visits: tagsList.stats[tag]?.visitsCount ?? 0,
+    })),
+    (normalizedTags) => sortList<NormalizedTag>(normalizedTags, order),
   );
 
   useEffect(() => {
@@ -50,21 +47,23 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     return <Message loading />;
   }
 
+  if (tagsList.error) {
+    return (
+      <Result type="error">
+        <ShlinkApiError errorData={tagsList.errorData} fallbackMessage="Error loading tags :(" />
+      </Result>
+    );
+  }
+
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
 
   const renderContent = () => {
-    if (tagsList.error) {
-      return (
-        <Result type="error">
-          <ShlinkApiError errorData={tagsList.errorData} fallbackMessage="Error loading tags :(" />
-        </Result>
-      );
-    }
-
     if (tagsList.filteredTags.length < 1) {
       return <Message>No tags found</Message>;
     }
+
+    const sortedTags = resolveSortedTags();
 
     return mode === 'cards'
       ? <TagsCards sortedTags={sortedTags} selectedServer={selectedServer} />

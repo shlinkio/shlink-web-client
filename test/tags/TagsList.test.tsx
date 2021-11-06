@@ -37,17 +37,21 @@ describe('<TagsList />', () => {
   it('shows a loading message when tags are being loaded', () => {
     const wrapper = createWrapper({ loading: true });
     const loadingMsg = wrapper.find(Message);
+    const searchField = wrapper.find(SearchField);
 
     expect(loadingMsg).toHaveLength(1);
     expect(loadingMsg.html()).toContain('Loading...');
+    expect(searchField).toHaveLength(0);
   });
 
   it('shows an error when tags failed to be loaded', () => {
     const wrapper = createWrapper({ error: true });
     const errorMsg = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
+    const searchField = wrapper.find(SearchField);
 
     expect(errorMsg).toHaveLength(1);
     expect(errorMsg.html()).toContain('Error loading tags :(');
+    expect(searchField).toHaveLength(0);
   });
 
   it('shows a message when the list of tags is empty', () => {
