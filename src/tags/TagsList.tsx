@@ -55,8 +55,11 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     );
   }
 
-  const orderByColumn = (field: OrderableFields) =>
-    () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
+  const orderByColumn = (field: OrderableFields) => () => {
+    const dir = determineOrderDir(field, order.field, order.dir);
+
+    setOrder({ field: dir ? field : undefined, dir });
+  };
 
   const renderContent = () => {
     if (tagsList.filteredTags.length < 1) {
@@ -85,12 +88,7 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
           <TagsModeDropdown mode={mode} onChange={setMode} />
         </div>
         <div className="col-lg-6 mt-3 mt-lg-0">
-          <SortingDropdown
-            items={SORTABLE_FIELDS}
-            orderField={order.field}
-            orderDir={order.dir}
-            onChange={(field, dir) => setOrder({ field, dir })}
-          />
+          <SortingDropdown items={SORTABLE_FIELDS} order={order} onChange={(field, dir) => setOrder({ field, dir })} />
         </div>
       </Row>
       {renderContent()}

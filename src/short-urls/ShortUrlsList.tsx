@@ -67,12 +67,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
   return (
     <>
       <div className="d-block d-lg-none mb-3">
-        <SortingDropdown
-          items={SORTABLE_FIELDS}
-          orderField={order.field}
-          orderDir={order.dir}
-          onChange={handleOrderBy}
-        />
+        <SortingDropdown items={SORTABLE_FIELDS} order={order} onChange={handleOrderBy} />
       </div>
       <Card body className="pb-1">
         <ShortUrlsTable

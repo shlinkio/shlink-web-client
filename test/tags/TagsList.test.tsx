@@ -89,14 +89,11 @@ describe('<TagsList />', () => {
   it('triggers ordering when sorting dropdown changes', () => {
     const wrapper = createWrapper({ filteredTags: [] });
 
-    expect(wrapper.find(SortingDropdown).prop('orderField')).not.toBeDefined();
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).not.toBeDefined();
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
     wrapper.find(SortingDropdown).simulate('change', 'tag', 'DESC');
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual('tag');
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual('DESC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'tag', dir: 'DESC' });
     wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual('visits');
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual('ASC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
   });
 
   it('can update current order via orderByColumn from table component', () => {

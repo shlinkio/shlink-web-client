@@ -108,23 +108,16 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('handles order by through dropdown', () => {
-    expect(wrapper.find(SortingDropdown).prop('orderField')).not.toBeDefined();
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).not.toBeDefined();
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
 
     wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual('visits');
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual('ASC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
 
     wrapper.find(SortingDropdown).simulate('change', 'shortCode', 'DESC');
-
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual('shortCode');
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual('DESC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'shortCode', dir: 'DESC' });
 
     wrapper.find(SortingDropdown).simulate('change', undefined, undefined);
-
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual(undefined);
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual(undefined);
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
 
     expect(listShortUrlsMock).toHaveBeenCalledTimes(3);
     expect(listShortUrlsMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
@@ -140,10 +133,9 @@ describe('<ShortUrlsList />', () => {
     [ Mock.of<OrderBy>({ visits: 'ASC' }), 'visits', 'ASC' ],
     [ Mock.of<OrderBy>({ title: 'DESC' }), 'title', 'DESC' ],
     [ Mock.of<OrderBy>(), undefined, undefined ],
-  ])('has expected initial ordering', (initialOrderBy, expectedField, expectedDir) => {
+  ])('has expected initial ordering', (initialOrderBy, field, dir) => {
     const wrapper = createWrapper(initialOrderBy);
 
-    expect(wrapper.find(SortingDropdown).prop('orderField')).toEqual(expectedField);
-    expect(wrapper.find(SortingDropdown).prop('orderDir')).toEqual(expectedDir);
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field, dir });
   });
 });
