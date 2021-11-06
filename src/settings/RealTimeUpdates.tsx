@@ -18,7 +18,7 @@ const RealTimeUpdates = (
   <SimpleCard title="Real-time updates" className="h-100">
     <FormGroup>
       <ToggleSwitch checked={realTimeUpdates.enabled} onChange={toggleRealTimeUpdates}>
-        Enable or disable real-time updates, when using Shlink v2.2.0 or newer.
+        Enable or disable real-time updates.
         <small className="form-text text-muted">
           Real-time updates are currently being <b>{realTimeUpdates.enabled ? 'processed' : 'ignored'}</b>.
         </small>

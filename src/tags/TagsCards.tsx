@@ -7,10 +7,10 @@ import { TagsListChildrenProps } from './data/TagsListChildrenProps';
 const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
-export const TagsCards = (TagCard: FC<TagCardProps>): FC<TagsListChildrenProps> => ({ tagsList, selectedServer }) => {
+export const TagsCards = (TagCard: FC<TagCardProps>): FC<TagsListChildrenProps> => ({ sortedTags, selectedServer }) => {
   const [ displayedTag, setDisplayedTag ] = useState<string | undefined>();
-  const tagsCount = tagsList.filteredTags.length;
-  const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), tagsList.filteredTags);
+  const tagsCount = sortedTags.length;
+  const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), sortedTags);
 
   return (
     <Row>
@@ -18,12 +18,11 @@ export const TagsCards = (TagCard: FC<TagCardProps>): FC<TagsListChildrenProps> 
         <div key={index} className="col-md-6 col-xl-3">
           {group.map((tag) => (
             <TagCard
-              key={tag}
+              key={tag.tag}
               tag={tag}
-              tagStats={tagsList.stats[tag]}
               selectedServer={selectedServer}
-              displayed={displayedTag === tag}
-              toggle={() => setDisplayedTag(displayedTag !== tag ? tag : undefined)}
+              displayed={displayedTag === tag.tag}
+              toggle={() => setDisplayedTag(displayedTag !== tag.tag ? tag.tag : undefined)}
             />
           ))}
         </div>

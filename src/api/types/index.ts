@@ -25,12 +25,12 @@ interface ShlinkTagsStats {
 
 export interface ShlinkTags {
   tags: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
+  stats: ShlinkTagsStats[];
 }
 
 export interface ShlinkTagsResponse {
   data: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
+  stats: ShlinkTagsStats[];
 }
 
 export interface ShlinkPaginator {
@@ -90,7 +90,6 @@ export interface ProblemDetailsError {
   detail: string;
   title: string;
   status: number;
-
   [extraProps: string]: any;
 }
 

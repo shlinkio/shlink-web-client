@@ -1,7 +1,12 @@
-import { TagsList as TagsListState } from '../reducers/tagsList';
 import { SelectedServer } from '../../servers/data';
+import { Order } from '../../utils/helpers/ordering';
+import { NormalizedTag } from './index';
+
+export type OrderableFields = 'tag' | 'shortUrls' | 'visits';
+
+export type TagsOrder = Order<OrderableFields>;
 
 export interface TagsListChildrenProps {
-  tagsList: TagsListState;
+  sortedTags: NormalizedTag[];
   selectedServer: SelectedServer;
 }
