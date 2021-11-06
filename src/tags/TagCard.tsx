@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
 import ColorGenerator from '../utils/services/ColorGenerator';
-import { isServerWithId, SelectedServer } from '../servers/data';
+import { getServerId, SelectedServer } from '../servers/data';
 import TagBullet from './helpers/TagBullet';
 import { NormalizedTag, TagModalProps } from './data';
 import './TagCard.scss';
@@ -29,7 +29,7 @@ const TagCard = (
   const [ isEditModalOpen, toggleEdit ] = useToggle();
   const [ hasTitle,, displayTitle ] = useToggle();
   const titleRef = useRef<HTMLElement>();
-  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const serverId = getServerId(selectedServer);
 
   useEffect(() => {
     if (isTruncated(titleRef.current)) {

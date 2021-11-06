@@ -40,7 +40,8 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
 const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   { selectedServer, showOnMobile = false }: AsideMenuProps,
 ) => {
-  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const hasId = isServerWithId(selectedServer);
+  const serverId = hasId ? selectedServer.id : '';
   const addManageDomainsLink = supportsDomainRedirects(selectedServer);
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
@@ -77,7 +78,7 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
           <FontAwesomeIcon fixedWidth icon={editIcon} />
           <span className="aside-menu__item-text">Edit this server</span>
         </AsideMenuItem>
-        {isServerWithId(selectedServer) && (
+        {hasId && (
           <DeleteServerButton
             className="aside-menu__item aside-menu__item--danger"
             textClassName="aside-menu__item-text"
