@@ -1,8 +1,6 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Row } from 'reactstrap';
 import { pipe } from 'ramda';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import Message from '../utils/Message';
 import SearchField from '../utils/SearchField';
 import { SelectedServer } from '../servers/data';
@@ -54,8 +52,6 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
 
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field &&
-    <FontAwesomeIcon icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
 
   const renderContent = () => {
     if (tagsList.error) {
@@ -76,8 +72,8 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
         <TagsTable
           sortedTags={sortedTags}
           selectedServer={selectedServer}
+          currentOrder={order}
           orderByColumn={orderByColumn}
-          renderOrderIcon={renderOrderIcon}
         />
       );
   };

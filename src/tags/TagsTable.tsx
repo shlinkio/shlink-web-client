@@ -1,23 +1,25 @@
-import { FC, ReactNode, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { splitEvery } from 'ramda';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { RouteChildrenProps } from 'react-router';
 import { SimpleCard } from '../utils/SimpleCard';
 import SimplePaginator from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
-import { OrderableFields, TagsListChildrenProps } from './data/TagsListChildrenProps';
+import { OrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
 import { TagsTableRowProps } from './TagsTableRow';
 import './TagsTable.scss';
 
 export interface TagsTableProps extends TagsListChildrenProps {
   orderByColumn: (field: OrderableFields) => () => void;
-  renderOrderIcon: (field: OrderableFields) => ReactNode;
+  currentOrder: TagsOrder;
 }
 
 const TAGS_PER_PAGE = 20; // TODO Allow customizing this value in settings
 
 export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
-  { sortedTags, selectedServer, location, orderByColumn, renderOrderIcon }: TagsTableProps & RouteChildrenProps,
+  { sortedTags, selectedServer, location, orderByColumn, currentOrder }: TagsTableProps & RouteChildrenProps,
 ) => {
   const isFirstLoad = useRef(true);
   const { page: pageFromQuery = 1 } = parseQuery<{ page?: number | string }>(location.search);
@@ -25,6 +27,8 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
   const pages = splitEvery(TAGS_PER_PAGE, sortedTags);
   const showPaginator = pages.length > 1;
   const currentPage = pages[page - 1] ?? [];
+  const renderOrderIcon = (field: OrderableFields) => currentOrder.dir && currentOrder.field === field &&
+    <FontAwesomeIcon icon={currentOrder.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
 
   useEffect(() => {
     !isFirstLoad.current && setPage(1);
