@@ -1,5 +1,3 @@
-import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { head, keys, values } from 'ramda';
 import { FC, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
@@ -10,6 +8,7 @@ import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
@@ -52,8 +51,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
   };
   const orderByColumn = (field: OrderableFields) => () =>
     handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
-  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field &&
-    <FontAwesomeIcon icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
+  const renderOrderIcon = (field: OrderableFields) => <TableOrderIcon currentOrder={order} field={field} />;
 
   useEffect(() => {
     const { tag } = parseQuery<{ tag?: string }>(location.search);

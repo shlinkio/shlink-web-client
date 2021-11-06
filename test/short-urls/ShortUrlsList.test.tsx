@@ -77,15 +77,15 @@ describe('<ShortUrlsList />', () => {
 
   it('invokes order icon rendering', () => {
     const renderIcon = (field: OrderableFields) =>
-      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement | null)(field);
+      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement)(field);
 
-    expect(renderIcon('visits')).toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({});
 
     wrapper.find(SortingDropdown).simulate('change', 'visits');
-    expect(renderIcon('visits')).toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits' });
 
     wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-    expect(renderIcon('visits')).not.toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits', dir: 'ASC' });
   });
 
   it('handles order by through table', () => {
