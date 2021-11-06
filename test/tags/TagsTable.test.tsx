@@ -4,24 +4,26 @@ import { match } from 'react-router';
 import { Location, History } from 'history';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
-import { TagsList } from '../../src/tags/reducers/tagsList';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import { NormalizedTag } from '../../src/tags/data';
 
 describe('<TagsTable />', () => {
   const TagsTableRow = () => null;
+  const orderByColumn = jest.fn();
   const TagsTable = createTagsTable(TagsTableRow);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   let wrapper: ShallowWrapper;
-  const createWrapper = (filteredTags: string[] = [], search = '') => {
+  const createWrapper = (sortedTags: string[] = [], search = '') => {
     wrapper = shallow(
       <TagsTable
-        tagsList={Mock.of<TagsList>({ stats: {}, filteredTags })}
+        sortedTags={sortedTags.map((tag) => Mock.of<NormalizedTag>({ tag }))}
         selectedServer={Mock.all<SelectedServer>()}
+        currentOrder={{}}
         history={Mock.all<History>()}
         location={Mock.of<Location>({ search })}
         match={Mock.all<match>()}
+        orderByColumn={() => orderByColumn}
       />,
     );
 
@@ -33,6 +35,7 @@ describe('<TagsTable />', () => {
     (global as any).history = { pushState: jest.fn() };
   });
 
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('renders empty result if there are no tags', () => {
@@ -99,22 +102,11 @@ describe('<TagsTable />', () => {
 
   it('orders tags when column is clicked', () => {
     const wrapper = createWrapper(tags(100));
-    const firstRowText = () => (wrapper.find('tbody').find(TagsTableRow).first().prop('tag') as NormalizedTag).tag;
 
-    expect(firstRowText()).toEqual('tag_1');
-    wrapper.find('thead').find('th').first().simulate('click'); // Tag column ASC
-    expect(firstRowText()).toEqual('tag_1');
-    wrapper.find('thead').find('th').first().simulate('click'); // Tag column DESC
-    expect(firstRowText()).toEqual('tag_99');
-    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - ASC
-    expect(firstRowText()).toEqual('tag_100');
-    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - DESC
-    expect(firstRowText()).toEqual('tag_1');
-    wrapper.find('thead').find('th').at(2).simulate('click'); // Visits column - reset
-    expect(firstRowText()).toEqual('tag_1');
-    wrapper.find('thead').find('th').at(1).simulate('click'); // Short URLs column - ASC
-    expect(firstRowText()).toEqual('tag_100');
-    wrapper.find('thead').find('th').at(1).simulate('click'); // Short URLs column - DESC
-    expect(firstRowText()).toEqual('tag_1');
+    expect(orderByColumn).not.toHaveBeenCalled();
+    wrapper.find('thead').find('th').first().simulate('click');
+    wrapper.find('thead').find('th').at(2).simulate('click');
+    wrapper.find('thead').find('th').at(1).simulate('click');
+    expect(orderByColumn).toHaveBeenCalledTimes(3);
   });
 });

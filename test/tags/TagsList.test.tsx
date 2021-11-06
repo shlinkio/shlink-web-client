@@ -9,6 +9,8 @@ import { Result } from '../../src/utils/Result';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import SearchField from '../../src/utils/SearchField';
 import { Settings } from '../../src/settings/reducers/settings';
+import { OrderableFields } from '../../src/tags/data/TagsListChildrenProps';
+import SortingDropdown from '../../src/utils/SortingDropdown';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
@@ -37,17 +39,21 @@ describe('<TagsList />', () => {
   it('shows a loading message when tags are being loaded', () => {
     const wrapper = createWrapper({ loading: true });
     const loadingMsg = wrapper.find(Message);
+    const searchField = wrapper.find(SearchField);
 
     expect(loadingMsg).toHaveLength(1);
     expect(loadingMsg.html()).toContain('Loading...');
+    expect(searchField).toHaveLength(0);
   });
 
   it('shows an error when tags failed to be loaded', () => {
     const wrapper = createWrapper({ error: true });
     const errorMsg = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
+    const searchField = wrapper.find(SearchField);
 
     expect(errorMsg).toHaveLength(1);
     expect(errorMsg.html()).toContain('Error loading tags :(');
+    expect(searchField).toHaveLength(0);
   });
 
   it('shows a message when the list of tags is empty', () => {
@@ -72,9 +78,39 @@ describe('<TagsList />', () => {
 
   it('triggers tags filtering when search field changes', () => {
     const wrapper = createWrapper({ filteredTags: [] });
+    const searchField = wrapper.find(SearchField);
 
+    expect(searchField).toHaveLength(1);
     expect(filterTags).not.toHaveBeenCalled();
-    wrapper.find(SearchField).simulate('change');
+    searchField.simulate('change');
     expect(filterTags).toHaveBeenCalledTimes(1);
+  });
+
+  it('triggers ordering when sorting dropdown changes', () => {
+    const wrapper = createWrapper({ filteredTags: [] });
+
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
+    wrapper.find(SortingDropdown).simulate('change', 'tag', 'DESC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'tag', dir: 'DESC' });
+    wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
+    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
+  });
+
+  it('can update current order via orderByColumn from table component', () => {
+    const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
+    const callOrderBy = (field: OrderableFields) => {
+      ((wrapper.find(TagsTable).prop('orderByColumn') as Function)(field) as Function)();
+    };
+
+    wrapper.find(TagsModeDropdown).simulate('change'); // Make sure table is rendered
+
+    callOrderBy('visits');
+    expect(wrapper.find(TagsTable).prop('currentOrder')).toEqual({ field: 'visits', dir: 'ASC' });
+    callOrderBy('visits');
+    expect(wrapper.find(TagsTable).prop('currentOrder')).toEqual({ field: 'visits', dir: 'DESC' });
+    callOrderBy('tag');
+    expect(wrapper.find(TagsTable).prop('currentOrder')).toEqual({ field: 'tag', dir: 'ASC' });
+    callOrderBy('shortUrls');
+    expect(wrapper.find(TagsTable).prop('currentOrder')).toEqual({ field: 'shortUrls', dir: 'ASC' });
   });
 });

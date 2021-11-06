@@ -11,7 +11,7 @@ import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Versions } from '../utils/helpers/version';
 import { Topics } from '../mercure/helpers/Topics';
-import { isServerWithId, SelectedServer } from './data';
+import { getServerId, SelectedServer } from './data';
 import './Overview.scss';
 
 interface OverviewConnectProps {
@@ -40,7 +40,7 @@ export const Overview = (
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
-  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const serverId = getServerId(selectedServer);
   const history = useHistory();
 
   useEffect(() => {

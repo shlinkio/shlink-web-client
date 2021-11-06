@@ -1,54 +1,39 @@
-import { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { pipe, splitEvery } from 'ramda';
-import { RouteChildrenProps } from 'react-router';
+import { FC, useEffect, useRef } from 'react';
+import { splitEvery } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
+import { RouteChildrenProps } from 'react-router';
 import { SimpleCard } from '../utils/SimpleCard';
 import SimplePaginator from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
-import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
-import { TagsListChildrenProps } from './data/TagsListChildrenProps';
+import { OrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
 import { TagsTableRowProps } from './TagsTableRow';
-import { NormalizedTag } from './data';
 import './TagsTable.scss';
+
+export interface TagsTableProps extends TagsListChildrenProps {
+  orderByColumn: (field: OrderableFields) => () => void;
+  currentOrder: TagsOrder;
+}
 
 const TAGS_PER_PAGE = 20; // TODO Allow customizing this value in settings
 
-type OrderableFields = 'tag' | 'shortUrls' | 'visits';
-type TagsOrder = Order<OrderableFields>;
-
 export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
-  { tagsList, selectedServer, location }: TagsListChildrenProps & RouteChildrenProps,
+  { sortedTags, selectedServer, location, orderByColumn, currentOrder }: TagsTableProps & RouteChildrenProps,
 ) => {
   const isFirstLoad = useRef(true);
   const { page: pageFromQuery = 1 } = parseQuery<{ page?: number | string }>(location.search);
   const [ page, setPage ] = useQueryState<number>('page', Number(pageFromQuery));
-  const [ order, setOrder ] = useState<TagsOrder>({});
-  const sortedTags = useMemo(
-    pipe(
-      () => tagsList.filteredTags.map((tag): NormalizedTag => ({
-        tag,
-        shortUrls: tagsList.stats[tag]?.shortUrlsCount ?? 0,
-        visits: tagsList.stats[tag]?.visitsCount ?? 0,
-      })),
-      (normalizedTags) => sortList<NormalizedTag>(normalizedTags, order),
-    ),
-    [ tagsList.filteredTags, order ],
-  );
   const pages = splitEvery(TAGS_PER_PAGE, sortedTags);
   const showPaginator = pages.length > 1;
   const currentPage = pages[page - 1] ?? [];
-
-  const orderByColumn = (field: OrderableFields) =>
-    () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field &&
-    <FontAwesomeIcon icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
+  const renderOrderIcon = (field: OrderableFields) => currentOrder.dir && currentOrder.field === field &&
+    <FontAwesomeIcon icon={currentOrder.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
 
   useEffect(() => {
     !isFirstLoad.current && setPage(1);
     isFirstLoad.current = false;
-  }, [ tagsList.filteredTags ]);
+  }, [ sortedTags ]);
   useEffect(() => {
     scrollTo(0, 0);
   }, [ page ]);

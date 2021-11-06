@@ -6,14 +6,13 @@ import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
 import ColorGenerator from '../utils/services/ColorGenerator';
-import { isServerWithId, SelectedServer } from '../servers/data';
+import { getServerId, SelectedServer } from '../servers/data';
 import TagBullet from './helpers/TagBullet';
-import { TagModalProps, TagStats } from './data';
+import { NormalizedTag, TagModalProps } from './data';
 import './TagCard.scss';
 
 export interface TagCardProps {
-  tag: string;
-  tagStats?: TagStats;
+  tag: NormalizedTag;
   selectedServer: SelectedServer;
   displayed: boolean;
   toggle: () => void;
@@ -25,12 +24,12 @@ const TagCard = (
   DeleteTagConfirmModal: FC<TagModalProps>,
   EditTagModal: FC<TagModalProps>,
   colorGenerator: ColorGenerator,
-) => ({ tag, tagStats, selectedServer, displayed, toggle }: TagCardProps) => {
+) => ({ tag, selectedServer, displayed, toggle }: TagCardProps) => {
   const [ isDeleteModalOpen, toggleDelete ] = useToggle();
   const [ isEditModalOpen, toggleEdit ] = useToggle();
   const [ hasTitle,, displayTitle ] = useToggle();
   const titleRef = useRef<HTMLElement>();
-  const serverId = isServerWithId(selectedServer) ? selectedServer.id : '';
+  const serverId = getServerId(selectedServer);
 
   useEffect(() => {
     if (isTruncated(titleRef.current)) {
@@ -49,39 +48,37 @@ const TagCard = (
         </Button>
         <h5
           className="tag-card__tag-title text-ellipsis"
-          title={hasTitle ? tag : undefined}
+          title={hasTitle ? tag.tag : undefined}
           ref={(el) => {
             titleRef.current = el ?? undefined;
           }}
         >
-          <TagBullet tag={tag} colorGenerator={colorGenerator} />
-          <span className="tag-card__tag-name" onClick={toggle}>{tag}</span>
+          <TagBullet tag={tag.tag} colorGenerator={colorGenerator} />
+          <span className="tag-card__tag-name" onClick={toggle}>{tag.tag}</span>
         </h5>
       </CardHeader>
 
-      {tagStats && (
-        <Collapse isOpen={displayed}>
-          <CardBody className="tag-card__body">
-            <Link
-              to={`/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag)}`}
-              className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
-            >
-              <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>
-              <b>{prettify(tagStats.shortUrlsCount)}</b>
-            </Link>
-            <Link
-              to={`/server/${serverId}/tag/${tag}/visits`}
-              className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center"
-            >
-              <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
-              <b>{prettify(tagStats.visitsCount)}</b>
-            </Link>
-          </CardBody>
-        </Collapse>
-      )}
+      <Collapse isOpen={displayed}>
+        <CardBody className="tag-card__body">
+          <Link
+            to={`/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag.tag)}`}
+            className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
+          >
+            <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>
+            <b>{prettify(tag.shortUrls)}</b>
+          </Link>
+          <Link
+            to={`/server/${serverId}/tag/${tag.tag}/visits`}
+            className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center"
+          >
+            <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
+            <b>{prettify(tag.visits)}</b>
+          </Link>
+        </CardBody>
+      </Collapse>
 
-      <DeleteTagConfirmModal tag={tag} toggle={toggleDelete} isOpen={isDeleteModalOpen} />
-      <EditTagModal tag={tag} toggle={toggleEdit} isOpen={isEditModalOpen} />
+      <DeleteTagConfirmModal tag={tag.tag} toggle={toggleDelete} isOpen={isDeleteModalOpen} />
+      <EditTagModal tag={tag.tag} toggle={toggleEdit} isOpen={isEditModalOpen} />
     </Card>
   );
 };
