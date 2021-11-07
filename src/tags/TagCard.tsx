@@ -61,7 +61,7 @@ const TagCard = (
       <Collapse isOpen={displayed}>
         <CardBody className="tag-card__body">
           <Link
-            to={`/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag.tag)}`}
+            to={`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}
             className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
           >
             <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>

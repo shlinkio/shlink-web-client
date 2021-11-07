@@ -107,7 +107,7 @@ export const Overview = (
             shortUrlsList={shortUrlsList}
             selectedServer={selectedServer}
             className="mb-0"
-            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tag=${tag}`)}
+            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
           />
         </CardBody>
       </Card>

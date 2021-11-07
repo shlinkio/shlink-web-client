@@ -35,7 +35,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'MenuLayout',
     MenuLayout,
     'TagsList',
-    'ShortUrls',
+    'ShortUrlsList',
     'AsideMenu',
     'CreateShortUrl',
     'ShortUrlVisits',
