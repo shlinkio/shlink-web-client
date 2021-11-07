@@ -1,4 +1,4 @@
-import { parseQuery, stringifyQuery } from '../../../src/utils/helpers/query';
+import { evolveStringifiedQuery, parseQuery, stringifyQuery } from '../../../src/utils/helpers/query';
 
 describe('query', () => {
   describe('parseQuery', () => {
@@ -20,6 +20,17 @@ describe('query', () => {
       [{ bar: 'foo', list: [ 'one', 'two' ] }, encodeURI('bar=foo&list[]=one&list[]=two') ],
     ])('stringifies query as expected', (queryObj, expectedResult) => {
       expect(stringifyQuery(queryObj)).toEqual(expectedResult);
+    });
+  });
+
+  describe('evolveStringifiedQuery', () => {
+    it.each([
+      [ '?foo=bar', { baz: 123 }, 'foo=bar&baz=123' ],
+      [ 'foo=bar', { baz: 123 }, 'foo=bar&baz=123' ],
+      [ 'foo=bar&baz=hello', { baz: 'world' }, 'foo=bar&baz=world' ],
+      [ '?', { foo: 'some', bar: 'thing' }, 'foo=some&bar=thing' ],
+    ])('adds and overwrites params on provided query string', (query, extra, expected) => {
+      expect(evolveStringifiedQuery(query, extra)).toEqual(expected);
     });
   });
 });
