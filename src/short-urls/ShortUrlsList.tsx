@@ -1,25 +1,20 @@
-import { head, keys, values } from 'ramda';
-import { FC, useEffect, useState } from 'react';
+import { head, keys, pipe, values } from 'ramda';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
 import { determineOrderDir, Order, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
+import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
 
-interface RouteParams {
-  page: string;
-  serverId: string;
-}
-
-export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
+interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams> {
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShortUrlsListParams) => void;
@@ -29,21 +24,26 @@ export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
 
 type ShortUrlsOrder = Order<OrderableFields>;
 
-const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
+const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) => boundToMercureHub(({
   listShortUrls,
   resetShortUrlParams,
   shortUrlsListParams,
   match,
   location,
+  history,
   shortUrlsList,
   selectedServer,
 }: ShortUrlsListProps) => {
+  const serverId = getServerId(selectedServer);
   const { orderBy } = shortUrlsListParams;
   const [ order, setOrder ] = useState<ShortUrlsOrder>({
     field: orderBy && (head(keys(orderBy)) as OrderableFields),
     dir: orderBy && head(values(orderBy)),
   });
+  const [{ tags, search }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
+  const decodedTags = useMemo(() => tags?.split(',').map(decodeURIComponent) ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
+
   const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
   const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => {
     setOrder({ field, dir });
@@ -52,30 +52,31 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercur
   const orderByColumn = (field: OrderableFields) => () =>
     handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
   const renderOrderIcon = (field: OrderableFields) => <TableOrderIcon currentOrder={order} field={field} />;
+  const addTag = pipe(
+    (newTag: string) => [ ...new Set([ ...decodedTags, newTag ]) ].join(','),
+    (tags) => toFirstPage({ tags }),
+  );
 
+  useEffect(() => resetShortUrlParams, []);
   useEffect(() => {
-    const { tag } = parseQuery<{ tag?: string }>(location.search);
-    const tags = tag ? [ decodeURIComponent(tag) ] : shortUrlsListParams.tags;
-
-    refreshList({ page: match.params.page, tags, itemsPerPage: undefined });
-
-    return resetShortUrlParams;
-  }, []);
+    refreshList({ page: match.params.page, searchTerm: search, tags: decodedTags, itemsPerPage: undefined });
+  }, [ match.params.page, search, decodedTags ]);
 
   return (
     <>
+      <div className="mb-3"><SearchBar /></div>
       <div className="d-block d-lg-none mb-3">
         <SortingDropdown items={SORTABLE_FIELDS} order={order} onChange={handleOrderBy} />
       </div>
       <Card body className="pb-1">
         <ShortUrlsTable
-          orderByColumn={orderByColumn}
-          renderOrderIcon={renderOrderIcon}
           selectedServer={selectedServer}
           shortUrlsList={shortUrlsList}
-          onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
+          orderByColumn={orderByColumn}
+          renderOrderIcon={renderOrderIcon}
+          onTagClick={addTag}
         />
-        <Paginator paginator={pagination} serverId={getServerId(selectedServer)} />
+        <Paginator paginator={pagination} serverId={serverId} currentQueryString={location.search} />
       </Card>
     </>
   );

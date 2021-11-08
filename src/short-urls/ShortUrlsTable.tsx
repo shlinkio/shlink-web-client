@@ -35,7 +35,9 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
     if (error) {
       return (
         <tr>
-          <td colSpan={6} className="text-center table-danger">Something went wrong while loading short URLs :(</td>
+          <td colSpan={6} className="text-center table-danger text-dark">
+            Something went wrong while loading short URLs :(
+          </td>
         </tr>
       );
     }
