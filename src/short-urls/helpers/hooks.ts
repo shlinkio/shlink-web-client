@@ -14,6 +14,8 @@ export interface ShortUrlListRouteParams {
 interface ShortUrlsQuery {
   tags?: string;
   search?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export const useShortUrlsQuery = ({ history, location, match }: ServerIdRouteProps): [ShortUrlsQuery, ToFirstPage] => {

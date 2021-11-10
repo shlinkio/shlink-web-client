@@ -2,6 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router';
+import { formatISO } from 'date-fns';
 import searchBarCreator, { SearchBarProps } from '../../src/short-urls/SearchBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
@@ -11,13 +12,12 @@ import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
 
 describe('<SearchBar />', () => {
   let wrapper: ShallowWrapper;
-  const listShortUrlsMock = jest.fn();
   const SearchBar = searchBarCreator(Mock.all<ColorGenerator>());
   const push = jest.fn();
+  const now = new Date();
   const createWrapper = (props: Partial<SearchBarProps> = {}) => {
     wrapper = shallow(
       <SearchBar
-        listShortUrls={listShortUrlsMock}
         shortUrlsListParams={{}}
         history={Mock.of<History>({ push })}
         location={Mock.of<Location>({ search: '' })}
@@ -50,7 +50,7 @@ describe('<SearchBar />', () => {
     expect(wrapper.find(Tag)).toHaveLength(expectedTagComps);
   });
 
-  it('updates short URLs list when search field changes', () => {
+  it('redirects to first page when search field changes', () => {
     const wrapper = createWrapper();
     const searchField = wrapper.find(SearchField);
 
@@ -59,7 +59,7 @@ describe('<SearchBar />', () => {
     expect(push).toHaveBeenCalledWith('/server/1/list-short-urls/1?search=search-term');
   });
 
-  it('updates short URLs list when a tag is removed', () => {
+  it('redirects to first page when a tag is removed', () => {
     const wrapper = createWrapper({ location: Mock.of<Location>({ search: 'tags=foo,bar' }) });
     const tag = wrapper.find(Tag).first();
 
@@ -68,12 +68,19 @@ describe('<SearchBar />', () => {
     expect(push).toHaveBeenCalledWith('/server/1/list-short-urls/1?tags=bar');
   });
 
-  it('updates short URLs list when date range changes', () => {
+  it.each([
+    [{ startDate: now }, `startDate=${encodeURIComponent(formatISO(now))}` ],
+    [{ endDate: now }, `endDate=${encodeURIComponent(formatISO(now))}` ],
+    [
+      { startDate: now, endDate: now },
+      `startDate=${encodeURIComponent(formatISO(now))}&endDate=${encodeURIComponent(formatISO(now))}`,
+    ],
+  ])('redirects to first page when date range changes', (dates, expectedQuery) => {
     const wrapper = createWrapper();
     const dateRange = wrapper.find(DateRangeSelector);
 
-    expect(listShortUrlsMock).not.toHaveBeenCalled();
-    dateRange.simulate('datesChange', {});
-    expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
+    expect(push).not.toHaveBeenCalled();
+    dateRange.simulate('datesChange', dates);
+    expect(push).toHaveBeenCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
   });
 });

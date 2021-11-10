@@ -52,7 +52,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   // Services
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
+  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ]));
   bottle.decorator('SearchBar', withRouter);
 
   // Actions

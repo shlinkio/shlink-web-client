@@ -14,23 +14,20 @@ import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
 import './SearchBar.scss';
 
 export interface SearchBarProps extends RouteChildrenProps<ShortUrlListRouteParams> {
-  listShortUrls: (params: ShortUrlsListParams) => void;
   shortUrlsListParams: ShortUrlsListParams;
 }
 
 const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
-const SearchBar = (colorGenerator: ColorGenerator) => (
-  { listShortUrls, shortUrlsListParams, ...rest }: SearchBarProps,
-) => {
-  const [{ search, tags }, toFirstPage ] = useShortUrlsQuery(rest);
-  const selectedTags = tags?.split(',').map(decodeURIComponent) ?? [];
+const SearchBar = (colorGenerator: ColorGenerator) => ({ shortUrlsListParams, ...rest }: SearchBarProps) => {
+  const [{ search, tags, startDate, endDate }, toFirstPage ] = useShortUrlsQuery(rest);
+  const selectedTags = tags?.split(',') ?? [];
   const setDates = pipe(
     ({ startDate, endDate }: DateRange) => ({
       startDate: formatIsoDate(startDate) ?? undefined,
       endDate: formatIsoDate(endDate) ?? undefined,
     }),
-    (dates) => listShortUrls({ ...shortUrlsListParams, ...dates }),
+    toFirstPage,
   );
   const setSearch = pipe(
     (searchTerm: string) => isEmpty(searchTerm) ? undefined : searchTerm,
@@ -52,8 +49,8 @@ const SearchBar = (colorGenerator: ColorGenerator) => (
             <DateRangeSelector
               defaultText="All short URLs"
               initialDateRange={{
-                startDate: dateOrNull(shortUrlsListParams.startDate),
-                endDate: dateOrNull(shortUrlsListParams.endDate),
+                startDate: dateOrNull(startDate),
+                endDate: dateOrNull(endDate),
               }}
               onDatesChange={setDates}
             />

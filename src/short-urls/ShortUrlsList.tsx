@@ -40,8 +40,8 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
     field: orderBy && (head(keys(orderBy)) as OrderableFields),
     dir: orderBy && head(values(orderBy)),
   });
-  const [{ tags, search }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
-  const decodedTags = useMemo(() => tags?.split(',').map(decodeURIComponent) ?? [], [ tags ]);
+  const [{ tags, search, startDate, endDate }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
+  const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
 
   const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
@@ -53,14 +53,16 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
     handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
   const renderOrderIcon = (field: OrderableFields) => <TableOrderIcon currentOrder={order} field={field} />;
   const addTag = pipe(
-    (newTag: string) => [ ...new Set([ ...decodedTags, newTag ]) ].join(','),
+    (newTag: string) => [ ...new Set([ ...selectedTags, newTag ]) ].join(','),
     (tags) => toFirstPage({ tags }),
   );
 
   useEffect(() => resetShortUrlParams, []);
   useEffect(() => {
-    refreshList({ page: match.params.page, searchTerm: search, tags: decodedTags, itemsPerPage: undefined });
-  }, [ match.params.page, search, decodedTags ]);
+    refreshList(
+      { page: match.params.page, searchTerm: search, tags: selectedTags, itemsPerPage: undefined, startDate, endDate },
+    );
+  }, [ match.params.page, search, selectedTags, startDate, endDate ]);
 
   return (
     <>
