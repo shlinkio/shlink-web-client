@@ -1,12 +1,11 @@
 import { FC, useEffect, useRef } from 'react';
 import { splitEvery } from 'ramda';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { RouteChildrenProps } from 'react-router';
 import { SimpleCard } from '../utils/SimpleCard';
 import SimplePaginator from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { OrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
 import { TagsTableRowProps } from './TagsTableRow';
 import './TagsTable.scss';
@@ -27,8 +26,6 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
   const pages = splitEvery(TAGS_PER_PAGE, sortedTags);
   const showPaginator = pages.length > 1;
   const currentPage = pages[page - 1] ?? [];
-  const renderOrderIcon = (field: OrderableFields) => currentOrder.dir && currentOrder.field === field &&
-    <FontAwesomeIcon icon={currentOrder.dir === 'ASC' ? caretUpIcon : caretDownIcon} className="ml-1" />;
 
   useEffect(() => {
     !isFirstLoad.current && setPage(1);
@@ -43,12 +40,14 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
       <table className="table table-hover mb-0">
         <thead className="responsive-table__header">
           <tr>
-            <th className="tags-table__header-cell" onClick={orderByColumn('tag')}>Tag {renderOrderIcon('tag')}</th>
+            <th className="tags-table__header-cell" onClick={orderByColumn('tag')}>
+              Tag <TableOrderIcon currentOrder={currentOrder} field="tag" />
+            </th>
             <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('shortUrls')}>
-              Short URLs {renderOrderIcon('shortUrls')}
+              Short URLs <TableOrderIcon currentOrder={currentOrder} field="shortUrls" />
             </th>
             <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('visits')}>
-              Visits {renderOrderIcon('visits')}
+              Visits <TableOrderIcon currentOrder={currentOrder} field="visits" />
             </th>
             <th className="tags-table__header-cell" />
           </tr>

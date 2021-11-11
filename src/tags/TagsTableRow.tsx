@@ -32,7 +32,7 @@ export const TagsTableRow = (
         <TagBullet tag={tag.tag} colorGenerator={colorGenerator} /> {tag.tag}
       </th>
       <td className="responsive-table__cell text-lg-right" data-th="Short URLs">
-        <Link to={`/server/${serverId}/list-short-urls/1?tag=${encodeURIComponent(tag.tag)}`}>
+        <Link to={`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}>
           {prettify(tag.shortUrls)}
         </Link>
       </td>

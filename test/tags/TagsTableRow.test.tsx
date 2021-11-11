@@ -35,7 +35,7 @@ describe('<TagsTableRow />', () => {
     const visitsLink = links.last();
 
     expect(shortUrlsLink.prop('children')).toEqual(expectedShortUrls);
-    expect(shortUrlsLink.prop('to')).toEqual(`/server/abc123/list-short-urls/1?tag=${encodeURIComponent('foo&bar')}`);
+    expect(shortUrlsLink.prop('to')).toEqual(`/server/abc123/list-short-urls/1?tags=${encodeURIComponent('foo&bar')}`);
     expect(visitsLink.prop('children')).toEqual(expectedVisits);
     expect(visitsLink.prop('to')).toEqual('/server/abc123/tag/foo&bar/visits');
   });

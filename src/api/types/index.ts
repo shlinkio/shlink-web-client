@@ -1,6 +1,7 @@
 import { Visit } from '../../visits/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import { OrderBy } from '../../short-urls/reducers/shortUrlsListParams';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -83,6 +84,16 @@ export interface ShlinkDomain {
 
 export interface ShlinkDomainsResponse {
   data: ShlinkDomain[];
+}
+
+export interface ShlinkShortUrlsListParams {
+  page?: string;
+  itemsPerPage?: number;
+  tags?: string[];
+  searchTerm?: string;
+  startDate?: string;
+  endDate?: string;
+  orderBy?: OrderBy;
 }
 
 export interface ProblemDetailsError {

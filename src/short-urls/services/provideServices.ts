@@ -1,5 +1,4 @@
-import Bottle from 'bottlejs';
-import ShortUrls from '../ShortUrls';
+import Bottle, { Decorator } from 'bottlejs';
 import SearchBar from '../SearchBar';
 import ShortUrlsList from '../ShortUrlsList';
 import ShortUrlsRow from '../helpers/ShortUrlsRow';
@@ -19,14 +18,11 @@ import { ShortUrlForm } from '../ShortUrlForm';
 import { EditShortUrl } from '../EditShortUrl';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   // Components
-  bottle.serviceFactory('ShortUrls', ShortUrls, 'SearchBar', 'ShortUrlsList');
-  bottle.decorator('ShortUrls', connect([ 'shortUrlsList' ]));
-
-  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable');
+  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'SearchBar');
   bottle.decorator('ShortUrlsList', connect(
-    [ 'selectedServer', 'shortUrlsListParams', 'mercureInfo' ],
+    [ 'selectedServer', 'shortUrlsListParams', 'mercureInfo', 'shortUrlsList' ],
     [ 'listShortUrls', 'resetShortUrlParams', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
@@ -56,7 +52,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Services
   bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-  bottle.decorator('SearchBar', connect([ 'shortUrlsListParams' ], [ 'listShortUrls' ]));
+  bottle.decorator('SearchBar', withRouter);
 
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');

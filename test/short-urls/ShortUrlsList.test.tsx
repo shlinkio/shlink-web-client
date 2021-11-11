@@ -1,19 +1,24 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ReactElement } from 'react';
 import { Mock } from 'ts-mockery';
-import shortUrlsListCreator, { ShortUrlsListProps } from '../../src/short-urls/ShortUrlsList';
+import { History, Location } from 'history';
+import { match } from 'react-router';
+import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
 import { ShortUrl } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import SortingDropdown from '../../src/utils/SortingDropdown';
 import { OrderableFields, OrderBy } from '../../src/short-urls/reducers/shortUrlsListParams';
 import Paginator from '../../src/short-urls/Paginator';
+import { ReachableServer } from '../../src/servers/data';
+import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
 
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsTable = () => null;
+  const SearchBar = () => null;
   const listShortUrlsMock = jest.fn();
-  const resetShortUrlParamsMock = jest.fn();
+  const push = jest.fn();
   const shortUrlsList = Mock.of<ShortUrlsListModel>({
     shortUrls: {
       data: [
@@ -26,22 +31,18 @@ describe('<ShortUrlsList />', () => {
       ],
     },
   });
-  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable);
+  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, SearchBar);
   const createWrapper = (orderBy: OrderBy = {}) => shallow(
     <ShortUrlsList
-      {...Mock.all<ShortUrlsListProps>()}
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
       listShortUrls={listShortUrlsMock}
-      resetShortUrlParams={resetShortUrlParamsMock}
-      shortUrlsListParams={{
-        page: '1',
-        tags: [ 'test tag' ],
-        searchTerm: 'example.com',
-        orderBy,
-      }}
-      match={{ params: {} } as any}
-      location={{} as any}
+      resetShortUrlParams={jest.fn()}
+      shortUrlsListParams={{ page: '1', orderBy }}
+      match={Mock.of<match<ShortUrlListRouteParams>>({ params: {} })}
+      location={Mock.of<Location>({ search: '?tags=test%20tag&search=example.com' })}
       shortUrlsList={shortUrlsList}
+      history={Mock.of<History>({ push })}
+      selectedServer={Mock.of<ReachableServer>({ id: '1' })}
     />,
   ).dive(); // Dive is needed as this component is wrapped in a HOC
 
@@ -56,6 +57,11 @@ describe('<ShortUrlsList />', () => {
     expect(wrapper.find(ShortUrlsTable)).toHaveLength(1);
     expect(wrapper.find(SortingDropdown)).toHaveLength(1);
     expect(wrapper.find(Paginator)).toHaveLength(1);
+    expect(wrapper.find(SearchBar)).toHaveLength(1);
+  });
+
+  it('passes current query to paginator', () => {
+    expect(wrapper.find(Paginator).prop('currentQueryString')).toEqual('?tags=test%20tag&search=example.com');
   });
 
   it('gets list refreshed every time a tag is clicked', () => {
@@ -63,32 +69,26 @@ describe('<ShortUrlsList />', () => {
     wrapper.find(ShortUrlsTable).simulate('tagClick', 'bar');
     wrapper.find(ShortUrlsTable).simulate('tagClick', 'baz');
 
-    expect(listShortUrlsMock).toHaveBeenCalledTimes(3);
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      tags: [ 'test tag', 'foo' ],
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      tags: [ 'test tag', 'bar' ],
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
-      tags: [ 'test tag', 'baz' ],
-    }));
+    expect(push).toHaveBeenCalledTimes(3);
+    expect(push).toHaveBeenNthCalledWith(1, expect.stringContaining(`tags=${encodeURIComponent('test tag,foo')}`));
+    expect(push).toHaveBeenNthCalledWith(2, expect.stringContaining(`tags=${encodeURIComponent('test tag,bar')}`));
+    expect(push).toHaveBeenNthCalledWith(3, expect.stringContaining(`tags=${encodeURIComponent('test tag,baz')}`));
   });
 
   it('invokes order icon rendering', () => {
     const renderIcon = (field: OrderableFields) =>
-      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement | null)(field);
+      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement)(field);
 
-    expect(renderIcon('visits')).toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({});
 
     wrapper.find(SortingDropdown).simulate('change', 'visits');
-    expect(renderIcon('visits')).toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits' });
 
     wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-    expect(renderIcon('visits')).not.toEqual(undefined);
+    expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits', dir: 'ASC' });
   });
 
-  it('handles order by through table', () => {
+  it('handles order through table', () => {
     const orderByColumn: (field: OrderableFields) => Function = wrapper.find(ShortUrlsTable).prop('orderByColumn');
 
     orderByColumn('visits')();
@@ -107,7 +107,7 @@ describe('<ShortUrlsList />', () => {
     }));
   });
 
-  it('handles order by through dropdown', () => {
+  it('handles order through dropdown', () => {
     expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
 
     wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');

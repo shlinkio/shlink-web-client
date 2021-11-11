@@ -13,7 +13,7 @@ import './MenuLayout.scss';
 
 const MenuLayout = (
   TagsList: FC,
-  ShortUrls: FC,
+  ShortUrlsList: FC,
   AsideMenu: FC<AsideMenuProps>,
   CreateShortUrl: FC,
   ShortUrlVisits: FC,
@@ -49,7 +49,7 @@ const MenuLayout = (
               <Switch>
                 <Redirect exact from="/server/:serverId" to="/server/:serverId/overview" />
                 <Route exact path="/server/:serverId/overview" component={Overview} />
-                <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrls} />
+                <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrlsList} />
                 <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
                 <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
                 <Route path="/server/:serverId/short-code/:shortCode/edit" component={EditShortUrl} />

@@ -1,12 +1,7 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
-import {
-  faCaretDown as caretDownIcon,
-  faCaretUp as caretUpIcon,
-  faCheck as checkIcon,
-  faRobot as botIcon,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheck as checkIcon, faRobot as botIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import SimplePaginator from '../common/SimplePaginator';
@@ -16,6 +11,7 @@ import { prettify } from '../utils/helpers/numbers';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { Time } from '../utils/Time';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
@@ -72,12 +68,8 @@ const VisitsTable = ({
 
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field && (
-    <FontAwesomeIcon
-      icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon}
-      className="visits-table__header-icon"
-    />
-  );
+  const renderOrderIcon = (field: OrderableFields) =>
+    <TableOrderIcon currentOrder={order} field={field} className="visits-table__header-icon" />;
 
   useEffect(() => {
     const listener = () => setIsMobileDevice(matchMobile());

@@ -1,15 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import { pageIsEllipsis, keyForPage, progressivePagination, prettifyPageNumber } from '../utils/helpers/pagination';
+import {
+  pageIsEllipsis,
+  keyForPage,
+  progressivePagination,
+  prettifyPageNumber,
+  NumberOrEllipsis,
+} from '../utils/helpers/pagination';
 import { ShlinkPaginator } from '../api/types';
 
 interface PaginatorProps {
   paginator?: ShlinkPaginator;
   serverId: string;
+  currentQueryString?: string;
 }
 
-const Paginator = ({ paginator, serverId }: PaginatorProps) => {
+const Paginator = ({ paginator, serverId, currentQueryString = '' }: PaginatorProps) => {
   const { currentPage = 0, pagesCount = 0 } = paginator ?? {};
+  const urlForPage = (pageNumber: NumberOrEllipsis) =>
+    `/server/${serverId}/list-short-urls/${pageNumber}${currentQueryString}`;
 
   if (pagesCount <= 1) {
     return null;
@@ -22,10 +31,7 @@ const Paginator = ({ paginator, serverId }: PaginatorProps) => {
         disabled={pageIsEllipsis(pageNumber)}
         active={currentPage === pageNumber}
       >
-        <PaginationLink
-          tag={Link}
-          to={`/server/${serverId}/list-short-urls/${pageNumber}`}
-        >
+        <PaginationLink tag={Link} to={urlForPage(pageNumber)}>
           {prettifyPageNumber(pageNumber)}
         </PaginationLink>
       </PaginationItem>
@@ -34,19 +40,11 @@ const Paginator = ({ paginator, serverId }: PaginatorProps) => {
   return (
     <Pagination className="sticky-card-paginator" listClassName="flex-wrap justify-content-center mb-0">
       <PaginationItem disabled={currentPage === 1}>
-        <PaginationLink
-          previous
-          tag={Link}
-          to={`/server/${serverId}/list-short-urls/${currentPage - 1}`}
-        />
+        <PaginationLink previous tag={Link} to={urlForPage(currentPage - 1)} />
       </PaginationItem>
       {renderPages()}
       <PaginationItem disabled={currentPage >= pagesCount}>
-        <PaginationLink
-          next
-          tag={Link}
-          to={`/server/${serverId}/list-short-urls/${currentPage + 1}`}
-        />
+        <PaginationLink next tag={Link} to={urlForPage(currentPage + 1)} />
       </PaginationItem>
     </Pagination>
   );

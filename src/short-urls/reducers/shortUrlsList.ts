@@ -5,7 +5,7 @@ import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCr
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ShlinkShortUrlsResponse } from '../../api/types';
+import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
 import { DeleteShortUrlAction, SHORT_URL_DELETED } from './shortUrlDeletion';
 import { ShortUrlsListParams } from './shortUrlsListParams';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from './shortUrlCreation';
@@ -101,7 +101,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
 }, initialState);
 
 export const listShortUrls = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  params: ShortUrlsListParams = {},
+  params: ShlinkShortUrlsListParams = {},
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: LIST_SHORT_URLS_START });
   const { listShortUrls } = buildShlinkApiClient(getState);

@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardText, CardTitle, Row } from 'reactstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { ShortUrlsListParams } from '../short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
@@ -11,12 +10,13 @@ import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Versions } from '../utils/helpers/version';
 import { Topics } from '../mercure/helpers/Topics';
+import { ShlinkShortUrlsListParams } from '../api/types';
 import { getServerId, SelectedServer } from './data';
 import './Overview.scss';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
-  listShortUrls: (params: ShortUrlsListParams) => void;
+  listShortUrls: (params: ShlinkShortUrlsListParams) => void;
   listTags: Function;
   tagsList: TagsList;
   selectedServer: SelectedServer;
@@ -107,7 +107,7 @@ export const Overview = (
             shortUrlsList={shortUrlsList}
             selectedServer={selectedServer}
             className="mb-0"
-            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tag=${tag}`)}
+            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
           />
         </CardBody>
       </Card>
