@@ -2,27 +2,28 @@ import { Mock } from 'ts-mockery';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { match } from 'react-router';
 import { Location, History } from 'history';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
-import { TagsList } from '../../src/tags/reducers/tagsList';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
+import { NormalizedTag } from '../../src/tags/data';
 
 describe('<TagsTable />', () => {
-  const colorGenerator = Mock.all<ColorGenerator>();
   const TagsTableRow = () => null;
-  const TagsTable = createTagsTable(colorGenerator, TagsTableRow);
+  const orderByColumn = jest.fn();
+  const TagsTable = createTagsTable(TagsTableRow);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   let wrapper: ShallowWrapper;
-  const createWrapper = (filteredTags: string[] = [], search = '') => {
+  const createWrapper = (sortedTags: string[] = [], search = '') => {
     wrapper = shallow(
       <TagsTable
-        tagsList={Mock.of<TagsList>({ stats: {}, filteredTags })}
+        sortedTags={sortedTags.map((tag) => Mock.of<NormalizedTag>({ tag }))}
         selectedServer={Mock.all<SelectedServer>()}
+        currentOrder={{}}
         history={Mock.all<History>()}
         location={Mock.of<Location>({ search })}
         match={Mock.all<match>()}
+        orderByColumn={() => orderByColumn}
       />,
     );
 
@@ -34,6 +35,7 @@ describe('<TagsTable />', () => {
     (global as any).history = { pushState: jest.fn() };
   });
 
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('renders empty result if there are no tags', () => {
@@ -86,7 +88,7 @@ describe('<TagsTable />', () => {
 
     expect(tagRows).toHaveLength(expectedRows);
     tagRows.forEach((row, index) => {
-      expect(row.prop('tag')).toEqual(`tag_${index + offset + 1}`);
+      expect(row.prop('tag')).toEqual(expect.objectContaining({ tag: `tag_${index + offset + 1}` }));
     });
   });
 
@@ -96,5 +98,15 @@ describe('<TagsTable />', () => {
     expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(1);
     (wrapper.find(SimplePaginator).prop('setCurrentPage') as Function)(5);
     expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(5);
+  });
+
+  it('orders tags when column is clicked', () => {
+    const wrapper = createWrapper(tags(100));
+
+    expect(orderByColumn).not.toHaveBeenCalled();
+    wrapper.find('thead').find('th').first().simulate('click');
+    wrapper.find('thead').find('th').at(2).simulate('click');
+    wrapper.find('thead').find('th').at(1).simulate('click');
+    expect(orderByColumn).toHaveBeenCalledTimes(3);
   });
 });

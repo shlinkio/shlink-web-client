@@ -5,6 +5,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
+import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
@@ -24,6 +25,7 @@ export interface TagVisits extends VisitsInfo {
 export interface TagVisitsAction extends Action<string> {
   visits: Visit[];
   tag: string;
+  query?: ShlinkVisitsParams;
 }
 
 type TagsVisitsCombinedAction = TagVisitsAction
@@ -44,14 +46,15 @@ const initialState: TagVisits = {
 export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_TAG_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_TAG_VISITS]: (_, { visits, tag }) => ({ ...initialState, visits, tag }),
+  [GET_TAG_VISITS]: (_, { visits, tag, query }) => ({ ...initialState, visits, tag, query }),
   [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [CREATE_VISITS]: (state, { createdVisits }) => {
-    const { tag, visits } = state;
+    const { tag, visits, query = {} } = state;
+    const { startDate, endDate } = query;
     const newVisits = createdVisits
-      .filter(({ shortUrl }) => shortUrl?.tags.includes(tag))
+      .filter(({ shortUrl, visit }) => shortUrl?.tags.includes(tag) && isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);
 
     return { ...state, visits: [ ...newVisits, ...visits ] };
@@ -68,7 +71,7 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
     { ...query, page, itemsPerPage },
   );
   const shouldCancel = () => getState().tagVisits.cancelLoad;
-  const extraFinishActionData: Partial<TagVisitsAction> = { tag };
+  const extraFinishActionData: Partial<TagVisitsAction> = { tag, query };
   const actionMap = {
     start: GET_TAG_VISITS_START,
     large: GET_TAG_VISITS_LARGE,

@@ -28,13 +28,14 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
+  bottle.decorator('Home', withRouter);
   bottle.decorator('Home', connect([ 'servers' ], [ 'resetSelectedServer' ]));
 
   bottle.serviceFactory(
     'MenuLayout',
     MenuLayout,
     'TagsList',
-    'ShortUrls',
+    'ShortUrlsList',
     'AsideMenu',
     'CreateShortUrl',
     'ShortUrlVisits',
@@ -45,7 +46,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'EditShortUrl',
     'ManageDomains',
   );
-  bottle.decorator('MenuLayout', connect([ 'selectedServer', 'shortUrlsListParams' ], [ 'selectServer' ]));
+  bottle.decorator('MenuLayout', connect([ 'selectedServer' ], [ 'selectServer' ]));
   bottle.decorator('MenuLayout', withRouter);
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');

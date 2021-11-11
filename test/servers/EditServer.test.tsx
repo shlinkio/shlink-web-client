@@ -10,8 +10,8 @@ describe('<EditServer />', () => {
   let wrapper: ReactWrapper;
   const ServerError = jest.fn();
   const editServerMock = jest.fn();
-  const push = jest.fn();
-  const historyMock = Mock.of<History>({ push });
+  const goBack = jest.fn();
+  const historyMock = Mock.of<History>({ goBack });
   const match = Mock.of<match<{ serverId: string }>>({
     params: { serverId: 'abc123' },
   });
@@ -50,6 +50,6 @@ describe('<EditServer />', () => {
     form.simulate('submit', {});
 
     expect(editServerMock).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledTimes(1);
+    expect(goBack).toHaveBeenCalledTimes(1);
   });
 });

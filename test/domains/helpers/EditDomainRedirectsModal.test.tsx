@@ -42,7 +42,7 @@ describe('<EditDomainRedirectsModal />', () => {
   it('has different handlers to toggle the modal', () => {
     expect(toggle).not.toHaveBeenCalled();
 
-    (wrapper.prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (wrapper.prop('toggle') as Function)();
     (wrapper.find(ModalHeader).prop('toggle') as Function)();
     wrapper.find(Button).first().simulate('click');
 

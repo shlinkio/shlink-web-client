@@ -1,6 +1,7 @@
 import { Visit } from '../../visits/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import { OrderBy } from '../../short-urls/reducers/shortUrlsListParams';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -25,12 +26,12 @@ interface ShlinkTagsStats {
 
 export interface ShlinkTags {
   tags: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
+  stats: ShlinkTagsStats[];
 }
 
 export interface ShlinkTagsResponse {
   data: string[];
-  stats?: ShlinkTagsStats[]; // Is only optional in Shlink older than v2.2
+  stats: ShlinkTagsStats[];
 }
 
 export interface ShlinkPaginator {
@@ -85,12 +86,21 @@ export interface ShlinkDomainsResponse {
   data: ShlinkDomain[];
 }
 
+export interface ShlinkShortUrlsListParams {
+  page?: string;
+  itemsPerPage?: number;
+  tags?: string[];
+  searchTerm?: string;
+  startDate?: string;
+  endDate?: string;
+  orderBy?: OrderBy;
+}
+
 export interface ProblemDetailsError {
   type: string;
   detail: string;
   title: string;
   status: number;
-
   [extraProps: string]: any;
 }
 

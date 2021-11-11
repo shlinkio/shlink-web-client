@@ -1,21 +1,17 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
-import {
-  faCaretDown as caretDownIcon,
-  faCaretUp as caretUpIcon,
-  faCheck as checkIcon,
-  faRobot as botIcon,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheck as checkIcon, faRobot as botIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import SimplePaginator from '../common/SimplePaginator';
 import SearchField from '../utils/SearchField';
-import { determineOrderDir, OrderDir } from '../utils/utils';
+import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
 import { prettify } from '../utils/helpers/numbers';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { Time } from '../utils/Time';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
@@ -29,11 +25,7 @@ export interface VisitsTableProps {
 }
 
 type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer' | 'visitedUrl' | 'potentialBot';
-
-interface Order {
-  field?: OrderableFields;
-  dir?: OrderDir;
-}
+type VisitsOrder = Order<OrderableFields>;
 
 const PAGE_SIZE = 20;
 const visitMatchesSearch = ({ browser, os, referer, country, city, ...rest }: NormalizedVisit, searchTerm: string) =>
@@ -42,15 +34,8 @@ const visitMatchesSearch = ({ browser, os, referer, country, city, ...rest }: No
   );
 const searchVisits = (searchTerm: string, visits: NormalizedVisit[]) =>
   visits.filter((visit) => visitMatchesSearch(visit, searchTerm));
-const sortVisits = ({ field, dir }: Order, visits: NormalizedVisit[]) => !field || !dir ? visits : visits.sort(
-  (a, b) => {
-    const greaterThan = dir === 'ASC' ? 1 : -1;
-    const smallerThan = dir === 'ASC' ? -1 : 1;
-
-    return (a as NormalizedOrphanVisit)[field] > (b as NormalizedOrphanVisit)[field] ? greaterThan : smallerThan;
-  },
-);
-const calculateVisits = (allVisits: NormalizedVisit[], searchTerm: string | undefined, order: Order) => {
+const sortVisits = (order: VisitsOrder, visits: NormalizedVisit[]) => sortList<NormalizedVisit>(visits, order as any);
+const calculateVisits = (allVisits: NormalizedVisit[], searchTerm: string | undefined, order: VisitsOrder) => {
   const filteredVisits = searchTerm ? searchVisits(searchTerm, allVisits) : [ ...allVisits ];
   const sortedVisits = sortVisits(order, filteredVisits);
   const total = sortedVisits.length;
@@ -72,7 +57,7 @@ const VisitsTable = ({
 
   const [ isMobileDevice, setIsMobileDevice ] = useState(matchMobile());
   const [ searchTerm, setSearchTerm ] = useState<string | undefined>(undefined);
-  const [ order, setOrder ] = useState<Order>({ field: undefined, dir: undefined });
+  const [ order, setOrder ] = useState<VisitsOrder>({});
   const resultSet = useMemo(() => calculateVisits(visits, searchTerm, order), [ searchTerm, order ]);
   const isFirstLoad = useRef(true);
   const [ page, setPage ] = useState(1);
@@ -83,12 +68,8 @@ const VisitsTable = ({
 
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
-  const renderOrderIcon = (field: OrderableFields) => order.dir && order.field === field && (
-    <FontAwesomeIcon
-      icon={order.dir === 'ASC' ? caretUpIcon : caretDownIcon}
-      className="visits-table__header-icon"
-    />
-  );
+  const renderOrderIcon = (field: OrderableFields) =>
+    <TableOrderIcon currentOrder={order} field={field} className="visits-table__header-icon" />;
 
   useEffect(() => {
     const listener = () => setIsMobileDevice(matchMobile());

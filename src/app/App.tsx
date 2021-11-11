@@ -23,6 +23,7 @@ const App = (
   CreateServer: FC,
   EditServer: FC,
   Settings: FC,
+  ManageServers: FC,
   ShlinkVersionsContainer: FC,
 ) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
   useEffect(() => {
@@ -43,6 +44,7 @@ const App = (
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/settings" component={Settings} />
+            <Route exact path="/manage-servers" component={ManageServers} />
             <Route exact path="/server/create" component={CreateServer} />
             <Route exact path="/server/:serverId/edit" component={EditServer} />
             <Route path="/server/:serverId" component={MenuLayout} />

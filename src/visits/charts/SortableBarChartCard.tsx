@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
-import { OrderDir, rangeOf } from '../../utils/utils';
+import { rangeOf } from '../../utils/utils';
+import { Order } from '../../utils/helpers/ordering';
 import SimplePaginator from '../../common/SimplePaginator';
 import { roundTen } from '../../utils/helpers/numbers';
 import SortingDropdown from '../../utils/SortingDropdown';
@@ -29,24 +30,21 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   withPagination = true,
   ...rest
 }) => {
-  const [ order, setOrder ] = useState<{ orderField?: string; orderDir?: OrderDir }>({
-    orderField: undefined,
-    orderDir: undefined,
-  });
+  const [ order, setOrder ] = useState<Order<string>>({});
   const [ currentPage, setCurrentPage ] = useState(1);
   const [ itemsPerPage, setItemsPerPage ] = useState(50);
 
   const getSortedPairsForStats = (stats: Stats, sortingItems: Record<string, string>) => {
     const pairs = toPairs(stats);
-    const sortedPairs = !order.orderField ? pairs : sortBy(
+    const sortedPairs = !order.field ? pairs : sortBy(
       pipe<StatsRow, string | number, string | number>(
-        order.orderField === Object.keys(sortingItems)[0] ? pickKeyFromPair : pickValueFromPair,
+        order.field === Object.keys(sortingItems)[0] ? pickKeyFromPair : pickValueFromPair,
         toLowerIfString,
       ),
       pairs,
     );
 
-    return !order.orderDir || order.orderDir === 'ASC' ? sortedPairs : reverse(sortedPairs);
+    return !order.dir || order.dir === 'ASC' ? sortedPairs : reverse(sortedPairs);
   };
   const determineCurrentPagePairs = (pages: StatsRow[][]): StatsRow[] => {
     const page = pages[currentPage - 1];
@@ -102,10 +100,9 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
           isButton={false}
           right
           items={sortingItems}
-          orderField={order.orderField}
-          orderDir={order.orderDir}
-          onChange={(orderField, orderDir) => {
-            setOrder({ orderField, orderDir });
+          order={order}
+          onChange={(field, dir) => {
+            setOrder({ field, dir });
             setCurrentPage(1);
           }}
         />

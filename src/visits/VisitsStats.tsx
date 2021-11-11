@@ -15,6 +15,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
+import { prettify } from '../utils/helpers/numbers';
 import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
@@ -295,7 +296,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                   className="btn-md-block mr-2"
                   onClick={() => setSelectedVisits([])}
                 >
-                  Clear selection {highlightedVisits.length > 0 && <>({highlightedVisits.length})</>}
+                  Clear selection {highlightedVisits.length > 0 && <>({prettify(highlightedVisits.length)})</>}
                 </Button>
                 <Button
                   outline
@@ -303,7 +304,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                   className="btn-md-block"
                   onClick={() => exportCsv(normalizedVisits)}
                 >
-                  <FontAwesomeIcon icon={faFileDownload} /> Export ({normalizedVisits.length})
+                  <FontAwesomeIcon icon={faFileDownload} /> Export ({prettify(normalizedVisits.length)})
                 </Button>
               </div>
             </div>

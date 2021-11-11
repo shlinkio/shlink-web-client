@@ -48,7 +48,7 @@ export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
   try {
     await deleteShortUrl(shortCode, domain);
     dispatch<DeleteShortUrlAction>({ type: SHORT_URL_DELETED, shortCode, domain });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 
     throw e;

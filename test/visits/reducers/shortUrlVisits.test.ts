@@ -1,4 +1,5 @@
 import { Mock } from 'ts-mockery';
+import { addDays, subDays } from 'date-fns';
 import reducer, {
   getShortUrlVisits,
   cancelGetShortUrlVisits,
@@ -16,8 +17,10 @@ import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
+import { formatIsoDate } from '../../../src/utils/helpers/date';
 
 describe('shortUrlVisitsReducer', () => {
+  const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
 
   describe('reducer', () => {
@@ -66,8 +69,52 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it.each([
-      [{ shortCode: 'abc123' }, [{}, ...visitsMocks ]],
-      [{ shortCode: 'def456' }, visitsMocks ],
+      [{ shortCode: 'abc123' }, visitsMocks.length + 1 ],
+      [{ shortCode: 'def456' }, visitsMocks.length ],
+      [
+        Mock.of<ShortUrlVisits>({
+          shortCode: 'abc123',
+          query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<ShortUrlVisits>({
+          shortCode: 'abc123',
+          query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<ShortUrlVisits>({
+          shortCode: 'abc123',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(subDays(now, 2)) ?? undefined,
+          },
+        }),
+        visitsMocks.length,
+      ],
+      [
+        Mock.of<ShortUrlVisits>({
+          shortCode: 'abc123',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
+          },
+        }),
+        visitsMocks.length + 1,
+      ],
+      [
+        Mock.of<ShortUrlVisits>({
+          shortCode: 'def456',
+          query: {
+            startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
+            endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
+          },
+        }),
+        visitsMocks.length,
+      ],
     ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
       const shortUrl = {
         shortCode: 'abc123',
@@ -77,9 +124,12 @@ describe('shortUrlVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(prevState, { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: {} }] } as any);
+      const { visits } = reducer(
+        prevState,
+        { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] } as any,
+      );
 
-      expect(visits).toEqual(expectedVisits);
+      expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_SHORT_URL_VISITS_PROGRESS_CHANGED', () => {
@@ -133,7 +183,10 @@ describe('shortUrlVisitsReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_VISITS, visits, shortCode, domain });
+      expect(dispatchMock).toHaveBeenNthCalledWith(
+        2,
+        { type: GET_SHORT_URL_VISITS, visits, shortCode, domain, query: query ?? {} },
+      );
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
     });
 

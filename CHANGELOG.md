@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.4.0] - 2021-11-11
+### Added
+* [#496](https://github.com/shlinkio/shlink-web-client/issues/496) Allowed to select "all visits" as the default interval for visits.
+* [#500](https://github.com/shlinkio/shlink-web-client/issues/500) Allowed to set the `forwardQuery` flag when creating/editing short URLs on a Shlink v2.9.0 server.
+* [#508](https://github.com/shlinkio/shlink-web-client/issues/508) Added new servers management section.
+* [#490](https://github.com/shlinkio/shlink-web-client/issues/490) Now a server can be marked as auto-connect, skipping home screen when that happens.
+* [#492](https://github.com/shlinkio/shlink-web-client/issues/492) Improved tags table, by supporting sorting by column and making the header sticky.
+* [#515](https://github.com/shlinkio/shlink-web-client/issues/515) Allowed to sort tags even when using the cards display mode.
+* [#518](https://github.com/shlinkio/shlink-web-client/issues/518) Improved short URLs list filtering by moving selected tags, search text and dates to the query string, allowing to navigate back and forth or even bookmark filters.
+
+### Changed
+* Moved ci workflow to external repo and reused
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#252](https://github.com/shlinkio/shlink-web-client/issues/252) Fixed visits coming from mercure being added in real time, even when selected date interval does not match tha visit's date.
+* [#48](https://github.com/shlinkio/shlink-web-client/issues/48) Fixed error when selected page gets out of range after filtering short URLs list by text, tags or dates. Now the page is reset to 1 in any of those cases.
+
+
 ## [3.3.2] - 2021-10-17
 ### Added
 * *Nothing*

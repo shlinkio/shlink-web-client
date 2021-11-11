@@ -5,7 +5,7 @@ import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
-import { supportsCrawlableVisits, supportsShortUrlTitle } from '../utils/helpers/features';
+import { supportsCrawlableVisits, supportsForwardQuery, supportsShortUrlTitle } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
@@ -33,6 +33,7 @@ export interface ShortUrlFormProps {
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const toDate = (date?: string | Date): Date | undefined => typeof date === 'string' ? parseISO(date) : date;
+const dynamicColClasses = (flag: boolean) => ({ 'col-sm-6': flag, 'col-sm-12': !flag });
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
@@ -109,11 +110,11 @@ export const ShortUrlForm = (
 
   const supportsTitle = supportsShortUrlTitle(selectedServer);
   const showCustomizeCard = supportsTitle || !isEdit;
-  const limitAccessCardClasses = classNames('mb-3', {
-    'col-sm-6': showCustomizeCard,
-    'col-sm-12': !showCustomizeCard,
-  });
+  const limitAccessCardClasses = classNames('mb-3', dynamicColClasses(showCustomizeCard));
   const showCrawlableControl = supportsCrawlableVisits(selectedServer);
+  const showForwardQueryControl = supportsForwardQuery(selectedServer);
+  const showBehaviorCard = showCrawlableControl || showForwardQueryControl;
+  const extraChecksCardClasses = classNames('mb-3', dynamicColClasses(showBehaviorCard));
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -165,37 +166,56 @@ export const ShortUrlForm = (
             </div>
           </Row>
 
-          <SimpleCard title="Extra checks" className="mb-3">
-            <ShortUrlFormCheckboxGroup
-              infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
-              checked={shortUrlData.validateUrl}
-              onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
-            >
-              Validate URL
-            </ShortUrlFormCheckboxGroup>
-            {showCrawlableControl && (
-              <ShortUrlFormCheckboxGroup
-                infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
-                checked={shortUrlData.crawlable}
-                onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
-              >
-                Make it crawlable
-              </ShortUrlFormCheckboxGroup>
-            )}
-            {!isEdit && (
-              <p>
-                <Checkbox
-                  inline
-                  className="mr-2"
-                  checked={shortUrlData.findIfExists}
-                  onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
+          <Row>
+            <div className={extraChecksCardClasses}>
+              <SimpleCard title="Extra checks">
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."
+                  checked={shortUrlData.validateUrl}
+                  onChange={(validateUrl) => setShortUrlData({ ...shortUrlData, validateUrl })}
                 >
-                  Use existing URL if found
-                </Checkbox>
-                <UseExistingIfFoundInfoIcon />
-              </p>
+                  Validate URL
+                </ShortUrlFormCheckboxGroup>
+                {!isEdit && (
+                  <p>
+                    <Checkbox
+                      inline
+                      className="mr-2"
+                      checked={shortUrlData.findIfExists}
+                      onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
+                    >
+                      Use existing URL if found
+                    </Checkbox>
+                    <UseExistingIfFoundInfoIcon />
+                  </p>
+                )}
+              </SimpleCard>
+            </div>
+            {showBehaviorCard && (
+              <div className="col-sm-6 mb-3">
+                <SimpleCard title="Configure behavior">
+                  {showCrawlableControl && (
+                    <ShortUrlFormCheckboxGroup
+                      infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
+                      checked={shortUrlData.crawlable}
+                      onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
+                    >
+                      Make it crawlable
+                    </ShortUrlFormCheckboxGroup>
+                  )}
+                  {showForwardQueryControl && (
+                    <ShortUrlFormCheckboxGroup
+                      infoTooltip="When this short URL is visited, any query params appended to it will be forwarded to the long URL."
+                      checked={shortUrlData.forwardQuery}
+                      onChange={(forwardQuery) => setShortUrlData({ ...shortUrlData, forwardQuery })}
+                    >
+                      Forward query params on redirect
+                    </ShortUrlFormCheckboxGroup>
+                  )}
+                </SimpleCard>
+              </div>
             )}
-          </SimpleCard>
+          </Row>
         </>
       )}
 

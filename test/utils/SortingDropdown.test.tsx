@@ -4,7 +4,7 @@ import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
 import SortingDropdown, { SortingDropdownProps } from '../../src/utils/SortingDropdown';
-import { OrderDir } from '../../src/utils/utils';
+import { OrderDir } from '../../src/utils/helpers/ordering';
 
 describe('<SortingDropdown />', () => {
   let wrapper: ShallowWrapper;
@@ -14,7 +14,7 @@ describe('<SortingDropdown />', () => {
     baz: 'Hello World',
   };
   const createWrapper = (props: Partial<SortingDropdownProps> = {}) => {
-    wrapper = shallow(<SortingDropdown items={items} onChange={identity} {...props} />);
+    wrapper = shallow(<SortingDropdown items={items} order={{}} onChange={identity} {...props} />);
 
     return wrapper;
   };
@@ -34,7 +34,7 @@ describe('<SortingDropdown />', () => {
   });
 
   it('properly marks selected field as active with proper icon', () => {
-    const wrapper = createWrapper({ orderField: 'bar', orderDir: 'DESC' });
+    const wrapper = createWrapper({ order: { field: 'bar', dir: 'DESC' } });
     const activeItem = wrapper.find('DropdownItem[active=true]');
     const activeItemIcon = activeItem.first().find(FontAwesomeIcon);
 
@@ -55,7 +55,7 @@ describe('<SortingDropdown />', () => {
 
   it('triggers change function when item is clicked and an order field was provided', () => {
     const onChange = jest.fn();
-    const wrapper = createWrapper({ onChange, orderField: 'baz', orderDir: 'ASC' });
+    const wrapper = createWrapper({ onChange, order: { field: 'baz', dir: 'ASC' } });
     const firstItem = wrapper.find(DropdownItem).first();
 
     firstItem.simulate('click');
@@ -66,7 +66,7 @@ describe('<SortingDropdown />', () => {
 
   it('updates order dir when already selected item is clicked', () => {
     const onChange = jest.fn();
-    const wrapper = createWrapper({ onChange, orderField: 'foo', orderDir: 'ASC' });
+    const wrapper = createWrapper({ onChange, order: { field: 'foo', dir: 'ASC' } });
     const firstItem = wrapper.find(DropdownItem).first();
 
     firstItem.simulate('click');
@@ -79,14 +79,14 @@ describe('<SortingDropdown />', () => {
     [{ isButton: false }, <>Order by</> ],
     [{ isButton: true }, <>Order by...</> ],
     [
-      { isButton: true, orderField: 'foo', orderDir: 'ASC' as OrderDir },
+      { isButton: true, order: { field: 'foo', dir: 'ASC' as OrderDir } },
       'Order by: "Foo" - "ASC"',
     ],
     [
-      { isButton: true, orderField: 'baz', orderDir: 'DESC' as OrderDir },
+      { isButton: true, order: { field: 'baz', dir: 'DESC' as OrderDir } },
       'Order by: "Hello World" - "DESC"',
     ],
-    [{ isButton: true, orderField: 'baz' }, 'Order by: "Hello World" - "DESC"' ],
+    [{ isButton: true, order: { field: 'baz' } }, 'Order by: "Hello World" - "DESC"' ],
   ])('displays expected text in toggle', (props, expectedText) => {
     const wrapper = createWrapper(props);
     const toggle = wrapper.find(DropdownToggle);

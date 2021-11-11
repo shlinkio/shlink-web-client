@@ -1,6 +1,6 @@
 @import '../base';
 
-@mixin sticky-cell() {
+@mixin sticky-cell($with-separators: true) {
   z-index: 1;
   border: none !important;
   position: relative;
@@ -11,20 +11,20 @@
     top: -1px;
     left: 0;
     bottom: -1px;
-    right: -1px;
+    right: if($with-separators, -1px, 0);
     background: var(--table-border-color);
     z-index: -2;
   }
 
   &:first-child:before {
-    left: -1px;
+    left: if($with-separators, -1px, 0);
   }
 
   &:after {
     content: '';
     position: absolute;
     top: 0;
-    left: 1px;
+    left: if($with-separators, 1px, 0);
     bottom: 0;
     right: 0;
     background: var(--primary-color);

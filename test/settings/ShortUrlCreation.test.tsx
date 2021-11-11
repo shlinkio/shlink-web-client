@@ -29,20 +29,42 @@ describe('<ShortUrlCreation />', () => {
     [ undefined, false ],
   ])('URL validation switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
     const wrapper = createWrapper(shortUrlCreation);
-    const toggle = wrapper.find(ToggleSwitch);
+    const urlValidationToggle = wrapper.find(ToggleSwitch).first();
 
-    expect(toggle.prop('checked')).toEqual(expectedChecked);
+    expect(urlValidationToggle.prop('checked')).toEqual(expectedChecked);
   });
 
   it.each([
-    [{ validateUrls: true }, 'checkbox will be checked' ],
-    [{ validateUrls: false }, 'checkbox will be unchecked' ],
-    [ undefined, 'checkbox will be unchecked' ],
+    [{ forwardQuery: true }, true ],
+    [{ forwardQuery: false }, false ],
+    [{}, true ],
+  ])('forward query switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
+    const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
+    const forwardQueryToggle = wrapper.find(ToggleSwitch).last();
+
+    expect(forwardQueryToggle.prop('checked')).toEqual(expectedChecked);
+  });
+
+  it.each([
+    [{ validateUrls: true }, 'Validate URL checkbox will be checked' ],
+    [{ validateUrls: false }, 'Validate URL checkbox will be unchecked' ],
+    [ undefined, 'Validate URL checkbox will be unchecked' ],
   ])('shows expected helper text for URL validation', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper(shortUrlCreation);
-    const text = wrapper.find('.form-text').first();
+    const validateUrlText = wrapper.find('.form-text').first();
 
-    expect(text.text()).toContain(expectedText);
+    expect(validateUrlText.text()).toContain(expectedText);
+  });
+
+  it.each([
+    [{ forwardQuery: true }, 'Forward query params on redirect checkbox will be checked' ],
+    [{ forwardQuery: false }, 'Forward query params on redirect checkbox will be unchecked' ],
+    [{}, 'Forward query params on redirect checkbox will be checked' ],
+  ])('shows expected helper text for query forwarding', (shortUrlCreation, expectedText) => {
+    const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
+    const forwardQueryText = wrapper.find('.form-text').at(1);
+
+    expect(forwardQueryText.text()).toContain(expectedText);
   });
 
   it.each([
@@ -62,13 +84,22 @@ describe('<ShortUrlCreation />', () => {
     expect(hintText.text()).toContain(expectedHint);
   });
 
-  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when toggle value changes', (validateUrls) => {
+  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
     const wrapper = createWrapper();
-    const toggle = wrapper.find(ToggleSwitch);
+    const urlValidationToggle = wrapper.find(ToggleSwitch).first();
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
-    toggle.simulate('change', validateUrls);
+    urlValidationToggle.simulate('change', validateUrls);
     expect(setShortUrlCreationSettings).toHaveBeenCalledWith({ validateUrls });
+  });
+
+  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when forward query toggle value changes', (forwardQuery) => {
+    const wrapper = createWrapper();
+    const urlValidationToggle = wrapper.find(ToggleSwitch).last();
+
+    expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
+    urlValidationToggle.simulate('change', forwardQuery);
+    expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining({ forwardQuery }));
   });
 
   it('invokes setShortUrlCreationSettings when dropdown value changes', () => {

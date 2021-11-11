@@ -1,6 +1,7 @@
 import { FC, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
 import { InputType } from 'reactstrap/lib/Input';
+import { FormGroup } from 'reactstrap';
 
 export interface FormGroupContainerProps {
   value: string;
@@ -19,7 +20,7 @@ export const FormGroupContainer: FC<FormGroupContainerProps> = (
   const forId = useRef<string>(id ?? uuid());
 
   return (
-    <div className={`form-group ${className ?? ''}`}>
+    <FormGroup className={className ?? ''}>
       <label htmlFor={forId.current} className={labelClassName ?? ''}>
         {children}:
       </label>
@@ -32,6 +33,6 @@ export const FormGroupContainer: FC<FormGroupContainerProps> = (
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
       />
-    </div>
+    </FormGroup>
   );
 };

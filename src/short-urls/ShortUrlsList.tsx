@@ -1,27 +1,21 @@
-import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { head, keys, values } from 'ramda';
-import { FC, useEffect, useState } from 'react';
+import { head, keys, pipe, values } from 'ramda';
+import { FC, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
-import { determineOrderDir, OrderDir } from '../utils/utils';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { determineOrderDir, Order, OrderDir } from '../utils/helpers/ordering';
+import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
+import { ShlinkShortUrlsListParams } from '../api/types';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
-import './ShortUrlsList.scss';
+import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
 
-interface RouteParams {
-  page: string;
-  serverId: string;
-}
-
-export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
+interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams> {
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShortUrlsListParams) => void;
@@ -29,73 +23,65 @@ export interface ShortUrlsListProps extends RouteComponentProps<RouteParams> {
   resetShortUrlParams: () => void;
 }
 
-const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>) => boundToMercureHub(({
+type ShortUrlsOrder = Order<OrderableFields>;
+
+const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) => boundToMercureHub(({
   listShortUrls,
   resetShortUrlParams,
   shortUrlsListParams,
   match,
   location,
+  history,
   shortUrlsList,
   selectedServer,
 }: ShortUrlsListProps) => {
+  const serverId = getServerId(selectedServer);
   const { orderBy } = shortUrlsListParams;
-  const [ order, setOrder ] = useState<{ orderField?: OrderableFields; orderDir?: OrderDir }>({
-    orderField: orderBy && (head(keys(orderBy)) as OrderableFields),
-    orderDir: orderBy && head(values(orderBy)),
+  const [ order, setOrder ] = useState<ShortUrlsOrder>({
+    field: orderBy && (head(keys(orderBy)) as OrderableFields),
+    dir: orderBy && head(values(orderBy)),
   });
+  const [{ tags, search, startDate, endDate }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
+  const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
-  const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
-  const handleOrderBy = (orderField?: OrderableFields, orderDir?: OrderDir) => {
-    setOrder({ orderField, orderDir });
-    refreshList({ orderBy: orderField ? { [orderField]: orderDir } : undefined });
+
+  const refreshList = (extraParams: ShlinkShortUrlsListParams) => listShortUrls(
+    { ...shortUrlsListParams, ...extraParams },
+  );
+  const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => {
+    setOrder({ field, dir });
+    refreshList({ orderBy: field ? { [field]: dir } : undefined });
   };
   const orderByColumn = (field: OrderableFields) => () =>
-    handleOrderBy(field, determineOrderDir(field, order.orderField, order.orderDir));
-  const renderOrderIcon = (field: OrderableFields) => {
-    if (order.orderField !== field) {
-      return null;
-    }
+    handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
+  const renderOrderIcon = (field: OrderableFields) => <TableOrderIcon currentOrder={order} field={field} />;
+  const addTag = pipe(
+    (newTag: string) => [ ...new Set([ ...selectedTags, newTag ]) ].join(','),
+    (tags) => toFirstPage({ tags }),
+  );
 
-    if (!order.orderDir) {
-      return null;
-    }
-
-    return (
-      <FontAwesomeIcon
-        icon={order.orderDir === 'ASC' ? caretUpIcon : caretDownIcon}
-        className="short-urls-list__header-icon"
-      />
-    );
-  };
-
+  useEffect(() => resetShortUrlParams, []);
   useEffect(() => {
-    const { tag } = parseQuery<{ tag?: string }>(location.search);
-    const tags = tag ? [ decodeURIComponent(tag) ] : shortUrlsListParams.tags;
-
-    refreshList({ page: match.params.page, tags, itemsPerPage: undefined });
-
-    return resetShortUrlParams;
-  }, []);
+    refreshList(
+      { page: match.params.page, searchTerm: search, tags: selectedTags, itemsPerPage: undefined, startDate, endDate },
+    );
+  }, [ match.params.page, search, selectedTags, startDate, endDate ]);
 
   return (
     <>
+      <div className="mb-3"><SearchBar /></div>
       <div className="d-block d-lg-none mb-3">
-        <SortingDropdown
-          items={SORTABLE_FIELDS}
-          orderField={order.orderField}
-          orderDir={order.orderDir}
-          onChange={handleOrderBy}
-        />
+        <SortingDropdown items={SORTABLE_FIELDS} order={order} onChange={handleOrderBy} />
       </div>
       <Card body className="pb-1">
         <ShortUrlsTable
-          orderByColumn={orderByColumn}
-          renderOrderIcon={renderOrderIcon}
           selectedServer={selectedServer}
           shortUrlsList={shortUrlsList}
-          onTagClick={(tag) => refreshList({ tags: [ ...shortUrlsListParams.tags ?? [], tag ] })}
+          orderByColumn={orderByColumn}
+          renderOrderIcon={renderOrderIcon}
+          onTagClick={addTag}
         />
-        <Paginator paginator={pagination} serverId={isReachableServer(selectedServer) ? selectedServer.id : ''} />
+        <Paginator paginator={pagination} serverId={serverId} currentQueryString={location.search} />
       </Card>
     </>
   );

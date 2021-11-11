@@ -14,8 +14,8 @@ const tagFilteringModeText = (tagFilteringMode: TagFilteringMode | undefined): s
   tagFilteringMode === 'includes' ? 'Suggest tags including input' : 'Suggest tags starting with input';
 const tagFilteringModeHint = (tagFilteringMode: TagFilteringMode | undefined): ReactNode =>
   tagFilteringMode === 'includes'
-    ? <>The list of suggested tags will contain existing ones <b>including</b> provided input.</>
-    : <>The list of suggested tags will contain existing ones <b>starting with</b> provided input.</>;
+    ? <>The list of suggested tags will contain those <b>including</b> provided input.</>
+    : <>The list of suggested tags will contain those <b>starting with</b> provided input.</>;
 
 export const ShortUrlCreation: FC<ShortUrlCreationProps> = ({ settings, setShortUrlCreationSettings }) => {
   const shortUrlCreation: ShortUrlCreationSettings = settings.shortUrlCreation ?? { validateUrls: false };
@@ -24,16 +24,28 @@ export const ShortUrlCreation: FC<ShortUrlCreationProps> = ({ settings, setShort
   );
 
   return (
-    <SimpleCard title="Short URLs creation" className="h-100">
+    <SimpleCard title="Short URLs form" className="h-100">
       <FormGroup>
         <ToggleSwitch
           checked={shortUrlCreation.validateUrls ?? false}
           onChange={(validateUrls) => setShortUrlCreationSettings({ ...shortUrlCreation, validateUrls })}
         >
-          By default, request validation on long URLs when creating new short URLs.
+          Request validation on long URLs when creating new short URLs.
           <small className="form-text text-muted">
             The initial state of the <b>Validate URL</b> checkbox will
             be <b>{shortUrlCreation.validateUrls ? 'checked' : 'unchecked'}</b>.
+          </small>
+        </ToggleSwitch>
+      </FormGroup>
+      <FormGroup>
+        <ToggleSwitch
+          checked={shortUrlCreation.forwardQuery ?? true}
+          onChange={(forwardQuery) => setShortUrlCreationSettings({ ...shortUrlCreation, forwardQuery })}
+        >
+          Make all new short URLs forward their query params to the long URL.
+          <small className="form-text text-muted">
+            The initial state of the <b>Forward query params on redirect</b> checkbox will
+            be <b>{shortUrlCreation.forwardQuery ?? true ? 'checked' : 'unchecked'}</b>.
           </small>
         </ToggleSwitch>
       </FormGroup>

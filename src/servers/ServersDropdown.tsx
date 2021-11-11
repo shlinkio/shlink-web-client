@@ -1,45 +1,37 @@
 import { isEmpty, values } from 'ramda';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { faPlus as plusIcon, faFileDownload as exportIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
+import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ServersExporter from './services/ServersExporter';
-import { isServerWithId, SelectedServer, ServersMap } from './data';
+import { getServerId, SelectedServer, ServersMap } from './data';
 
 export interface ServersDropdownProps {
   servers: ServersMap;
   selectedServer: SelectedServer;
 }
 
-const ServersDropdown = (serversExporter: ServersExporter) => ({ servers, selectedServer }: ServersDropdownProps) => {
+const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
   const serversList = values(servers);
-  const createServerItem = (
-    <DropdownItem tag={Link} to="/server/create">
-      <FontAwesomeIcon icon={plusIcon} /> <span className="ml-1">Add a server</span>
-    </DropdownItem>
-  );
 
   const renderServers = () => {
     if (isEmpty(serversList)) {
-      return createServerItem;
+      return (
+        <DropdownItem tag={Link} to="/server/create">
+          <FontAwesomeIcon icon={plusIcon} /> <span className="ml-1">Add a server</span>
+        </DropdownItem>
+      );
     }
 
     return (
       <>
         {serversList.map(({ name, id }) => (
-          <DropdownItem
-            key={id}
-            tag={Link}
-            to={`/server/${id}`}
-            active={isServerWithId(selectedServer) && selectedServer.id === id}
-          >
+          <DropdownItem key={id} tag={Link} to={`/server/${id}`} active={getServerId(selectedServer) === id}>
             {name}
           </DropdownItem>
         ))}
         <DropdownItem divider />
-        {createServerItem}
-        <DropdownItem className="servers-dropdown__export-item" onClick={async () => serversExporter.exportServers()}>
-          <FontAwesomeIcon icon={exportIcon} /> <span className="ml-1">Export servers</span>
+        <DropdownItem tag={Link} to="/manage-servers">
+          <FontAwesomeIcon icon={serverIcon} /> <span className="ml-1">Manage servers</span>
         </DropdownItem>
       </>
     );

@@ -59,7 +59,7 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
     await editTag(oldName, newName);
     colorGenerator.setColorForKey(newName, color);
     dispatch({ type: EDIT_TAG, oldName, newName });
-  } catch (e) {
+  } catch (e: any) {
     dispatch<ApiErrorAction>({ type: EDIT_TAG_ERROR, errorData: parseApiError(e) });
 
     throw e;

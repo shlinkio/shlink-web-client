@@ -11,7 +11,16 @@ describe('<App />', () => {
   const ShlinkVersions = () => null;
 
   beforeEach(() => {
-    const App = appFactory(MainHeader, () => null, () => null, () => null, () => null, () => null, ShlinkVersions);
+    const App = appFactory(
+      MainHeader,
+      () => null,
+      () => null,
+      () => null,
+      () => null,
+      () => null,
+      () => null,
+      ShlinkVersions,
+    );
 
     wrapper = shallow(
       <App
@@ -36,6 +45,7 @@ describe('<App />', () => {
     const expectedPaths = [
       '/',
       '/settings',
+      '/manage-servers',
       '/server/create',
       '/server/:serverId/edit',
       '/server/:serverId',

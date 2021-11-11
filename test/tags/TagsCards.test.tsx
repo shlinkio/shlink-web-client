@@ -1,19 +1,19 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { TagsCards as createTagsCards } from '../../src/tags/TagsCards';
-import { TagsList } from '../../src/tags/reducers/tagsList';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
+import { NormalizedTag } from '../../src/tags/data';
 
 describe('<TagsCards />', () => {
   const amountOfTags = 10;
-  const tagsList = Mock.of<TagsList>({ filteredTags: rangeOf(amountOfTags, (i) => `tag_${i}`), stats: {} });
+  const sortedTags = rangeOf(amountOfTags, (i) => Mock.of<NormalizedTag>({ tag: `tag_${i}` }));
   const TagCard = () => null;
   const TagsCards = createTagsCards(TagCard);
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<TagsCards tagsList={tagsList} selectedServer={Mock.all<SelectedServer>()} />);
+    wrapper = shallow(<TagsCards sortedTags={sortedTags} selectedServer={Mock.all<SelectedServer>()} />);
   });
 
   afterEach(() => wrapper?.unmount());
@@ -31,7 +31,7 @@ describe('<TagsCards />', () => {
     const card = () => wrapper.find(TagCard).at(5);
 
     expect(card().prop('displayed')).toEqual(false);
-    (card().prop('toggle') as Function)(); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    (card().prop('toggle') as Function)();
     expect(card().prop('displayed')).toEqual(true);
   });
 });

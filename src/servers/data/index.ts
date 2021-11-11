@@ -8,6 +8,7 @@ export interface ServerData {
 
 export interface ServerWithId extends ServerData {
   id: string;
+  autoConnect?: boolean;
 }
 
 export interface ReachableServer extends ServerWithId {

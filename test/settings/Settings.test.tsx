@@ -13,6 +13,6 @@ describe('<Settings />', () => {
 
     expect(layout).toHaveLength(1);
     expect(sections).toHaveLength(1);
-    expect((sections.prop('items') as any[]).flat()).toHaveLength(4); // eslint-disable-line @typescript-eslint/no-unnecessary-type-assertion
+    expect((sections.prop('items') as any[]).flat()).toHaveLength(4);
   });
 });
