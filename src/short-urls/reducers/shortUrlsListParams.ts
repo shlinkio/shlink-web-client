@@ -19,10 +19,6 @@ export type OrderBy = Partial<Record<OrderableFields, OrderDir>>;
 export interface ShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
-  tags?: string[];
-  searchTerm?: string;
-  startDate?: string;
-  endDate?: string;
   orderBy?: OrderBy;
 }
 

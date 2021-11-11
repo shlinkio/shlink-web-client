@@ -9,18 +9,15 @@ import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import { DateRange } from '../utils/dates/types';
-import { ShortUrlsListParams } from './reducers/shortUrlsListParams';
 import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
 import './SearchBar.scss';
 
-export interface SearchBarProps extends RouteChildrenProps<ShortUrlListRouteParams> {
-  shortUrlsListParams: ShortUrlsListParams;
-}
+export type SearchBarProps = RouteChildrenProps<ShortUrlListRouteParams>;
 
 const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
-const SearchBar = (colorGenerator: ColorGenerator) => ({ shortUrlsListParams, ...rest }: SearchBarProps) => {
-  const [{ search, tags, startDate, endDate }, toFirstPage ] = useShortUrlsQuery(rest);
+const SearchBar = (colorGenerator: ColorGenerator) => (props: SearchBarProps) => {
+  const [{ search, tags, startDate, endDate }, toFirstPage ] = useShortUrlsQuery(props);
   const selectedTags = tags?.split(',') ?? [];
   const setDates = pipe(
     ({ startDate, endDate }: DateRange) => ({

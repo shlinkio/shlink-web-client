@@ -8,6 +8,7 @@ import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
+import { ShlinkShortUrlsListParams } from '../api/types';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
@@ -44,7 +45,9 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
   const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
 
-  const refreshList = (extraParams: ShortUrlsListParams) => listShortUrls({ ...shortUrlsListParams, ...extraParams });
+  const refreshList = (extraParams: ShlinkShortUrlsListParams) => listShortUrls(
+    { ...shortUrlsListParams, ...extraParams },
+  );
   const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => {
     setOrder({ field, dir });
     refreshList({ orderBy: field ? { [field]: dir } : undefined });

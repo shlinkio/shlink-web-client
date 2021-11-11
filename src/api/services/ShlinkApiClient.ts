@@ -1,6 +1,5 @@
 import { isEmpty, isNil, reject } from 'ramda';
 import { AxiosInstance, AxiosResponse, Method } from 'axios';
-import { ShortUrlsListParams } from '../../short-urls/reducers/shortUrlsListParams';
 import { ShortUrl, ShortUrlData } from '../../short-urls/data';
 import { OptionalString } from '../../utils/utils';
 import {
@@ -17,6 +16,7 @@ import {
   ShlinkVisitsOverview,
   ShlinkEditDomainRedirects,
   ShlinkDomainRedirects,
+  ShlinkShortUrlsListParams,
 } from '../types';
 import { stringifyQuery } from '../../utils/helpers/query';
 
@@ -34,7 +34,7 @@ export default class ShlinkApiClient {
     this.apiVersion = 2;
   }
 
-  public readonly listShortUrls = async (params: ShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
+  public readonly listShortUrls = async (params: ShlinkShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
     this.performRequest<{ shortUrls: ShlinkShortUrlsResponse }>('/short-urls', 'GET', params)
       .then(({ data }) => data.shortUrls);
 
