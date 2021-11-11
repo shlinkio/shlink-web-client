@@ -18,7 +18,6 @@ describe('<SearchBar />', () => {
   const createWrapper = (props: Partial<SearchBarProps> = {}) => {
     wrapper = shallow(
       <SearchBar
-        shortUrlsListParams={{}}
         history={Mock.of<History>({ push })}
         location={Mock.of<Location>({ search: '' })}
         match={Mock.of<match<ShortUrlListRouteParams>>({ params: { serverId: '1' } })}
