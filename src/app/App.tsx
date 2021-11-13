@@ -1,5 +1,6 @@
 import { useEffect, FC } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, RouteChildrenProps, Switch } from 'react-router-dom';
+import classNames from 'classnames';
 import NotFound from '../common/NotFound';
 import { ServersMap } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
@@ -8,7 +9,7 @@ import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
-interface AppProps {
+interface AppProps extends RouteChildrenProps {
   fetchServers: () => void;
   servers: ServersMap;
   settings: Settings;
@@ -25,7 +26,9 @@ const App = (
   Settings: FC,
   ManageServers: FC,
   ShlinkVersionsContainer: FC,
-) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
+) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate, location }: AppProps) => {
+  const isHome = location.pathname === '/';
+
   useEffect(() => {
     // On first load, try to fetch the remote servers if the list is empty
     if (Object.keys(servers).length === 0) {
@@ -40,7 +43,7 @@ const App = (
       <MainHeader />
 
       <div className="app">
-        <div className="shlink-wrapper">
+        <div className={classNames('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/settings" component={Settings} />

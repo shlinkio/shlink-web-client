@@ -33,7 +33,7 @@ const connect: ConnectDecorator = (propsFromState: string[] | null, actionServic
     actionServiceNames.reduce(mapActionService, {}),
   );
 
-provideAppServices(bottle, connect);
+provideAppServices(bottle, connect, withRouter);
 provideCommonServices(bottle, connect, withRouter);
 provideApiServices(bottle);
 provideShortUrlsServices(bottle, connect, withRouter);
