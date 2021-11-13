@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* [#520](https://github.com/shlinkio/shlink-web-client/issues/520) Allowed to select "all visits" as the default interval for visits.
+
+### Changed
+* Moved ci workflow to external repo and reused
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [3.4.0] - 2021-11-11
 ### Added
 * [#496](https://github.com/shlinkio/shlink-web-client/issues/496) Allowed to select "all visits" as the default interval for visits.
