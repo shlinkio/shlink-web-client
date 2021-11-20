@@ -10,10 +10,12 @@ describe('ServersExporter', () => {
       abc123: {
         id: 'abc123',
         name: 'foo',
+        autoConnect: true,
       },
       def456: {
         id: 'def456',
         name: 'bar',
+        autoConnect: false,
       },
     })),
   });

@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.4.1] - 2021-11-20
+### Added
+* [#525](https://github.com/shlinkio/shlink-web-client/issues/525) Added docs section for Architectural Decision Records, including the one for servers "auto-connect".
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#520](https://github.com/shlinkio/shlink-web-client/issues/520) Fixed landing page scroll on mobile devices and improved its design.
+* [#526](https://github.com/shlinkio/shlink-web-client/issues/526) Ensured exported servers do not include the `autoConnect` prop.
+
+
 ## [3.4.0] - 2021-11-11
 ### Added
 * [#496](https://github.com/shlinkio/shlink-web-client/issues/496) Allowed to select "all visits" as the default interval for visits.

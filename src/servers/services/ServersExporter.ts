@@ -1,7 +1,7 @@
-import { dissoc, values } from 'ramda';
+import { values } from 'ramda';
 import { CsvJson } from 'csvjson';
 import LocalStorage from '../../utils/services/LocalStorage';
-import { ServersMap } from '../data';
+import { ServersMap, serverWithIdToServerData } from '../data';
 import { saveCsv } from '../../utils/helpers/files';
 
 const SERVERS_FILENAME = 'shlink-servers.csv';
@@ -14,7 +14,7 @@ export default class ServersExporter {
   ) {}
 
   public readonly exportServers = async () => {
-    const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(dissoc('id'));
+    const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(serverWithIdToServerData);
 
     try {
       const csv = this.csvjson.toCSV(servers, { headers: 'key' });
