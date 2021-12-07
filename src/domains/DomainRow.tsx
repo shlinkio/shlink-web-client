@@ -25,7 +25,7 @@ const Nr: FC<{ fallback: OptionalString }> = ({ fallback }) => (
 );
 const DefaultDomain: FC = () => (
   <>
-    <FontAwesomeIcon icon={defaultDomainIcon} className="text-primary" id="defaultDomainIcon" />
+    <FontAwesomeIcon fixedWidth icon={defaultDomainIcon} className="text-primary" id="defaultDomainIcon" />
     <UncontrolledTooltip target="defaultDomainIcon" placement="right">Default domain</UncontrolledTooltip>
   </>
 );
@@ -33,7 +33,6 @@ const DefaultDomain: FC = () => (
 export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects }) => {
   const [ isOpen, toggle ] = useToggle();
   const { domain: authority, isDefault, redirects } = domain;
-  const domainId = `domainEdit${authority.replace(/\./g, '')}`;
 
   return (
     <tr className="responsive-table__row">
@@ -49,13 +48,13 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
       <td className="responsive-table__cell text-right">
-        <span id={domainId}>
+        <span id={isDefault ? 'defaultDomainBtn' : undefined}>
           <Button outline size="sm" disabled={isDefault} onClick={isDefault ? undefined : toggle}>
-            <FontAwesomeIcon icon={isDefault ? forbiddenIcon : editIcon} />
+            <FontAwesomeIcon fixedWidth icon={isDefault ? forbiddenIcon : editIcon} />
           </Button>
         </span>
         {isDefault && (
-          <UncontrolledTooltip target={domainId} placement="left">
+          <UncontrolledTooltip target="defaultDomainBtn" placement="left">
             Redirects for default domain cannot be edited here.
             <br />
             Use config options or env vars directly on the server.
