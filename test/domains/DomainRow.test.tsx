@@ -17,10 +17,11 @@ describe('<DomainRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), 1, 'domainEdit' ],
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), 0, '' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.com', isDefault: true }), 1, 'domainEditfoocom' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.bar.com', isDefault: true }), 1, 'domainEditfoobarcom' ],
+    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), 1, 'defaultDomainBtn' ],
+    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), 0, undefined ],
+    [ Mock.of<ShlinkDomain>({ domain: 'foo.com', isDefault: true }), 1, 'defaultDomainBtn' ],
+    [ Mock.of<ShlinkDomain>({ domain: 'foo.bar.com', isDefault: true }), 1, 'defaultDomainBtn' ],
+    [ Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: false }), 0, undefined ],
   ])('shows proper components based on the fact that provided domain is default or not', (
     domain,
     expectedComps,
