@@ -48,13 +48,13 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
       <td className="responsive-table__cell text-right">
-        <span id={isDefault ? 'defaultDomaiBtn' : undefined}>
+        <span id={isDefault ? 'defaultDomainBtn' : undefined}>
           <Button outline size="sm" disabled={isDefault} onClick={isDefault ? undefined : toggle}>
             <FontAwesomeIcon fixedWidth icon={isDefault ? forbiddenIcon : editIcon} />
           </Button>
         </span>
         {isDefault && (
-          <UncontrolledTooltip target="defaultDomaiBtn" placement="left">
+          <UncontrolledTooltip target="defaultDomainBtn" placement="left">
             Redirects for default domain cannot be edited here.
             <br />
             Use config options or env vars directly on the server.
