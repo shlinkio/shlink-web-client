@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Changed
-* *Nothing*
+* [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
 
 ### Deprecated
 * *Nothing*
