@@ -68,7 +68,7 @@ export const listDomains = (buildShlinkApiClient: ShlinkApiClientBuilder) => () 
   const { listDomains } = buildShlinkApiClient(getState);
 
   try {
-    const domains = await listDomains();
+    const { data: domains } = await listDomains();
 
     dispatch<ListDomainsAction>({ type: LIST_DOMAINS, domains });
   } catch (e: any) {

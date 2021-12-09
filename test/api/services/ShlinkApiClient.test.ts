@@ -256,10 +256,8 @@ describe('ShlinkApiClient', () => {
 
   describe('listDomains', () => {
     it('returns domains', async () => {
-      const expectedData = [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ];
-      const resp = {
-        domains: { data: expectedData },
-      };
+      const expectedData = { data: [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ] };
+      const resp = { domains: expectedData };
       const axiosSpy = createAxiosMock({ data: resp });
       const { listDomains } = new ShlinkApiClient(axiosSpy, '', '');
 

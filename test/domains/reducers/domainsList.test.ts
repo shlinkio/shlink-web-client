@@ -88,7 +88,7 @@ describe('domainsList', () => {
     });
 
     it('dispatches domains once loaded', async () => {
-      listDomains.mockResolvedValue(domains);
+      listDomains.mockResolvedValue({ data: domains });
 
       await listDomainsAction(buildShlinkApiClient)()(dispatch, getState);
 
