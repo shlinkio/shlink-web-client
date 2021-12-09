@@ -12,7 +12,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ManageDomains', () => ManageDomains);
   bottle.decorator('ManageDomains', connect(
-    [ 'domainsList' ],
+    [ 'domainsList', 'selectedServer' ],
     [ 'listDomains', 'filterDomains', 'editDomainRedirects' ],
   ));
 

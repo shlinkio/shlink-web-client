@@ -17,6 +17,7 @@ export const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
 export interface DomainsList {
   domains: ShlinkDomain[];
   filteredDomains: ShlinkDomain[];
+  defaultRedirects?: ShlinkDomainRedirects;
   loading: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
@@ -24,6 +25,7 @@ export interface DomainsList {
 
 export interface ListDomainsAction extends Action<string> {
   domains: ShlinkDomain[];
+  defaultRedirects?: ShlinkDomainRedirects;
 }
 
 interface FilterDomainsAction extends Action<string> {
@@ -48,7 +50,8 @@ export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomain
 export default buildReducer<DomainsList, DomainsCombinedAction>({
   [LIST_DOMAINS_START]: () => ({ ...initialState, loading: true }),
   [LIST_DOMAINS_ERROR]: ({ errorData }) => ({ ...initialState, error: true, errorData }),
-  [LIST_DOMAINS]: (_, { domains }) => ({ ...initialState, domains, filteredDomains: domains }),
+  [LIST_DOMAINS]: (_, { domains, defaultRedirects }) =>
+    ({ ...initialState, domains, filteredDomains: domains, defaultRedirects }),
   [FILTER_DOMAINS]: (state, { searchTerm }) => ({
     ...state,
     filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(searchTerm)),
@@ -68,9 +71,9 @@ export const listDomains = (buildShlinkApiClient: ShlinkApiClientBuilder) => () 
   const { listDomains } = buildShlinkApiClient(getState);
 
   try {
-    const domains = await listDomains();
+    const { data: domains, defaultRedirects } = await listDomains();
 
-    dispatch<ListDomainsAction>({ type: LIST_DOMAINS, domains });
+    dispatch<ListDomainsAction>({ type: LIST_DOMAINS, domains, defaultRedirects });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: LIST_DOMAINS_ERROR, errorData: parseApiError(e) });
   }

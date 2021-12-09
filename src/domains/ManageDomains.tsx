@@ -5,6 +5,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';
 import SearchField from '../utils/SearchField';
 import { ShlinkDomainRedirects } from '../api/types';
+import { SelectedServer } from '../servers/data';
 import { DomainsList } from './reducers/domainsList';
 import { DomainRow } from './DomainRow';
 
@@ -13,15 +14,16 @@ interface ManageDomainsProps {
   filterDomains: (searchTerm: string) => void;
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
   domainsList: DomainsList;
+  selectedServer: SelectedServer;
 }
 
 const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '' ];
 
 export const ManageDomains: FC<ManageDomainsProps> = (
-  { listDomains, domainsList, filterDomains, editDomainRedirects },
+  { listDomains, domainsList, filterDomains, editDomainRedirects, selectedServer },
 ) => {
-  const { filteredDomains: domains, loading, error, errorData } = domainsList;
-  const defaultRedirects = domains.find(({ isDefault }) => isDefault)?.redirects;
+  const { filteredDomains: domains, defaultRedirects, loading, error, errorData } = domainsList;
+  const resolvedDefaultRedirects = defaultRedirects ?? domains.find(({ isDefault }) => isDefault)?.redirects;
 
   useEffect(() => {
     listDomains();
@@ -53,7 +55,8 @@ export const ManageDomains: FC<ManageDomainsProps> = (
                 key={domain.domain}
                 domain={domain}
                 editDomainRedirects={editDomainRedirects}
-                defaultRedirects={defaultRedirects}
+                defaultRedirects={resolvedDefaultRedirects}
+                selectedServer={selectedServer}
               />
             ))}
           </tbody>

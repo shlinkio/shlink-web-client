@@ -9,12 +9,15 @@ import {
 import { ShlinkDomain, ShlinkDomainRedirects } from '../api/types';
 import { useToggle } from '../utils/helpers/hooks';
 import { OptionalString } from '../utils/utils';
+import { SelectedServer } from '../servers/data';
+import { supportsDefaultDomainRedirectsEdition } from '../utils/helpers/features';
 import { EditDomainRedirectsModal } from './helpers/EditDomainRedirectsModal';
 
 interface DomainRowProps {
   domain: ShlinkDomain;
   defaultRedirects?: ShlinkDomainRedirects;
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  selectedServer: SelectedServer;
 }
 
 const Nr: FC<{ fallback: OptionalString }> = ({ fallback }) => (
@@ -30,9 +33,10 @@ const DefaultDomain: FC = () => (
   </>
 );
 
-export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects }) => {
+export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects, selectedServer }) => {
   const [ isOpen, toggle ] = useToggle();
   const { domain: authority, isDefault, redirects } = domain;
+  const canEditDomain = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
 
   return (
     <tr className="responsive-table__row">
@@ -48,12 +52,12 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
       <td className="responsive-table__cell text-right">
-        <span id={isDefault ? 'defaultDomainBtn' : undefined}>
-          <Button outline size="sm" disabled={isDefault} onClick={isDefault ? undefined : toggle}>
-            <FontAwesomeIcon fixedWidth icon={isDefault ? forbiddenIcon : editIcon} />
+        <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>
+          <Button outline size="sm" disabled={!canEditDomain} onClick={!canEditDomain ? undefined : toggle}>
+            <FontAwesomeIcon fixedWidth icon={!canEditDomain ? forbiddenIcon : editIcon} />
           </Button>
         </span>
-        {isDefault && (
+        {!canEditDomain && (
           <UncontrolledTooltip target="defaultDomainBtn" placement="left">
             Redirects for default domain cannot be edited here.
             <br />

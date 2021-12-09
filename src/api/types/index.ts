@@ -84,6 +84,7 @@ export interface ShlinkDomain {
 
 export interface ShlinkDomainsResponse {
   data: ShlinkDomain[];
+  defaultRedirects?: ShlinkDomainRedirects; // Optional only for Shlink older than 2.10
 }
 
 export interface ShlinkShortUrlsListParams {

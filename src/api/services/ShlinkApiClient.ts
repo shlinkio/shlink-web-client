@@ -11,7 +11,6 @@ import {
   ShlinkVisits,
   ShlinkVisitsParams,
   ShlinkShortUrlData,
-  ShlinkDomain,
   ShlinkDomainsResponse,
   ShlinkVisitsOverview,
   ShlinkEditDomainRedirects,
@@ -107,8 +106,8 @@ export default class ShlinkApiClient {
     this.performRequest<ShlinkMercureInfo>('/mercure-info', 'GET')
       .then((resp) => resp.data);
 
-  public readonly listDomains = async (): Promise<ShlinkDomain[]> =>
-    this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains.data);
+  public readonly listDomains = async (): Promise<ShlinkDomainsResponse> =>
+    this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains);
 
   public readonly editDomainRedirects = async (
     domainRedirects: ShlinkEditDomainRedirects,

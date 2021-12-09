@@ -14,7 +14,7 @@ import { EDIT_DOMAIN_REDIRECTS } from '../../../src/domains/reducers/domainRedir
 import { ShlinkDomain, ShlinkDomainRedirects } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 
-describe('domainsList', () => {
+describe('domainsListReducer', () => {
   const filteredDomains = [ Mock.of<ShlinkDomain>({ domain: 'foo' }), Mock.of<ShlinkDomain>({ domain: 'boo' }) ];
   const domains = [ ...filteredDomains, Mock.of<ShlinkDomain>({ domain: 'bar' }) ];
 
@@ -88,13 +88,13 @@ describe('domainsList', () => {
     });
 
     it('dispatches domains once loaded', async () => {
-      listDomains.mockResolvedValue(domains);
+      listDomains.mockResolvedValue({ data: domains });
 
       await listDomainsAction(buildShlinkApiClient)()(dispatch, getState);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_DOMAINS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_DOMAINS, domains });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_DOMAINS, domains, defaultRedirects: undefined });
       expect(listDomains).toHaveBeenCalledTimes(1);
     });
   });
