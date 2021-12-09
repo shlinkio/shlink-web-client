@@ -23,3 +23,5 @@ export const supportsQrErrorCorrection = serverMatchesVersions({ minVersion: '2.
 export const supportsDomainRedirects = supportsQrErrorCorrection;
 
 export const supportsForwardQuery = serverMatchesVersions({ minVersion: '2.9.0' });
+
+export const supportsDefaultDomainRedirectsEdition = serverMatchesVersions({ minVersion: '2.10.0' });

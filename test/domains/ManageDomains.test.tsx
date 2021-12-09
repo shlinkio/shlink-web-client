@@ -8,6 +8,7 @@ import SearchField from '../../src/utils/SearchField';
 import { ProblemDetailsError, ShlinkDomain } from '../../src/api/types';
 import { ShlinkApiError } from '../../src/api/ShlinkApiError';
 import { DomainRow } from '../../src/domains/DomainRow';
+import { SelectedServer } from '../../src/servers/data';
 
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();
@@ -21,6 +22,7 @@ describe('<ManageDomains />', () => {
         filterDomains={filterDomains}
         editDomainRedirects={editDomainRedirects}
         domainsList={domainsList}
+        selectedServer={Mock.all<SelectedServer>()}
       />,
     );
 
