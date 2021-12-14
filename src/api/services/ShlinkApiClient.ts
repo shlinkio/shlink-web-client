@@ -23,11 +23,7 @@ import { stringifyQuery } from '../../utils/helpers/query';
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
-  if (!params.orderBy) {
-    return params as ShlinkShortUrlsListNormalizedParams;
-  }
-
-  const { orderBy, ...rest } = params;
+  const { orderBy = {}, ...rest } = params;
   const [ firstKey ] = Object.keys(orderBy);
   const [ firstValue ] = Object.values(orderBy);
 
