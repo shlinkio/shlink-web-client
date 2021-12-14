@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
+* [#538](https://github.com/shlinkio/shlink-web-client/pull/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
 
 ### Deprecated
 * *Nothing*

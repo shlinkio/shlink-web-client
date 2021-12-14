@@ -16,11 +16,26 @@ import {
   ShlinkEditDomainRedirects,
   ShlinkDomainRedirects,
   ShlinkShortUrlsListParams,
+  ShlinkShortUrlsListNormalizedParams,
 } from '../types';
 import { stringifyQuery } from '../../utils/helpers/query';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
+const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
+  if (!params.orderBy) {
+    return params as ShlinkShortUrlsListNormalizedParams;
+  }
+
+  const { orderBy, ...rest } = params;
+  const [ firstKey ] = Object.keys(orderBy);
+  const [ firstValue ] = Object.values(orderBy);
+
+  return !firstValue ? rest : {
+    ...rest,
+    orderBy: `${firstKey}-${firstValue}`,
+  };
+};
 
 export default class ShlinkApiClient {
   private apiVersion: number;
@@ -34,7 +49,7 @@ export default class ShlinkApiClient {
   }
 
   public readonly listShortUrls = async (params: ShlinkShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
-    this.performRequest<{ shortUrls: ShlinkShortUrlsResponse }>('/short-urls', 'GET', params)
+    this.performRequest<{ shortUrls: ShlinkShortUrlsResponse }>('/short-urls', 'GET', normalizeOrderByInParams(params))
       .then(({ data }) => data.shortUrls);
 
   public readonly createShortUrl = async (options: ShortUrlData): Promise<ShortUrl> => {

@@ -5,6 +5,7 @@ import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { Visit } from '../../../src/visits/types';
+import { OrderDir } from '../../../src/utils/helpers/ordering';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
@@ -17,9 +18,9 @@ describe('ShlinkApiClient', () => {
   ];
 
   describe('listShortUrls', () => {
-    it('properly returns short URLs list', async () => {
-      const expectedList = [ 'foo', 'bar' ];
+    const expectedList = [ 'foo', 'bar' ];
 
+    it('properly returns short URLs list', async () => {
       const { listShortUrls } = createApiClient({
         data: {
           shortUrls: expectedList,
@@ -29,6 +30,23 @@ describe('ShlinkApiClient', () => {
       const actualList = await listShortUrls();
 
       expect(expectedList).toEqual(actualList);
+    });
+
+    it.each([
+      [{ visits: 'DESC' as OrderDir }, 'visits-DESC' ],
+      [{ longUrl: 'ASC' as OrderDir }, 'longUrl-ASC' ],
+      [{ longUrl: undefined as OrderDir }, undefined ],
+    ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
+      const axiosSpy = createAxiosMock({
+        data: expectedList,
+      });
+      const { listShortUrls } = new ShlinkApiClient(axiosSpy, '', '');
+
+      await listShortUrls({ orderBy });
+
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        params: { orderBy: expectedOrderBy },
+      }));
     });
   });
 
