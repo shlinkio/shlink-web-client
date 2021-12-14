@@ -97,6 +97,10 @@ export interface ShlinkShortUrlsListParams {
   orderBy?: OrderBy;
 }
 
+export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {
+  orderBy?: string;
+}
+
 export interface ProblemDetailsError {
   type: string;
   detail: string;
