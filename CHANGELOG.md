@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
+* [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
 
 ### Changed
 * [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
