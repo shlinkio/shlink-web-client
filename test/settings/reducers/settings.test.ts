@@ -54,9 +54,9 @@ describe('settingsReducer', () => {
 
   describe('setVisitsSettings', () => {
     it('creates action to set visits settings', () => {
-      const result = setVisitsSettings({ defaultInterval: 'last180days' });
+      const result = setVisitsSettings({ defaultInterval: 'last180Days' });
 
-      expect(result).toEqual({ type: SET_SETTINGS, visits: { defaultInterval: 'last180days' } });
+      expect(result).toEqual({ type: SET_SETTINGS, visits: { defaultInterval: 'last180Days' } });
     });
   });
 });

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, EffectCallback, DependencyList, useEffect } from 'react';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { parseQuery, stringifyQuery } from './query';
 
@@ -65,4 +65,13 @@ export const useQueryState = <T>(paramName: string, initialState: T): [ T, (newV
   };
 
   return [ value, setValueWithLocation ];
+};
+
+export const useEffectExceptFirstTime = (callback: EffectCallback, deps: DependencyList): void => {
+  const isFirstLoad = useRef(true);
+
+  useEffect(() => {
+    !isFirstLoad.current && callback();
+    isFirstLoad.current = false;
+  }, deps);
 };

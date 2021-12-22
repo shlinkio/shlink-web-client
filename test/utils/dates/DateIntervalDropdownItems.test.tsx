@@ -8,7 +8,7 @@ describe('<DateIntervalDropdownItems />', () => {
   const onChange = jest.fn();
 
   beforeEach(() => {
-    wrapper = shallow(<DateIntervalDropdownItems allText="All" active="last180days" onChange={onChange} />);
+    wrapper = shallow(<DateIntervalDropdownItems allText="All" active="last180Days" onChange={onChange} />);
   });
 
   afterEach(jest.clearAllMocks);
