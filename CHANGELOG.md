@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
+* [#407](https://github.com/shlinkio/shlink-web-client/pull/407) Improved how visits (short URLs, tags and orphan) are loaded, to avoid ending up in a page with "There are no visits matching current filter".
+
+    Now, the app will try to load visits for the configured default interval, and in parallel, it will load the latest visit.
+
+    If the resulting list for that interval is empty, it will try to infer the closest interval with visits, based on the latest visit's date, and reload visits for that interval.
+
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
 * [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
 
