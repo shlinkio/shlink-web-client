@@ -10,7 +10,7 @@ import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 
 export interface OrphanVisitsProps extends CommonVisitsProps, RouteComponentProps {
-  getOrphanVisits: (params?: ShlinkVisitsParams, orphanVisitsType?: OrphanVisitType) => void;
+  getOrphanVisits: (params?: ShlinkVisitsParams, orphanVisitsType?: OrphanVisitType, doFallbackRange?: boolean) => void;
   orphanVisits: VisitsInfo;
   cancelGetOrphanVisits: () => void;
 }
@@ -25,7 +25,8 @@ export const OrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercure
   selectedServer,
 }: OrphanVisitsProps) => {
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
-  const loadVisits = (params: VisitsParams) => getOrphanVisits(toApiParams(params), params.filter?.orphanVisitsType);
+  const loadVisits = (params: VisitsParams, doFallbackRange?: boolean) =>
+    getOrphanVisits(toApiParams(params), params.filter?.orphanVisitsType, doFallbackRange);
 
   return (
     <VisitsStats
