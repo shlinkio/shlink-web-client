@@ -44,7 +44,7 @@ describe('<DateRangeSelector />', () => {
     [ 'last7Days' as DateInterval, 1 ],
     [ 'last30Days' as DateInterval, 1 ],
     [ 'last90Days' as DateInterval, 1 ],
-    [ 'last180days' as DateInterval, 1 ],
+    [ 'last180Days' as DateInterval, 1 ],
     [ 'last365Days' as DateInterval, 1 ],
     [{ startDate: new Date() }, 0 ],
   ])('sets proper element as active based on provided date range', (initialDateRange, expectedActiveIntervalItems) => {
