@@ -55,12 +55,12 @@ describe('<Visits />', () => {
     const selector = wrapper.find(DateIntervalSelector);
 
     selector.simulate('change', 'last7Days');
-    selector.simulate('change', 'last180days');
+    selector.simulate('change', 'last180Days');
     selector.simulate('change', 'yesterday');
 
     expect(setVisitsSettings).toHaveBeenCalledTimes(3);
     expect(setVisitsSettings).toHaveBeenNthCalledWith(1, { defaultInterval: 'last7Days' });
-    expect(setVisitsSettings).toHaveBeenNthCalledWith(2, { defaultInterval: 'last180days' });
+    expect(setVisitsSettings).toHaveBeenNthCalledWith(2, { defaultInterval: 'last180Days' });
     expect(setVisitsSettings).toHaveBeenNthCalledWith(3, { defaultInterval: 'yesterday' });
   });
 });

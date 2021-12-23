@@ -1,5 +1,5 @@
 import { isEmpty, propEq, values } from 'ramda';
-import { useState, useEffect, useMemo, FC } from 'react';
+import { useState, useEffect, useMemo, FC, useRef } from 'react';
 import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +28,7 @@ import { SortableBarChartCard } from './charts/SortableBarChartCard';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
-  getVisits: (params: VisitsParams) => void;
+  getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
   selectedServer: SelectedServer;
@@ -81,19 +81,22 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   selectedServer,
   isOrphanVisits = false,
 }) => {
-  const initialInterval: DateInterval = settings.visits?.defaultInterval ?? 'last30Days';
+  const { visits, loading, loadingLarge, error, errorData, progress, fallbackInterval } = visitsInfo;
+  const [ initialInterval, setInitialInterval ] = useState<DateInterval>(
+    fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
+  );
   const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
   const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
   const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
   const [ visitsFilter, setVisitsFilter ] = useState<VisitsFilter>({});
   const botsSupported = supportsBotVisits(selectedServer);
+  const isFirstLoad = useRef(true);
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
 
     return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
   };
-  const { visits, loading, loadingLarge, error, errorData, progress } = visitsInfo;
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
@@ -121,8 +124,12 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
-    getVisits({ dateRange, filter: visitsFilter });
+    getVisits({ dateRange, filter: visitsFilter }, isFirstLoad.current);
+    isFirstLoad.current = false;
   }, [ dateRange, visitsFilter ]);
+  useEffect(() => {
+    fallbackInterval && setInitialInterval(fallbackInterval);
+  }, [ fallbackInterval ]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
@@ -272,6 +279,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
             <div className="d-md-flex">
               <div className="flex-fill">
                 <DateRangeSelector
+                  updatable
                   disabled={loading}
                   initialDateRange={initialInterval}
                   defaultText="All visits"

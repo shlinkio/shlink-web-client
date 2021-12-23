@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { addDays, subDays } from 'date-fns';
+import { addDays, formatISO, subDays } from 'date-fns';
 import reducer, {
   getShortUrlVisits,
   cancelGetShortUrlVisits,
@@ -9,6 +9,7 @@ import reducer, {
   GET_SHORT_URL_VISITS_LARGE,
   GET_SHORT_URL_VISITS_CANCEL,
   GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
+  GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL,
   ShortUrlVisits,
 } from '../../../src/visits/reducers/shortUrlVisits';
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
@@ -18,6 +19,7 @@ import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
+import { DateInterval } from '../../../src/utils/dates/types';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
@@ -137,6 +139,13 @@ describe('shortUrlVisitsReducer', () => {
 
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
+
+    it('returns fallbackInterval on GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL', () => {
+      const fallbackInterval: DateInterval = 'last30Days';
+      const state = reducer(undefined, { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval } as any);
+
+      expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
+    });
   });
 
   describe('getShortUrlVisits', () => {
@@ -208,6 +217,38 @@ describe('shortUrlVisitsReducer', () => {
       expect(dispatchMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
         visits: [ ...visitsMocks, ...visitsMocks, ...visitsMocks ],
       }));
+    });
+
+    it.each([
+      [
+        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) }) ],
+        { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last7Days' },
+      ],
+      [
+        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) }) ],
+        { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last365Days' },
+      ],
+      [[], expect.objectContaining({ type: GET_SHORT_URL_VISITS }) ],
+    ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
+      const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
+        data,
+        pagination: {
+          currentPage: 1,
+          pagesCount: 1,
+          totalItems: 1,
+        },
+      });
+      const getShlinkShortUrlVisits = jest.fn()
+        .mockResolvedValueOnce(buildVisitsResult())
+        .mockResolvedValueOnce(buildVisitsResult(lastVisits));
+      const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShlinkShortUrlVisits });
+
+      await getShortUrlVisits(() => ShlinkApiClient)('abc123', {}, true)(dispatchMock, getState);
+
+      expect(dispatchMock).toHaveBeenCalledTimes(2);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
+      expect(getShlinkShortUrlVisits).toHaveBeenCalledTimes(2);
     });
   });
 
