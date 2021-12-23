@@ -1,6 +1,6 @@
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../../short-urls/helpers';
-import { Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
 import { ShortUrlIdentifier } from '../../short-urls/data';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -8,7 +8,7 @@ import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
-import { getVisitsWithLoader } from './common';
+import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
@@ -18,6 +18,7 @@ export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS'
 export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_LARGE';
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
 export const GET_SHORT_URL_VISITS_PROGRESS_CHANGED = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_PROGRESS_CHANGED';
+export const GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL';
 /* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
@@ -29,6 +30,7 @@ interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
 
 type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
 & VisitsLoadProgressChangedAction
+& VisitsFallbackIntervalAction
 & CreateVisitsAction
 & ApiErrorAction;
 
@@ -46,16 +48,19 @@ const initialState: ShortUrlVisits = {
 export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_SHORT_URL_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_SHORT_URL_VISITS]: (_, { visits, query, shortCode, domain }) => ({
-    ...initialState,
+  [GET_SHORT_URL_VISITS]: (state, { visits, query, shortCode, domain }) => ({
+    ...state,
     visits,
     shortCode,
     domain,
     query,
+    loading: false,
+    error: false,
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
+  [GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
   [CREATE_VISITS]: (state, { createdVisits }) => {
     const { shortCode, domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
@@ -73,11 +78,16 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
 export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   shortCode: string,
   query: ShlinkVisitsParams = {},
+  doFallbackRange = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getShortUrlVisits(
     shortCode,
     { ...query, page, itemsPerPage },
+  );
+  const lastVisitLoader = lastVisitLoaderForLoader(
+    doFallbackRange,
+    async (params) => getShortUrlVisits(shortCode, { ...params, domain: query.domain }),
   );
   const shouldCancel = () => getState().shortUrlVisits.cancelLoad;
   const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, query, domain: query.domain };
@@ -87,9 +97,10 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     finish: GET_SHORT_URL_VISITS,
     error: GET_SHORT_URL_VISITS_ERROR,
     progress: GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
+    fallbackToInterval: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL,
   };
 
-  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
+  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
 };
 
 export const cancelGetShortUrlVisits = buildActionCreator(GET_SHORT_URL_VISITS_CANCEL);

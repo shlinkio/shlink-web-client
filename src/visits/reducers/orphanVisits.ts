@@ -1,5 +1,12 @@
 import { Action, Dispatch } from 'redux';
-import { OrphanVisit, OrphanVisitType, Visit, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import {
+  OrphanVisit,
+  OrphanVisitType,
+  Visit,
+  VisitsFallbackIntervalAction,
+  VisitsInfo,
+  VisitsLoadProgressChangedAction,
+} from '../types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -7,7 +14,7 @@ import { ShlinkVisitsParams } from '../../api/types';
 import { isOrphanVisit } from '../types/helpers';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
-import { getVisitsWithLoader } from './common';
+import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
 /* eslint-disable padding-line-between-statements */
@@ -17,6 +24,7 @@ export const GET_ORPHAN_VISITS = 'shlink/orphanVisits/GET_ORPHAN_VISITS';
 export const GET_ORPHAN_VISITS_LARGE = 'shlink/orphanVisits/GET_ORPHAN_VISITS_LARGE';
 export const GET_ORPHAN_VISITS_CANCEL = 'shlink/orphanVisits/GET_ORPHAN_VISITS_CANCEL';
 export const GET_ORPHAN_VISITS_PROGRESS_CHANGED = 'shlink/orphanVisits/GET_ORPHAN_VISITS_PROGRESS_CHANGED';
+export const GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL = 'shlink/orphanVisits/GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL';
 /* eslint-enable padding-line-between-statements */
 
 export interface OrphanVisitsAction extends Action<string> {
@@ -26,6 +34,7 @@ export interface OrphanVisitsAction extends Action<string> {
 
 type OrphanVisitsCombinedAction = OrphanVisitsAction
 & VisitsLoadProgressChangedAction
+& VisitsFallbackIntervalAction
 & CreateVisitsAction
 & ApiErrorAction;
 
@@ -41,10 +50,11 @@ const initialState: VisitsInfo = {
 export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
   [GET_ORPHAN_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_ORPHAN_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_ORPHAN_VISITS]: (_, { visits, query }) => ({ ...initialState, visits, query }),
+  [GET_ORPHAN_VISITS]: (state, { visits, query }) => ({ ...state, visits, query, loading: false, error: false }),
   [GET_ORPHAN_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_ORPHAN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_ORPHAN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
+  [GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
   [CREATE_VISITS]: (state, { createdVisits }) => {
     const { visits, query = {} } = state;
     const { startDate, endDate } = query;
@@ -62,6 +72,7 @@ const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
 export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   query: ShlinkVisitsParams = {},
   orphanVisitsType?: OrphanVisitType,
+  doFallbackRange = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getOrphanVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getOrphanVisits({ ...query, page, itemsPerPage })
@@ -70,6 +81,7 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
 
       return { ...result, data: visits };
     });
+  const lastVisitLoader = lastVisitLoaderForLoader(doFallbackRange, getOrphanVisits);
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
   const extraFinishActionData: Partial<OrphanVisitsAction> = { query };
   const actionMap = {
@@ -78,9 +90,10 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     finish: GET_ORPHAN_VISITS,
     error: GET_ORPHAN_VISITS_ERROR,
     progress: GET_ORPHAN_VISITS_PROGRESS_CHANGED,
+    fallbackToInterval: GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL,
   };
 
-  return getVisitsWithLoader(visitsLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
+  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
 };
 
 export const cancelGetOrphanVisits = buildActionCreator(GET_ORPHAN_VISITS_CANCEL);
