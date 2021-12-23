@@ -18,9 +18,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 * [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
 * [#538](https://github.com/shlinkio/shlink-web-client/pull/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
-* Fixed typo in identifier for "Last 180 days" interval.
-
-    If that was your default interval, you will see now "All visits" is selected instead. You will need to go to settings page and change it again to "Last 180 days".
 
 ### Deprecated
 * *Nothing*

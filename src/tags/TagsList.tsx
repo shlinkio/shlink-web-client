@@ -28,7 +28,7 @@ export interface TagsListProps {
 const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableProps>) => boundToMercureHub((
   { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
-  const [ mode, setMode ] = useState<TagsMode>(settings.ui?.tagsMode ?? 'cards');
+  const [ mode, setMode ] = useState<TagsMode>(settings.tags?.defaultMode ?? 'cards');
   const [ order, setOrder ] = useState<TagsOrder>({});
   const resolveSortedTags = pipe(
     () => tagsList.filteredTags.map((tag): NormalizedTag => ({

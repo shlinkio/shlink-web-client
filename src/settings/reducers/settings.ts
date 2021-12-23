@@ -4,6 +4,7 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { RecursivePartial } from '../../utils/utils';
 import { Theme } from '../../utils/theme';
 import { DateInterval } from '../../utils/dates/types';
+import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
@@ -29,11 +30,15 @@ export type TagsMode = 'cards' | 'list';
 
 export interface UiSettings {
   theme: Theme;
-  tagsMode?: TagsMode;
 }
 
 export interface VisitsSettings {
   defaultInterval: DateInterval;
+}
+
+export interface TagsSettings {
+  defaultOrdering?: TagsOrder;
+  defaultMode?: TagsMode;
 }
 
 export interface Settings {
@@ -41,6 +46,7 @@ export interface Settings {
   shortUrlCreation?: ShortUrlCreationSettings;
   ui?: UiSettings;
   visits?: VisitsSettings;
+  tags?: TagsSettings;
 }
 
 const initialState: Settings = {
@@ -89,4 +95,9 @@ export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
 export const setVisitsSettings = (settings: VisitsSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   visits: settings,
+});
+
+export const setTagsSettings = (settings: TagsSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  tags: settings,
 });
