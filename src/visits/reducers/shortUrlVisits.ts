@@ -78,7 +78,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
 export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   shortCode: string,
   query: ShlinkVisitsParams = {},
-  doFallbackRange = false,
+  doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getShortUrlVisits(
@@ -86,7 +86,7 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
     { ...query, page, itemsPerPage },
   );
   const lastVisitLoader = lastVisitLoaderForLoader(
-    doFallbackRange,
+    doIntervalFallback,
     async (params) => getShortUrlVisits(shortCode, { ...params, domain: query.domain }),
   );
   const shouldCancel = () => getState().shortUrlVisits.cancelLoad;

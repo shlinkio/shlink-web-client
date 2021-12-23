@@ -28,7 +28,7 @@ import { SortableBarChartCard } from './charts/SortableBarChartCard';
 import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
-  getVisits: (params: VisitsParams, doFallbackRange?: boolean) => void;
+  getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
   selectedServer: SelectedServer;

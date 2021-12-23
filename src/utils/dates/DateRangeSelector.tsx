@@ -40,11 +40,10 @@ export const DateRangeSelector = (
   };
 
   updatable && useEffectExceptFirstTime(() => {
-    if (rangeIsInterval(initialDateRange)) {
-      updateInterval(initialDateRange);
-    } else if (initialDateRange) {
-      updateDateRange(initialDateRange);
-    }
+    const isDateInterval = rangeIsInterval(initialDateRange);
+
+    isDateInterval && updateInterval(initialDateRange);
+    initialDateRange && !isDateInterval && updateDateRange(initialDateRange);
   }, [ initialDateRange ]);
 
   return (

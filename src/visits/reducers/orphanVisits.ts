@@ -72,7 +72,7 @@ const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
 export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   query: ShlinkVisitsParams = {},
   orphanVisitsType?: OrphanVisitType,
-  doFallbackRange = false,
+  doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getOrphanVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getOrphanVisits({ ...query, page, itemsPerPage })
@@ -81,7 +81,7 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
 
       return { ...result, data: visits };
     });
-  const lastVisitLoader = lastVisitLoaderForLoader(doFallbackRange, getOrphanVisits);
+  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, getOrphanVisits);
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
   const extraFinishActionData: Partial<OrphanVisitsAction> = { query };
   const actionMap = {

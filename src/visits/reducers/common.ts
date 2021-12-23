@@ -86,10 +86,10 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 };
 
 export const lastVisitLoaderForLoader = (
-  doFallbackRange: boolean,
+  doIntervalFallback: boolean,
   loader: (params: ShlinkVisitsParams) => Promise<ShlinkVisits>,
 ): LastVisitLoader => {
-  if (!doFallbackRange) {
+  if (!doIntervalFallback) {
     return async () => Promise.resolve(undefined);
   }
 

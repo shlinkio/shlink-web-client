@@ -67,14 +67,14 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
 export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   tag: string,
   query: ShlinkVisitsParams = {},
-  doFallbackRange = false,
+  doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getTagVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getTagVisits(
     tag,
     { ...query, page, itemsPerPage },
   );
-  const lastVisitLoader = lastVisitLoaderForLoader(doFallbackRange, async (params) => getTagVisits(tag, params));
+  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getTagVisits(tag, params));
   const shouldCancel = () => getState().tagVisits.cancelLoad;
   const extraFinishActionData: Partial<TagVisitsAction> = { tag, query };
   const actionMap = {
