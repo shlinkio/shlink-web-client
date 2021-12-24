@@ -24,7 +24,6 @@ export interface ShortUrlsList {
 
 export interface ListShortUrlsAction extends Action<string> {
   shortUrls: ShlinkShortUrlsResponse;
-  params: ShlinkShortUrlsListParams;
 }
 
 export type ListShortUrlsCombinedAction = (
@@ -108,8 +107,8 @@ export const listShortUrls = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   try {
     const shortUrls = await listShortUrls(params);
 
-    dispatch<ListShortUrlsAction>({ type: LIST_SHORT_URLS, shortUrls, params });
+    dispatch<ListShortUrlsAction>({ type: LIST_SHORT_URLS, shortUrls });
   } catch (e) {
-    dispatch({ type: LIST_SHORT_URLS_ERROR, params });
+    dispatch({ type: LIST_SHORT_URLS_ERROR });
   }
 };
