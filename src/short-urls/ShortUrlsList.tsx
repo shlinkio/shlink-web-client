@@ -1,4 +1,4 @@
-import { head, keys, pipe, values } from 'ramda';
+import { pipe } from 'ramda';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
@@ -9,6 +9,7 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShlinkShortUrlsListParams } from '../api/types';
+import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { OrderableFields, ShortUrlsListParams, ShortUrlsOrder, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
@@ -18,9 +19,10 @@ import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
 interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams> {
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
-  listShortUrls: (params: ShortUrlsListParams) => void;
+  listShortUrls: (params: ShlinkShortUrlsListParams) => void;
   shortUrlsListParams: ShortUrlsListParams;
   resetShortUrlParams: () => void;
+  settings: Settings;
 }
 
 const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) => boundToMercureHub(({
@@ -32,24 +34,17 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
   history,
   shortUrlsList,
   selectedServer,
+  settings,
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { orderBy } = shortUrlsListParams;
-  const [ order, setOrder ] = useState<ShortUrlsOrder>({
-    field: orderBy && (head(keys(orderBy)) as OrderableFields),
-    dir: orderBy && head(values(orderBy)),
-  });
+  const initialOrderBy = orderBy ?? settings.shortUrlList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING;
+  const [ order, setOrder ] = useState<ShortUrlsOrder>(initialOrderBy);
   const [{ tags, search, startDate, endDate }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
   const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
 
-  const refreshList = (extraParams: ShlinkShortUrlsListParams) => listShortUrls(
-    { ...shortUrlsListParams, ...extraParams },
-  );
-  const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => {
-    setOrder({ field, dir });
-    refreshList({ orderBy: field ? { [field]: dir } : undefined });
-  };
+  const handleOrderBy = (field?: OrderableFields, dir?: OrderDir) => setOrder({ field, dir });
   const orderByColumn = (field: OrderableFields) => () =>
     handleOrderBy(field, determineOrderDir(field, order.field, order.dir));
   const renderOrderIcon = (field: OrderableFields) => <TableOrderIcon currentOrder={order} field={field} />;
@@ -60,10 +55,16 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
 
   useEffect(() => resetShortUrlParams, []);
   useEffect(() => {
-    refreshList(
-      { page: match.params.page, searchTerm: search, tags: selectedTags, itemsPerPage: undefined, startDate, endDate },
-    );
-  }, [ match.params.page, search, selectedTags, startDate, endDate ]);
+    listShortUrls({
+      page: match.params.page,
+      searchTerm: search,
+      tags: selectedTags,
+      itemsPerPage: undefined,
+      startDate,
+      endDate,
+      orderBy: order,
+    });
+  }, [ match.params.page, search, selectedTags, startDate, endDate, order ]);
 
   return (
     <>

@@ -7,7 +7,6 @@ import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
 import { DeleteShortUrlAction, SHORT_URL_DELETED } from './shortUrlDeletion';
-import { ShortUrlsListParams } from './shortUrlsListParams';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from './shortUrlCreation';
 import { SHORT_URL_EDITED, ShortUrlEditedAction } from './shortUrlEdition';
 
@@ -25,7 +24,7 @@ export interface ShortUrlsList {
 
 export interface ListShortUrlsAction extends Action<string> {
   shortUrls: ShlinkShortUrlsResponse;
-  params: ShortUrlsListParams;
+  params: ShlinkShortUrlsListParams;
 }
 
 export type ListShortUrlsCombinedAction = (

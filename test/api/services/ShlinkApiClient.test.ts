@@ -5,7 +5,7 @@ import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { Visit } from '../../../src/visits/types';
-import { OrderDir } from '../../../src/utils/helpers/ordering';
+import { ShortUrlsOrder } from '../../../src/short-urls/reducers/shortUrlsListParams';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
@@ -33,9 +33,9 @@ describe('ShlinkApiClient', () => {
     });
 
     it.each([
-      [{ visits: 'DESC' as OrderDir }, 'visits-DESC' ],
-      [{ longUrl: 'ASC' as OrderDir }, 'longUrl-ASC' ],
-      [{ longUrl: undefined as OrderDir }, undefined ],
+      [ { field: 'visits', dir: 'DESC' } as ShortUrlsOrder, 'visits-DESC' ],
+      [ { field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, 'longUrl-ASC' ],
+      [ { field: 'longUrl', dir: undefined } as ShortUrlsOrder, undefined ],
     ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
       const axiosSpy = createAxiosMock({
         data: expectedList,

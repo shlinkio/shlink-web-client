@@ -24,12 +24,11 @@ const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/re
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
   const { orderBy = {}, ...rest } = params;
-  const [ firstKey ] = Object.keys(orderBy);
-  const [ firstValue ] = Object.values(orderBy);
+  const { field, dir } = orderBy;
 
-  return !firstValue ? rest : {
+  return !dir ? rest : {
     ...rest,
-    orderBy: `${firstKey}-${firstValue}`,
+    orderBy: `${field}-${dir}`,
   };
 };
 

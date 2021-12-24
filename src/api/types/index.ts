@@ -1,7 +1,7 @@
 import { Visit } from '../../visits/types';
 import { OptionalString } from '../../utils/utils';
 import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
-import { OrderBy } from '../../short-urls/reducers/shortUrlsListParams';
+import { ShortUrlsOrder } from '../../short-urls/reducers/shortUrlsListParams';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -94,7 +94,7 @@ export interface ShlinkShortUrlsListParams {
   searchTerm?: string;
   startDate?: string;
   endDate?: string;
-  orderBy?: OrderBy;
+  orderBy?: ShortUrlsOrder;
 }
 
 export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {

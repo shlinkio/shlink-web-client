@@ -9,6 +9,11 @@ import { ShortUrlsOrder } from '../../short-urls/reducers/shortUrlsListParams';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
+export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
+  field: 'dateCreated',
+  dir: 'DESC',
+};
+
 /**
  * Important! When adding new props in the main Settings interface or any of the nested props, they have to be set as
  * optional, as old instances of the app will load partial objects from local storage until it is saved again.
@@ -67,6 +72,9 @@ const initialState: Settings = {
   },
   visits: {
     defaultInterval: 'last30Days',
+  },
+  shortUrlList: {
+    defaultOrdering: DEFAULT_SHORT_URLS_ORDERING,
   },
 };
 

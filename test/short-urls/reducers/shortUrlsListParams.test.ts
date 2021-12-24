@@ -10,14 +10,10 @@ describe('shortUrlsListParamsReducer', () => {
       expect(reducer(undefined, { type: LIST_SHORT_URLS, params: { searchTerm: 'foo', page: '2' } } as any)).toEqual({
         page: '2',
         searchTerm: 'foo',
-        orderBy: { dateCreated: 'DESC' },
       }));
 
     it('returns default value when action is RESET_SHORT_URL_PARAMS', () =>
-      expect(reducer(undefined, { type: RESET_SHORT_URL_PARAMS } as any)).toEqual({
-        page: '1',
-        orderBy: { dateCreated: 'DESC' },
-      }));
+      expect(reducer(undefined, { type: RESET_SHORT_URL_PARAMS } as any)).toEqual({ page: '1' }));
   });
 
   describe('resetShortUrlParams', () => {

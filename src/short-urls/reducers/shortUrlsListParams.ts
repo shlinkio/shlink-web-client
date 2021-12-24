@@ -1,5 +1,5 @@
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-import { Order, OrderDir } from '../../utils/helpers/ordering';
+import { Order } from '../../utils/helpers/ordering';
 import { LIST_SHORT_URLS, ListShortUrlsAction } from './shortUrlsList';
 
 export const RESET_SHORT_URL_PARAMS = 'shlink/shortUrlsListParams/RESET_SHORT_URL_PARAMS';
@@ -16,17 +16,14 @@ export type OrderableFields = keyof typeof SORTABLE_FIELDS;
 
 export type ShortUrlsOrder = Order<OrderableFields>;
 
-export type OrderBy = Partial<Record<OrderableFields, OrderDir>>;
-
 export interface ShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
-  orderBy?: OrderBy;
+  orderBy?: ShortUrlsOrder;
 }
 
 const initialState: ShortUrlsListParams = {
   page: '1',
-  orderBy: { dateCreated: 'DESC' },
 };
 
 export default buildReducer<ShortUrlsListParams, ListShortUrlsAction>({
