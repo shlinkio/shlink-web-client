@@ -14,13 +14,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
 * [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
+* [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
 
 ### Changed
 * [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
 * [#538](https://github.com/shlinkio/shlink-web-client/pull/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
-* Fixed typo in identifier for "Last 180 days" interval.
-
-    If that was your default interval, you will see now "All visits" is selected instead. You will need to go to settings page and change it again to "Last 180 days".
 
 ### Deprecated
 * *Nothing*

@@ -4,6 +4,8 @@ import Settings from '../Settings';
 import {
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
+  setShortUrlsListSettings,
+  setTagsSettings,
   setUiSettings,
   setVisitsSettings,
   toggleRealTimeUpdates,
@@ -13,10 +15,21 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 import { ShortUrlCreation } from '../ShortUrlCreation';
 import { UserInterface } from '../UserInterface';
 import { Visits } from '../Visits';
+import { Tags } from '../Tags';
+import { ShortUrlsList } from '../ShortUrlsList';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
-  bottle.serviceFactory('Settings', Settings, 'RealTimeUpdates', 'ShortUrlCreation', 'UserInterface', 'Visits');
+  bottle.serviceFactory(
+    'Settings',
+    Settings,
+    'RealTimeUpdates',
+    'ShortUrlCreation',
+    'ShortUrlsListSettings',
+    'UserInterface',
+    'Visits',
+    'Tags',
+  );
   bottle.decorator('Settings', withoutSelectedServer);
   bottle.decorator('Settings', connect(null, [ 'resetSelectedServer' ]));
 
@@ -35,12 +48,20 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('Visits', () => Visits);
   bottle.decorator('Visits', connect([ 'settings' ], [ 'setVisitsSettings' ]));
 
+  bottle.serviceFactory('Tags', () => Tags);
+  bottle.decorator('Tags', connect([ 'settings' ], [ 'setTagsSettings' ]));
+
+  bottle.serviceFactory('ShortUrlsListSettings', () => ShortUrlsList);
+  bottle.decorator('ShortUrlsListSettings', connect([ 'settings' ], [ 'setShortUrlsListSettings' ]));
+
   // Actions
   bottle.serviceFactory('toggleRealTimeUpdates', () => toggleRealTimeUpdates);
   bottle.serviceFactory('setRealTimeUpdatesInterval', () => setRealTimeUpdatesInterval);
   bottle.serviceFactory('setShortUrlCreationSettings', () => setShortUrlCreationSettings);
+  bottle.serviceFactory('setShortUrlsListSettings', () => setShortUrlsListSettings);
   bottle.serviceFactory('setUiSettings', () => setUiSettings);
   bottle.serviceFactory('setVisitsSettings', () => setVisitsSettings);
+  bottle.serviceFactory('setTagsSettings', () => setTagsSettings);
 };
 
 export default provideServices;

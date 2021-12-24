@@ -5,7 +5,7 @@ import { SelectedServer } from '../servers/data';
 import { supportsShortUrlTitle } from '../utils/helpers/features';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
-import { OrderableFields } from './reducers/shortUrlsListParams';
+import { OrderableFields } from './data';
 import './ShortUrlsTable.scss';
 
 export interface ShortUrlsTableProps {

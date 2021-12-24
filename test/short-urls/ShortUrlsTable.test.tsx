@@ -2,10 +2,10 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
-import { OrderableFields, SORTABLE_FIELDS } from '../../src/short-urls/reducers/shortUrlsListParams';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { SemVer } from '../../src/utils/helpers/version';
+import { OrderableFields, SORTABLE_FIELDS } from '../../src/short-urls/data';
 
 describe('<ShortUrlsTable />', () => {
   let wrapper: ShallowWrapper;

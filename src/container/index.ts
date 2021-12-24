@@ -18,7 +18,8 @@ import { ConnectDecorator } from './types';
 type LazyActionMap = Record<string, Function>;
 
 const bottle = new Bottle();
-const { container } = bottle;
+
+export const { container } = bottle;
 
 const lazyService = <T extends Function, K>(container: IContainer, serviceName: string) =>
   (...args: any[]) => (container[serviceName] as T)(...args) as K;
@@ -44,5 +45,3 @@ provideUtilsServices(bottle);
 provideMercureServices(bottle);
 provideSettingsServices(bottle, connect);
 provideDomainsServices(bottle, connect);
-
-export default container;
