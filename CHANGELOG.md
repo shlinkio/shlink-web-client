@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
 * [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
+* [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
 
 ### Changed
 * [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
