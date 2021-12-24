@@ -8,7 +8,6 @@ import reducer, {
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
-import { RESET_SHORT_URL_PARAMS } from '../../../src/short-urls/reducers/shortUrlsListParams';
 import { ShlinkState } from '../../../src/container/types';
 import { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
 
@@ -62,10 +61,9 @@ describe('selectedServerReducer', () => {
 
       await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
-      expect(dispatch).toHaveBeenCalledTimes(4);
+      expect(dispatch).toHaveBeenCalledTimes(3);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: RESET_SHORT_URL_PARAMS });
-      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
       expect(loadMercureInfo).toHaveBeenCalledTimes(1);
     });
 
@@ -89,7 +87,7 @@ describe('selectedServerReducer', () => {
       await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
       expect(apiClientMock.health).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
       expect(loadMercureInfo).not.toHaveBeenCalled();
     });
 
@@ -102,7 +100,7 @@ describe('selectedServerReducer', () => {
 
       expect(getState).toHaveBeenCalled();
       expect(apiClientMock.health).not.toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(3, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
       expect(loadMercureInfo).not.toHaveBeenCalled();
     });
   });

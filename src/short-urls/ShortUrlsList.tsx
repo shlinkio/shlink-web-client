@@ -11,7 +11,7 @@ import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShlinkShortUrlsListParams } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { OrderableFields, ShortUrlsListParams, ShortUrlsOrder, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
+import { OrderableFields, ShortUrlsOrder, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
@@ -20,15 +20,11 @@ interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
-  shortUrlsListParams: ShortUrlsListParams;
-  resetShortUrlParams: () => void;
   settings: Settings;
 }
 
 const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) => boundToMercureHub(({
   listShortUrls,
-  resetShortUrlParams,
-  shortUrlsListParams,
   match,
   location,
   history,
@@ -37,8 +33,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
   settings,
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
-  const { orderBy } = shortUrlsListParams;
-  const initialOrderBy = orderBy ?? settings.shortUrlList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING;
+  const initialOrderBy = settings.shortUrlList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING;
   const [ order, setOrder ] = useState<ShortUrlsOrder>(initialOrderBy);
   const [{ tags, search, startDate, endDate }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
   const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
@@ -53,7 +48,6 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
     (tags) => toFirstPage({ tags }),
   );
 
-  useEffect(() => resetShortUrlParams, []);
   useEffect(() => {
     listShortUrls({
       page: match.params.page,

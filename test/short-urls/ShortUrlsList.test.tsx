@@ -33,18 +33,16 @@ describe('<ShortUrlsList />', () => {
     },
   });
   const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, SearchBar);
-  const createWrapper = (orderBy: ShortUrlsOrder = {}) => shallow(
+  const createWrapper = (defaultOrdering: ShortUrlsOrder = {}) => shallow(
     <ShortUrlsList
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
       listShortUrls={listShortUrlsMock}
-      resetShortUrlParams={jest.fn()}
-      shortUrlsListParams={{ page: '1', orderBy }}
       match={Mock.of<match<ShortUrlListRouteParams>>({ params: {} })}
       location={Mock.of<Location>({ search: '?tags=test%20tag&search=example.com' })}
       shortUrlsList={shortUrlsList}
       history={Mock.of<History>({ push })}
       selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-      settings={Mock.all<Settings>()}
+      settings={Mock.of<Settings>({ shortUrlList: { defaultOrdering } })}
     />,
   ).dive(); // Dive is needed as this component is wrapped in a HOC
 
