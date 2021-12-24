@@ -29,7 +29,7 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
   { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
   const [ mode, setMode ] = useState<TagsMode>(settings.tags?.defaultMode ?? 'cards');
-  const [ order, setOrder ] = useState<TagsOrder>({});
+  const [ order, setOrder ] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
   const resolveSortedTags = pipe(
     () => tagsList.filteredTags.map((tag): NormalizedTag => ({
       tag,

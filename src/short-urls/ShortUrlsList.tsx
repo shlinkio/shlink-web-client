@@ -3,14 +3,14 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
 import SortingDropdown from '../utils/SortingDropdown';
-import { determineOrderDir, Order, OrderDir } from '../utils/helpers/ordering';
+import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShlinkShortUrlsListParams } from '../api/types';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { OrderableFields, ShortUrlsListParams, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
+import { OrderableFields, ShortUrlsListParams, ShortUrlsOrder, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
@@ -22,8 +22,6 @@ interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams
   shortUrlsListParams: ShortUrlsListParams;
   resetShortUrlParams: () => void;
 }
-
-type ShortUrlsOrder = Order<OrderableFields>;
 
 const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) => boundToMercureHub(({
   listShortUrls,

@@ -5,6 +5,7 @@ import { RecursivePartial } from '../../utils/utils';
 import { Theme } from '../../utils/theme';
 import { DateInterval } from '../../utils/dates/types';
 import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
+import { ShortUrlsOrder } from '../../short-urls/reducers/shortUrlsListParams';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
@@ -41,9 +42,14 @@ export interface TagsSettings {
   defaultMode?: TagsMode;
 }
 
+export interface ShortUrlListSettings {
+  defaultOrdering?: ShortUrlsOrder;
+}
+
 export interface Settings {
   realTimeUpdates: RealTimeUpdatesSettings;
   shortUrlCreation?: ShortUrlCreationSettings;
+  shortUrlList?: ShortUrlListSettings;
   ui?: UiSettings;
   visits?: VisitsSettings;
   tags?: TagsSettings;
