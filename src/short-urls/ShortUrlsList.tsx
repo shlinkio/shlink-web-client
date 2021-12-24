@@ -33,7 +33,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
   settings,
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
-  const initialOrderBy = settings.shortUrlList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING;
+  const initialOrderBy = settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING;
   const [ order, setOrder ] = useState<ShortUrlsOrder>(initialOrderBy);
   const [{ tags, search, startDate, endDate }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
   const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);

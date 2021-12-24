@@ -41,7 +41,7 @@ describe('<ShortUrlsList />', () => {
       shortUrlsList={shortUrlsList}
       history={Mock.of<History>({ push })}
       selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-      settings={Mock.of<Settings>({ shortUrlList: { defaultOrdering } })}
+      settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
     />,
   ).dive(); // Dive is needed as this component is wrapped in a HOC
 

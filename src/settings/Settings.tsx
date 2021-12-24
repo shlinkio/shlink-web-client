@@ -16,13 +16,20 @@ const SettingsSections: FC<{ items: ReactNode[][] }> = ({ items }) => (
   </>
 );
 
-const Settings = (RealTimeUpdates: FC, ShortUrlCreation: FC, UserInterface: FC, Visits: FC, Tags: FC) => () => (
+const Settings = (
+  RealTimeUpdates: FC,
+  ShortUrlCreation: FC,
+  ShortUrlsList: FC,
+  UserInterface: FC,
+  Visits: FC,
+  Tags: FC,
+) => () => (
   <NoMenuLayout>
     <SettingsSections
       items={[
-        [ <UserInterface /> ], // eslint-disable-line react/jsx-key
-        [ <ShortUrlCreation />, <RealTimeUpdates /> ], // eslint-disable-line react/jsx-key
-        [ <Tags />, <Visits /> ], // eslint-disable-line react/jsx-key
+        [ <UserInterface />, <Visits /> ], // eslint-disable-line react/jsx-key
+        [ <ShortUrlCreation />, <ShortUrlsList /> ], // eslint-disable-line react/jsx-key
+        [ <Tags />, <RealTimeUpdates /> ], // eslint-disable-line react/jsx-key
       ]}
     />
   </NoMenuLayout>

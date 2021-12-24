@@ -47,14 +47,14 @@ export interface TagsSettings {
   defaultMode?: TagsMode;
 }
 
-export interface ShortUrlListSettings {
+export interface ShortUrlsListSettings {
   defaultOrdering?: ShortUrlsOrder;
 }
 
 export interface Settings {
   realTimeUpdates: RealTimeUpdatesSettings;
   shortUrlCreation?: ShortUrlCreationSettings;
-  shortUrlList?: ShortUrlListSettings;
+  shortUrlsList?: ShortUrlsListSettings;
   ui?: UiSettings;
   visits?: VisitsSettings;
   tags?: TagsSettings;
@@ -73,7 +73,7 @@ const initialState: Settings = {
   visits: {
     defaultInterval: 'last30Days',
   },
-  shortUrlList: {
+  shortUrlsList: {
     defaultOrdering: DEFAULT_SHORT_URLS_ORDERING,
   },
 };
@@ -99,6 +99,11 @@ export const setRealTimeUpdatesInterval = (interval: number): PartialSettingsAct
 export const setShortUrlCreationSettings = (settings: ShortUrlCreationSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   shortUrlCreation: settings,
+});
+
+export const setShortUrlsListSettings = (settings: ShortUrlsListSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  shortUrlsList: settings,
 });
 
 export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({

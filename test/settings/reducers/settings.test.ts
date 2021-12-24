@@ -7,6 +7,7 @@ import reducer, {
   setUiSettings,
   setVisitsSettings,
   setTagsSettings,
+  setShortUrlsListSettings,
 } from '../../../src/settings/reducers/settings';
 
 describe('settingsReducer', () => {
@@ -14,8 +15,8 @@ describe('settingsReducer', () => {
   const shortUrlCreation = { validateUrls: false };
   const ui = { theme: 'light' };
   const visits = { defaultInterval: 'last30Days' };
-  const shortUrlList = { defaultOrdering: DEFAULT_SHORT_URLS_ORDERING };
-  const settings = { realTimeUpdates, shortUrlCreation, ui, visits, shortUrlList };
+  const shortUrlsList = { defaultOrdering: DEFAULT_SHORT_URLS_ORDERING };
+  const settings = { realTimeUpdates, shortUrlCreation, ui, visits, shortUrlsList };
 
   describe('reducer', () => {
     it('returns realTimeUpdates when action is SET_SETTINGS', () => {
@@ -68,6 +69,14 @@ describe('settingsReducer', () => {
       const result = setTagsSettings({ defaultMode: 'list' });
 
       expect(result).toEqual({ type: SET_SETTINGS, tags: { defaultMode: 'list' } });
+    });
+  });
+
+  describe('setShortUrlsListSettings', () => {
+    it('creates action to set short URLs list settings', () => {
+      const result = setShortUrlsListSettings({ defaultOrdering: DEFAULT_SHORT_URLS_ORDERING });
+
+      expect(result).toEqual({ type: SET_SETTINGS, shortUrlsList: { defaultOrdering: DEFAULT_SHORT_URLS_ORDERING } });
     });
   });
 });

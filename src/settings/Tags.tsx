@@ -13,7 +13,7 @@ interface TagsProps {
 }
 
 export const Tags: FC<TagsProps> = ({ settings: { tags }, setTagsSettings }) => (
-  <SimpleCard title="Tags">
+  <SimpleCard title="Tags" className="h-100">
     <FormGroup>
       <label>Default display mode when managing tags:</label>
       <TagsModeDropdown
