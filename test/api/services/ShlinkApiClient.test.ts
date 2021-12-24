@@ -3,9 +3,8 @@ import { Mock } from 'ts-mockery';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
-import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import { Visit } from '../../../src/visits/types';
-import { ShortUrlsOrder } from '../../../src/short-urls/reducers/shortUrlsListParams';
 
 describe('ShlinkApiClient', () => {
   const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;

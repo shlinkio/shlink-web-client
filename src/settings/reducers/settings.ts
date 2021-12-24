@@ -5,7 +5,7 @@ import { RecursivePartial } from '../../utils/utils';
 import { Theme } from '../../utils/theme';
 import { DateInterval } from '../../utils/dates/types';
 import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
-import { ShortUrlsOrder } from '../../short-urls/reducers/shortUrlsListParams';
+import { ShortUrlsOrder } from '../../short-urls/data';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 

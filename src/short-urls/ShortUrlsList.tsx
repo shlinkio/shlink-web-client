@@ -11,10 +11,10 @@ import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShlinkShortUrlsListParams } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { OrderableFields, ShortUrlsOrder, SORTABLE_FIELDS } from './reducers/shortUrlsListParams';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
+import { OrderableFields, ShortUrlsOrder, SORTABLE_FIELDS } from './data';
 
 interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams> {
   selectedServer: SelectedServer;
