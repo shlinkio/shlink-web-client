@@ -16,7 +16,7 @@ import { Settings } from '../../src/settings/reducers/settings';
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsTable = () => null;
-  const SearchBar = () => null;
+  const ShortUrlsFilteringBar = () => null;
   const listShortUrlsMock = jest.fn();
   const push = jest.fn();
   const shortUrlsList = Mock.of<ShortUrlsListModel>({
@@ -31,7 +31,7 @@ describe('<ShortUrlsList />', () => {
       ],
     },
   });
-  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, SearchBar);
+  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, ShortUrlsFilteringBar);
   const createWrapper = (defaultOrdering: ShortUrlsOrder = {}) => shallow(
     <ShortUrlsList
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
@@ -56,7 +56,7 @@ describe('<ShortUrlsList />', () => {
     expect(wrapper.find(ShortUrlsTable)).toHaveLength(1);
     expect(wrapper.find(OrderingDropdown)).toHaveLength(1);
     expect(wrapper.find(Paginator)).toHaveLength(1);
-    expect(wrapper.find(SearchBar)).toHaveLength(1);
+    expect(wrapper.find(ShortUrlsFilteringBar)).toHaveLength(1);
   });
 
   it('passes current query to paginator', () => {

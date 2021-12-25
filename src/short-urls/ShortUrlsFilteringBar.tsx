@@ -10,13 +10,13 @@ import { formatIsoDate } from '../utils/helpers/date';
 import ColorGenerator from '../utils/services/ColorGenerator';
 import { DateRange } from '../utils/dates/types';
 import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
-import './SearchBar.scss';
+import './ShortUrlsFilteringBar.scss';
 
-export type SearchBarProps = RouteChildrenProps<ShortUrlListRouteParams>;
+export type ShortUrlsFilteringProps = RouteChildrenProps<ShortUrlListRouteParams>;
 
 const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
-const SearchBar = (colorGenerator: ColorGenerator) => (props: SearchBarProps) => {
+const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator) => (props: ShortUrlsFilteringProps) => {
   const [{ search, tags, startDate, endDate }, toFirstPage ] = useShortUrlsQuery(props);
   const selectedTags = tags?.split(',') ?? [];
   const setDates = pipe(
@@ -37,7 +37,7 @@ const SearchBar = (colorGenerator: ColorGenerator) => (props: SearchBarProps) =>
   );
 
   return (
-    <div className="search-bar-container">
+    <div className="short-urls-filtering-bar-container">
       <SearchField initialValue={search} onChange={setSearch} />
 
       <div className="mt-3">
@@ -56,8 +56,8 @@ const SearchBar = (colorGenerator: ColorGenerator) => (props: SearchBarProps) =>
       </div>
 
       {selectedTags.length > 0 && (
-        <h4 className="search-bar__selected-tag mt-3">
-          <FontAwesomeIcon icon={tagsIcon} className="search-bar__tags-icon" />
+        <h4 className="short-urls-filtering-bar__selected-tag mt-3">
+          <FontAwesomeIcon icon={tagsIcon} className="short-urls-filtering-bar__tags-icon" />
           &nbsp;
           {selectedTags.map((tag) =>
             <Tag colorGenerator={colorGenerator} key={tag} text={tag} clearable onClose={() => removeTag(tag)} />)}
@@ -67,4 +67,4 @@ const SearchBar = (colorGenerator: ColorGenerator) => (props: SearchBarProps) =>
   );
 };
 
-export default SearchBar;
+export default ShortUrlsFilteringBar;

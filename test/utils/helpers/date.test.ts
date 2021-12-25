@@ -34,7 +34,7 @@ describe('date', () => {
   });
 
   describe('isBetween', () => {
-    test.each([
+    it.each([
       [ now, undefined, undefined, true ],
       [ now, subDays(now, 1), undefined, true ],
       [ now, now, undefined, true ],
@@ -52,7 +52,7 @@ describe('date', () => {
   });
 
   describe('isBeforeOrEqual', () => {
-    test.each([
+    it.each([
       [ now, now, true ],
       [ now, addDays(now, 1), true ],
       [ now, subDays(now, 1), false ],

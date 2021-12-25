@@ -19,17 +19,14 @@ import {
   ShlinkShortUrlsListNormalizedParams,
 } from '../types';
 import { stringifyQuery } from '../../utils/helpers/query';
+import { orderToString } from '../../utils/helpers/ordering';
 
 const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
   const { orderBy = {}, ...rest } = params;
-  const { field, dir } = orderBy;
 
-  return !dir ? rest : {
-    ...rest,
-    orderBy: `${field}-${dir}`,
-  };
+  return { ...rest, orderBy: orderToString(orderBy) };
 };
 
 export default class ShlinkApiClient {

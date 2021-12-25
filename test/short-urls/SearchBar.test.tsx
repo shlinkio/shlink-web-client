@@ -3,21 +3,21 @@ import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router';
 import { formatISO } from 'date-fns';
-import searchBarCreator, { SearchBarProps } from '../../src/short-urls/SearchBar';
+import filteringBarCreator, { ShortUrlsFilteringProps } from '../../src/short-urls/ShortUrlsFilteringBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
 
-describe('<SearchBar />', () => {
+describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
-  const SearchBar = searchBarCreator(Mock.all<ColorGenerator>());
+  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>());
   const push = jest.fn();
   const now = new Date();
-  const createWrapper = (props: Partial<SearchBarProps> = {}) => {
+  const createWrapper = (props: Partial<ShortUrlsFilteringProps> = {}) => {
     wrapper = shallow(
-      <SearchBar
+      <ShortUrlsFilteringBar
         history={Mock.of<History>({ push })}
         location={Mock.of<Location>({ search: '' })}
         match={Mock.of<match<ShortUrlListRouteParams>>({ params: { serverId: '1' } })}

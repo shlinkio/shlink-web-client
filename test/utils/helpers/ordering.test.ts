@@ -1,4 +1,4 @@
-import { determineOrderDir } from '../../../src/utils/helpers/ordering';
+import { determineOrderDir, OrderDir, orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
 
 describe('ordering', () => {
   describe('determineOrderDir', () => {
@@ -20,6 +20,26 @@ describe('ordering', () => {
     it('returns undefined when current order field and selected field are equal and current order dir is DESC', () => {
       expect(determineOrderDir('foo', 'foo', 'DESC')).toBeUndefined();
       expect(determineOrderDir('bar', 'bar', 'DESC')).toBeUndefined();
+    });
+  });
+
+  describe('orderToString', () => {
+    it.each([
+      [{}, undefined ],
+      [{ field: 'foo' }, undefined ],
+      [{ field: 'foo', dir: 'ASC' as OrderDir }, 'foo-ASC' ],
+      [{ field: 'bar', dir: 'DESC' as OrderDir }, 'bar-DESC' ],
+    ])('casts the order to string', (order, expectedResult) => {
+      expect(orderToString(order)).toEqual(expectedResult);
+    });
+  });
+
+  describe('stringToOrder', () => {
+    it.each([
+      [ 'foo-ASC', { field: 'foo', dir: 'ASC' }],
+      [ 'bar-DESC', { field: 'bar', dir: 'DESC' }],
+    ])('casts a string to an order objects', (order, expectedResult) => {
+      expect(stringToOrder(order)).toEqual(expectedResult);
     });
   });
 });
