@@ -6,14 +6,14 @@ import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { changeThemeInMarkup, Theme } from '../utils/theme';
 import { Settings, UiSettings } from './reducers/settings';
-import './UserInterface.scss';
+import './UserInterfaceSettings.scss';
 
 interface UserInterfaceProps {
   settings: Settings;
   setUiSettings: (settings: UiSettings) => void;
 }
 
-export const UserInterface: FC<UserInterfaceProps> = ({ settings: { ui }, setUiSettings }) => (
+export const UserInterfaceSettings: FC<UserInterfaceProps> = ({ settings: { ui }, setUiSettings }) => (
   <SimpleCard title="User interface" className="h-100">
     <FormGroup>
       <FontAwesomeIcon icon={ui?.theme === 'dark' ? faMoon : faSun} className="user-interface__theme-icon" />

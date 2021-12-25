@@ -1,15 +1,15 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { Settings } from '../../src/settings/reducers/settings';
-import { Visits } from '../../src/settings/Visits';
+import { VisitsSettings } from '../../src/settings/VisitsSettings';
 import { SimpleCard } from '../../src/utils/SimpleCard';
 import { DateIntervalSelector } from '../../src/utils/dates/DateIntervalSelector';
 
-describe('<Visits />', () => {
+describe('<VisitsSettings />', () => {
   let wrapper: ShallowWrapper;
   const setVisitsSettings = jest.fn();
   const createWrapper = (settings: Partial<Settings> = {}) => {
-    wrapper = shallow(<Visits settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />);
+    wrapper = shallow(<VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />);
 
     return wrapper;
   };

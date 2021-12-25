@@ -1,16 +1,20 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { DEFAULT_SHORT_URLS_ORDERING, Settings, ShortUrlsListSettings } from '../../src/settings/reducers/settings';
-import { ShortUrlsList } from '../../src/settings/ShortUrlsList';
+import {
+  DEFAULT_SHORT_URLS_ORDERING,
+  Settings,
+  ShortUrlsListSettings as ShortUrlsSettings,
+} from '../../src/settings/reducers/settings';
+import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { ShortUrlsOrder } from '../../src/short-urls/data';
 
-describe('<ShortUrlsList />', () => {
+describe('<ShortUrlsListSettings />', () => {
   let wrapper: ShallowWrapper;
   const setSettings = jest.fn();
-  const createWrapper = (shortUrlsList?: ShortUrlsListSettings) => {
+  const createWrapper = (shortUrlsList?: ShortUrlsSettings) => {
     wrapper = shallow(
-      <ShortUrlsList settings={Mock.of<Settings>({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
+      <ShortUrlsListSettings settings={Mock.of<Settings>({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
     );
 
     return wrapper;

@@ -1,17 +1,17 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { FormGroup } from 'reactstrap';
-import { Settings, TagsMode, TagsSettings } from '../../src/settings/reducers/settings';
+import { Settings, TagsMode, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
-import { Tags } from '../../src/settings/Tags';
+import { TagsSettings } from '../../src/settings/TagsSettings';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 
-describe('<Tags />', () => {
+describe('<TagsSettings />', () => {
   let wrapper: ShallowWrapper;
   const setTagsSettings = jest.fn();
-  const createWrapper = (tags?: TagsSettings) => {
-    wrapper = shallow(<Tags settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />);
+  const createWrapper = (tags?: TagsSettingsOptions) => {
+    wrapper = shallow(<TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />);
 
     return wrapper;
   };
