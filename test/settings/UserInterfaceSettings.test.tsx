@@ -3,15 +3,15 @@ import { Mock } from 'ts-mockery';
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Settings, UiSettings } from '../../src/settings/reducers/settings';
-import { UserInterface } from '../../src/settings/UserInterface';
+import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { Theme } from '../../src/utils/theme';
 
-describe('<UserInterface />', () => {
+describe('<UserInterfaceSettings />', () => {
   let wrapper: ShallowWrapper;
   const setUiSettings = jest.fn();
   const createWrapper = (ui?: UiSettings) => {
-    wrapper = shallow(<UserInterface settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />);
+    wrapper = shallow(<UserInterfaceSettings settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />);
 
     return wrapper;
   };

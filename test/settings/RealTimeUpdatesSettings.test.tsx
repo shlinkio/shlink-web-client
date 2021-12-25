@@ -1,19 +1,22 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { Input } from 'reactstrap';
-import { RealTimeUpdatesSettings, Settings } from '../../src/settings/reducers/settings';
-import RealTimeUpdates from '../../src/settings/RealTimeUpdates';
+import {
+  RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
+  Settings,
+} from '../../src/settings/reducers/settings';
+import RealTimeUpdatesSettings from '../../src/settings/RealTimeUpdatesSettings';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 
-describe('<RealTimeUpdates />', () => {
+describe('<RealTimeUpdatesSettings />', () => {
   const toggleRealTimeUpdates = jest.fn();
   const setRealTimeUpdatesInterval = jest.fn();
   let wrapper: ShallowWrapper;
-  const createWrapper = (realTimeUpdates: Partial<RealTimeUpdatesSettings> = {}) => {
+  const createWrapper = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => {
     const settings = Mock.of<Settings>({ realTimeUpdates });
 
     wrapper = shallow(
-      <RealTimeUpdates
+      <RealTimeUpdatesSettings
         settings={settings}
         toggleRealTimeUpdates={toggleRealTimeUpdates}
         setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}

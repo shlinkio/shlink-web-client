@@ -5,12 +5,12 @@ import { SelectedServer } from '../servers/data';
 import { supportsShortUrlTitle } from '../utils/helpers/features';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
-import { OrderableFields } from './data';
+import { ShortUrlsOrderableFields } from './data';
 import './ShortUrlsTable.scss';
 
 export interface ShortUrlsTableProps {
-  orderByColumn?: (column: OrderableFields) => () => void;
-  renderOrderIcon?: (column: OrderableFields) => ReactNode;
+  orderByColumn?: (column: ShortUrlsOrderableFields) => () => void;
+  renderOrderIcon?: (column: ShortUrlsOrderableFields) => ReactNode;
   shortUrlsList: ShortUrlsListState;
   selectedServer: SelectedServer;
   onTagClick?: (tag: string) => void;

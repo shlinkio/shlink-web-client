@@ -1,17 +1,17 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { DropdownItem } from 'reactstrap';
-import { ShortUrlCreationSettings, Settings } from '../../src/settings/reducers/settings';
-import { ShortUrlCreation } from '../../src/settings/ShortUrlCreation';
+import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
+import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { DropdownBtn } from '../../src/utils/DropdownBtn';
 
-describe('<ShortUrlCreation />', () => {
+describe('<ShortUrlCreationSettings />', () => {
   let wrapper: ShallowWrapper;
   const setShortUrlCreationSettings = jest.fn();
-  const createWrapper = (shortUrlCreation?: ShortUrlCreationSettings) => {
+  const createWrapper = (shortUrlCreation?: ShortUrlsSettings) => {
     wrapper = shallow(
-      <ShortUrlCreation
+      <ShortUrlCreationSettings
         settings={Mock.of<Settings>({ shortUrlCreation })}
         setShortUrlCreationSettings={setShortUrlCreationSettings}
       />,
@@ -68,9 +68,9 @@ describe('<ShortUrlCreation />', () => {
   });
 
   it.each([
-    [ { tagFilteringMode: 'includes' } as ShortUrlCreationSettings, 'Suggest tags including input', 'including' ],
+    [ { tagFilteringMode: 'includes' } as ShortUrlsSettings, 'Suggest tags including input', 'including' ],
     [
-      { tagFilteringMode: 'startsWith' } as ShortUrlCreationSettings,
+      { tagFilteringMode: 'startsWith' } as ShortUrlsSettings,
       'Suggest tags starting with input',
       'starting with',
     ],

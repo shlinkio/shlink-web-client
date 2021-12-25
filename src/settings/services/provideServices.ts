@@ -1,5 +1,5 @@
 import Bottle from 'bottlejs';
-import RealTimeUpdates from '../RealTimeUpdates';
+import RealTimeUpdatesSettings from '../RealTimeUpdatesSettings';
 import Settings from '../Settings';
 import {
   setRealTimeUpdatesInterval,
@@ -12,46 +12,46 @@ import {
 } from '../reducers/settings';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
-import { ShortUrlCreation } from '../ShortUrlCreation';
-import { UserInterface } from '../UserInterface';
-import { Visits } from '../Visits';
-import { Tags } from '../Tags';
-import { ShortUrlsList } from '../ShortUrlsList';
+import { ShortUrlCreationSettings } from '../ShortUrlCreationSettings';
+import { UserInterfaceSettings } from '../UserInterfaceSettings';
+import { VisitsSettings } from '../VisitsSettings';
+import { TagsSettings } from '../TagsSettings';
+import { ShortUrlsListSettings } from '../ShortUrlsListSettings';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'Settings',
     Settings,
-    'RealTimeUpdates',
-    'ShortUrlCreation',
+    'RealTimeUpdatesSettings',
+    'ShortUrlCreationSettings',
     'ShortUrlsListSettings',
-    'UserInterface',
-    'Visits',
-    'Tags',
+    'UserInterfaceSettings',
+    'VisitsSettings',
+    'TagsSettings',
   );
   bottle.decorator('Settings', withoutSelectedServer);
   bottle.decorator('Settings', connect(null, [ 'resetSelectedServer' ]));
 
-  bottle.serviceFactory('RealTimeUpdates', () => RealTimeUpdates);
+  bottle.serviceFactory('RealTimeUpdatesSettings', () => RealTimeUpdatesSettings);
   bottle.decorator(
-    'RealTimeUpdates',
+    'RealTimeUpdatesSettings',
     connect([ 'settings' ], [ 'toggleRealTimeUpdates', 'setRealTimeUpdatesInterval' ]),
   );
 
-  bottle.serviceFactory('ShortUrlCreation', () => ShortUrlCreation);
-  bottle.decorator('ShortUrlCreation', connect([ 'settings' ], [ 'setShortUrlCreationSettings' ]));
+  bottle.serviceFactory('ShortUrlCreationSettings', () => ShortUrlCreationSettings);
+  bottle.decorator('ShortUrlCreationSettings', connect([ 'settings' ], [ 'setShortUrlCreationSettings' ]));
 
-  bottle.serviceFactory('UserInterface', () => UserInterface);
-  bottle.decorator('UserInterface', connect([ 'settings' ], [ 'setUiSettings' ]));
+  bottle.serviceFactory('UserInterfaceSettings', () => UserInterfaceSettings);
+  bottle.decorator('UserInterfaceSettings', connect([ 'settings' ], [ 'setUiSettings' ]));
 
-  bottle.serviceFactory('Visits', () => Visits);
-  bottle.decorator('Visits', connect([ 'settings' ], [ 'setVisitsSettings' ]));
+  bottle.serviceFactory('VisitsSettings', () => VisitsSettings);
+  bottle.decorator('VisitsSettings', connect([ 'settings' ], [ 'setVisitsSettings' ]));
 
-  bottle.serviceFactory('Tags', () => Tags);
-  bottle.decorator('Tags', connect([ 'settings' ], [ 'setTagsSettings' ]));
+  bottle.serviceFactory('TagsSettings', () => TagsSettings);
+  bottle.decorator('TagsSettings', connect([ 'settings' ], [ 'setTagsSettings' ]));
 
-  bottle.serviceFactory('ShortUrlsListSettings', () => ShortUrlsList);
+  bottle.serviceFactory('ShortUrlsListSettings', () => ShortUrlsListSettings);
   bottle.decorator('ShortUrlsListSettings', connect([ 'settings' ], [ 'setShortUrlsListSettings' ]));
 
   // Actions

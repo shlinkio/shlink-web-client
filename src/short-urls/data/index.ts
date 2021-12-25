@@ -52,7 +52,7 @@ export interface ShortUrlIdentifier {
   domain: OptionalString;
 }
 
-export const SORTABLE_FIELDS = {
+export const SHORT_URLS_ORDERABLE_FIELDS = {
   dateCreated: 'Created at',
   shortCode: 'Short URL',
   longUrl: 'Long URL',
@@ -60,6 +60,6 @@ export const SORTABLE_FIELDS = {
   visits: 'Visits',
 };
 
-export type OrderableFields = keyof typeof SORTABLE_FIELDS;
+export type ShortUrlsOrderableFields = keyof typeof SHORT_URLS_ORDERABLE_FIELDS;
 
-export type ShortUrlsOrder = Order<OrderableFields>;
+export type ShortUrlsOrder = Order<ShortUrlsOrderableFields>;

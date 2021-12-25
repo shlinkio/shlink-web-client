@@ -3,7 +3,7 @@ import { DropdownItem, DropdownToggle } from 'reactstrap';
 import { identity, values } from 'ramda';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountDown as caretDownIcon } from '@fortawesome/free-solid-svg-icons';
-import SortingDropdown, { SortingDropdownProps } from '../../src/utils/SortingDropdown';
+import { OrderingDropdown, OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
 import { OrderDir } from '../../src/utils/helpers/ordering';
 
 describe('<SortingDropdown />', () => {
@@ -13,8 +13,8 @@ describe('<SortingDropdown />', () => {
     bar: 'Bar',
     baz: 'Hello World',
   };
-  const createWrapper = (props: Partial<SortingDropdownProps> = {}) => {
-    wrapper = shallow(<SortingDropdown items={items} order={{}} onChange={identity} {...props} />);
+  const createWrapper = (props: Partial<OrderingDropdownProps> = {}) => {
+    wrapper = shallow(<OrderingDropdown items={items} order={{}} onChange={identity} {...props} />);
 
     return wrapper;
   };

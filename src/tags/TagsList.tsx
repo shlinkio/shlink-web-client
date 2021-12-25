@@ -10,9 +10,14 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
 import { Settings, TagsMode } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
-import SortingDropdown from '../utils/SortingDropdown';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TagsList as TagsListState } from './reducers/tagsList';
-import { OrderableFields, SORTABLE_FIELDS, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
+import {
+  TagsOrderableFields,
+  TAGS_ORDERABLE_FIELDS,
+  TagsListChildrenProps,
+  TagsOrder,
+} from './data/TagsListChildrenProps';
 import { TagsModeDropdown } from './TagsModeDropdown';
 import { NormalizedTag } from './data';
 import { TagsTableProps } from './TagsTable';
@@ -55,7 +60,7 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     );
   }
 
-  const orderByColumn = (field: OrderableFields) => () => {
+  const orderByColumn = (field: TagsOrderableFields) => () => {
     const dir = determineOrderDir(field, order.field, order.dir);
 
     setOrder({ field: dir ? field : undefined, dir });
@@ -88,7 +93,11 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
           <TagsModeDropdown mode={mode} onChange={setMode} />
         </div>
         <div className="col-lg-6 mt-3 mt-lg-0">
-          <SortingDropdown items={SORTABLE_FIELDS} order={order} onChange={(field, dir) => setOrder({ field, dir })} />
+          <OrderingDropdown
+            items={TAGS_ORDERABLE_FIELDS}
+            order={order}
+            onChange={(field, dir) => setOrder({ field, dir })}
+          />
         </div>
       </Row>
       {renderContent()}
