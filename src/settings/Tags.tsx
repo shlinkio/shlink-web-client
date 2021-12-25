@@ -4,7 +4,7 @@ import { SimpleCard } from '../utils/SimpleCard';
 import { TagsModeDropdown } from '../tags/TagsModeDropdown';
 import { capitalize } from '../utils/utils';
 import SortingDropdown from '../utils/SortingDropdown';
-import { SORTABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
+import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
 import { Settings, TagsSettings } from './reducers/settings';
 
 interface TagsProps {
@@ -26,7 +26,7 @@ export const Tags: FC<TagsProps> = ({ settings: { tags }, setTagsSettings }) => 
     <FormGroup className="mb-0">
       <label>Default ordering for tags list:</label>
       <SortingDropdown
-        items={SORTABLE_FIELDS}
+        items={TAGS_ORDERABLE_FIELDS}
         order={tags?.defaultOrdering ?? {}}
         onChange={(field, dir) => setTagsSettings({ ...tags, defaultOrdering: { field, dir } })}
       />

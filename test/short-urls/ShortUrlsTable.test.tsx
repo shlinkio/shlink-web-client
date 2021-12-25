@@ -5,7 +5,7 @@ import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/Sh
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { SemVer } from '../../src/utils/helpers/version';
-import { OrderableFields, SORTABLE_FIELDS } from '../../src/short-urls/data';
+import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 
 describe('<ShortUrlsTable />', () => {
   let wrapper: ShallowWrapper;
@@ -51,8 +51,8 @@ describe('<ShortUrlsTable />', () => {
       .find('thead')
       .find('tr')
       .find('th')
-      .filterWhere((e) => e.text().includes(SORTABLE_FIELDS[orderableField as OrderableFields]));
-    const sortableFields = Object.keys(SORTABLE_FIELDS).filter((sortableField) => sortableField !== 'title');
+      .filterWhere((e) => e.text().includes(SHORT_URLS_ORDERABLE_FIELDS[orderableField as ShortUrlsOrderableFields]));
+    const sortableFields = Object.keys(SHORT_URLS_ORDERABLE_FIELDS).filter((sortableField) => sortableField !== 'title');
 
     expect.assertions(sortableFields.length);
     sortableFields.forEach((sortableField) => {

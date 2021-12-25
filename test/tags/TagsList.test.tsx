@@ -9,7 +9,7 @@ import { Result } from '../../src/utils/Result';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import SearchField from '../../src/utils/SearchField';
 import { Settings } from '../../src/settings/reducers/settings';
-import { OrderableFields } from '../../src/tags/data/TagsListChildrenProps';
+import { TagsOrderableFields } from '../../src/tags/data/TagsListChildrenProps';
 import SortingDropdown from '../../src/utils/SortingDropdown';
 
 describe('<TagsList />', () => {
@@ -98,7 +98,7 @@ describe('<TagsList />', () => {
 
   it('can update current order via orderByColumn from table component', () => {
     const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
-    const callOrderBy = (field: OrderableFields) => {
+    const callOrderBy = (field: TagsOrderableFields) => {
       ((wrapper.find(TagsTable).prop('orderByColumn') as Function)(field) as Function)();
     };
 

@@ -6,12 +6,12 @@ import SimplePaginator from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { OrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
+import { TagsOrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
 import { TagsTableRowProps } from './TagsTableRow';
 import './TagsTable.scss';
 
 export interface TagsTableProps extends TagsListChildrenProps {
-  orderByColumn: (field: OrderableFields) => () => void;
+  orderByColumn: (field: TagsOrderableFields) => () => void;
   currentOrder: TagsOrder;
 }
 

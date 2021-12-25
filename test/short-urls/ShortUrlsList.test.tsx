@@ -4,7 +4,7 @@ import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router';
 import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
-import { OrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
+import { ShortUrlsOrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import SortingDropdown from '../../src/utils/SortingDropdown';
@@ -75,8 +75,8 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('invokes order icon rendering', () => {
-    const renderIcon = (field: OrderableFields) =>
-      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement)(field);
+    const renderIcon = (field: ShortUrlsOrderableFields) =>
+      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: ShortUrlsOrderableFields) => ReactElement)(field);
 
     expect(renderIcon('visits').props.currentOrder).toEqual({});
 
@@ -88,7 +88,7 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('handles order through table', () => {
-    const orderByColumn: (field: OrderableFields) => Function = wrapper.find(ShortUrlsTable).prop('orderByColumn');
+    const orderByColumn: (field: ShortUrlsOrderableFields) => Function = wrapper.find(ShortUrlsTable).prop('orderByColumn');
 
     expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
 
