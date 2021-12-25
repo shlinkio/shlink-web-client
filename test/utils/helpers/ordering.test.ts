@@ -22,4 +22,12 @@ describe('ordering', () => {
       expect(determineOrderDir('bar', 'bar', 'DESC')).toBeUndefined();
     });
   });
+
+  describe('orderToString', () => {
+    test.todo('casts the order to string');
+  });
+
+  describe('stringToOrder', () => {
+    test.todo('casts a string to an order objects');
+  });
 });

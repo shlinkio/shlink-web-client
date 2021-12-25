@@ -1,5 +1,5 @@
 import Bottle, { Decorator } from 'bottlejs';
-import SearchBar from '../SearchBar';
+import ShortUrlsFilteringBar from '../ShortUrlsFilteringBar';
 import ShortUrlsList from '../ShortUrlsList';
 import ShortUrlsRow from '../helpers/ShortUrlsRow';
 import ShortUrlsRowMenu from '../helpers/ShortUrlsRowMenu';
@@ -19,7 +19,7 @@ import { getShortUrlDetail } from '../reducers/shortUrlDetail';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
   // Components
-  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'SearchBar');
+  bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'ShortUrlsFilteringBar');
   bottle.decorator('ShortUrlsList', connect(
     [ 'selectedServer', 'mercureInfo', 'shortUrlsList', 'settings' ],
     [ 'listShortUrls', 'createNewVisits', 'loadMercureInfo' ],
@@ -50,8 +50,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
 
   // Services
-  bottle.serviceFactory('SearchBar', SearchBar, 'ColorGenerator');
-  bottle.decorator('SearchBar', withRouter);
+  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator');
+  bottle.decorator('ShortUrlsFilteringBar', withRouter);
 
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');
