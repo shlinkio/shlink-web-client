@@ -10,7 +10,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
 import { Settings, TagsMode } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
-import { SortingDropdown } from '../utils/SortingDropdown';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import {
   TagsOrderableFields,
@@ -93,7 +93,7 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
           <TagsModeDropdown mode={mode} onChange={setMode} />
         </div>
         <div className="col-lg-6 mt-3 mt-lg-0">
-          <SortingDropdown
+          <OrderingDropdown
             items={TAGS_ORDERABLE_FIELDS}
             order={order}
             onChange={(field, dir) => setOrder({ field, dir })}

@@ -4,7 +4,7 @@ import { FormGroup } from 'reactstrap';
 import { Settings, TagsMode, TagsSettings } from '../../src/settings/reducers/settings';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { Tags } from '../../src/settings/Tags';
-import { SortingDropdown } from '../../src/utils/SortingDropdown';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 
 describe('<Tags />', () => {
@@ -60,7 +60,7 @@ describe('<Tags />', () => {
     [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as TagsOrder }, { field: 'visits', dir: 'ASC' }],
   ])('shows expected ordering', (tags, expectedOrder) => {
     const wrapper = createWrapper(tags);
-    const dropdown = wrapper.find(SortingDropdown);
+    const dropdown = wrapper.find(OrderingDropdown);
 
     expect(dropdown.prop('order')).toEqual(expectedOrder);
   });
@@ -72,7 +72,7 @@ describe('<Tags />', () => {
     [ 'shortUrls', 'DESC' ],
   ])('invokes setTagsSettings when ordering changes', (field, dir) => {
     const wrapper = createWrapper();
-    const dropdown = wrapper.find(SortingDropdown);
+    const dropdown = wrapper.find(OrderingDropdown);
 
     expect(setTagsSettings).not.toHaveBeenCalled();
     dropdown.simulate('change', field, dir);

@@ -3,7 +3,7 @@ import { FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import { TagsModeDropdown } from '../tags/TagsModeDropdown';
 import { capitalize } from '../utils/utils';
-import { SortingDropdown } from '../utils/SortingDropdown';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
 import { Settings, TagsSettings } from './reducers/settings';
 
@@ -25,7 +25,7 @@ export const Tags: FC<TagsProps> = ({ settings: { tags }, setTagsSettings }) => 
     </FormGroup>
     <FormGroup className="mb-0">
       <label>Default ordering for tags list:</label>
-      <SortingDropdown
+      <OrderingDropdown
         items={TAGS_ORDERABLE_FIELDS}
         order={tags?.defaultOrdering ?? {}}
         onChange={(field, dir) => setTagsSettings({ ...tags, defaultOrdering: { field, dir } })}

@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { range } from 'ramda';
-import { SortingDropdown } from '../../../src/utils/SortingDropdown';
+import { OrderingDropdown } from '../../../src/utils/OrderingDropdown';
 import PaginationDropdown from '../../../src/utils/PaginationDropdown';
 import { rangeOf } from '../../../src/utils/utils';
 import { OrderDir } from '../../../src/utils/helpers/ordering';
@@ -45,7 +45,7 @@ describe('<SortableBarChartCard />', () => {
 
     beforeEach(() => {
       const wrapper = createWrapper();
-      const dropdown = wrapper.renderProp('title' as never)().find(SortingDropdown);
+      const dropdown = wrapper.renderProp('title' as never)().find(OrderingDropdown);
 
       assert = (sortName: string, sortDir: OrderDir, keys: string[], values: number[]) => {
         dropdown.prop('onChange')(sortName, sortDir);

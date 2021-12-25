@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings, ShortUrlsListSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlsList } from '../../src/settings/ShortUrlsList';
-import { SortingDropdown } from '../../src/utils/SortingDropdown';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { ShortUrlsOrder } from '../../src/short-urls/data';
 
 describe('<ShortUrlsList />', () => {
@@ -27,7 +27,7 @@ describe('<ShortUrlsList />', () => {
     [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as ShortUrlsOrder }, { field: 'visits', dir: 'ASC' }],
   ])('shows expected ordering', (shortUrlsList, expectedOrder) => {
     const wrapper = createWrapper(shortUrlsList);
-    const dropdown = wrapper.find(SortingDropdown);
+    const dropdown = wrapper.find(OrderingDropdown);
 
     expect(dropdown.prop('order')).toEqual(expectedOrder);
   });
@@ -39,7 +39,7 @@ describe('<ShortUrlsList />', () => {
     [ 'title', 'DESC' ],
   ])('invokes setSettings when ordering changes', (field, dir) => {
     const wrapper = createWrapper();
-    const dropdown = wrapper.find(SortingDropdown);
+    const dropdown = wrapper.find(OrderingDropdown);
 
     expect(setSettings).not.toHaveBeenCalled();
     dropdown.simulate('change', field, dir);

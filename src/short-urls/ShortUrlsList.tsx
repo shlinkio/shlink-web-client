@@ -2,7 +2,7 @@ import { pipe } from 'ramda';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
-import { SortingDropdown } from '../utils/SortingDropdown';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
@@ -64,7 +64,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, SearchBar: FC) =
     <>
       <div className="mb-3"><SearchBar /></div>
       <div className="d-block d-lg-none mb-3">
-        <SortingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
+        <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
       </div>
       <Card body className="pb-1">
         <ShortUrlsTable
