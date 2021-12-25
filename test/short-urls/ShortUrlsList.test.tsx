@@ -12,7 +12,6 @@ import Paginator from '../../src/short-urls/Paginator';
 import { ReachableServer } from '../../src/servers/data';
 import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
 import { Settings } from '../../src/settings/reducers/settings';
-import ShortUrlsFilteringBar from '../../src/short-urls/ShortUrlsFilteringBar';
 
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;

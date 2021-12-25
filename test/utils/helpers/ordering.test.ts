@@ -1,4 +1,4 @@
-import { determineOrderDir } from '../../../src/utils/helpers/ordering';
+import { determineOrderDir, OrderDir, orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
 
 describe('ordering', () => {
   describe('determineOrderDir', () => {
@@ -24,10 +24,22 @@ describe('ordering', () => {
   });
 
   describe('orderToString', () => {
-    test.todo('casts the order to string');
+    it.each([
+      [{}, undefined ],
+      [{ field: 'foo' }, undefined ],
+      [{ field: 'foo', dir: 'ASC' as OrderDir }, 'foo-ASC' ],
+      [{ field: 'bar', dir: 'DESC' as OrderDir }, 'bar-DESC' ],
+    ])('casts the order to string', (order, expectedResult) => {
+      expect(orderToString(order)).toEqual(expectedResult);
+    });
   });
 
   describe('stringToOrder', () => {
-    test.todo('casts a string to an order objects');
+    it.each([
+      [ 'foo-ASC', { field: 'foo', dir: 'ASC' }],
+      [ 'bar-DESC', { field: 'bar', dir: 'DESC' }],
+    ])('casts a string to an order objects', (order, expectedResult) => {
+      expect(stringToOrder(order)).toEqual(expectedResult);
+    });
   });
 });
