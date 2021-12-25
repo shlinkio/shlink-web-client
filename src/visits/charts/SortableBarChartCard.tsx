@@ -4,7 +4,7 @@ import { rangeOf } from '../../utils/utils';
 import { Order } from '../../utils/helpers/ordering';
 import SimplePaginator from '../../common/SimplePaginator';
 import { roundTen } from '../../utils/helpers/numbers';
-import SortingDropdown from '../../utils/SortingDropdown';
+import { SortingDropdown } from '../../utils/SortingDropdown';
 import PaginationDropdown from '../../utils/PaginationDropdown';
 import { Stats, StatsRow } from '../types';
 import { HorizontalBarChart, HorizontalBarChartProps } from './HorizontalBarChart';

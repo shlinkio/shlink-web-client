@@ -7,7 +7,7 @@ import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
 import { ShortUrlsOrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import { SortingDropdown } from '../../src/utils/SortingDropdown';
 import Paginator from '../../src/short-urls/Paginator';
 import { ReachableServer } from '../../src/servers/data';
 import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';

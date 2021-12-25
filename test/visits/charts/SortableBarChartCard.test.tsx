@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { range } from 'ramda';
-import SortingDropdown from '../../../src/utils/SortingDropdown';
+import { SortingDropdown } from '../../../src/utils/SortingDropdown';
 import PaginationDropdown from '../../../src/utils/PaginationDropdown';
 import { rangeOf } from '../../../src/utils/utils';
 import { OrderDir } from '../../../src/utils/helpers/ordering';

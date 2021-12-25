@@ -3,7 +3,7 @@ import { FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import { TagsModeDropdown } from '../tags/TagsModeDropdown';
 import { capitalize } from '../utils/utils';
-import SortingDropdown from '../utils/SortingDropdown';
+import { SortingDropdown } from '../utils/SortingDropdown';
 import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
 import { Settings, TagsSettings } from './reducers/settings';
 

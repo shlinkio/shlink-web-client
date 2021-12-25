@@ -10,7 +10,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
 import { Settings, TagsMode } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
-import SortingDropdown from '../utils/SortingDropdown';
+import { SortingDropdown } from '../utils/SortingDropdown';
 import { TagsList as TagsListState } from './reducers/tagsList';
 import {
   TagsOrderableFields,

@@ -4,7 +4,7 @@ import { FormGroup } from 'reactstrap';
 import { Settings, TagsMode, TagsSettings } from '../../src/settings/reducers/settings';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { Tags } from '../../src/settings/Tags';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import { SortingDropdown } from '../../src/utils/SortingDropdown';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 
 describe('<Tags />', () => {

@@ -10,7 +10,7 @@ import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import SearchField from '../../src/utils/SearchField';
 import { Settings } from '../../src/settings/reducers/settings';
 import { TagsOrderableFields } from '../../src/tags/data/TagsListChildrenProps';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import { SortingDropdown } from '../../src/utils/SortingDropdown';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;

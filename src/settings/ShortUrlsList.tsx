@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { FormGroup } from 'reactstrap';
-import SortingDropdown from '../utils/SortingDropdown';
+import { SortingDropdown } from '../utils/SortingDropdown';
 import { SHORT_URLS_ORDERABLE_FIELDS } from '../short-urls/data';
 import { SimpleCard } from '../utils/SimpleCard';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings, ShortUrlsListSettings } from './reducers/settings';

@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings, ShortUrlsListSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlsList } from '../../src/settings/ShortUrlsList';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import { SortingDropdown } from '../../src/utils/SortingDropdown';
 import { ShortUrlsOrder } from '../../src/short-urls/data';
 
 describe('<ShortUrlsList />', () => {

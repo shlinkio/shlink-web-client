@@ -14,7 +14,7 @@ export interface SortingDropdownProps<T extends string = string> {
   right?: boolean;
 }
 
-export default function SortingDropdown<T extends string = string>(
+export function SortingDropdown<T extends string = string>(
   { items, order, onChange, isButton = true, right = false }: SortingDropdownProps<T>,
 ) {
   const handleItemClick = (fieldKey: T) => () => {
