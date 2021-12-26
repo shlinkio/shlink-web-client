@@ -1,22 +1,26 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan as forbiddenIcon,
-  faCheck as defaultDomainIcon,
+  faDotCircle as defaultDomainIcon,
+  faCheck as checkIcon,
+  faCircleNotch as loadingStatusIcon,
   faEdit as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
-import { ShlinkDomain, ShlinkDomainRedirects } from '../api/types';
+import { ShlinkDomainRedirects } from '../api/types';
 import { useToggle } from '../utils/helpers/hooks';
 import { OptionalString } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
 import { supportsDefaultDomainRedirectsEdition } from '../utils/helpers/features';
 import { EditDomainRedirectsModal } from './helpers/EditDomainRedirectsModal';
+import { Domain, DomainStatus } from './data';
 
 interface DomainRowProps {
-  domain: ShlinkDomain;
+  domain: Domain;
   defaultRedirects?: ShlinkDomainRedirects;
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  checkDomainHealth: (domain: string) => void;
   selectedServer: SelectedServer;
 }
 
@@ -32,11 +36,26 @@ const DefaultDomain: FC = () => (
     <UncontrolledTooltip target="defaultDomainIcon" placement="right">Default domain</UncontrolledTooltip>
   </>
 );
+const StatusIcon: FC<{ status: DomainStatus }> = ({ status }) => {
+  if (status === 'validating') {
+    return <FontAwesomeIcon fixedWidth icon={loadingStatusIcon} spin />;
+  }
 
-export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects, selectedServer }) => {
+  return status === 'valid'
+    ? <FontAwesomeIcon fixedWidth icon={checkIcon} className="text-muted" />
+    : <FontAwesomeIcon fixedWidth icon={forbiddenIcon} className="text-danger" />;
+};
+
+export const DomainRow: FC<DomainRowProps> = (
+  { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
+) => {
   const [ isOpen, toggle ] = useToggle();
-  const { domain: authority, isDefault, redirects } = domain;
+  const { domain: authority, isDefault, redirects, status } = domain;
   const canEditDomain = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
+
+  useEffect(() => {
+    checkDomainHealth(domain.domain);
+  }, []);
 
   return (
     <tr className="responsive-table__row">
@@ -50,6 +69,9 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
       </td>
       <td className="responsive-table__cell" data-th="Invalid short URL redirect">
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
+      </td>
+      <td className="responsive-table__cell text-lg-center" data-th="Status">
+        <StatusIcon status={status} />
       </td>
       <td className="responsive-table__cell text-right">
         <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>

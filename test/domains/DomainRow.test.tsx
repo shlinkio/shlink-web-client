@@ -3,14 +3,22 @@ import { Mock } from 'ts-mockery';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan as forbiddenIcon, faEdit as editIcon } from '@fortawesome/free-solid-svg-icons';
-import { ShlinkDomain, ShlinkDomainRedirects } from '../../src/api/types';
+import { ShlinkDomainRedirects } from '../../src/api/types';
 import { DomainRow } from '../../src/domains/DomainRow';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { Domain } from '../../src/domains/data';
 
 describe('<DomainRow />', () => {
   let wrapper: ShallowWrapper;
-  const createWrapper = (domain: ShlinkDomain, selectedServer = Mock.all<SelectedServer>()) => {
-    wrapper = shallow(<DomainRow domain={domain} editDomainRedirects={jest.fn()} selectedServer={selectedServer} />);
+  const createWrapper = (domain: Domain, selectedServer = Mock.all<SelectedServer>()) => {
+    wrapper = shallow(
+      <DomainRow
+        domain={domain}
+        selectedServer={selectedServer}
+        editDomainRedirects={jest.fn()}
+        checkDomainHealth={jest.fn()}
+      />,
+    );
 
     return wrapper;
   };
@@ -18,34 +26,34 @@ describe('<DomainRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined ],
+    [ Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined ],
+    [ Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined ],
     [
-      Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: true }),
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
       Mock.of<ReachableServer>({ version: '2.10.0' }),
       1,
       0,
       undefined,
     ],
     [
-      Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: true }),
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
       Mock.of<ReachableServer>({ version: '2.9.0' }),
       1,
       1,
       'defaultDomainBtn',
     ],
     [
-      Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: false }),
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
       Mock.of<ReachableServer>({ version: '2.9.0' }),
       0,
       0,
       undefined,
     ],
     [
-      Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: false }),
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
       Mock.of<ReachableServer>({ version: '2.10.0' }),
       0,
       0,
@@ -89,7 +97,7 @@ describe('<DomainRow />', () => {
       0,
     ],
   ])('shows expected redirects', (redirects, expectedNoRedirects) => {
-    const wrapper = createWrapper(Mock.of<ShlinkDomain>({ domain: '', isDefault: true, redirects }));
+    const wrapper = createWrapper(Mock.of<Domain>({ domain: '', isDefault: true, redirects }));
     const noRedirects = wrapper.find('Nr');
     const cells = wrapper.find('td');
 
