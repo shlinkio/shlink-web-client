@@ -21,7 +21,7 @@ import {
 import { stringifyQuery } from '../../utils/helpers/query';
 import { orderToString } from '../../utils/helpers/ordering';
 
-const buildShlinkBaseUrl = (url: string, apiVersion: number) => url ? `${url}/rest/v${apiVersion}` : '';
+const buildShlinkBaseUrl = (url: string) => url ? `${url}/rest/v2` : '';
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
   const { orderBy = {}, ...rest } = params;
@@ -30,14 +30,11 @@ const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShor
 };
 
 export default class ShlinkApiClient {
-  private apiVersion: number;
-
   public constructor(
     private readonly axios: AxiosInstance,
     private readonly baseUrl: string,
     private readonly apiKey: string,
   ) {
-    this.apiVersion = 2;
   }
 
   public readonly listShortUrls = async (params: ShlinkShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
@@ -75,7 +72,10 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
-  /* @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead */
+  // eslint-disable-next-line valid-jsdoc
+  /**
+   * @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead
+   */
   public readonly updateShortUrlTags = async (
     shortCode: string,
     domain: OptionalString,
@@ -121,35 +121,13 @@ export default class ShlinkApiClient {
   ): Promise<ShlinkDomainRedirects> =>
     this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects).then(({ data }) => data);
 
-  private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> => {
-    try {
-      return await this.axios({
-        method,
-        url: `${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}`,
-        headers: { 'X-Api-Key': this.apiKey },
-        params: rejectNilProps(query),
-        data: body,
-        paramsSerializer: stringifyQuery,
-      });
-    } catch (e: any) {
-      const { response } = e;
-
-      // Due to a bug on all previous Shlink versions, requests to non-matching URLs will always result on a CORS error
-      // when performed from the browser (due to the preflight request not returning a 2xx status.
-      // See https://github.com/shlinkio/shlink/issues/614), which will make the "response" prop not to be set here.
-      // The bug will be fixed on upcoming Shlink patches, but for other versions, we can consider this situation as
-      // if a request has been performed to a not supported API version.
-      const apiVersionIsNotSupported = !response;
-
-      // When the request is not invalid or we have already tried both API versions, throw the error and let the
-      // caller handle it
-      if (!apiVersionIsNotSupported || this.apiVersion === 2) {
-        throw e;
-      }
-
-      this.apiVersion = this.apiVersion - 1;
-
-      return await this.performRequest(url, method, query, body);
-    }
-  };
+  private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> =>
+    this.axios({
+      method,
+      url: `${buildShlinkBaseUrl(this.baseUrl)}${url}`,
+      headers: { 'X-Api-Key': this.apiKey },
+      params: rejectNilProps(query),
+      data: body,
+      paramsSerializer: stringifyQuery,
+    });
 }
