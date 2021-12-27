@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan as forbiddenIcon,
   faDotCircle as defaultDomainIcon,
-  faCheck as checkIcon,
-  faCircleNotch as loadingStatusIcon,
   faEdit as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { ShlinkDomainRedirects } from '../api/types';
@@ -14,7 +12,8 @@ import { OptionalString } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
 import { supportsDefaultDomainRedirectsEdition } from '../utils/helpers/features';
 import { EditDomainRedirectsModal } from './helpers/EditDomainRedirectsModal';
-import { Domain, DomainStatus } from './data';
+import { Domain } from './data';
+import { DomainStatusIcon } from './helpers/DomainStatusIcon';
 
 interface DomainRowProps {
   domain: Domain;
@@ -36,15 +35,6 @@ const DefaultDomain: FC = () => (
     <UncontrolledTooltip target="defaultDomainIcon" placement="right">Default domain</UncontrolledTooltip>
   </>
 );
-const StatusIcon: FC<{ status: DomainStatus }> = ({ status }) => {
-  if (status === 'validating') {
-    return <FontAwesomeIcon fixedWidth icon={loadingStatusIcon} spin />;
-  }
-
-  return status === 'valid'
-    ? <FontAwesomeIcon fixedWidth icon={checkIcon} className="text-muted" />
-    : <FontAwesomeIcon fixedWidth icon={forbiddenIcon} className="text-danger" />;
-};
 
 export const DomainRow: FC<DomainRowProps> = (
   { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
@@ -59,7 +49,7 @@ export const DomainRow: FC<DomainRowProps> = (
 
   return (
     <tr className="responsive-table__row">
-      <td className="responsive-table__cell" data-th="Is default domain">{isDefault ? <DefaultDomain /> : ''}</td>
+      <td className="responsive-table__cell" data-th="Is default domain">{isDefault && <DefaultDomain />}</td>
       <th className="responsive-table__cell" data-th="Domain">{authority}</th>
       <td className="responsive-table__cell" data-th="Base path redirect">
         {redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}
@@ -71,7 +61,7 @@ export const DomainRow: FC<DomainRowProps> = (
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
       </td>
       <td className="responsive-table__cell text-lg-center" data-th="Status">
-        <StatusIcon status={status} />
+        <DomainStatusIcon status={status} />
       </td>
       <td className="responsive-table__cell text-right">
         <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>
