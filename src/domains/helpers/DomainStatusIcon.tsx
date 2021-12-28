@@ -29,12 +29,12 @@ export const DomainStatusIcon: FC<{ status: DomainStatus }> = ({ status }) => {
       </span>
       <UncontrolledTooltip target={(() => ref.current) as any} placement="bottom" autohide={status === 'valid'}>
         {status === 'valid' ? 'Congratulations! This domain is properly configured.' : (
-          <>
+          <span>
             Oops! There is some missing configuration, and short URLs shared with this domain will not work.
             <br />
             Follow <ExternalLink href="https://slnk.to/multi-domain-docs">the documentation</ExternalLink> in order to
             find out what is missing.
-          </>
+          </span>
         )}
       </UncontrolledTooltip>
     </>
