@@ -12,6 +12,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
     If the resulting list for that interval is empty, it will try to infer the closest interval with visits, based on the latest visit's date, and reload visits for that interval.
 
+* [#547](https://github.com/shlinkio/shlink-web-client/pull/547) Improved domains page, to tell which of the domains are not properly configured.
+
+    Now, when this section is loaded, it tries to call the `GET /rest/health` endpoint for each one of the domains, and displays a warning icon on each one that failed.
+
+    The warning includes a link to the documentation, explaining what are the steps to get it fixed.
+
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
 * [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
 * [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.

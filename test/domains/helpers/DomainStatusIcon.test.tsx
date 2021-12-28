@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan, faCheck, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { faTimes, faCheck, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
 
@@ -29,7 +29,7 @@ describe('<DomainStatusIcon />', () => {
   it.each([
     [
       'invalid' as DomainStatus,
-      faBan,
+      faTimes,
       'Oops! There is some missing configuration, and short URLs shared with this domain will not work.',
     ],
     [ 'valid' as DomainStatus, faCheck, 'Congratulations! This domain is properly configured.' ],
