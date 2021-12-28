@@ -1,20 +1,21 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Mock } from 'ts-mockery';
 import { faTimes, faCheck, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
-import { MediaMatcher } from '../../../src/utils/types';
-import { Mock } from 'ts-mockery';
 
 describe('<DomainStatusIcon />', () => {
+  const matchMedia = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: false }));
   let wrapper: ShallowWrapper;
-  const createWrapper = (status: DomainStatus, matchMedia?: MediaMatcher) => {
+  const createWrapper = (status: DomainStatus) => {
     wrapper = shallow(<DomainStatusIcon status={status} matchMedia={matchMedia} />);
 
     return wrapper;
   };
 
+  beforeEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('renders loading icon when status is "validating"', () => {
@@ -58,11 +59,12 @@ describe('<DomainStatusIcon />', () => {
   });
 
   it.each([
-    [ true, 'top-sart' ],
+    [ true, 'top-start' ],
     [ false, 'left' ],
   ])('places the tooltip properly based on query match', (isMobile, expectedPlacement) => {
-    const mediaMatch = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: isMobile }));
-    const wrapper = createWrapper('valid', mediaMatch);
+    matchMedia.mockReturnValue(Mock.of<MediaQueryList>({ matches: isMobile }));
+
+    const wrapper = createWrapper('valid');
     const tooltip = wrapper.find(UncontrolledTooltip);
 
     expect(tooltip).toHaveLength(1);
