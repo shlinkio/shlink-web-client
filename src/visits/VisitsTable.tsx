@@ -12,6 +12,7 @@ import { supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { Time } from '../utils/Time';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
+import { MediaMatcher } from '../utils/types';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
@@ -19,7 +20,7 @@ export interface VisitsTableProps {
   visits: NormalizedVisit[];
   selectedVisits?: NormalizedVisit[];
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
-  matchMedia?: (query: string) => MediaQueryList;
+  matchMedia?: MediaMatcher;
   isOrphanVisits?: boolean;
   selectedServer: SelectedServer;
 }

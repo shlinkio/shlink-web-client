@@ -4,11 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes, faCheck, faCircleNotch } from '@fortawesome/free-solid-svg-icons';
 import { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
+import { MediaMatcher } from '../../../src/utils/types';
+import { Mock } from 'ts-mockery';
 
 describe('<DomainStatusIcon />', () => {
   let wrapper: ShallowWrapper;
-  const createWrapper = (status: DomainStatus) => {
-    wrapper = shallow(<DomainStatusIcon status={status} />);
+  const createWrapper = (status: DomainStatus, matchMedia?: MediaMatcher) => {
+    wrapper = shallow(<DomainStatusIcon status={status} matchMedia={matchMedia} />);
 
     return wrapper;
   };
@@ -53,5 +55,17 @@ describe('<DomainStatusIcon />', () => {
     expect(faIcon).toHaveLength(1);
     expect(faIcon.prop('icon')).toEqual(expectedIcon);
     expect(faIcon.prop('spin')).toEqual(false);
+  });
+
+  it.each([
+    [ true, 'top-sart' ],
+    [ false, 'left' ],
+  ])('places the tooltip properly based on query match', (isMobile, expectedPlacement) => {
+    const mediaMatch = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: isMobile }));
+    const wrapper = createWrapper('valid', mediaMatch);
+    const tooltip = wrapper.find(UncontrolledTooltip);
+
+    expect(tooltip).toHaveLength(1);
+    expect(tooltip.prop('placement')).toEqual(expectedPlacement);
   });
 });
