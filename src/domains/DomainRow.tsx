@@ -1,22 +1,25 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBan as forbiddenIcon,
-  faCheck as defaultDomainIcon,
+  faDotCircle as defaultDomainIcon,
   faEdit as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
-import { ShlinkDomain, ShlinkDomainRedirects } from '../api/types';
+import { ShlinkDomainRedirects } from '../api/types';
 import { useToggle } from '../utils/helpers/hooks';
 import { OptionalString } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
 import { supportsDefaultDomainRedirectsEdition } from '../utils/helpers/features';
 import { EditDomainRedirectsModal } from './helpers/EditDomainRedirectsModal';
+import { Domain } from './data';
+import { DomainStatusIcon } from './helpers/DomainStatusIcon';
 
 interface DomainRowProps {
-  domain: ShlinkDomain;
+  domain: Domain;
   defaultRedirects?: ShlinkDomainRedirects;
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  checkDomainHealth: (domain: string) => void;
   selectedServer: SelectedServer;
 }
 
@@ -33,14 +36,20 @@ const DefaultDomain: FC = () => (
   </>
 );
 
-export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, defaultRedirects, selectedServer }) => {
+export const DomainRow: FC<DomainRowProps> = (
+  { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
+) => {
   const [ isOpen, toggle ] = useToggle();
-  const { domain: authority, isDefault, redirects } = domain;
+  const { domain: authority, isDefault, redirects, status } = domain;
   const canEditDomain = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
+
+  useEffect(() => {
+    checkDomainHealth(domain.domain);
+  }, []);
 
   return (
     <tr className="responsive-table__row">
-      <td className="responsive-table__cell" data-th="Is default domain">{isDefault ? <DefaultDomain /> : ''}</td>
+      <td className="responsive-table__cell" data-th="Is default domain">{isDefault && <DefaultDomain />}</td>
       <th className="responsive-table__cell" data-th="Domain">{authority}</th>
       <td className="responsive-table__cell" data-th="Base path redirect">
         {redirects?.baseUrlRedirect ?? <Nr fallback={defaultRedirects?.baseUrlRedirect} />}
@@ -50,6 +59,9 @@ export const DomainRow: FC<DomainRowProps> = ({ domain, editDomainRedirects, def
       </td>
       <td className="responsive-table__cell" data-th="Invalid short URL redirect">
         {redirects?.invalidShortUrlRedirect ?? <Nr fallback={defaultRedirects?.invalidShortUrlRedirect} />}
+      </td>
+      <td className="responsive-table__cell text-lg-center" data-th="Status">
+        <DomainStatusIcon status={status} />
       </td>
       <td className="responsive-table__cell text-right">
         <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>

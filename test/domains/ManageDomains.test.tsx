@@ -13,14 +13,14 @@ import { SelectedServer } from '../../src/servers/data';
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();
   const filterDomains = jest.fn();
-  const editDomainRedirects = jest.fn();
   let wrapper: ShallowWrapper;
   const createWrapper = (domainsList: DomainsList) => {
     wrapper = shallow(
       <ManageDomains
         listDomains={listDomains}
         filterDomains={filterDomains}
-        editDomainRedirects={editDomainRedirects}
+        editDomainRedirects={jest.fn()}
+        checkDomainHealth={jest.fn()}
         domainsList={domainsList}
         selectedServer={Mock.all<SelectedServer>()}
       />,
@@ -77,7 +77,7 @@ describe('<ManageDomains />', () => {
     const wrapper = createWrapper(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
     const headerCells = wrapper.find('th');
 
-    expect(headerCells).toHaveLength(6);
+    expect(headerCells).toHaveLength(7);
   });
 
   it('one row when list of domains is empty', () => {

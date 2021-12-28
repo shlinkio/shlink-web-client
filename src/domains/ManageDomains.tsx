@@ -13,14 +13,15 @@ interface ManageDomainsProps {
   listDomains: Function;
   filterDomains: (searchTerm: string) => void;
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  checkDomainHealth: (domain: string) => void;
   domainsList: DomainsList;
   selectedServer: SelectedServer;
 }
 
-const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '' ];
+const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', '' ];
 
 export const ManageDomains: FC<ManageDomainsProps> = (
-  { listDomains, domainsList, filterDomains, editDomainRedirects, selectedServer },
+  { listDomains, domainsList, filterDomains, editDomainRedirects, checkDomainHealth, selectedServer },
 ) => {
   const { filteredDomains: domains, defaultRedirects, loading, error, errorData } = domainsList;
   const resolvedDefaultRedirects = defaultRedirects ?? domains.find(({ isDefault }) => isDefault)?.redirects;
@@ -55,6 +56,7 @@ export const ManageDomains: FC<ManageDomainsProps> = (
                 key={domain.domain}
                 domain={domain}
                 editDomainRedirects={editDomainRedirects}
+                checkDomainHealth={checkDomainHealth}
                 defaultRedirects={resolvedDefaultRedirects}
                 selectedServer={selectedServer}
               />
