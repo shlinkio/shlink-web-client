@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import Message from '../../utils/Message';
 import { isNotFoundServer, SelectedServer } from '../data';
-import NoMenuLayout from '../../common/NoMenuLayout';
+import { NoMenuLayout } from '../../common/NoMenuLayout';
 
 interface WithSelectedServerProps extends RouteComponentProps<{ serverId: string }> {
   selectServer: (serverId: string) => void;

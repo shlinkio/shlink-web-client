@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import createSettings from '../../src/settings/Settings';
-import NoMenuLayout from '../../src/common/NoMenuLayout';
+import { NoMenuLayout } from '../../src/common/NoMenuLayout';
 
 describe('<Settings />', () => {
   const Component = () => null;

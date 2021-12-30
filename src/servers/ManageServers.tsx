@@ -3,7 +3,7 @@ import { Button, Row } from 'reactstrap';
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import NoMenuLayout from '../common/NoMenuLayout';
+import { NoMenuLayout } from '../common/NoMenuLayout';
 import { SimpleCard } from '../utils/SimpleCard';
 import SearchField from '../utils/SearchField';
 import { Result } from '../utils/Result';

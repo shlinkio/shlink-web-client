@@ -3,12 +3,11 @@ import { v4 as uuid } from 'uuid';
 import { RouterProps } from 'react-router';
 import { Button } from 'reactstrap';
 import { Result } from '../utils/Result';
-import NoMenuLayout from '../common/NoMenuLayout';
+import { NoMenuLayout } from '../common/NoMenuLayout';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
-import './CreateServer.scss';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 

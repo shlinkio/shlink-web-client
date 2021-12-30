@@ -4,7 +4,7 @@ import Message from '../../utils/Message';
 import ServersListGroup from '../ServersListGroup';
 import { DeleteServerButtonProps } from '../DeleteServerButton';
 import { isServerWithId, SelectedServer, ServersMap } from '../data';
-import NoMenuLayout from '../../common/NoMenuLayout';
+import { NoMenuLayout } from '../../common/NoMenuLayout';
 import './ServerError.scss';
 
 interface ServerErrorProps {
