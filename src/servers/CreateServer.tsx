@@ -1,13 +1,14 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { RouterProps } from 'react-router';
 import { Button } from 'reactstrap';
 import { Result } from '../utils/Result';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import { StateFlagTimeout } from '../utils/helpers/hooks';
+import { StateFlagTimeout, useToggle } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
+import { DuplicatedServerModal } from './helpers/DuplicatedServerModal';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
@@ -31,16 +32,30 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
   const hasServers = !!Object.keys(servers).length;
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
-  const handleSubmit = (serverData: ServerData) => {
+  const [ isConfirmModalOpen, toggleConfirmModal ] = useToggle();
+  const [ serverData, setServerData ] = useState<ServerData | undefined>();
+  const save = () => {
+    if (!serverData) {
+      return;
+    }
+
     const id = uuid();
 
     createServer({ ...serverData, id });
     push(`/server/${id}`);
   };
 
+  useEffect(() => {
+    const serverExists = Object.values(servers).some(
+      ({ url, apiKey }) => serverData?.url === url && serverData?.apiKey === apiKey,
+    );
+
+    serverExists ? toggleConfirmModal() : save();
+  }, [ serverData ]);
+
   return (
     <NoMenuLayout>
-      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={handleSubmit}>
+      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={setServerData}>
         {!hasServers &&
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />}
         {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
@@ -49,6 +64,14 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
 
       {serversImported && <ImportResult type="success" />}
       {errorImporting && <ImportResult type="error" />}
+
+      <DuplicatedServerModal
+        isOpen={isConfirmModalOpen}
+        toggle={toggleConfirmModal}
+        serverData={serverData}
+        onDiscard={goBack}
+        onSave={save}
+      />
     </NoMenuLayout>
   );
 };
