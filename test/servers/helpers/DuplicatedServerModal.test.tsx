@@ -10,13 +10,7 @@ describe('<DuplicatedServerModal />', () => {
   let wrapper: ShallowWrapper;
   const createWrapper = (serverData?: ServerData) => {
     wrapper = shallow(
-      <DuplicatedServerModal
-        serverData={serverData}
-        isOpen={true}
-        toggle={jest.fn()}
-        onDiscard={onDiscard}
-        onSave={onSave}
-      />,
+      <DuplicatedServerModal isOpen serverData={serverData} toggle={jest.fn()} onDiscard={onDiscard} onSave={onSave} />,
     );
 
     return wrapper;
