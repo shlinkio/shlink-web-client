@@ -2,8 +2,9 @@ import { ReactNode } from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import importServersBtnConstruct from '../../../src/servers/helpers/ImportServersBtn';
-import ServersImporter from '../../../src/servers/services/ServersImporter';
+import importServersBtnConstruct, { ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
+import { ServersImporter } from '../../../src/servers/services/ServersImporter';
+import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
 
 describe('<ImportServersBtn />', () => {
   let wrapper: ShallowWrapper;
@@ -12,17 +13,15 @@ describe('<ImportServersBtn />', () => {
   const importServersFromFile = jest.fn().mockResolvedValue([]);
   const serversImporterMock = Mock.of<ServersImporter>({ importServersFromFile });
   const click = jest.fn();
-  const fileRef = {
-    current: Mock.of<HTMLInputElement>({ click }),
-  };
+  const fileRef = { current: Mock.of<HTMLInputElement>({ click }) };
   const ImportServersBtn = importServersBtnConstruct(serversImporterMock);
-  const createWrapper = (className?: string, children?: ReactNode) => {
+  const createWrapper = (props: Partial<ImportServersBtnProps & { children: ReactNode }> = {}) => {
     wrapper = shallow(
       <ImportServersBtn
-        createServers={createServersMock}
-        className={className}
+        servers={{}}
+        {...props}
         fileRef={fileRef}
-        children={children}
+        createServers={createServersMock}
         onImport={onImportMock}
       />,
     );
@@ -46,7 +45,7 @@ describe('<ImportServersBtn />', () => {
     [ 'foo', 'foo' ],
     [ 'bar', 'bar' ],
   ])('allows a class name to be provided', (providedClassName, expectedClassName) => {
-    const wrapper = createWrapper(providedClassName);
+    const wrapper = createWrapper({ className: providedClassName });
 
     expect(wrapper.find('#importBtn').prop('className')).toEqual(expectedClassName);
   });
@@ -56,7 +55,7 @@ describe('<ImportServersBtn />', () => {
     [ 'foo', false ],
     [ 'bar', false ],
   ])('has expected text', (children, expectToHaveDefaultText) => {
-    const wrapper = createWrapper(undefined, children);
+    const wrapper = createWrapper({ children });
 
     if (expectToHaveDefaultText) {
       expect(wrapper.find('#importBtn').html()).toContain('Import from file');
@@ -82,6 +81,16 @@ describe('<ImportServersBtn />', () => {
     await file.simulate('change', { target: { files: [ '' ] } }); // eslint-disable-line @typescript-eslint/await-thenable
 
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    [ 'discard' ],
+    [ 'save' ],
+  ])('invokes callback in DuplicatedServersModal events', (event) => {
+    const wrapper = createWrapper();
+
+    wrapper.find(DuplicatedServersModal).simulate(event);
+
     expect(createServersMock).toHaveBeenCalledTimes(1);
     expect(onImportMock).toHaveBeenCalledTimes(1);
   });

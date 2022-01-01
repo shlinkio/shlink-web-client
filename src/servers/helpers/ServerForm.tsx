@@ -12,7 +12,7 @@ interface ServerFormProps {
 }
 
 const FormGroup: FC<FormGroupContainerProps> = (props) =>
-  <FormGroupContainer {...props} labelClassName="create-server__label" />;
+  <FormGroupContainer {...props} labelClassName="server-form__label" />;
 
 export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
   const [ name, setName ] = useState('');

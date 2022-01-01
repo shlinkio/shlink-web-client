@@ -1,6 +1,6 @@
 import { FC, ReactNode } from 'react';
 import { Row } from 'reactstrap';
-import NoMenuLayout from '../common/NoMenuLayout';
+import { NoMenuLayout } from '../common/NoMenuLayout';
 
 const SettingsSections: FC<{ items: ReactNode[][] }> = ({ items }) => (
   <>

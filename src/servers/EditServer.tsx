@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button } from 'reactstrap';
-import NoMenuLayout from '../common/NoMenuLayout';
+import { NoMenuLayout } from '../common/NoMenuLayout';
 import { ServerForm } from './helpers/ServerForm';
 import { withSelectedServer } from './helpers/withSelectedServer';
 import { isServerWithId, ServerData } from './data';

@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { CsvJson } from 'csvjson';
-import ServersImporter from '../../../src/servers/services/ServersImporter';
+import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
