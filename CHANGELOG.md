@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.5.0] - 2022-01-01
 ### Added
 * [#407](https://github.com/shlinkio/shlink-web-client/pull/407) Improved how visits (short URLs, tags and orphan) are loaded, to avoid ending up in a page with "There are no visits matching current filter".
 
@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
     The warning includes a link to the documentation, explaining what are the steps to get it fixed.
 
+* [#506](https://github.com/shlinkio/shlink-web-client/pull/506) Improved how servers are handled, dispaying a warning when creating or importing servers that already exist.
 * [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
 * [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
 * [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
