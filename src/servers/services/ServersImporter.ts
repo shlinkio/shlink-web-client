@@ -7,7 +7,7 @@ const validateServer = (server: any): server is ServerData =>
 const validateServers = (servers: any): servers is ServerData[] =>
   Array.isArray(servers) && servers.every(validateServer);
 
-export default class ServersImporter {
+export class ServersImporter {
   public constructor(private readonly csvJson: CsvJson, private readonly fileReaderFactory: () => FileReader) {}
 
   public readonly importServersFromFile = async (file?: File | null): Promise<ServerData[]> => {

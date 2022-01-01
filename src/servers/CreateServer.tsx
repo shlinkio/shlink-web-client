@@ -8,7 +8,7 @@ import { StateFlagTimeout, useToggle } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
-import { DuplicatedServerModal } from './helpers/DuplicatedServerModal';
+import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
@@ -65,10 +65,9 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
       {serversImported && <ImportResult type="success" />}
       {errorImporting && <ImportResult type="error" />}
 
-      <DuplicatedServerModal
+      <DuplicatedServersModal
         isOpen={isConfirmModalOpen}
-        toggle={toggleConfirmModal}
-        serverData={serverData}
+        duplicatedServers={serverData ? [ serverData ] : []}
         onDiscard={goBack}
         onSave={save}
       />
