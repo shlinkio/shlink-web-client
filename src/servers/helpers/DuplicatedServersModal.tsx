@@ -27,7 +27,9 @@ export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
             </Fragment>
           ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>)}
         </ul>
-        {hasMultipleServers ? 'Do you want to ignore duplicated servers?' : 'Do you want to save this server anyway?'}
+        <span>
+          {hasMultipleServers ? 'Do you want to ignore duplicated servers' : 'Do you want to save this server anyway'}?
+        </span>
       </ModalBody>
       <ModalFooter>
         <Button color="link" onClick={onDiscard}>{hasMultipleServers ? 'Ignore duplicated' : 'Discard'}</Button>
