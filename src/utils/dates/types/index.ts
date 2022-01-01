@@ -1,13 +1,13 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
-import { filter, isEmpty } from 'ramda';
-import { formatInternational } from '../../helpers/date';
+import { cond, filter, isEmpty, T } from 'ramda';
+import { DateOrString, formatInternational, isBeforeOrEqual, parseISO } from '../../helpers/date';
 
 export interface DateRange {
   startDate?: Date | null;
   endDate?: Date | null;
 }
 
-export type DateInterval = 'all' | 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'last90Days' | 'last180days' | 'last365Days';
+export type DateInterval = 'all' | 'today' | 'yesterday' | 'last7Days' | 'last30Days' | 'last90Days' | 'last180Days' | 'last365Days';
 
 export const dateRangeIsEmpty = (dateRange?: DateRange): boolean => dateRange === undefined
   || isEmpty(filter(Boolean, dateRange as any));
@@ -21,7 +21,7 @@ const INTERVAL_TO_STRING_MAP: Record<DateInterval, string | undefined> = {
   last7Days: 'Last 7 days',
   last30Days: 'Last 30 days',
   last90Days: 'Last 90 days',
-  last180days: 'Last 180 days',
+  last180Days: 'Last 180 days',
   last365Days: 'Last 365 days',
   all: undefined,
 };
@@ -75,11 +75,26 @@ export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
       return endingToday(startOfDaysAgo(30));
     case 'last90Days':
       return endingToday(startOfDaysAgo(90));
-    case 'last180days':
+    case 'last180Days':
       return endingToday(startOfDaysAgo(180));
     case 'last365Days':
       return endingToday(startOfDaysAgo(365));
   }
 
   return {};
+};
+
+export const dateToMatchingInterval = (date: DateOrString): DateInterval => {
+  const theDate: Date = parseISO(date);
+
+  return cond<never, DateInterval>([
+    [ () => isBeforeOrEqual(startOfDay(new Date()), theDate), () => 'today' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(1), theDate), () => 'yesterday' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(7), theDate), () => 'last7Days' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(30), theDate), () => 'last30Days' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(90), theDate), () => 'last90Days' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(180), theDate), () => 'last180Days' ],
+    [ () => isBeforeOrEqual(startOfDaysAgo(365), theDate), () => 'last365Days' ],
+    [ T, () => 'all' ],
+  ])();
 };

@@ -175,7 +175,7 @@ describe('shortUrlsListReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [], params: {} });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [] });
 
       expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });
@@ -188,7 +188,7 @@ describe('shortUrlsListReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS_ERROR, params: {} });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS_ERROR });
 
       expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });

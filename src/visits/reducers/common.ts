@@ -1,9 +1,10 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { ShlinkPaginator, ShlinkVisits } from '../../api/types';
+import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
 import { Visit } from '../types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { dateToMatchingInterval } from '../../utils/dates/types';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;
@@ -13,16 +14,19 @@ const isLastPage = ({ currentPage, pagesCount }: ShlinkPaginator): boolean => cu
 const calcProgress = (total: number, current: number): number => current * 100 / total;
 
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
+type LastVisitLoader = () => Promise<Visit | undefined>;
 interface ActionMap {
   start: string;
   large: string;
   finish: string;
   error: string;
   progress: string;
+  fallbackToInterval: string;
 }
 
 export const getVisitsWithLoader = async <T extends Action<string> & { visits: Visit[] }>(
   visitsLoader: VisitsLoader,
+  lastVisitLoader: LastVisitLoader,
   extraFinishActionData: Partial<T>,
   actionMap: ActionMap,
   dispatch: Dispatch,
@@ -69,10 +73,25 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
   };
 
   try {
-    const visits = await loadVisits();
+    const [ visits, lastVisit ] = await Promise.all([ loadVisits(), lastVisitLoader() ]);
 
-    dispatch({ ...extraFinishActionData, visits, type: actionMap.finish });
+    dispatch(
+      !visits.length && lastVisit
+        ? { type: actionMap.fallbackToInterval, fallbackInterval: dateToMatchingInterval(lastVisit.date) }
+        : { ...extraFinishActionData, visits, type: actionMap.finish },
+    );
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: actionMap.error, errorData: parseApiError(e) });
   }
+};
+
+export const lastVisitLoaderForLoader = (
+  doIntervalFallback: boolean,
+  loader: (params: ShlinkVisitsParams) => Promise<ShlinkVisits>,
+): LastVisitLoader => {
+  if (!doIntervalFallback) {
+    return async () => Promise.resolve(undefined);
+  }
+
+  return async () => loader({ page: 1, itemsPerPage: 1 }).then((result) => result.data[0]);
 };

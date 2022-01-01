@@ -1,4 +1,5 @@
 import { Nullable, OptionalString } from '../../utils/utils';
+import { Order } from '../../utils/helpers/ordering';
 
 export interface EditShortUrlData {
   longUrl?: string;
@@ -50,3 +51,15 @@ export interface ShortUrlIdentifier {
   shortCode: string;
   domain: OptionalString;
 }
+
+export const SHORT_URLS_ORDERABLE_FIELDS = {
+  dateCreated: 'Created at',
+  shortCode: 'Short URL',
+  longUrl: 'Long URL',
+  title: 'Title',
+  visits: 'Visits',
+};
+
+export type ShortUrlsOrderableFields = keyof typeof SHORT_URLS_ORDERABLE_FIELDS;
+
+export type ShortUrlsOrder = Order<ShortUrlsOrderableFields>;

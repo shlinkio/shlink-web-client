@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
-import { ShortUrl } from '../../../src/short-urls/data';
+import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import { Visit } from '../../../src/visits/types';
 
 describe('ShlinkApiClient', () => {
@@ -17,9 +17,9 @@ describe('ShlinkApiClient', () => {
   ];
 
   describe('listShortUrls', () => {
-    it('properly returns short URLs list', async () => {
-      const expectedList = [ 'foo', 'bar' ];
+    const expectedList = [ 'foo', 'bar' ];
 
+    it('properly returns short URLs list', async () => {
       const { listShortUrls } = createApiClient({
         data: {
           shortUrls: expectedList,
@@ -29,6 +29,23 @@ describe('ShlinkApiClient', () => {
       const actualList = await listShortUrls();
 
       expect(expectedList).toEqual(actualList);
+    });
+
+    it.each([
+      [ { field: 'visits', dir: 'DESC' } as ShortUrlsOrder, 'visits-DESC' ],
+      [ { field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, 'longUrl-ASC' ],
+      [ { field: 'longUrl', dir: undefined } as ShortUrlsOrder, undefined ],
+    ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
+      const axiosSpy = createAxiosMock({
+        data: expectedList,
+      });
+      const { listShortUrls } = new ShlinkApiClient(axiosSpy, '', '');
+
+      await listShortUrls({ orderBy });
+
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        params: { orderBy: expectedOrderBy },
+      }));
     });
   });
 
@@ -256,10 +273,8 @@ describe('ShlinkApiClient', () => {
 
   describe('listDomains', () => {
     it('returns domains', async () => {
-      const expectedData = [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ];
-      const resp = {
-        domains: { data: expectedData },
-      };
+      const expectedData = { data: [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ] };
+      const resp = { domains: expectedData };
       const axiosSpy = createAxiosMock({ data: resp });
       const { listDomains } = new ShlinkApiClient(axiosSpy, '', '');
 

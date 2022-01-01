@@ -1,6 +1,5 @@
 import { identity, memoizeWith, pipe } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { resetShortUrlParams } from '../../short-urls/reducers/shortUrlsListParams';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 import { SelectedServer } from '../data';
 import { GetState } from '../../container/types';
@@ -53,7 +52,6 @@ export const selectServer = (
   getState: GetState,
 ) => {
   dispatch(resetSelectedServer());
-  dispatch(resetShortUrlParams());
 
   const { servers } = getState();
   const selectedServer = servers[serverId];

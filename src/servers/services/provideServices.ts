@@ -17,7 +17,7 @@ import { Overview } from '../Overview';
 import { ManageServers } from '../ManageServers';
 import { ManageServersRow } from '../ManageServersRow';
 import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
-import ServersImporter from './ServersImporter';
+import { ServersImporter } from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
@@ -54,7 +54,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
 
   bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
-  bottle.decorator('ImportServersBtn', connect(null, [ 'createServers' ]));
+  bottle.decorator('ImportServersBtn', connect([ 'servers' ], [ 'createServers' ]));
 
   bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
   bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));

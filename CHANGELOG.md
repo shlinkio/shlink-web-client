@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.5.0] - 2022-01-01
+### Added
+* [#407](https://github.com/shlinkio/shlink-web-client/pull/407) Improved how visits (short URLs, tags and orphan) are loaded, to avoid ending up in a page with "There are no visits matching current filter".
+
+    Now, the app will try to load visits for the configured default interval, and in parallel, it will load the latest visit.
+
+    If the resulting list for that interval is empty, it will try to infer the closest interval with visits, based on the latest visit's date, and reload visits for that interval.
+
+* [#547](https://github.com/shlinkio/shlink-web-client/pull/547) Improved domains page, to tell which of the domains are not properly configured.
+
+    Now, when this section is loaded, it tries to call the `GET /rest/health` endpoint for each one of the domains, and displays a warning icon on each one that failed.
+
+    The warning includes a link to the documentation, explaining what are the steps to get it fixed.
+
+* [#506](https://github.com/shlinkio/shlink-web-client/pull/506) Improved how servers are handled, displaying a warning when creating or importing servers that already exist.
+* [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
+* [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
+* [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
+* [#542](https://github.com/shlinkio/shlink-web-client/pull/542) Added ordering for short URLs to the query, so that it is consistent with the rest of the filtering params.
+
+### Changed
+* [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
+* [#538](https://github.com/shlinkio/shlink-web-client/pull/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [3.4.2] - 2021-12-07
 ### Added
 * *Nothing*

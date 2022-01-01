@@ -1,7 +1,8 @@
-import { format, subDays } from 'date-fns';
+import { endOfDay, format, formatISO, startOfDay, subDays } from 'date-fns';
 import {
   DateInterval,
   dateRangeIsEmpty,
+  dateToMatchingInterval,
   intervalToDateRange,
   rangeIsInterval,
   rangeOrIntervalToString,
@@ -9,6 +10,9 @@ import {
 import { parseDate } from '../../../../src/utils/helpers/date';
 
 describe('date-types', () => {
+  const now = () => new Date();
+  const daysBack = (days: number) => subDays(new Date(), days);
+
   describe('dateRangeIsEmpty', () => {
     it.each([
       [ undefined, true ],
@@ -48,7 +52,7 @@ describe('date-types', () => {
       [ 'last7Days' as DateInterval, 'Last 7 days' ],
       [ 'last30Days' as DateInterval, 'Last 30 days' ],
       [ 'last90Days' as DateInterval, 'Last 90 days' ],
-      [ 'last180days' as DateInterval, 'Last 180 days' ],
+      [ 'last180Days' as DateInterval, 'Last 180 days' ],
       [ 'last365Days' as DateInterval, 'Last 365 days' ],
       [{}, undefined ],
       [{ startDate: null }, undefined ],
@@ -71,8 +75,6 @@ describe('date-types', () => {
   });
 
   describe('intervalToDateRange', () => {
-    const now = () => new Date();
-    const daysBack = (days: number) => subDays(new Date(), days);
     const formatted = (date?: Date | null): string | undefined => !date ? undefined : format(date, 'yyyy-MM-dd');
 
     it.each([
@@ -82,13 +84,36 @@ describe('date-types', () => {
       [ 'last7Days' as DateInterval, daysBack(7), now() ],
       [ 'last30Days' as DateInterval, daysBack(30), now() ],
       [ 'last90Days' as DateInterval, daysBack(90), now() ],
-      [ 'last180days' as DateInterval, daysBack(180), now() ],
+      [ 'last180Days' as DateInterval, daysBack(180), now() ],
       [ 'last365Days' as DateInterval, daysBack(365), now() ],
     ])('returns proper result', (interval, expectedStartDate, expectedEndDate) => {
       const { startDate, endDate } = intervalToDateRange(interval);
 
       expect(formatted(expectedStartDate)).toEqual(formatted(startDate));
       expect(formatted(expectedEndDate)).toEqual(formatted(endDate));
+    });
+  });
+
+  describe('dateToMatchingInterval', () => {
+    it.each([
+      [ startOfDay(now()), 'today' ],
+      [ now(), 'today' ],
+      [ formatISO(now()), 'today' ],
+      [ daysBack(1), 'yesterday' ],
+      [ endOfDay(daysBack(1)), 'yesterday' ],
+      [ daysBack(2), 'last7Days' ],
+      [ daysBack(7), 'last7Days' ],
+      [ startOfDay(daysBack(7)), 'last7Days' ],
+      [ daysBack(18), 'last30Days' ],
+      [ daysBack(29), 'last30Days' ],
+      [ daysBack(58), 'last90Days' ],
+      [ startOfDay(daysBack(90)), 'last90Days' ],
+      [ daysBack(120), 'last180Days' ],
+      [ daysBack(250), 'last365Days' ],
+      [ daysBack(366), 'all' ],
+      [ formatISO(daysBack(500)), 'all' ],
+    ])('returns the first interval which contains provided date', (date, expectedInterval) => {
+      expect(dateToMatchingInterval(date)).toEqual(expectedInterval);
     });
   });
 });

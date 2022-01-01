@@ -9,8 +9,8 @@ import { Result } from '../../src/utils/Result';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import SearchField from '../../src/utils/SearchField';
 import { Settings } from '../../src/settings/reducers/settings';
-import { OrderableFields } from '../../src/tags/data/TagsListChildrenProps';
-import SortingDropdown from '../../src/utils/SortingDropdown';
+import { TagsOrderableFields } from '../../src/tags/data/TagsListChildrenProps';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 
 describe('<TagsList />', () => {
   let wrapper: ShallowWrapper;
@@ -89,16 +89,16 @@ describe('<TagsList />', () => {
   it('triggers ordering when sorting dropdown changes', () => {
     const wrapper = createWrapper({ filteredTags: [] });
 
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
-    wrapper.find(SortingDropdown).simulate('change', 'tag', 'DESC');
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'tag', dir: 'DESC' });
-    wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
+    wrapper.find(OrderingDropdown).simulate('change', 'tag', 'DESC');
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'tag', dir: 'DESC' });
+    wrapper.find(OrderingDropdown).simulate('change', 'visits', 'ASC');
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
   });
 
   it('can update current order via orderByColumn from table component', () => {
     const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
-    const callOrderBy = (field: OrderableFields) => {
+    const callOrderBy = (field: TagsOrderableFields) => {
       ((wrapper.find(TagsTable).prop('orderByColumn') as Function)(field) as Function)();
     };
 

@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { addDays, subDays } from 'date-fns';
+import { addDays, formatISO, subDays } from 'date-fns';
 import reducer, {
   getTagVisits,
   cancelGetTagVisits,
@@ -9,6 +9,7 @@ import reducer, {
   GET_TAG_VISITS_LARGE,
   GET_TAG_VISITS_CANCEL,
   GET_TAG_VISITS_PROGRESS_CHANGED,
+  GET_TAG_VISITS_FALLBACK_TO_INTERVAL,
   TagVisits,
 } from '../../../src/visits/reducers/tagVisits';
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
@@ -18,6 +19,7 @@ import { ShlinkVisits } from '../../../src/api/types';
 import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
+import { DateInterval } from '../../../src/utils/dates/types';
 
 describe('tagVisitsReducer', () => {
   const now = new Date();
@@ -137,6 +139,13 @@ describe('tagVisitsReducer', () => {
 
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
+
+    it('returns fallbackInterval on GET_TAG_VISITS_FALLBACK_TO_INTERVAL', () => {
+      const fallbackInterval: DateInterval = 'last30Days';
+      const state = reducer(undefined, { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval } as any);
+
+      expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
+    });
   });
 
   describe('getTagVisits', () => {
@@ -149,8 +158,9 @@ describe('tagVisitsReducer', () => {
     const getState = () => Mock.of<ShlinkState>({
       tagVisits: { cancelLoad: false },
     });
+    const tag = 'foo';
 
-    beforeEach(jest.resetAllMocks);
+    beforeEach(jest.clearAllMocks);
 
     it('dispatches start and error when promise is rejected', async () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
@@ -168,7 +178,6 @@ describe('tagVisitsReducer', () => {
       [{}],
     ])('dispatches start and success when promise is resolved', async (query) => {
       const visits = visitsMocks;
-      const tag = 'foo';
       const ShlinkApiClient = buildApiClientMock(Promise.resolve({
         data: visitsMocks,
         pagination: {
@@ -184,6 +193,38 @@ describe('tagVisitsReducer', () => {
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });
       expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_TAG_VISITS, visits, tag, query: query ?? {} });
       expect(ShlinkApiClient.getTagVisits).toHaveBeenCalledTimes(1);
+    });
+
+    it.each([
+      [
+        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 20)) }) ],
+        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last30Days' },
+      ],
+      [
+        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 100)) }) ],
+        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last180Days' },
+      ],
+      [[], expect.objectContaining({ type: GET_TAG_VISITS }) ],
+    ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
+      const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
+        data,
+        pagination: {
+          currentPage: 1,
+          pagesCount: 1,
+          totalItems: 1,
+        },
+      });
+      const getShlinkTagVisits = jest.fn()
+        .mockResolvedValueOnce(buildVisitsResult())
+        .mockResolvedValueOnce(buildVisitsResult(lastVisits));
+      const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getTagVisits: getShlinkTagVisits });
+
+      await getTagVisits(() => ShlinkApiClient)(tag, {}, true)(dispatchMock, getState);
+
+      expect(dispatchMock).toHaveBeenCalledTimes(2);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
+      expect(getShlinkTagVisits).toHaveBeenCalledTimes(2);
     });
   });
 

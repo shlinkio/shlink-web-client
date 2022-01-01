@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../DropdownBtn';
+import { useEffectExceptFirstTime } from '../helpers/hooks';
 import {
   DateInterval,
   DateRange,
@@ -17,10 +18,11 @@ export interface DateRangeSelectorProps {
   disabled?: boolean;
   onDatesChange: (dateRange: DateRange) => void;
   defaultText: string;
+  updatable?: boolean;
 }
 
 export const DateRangeSelector = (
-  { onDatesChange, initialDateRange, defaultText, disabled }: DateRangeSelectorProps,
+  { onDatesChange, initialDateRange, defaultText, disabled, updatable = false }: DateRangeSelectorProps,
 ) => {
   const initialIntervalIsRange = rangeIsInterval(initialDateRange);
   const [ activeInterval, setActiveInterval ] = useState(initialIntervalIsRange ? initialDateRange : undefined);
@@ -36,6 +38,13 @@ export const DateRangeSelector = (
     setActiveDateRange(undefined);
     onDatesChange(intervalToDateRange(dateInterval));
   };
+
+  updatable && useEffectExceptFirstTime(() => {
+    const isDateInterval = rangeIsInterval(initialDateRange);
+
+    isDateInterval && updateInterval(initialDateRange);
+    initialDateRange && !isDateInterval && updateDateRange(initialDateRange);
+  }, [ initialDateRange ]);
 
   return (
     <DropdownBtn disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>

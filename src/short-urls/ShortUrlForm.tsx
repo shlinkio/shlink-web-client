@@ -41,6 +41,7 @@ export const ShortUrlForm = (
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
   const [ shortUrlData, setShortUrlData ] = useState(initialState);
   const isEdit = mode === 'edit';
+  const isBasicMode = mode === 'create-basic';
   const hadTitleOriginally = hasValue(initialState.title);
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
   const reset = () => setShortUrlData(initialState);
@@ -66,8 +67,14 @@ export const ShortUrlForm = (
     setShortUrlData(initialState);
   }, [ initialState ]);
 
-  const renderOptionalInput = (id: NonDateFields, placeholder: string, type: InputType = 'text', props = {}) => (
-    <FormGroup>
+  const renderOptionalInput = (
+    id: NonDateFields,
+    placeholder: string,
+    type: InputType = 'text',
+    props = {},
+    fromGroupProps = {},
+  ) => (
+    <FormGroup {...fromGroupProps}>
       <Input
         id={id}
         type={type}
@@ -101,10 +108,12 @@ export const ShortUrlForm = (
           onChange={(e) => setShortUrlData({ ...shortUrlData, longUrl: e.target.value })}
         />
       </FormGroup>
-
-      <FormGroup>
-        <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
-      </FormGroup>
+      <Row>
+        {isBasicMode && renderOptionalInput('customSlug', 'Custom slug', 'text', { bsSize: 'lg' }, { className: 'col-lg-6' })}
+        <FormGroup className={isBasicMode ? 'col-lg-6' : 'col-12 mb-0'}>
+          <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
+        </FormGroup>
+      </Row>
     </>
   );
 
@@ -118,8 +127,8 @@ export const ShortUrlForm = (
 
   return (
     <form className="short-url-form" onSubmit={submit}>
-      {mode === 'create-basic' && basicComponents}
-      {mode !== 'create-basic' && (
+      {isBasicMode && basicComponents}
+      {!isBasicMode && (
         <>
           <SimpleCard title="Basic options" className="mb-3">
             {basicComponents}

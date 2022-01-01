@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import serversReducer from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
 import shortUrlsListReducer from '../short-urls/reducers/shortUrlsList';
-import shortUrlsListParamsReducer from '../short-urls/reducers/shortUrlsListParams';
 import shortUrlCreationReducer from '../short-urls/reducers/shortUrlCreation';
 import shortUrlDeletionReducer from '../short-urls/reducers/shortUrlDeletion';
 import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
@@ -24,7 +23,6 @@ export default combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: selectedServerReducer,
   shortUrlsList: shortUrlsListReducer,
-  shortUrlsListParams: shortUrlsListParamsReducer,
   shortUrlCreationResult: shortUrlCreationReducer,
   shortUrlDeletion: shortUrlDeletionReducer,
   shortUrlEdition: shortUrlEditionReducer,

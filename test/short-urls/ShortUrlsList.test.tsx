@@ -4,19 +4,19 @@ import { Mock } from 'ts-mockery';
 import { History, Location } from 'history';
 import { match } from 'react-router';
 import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
-import { ShortUrl } from '../../src/short-urls/data';
+import { ShortUrlsOrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
-import SortingDropdown from '../../src/utils/SortingDropdown';
-import { OrderableFields, OrderBy } from '../../src/short-urls/reducers/shortUrlsListParams';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import Paginator from '../../src/short-urls/Paginator';
 import { ReachableServer } from '../../src/servers/data';
 import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
+import { Settings } from '../../src/settings/reducers/settings';
 
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsTable = () => null;
-  const SearchBar = () => null;
+  const ShortUrlsFilteringBar = () => null;
   const listShortUrlsMock = jest.fn();
   const push = jest.fn();
   const shortUrlsList = Mock.of<ShortUrlsListModel>({
@@ -31,18 +31,17 @@ describe('<ShortUrlsList />', () => {
       ],
     },
   });
-  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, SearchBar);
-  const createWrapper = (orderBy: OrderBy = {}) => shallow(
+  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, ShortUrlsFilteringBar);
+  const createWrapper = (defaultOrdering: ShortUrlsOrder = {}) => shallow(
     <ShortUrlsList
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
       listShortUrls={listShortUrlsMock}
-      resetShortUrlParams={jest.fn()}
-      shortUrlsListParams={{ page: '1', orderBy }}
       match={Mock.of<match<ShortUrlListRouteParams>>({ params: {} })}
       location={Mock.of<Location>({ search: '?tags=test%20tag&search=example.com' })}
       shortUrlsList={shortUrlsList}
       history={Mock.of<History>({ push })}
       selectedServer={Mock.of<ReachableServer>({ id: '1' })}
+      settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
     />,
   ).dive(); // Dive is needed as this component is wrapped in a HOC
 
@@ -55,9 +54,9 @@ describe('<ShortUrlsList />', () => {
 
   it('wraps expected components', () => {
     expect(wrapper.find(ShortUrlsTable)).toHaveLength(1);
-    expect(wrapper.find(SortingDropdown)).toHaveLength(1);
+    expect(wrapper.find(OrderingDropdown)).toHaveLength(1);
     expect(wrapper.find(Paginator)).toHaveLength(1);
-    expect(wrapper.find(SearchBar)).toHaveLength(1);
+    expect(wrapper.find(ShortUrlsFilteringBar)).toHaveLength(1);
   });
 
   it('passes current query to paginator', () => {
@@ -76,66 +75,53 @@ describe('<ShortUrlsList />', () => {
   });
 
   it('invokes order icon rendering', () => {
-    const renderIcon = (field: OrderableFields) =>
-      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: OrderableFields) => ReactElement)(field);
+    const renderIcon = (field: ShortUrlsOrderableFields) =>
+      (wrapper.find(ShortUrlsTable).prop('renderOrderIcon') as (field: ShortUrlsOrderableFields) => ReactElement)(field);
 
     expect(renderIcon('visits').props.currentOrder).toEqual({});
 
-    wrapper.find(SortingDropdown).simulate('change', 'visits');
+    wrapper.find(OrderingDropdown).simulate('change', 'visits');
     expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits' });
 
-    wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
+    wrapper.find(OrderingDropdown).simulate('change', 'visits', 'ASC');
     expect(renderIcon('visits').props.currentOrder).toEqual({ field: 'visits', dir: 'ASC' });
   });
 
   it('handles order through table', () => {
-    const orderByColumn: (field: OrderableFields) => Function = wrapper.find(ShortUrlsTable).prop('orderByColumn');
+    const orderByColumn: (field: ShortUrlsOrderableFields) => Function = wrapper.find(ShortUrlsTable).prop('orderByColumn');
+
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
 
     orderByColumn('visits')();
-    orderByColumn('title')();
-    orderByColumn('shortCode')();
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
 
-    expect(listShortUrlsMock).toHaveBeenCalledTimes(3);
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      orderBy: { visits: 'ASC' },
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      orderBy: { title: 'ASC' },
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
-      orderBy: { shortCode: 'ASC' },
-    }));
+    orderByColumn('title')();
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'title', dir: 'ASC' });
+
+    orderByColumn('shortCode')();
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'shortCode', dir: 'ASC' });
   });
 
   it('handles order through dropdown', () => {
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
 
-    wrapper.find(SortingDropdown).simulate('change', 'visits', 'ASC');
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
+    wrapper.find(OrderingDropdown).simulate('change', 'visits', 'ASC');
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'visits', dir: 'ASC' });
 
-    wrapper.find(SortingDropdown).simulate('change', 'shortCode', 'DESC');
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field: 'shortCode', dir: 'DESC' });
+    wrapper.find(OrderingDropdown).simulate('change', 'shortCode', 'DESC');
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field: 'shortCode', dir: 'DESC' });
 
-    wrapper.find(SortingDropdown).simulate('change', undefined, undefined);
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({});
-
-    expect(listShortUrlsMock).toHaveBeenCalledTimes(3);
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-      orderBy: { visits: 'ASC' },
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-      orderBy: { shortCode: 'DESC' },
-    }));
-    expect(listShortUrlsMock).toHaveBeenNthCalledWith(3, expect.objectContaining({ orderBy: undefined }));
+    wrapper.find(OrderingDropdown).simulate('change', undefined, undefined);
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
   });
 
   it.each([
-    [ Mock.of<OrderBy>({ visits: 'ASC' }), 'visits', 'ASC' ],
-    [ Mock.of<OrderBy>({ title: 'DESC' }), 'title', 'DESC' ],
-    [ Mock.of<OrderBy>(), undefined, undefined ],
+    [ Mock.of<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC' ],
+    [ Mock.of<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC' ],
+    [ Mock.of<ShortUrlsOrder>(), undefined, undefined ],
   ])('has expected initial ordering', (initialOrderBy, field, dir) => {
     const wrapper = createWrapper(initialOrderBy);
 
-    expect(wrapper.find(SortingDropdown).prop('order')).toEqual({ field, dir });
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({ field, dir });
   });
 });

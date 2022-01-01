@@ -44,7 +44,7 @@ export const Overview = (
   const history = useHistory();
 
   useEffect(() => {
-    listShortUrls({ itemsPerPage: 5, orderBy: { dateCreated: 'DESC' } });
+    listShortUrls({ itemsPerPage: 5, orderBy: { field: 'dateCreated', dir: 'DESC' } });
     listTags();
     loadVisitsOverview();
   }, []);

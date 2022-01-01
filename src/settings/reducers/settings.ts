@@ -4,8 +4,15 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { RecursivePartial } from '../../utils/utils';
 import { Theme } from '../../utils/theme';
 import { DateInterval } from '../../utils/dates/types';
+import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
+import { ShortUrlsOrder } from '../../short-urls/data';
 
 export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
+
+export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
+  field: 'dateCreated',
+  dir: 'DESC',
+};
 
 /**
  * Important! When adding new props in the main Settings interface or any of the nested props, they have to be set as
@@ -29,18 +36,28 @@ export type TagsMode = 'cards' | 'list';
 
 export interface UiSettings {
   theme: Theme;
-  tagsMode?: TagsMode;
 }
 
 export interface VisitsSettings {
   defaultInterval: DateInterval;
 }
 
+export interface TagsSettings {
+  defaultOrdering?: TagsOrder;
+  defaultMode?: TagsMode;
+}
+
+export interface ShortUrlsListSettings {
+  defaultOrdering?: ShortUrlsOrder;
+}
+
 export interface Settings {
   realTimeUpdates: RealTimeUpdatesSettings;
   shortUrlCreation?: ShortUrlCreationSettings;
+  shortUrlsList?: ShortUrlsListSettings;
   ui?: UiSettings;
   visits?: VisitsSettings;
+  tags?: TagsSettings;
 }
 
 const initialState: Settings = {
@@ -55,6 +72,9 @@ const initialState: Settings = {
   },
   visits: {
     defaultInterval: 'last30Days',
+  },
+  shortUrlsList: {
+    defaultOrdering: DEFAULT_SHORT_URLS_ORDERING,
   },
 };
 
@@ -81,6 +101,11 @@ export const setShortUrlCreationSettings = (settings: ShortUrlCreationSettings):
   shortUrlCreation: settings,
 });
 
+export const setShortUrlsListSettings = (settings: ShortUrlsListSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  shortUrlsList: settings,
+});
+
 export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   ui: settings,
@@ -89,4 +114,9 @@ export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
 export const setVisitsSettings = (settings: VisitsSettings): PartialSettingsAction => ({
   type: SET_SETTINGS,
   visits: settings,
+});
+
+export const setTagsSettings = (settings: TagsSettings): PartialSettingsAction => ({
+  type: SET_SETTINGS,
+  tags: settings,
 });

@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortAmountUp as sortAscIcon, faSortAmountDown as sortDescIcon } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { determineOrderDir, Order, OrderDir } from './helpers/ordering';
-import './SortingDropdown.scss';
+import './OrderingDropdown.scss';
 
-export interface SortingDropdownProps<T extends string = string> {
+export interface OrderingDropdownProps<T extends string = string> {
   items: Record<T, string>;
   order: Order<T>;
   onChange: (orderField?: T, orderDir?: OrderDir) => void;
@@ -14,8 +14,8 @@ export interface SortingDropdownProps<T extends string = string> {
   right?: boolean;
 }
 
-export default function SortingDropdown<T extends string = string>(
-  { items, order, onChange, isButton = true, right = false }: SortingDropdownProps<T>,
+export function OrderingDropdown<T extends string = string>(
+  { items, order, onChange, isButton = true, right = false }: OrderingDropdownProps<T>,
 ) {
   const handleItemClick = (fieldKey: T) => () => {
     const newOrderDir = determineOrderDir(fieldKey, order.field, order.dir);
@@ -36,7 +36,7 @@ export default function SortingDropdown<T extends string = string>(
       </DropdownToggle>
       <DropdownMenu
         right={right}
-        className={classNames('w-100', { 'sorting-dropdown__menu--link': !isButton })}
+        className={classNames('w-100', { 'ordering-dropdown__menu--link': !isButton })}
       >
         {toPairs(items).map(([ fieldKey, fieldValue ]) => (
           <DropdownItem key={fieldKey} active={order.field === fieldKey} onClick={handleItemClick(fieldKey as T)}>
@@ -44,7 +44,7 @@ export default function SortingDropdown<T extends string = string>(
             {order.field === fieldKey && (
               <FontAwesomeIcon
                 icon={order.dir === 'ASC' ? sortAscIcon : sortDescIcon}
-                className="sorting-dropdown__sort-icon"
+                className="ordering-dropdown__sort-icon"
               />
             )}
           </DropdownItem>

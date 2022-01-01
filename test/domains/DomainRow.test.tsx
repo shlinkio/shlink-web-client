@@ -3,13 +3,22 @@ import { Mock } from 'ts-mockery';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan as forbiddenIcon, faEdit as editIcon } from '@fortawesome/free-solid-svg-icons';
-import { ShlinkDomain, ShlinkDomainRedirects } from '../../src/api/types';
+import { ShlinkDomainRedirects } from '../../src/api/types';
 import { DomainRow } from '../../src/domains/DomainRow';
+import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { Domain } from '../../src/domains/data';
 
 describe('<DomainRow />', () => {
   let wrapper: ShallowWrapper;
-  const createWrapper = (domain: ShlinkDomain) => {
-    wrapper = shallow(<DomainRow domain={domain} editDomainRedirects={jest.fn()} />);
+  const createWrapper = (domain: Domain, selectedServer = Mock.all<SelectedServer>()) => {
+    wrapper = shallow(
+      <DomainRow
+        domain={domain}
+        selectedServer={selectedServer}
+        editDomainRedirects={jest.fn()}
+        checkDomainHealth={jest.fn()}
+      />,
+    );
 
     return wrapper;
   };
@@ -17,28 +26,60 @@ describe('<DomainRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: true }), 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: '', isDefault: false }), 0, undefined ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.com', isDefault: true }), 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.bar.com', isDefault: true }), 1, 'defaultDomainBtn' ],
-    [ Mock.of<ShlinkDomain>({ domain: 'foo.baz', isDefault: false }), 0, undefined ],
-  ])('shows proper components based on the fact that provided domain is default or not', (
+    [ Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined ],
+    [ Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
+    [ Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined ],
+    [
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
+      Mock.of<ReachableServer>({ version: '2.10.0' }),
+      1,
+      0,
+      undefined,
+    ],
+    [
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
+      Mock.of<ReachableServer>({ version: '2.9.0' }),
+      1,
+      1,
+      'defaultDomainBtn',
+    ],
+    [
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
+      Mock.of<ReachableServer>({ version: '2.9.0' }),
+      0,
+      0,
+      undefined,
+    ],
+    [
+      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
+      Mock.of<ReachableServer>({ version: '2.10.0' }),
+      0,
+      0,
+      undefined,
+    ],
+  ])('shows proper components based on provided domain and selectedServer', (
     domain,
-    expectedComps,
+    selectedServer,
+    expectedDefaultDomainIcons,
+    expectedDisabledComps,
     expectedDomainId,
   ) => {
-    const wrapper = createWrapper(domain);
+    const wrapper = createWrapper(domain, selectedServer);
     const defaultDomainComp = wrapper.find('td').first().find('DefaultDomain');
+    const disabledBtn = wrapper.find(Button).findWhere((btn) => !!btn.prop('disabled'));
     const tooltip = wrapper.find(UncontrolledTooltip);
     const button = wrapper.find(Button);
     const icon = wrapper.find(FontAwesomeIcon);
 
-    expect(defaultDomainComp).toHaveLength(expectedComps);
-    expect(button.prop('disabled')).toEqual(domain.isDefault);
-    expect(icon.prop('icon')).toEqual(domain.isDefault ? forbiddenIcon : editIcon);
-    expect(tooltip).toHaveLength(expectedComps);
+    expect(defaultDomainComp).toHaveLength(expectedDefaultDomainIcons);
+    expect(disabledBtn).toHaveLength(expectedDisabledComps);
+    expect(button.prop('disabled')).toEqual(expectedDisabledComps > 0);
+    expect(icon.prop('icon')).toEqual(expectedDisabledComps > 0 ? forbiddenIcon : editIcon);
+    expect(tooltip).toHaveLength(expectedDisabledComps);
 
-    if (expectedComps > 0) {
+    if (expectedDisabledComps > 0) {
       expect(tooltip.prop('target')).toEqual(expectedDomainId);
     }
   });
@@ -56,7 +97,7 @@ describe('<DomainRow />', () => {
       0,
     ],
   ])('shows expected redirects', (redirects, expectedNoRedirects) => {
-    const wrapper = createWrapper(Mock.of<ShlinkDomain>({ domain: '', isDefault: true, redirects }));
+    const wrapper = createWrapper(Mock.of<Domain>({ domain: '', isDefault: true, redirects }));
     const noRedirects = wrapper.find('Nr');
     const cells = wrapper.find('td');
 

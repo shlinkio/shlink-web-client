@@ -33,20 +33,20 @@ describe('<ManageServers />', () => {
       bar: createServerMock('bar'),
       baz: createServerMock('baz'),
     });
-    const searchBar = wrapper.find(SearchField);
+    const searchField = wrapper.find(SearchField);
 
     expect(wrapper.find(ManageServersRow)).toHaveLength(3);
     expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
 
-    searchBar.simulate('change', 'foo');
+    searchField.simulate('change', 'foo');
     expect(wrapper.find(ManageServersRow)).toHaveLength(1);
     expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
 
-    searchBar.simulate('change', 'ba');
+    searchField.simulate('change', 'ba');
     expect(wrapper.find(ManageServersRow)).toHaveLength(2);
     expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
 
-    searchBar.simulate('change', 'invalid');
+    searchField.simulate('change', 'invalid');
     expect(wrapper.find(ManageServersRow)).toHaveLength(0);
     expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
   });

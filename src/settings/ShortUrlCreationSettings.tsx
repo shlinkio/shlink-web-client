@@ -3,11 +3,11 @@ import { DropdownItem, FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
-import { Settings, ShortUrlCreationSettings, TagFilteringMode } from './reducers/settings';
+import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 
 interface ShortUrlCreationProps {
   settings: Settings;
-  setShortUrlCreationSettings: (settings: ShortUrlCreationSettings) => void;
+  setShortUrlCreationSettings: (settings: ShortUrlsSettings) => void;
 }
 
 const tagFilteringModeText = (tagFilteringMode: TagFilteringMode | undefined): string =>
@@ -17,8 +17,8 @@ const tagFilteringModeHint = (tagFilteringMode: TagFilteringMode | undefined): R
     ? <>The list of suggested tags will contain those <b>including</b> provided input.</>
     : <>The list of suggested tags will contain those <b>starting with</b> provided input.</>;
 
-export const ShortUrlCreation: FC<ShortUrlCreationProps> = ({ settings, setShortUrlCreationSettings }) => {
-  const shortUrlCreation: ShortUrlCreationSettings = settings.shortUrlCreation ?? { validateUrls: false };
+export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, setShortUrlCreationSettings }) => {
+  const shortUrlCreation: ShortUrlsSettings = settings.shortUrlCreation ?? { validateUrls: false };
   const changeTagsFilteringMode = (tagFilteringMode: TagFilteringMode) => () => setShortUrlCreationSettings(
     { ...shortUrlCreation ?? { validateUrls: false }, tagFilteringMode },
   );

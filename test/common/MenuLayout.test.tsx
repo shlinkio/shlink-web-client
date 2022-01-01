@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import createMenuLayout from '../../src/common/MenuLayout';
 import { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';
-import NoMenuLayout from '../../src/common/NoMenuLayout';
+import { NoMenuLayout } from '../../src/common/NoMenuLayout';
 import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<MenuLayout />', () => {
