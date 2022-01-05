@@ -13,7 +13,7 @@ interface TagProps {
 
 const Tag: FC<TagProps> = ({ text, children, clearable, className = '', colorGenerator, onClick, onClose }) => (
   <span
-    className={`badge tag ${className}`}
+    className={`badge tag ${className} ${colorGenerator.isColorLightForKey(text) ? 'light-generated-bg' : ''}`}
     style={{ backgroundColor: colorGenerator.getColorForKey(text), cursor: clearable || !onClick ? 'auto' : 'pointer' }}
     onClick={onClick}
   >
