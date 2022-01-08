@@ -11,6 +11,8 @@ import reducer, {
 import { TAG_DELETED } from '../../../src/tags/reducers/tagDelete';
 import { TAG_EDITED } from '../../../src/tags/reducers/tagEdit';
 import { ShlinkState } from '../../../src/container/types';
+import { ShortUrl } from '../../../src/short-urls/data';
+import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
@@ -72,6 +74,19 @@ describe('tagsListReducer', () => {
       expect(reducer(state({ tags }), { type: FILTER_TAGS, searchTerm } as any)).toEqual({
         tags,
         filteredTags,
+      });
+    });
+
+    it.each([
+      [[ 'foo', 'foo3', 'bar3', 'fo' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo', 'foo3', 'bar3' ]],
+      [[ 'foo', 'bar' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo' ]],
+      [[ 'new', 'tag' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag' ]],
+    ])('appends new short URL\'s tags to the list of tags on CREATE_SHORT_URL', (shortUrlTags, expectedTags) => {
+      const tags = [ 'foo', 'bar', 'baz', 'foo2', 'fo' ];
+      const result = Mock.of<ShortUrl>({ tags: shortUrlTags });
+
+      expect(reducer(state({ tags }), { type: CREATE_SHORT_URL, result } as any)).toEqual({
+        tags: expectedTags,
       });
     });
   });
