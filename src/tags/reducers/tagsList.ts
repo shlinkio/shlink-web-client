@@ -9,6 +9,7 @@ import { CreateVisit, Stats } from '../../visits/types';
 import { parseApiError } from '../../api/utils';
 import { TagStats } from '../data';
 import { ApiErrorAction } from '../../api/types/actions';
+import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
 
@@ -42,6 +43,7 @@ interface FilterTagsAction extends Action<string> {
 type TagsCombinedAction = ListTagsAction
 & DeleteTagAction
 & CreateVisitsAction
+& CreateShortUrlAction
 & EditTagAction
 & FilterTagsAction
 & ApiErrorAction;
@@ -101,6 +103,10 @@ export default buildReducer<TagsList, TagsCombinedAction>({
   [CREATE_VISITS]: (state, { createdVisits }) => ({
     ...state,
     stats: increaseVisitsForTags(calculateVisitsPerTag(createdVisits), state.stats),
+  }),
+  [CREATE_SHORT_URL]: ({ tags: stateTags, ...rest }, { result }) => ({
+    ...rest,
+    tags: stateTags.concat(result.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
   }),
 }, initialState);
 

@@ -12,8 +12,16 @@
   }
 }
 
+.home__logo-wrapper {
+  padding: 1.5rem !important;
+  height: 100% !important;
+  min-height: 300px;
+}
+
 .home__logo {
   @include vertical-align();
+
+  width: calc(100% - 3rem);
 }
 
 .home__main-card {
@@ -23,6 +31,11 @@
   @media (min-width: $mdMin) {
     @include vertical-align();
   }
+}
+
+.home__title-wrapper {
+  padding: 1.5rem !important;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .home__title {

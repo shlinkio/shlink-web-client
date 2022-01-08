@@ -1,4 +1,4 @@
-import { assoc, assocPath, init, last, pipe, reject } from 'ramda';
+import { assoc, assocPath, last, pipe, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../helpers';
 import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
@@ -15,6 +15,8 @@ export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START
 export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
 export const LIST_SHORT_URLS = 'shlink/shortUrlsList/LIST_SHORT_URLS';
 /* eslint-enable padding-line-between-statements */
+
+export const ITEMS_IN_OVERVIEW_PAGE = 5;
 
 export interface ShortUrlsList {
   shortUrls?: ShlinkShortUrlsResponse;
@@ -75,10 +77,11 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   ),
   [CREATE_SHORT_URL]: pipe(
     // The only place where the list and the creation form coexist is the overview page.
-    // There we can assume we are displaying page 1, and therefore, we can safely prepend the new short URL and remove the last one.
+    // There we can assume we are displaying page 1, and therefore, we can safely prepend the new short URL.
+    // We can also remove the items above the amount that is displayed there.
     (state: ShortUrlsList, { result }: CreateShortUrlAction) => !state.shortUrls ? state : assocPath(
       [ 'shortUrls', 'data' ],
-      [ result, ...init(state.shortUrls.data) ],
+      [ result, ...state.shortUrls.data.slice(0, ITEMS_IN_OVERVIEW_PAGE - 1) ],
       state,
     ),
     (state: ShortUrlsList) => !state.shortUrls ? state : assocPath(
