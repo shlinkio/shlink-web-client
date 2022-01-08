@@ -1,10 +1,14 @@
+import { isNil } from 'ramda';
 import { rangeOf } from '../utils';
 import LocalStorage from './LocalStorage';
 
 const HEX_COLOR_LENGTH = 6;
+const HEX_DIGITS = '0123456789ABCDEF';
+const LIGHTNESS_BREAKPOINT = 128;
+
 const { floor, random, sqrt, round } = Math;
-const letters = '0123456789ABCDEF';
-const buildRandomColor = () => `#${rangeOf(HEX_COLOR_LENGTH, () => letters[floor(random() * letters.length)]).join('')}`;
+const buildRandomColor = () =>
+  `#${rangeOf(HEX_COLOR_LENGTH, () => HEX_DIGITS[floor(random() * HEX_DIGITS.length)]).join('')}`;
 const normalizeKey = (key: string) => key.toLowerCase().trim();
 const hexColorToRgbArray = (colorHex: string): number[] =>
   (colorHex.match(/../g) ?? []).map((hex) => parseInt(hex, 16) || 0);
@@ -44,10 +48,10 @@ export default class ColorGenerator {
   public readonly isColorLightForKey = (key: string): boolean => {
     const colorHex = this.getColorForKey(key).substring(1);
 
-    if (!this.lights[colorHex]) {
+    if (isNil(this.lights[colorHex])) {
       const rgb = hexColorToRgbArray(colorHex);
 
-      this.lights[colorHex] = perceivedLightness(...rgb) >= 128;
+      this.lights[colorHex] = perceivedLightness(...rgb) >= LIGHTNESS_BREAKPOINT;
     }
 
     return this.lights[colorHex];
