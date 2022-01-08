@@ -1,6 +1,7 @@
 import { Mock } from 'ts-mockery';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import LocalStorage from '../../../src/utils/services/LocalStorage';
+import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
@@ -47,7 +48,7 @@ describe('ColorGenerator', () => {
 
   describe('isColorLightForKey', () => {
     it.each([
-      [ '#4696e5', true ], // Shlink brand color
+      [ MAIN_COLOR, true ],
       [ '#8A661C', false ],
       [ '#F7BE05', true ],
       [ '#5A02D8', false ],
