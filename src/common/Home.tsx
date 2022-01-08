@@ -37,7 +37,7 @@ const Home = ({ servers, history }: HomeProps) => {
             </div>
           </div>
           <div className="col-md-7 home__servers-container">
-            <div className="p-4">
+            <div className="home__title-wrapper">
               <h1 className="home__title">Welcome!</h1>
             </div>
             <ServersListGroup embedded servers={serversList}>
