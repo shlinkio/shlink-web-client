@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { Card, CardBody, CardHeader, CardText, CardTitle, Row } from 'reactstrap';
 import { Link, useHistory } from 'react-router-dom';
-import { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
+import { ITEMS_IN_OVERVIEW_PAGE, ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
 import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
@@ -44,7 +44,7 @@ export const Overview = (
   const history = useHistory();
 
   useEffect(() => {
-    listShortUrls({ itemsPerPage: 5, orderBy: { field: 'dateCreated', dir: 'DESC' } });
+    listShortUrls({ itemsPerPage: ITEMS_IN_OVERVIEW_PAGE, orderBy: { field: 'dateCreated', dir: 'DESC' } });
     listTags();
     loadVisitsOverview();
   }, []);

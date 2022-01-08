@@ -14,6 +14,8 @@ import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreat
 import { SHORT_URL_EDITED } from '../../../src/short-urls/reducers/shortUrlEdition';
 
 describe('shortUrlsListReducer', () => {
+  const shortCode = 'abc123';
+
   describe('reducer', () => {
     it('returns loading on LIST_SHORT_URLS_START', () =>
       expect(reducer(undefined, { type: LIST_SHORT_URLS_START } as any)).toEqual({
@@ -35,7 +37,6 @@ describe('shortUrlsListReducer', () => {
       }));
 
     it('removes matching URL and reduces total on SHORT_URL_DELETED', () => {
-      const shortCode = 'abc123';
       const state = {
         shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
@@ -72,7 +73,6 @@ describe('shortUrlsListReducer', () => {
       [[{}], 10 ],
       [[], 10 ],
     ])('updates visits count on CREATE_VISITS', (createdVisits, expectedCount) => {
-      const shortCode = 'abc123';
       const state = {
         shortUrls: Mock.of<ShlinkShortUrlsResponse>({
           data: [
@@ -98,16 +98,42 @@ describe('shortUrlsListReducer', () => {
       });
     });
 
-    it('prepends new short URL and increases total on CREATE_SHORT_URL', () => {
+    it.each([
+      [
+        [
+          Mock.of<ShortUrl>({ shortCode }),
+          Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
+          Mock.of<ShortUrl>({ shortCode: 'foo' }),
+        ],
+        [{ shortCode: 'newOne' }, { shortCode }, { shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
+      ],
+      [
+        [
+          Mock.of<ShortUrl>({ shortCode }),
+          Mock.of<ShortUrl>({ shortCode: 'code' }),
+          Mock.of<ShortUrl>({ shortCode: 'foo' }),
+          Mock.of<ShortUrl>({ shortCode: 'bar' }),
+          Mock.of<ShortUrl>({ shortCode: 'baz' }),
+        ],
+        [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
+      ],
+      [
+        [
+          Mock.of<ShortUrl>({ shortCode }),
+          Mock.of<ShortUrl>({ shortCode: 'code' }),
+          Mock.of<ShortUrl>({ shortCode: 'foo' }),
+          Mock.of<ShortUrl>({ shortCode: 'bar' }),
+          Mock.of<ShortUrl>({ shortCode: 'baz1' }),
+          Mock.of<ShortUrl>({ shortCode: 'baz2' }),
+          Mock.of<ShortUrl>({ shortCode: 'baz3' }),
+        ],
+        [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
+      ],
+    ])('prepends new short URL and increases total on CREATE_SHORT_URL', (data, expectedData) => {
       const newShortUrl = Mock.of<ShortUrl>({ shortCode: 'newOne' });
-      const shortCode = 'abc123';
       const state = {
         shortUrls: Mock.of<ShlinkShortUrlsResponse>({
-          data: [
-            Mock.of<ShortUrl>({ shortCode }),
-            Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
-            Mock.of<ShortUrl>({ shortCode: 'foo' }),
-          ],
+          data,
           pagination: Mock.of<ShlinkPaginator>({
             totalItems: 15,
           }),
@@ -118,7 +144,7 @@ describe('shortUrlsListReducer', () => {
 
       expect(reducer(state, { type: CREATE_SHORT_URL, result: newShortUrl } as any)).toEqual({
         shortUrls: {
-          data: [{ shortCode: 'newOne' }, { shortCode }, { shortCode, domain: 'example.com' }],
+          data: expectedData,
           pagination: { totalItems: 16 },
         },
         loading: false,
