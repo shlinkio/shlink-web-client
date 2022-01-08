@@ -6,9 +6,10 @@ const { floor, random, sqrt, round } = Math;
 const letters = '0123456789ABCDEF';
 const buildRandomColor = () => `#${rangeOf(HEX_COLOR_LENGTH, () => letters[floor(random() * letters.length)]).join('')}`;
 const normalizeKey = (key: string) => key.toLowerCase().trim();
-const hexColorToRgbArray = (colorHex: string): number[] => (colorHex.match(/../g) || []).map(hex => parseInt(hex, 16) || 0);
+const hexColorToRgbArray = (colorHex: string): number[] =>
+  (colorHex.match(/../g) ?? []).map((hex) => parseInt(hex, 16) || 0);
 // HSP by Darel Rex Finley https://alienryderflex.com/hsp.html
-const perceivedLightness = (r: number = 0, g: number = 0, b: number = 0) => round(sqrt(0.299 * r ** 2 + 0.587 * g ** 2 + 0.114 * b ** 2));
+const perceivedLightness = (r = 0, g = 0, b = 0) => round(sqrt(0.299 * r ** 2 + 0.587 * g ** 2 + 0.114 * b ** 2));
 
 export default class ColorGenerator {
   private readonly colors: Record<string, string>;
@@ -40,11 +41,12 @@ export default class ColorGenerator {
     return color;
   };
 
-  public readonly isColorLightForKey = (key: string) => {
+  public readonly isColorLightForKey = (key: string): boolean => {
     const colorHex = this.getColorForKey(key).substring(1);
 
-    if (this.lights[colorHex] == undefined) {
+    if (!this.lights[colorHex]) {
       const rgb = hexColorToRgbArray(colorHex);
+
       this.lights[colorHex] = perceivedLightness(...rgb) >= 128;
     }
 

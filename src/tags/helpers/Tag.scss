@@ -1,9 +1,9 @@
 .tag {
   color: #fff;
+}
 
-  &.light-generated-bg {
+.tag--light-bg {
     color: #000;
-  }
 }
 
 .tag:not(:last-child) {
