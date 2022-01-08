@@ -30,8 +30,10 @@ const Home = ({ servers, history }: HomeProps) => {
       <Card className="home__main-card">
         <Row noGutters>
           <div className="col-md-5 d-none d-md-block">
-            <div className="p-4">
-              <ShlinkLogo />
+            <div className="home__logo-wrapper">
+              <div className="home__logo">
+                <ShlinkLogo />
+              </div>
             </div>
           </div>
           <div className="col-md-7 home__servers-container">
