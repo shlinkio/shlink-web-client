@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.5.1] - 2022-01-08
 ### Added
 * *Nothing*
 
@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 * [#555](https://github.com/shlinkio/shlink-web-client/issues/555) Fixed vertical alignment in welcome screen logo.
 * [#554](https://github.com/shlinkio/shlink-web-client/issues/554) Fixed behavior in overview page, where items in the list of short URLs were stripped out when creating new ones, even if the amount of short URLs was still not yet big enough.
+* [#557](https://github.com/shlinkio/shlink-web-client/issues/557) Fixed new tags added to new short URLs, not appearing on tags autosuggest.
 
 
 ## [3.5.0] - 2022-01-01
