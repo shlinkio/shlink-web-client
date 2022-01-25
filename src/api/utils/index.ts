@@ -7,4 +7,4 @@ export const isInvalidArgumentError = (error?: ProblemDetailsError): error is In
   error?.type === 'INVALID_ARGUMENT';
 
 export const isInvalidDeletionError = (error?: ProblemDetailsError): error is InvalidShortUrlDeletion =>
-  error?.type === 'INVALID_SHORTCODE_DELETION';
+  error?.type === 'INVALID_SHORTCODE_DELETION' || error?.type === 'INVALID_SHORT_URL_DELETION';

@@ -114,6 +114,6 @@ export interface InvalidArgumentError extends ProblemDetailsError {
 }
 
 export interface InvalidShortUrlDeletion extends ProblemDetailsError {
-  type: 'INVALID_SHORTCODE_DELETION';
+  type: 'INVALID_SHORTCODE_DELETION' | 'INVALID_SHORT_URL_DELETION';
   threshold: number;
 }
