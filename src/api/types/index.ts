@@ -86,6 +86,8 @@ export interface ShlinkDomainsResponse {
   defaultRedirects?: ShlinkDomainRedirects; // Optional only for Shlink older than 2.10
 }
 
+export type TagsFilteringMode = 'all' | 'any';
+
 export interface ShlinkShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
@@ -94,6 +96,7 @@ export interface ShlinkShortUrlsListParams {
   startDate?: string;
   endDate?: string;
   orderBy?: ShortUrlsOrder;
+  tagsMode?: TagsFilteringMode;
 }
 
 export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {

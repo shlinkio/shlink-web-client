@@ -4,6 +4,7 @@ import { isEmpty, pipe } from 'ramda';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 import { orderToString, stringToOrder } from '../../utils/helpers/ordering';
+import { TagsFilteringMode } from '../../api/types';
 
 type ServerIdRouteProps = RouteChildrenProps<{ serverId: string }>;
 type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
@@ -18,6 +19,7 @@ interface ShortUrlsQueryCommon {
   search?: string;
   startDate?: string;
   endDate?: string;
+  tagsMode?: TagsFilteringMode;
 }
 
 interface ShortUrlsQuery extends ShortUrlsQueryCommon {

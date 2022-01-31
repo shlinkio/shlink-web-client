@@ -33,7 +33,10 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
   settings,
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
-  const [{ tags, search, startDate, endDate, orderBy }, toFirstPage ] = useShortUrlsQuery({ history, match, location });
+  const [
+    { tags, search, startDate, endDate, orderBy, tagsMode },
+    toFirstPage,
+  ] = useShortUrlsQuery({ history, match, location });
   const [ actualOrderBy, setActualOrderBy ] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
@@ -61,8 +64,9 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
       startDate,
       endDate,
       orderBy: actualOrderBy,
+      tagsMode,
     });
-  }, [ match.params.page, search, selectedTags, startDate, endDate, actualOrderBy ]);
+  }, [ match.params.page, search, selectedTags, startDate, endDate, actualOrderBy, tagsMode ]);
 
   return (
     <>

@@ -51,6 +51,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   // Services
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator');
+  bottle.decorator('ShortUrlsFilteringBar', connect([ 'selectedServer' ]));
   bottle.decorator('ShortUrlsFilteringBar', withRouter);
 
   // Actions
