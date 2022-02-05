@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.
+* [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together.
 
 ### Changed
 * [#567](https://github.com/shlinkio/shlink-web-client/pull/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
