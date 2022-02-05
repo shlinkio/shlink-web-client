@@ -1,13 +1,13 @@
-@import '../utils/base';
+@import '../../utils/base';
 
-.overview__card.overview__card {
+.highlight-card.highlight-card {
   text-align: center;
   border-top: 3px solid var(--brand-color);
   color: inherit;
   text-decoration: none;
 }
 
-.overview__card-title {
+.highlight-card__title {
   text-transform: uppercase;
   color: $textPlaceholder;
 }
