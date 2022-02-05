@@ -56,15 +56,12 @@ export const Overview = (
     <>
       <Row>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Visits" link={linkToNonOrphanVisits ? `/server/${serverId}/visits` : undefined}>
+          <HighlightCard title="Visits" link={linkToNonOrphanVisits && `/server/${serverId}/non-orphan-visits`}>
             {loadingVisits ? 'Loading...' : prettify(visitsCount)}
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard
-            title="Orphan visits"
-            link={linkToOrphanVisits ? `/server/${serverId}/orphan-visits` : undefined}
-          >
+          <HighlightCard title="Orphan visits" link={linkToOrphanVisits && `/server/${serverId}/orphan-visits`}>
             <ForServerVersion minVersion="2.6.0">
               {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
             </ForServerVersion>

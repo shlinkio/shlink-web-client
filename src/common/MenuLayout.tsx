@@ -19,6 +19,7 @@ const MenuLayout = (
   ShortUrlVisits: FC,
   TagVisits: FC,
   OrphanVisits: FC,
+  NonOrphanVisits: FC,
   ServerError: FC,
   Overview: FC,
   EditShortUrl: FC,
@@ -56,7 +57,7 @@ const MenuLayout = (
                 <Route path="/server/:serverId/short-code/:shortCode/edit" component={EditShortUrl} />
                 <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />
                 {addOrphanVisitsRoute && <Route path="/server/:serverId/orphan-visits" component={OrphanVisits} />}
-                {addNonOrphanVisitsRoute && <Route path="/server/:serverId/visits" render={() => 'Non orphan'} />}
+                {addNonOrphanVisitsRoute && <Route path="/server/:serverId/non-orphan-visits" component={NonOrphanVisits} />}
                 <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
                 {addManageDomainsRoute && <Route exact path="/server/:serverId/manage-domains" component={ManageDomains} />}
                 <Route

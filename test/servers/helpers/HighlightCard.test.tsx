@@ -15,8 +15,11 @@ describe('<HighlightCard />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  it('renders expected components', () => {
-    const wrapper = createWrapper({ title: 'foo' });
+  it.each([
+    [ undefined ],
+    [ false ],
+  ])('renders expected components', (link) => {
+    const wrapper = createWrapper({ title: 'foo', link: link as undefined | false });
 
     expect(wrapper.find(Card)).toHaveLength(1);
     expect(wrapper.find(CardTitle)).toHaveLength(1);
