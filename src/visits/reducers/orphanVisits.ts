@@ -59,7 +59,7 @@ export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
     const { visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = createdVisits
-      .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
+      .filter(({ visit, shortUrl }) => !shortUrl && isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);
 
     return { ...state, visits: [ ...newVisits, ...visits ] };

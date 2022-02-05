@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { CardText } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, MemoryRouter } from 'react-router-dom';
 import { ShortUrlsList as ShortUrlsListState } from '../../src/short-urls/reducers/shortUrlsList';
 import { Overview as overviewCreator } from '../../src/servers/Overview';
 import { TagsList } from '../../src/tags/reducers/tagsList';
@@ -10,9 +9,10 @@ import { VisitsOverview } from '../../src/visits/reducers/visitsOverview';
 import { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
 import { ReachableServer } from '../../src/servers/data';
 import { prettify } from '../../src/utils/helpers/numbers';
+import { HighlightCard } from '../../src/servers/helpers/HighlightCard';
 
 describe('<Overview />', () => {
-  let wrapper: ShallowWrapper;
+  let wrapper: ReactWrapper;
   const ShortUrlsTable = () => null;
   const CreateShortUrl = () => null;
   const ForServerVersion: FC = ({ children }) => <>{children}</>;
@@ -25,20 +25,22 @@ describe('<Overview />', () => {
   };
   const serverId = '123';
   const createWrapper = (loading = false) => {
-    wrapper = shallow(
-      <Overview
-        listShortUrls={listShortUrls}
-        listTags={listTags}
-        loadVisitsOverview={loadVisitsOverview}
-        shortUrlsList={Mock.of<ShortUrlsListState>({ loading, shortUrls })}
-        tagsList={Mock.of<TagsList>({ loading, tags: [ 'foo', 'bar', 'baz' ] })}
-        visitsOverview={Mock.of<VisitsOverview>({ loading, visitsCount: 3456, orphanVisitsCount: 28 })}
-        selectedServer={Mock.of<ReachableServer>({ id: serverId })}
-        createNewVisits={jest.fn()}
-        loadMercureInfo={jest.fn()}
-        mercureInfo={Mock.all<MercureInfo>()}
-      />,
-    ).dive(); // Dive is needed as this component is wrapped in a HOC
+    wrapper = mount(
+      <MemoryRouter>
+        <Overview
+          listShortUrls={listShortUrls}
+          listTags={listTags}
+          loadVisitsOverview={loadVisitsOverview}
+          shortUrlsList={Mock.of<ShortUrlsListState>({ loading, shortUrls })}
+          tagsList={Mock.of<TagsList>({ loading, tags: [ 'foo', 'bar', 'baz' ] })}
+          visitsOverview={Mock.of<VisitsOverview>({ loading, visitsCount: 3456, orphanVisitsCount: 28 })}
+          selectedServer={Mock.of<ReachableServer>({ id: serverId })}
+          createNewVisits={jest.fn()}
+          loadMercureInfo={jest.fn()}
+          mercureInfo={Mock.all<MercureInfo>()}
+        />
+      </MemoryRouter>,
+    );
 
     return wrapper;
   };
@@ -47,7 +49,7 @@ describe('<Overview />', () => {
 
   it('displays loading messages when still loading', () => {
     const wrapper = createWrapper(true);
-    const cards = wrapper.find(CardText);
+    const cards = wrapper.find(HighlightCard);
 
     expect(cards).toHaveLength(4);
     cards.forEach((card) => expect(card.html()).toContain('Loading...'));
@@ -55,7 +57,7 @@ describe('<Overview />', () => {
 
   it('displays amounts in cards after finishing loading', () => {
     const wrapper = createWrapper();
-    const cards = wrapper.find(CardText);
+    const cards = wrapper.find(HighlightCard);
 
     expect(cards).toHaveLength(4);
     expect(cards.at(0).html()).toContain(prettify(3456));
@@ -75,8 +77,10 @@ describe('<Overview />', () => {
     const wrapper = createWrapper();
     const links = wrapper.find(Link);
 
-    expect(links).toHaveLength(2);
-    expect(links.at(0).prop('to')).toEqual(`/server/${serverId}/create-short-url`);
-    expect(links.at(1).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
+    expect(links).toHaveLength(4);
+    expect(links.at(0).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
+    expect(links.at(1).prop('to')).toEqual(`/server/${serverId}/manage-tags`);
+    expect(links.at(2).prop('to')).toEqual(`/server/${serverId}/create-short-url`);
+    expect(links.at(3).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
   });
 });

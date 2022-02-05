@@ -25,6 +25,7 @@ export interface ShlinkState {
   shortUrlVisits: ShortUrlVisits;
   tagVisits: TagVisits;
   orphanVisits: VisitsInfo;
+  nonOrphanVisits: VisitsInfo;
   shortUrlDetail: ShortUrlDetail;
   tagsList: TagsList;
   tagDelete: TagDeletion;

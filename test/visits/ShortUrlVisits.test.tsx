@@ -48,6 +48,7 @@ describe('<ShortUrlVisits />', () => {
     const visitHeader = wrapper.find(ShortUrlVisitsHeader);
 
     expect(visitStats).toHaveLength(1);
+    expect(visitStats.prop('isOrphanVisits')).not.toBeDefined();
     expect(visitHeader).toHaveLength(1);
   });
 });
