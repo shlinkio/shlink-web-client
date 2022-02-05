@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Card, CardText, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { faLink as linkIcon } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleRight as linkIcon } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './HighlightCard.scss';
 
