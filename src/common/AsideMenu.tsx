@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { NavLink, NavLinkProps, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import { isServerWithId, SelectedServer } from '../servers/data';
@@ -40,12 +40,11 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
 ) => {
   const hasId = isServerWithId(selectedServer);
   const serverId = hasId ? selectedServer.id : '';
+  const { pathname } = useLocation();
   const addManageDomainsLink = supportsDomainRedirects(selectedServer);
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
-  // TODO
-  // const shortUrlsIsActive = (_: null, location: Location) => location.pathname.match('/list-short-urls') !== null;
   const buildPath = (suffix: string) => `/server/${serverId}${suffix}`;
 
   return (
@@ -55,7 +54,10 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
           <FontAwesomeIcon fixedWidth icon={overviewIcon} />
           <span className="aside-menu__item-text">Overview</span>
         </AsideMenuItem>
-        <AsideMenuItem to={buildPath('/list-short-urls/1')}>
+        <AsideMenuItem
+          to={buildPath('/list-short-urls/1')}
+          className={classNames({ 'aside-menu__item--selected': pathname.match('/list-short-urls') !== null })}
+        >
           <FontAwesomeIcon fixedWidth icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>
         </AsideMenuItem>
