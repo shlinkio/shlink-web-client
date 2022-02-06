@@ -3,6 +3,7 @@ import { pipe } from 'ramda';
 import { CreateVisit } from '../../visits/types';
 import { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
+import { useParams } from 'react-router-dom';
 
 export interface MercureBoundProps {
   createNewVisits: (createdVisits: CreateVisit[]) => void;
@@ -12,17 +13,19 @@ export interface MercureBoundProps {
 
 export function boundToMercureHub<T = {}>(
   WrappedComponent: FC<MercureBoundProps & T>,
-  getTopicsForProps: (props: T) => string[],
+  getTopicsForProps: (props: T, routeParams: any) => string[],
 ) {
   const pendingUpdates = new Set<CreateVisit>();
 
   return (props: MercureBoundProps & T) => {
     const { createNewVisits, loadMercureInfo, mercureInfo } = props;
     const { interval } = mercureInfo;
+    const params = useParams();
 
     useEffect(() => {
       const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisits([ visit ]);
-      const closeEventSource = bindToMercureTopic(mercureInfo, getTopicsForProps(props), onMessage, loadMercureInfo);
+      const topics = getTopicsForProps(props, params);
+      const closeEventSource = bindToMercureTopic(mercureInfo, topics, onMessage, loadMercureInfo);
 
       if (!interval) {
         return closeEventSource;

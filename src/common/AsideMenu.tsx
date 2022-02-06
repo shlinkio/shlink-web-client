@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC } from 'react';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import classNames from 'classnames';
-import { Location } from 'history';
 import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import { isServerWithId, SelectedServer } from '../servers/data';
 import { supportsDomainRedirects } from '../utils/helpers/features';
@@ -28,8 +27,7 @@ interface AsideMenuItemProps extends NavLinkProps {
 
 const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...rest }) => (
   <NavLink
-    className={classNames('aside-menu__item', className)}
-    activeClassName="aside-menu__item--selected"
+    className={({ isActive }) => classNames('aside-menu__item', className, { 'aside-menu__item--selected': isActive })}
     to={to}
     {...rest}
   >
@@ -46,7 +44,8 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
-  const shortUrlsIsActive = (_: null, location: Location) => location.pathname.match('/list-short-urls') !== null;
+  // TODO
+  // const shortUrlsIsActive = (_: null, location: Location) => location.pathname.match('/list-short-urls') !== null;
   const buildPath = (suffix: string) => `/server/${serverId}${suffix}`;
 
   return (
@@ -56,7 +55,7 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
           <FontAwesomeIcon fixedWidth icon={overviewIcon} />
           <span className="aside-menu__item-text">Overview</span>
         </AsideMenuItem>
-        <AsideMenuItem to={buildPath('/list-short-urls/1')} isActive={shortUrlsIsActive}>
+        <AsideMenuItem to={buildPath('/list-short-urls/1')}>
           <FontAwesomeIcon fixedWidth icon={listIcon} />
           <span className="aside-menu__item-text">List short URLs</span>
         </AsideMenuItem>

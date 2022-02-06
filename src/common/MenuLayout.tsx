@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
@@ -24,7 +24,8 @@ const MenuLayout = (
   Overview: FC,
   EditShortUrl: FC,
   ManageDomains: FC,
-) => withSelectedServer(({ location, selectedServer }) => {
+) => withSelectedServer(({ selectedServer }) => {
+  const location = useLocation();
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
 
   useEffect(() => hideSidebar(), [ location ]);
@@ -48,22 +49,23 @@ const MenuLayout = (
           <AsideMenu selectedServer={selectedServer} showOnMobile={sidebarVisible} />
           <div className="menu-layout__container" onClick={() => hideSidebar()}>
             <div className="container-xl">
-              <Switch>
-                <Redirect exact from="/server/:serverId" to="/server/:serverId/overview" />
-                <Route exact path="/server/:serverId/overview" component={Overview} />
-                <Route exact path="/server/:serverId/list-short-urls/:page" component={ShortUrlsList} />
-                <Route exact path="/server/:serverId/create-short-url" component={CreateShortUrl} />
-                <Route path="/server/:serverId/short-code/:shortCode/visits" component={ShortUrlVisits} />
-                <Route path="/server/:serverId/short-code/:shortCode/edit" component={EditShortUrl} />
-                <Route path="/server/:serverId/tag/:tag/visits" component={TagVisits} />
-                {addOrphanVisitsRoute && <Route path="/server/:serverId/orphan-visits" component={OrphanVisits} />}
-                {addNonOrphanVisitsRoute && <Route path="/server/:serverId/non-orphan-visits" component={NonOrphanVisits} />}
-                <Route exact path="/server/:serverId/manage-tags" component={TagsList} />
-                {addManageDomainsRoute && <Route exact path="/server/:serverId/manage-domains" component={ManageDomains} />}
+              <Routes>
+                <Route index element={<Navigate replace to="overview" />} />
+                <Route path="/overview" element={<Overview />} />
+                <Route path="/list-short-urls/:page" element={<ShortUrlsList />} />
+                <Route path="/create-short-url" element={<CreateShortUrl />} />
+                <Route path="/short-code/:shortCode/visits/*" element={<ShortUrlVisits />} />
+                <Route path="/short-code/:shortCode/edit" element={<EditShortUrl />} />
+                <Route path="/tag/:tag/visits/*" element={<TagVisits />} />
+                {addOrphanVisitsRoute && <Route path="/orphan-visits/*" element={<OrphanVisits />} />}
+                {addNonOrphanVisitsRoute && <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />}
+                <Route path="/manage-tags" element={<TagsList />} />
+                {addManageDomainsRoute && <Route path="/manage-domains" element={<ManageDomains />} />}
                 <Route
-                  render={() => <NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}
+                  path="*"
+                  element={<NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}
                 />
-              </Switch>
+              </Routes>
             </div>
           </div>
         </div>

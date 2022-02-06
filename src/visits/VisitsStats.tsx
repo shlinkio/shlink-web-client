@@ -4,7 +4,7 @@ import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { Route, Switch, NavLink as RouterNavLink, Redirect } from 'react-router-dom';
+import { Route, Routes, NavLink as RouterNavLink, Navigate } from 'react-router-dom';
 import { Location } from 'history';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
@@ -33,7 +33,6 @@ export interface VisitsStatsProps {
   settings: Settings;
   selectedServer: SelectedServer;
   cancelGetVisits: () => void;
-  baseUrl: string;
   domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
@@ -48,10 +47,10 @@ interface VisitsNavLinkProps {
 type Section = 'byTime' | 'byContext' | 'byLocation' | 'list';
 
 const sections: Record<Section, VisitsNavLinkProps> = {
-  byTime: { title: 'By time', subPath: '', icon: faCalendarAlt },
-  byContext: { title: 'By context', subPath: '/by-context', icon: faChartPie },
-  byLocation: { title: 'By location', subPath: '/by-location', icon: faMapMarkedAlt },
-  list: { title: 'List', subPath: '/list', icon: faList },
+  byTime: { title: 'By time', subPath: 'by-time', icon: faCalendarAlt },
+  byContext: { title: 'By context', subPath: 'by-context', icon: faChartPie },
+  byLocation: { title: 'By location', subPath: 'by-location', icon: faMapMarkedAlt },
+  list: { title: 'List', subPath: 'list', icon: faList },
 };
 
 let selectedBar: string | undefined;
@@ -74,7 +73,6 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   visitsInfo,
   getVisits,
   cancelGetVisits,
-  baseUrl,
   domain,
   settings,
   exportCsv,
@@ -95,7 +93,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
 
-    return !subPath ? `${baseUrl}${query}` : `${baseUrl}${subPath}${query}`;
+    return !subPath ? `${query}` : `${subPath}${query}`;
   };
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
@@ -166,104 +164,120 @@ const VisitsStats: FC<VisitsStatsProps> = ({
           </Nav>
         </Card>
         <Row>
-          <Switch>
-            <Route exact path={baseUrl}>
-              <div className="col-12 mt-3">
-                <LineChartCard
-                  title="Visits during time"
-                  visits={normalizedVisits}
-                  highlightedVisits={highlightedVisits}
-                  highlightedLabel={highlightedLabel}
-                  setSelectedVisits={setSelectedVisits}
-                />
-              </div>
-            </Route>
-
-            <Route exact path={`${baseUrl}${sections.byContext.subPath}`}>
-              <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
-                <DoughnutChartCard title="Operating systems" stats={os} />
-              </div>
-              <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
-                <DoughnutChartCard title="Browsers" stats={browsers} />
-              </div>
-              <div className={classNames('mt-3', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
-                <SortableBarChartCard
-                  title="Referrers"
-                  stats={referrers}
-                  withPagination={false}
-                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
-                  highlightedLabel={highlightedLabel}
-                  sortingItems={{
-                    name: 'Referrer name',
-                    amount: 'Visits amount',
-                  }}
-                  onClick={highlightVisitsForProp('referer')}
-                />
-              </div>
-              {isOrphanVisits && (
-                <div className="mt-3 col-lg-6">
-                  <SortableBarChartCard
-                    title="Visited URLs"
-                    stats={visitedUrls}
+          <Routes>
+            <Route
+              path={sections.byTime.subPath}
+              element={(
+                <div className="col-12 mt-3">
+                  <LineChartCard
+                    title="Visits during time"
+                    visits={normalizedVisits}
+                    highlightedVisits={highlightedVisits}
                     highlightedLabel={highlightedLabel}
-                    highlightedStats={highlightedVisitsToStats(highlightedVisits, 'visitedUrl')}
-                    sortingItems={{
-                      visitedUrl: 'Visited URL',
-                      amount: 'Visits amount',
-                    }}
-                    onClick={highlightVisitsForProp('visitedUrl')}
+                    setSelectedVisits={setSelectedVisits}
                   />
                 </div>
               )}
-            </Route>
+            />
 
-            <Route exact path={`${baseUrl}${sections.byLocation.subPath}`}>
-              <div className="col-lg-6 mt-3">
-                <SortableBarChartCard
-                  title="Countries"
-                  stats={countries}
-                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
-                  highlightedLabel={highlightedLabel}
-                  sortingItems={{
-                    name: 'Country name',
-                    amount: 'Visits amount',
-                  }}
-                  onClick={highlightVisitsForProp('country')}
-                />
-              </div>
-              <div className="col-lg-6 mt-3">
-                <SortableBarChartCard
-                  title="Cities"
-                  stats={cities}
-                  highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
-                  highlightedLabel={highlightedLabel}
-                  extraHeaderContent={(activeCities: string[]) =>
-                    mapLocations.length > 0 &&
-                    <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
-                  }
-                  sortingItems={{
-                    name: 'City name',
-                    amount: 'Visits amount',
-                  }}
-                  onClick={highlightVisitsForProp('city')}
-                />
-              </div>
-            </Route>
+            <Route
+              path={sections.byContext.subPath}
+              element={(
+                <>
+                  <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
+                    <DoughnutChartCard title="Operating systems" stats={os} />
+                  </div>
+                  <div className={classNames('mt-3 col-lg-6', { 'col-xl-4': !isOrphanVisits })}>
+                    <DoughnutChartCard title="Browsers" stats={browsers} />
+                  </div>
+                  <div className={classNames('mt-3', { 'col-xl-4': !isOrphanVisits, 'col-lg-6': isOrphanVisits })}>
+                    <SortableBarChartCard
+                      title="Referrers"
+                      stats={referrers}
+                      withPagination={false}
+                      highlightedStats={highlightedVisitsToStats(highlightedVisits, 'referer')}
+                      highlightedLabel={highlightedLabel}
+                      sortingItems={{
+                        name: 'Referrer name',
+                        amount: 'Visits amount',
+                      }}
+                      onClick={highlightVisitsForProp('referer')}
+                    />
+                  </div>
+                  {isOrphanVisits && (
+                    <div className="mt-3 col-lg-6">
+                      <SortableBarChartCard
+                        title="Visited URLs"
+                        stats={visitedUrls}
+                        highlightedLabel={highlightedLabel}
+                        highlightedStats={highlightedVisitsToStats(highlightedVisits, 'visitedUrl')}
+                        sortingItems={{
+                          visitedUrl: 'Visited URL',
+                          amount: 'Visits amount',
+                        }}
+                        onClick={highlightVisitsForProp('visitedUrl')}
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+            />
 
-            <Route exact path={`${baseUrl}${sections.list.subPath}`}>
-              <div className="col-12">
-                <VisitsTable
-                  visits={normalizedVisits}
-                  selectedVisits={highlightedVisits}
-                  setSelectedVisits={setSelectedVisits}
-                  isOrphanVisits={isOrphanVisits}
-                  selectedServer={selectedServer}
-                />
-              </div>
-            </Route>
+            <Route
+              path={sections.byLocation.subPath}
+              element={(
+                <>
+                  <div className="col-lg-6 mt-3">
+                    <SortableBarChartCard
+                      title="Countries"
+                      stats={countries}
+                      highlightedStats={highlightedVisitsToStats(highlightedVisits, 'country')}
+                      highlightedLabel={highlightedLabel}
+                      sortingItems={{
+                        name: 'Country name',
+                        amount: 'Visits amount',
+                      }}
+                      onClick={highlightVisitsForProp('country')}
+                    />
+                  </div>
+                  <div className="col-lg-6 mt-3">
+                    <SortableBarChartCard
+                      title="Cities"
+                      stats={cities}
+                      highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
+                      highlightedLabel={highlightedLabel}
+                      extraHeaderContent={(activeCities: string[]) =>
+                        mapLocations.length > 0 &&
+                        <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
+                      }
+                      sortingItems={{
+                        name: 'City name',
+                        amount: 'Visits amount',
+                      }}
+                      onClick={highlightVisitsForProp('city')}
+                    />
+                  </div>
+                </>
+              )}
+            />
 
-            <Redirect to={baseUrl} />
-          </Switch>
+            <Route
+              path={sections.list.subPath}
+              element={(
+                <div className="col-12">
+                  <VisitsTable
+                    visits={normalizedVisits}
+                    selectedVisits={highlightedVisits}
+                    setSelectedVisits={setSelectedVisits}
+                    isOrphanVisits={isOrphanVisits}
+                    selectedServer={selectedServer}
+                  />
+                </div>
+              )}
+            />
+
+            <Route path="*" element={<Navigate replace to={buildSectionUrl(sections.byTime.subPath)} />} />
+          </Routes>
         </Row>
       </>
     );

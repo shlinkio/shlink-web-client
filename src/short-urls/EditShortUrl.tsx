@@ -1,9 +1,9 @@
 import { FC, useEffect, useMemo } from 'react';
-import { RouteComponentProps } from 'react-router';
 import { Button, Card } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
+import { useLocation, useParams } from 'react-router-dom';
 import { SelectedServer } from '../servers/data';
 import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
 import { OptionalString } from '../utils/utils';
@@ -11,13 +11,13 @@ import { parseQuery } from '../utils/helpers/query';
 import Message from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
-import { useToggle } from '../utils/helpers/hooks';
+import { useGoBack, useToggle } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import { EditShortUrlData, ShortUrl, ShortUrlData } from './data';
 import { ShortUrlEdition } from './reducers/shortUrlEdition';
 
-interface EditShortUrlConnectProps extends RouteComponentProps<{ shortCode: string }> {
+interface EditShortUrlConnectProps {
   settings: Settings;
   selectedServer: SelectedServer;
   shortUrlDetail: ShortUrlDetail;
@@ -48,9 +48,6 @@ const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSetting
 };
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
-  history: { goBack },
-  match: { params },
-  location: { search },
   settings: { shortUrlCreation: shortUrlCreationSettings },
   selectedServer,
   shortUrlDetail,
@@ -58,6 +55,9 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   shortUrlEdition,
   editShortUrl,
 }: EditShortUrlConnectProps) => {
+  const { search } = useLocation();
+  const params = useParams<{ shortCode: string }>();
+  const goBack = useGoBack();
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
   const { saving, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
@@ -68,7 +68,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const [ savingSucceeded,, isSuccessful, isNotSuccessful ] = useToggle();
 
   useEffect(() => {
-    getShortUrlDetail(params.shortCode, domain);
+    params.shortCode && getShortUrlDetail(params.shortCode, domain);
   }, []);
 
   if (loading) {

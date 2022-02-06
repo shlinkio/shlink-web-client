@@ -1,6 +1,7 @@
 import { useState, useRef, EffectCallback, DependencyList, useEffect } from 'react';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { parseQuery, stringifyQuery } from './query';
+import { useNavigate } from 'react-router-dom';
 
 const DEFAULT_DELAY = 2000;
 
@@ -74,4 +75,10 @@ export const useEffectExceptFirstTime = (callback: EffectCallback, deps: Depende
     !isFirstLoad.current && callback();
     isFirstLoad.current = false;
   }, deps);
+};
+
+export const useGoBack = () => {
+  const navigate = useNavigate();
+
+  return () => navigate(-1);
 };

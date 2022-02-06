@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
+import { useGoBack } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { withSelectedServer } from './helpers/withSelectedServer';
 import { isServerWithId, ServerData } from './data';
@@ -9,9 +10,9 @@ interface EditServerProps {
   editServer: (serverId: string, serverData: ServerData) => void;
 }
 
-export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProps>((
-  { editServer, selectedServer, history: { goBack } },
-) => {
+export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProps>(({ editServer, selectedServer }) => {
+  const goBack = useGoBack();
+
   if (!isServerWithId(selectedServer)) {
     return null;
   }
