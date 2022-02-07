@@ -1,25 +1,28 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { History } from 'history';
 import { Mock } from 'ts-mockery';
+import { useNavigate } from 'react-router-dom';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
 import { ServerWithId } from '../../src/servers/data';
+
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
 describe('<DeleteServerModal />', () => {
   let wrapper: ShallowWrapper;
   const deleteServerMock = jest.fn();
-  const push = jest.fn();
+  const navigate = jest.fn();
   const toggleMock = jest.fn();
   const serverName = 'the_server_name';
 
   beforeEach(() => {
+    (useNavigate as any).mockReturnValue(navigate);
+
     wrapper = shallow(
       <DeleteServerModal
         server={Mock.of<ServerWithId>({ name: serverName })}
         toggle={toggleMock}
         isOpen={true}
         deleteServer={deleteServerMock}
-        history={Mock.of<History>({ push })}
       />,
     );
   });
@@ -48,7 +51,7 @@ describe('<DeleteServerModal />', () => {
 
     expect(toggleMock).toHaveBeenCalledTimes(1);
     expect(deleteServerMock).not.toHaveBeenCalled();
-    expect(push).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it('deletes server when clicking accept button', () => {
@@ -58,6 +61,6 @@ describe('<DeleteServerModal />', () => {
 
     expect(toggleMock).toHaveBeenCalledTimes(1);
     expect(deleteServerMock).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledTimes(1);
   });
 });

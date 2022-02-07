@@ -12,7 +12,7 @@ import { SelectedServer } from '../../src/servers/data';
 import { SortableBarChartCard } from '../../src/visits/charts/SortableBarChartCard';
 import { DoughnutChartCard } from '../../src/visits/charts/DoughnutChartCard';
 
-describe('<VisitStats />', () => {
+describe('<VisitsStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
 
   let wrapper: ShallowWrapper;
@@ -25,7 +25,6 @@ describe('<VisitStats />', () => {
         getVisits={getVisitsMock}
         visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
         cancelGetVisits={() => {}}
-        baseUrl={''}
         settings={Mock.all<Settings>()}
         exportCsv={exportCsv}
         selectedServer={Mock.all<SelectedServer>()}

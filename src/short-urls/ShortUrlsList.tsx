@@ -1,7 +1,7 @@
 import { pipe } from 'ramda';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Card } from 'reactstrap';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
@@ -31,6 +31,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
+  const location = useLocation();
   const [{ tags, search, startDate, endDate, orderBy }, toFirstPage ] = useShortUrlsQuery();
   const [ actualOrderBy, setActualOrderBy ] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded

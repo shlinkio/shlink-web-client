@@ -1,9 +1,9 @@
 import { FC, useEffect } from 'react';
 import { pipe } from 'ramda';
+import { useParams } from 'react-router-dom';
 import { CreateVisit } from '../../visits/types';
 import { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
-import { useParams } from 'react-router-dom';
 
 export interface MercureBoundProps {
   createNewVisits: (createdVisits: CreateVisit[]) => void;
