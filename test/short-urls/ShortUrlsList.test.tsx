@@ -1,8 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ReactElement } from 'react';
 import { Mock } from 'ts-mockery';
-import { History, Location } from 'history';
-import { match } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
 import { ShortUrlsOrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
@@ -10,15 +9,21 @@ import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reduce
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import Paginator from '../../src/short-urls/Paginator';
 import { ReachableServer } from '../../src/servers/data';
-import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
 import { Settings } from '../../src/settings/reducers/settings';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+  useParams: jest.fn().mockReturnValue({}),
+  useLocation: jest.fn().mockReturnValue({ search: '?tags=test%20tag&search=example.com' }),
+}));
 
 describe('<ShortUrlsList />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsTable = () => null;
   const ShortUrlsFilteringBar = () => null;
   const listShortUrlsMock = jest.fn();
-  const push = jest.fn();
+  const navigate = jest.fn();
   const shortUrlsList = Mock.of<ShortUrlsListModel>({
     shortUrls: {
       data: [
@@ -36,20 +41,19 @@ describe('<ShortUrlsList />', () => {
     <ShortUrlsList
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
       listShortUrls={listShortUrlsMock}
-      match={Mock.of<match<ShortUrlListRouteParams>>({ params: {} })}
-      location={Mock.of<Location>({ search: '?tags=test%20tag&search=example.com' })}
       shortUrlsList={shortUrlsList}
-      history={Mock.of<History>({ push })}
       selectedServer={Mock.of<ReachableServer>({ id: '1' })}
       settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
     />,
   ).dive(); // Dive is needed as this component is wrapped in a HOC
 
   beforeEach(() => {
+    (useNavigate as any).mockReturnValue(navigate);
+
     wrapper = createWrapper();
   });
 
-  afterEach(jest.resetAllMocks);
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('wraps expected components', () => {
@@ -68,10 +72,10 @@ describe('<ShortUrlsList />', () => {
     wrapper.find(ShortUrlsTable).simulate('tagClick', 'bar');
     wrapper.find(ShortUrlsTable).simulate('tagClick', 'baz');
 
-    expect(push).toHaveBeenCalledTimes(3);
-    expect(push).toHaveBeenNthCalledWith(1, expect.stringContaining(`tags=${encodeURIComponent('test tag,foo')}`));
-    expect(push).toHaveBeenNthCalledWith(2, expect.stringContaining(`tags=${encodeURIComponent('test tag,bar')}`));
-    expect(push).toHaveBeenNthCalledWith(3, expect.stringContaining(`tags=${encodeURIComponent('test tag,baz')}`));
+    expect(navigate).toHaveBeenCalledTimes(3);
+    expect(navigate).toHaveBeenNthCalledWith(1, expect.stringContaining(`tags=${encodeURIComponent('test tag,foo')}`));
+    expect(navigate).toHaveBeenNthCalledWith(2, expect.stringContaining(`tags=${encodeURIComponent('test tag,bar')}`));
+    expect(navigate).toHaveBeenNthCalledWith(3, expect.stringContaining(`tags=${encodeURIComponent('test tag,baz')}`));
   });
 
   it('invokes order icon rendering', () => {

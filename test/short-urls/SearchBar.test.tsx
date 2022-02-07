@@ -1,29 +1,30 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { History, Location } from 'history';
-import { match } from 'react-router';
 import { formatISO } from 'date-fns';
-import filteringBarCreator, { ShortUrlsFilteringProps } from '../../src/short-urls/ShortUrlsFilteringBar';
+import { useLocation, useNavigate } from 'react-router-dom';
+import filteringBarCreator from '../../src/short-urls/ShortUrlsFilteringBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
-import { ShortUrlListRouteParams } from '../../src/short-urls/helpers/hooks';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn(),
+  useParams: jest.fn().mockReturnValue({ serverId: '1' }),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
 
 describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>());
-  const push = jest.fn();
+  const navigate = jest.fn();
   const now = new Date();
-  const createWrapper = (props: Partial<ShortUrlsFilteringProps> = {}) => {
-    wrapper = shallow(
-      <ShortUrlsFilteringBar
-        history={Mock.of<History>({ push })}
-        location={Mock.of<Location>({ search: '' })}
-        match={Mock.of<match<ShortUrlListRouteParams>>({ params: { serverId: '1' } })}
-        {...props}
-      />,
-    );
+  const createWrapper = (search = '') => {
+    (useLocation as any).mockReturnValue({ search });
+    (useNavigate as any).mockReturnValue(navigate);
+
+    wrapper = shallow(<ShortUrlsFilteringBar />);
 
     return wrapper;
   };
@@ -44,7 +45,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     [ '', 0 ],
     [ 'foo=bar', 0 ],
   ])('renders the proper amount of tags', (search, expectedTagComps) => {
-    const wrapper = createWrapper({ location: Mock.of<Location>({ search }) });
+    const wrapper = createWrapper(search);
 
     expect(wrapper.find(Tag)).toHaveLength(expectedTagComps);
   });
@@ -53,18 +54,18 @@ describe('<ShortUrlsFilteringBar />', () => {
     const wrapper = createWrapper();
     const searchField = wrapper.find(SearchField);
 
-    expect(push).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
     searchField.simulate('change', 'search-term');
-    expect(push).toHaveBeenCalledWith('/server/1/list-short-urls/1?search=search-term');
+    expect(navigate).toHaveBeenCalledWith('/server/1/list-short-urls/1?search=search-term');
   });
 
   it('redirects to first page when a tag is removed', () => {
-    const wrapper = createWrapper({ location: Mock.of<Location>({ search: 'tags=foo,bar' }) });
+    const wrapper = createWrapper('tags=foo,bar');
     const tag = wrapper.find(Tag).first();
 
-    expect(push).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
     tag.simulate('close');
-    expect(push).toHaveBeenCalledWith('/server/1/list-short-urls/1?tags=bar');
+    expect(navigate).toHaveBeenCalledWith('/server/1/list-short-urls/1?tags=bar');
   });
 
   it.each([
@@ -78,8 +79,8 @@ describe('<ShortUrlsFilteringBar />', () => {
     const wrapper = createWrapper();
     const dateRange = wrapper.find(DateRangeSelector);
 
-    expect(push).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
     dateRange.simulate('datesChange', dates);
-    expect(push).toHaveBeenCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
+    expect(navigate).toHaveBeenCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
   });
 });

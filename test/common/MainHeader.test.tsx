@@ -1,10 +1,13 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Mock } from 'ts-mockery';
-import { match } from 'react-router';
-import { History, Location } from 'history';
+import { useLocation } from 'react-router-dom';
 import { Collapse, NavbarToggler, NavLink } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import createMainHeader from '../../src/common/MainHeader';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
 
 describe('<MainHeader />', () => {
   const ServersDropdown = () => null;
@@ -12,13 +15,14 @@ describe('<MainHeader />', () => {
   let wrapper: ShallowWrapper;
 
   const createWrapper = (pathname = '') => {
-    const location = Mock.of<Location>({ pathname });
+    (useLocation as any).mockReturnValue({ pathname });
 
-    wrapper = shallow(<MainHeader history={Mock.all<History>()} location={location} match={Mock.all<match>()} />);
+    wrapper = shallow(<MainHeader />);
 
     return wrapper;
   };
 
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('renders ServersDropdown', () => {

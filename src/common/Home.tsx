@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { isEmpty, values } from 'ramda';
-import { Link, RouteChildrenProps } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Card, Row } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,11 +10,12 @@ import { ServersMap } from '../servers/data';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './Home.scss';
 
-export interface HomeProps extends RouteChildrenProps {
+export interface HomeProps {
   servers: ServersMap;
 }
 
-const Home = ({ servers, history }: HomeProps) => {
+const Home = ({ servers }: HomeProps) => {
+  const navigate = useNavigate();
   const serversList = values(servers);
   const hasServers = !isEmpty(serversList);
 
@@ -22,7 +23,7 @@ const Home = ({ servers, history }: HomeProps) => {
     // Try to redirect to the first server marked as auto-connect
     const autoConnectServer = serversList.find(({ autoConnect }) => autoConnect);
 
-    autoConnectServer && history.push(`/server/${autoConnectServer.id}`);
+    autoConnectServer && navigate(`/server/${autoConnectServer.id}`);
   }, []);
 
   return (

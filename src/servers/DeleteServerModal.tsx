@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { RouterProps } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { ServerWithId } from './data';
 
 export interface DeleteServerModalProps {
@@ -10,17 +10,18 @@ export interface DeleteServerModalProps {
   redirectHome?: boolean;
 }
 
-interface DeleteServerModalConnectProps extends DeleteServerModalProps, RouterProps {
+interface DeleteServerModalConnectProps extends DeleteServerModalProps {
   deleteServer: (server: ServerWithId) => void;
 }
 
 const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
-  { server, toggle, isOpen, deleteServer, history, redirectHome = true },
+  { server, toggle, isOpen, deleteServer, redirectHome = true },
 ) => {
+  const navigate = useNavigate();
   const closeModal = () => {
     deleteServer(server);
     toggle();
-    redirectHome && history.push('/');
+    redirectHome && navigate('/');
   };
 
   return (

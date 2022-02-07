@@ -1,5 +1,5 @@
 import { useEffect, FC } from 'react';
-import { Route, RouteChildrenProps, Switch } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import NotFound from '../common/NotFound';
 import { ServersMap } from '../servers/data';
@@ -9,7 +9,7 @@ import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
-interface AppProps extends RouteChildrenProps {
+interface AppProps {
   fetchServers: () => void;
   servers: ServersMap;
   settings: Settings;
@@ -26,7 +26,8 @@ const App = (
   Settings: FC,
   ManageServers: FC,
   ShlinkVersionsContainer: FC,
-) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate, location }: AppProps) => {
+) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
+  const location = useLocation();
   const isHome = location.pathname === '/';
 
   useEffect(() => {
@@ -44,15 +45,15 @@ const App = (
 
       <div className="app">
         <div className={classNames('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/settings" component={Settings} />
-            <Route exact path="/manage-servers" component={ManageServers} />
-            <Route exact path="/server/create" component={CreateServer} />
-            <Route exact path="/server/:serverId/edit" component={EditServer} />
-            <Route path="/server/:serverId" component={MenuLayout} />
-            <Route component={NotFound} />
-          </Switch>
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/manage-servers" element={<ManageServers />} />
+            <Route path="/server/create" element={<CreateServer />} />
+            <Route path="/server/:serverId/edit" element={<EditServer />} />
+            <Route path="/server/:serverId/*" element={<MenuLayout />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
 
         <div className="shlink-footer">
