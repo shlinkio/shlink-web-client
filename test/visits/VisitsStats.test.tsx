@@ -1,6 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Button, Progress } from 'reactstrap';
+import { sum } from 'ramda';
 import { Mock } from 'ts-mockery';
+import { Route } from 'react-router-dom';
 import VisitStats from '../../src/visits/VisitsStats';
 import Message from '../../src/utils/Message';
 import { Visit, VisitsInfo } from '../../src/visits/types';
@@ -75,18 +77,27 @@ describe('<VisitsStats />', () => {
 
   it('renders expected amount of charts', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const charts = wrapper.find(DoughnutChartCard);
-    const sortableCharts = wrapper.find(SortableBarChartCard);
-    const lineChart = wrapper.find(LineChartCard);
-    const table = wrapper.find(VisitsTable);
+    const total = sum(wrapper.find(Route).map((element) => {
+      const ElementComponents = () => element.prop('element');
+      // @ts-expect-error Wrapped element
+      const wrappedElement = shallow(<ElementComponents />);
 
-    expect(charts.length + sortableCharts.length + lineChart.length).toEqual(6);
-    expect(table).toHaveLength(1);
+      const charts = wrappedElement.find(DoughnutChartCard);
+      const sortableCharts = wrappedElement.find(SortableBarChartCard);
+      const lineChart = wrappedElement.find(LineChartCard);
+      const table = wrappedElement.find(VisitsTable);
+
+      return charts.length + sortableCharts.length + lineChart.length + table.length;
+    }));
+
+    expect(total).toEqual(7);
   });
 
   it('holds the map button content generator on cities chart extraHeaderContent', () => {
     const wrapper = createComponent({ loading: false, error: false, visits });
-    const citiesChart = wrapper.find(SortableBarChartCard).find('[title="Cities"]');
+    const ElementComponent = () => wrapper.find(Route).findWhere((element) => element.prop('path') === 'by-location')
+      .prop('element');
+    const citiesChart = shallow(<ElementComponent />).find(SortableBarChartCard).find('[title="Cities"]');
     const extraHeaderContent = citiesChart.prop('extraHeaderContent');
 
     expect(extraHeaderContent).toHaveLength(1);
