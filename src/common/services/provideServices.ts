@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Bottle, { Decorator } from 'bottlejs';
+import Bottle from 'bottlejs';
 import ScrollToTop from '../ScrollToTop';
 import MainHeader from '../MainHeader';
 import Home from '../Home';
@@ -11,7 +11,7 @@ import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { ImageDownloader } from './ImageDownloader';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
@@ -21,14 +21,11 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
 
   // Components
   bottle.serviceFactory('ScrollToTop', ScrollToTop);
-  bottle.decorator('ScrollToTop', withRouter);
 
   bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');
-  bottle.decorator('MainHeader', withRouter);
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
-  bottle.decorator('Home', withRouter);
   bottle.decorator('Home', connect([ 'servers' ], [ 'resetSelectedServer' ]));
 
   bottle.serviceFactory(
@@ -48,7 +45,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
     'ManageDomains',
   );
   bottle.decorator('MenuLayout', connect([ 'selectedServer' ], [ 'selectServer' ]));
-  bottle.decorator('MenuLayout', withRouter);
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 

@@ -1,7 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { History, Location } from 'history';
-import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { useLocation, useParams } from 'react-router-dom';
 import { EditShortUrl as createEditShortUrl } from '../../src/short-urls/EditShortUrl';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
@@ -9,29 +8,32 @@ import { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
 import { ShlinkApiError } from '../../src/api/ShlinkApiError';
 import { ShortUrl } from '../../src/short-urls/data';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+  useParams: jest.fn().mockReturnValue({}),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
+
 describe('<EditShortUrl />', () => {
   let wrapper: ShallowWrapper;
   const ShortUrlForm = () => null;
-  const goBack = jest.fn();
   const getShortUrlDetail = jest.fn();
   const editShortUrl = jest.fn(async () => Promise.resolve());
   const shortUrlCreation = { validateUrls: true };
+  const EditShortUrl = createEditShortUrl(ShortUrlForm);
   const createWrapper = (detail: Partial<ShortUrlDetail> = {}, edition: Partial<ShortUrlEdition> = {}) => {
-    const EditSHortUrl = createEditShortUrl(ShortUrlForm);
+    (useParams as any).mockReturnValue({ shortCode: 'the_base_url' });
+    (useLocation as any).mockReturnValue({ search: '' });
 
     wrapper = shallow(
-      <EditSHortUrl
+      <EditShortUrl
         settings={Mock.of<Settings>({ shortUrlCreation })}
         selectedServer={null}
         shortUrlDetail={Mock.of<ShortUrlDetail>(detail)}
         shortUrlEdition={Mock.of<ShortUrlEdition>(edition)}
         getShortUrlDetail={getShortUrlDetail}
         editShortUrl={editShortUrl}
-        history={Mock.of<History>({ goBack })}
-        location={Mock.all<Location>()}
-        match={Mock.of<match<{ shortCode: string }>>({
-          params: { shortCode: 'the_base_url' },
-        })}
       />,
     );
 

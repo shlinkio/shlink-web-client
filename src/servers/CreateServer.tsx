@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import { RouterProps } from 'react-router';
 import { Button } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
 import { Result } from '../utils/Result';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import { StateFlagTimeout, useToggle } from '../utils/helpers/hooks';
+import { StateFlagTimeout, useGoBack, useToggle } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
@@ -12,7 +12,7 @@ import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-interface CreateServerProps extends RouterProps {
+interface CreateServerProps {
   createServer: (server: ServerWithId) => void;
   servers: ServersMap;
 }
@@ -27,8 +27,10 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
 );
 
 const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
-  { servers, createServer, history: { push, goBack } }: CreateServerProps,
+  { servers, createServer }: CreateServerProps,
 ) => {
+  const navigate = useNavigate();
+  const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
   const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
   const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
@@ -42,7 +44,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
     const id = uuid();
 
     createServer({ ...serverData, id });
-    push(`/server/${id}`);
+    navigate(`/server/${id}`);
   };
 
   useEffect(() => {

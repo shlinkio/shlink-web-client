@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ITEMS_IN_OVERVIEW_PAGE, ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
@@ -44,7 +44,7 @@ export const Overview = (
   const serverId = getServerId(selectedServer);
   const linkToOrphanVisits = supportsOrphanVisits(selectedServer);
   const linkToNonOrphanVisits = supportsNonOrphanVisits(selectedServer);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     listShortUrls({ itemsPerPage: ITEMS_IN_OVERVIEW_PAGE, orderBy: { field: 'dateCreated', dir: 'DESC' } });
@@ -103,7 +103,7 @@ export const Overview = (
             shortUrlsList={shortUrlsList}
             selectedServer={selectedServer}
             className="mb-0"
-            onTagClick={(tag) => history.push(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
+            onTagClick={(tag) => navigate(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
           />
         </CardBody>
       </Card>

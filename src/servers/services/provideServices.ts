@@ -1,5 +1,5 @@
 import csvjson from 'csvjson';
-import Bottle, { Decorator } from 'bottlejs';
+import Bottle from 'bottlejs';
 import CreateServer from '../CreateServer';
 import ServersDropdown from '../ServersDropdown';
 import DeleteServerModal from '../DeleteServerModal';
@@ -20,7 +20,7 @@ import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
 import { ServersImporter } from './ServersImporter';
 import ServersExporter from './ServersExporter';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: Decorator) => {
+const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'ManageServers',
@@ -48,7 +48,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator, withRouter: 
   bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
-  bottle.decorator('DeleteServerModal', withRouter);
   bottle.decorator('DeleteServerModal', connect(null, [ 'deleteServer' ]));
 
   bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');

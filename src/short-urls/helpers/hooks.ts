@@ -1,4 +1,4 @@
-import { RouteChildrenProps } from 'react-router-dom';
+import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { isEmpty, pipe } from 'ramda';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
@@ -6,7 +6,6 @@ import { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 import { orderToString, stringToOrder } from '../../utils/helpers/ordering';
 import { TagsFilteringMode } from '../../api/types';
 
-type ServerIdRouteProps = RouteChildrenProps<{ serverId: string }>;
 type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
 
 export interface ShortUrlListRouteParams {
@@ -30,9 +29,11 @@ interface ShortUrlsFiltering extends ShortUrlsQueryCommon {
   orderBy?: ShortUrlsOrder;
 }
 
-export const useShortUrlsQuery = (
-  { history, location, match }: ServerIdRouteProps,
-): [ShortUrlsFiltering, ToFirstPage] => {
+export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams<{ serverId: string }>();
+
   const query = useMemo(
     pipe(
       () => parseQuery<ShortUrlsQuery>(location.search),
@@ -49,7 +50,7 @@ export const useShortUrlsQuery = (
     const evolvedQuery = stringifyQuery(normalizedQuery);
     const queryString = isEmpty(evolvedQuery) ? '' : `?${evolvedQuery}`;
 
-    history.push(`/server/${match?.params.serverId}/list-short-urls/1${queryString}`);
+    navigate(`/server/${params.serverId}/list-short-urls/1${queryString}`);
   };
 
   return [ query, toFirstPageWithExtra ];

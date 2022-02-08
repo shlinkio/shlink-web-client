@@ -1,7 +1,10 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Mock } from 'ts-mockery';
-import { RouteComponentProps } from 'react-router';
 import createScrollToTop from '../../src/common/ScrollToTop';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
 
 describe('<ScrollToTop />', () => {
   let wrapper: ShallowWrapper;
@@ -9,7 +12,7 @@ describe('<ScrollToTop />', () => {
   beforeEach(() => {
     const ScrollToTop = createScrollToTop();
 
-    wrapper = shallow(<ScrollToTop {...Mock.all<RouteComponentProps>()}>Foobar</ScrollToTop>);
+    wrapper = shallow(<ScrollToTop>Foobar</ScrollToTop>);
   });
 
   afterEach(() => wrapper.unmount());

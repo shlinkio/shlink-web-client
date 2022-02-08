@@ -1,7 +1,7 @@
 import { pipe } from 'ramda';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
 import { Card } from 'reactstrap';
+import { useLocation, useParams } from 'react-router-dom';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
@@ -13,10 +13,10 @@ import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/sett
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
-import { ShortUrlListRouteParams, useShortUrlsQuery } from './helpers/hooks';
+import { useShortUrlsQuery } from './helpers/hooks';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from './data';
 
-interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams> {
+interface ShortUrlsListProps {
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
@@ -25,18 +25,14 @@ interface ShortUrlsListProps extends RouteComponentProps<ShortUrlListRouteParams
 
 const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteringBar: FC) => boundToMercureHub(({
   listShortUrls,
-  match,
-  location,
-  history,
   shortUrlsList,
   selectedServer,
   settings,
 }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
-  const [
-    { tags, search, startDate, endDate, orderBy, tagsMode },
-    toFirstPage,
-  ] = useShortUrlsQuery({ history, match, location });
+  const { page } = useParams();
+  const location = useLocation();
+  const [{ tags, search, startDate, endDate, orderBy, tagsMode }, toFirstPage ] = useShortUrlsQuery();
   const [ actualOrderBy, setActualOrderBy ] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
@@ -58,7 +54,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
 
   useEffect(() => {
     listShortUrls({
-      page: match.params.page,
+      page,
       searchTerm: search,
       tags: selectedTags,
       startDate,
@@ -66,7 +62,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
       orderBy: actualOrderBy,
       tagsMode,
     });
-  }, [ match.params.page, search, selectedTags, startDate, endDate, actualOrderBy, tagsMode ]);
+  }, [ page, search, selectedTags, startDate, endDate, actualOrderBy, tagsMode ]);
 
   return (
     <>

@@ -1,12 +1,13 @@
 import { Mock } from 'ts-mockery';
 import { shallow, ShallowWrapper } from 'enzyme';
-import { match } from 'react-router';
-import { Location, History } from 'history';
+import { useLocation } from 'react-router-dom';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
 import SimplePaginator from '../../src/common/SimplePaginator';
 import { NormalizedTag } from '../../src/tags/data';
+
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useLocation: jest.fn() }));
 
 describe('<TagsTable />', () => {
   const TagsTableRow = () => null;
@@ -15,25 +16,19 @@ describe('<TagsTable />', () => {
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   let wrapper: ShallowWrapper;
   const createWrapper = (sortedTags: string[] = [], search = '') => {
+    (useLocation as any).mockReturnValue({ search });
+
     wrapper = shallow(
       <TagsTable
         sortedTags={sortedTags.map((tag) => Mock.of<NormalizedTag>({ tag }))}
         selectedServer={Mock.all<SelectedServer>()}
         currentOrder={{}}
-        history={Mock.all<History>()}
-        location={Mock.of<Location>({ search })}
-        match={Mock.all<match>()}
         orderByColumn={() => orderByColumn}
       />,
     );
 
     return wrapper;
   };
-
-  beforeEach(() => {
-    (global as any).location = { search: '', pathname: '' };
-    (global as any).history = { pushState: jest.fn() };
-  });
 
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
