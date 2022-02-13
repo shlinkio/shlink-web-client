@@ -1,18 +1,11 @@
 import { FC, ReactNode } from 'react';
-import { Row } from 'reactstrap';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import { NoMenuLayout } from '../common/NoMenuLayout';
+import { NavPills } from '../utils/NavPills';
 
-const SettingsSections: FC<{ items: ReactNode[][] }> = ({ items }) => (
+const SettingsSections: FC<{ items: ReactNode[] }> = ({ items }) => (
   <>
-    {items.map((child, index) => (
-      <Row key={index}>
-        {child.map((subChild, subIndex) => (
-          <div key={subIndex} className={`col-lg-${12 / child.length} mb-3`}>
-            {subChild}
-          </div>
-        ))}
-      </Row>
-    ))}
+    {items.map((child, index) => <div key={index} className="mb-3">{child}</div>)}
   </>
 );
 
@@ -25,13 +18,20 @@ const Settings = (
   Tags: FC,
 ) => () => (
   <NoMenuLayout>
-    <SettingsSections
+    <NavPills
       items={[
-        [ <UserInterface />, <Visits /> ], // eslint-disable-line react/jsx-key
-        [ <ShortUrlCreation />, <ShortUrlsList /> ], // eslint-disable-line react/jsx-key
-        [ <Tags />, <RealTimeUpdates /> ], // eslint-disable-line react/jsx-key
+        { to: 'app', children: 'App' },
+        { to: 'short-urls', children: 'Short URLs' },
+        { to: 'others', children: 'Others' },
       ]}
     />
+
+    <Routes>
+      <Route path="app" element={<SettingsSections items={[ <UserInterface key="one" />, <RealTimeUpdates key="two" /> ]} />} />
+      <Route path="short-urls" element={<SettingsSections items={[ <ShortUrlCreation key="one" />, <ShortUrlsList key="two" /> ]} />} />
+      <Route path="others" element={<SettingsSections items={[ <Tags key="one" />, <Visits key="two" /> ]} />} />
+      <Route path="*" element={<Navigate replace to="app" />} />
+    </Routes>
   </NoMenuLayout>
 );
 

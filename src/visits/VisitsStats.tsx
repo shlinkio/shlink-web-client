@@ -1,11 +1,10 @@
 import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC, useRef } from 'react';
-import { Button, Card, Nav, NavLink, Progress, Row } from 'reactstrap';
+import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { Route, Routes, NavLink as RouterNavLink, Navigate } from 'react-router-dom';
-import { Location } from 'history';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import Message from '../utils/Message';
@@ -16,6 +15,7 @@ import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
+import { NavPills } from '../utils/NavPills';
 import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
@@ -25,7 +25,6 @@ import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
-import './VisitsStats.scss';
 
 export interface VisitsStatsProps {
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
@@ -54,19 +53,6 @@ const sections: Record<Section, VisitsNavLinkProps> = {
 };
 
 let selectedBar: string | undefined;
-
-const VisitsNavLink: FC<VisitsNavLinkProps & { to: string }> = ({ subPath, title, icon, to }) => (
-  <NavLink
-    tag={RouterNavLink}
-    className="visits-stats__nav-link"
-    to={to}
-    isActive={(_: null, { pathname }: Location) => pathname.endsWith(`visits${subPath}`)}
-    replace
-  >
-    <FontAwesomeIcon icon={icon} />
-    <span className="ml-2 d-none d-sm-inline">{title}</span>
-  </NavLink>
-);
 
 const VisitsStats: FC<VisitsStatsProps> = ({
   children,
@@ -157,12 +143,18 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
     return (
       <>
-        <Card className="visits-stats__nav p-0 overflow-hidden" body>
-          <Nav pills fill>
-            {Object.entries(sections).map(([ section, props ]) =>
-              <VisitsNavLink key={section} {...props} to={buildSectionUrl(props.subPath)} />)}
-          </Nav>
-        </Card>
+        <NavPills
+          items={Object.values(sections).map(({ title, icon, subPath }) => ({
+            replace: true,
+            to: buildSectionUrl(subPath),
+            children: (
+              <>
+                <FontAwesomeIcon icon={icon} />
+                <span className="ml-2 d-none d-sm-inline">{title}</span>
+              </>
+            ),
+          }))}
+        />
         <Row>
           <Routes>
             <Route
