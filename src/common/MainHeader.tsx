@@ -31,7 +31,7 @@ const MainHeader = (ServersDropdown: FC) => () => {
       <Collapse navbar isOpen={isOpen}>
         <Nav navbar className="ml-auto">
           <NavItem>
-            <NavLink tag={Link} to={settingsPath} active={pathname === settingsPath}>
+            <NavLink tag={Link} to={settingsPath} active={pathname.startsWith(settingsPath)}>
               <FontAwesomeIcon icon={cogsIcon} />&nbsp; Settings
             </NavLink>
           </NavItem>
