@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { Navigate, Routes, Route } from 'react-router-dom';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import { NavPills } from '../utils/NavPills';
+import { NavPillItem, NavPills } from '../utils/NavPills';
 
 const SettingsSections: FC<{ items: ReactNode[] }> = ({ items }) => (
   <>
@@ -18,13 +18,11 @@ const Settings = (
   Tags: FC,
 ) => () => (
   <NoMenuLayout>
-    <NavPills
-      items={[
-        { to: 'app', children: 'App' },
-        { to: 'short-urls', children: 'Short URLs' },
-        { to: 'others', children: 'Others' },
-      ]}
-    />
+    <NavPills>
+      <NavPillItem to="app">App</NavPillItem>
+      <NavPillItem to="short-urls">Short URLs</NavPillItem>
+      <NavPillItem to="others">Others</NavPillItem>
+    </NavPills>
 
     <Routes>
       <Route path="app" element={<SettingsSections items={[ <UserInterface key="one" />, <RealTimeUpdates key="two" /> ]} />} />

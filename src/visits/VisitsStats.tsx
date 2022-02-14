@@ -15,7 +15,7 @@ import { Settings } from '../settings/reducers/settings';
 import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
-import { NavPills } from '../utils/NavPills';
+import { NavPillItem, NavPills } from '../utils/NavPills';
 import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
@@ -143,18 +143,14 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
     return (
       <>
-        <NavPills
-          items={Object.values(sections).map(({ title, icon, subPath }) => ({
-            replace: true,
-            to: buildSectionUrl(subPath),
-            children: (
-              <>
-                <FontAwesomeIcon icon={icon} />
-                <span className="ml-2 d-none d-sm-inline">{title}</span>
-              </>
-            ),
-          }))}
-        />
+        <NavPills>
+          {Object.values(sections).map(({ title, icon, subPath }, index) => (
+            <NavPillItem key={index} to={buildSectionUrl(subPath)} replace>
+              <FontAwesomeIcon icon={icon} />
+              <span className="ml-2 d-none d-sm-inline">{title}</span>
+            </NavPillItem>
+          ))}
+        </NavPills>
         <Row>
           <Routes>
             <Route
