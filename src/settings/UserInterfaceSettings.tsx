@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import { FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { changeThemeInMarkup, Theme } from '../utils/theme';
@@ -15,19 +14,17 @@ interface UserInterfaceProps {
 
 export const UserInterfaceSettings: FC<UserInterfaceProps> = ({ settings: { ui }, setUiSettings }) => (
   <SimpleCard title="User interface" className="h-100">
-    <FormGroup>
-      <FontAwesomeIcon icon={ui?.theme === 'dark' ? faMoon : faSun} className="user-interface__theme-icon" />
-      <ToggleSwitch
-        checked={ui?.theme === 'dark'}
-        onChange={(useDarkTheme) => {
-          const theme: Theme = useDarkTheme ? 'dark' : 'light';
+    <FontAwesomeIcon icon={ui?.theme === 'dark' ? faMoon : faSun} className="user-interface__theme-icon" />
+    <ToggleSwitch
+      checked={ui?.theme === 'dark'}
+      onChange={(useDarkTheme) => {
+        const theme: Theme = useDarkTheme ? 'dark' : 'light';
 
-          setUiSettings({ ...ui, theme });
-          changeThemeInMarkup(theme);
-        }}
-      >
-        Use dark theme.
-      </ToggleSwitch>
-    </FormGroup>
+        setUiSettings({ ...ui, theme });
+        changeThemeInMarkup(theme);
+      }}
+    >
+      Use dark theme.
+    </ToggleSwitch>
   </SimpleCard>
 );

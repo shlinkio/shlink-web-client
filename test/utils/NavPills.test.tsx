@@ -17,9 +17,13 @@ describe('<NavPills />', () => {
     }
   });
 
-  it('renders provided items', () => {
+  it.each([
+    [ undefined ],
+    [ true ],
+    [ false ],
+  ])('renders provided items', (fill) => {
     const wrapper = shallow(
-      <NavPills>
+      <NavPills fill={fill}>
         <NavPillItem to="1">1</NavPillItem>
         <NavPillItem to="2">2</NavPillItem>
         <NavPillItem to="3">3</NavPillItem>
@@ -32,6 +36,6 @@ describe('<NavPills />', () => {
     expect(card.prop('body')).toEqual(true);
     expect(nav).toHaveLength(1);
     expect(nav.prop('pills')).toEqual(true);
-    expect(nav.prop('fill')).toEqual(true);
+    expect(nav.prop('fill')).toEqual(!!fill);
   });
 });

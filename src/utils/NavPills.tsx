@@ -14,9 +14,9 @@ export const NavPillItem: FC<NavPillProps> = ({ children, ...rest }) => (
   </NavLink>
 );
 
-export const NavPills: FC = ({ children }) => (
+export const NavPills: FC<{ fill?: boolean }> = ({ children, fill = false }) => (
   <Card className="nav-pills__nav p-0 overflow-hidden mb-3" body>
-    <Nav pills fill>
+    <Nav pills fill={fill}>
       {Children.map(children, (child) => {
         if (!isValidElement(child) || child.type !== NavPillItem) {
           throw new Error('Only NavPillItem children are allowed inside NavPills.');

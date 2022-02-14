@@ -22,8 +22,8 @@ describe('<Settings />', () => {
     const items = wrapper.find(NavPillItem);
 
     expect(items).toHaveLength(3);
-    expect(items.first().prop('to')).toEqual('app');
+    expect(items.first().prop('to')).toEqual('general');
     expect(items.at(1).prop('to')).toEqual('short-urls');
-    expect(items.last().prop('to')).toEqual('others');
+    expect(items.last().prop('to')).toEqual('secondary-items');
   });
 });

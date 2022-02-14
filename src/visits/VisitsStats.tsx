@@ -143,7 +143,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
     return (
       <>
-        <NavPills>
+        <NavPills fill>
           {Object.values(sections).map(({ title, icon, subPath }, index) => (
             <NavPillItem key={index} to={buildSectionUrl(subPath)} replace>
               <FontAwesomeIcon icon={icon} />
