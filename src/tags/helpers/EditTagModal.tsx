@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
-import { ChromePicker } from 'react-color';
+import { HexColorPicker } from 'react-colorful';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -46,8 +46,15 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
                 <FontAwesomeIcon icon={colorIcon} className="edit-tag-modal__color-icon" />
               </div>
             </div>
-            <Popover isOpen={showColorPicker} toggle={toggleColorPicker} target="colorPickerBtn" placement="right">
-              <ChromePicker color={color} disableAlpha onChange={({ hex }) => setColor(hex)} />
+            <Popover
+              isOpen={showColorPicker}
+              toggle={toggleColorPicker}
+              target="colorPickerBtn"
+              placement="right"
+              hideArrow
+              popperClassName="edit-tag-modal__popover"
+            >
+              <HexColorPicker color={color} onChange={setColor} />
             </Popover>
             <Input
               value={newTagName}
