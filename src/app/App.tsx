@@ -47,7 +47,7 @@ const App = (
         <div className={classNames('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
           <Routes>
             <Route index element={<Home />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/settings/*" element={<Settings />} />
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />

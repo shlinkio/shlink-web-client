@@ -10,8 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together.
 
 ### Changed
+* [#543](https://github.com/shlinkio/shlink-web-client/pull/543) Redesigned settings section.
 * [#567](https://github.com/shlinkio/shlink-web-client/pull/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
 * [#524](https://github.com/shlinkio/shlink-web-client/pull/524) Updated to react-router v6.
+* [#579](https://github.com/shlinkio/shlink-web-client/pull/579) Replaced react-color with react-colorful.
 
 ### Deprecated
 * *Nothing*
