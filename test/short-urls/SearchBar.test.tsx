@@ -7,6 +7,7 @@ import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { SelectedServer } from '../../src/servers/data';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -24,7 +25,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     (useLocation as any).mockReturnValue({ search });
     (useNavigate as any).mockReturnValue(navigate);
 
-    wrapper = shallow(<ShortUrlsFilteringBar />);
+    wrapper = shallow(<ShortUrlsFilteringBar selectedServer={Mock.all<SelectedServer>()} />);
 
     return wrapper;
   };
