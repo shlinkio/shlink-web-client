@@ -4,9 +4,9 @@ import { UncontrolledTooltipProps } from 'reactstrap/lib/Tooltip';
 import { BooleanControlProps } from './BooleanControl';
 import ToggleSwitch from './ToggleSwitch';
 
-export const TooltipToggleSwitch: FC<BooleanControlProps & { tooltip?: Omit<UncontrolledTooltipProps, 'target'> }> = (
-  { children, tooltip = {}, ...rest },
-) => {
+export type TooltipToggleSwitchProps = BooleanControlProps & { tooltip?: Omit<UncontrolledTooltipProps, 'target'> };
+
+export const TooltipToggleSwitch: FC<TooltipToggleSwitchProps> = ({ children, tooltip = {}, ...rest }) => {
   const ref = useRef<HTMLSpanElement>();
 
   return (
