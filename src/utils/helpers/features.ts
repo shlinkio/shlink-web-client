@@ -27,3 +27,5 @@ export const supportsForwardQuery = serverMatchesVersions({ minVersion: '2.9.0' 
 export const supportsDefaultDomainRedirectsEdition = serverMatchesVersions({ minVersion: '2.10.0' });
 
 export const supportsNonOrphanVisits = serverMatchesVersions({ minVersion: '3.0.0' });
+
+export const supportsAllTagsFiltering = supportsNonOrphanVisits;
