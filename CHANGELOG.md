@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Added
 * [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.
 * [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together.
+* [#556](https://github.com/shlinkio/shlink-web-client/pull/556) Added support to filter short URLs list by "all" tags when consuming Shlink 3.0.0.
 
 ### Changed
 * [#543](https://github.com/shlinkio/shlink-web-client/pull/543) Redesigned settings section.
