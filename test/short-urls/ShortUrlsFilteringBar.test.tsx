@@ -7,7 +7,8 @@ import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
-import { SelectedServer } from '../../src/servers/data';
+import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { TooltipToggleSwitch } from '../../src/utils/TooltipToggleSwitch';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -21,11 +22,11 @@ describe('<ShortUrlsFilteringBar />', () => {
   const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>());
   const navigate = jest.fn();
   const now = new Date();
-  const createWrapper = (search = '') => {
+  const createWrapper = (search = '', selectedServer?: SelectedServer) => {
     (useLocation as any).mockReturnValue({ search });
     (useNavigate as any).mockReturnValue(navigate);
 
-    wrapper = shallow(<ShortUrlsFilteringBar selectedServer={Mock.all<SelectedServer>()} />);
+    wrapper = shallow(<ShortUrlsFilteringBar selectedServer={selectedServer ?? Mock.all<SelectedServer>()} />);
 
     return wrapper;
   };
@@ -83,5 +84,47 @@ describe('<ShortUrlsFilteringBar />', () => {
     expect(navigate).not.toHaveBeenCalled();
     dateRange.simulate('datesChange', dates);
     expect(navigate).toHaveBeenCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
+  });
+
+  it.each([
+    [ 'tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '3.0.0' }), 1 ],
+    [ 'tags=foo,bar', Mock.of<ReachableServer>({ version: '3.1.0' }), 1 ],
+    [ 'tags=foo', Mock.of<ReachableServer>({ version: '3.0.0' }), 0 ],
+    [ '', Mock.of<ReachableServer>({ version: '3.0.0' }), 0 ],
+    [ 'tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '2.10.0' }), 0 ],
+    [ '', Mock.of<ReachableServer>({ version: '2.10.0' }), 0 ],
+  ])(
+    'renders tags mode toggle if the server supports it and there is more than one tag selected',
+    (search, selectedServer, expectedTagToggleComponents) => {
+      const wrapper = createWrapper(search, selectedServer);
+      const toggle = wrapper.find(TooltipToggleSwitch);
+
+      expect(toggle).toHaveLength(expectedTagToggleComponents);
+    },
+  );
+
+  it.each([
+    [ '', 'Short URLs including any tag.', false ],
+    [ '&tagsMode=all', 'Short URLs including all tags.', true ],
+    [ '&tagsMode=any', 'Short URLs including any tag.', false ],
+  ])('expected tags mode tooltip title', (initialTagsMode, expectedToggleText, expectedChecked) => {
+    const wrapper = createWrapper(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
+    const toggle = wrapper.find(TooltipToggleSwitch);
+
+    expect(toggle.prop('children')).toEqual(expectedToggleText);
+    expect(toggle.prop('checked')).toEqual(expectedChecked);
+  });
+
+  it.each([
+    [ '', 'tagsMode=all' ],
+    [ '&tagsMode=all', 'tagsMode=any' ],
+    [ '&tagsMode=any', 'tagsMode=all' ],
+  ])('redirects to first page when tags mode changes', (initialTagsMode, expectedRedirectTagsMode) => {
+    const wrapper = createWrapper(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
+    const toggle = wrapper.find(TooltipToggleSwitch);
+
+    expect(navigate).not.toHaveBeenCalled();
+    toggle.simulate('change');
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedRedirectTagsMode));
   });
 });

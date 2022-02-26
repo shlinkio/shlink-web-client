@@ -73,8 +73,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator) => ({ selectedSer
                 tooltip={{ placement: 'left' }}
                 onChange={toggleTagsMode}
               >
-                {tagsMode === 'all' && 'Short URLs including all tags.'}
-                {tagsMode !== 'all' && 'Short URLs including any tag.'}
+                {tagsMode === 'all' ? 'Short URLs including all tags.' : 'Short URLs including any tag.'}
               </TooltipToggleSwitch>
             </div>
           )}
