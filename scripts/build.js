@@ -18,7 +18,6 @@ const chalk = require('chalk');
 const fs = require('fs-extra');
 const webpack = require('webpack');
 const bfj = require('bfj');
-const AdmZip = require('adm-zip');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
@@ -44,8 +43,6 @@ if (!checkRequiredFiles([ paths.appHtml, paths.appIndexJs ])) {
 const argvSliceStart = 2;
 const argv = process.argv.slice(argvSliceStart);
 const writeStatsJson = argv.includes('--stats');
-const withoutDist = argv.includes('--no-dist');
-const { version, hasVersion } = getVersionFromArgs(argv);
 
 // Generate configuration
 const config = configFactory('production');
@@ -84,7 +81,6 @@ checkBrowsers(paths.appPath, isInteractive)
         );
       } else {
         console.log(chalk.green('Compiled successfully.\n'));
-        hasVersion && replaceVersionPlaceholder(version);
       }
 
       console.log('File sizes after gzip:\n');
@@ -103,7 +99,6 @@ checkBrowsers(paths.appPath, isInteractive)
       process.exit(1);
     },
   )
-  .then(() => hasVersion && !withoutDist && zipDist(version))
   .catch((err) => {
     if (err && err.message) {
       console.log(err.message);
@@ -184,44 +179,4 @@ function copyPublicFolder() {
     dereference: true,
     filter: (file) => file !== paths.appHtml,
   });
-}
-
-function zipDist(version) {
-  const versionFileName = `./dist/shlink-web-client_${version}_dist.zip`;
-
-  console.log(chalk.cyan(`Generating dist file for version ${chalk.bold(version)}...`));
-  const zip = new AdmZip();
-
-  try {
-    if (fs.existsSync(versionFileName)) {
-      fs.unlink(versionFileName);
-    }
-
-    zip.addLocalFolder('./build', `shlink-web-client_${version}_dist`);
-    zip.writeZip(versionFileName);
-    console.log(chalk.green('Dist file properly generated'));
-  } catch (e) {
-    console.log(chalk.red('An error occurred while generating dist file'));
-    console.log(e);
-  }
-  console.log();
-}
-
-function getVersionFromArgs(argv) {
-  const [ version ] = argv;
-
-  return { version, hasVersion: !!version };
-}
-
-function replaceVersionPlaceholder(version) {
-  const staticJsFilesPath = './build/static/js';
-  const versionPlaceholder = '%_VERSION_%';
-
-  const isMainFile = (file) => file.startsWith('main.') && file.endsWith('.js');
-  const [ mainJsFile ] = fs.readdirSync(staticJsFilesPath).filter(isMainFile);
-  const filePath = `${staticJsFilesPath}/${mainJsFile}`;
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const replaced = fileContent.replace(versionPlaceholder, version);
-
-  fs.writeFileSync(filePath, replaced, 'utf-8');
 }
