@@ -19,10 +19,13 @@ body,
   color: var(--text-color);
 }
 
-a {
+a,
+.btn-link {
   text-decoration: none;
 }
-a:hover {
+
+a:hover,
+.btn-link:hover {
   text-decoration: underline;
 }
 
@@ -105,6 +108,12 @@ hr {
   }
 }
 
+/* Deprecated. Brought from bootstrap 4 */
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
 .dropdown-item,
 .dropdown-item-text {
   color: var(--text-color);
@@ -140,7 +149,7 @@ hr {
 .close,
 .close:hover,
 .table,
-.table-hover tbody tr:hover {
+.table-hover > tbody > tr:hover > * {
   color: var(--text-color);
 }
 

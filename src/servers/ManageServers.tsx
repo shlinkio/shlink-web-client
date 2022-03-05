@@ -50,7 +50,7 @@ export const ManageServers = (
             </Button>
           )}
         </div>
-        <div className="col-md-6 text-md-right d-flex d-md-block">
+        <div className="col-md-6 text-md-end d-flex d-md-block">
           <Button outline color="primary" className="flex-fill" tag={Link} to="/server/create">
             <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
           </Button>

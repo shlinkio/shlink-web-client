@@ -73,7 +73,7 @@ const ShortUrlsRow = (
         </td>
       )}
       <td className="responsive-table__cell short-urls-row__cell" data-th="Tags">{renderTags(shortUrl.tags)}</td>
-      <td className="responsive-table__cell short-urls-row__cell text-lg-right" data-th="Visits">
+      <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount
           visitsCount={shortUrl.visitsCount}
           shortUrl={shortUrl}

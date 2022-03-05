@@ -31,17 +31,17 @@ export const TagsTableRow = (
       <th className="responsive-table__cell" data-th="Tag">
         <TagBullet tag={tag.tag} colorGenerator={colorGenerator} /> {tag.tag}
       </th>
-      <td className="responsive-table__cell text-lg-right" data-th="Short URLs">
+      <td className="responsive-table__cell text-lg-end" data-th="Short URLs">
         <Link to={`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}>
           {prettify(tag.shortUrls)}
         </Link>
       </td>
-      <td className="responsive-table__cell text-lg-right" data-th="Visits">
+      <td className="responsive-table__cell text-lg-end" data-th="Visits">
         <Link to={`/server/${serverId}/tag/${tag.tag}/visits`}>
           {prettify(tag.visits)}
         </Link>
       </td>
-      <td className="responsive-table__cell text-lg-right">
+      <td className="responsive-table__cell text-lg-end">
         <DropdownBtnMenu toggle={toggleDropdown} isOpen={isDropdownOpen}>
           <DropdownItem onClick={toggleEdit}>
             <FontAwesomeIcon icon={editIcon} fixedWidth className="me-1" /> Edit

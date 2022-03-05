@@ -18,7 +18,7 @@ const Settings = (
   Tags: FC,
 ) => () => (
   <NoMenuLayout>
-    <NavPills>
+    <NavPills className="mb-3">
       <NavPillItem to="general">General</NavPillItem>
       <NavPillItem to="short-urls">Short URLs</NavPillItem>
       <NavPillItem to="secondary-items">Secondary items</NavPillItem>
