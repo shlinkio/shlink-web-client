@@ -15,13 +15,13 @@ export interface FormGroupContainerProps {
 }
 
 export const FormGroupContainer: FC<FormGroupContainerProps> = (
-  { children, value, onChange, id, type, required, placeholder, className, labelClassName },
+  { children, value, onChange, id, type, required, placeholder, className, labelClassName = '' },
 ) => {
   const forId = useRef<string>(id ?? uuid());
 
   return (
     <FormGroup className={className ?? ''}>
-      {children && <label htmlFor={forId.current} className={labelClassName ?? ''}>{children}:</label>}
+      <label htmlFor={forId.current} className={`form-label ${labelClassName}`}>{children}:</label>
       <input
         className="form-control"
         type={type ?? 'text'}

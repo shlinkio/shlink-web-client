@@ -16,7 +16,7 @@ interface TagsProps {
 export const TagsSettings: FC<TagsProps> = ({ settings: { tags }, setTagsSettings }) => (
   <SimpleCard title="Tags" className="h-100">
     <FormGroup>
-      <label>Default display mode when managing tags:</label>
+      <label className="form-label">Default display mode when managing tags:</label>
       <TagsModeDropdown
         mode={tags?.defaultMode ?? 'cards'}
         renderTitle={(tagsMode) => capitalize(tagsMode)}
@@ -24,13 +24,13 @@ export const TagsSettings: FC<TagsProps> = ({ settings: { tags }, setTagsSetting
       />
       <FormText>Tags will be displayed as <b>{tags?.defaultMode ?? 'cards'}</b>.</FormText>
     </FormGroup>
-    <FormGroup className="mb-0">
-      <label>Default ordering for tags list:</label>
+    <div>
+      <label className="form-label">Default ordering for tags list:</label>
       <OrderingDropdown
         items={TAGS_ORDERABLE_FIELDS}
         order={tags?.defaultOrdering ?? {}}
         onChange={(field, dir) => setTagsSettings({ ...tags, defaultOrdering: { field, dir } })}
       />
-    </FormGroup>
+    </div>
   </SimpleCard>
 );

@@ -50,8 +50,8 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           </FormText>
         </ToggleSwitch>
       </FormGroup>
-      <FormGroup className="mb-0">
-        <label>Tag suggestions search mode:</label>
+      <div>
+        <label className="form-label">Tag suggestions search mode:</label>
         <DropdownBtn text={tagFilteringModeText(shortUrlCreation.tagFilteringMode)}>
           <DropdownItem
             active={!shortUrlCreation.tagFilteringMode || shortUrlCreation.tagFilteringMode === 'startsWith'}
@@ -67,7 +67,7 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           </DropdownItem>
         </DropdownBtn>
         <FormText>{tagFilteringModeHint(shortUrlCreation.tagFilteringMode)}</FormText>
-      </FormGroup>
+      </div>
     </SimpleCard>
   );
 };

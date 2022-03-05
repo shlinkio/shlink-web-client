@@ -25,8 +25,8 @@ const RealTimeUpdatesSettings = (
         </FormText>
       </ToggleSwitch>
     </FormGroup>
-    <FormGroup className="mb-0">
-      <label className={classNames({ 'text-muted': !realTimeUpdates.enabled })}>
+    <div>
+      <label className={classNames('form-label', { 'text-muted': !realTimeUpdates.enabled })}>
         Real-time updates frequency (in minutes):
       </label>
       <Input
@@ -47,7 +47,7 @@ const RealTimeUpdatesSettings = (
           {!realTimeUpdates.interval && 'Updates will be reflected in the UI as soon as they happen.'}
         </FormText>
       )}
-    </FormGroup>
+    </div>
   </SimpleCard>
 );
 
