@@ -1,6 +1,6 @@
 import { FC, useRef } from 'react';
 import { v4 as uuid } from 'uuid';
-import { InputType } from 'reactstrap/lib/Input';
+import { InputType } from 'reactstrap/types/lib/Input';
 import { FormGroup } from 'reactstrap';
 
 export interface FormGroupContainerProps {

@@ -1,5 +1,4 @@
-import { CardProps } from 'reactstrap/lib/Card';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { Card, CardBody, CardHeader, CardProps } from 'reactstrap';
 import { ReactNode } from 'react';
 
 interface SimpleCardProps extends Omit<CardProps, 'title'> {

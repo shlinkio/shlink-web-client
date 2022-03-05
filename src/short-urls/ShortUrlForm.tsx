@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { InputType } from 'reactstrap/lib/Input';
+import { InputType } from 'reactstrap/types/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import classNames from 'classnames';
