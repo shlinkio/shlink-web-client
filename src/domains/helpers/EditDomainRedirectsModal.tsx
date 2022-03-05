@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { ShlinkDomain, ShlinkDomainRedirects } from '../../api/types';
-import { FormGroupContainer, FormGroupContainerProps } from '../../utils/forms/FormGroupContainer';
+import { InputFormGroup, InputFormGroupProps } from '../../utils/forms/InputFormGroup';
 import { handleEventPreventingDefault, nonEmptyValueOrNull } from '../../utils/utils';
 import { InfoTooltip } from '../../utils/InfoTooltip';
 
@@ -12,8 +12,8 @@ interface EditDomainRedirectsModalProps {
   editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
 }
 
-const FormGroup: FC<FormGroupContainerProps & { isLast?: boolean }> = ({ isLast, ...rest }) => (
-  <FormGroupContainer
+const FormGroup: FC<InputFormGroupProps & { isLast?: boolean }> = ({ isLast, ...rest }) => (
+  <InputFormGroup
     {...rest}
     required={false}
     type="url"

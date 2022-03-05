@@ -4,6 +4,7 @@ import ToggleSwitch from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
 import { FormText } from '../utils/forms/FormText';
 import { Settings } from './reducers/settings';
+import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 
 interface RealTimeUpdatesProps {
   settings: Settings;
@@ -25,10 +26,11 @@ const RealTimeUpdatesSettings = (
         </FormText>
       </ToggleSwitch>
     </FormGroup>
-    <div>
-      <label className={classNames('form-label', { 'text-muted': !realTimeUpdates.enabled })}>
-        Real-time updates frequency (in minutes):
-      </label>
+    <LabeledFormGroup
+      noMargin
+      label="Real-time updates frequency (in minutes):"
+      labelClassName={classNames('form-label', { 'text-muted': !realTimeUpdates.enabled })}
+    >
       <Input
         type="number"
         min={0}
@@ -47,7 +49,7 @@ const RealTimeUpdatesSettings = (
           {!realTimeUpdates.interval && 'Updates will be reflected in the UI as soon as they happen.'}
         </FormText>
       )}
-    </div>
+    </LabeledFormGroup>
   </SimpleCard>
 );
 

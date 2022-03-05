@@ -5,6 +5,7 @@ import ToggleSwitch from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { FormText } from '../utils/forms/FormText';
 import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
+import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 
 interface ShortUrlCreationProps {
   settings: Settings;
@@ -50,8 +51,7 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           </FormText>
         </ToggleSwitch>
       </FormGroup>
-      <div>
-        <label className="form-label">Tag suggestions search mode:</label>
+      <LabeledFormGroup noMargin label="Tag suggestions search mode:">
         <DropdownBtn text={tagFilteringModeText(shortUrlCreation.tagFilteringMode)}>
           <DropdownItem
             active={!shortUrlCreation.tagFilteringMode || shortUrlCreation.tagFilteringMode === 'startsWith'}
@@ -67,7 +67,7 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           </DropdownItem>
         </DropdownBtn>
         <FormText>{tagFilteringModeHint(shortUrlCreation.tagFilteringMode)}</FormText>
-      </div>
+      </LabeledFormGroup>
     </SimpleCard>
   );
 };
