@@ -64,14 +64,14 @@ const TagCard = (
             to={`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}
             className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center mb-1"
           >
-            <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="mr-2" />Short URLs</span>
+            <span className="text-ellipsis"><FontAwesomeIcon icon={faLink} className="me-2" />Short URLs</span>
             <b>{prettify(tag.shortUrls)}</b>
           </Link>
           <Link
             to={`/server/${serverId}/tag/${tag.tag}/visits`}
             className="btn btn-outline-secondary btn-block d-flex justify-content-between align-items-center"
           >
-            <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="mr-2" />Visits</span>
+            <span className="text-ellipsis"><FontAwesomeIcon icon={faEye} className="me-2" />Visits</span>
             <b>{prettify(tag.visits)}</b>
           </Link>
         </CardBody>

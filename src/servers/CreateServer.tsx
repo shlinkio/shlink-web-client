@@ -61,7 +61,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
         {!hasServers &&
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />}
         {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
-        <Button outline color="primary" className="ml-2">Create server</Button>
+        <Button outline color="primary" className="ms-2">Create server</Button>
       </ServerForm>
 
       {serversImported && <ImportResult type="success" />}

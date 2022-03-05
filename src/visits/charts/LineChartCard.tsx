@@ -232,7 +232,7 @@ const LineChartCard = (
     <Card>
       <CardHeader>
         {title}
-        <div className="float-right">
+        <div className="float-end">
           <UncontrolledDropdown>
             <DropdownToggle caret color="link" className="btn-sm p-0">
               Group by
@@ -246,7 +246,7 @@ const LineChartCard = (
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-        <div className="float-right mr-2">
+        <div className="float-end me-2">
           <ToggleSwitch checked={skipNoVisits} onChange={toggleSkipNoVisits}>
             <small>Skip dates with no visits</small>
           </ToggleSwitch>

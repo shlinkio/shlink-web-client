@@ -34,7 +34,7 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
         <FormGroup value={apiKey} onChange={setApiKey}>API key</FormGroup>
       </SimpleCard>
 
-      <div className="text-right">{children}</div>
+      <div className="text-end">{children}</div>
     </form>
   );
 };

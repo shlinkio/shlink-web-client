@@ -42,20 +42,20 @@ export const EditDomainRedirectsModal: FC<EditDomainRedirectsModalProps> = (
         <ModalHeader toggle={toggle}>Edit redirects for <b>{domain.domain}</b></ModalHeader>
         <ModalBody>
           <FormGroup value={baseUrlRedirect} onChange={setBaseUrlRedirect}>
-            <InfoTooltip className="mr-2" placement="bottom">
+            <InfoTooltip className="me-2" placement="bottom">
               Visitors accessing the base url, as in <b>https://{domain.domain}/</b>, will be redirected to this URL.
             </InfoTooltip>
             Base URL
           </FormGroup>
           <FormGroup value={regular404Redirect} onChange={setRegular404Redirect}>
-            <InfoTooltip className="mr-2" placement="bottom">
+            <InfoTooltip className="me-2" placement="bottom">
               Visitors accessing a url not matching a short URL pattern, as in <b>https://{domain.domain}/???/[...]</b>,
               will be redirected to this URL.
             </InfoTooltip>
             Regular 404
           </FormGroup>
           <FormGroup value={invalidShortUrlRedirect} isLast onChange={setInvalidShortUrlRedirect}>
-            <InfoTooltip className="mr-2" placement="bottom">
+            <InfoTooltip className="me-2" placement="bottom">
               Visitors accessing a url matching a short URL pattern, but not matching an existing short code, will be
               redirected to this URL.
             </InfoTooltip>

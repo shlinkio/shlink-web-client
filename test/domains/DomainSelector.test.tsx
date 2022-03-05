@@ -54,7 +54,7 @@ describe('<DomainSelector />', () => {
   });
 
   it.each([
-    [ 0, 'default.com<span class="float-right text-muted">default</span>' ],
+    [ 0, 'default.com<span class="float-end text-muted">default</span>' ],
     [ 1, 'foo.com' ],
     [ 2, 'bar.com' ],
   ])('shows expected content on every item', (index, expectedContent) => {

@@ -15,7 +15,7 @@ const TagVisitsHeader = ({ tagVisits, goBack, colorGenerator }: TagVisitsHeaderP
 
   const visitsStatsTitle = (
     <span className="d-flex align-items-center justify-content-center">
-      <span className="mr-2">Visits for</span>
+      <span className="me-2">Visits for</span>
       <Tag text={tag} colorGenerator={colorGenerator} />
     </span>
   );

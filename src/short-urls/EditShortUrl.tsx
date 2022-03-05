@@ -88,7 +88,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
       <header className="mb-3">
         <Card body>
           <h2 className="d-sm-flex justify-content-between align-items-center mb-0">
-            <Button color="link" size="lg" className="p-0 mr-3" onClick={goBack}>
+            <Button color="link" size="lg" className="p-0 me-3" onClick={goBack}>
               <FontAwesomeIcon icon={faArrowLeft} />
             </Button>
             <span className="text-center">

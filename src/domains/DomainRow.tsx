@@ -63,7 +63,7 @@ export const DomainRow: FC<DomainRowProps> = (
       <td className="responsive-table__cell text-lg-center" data-th="Status">
         <DomainStatusIcon status={status} />
       </td>
-      <td className="responsive-table__cell text-right">
+      <td className="responsive-table__cell text-end">
         <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>
           <Button outline size="sm" disabled={!canEditDomain} onClick={!canEditDomain ? undefined : toggle}>
             <FontAwesomeIcon fixedWidth icon={!canEditDomain ? forbiddenIcon : editIcon} />

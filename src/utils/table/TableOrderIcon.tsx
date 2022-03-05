@@ -9,7 +9,7 @@ interface TableOrderIconProps<T> {
 }
 
 export function TableOrderIcon<T extends string = string>(
-  { currentOrder, field, className = 'ml-1' }: TableOrderIconProps<T>,
+  { currentOrder, field, className = 'ms-1' }: TableOrderIconProps<T>,
 ) {
   if (!currentOrder.dir || currentOrder.field !== field) {
     return null;

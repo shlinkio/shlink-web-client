@@ -44,10 +44,10 @@ export const TagsTableRow = (
       <td className="responsive-table__cell text-lg-right">
         <DropdownBtnMenu toggle={toggleDropdown} isOpen={isDropdownOpen}>
           <DropdownItem onClick={toggleEdit}>
-            <FontAwesomeIcon icon={editIcon} fixedWidth className="mr-1" /> Edit
+            <FontAwesomeIcon icon={editIcon} fixedWidth className="me-1" /> Edit
           </DropdownItem>
           <DropdownItem onClick={toggleDelete}>
-            <FontAwesomeIcon icon={deleteIcon} fixedWidth className="mr-1" /> Delete
+            <FontAwesomeIcon icon={deleteIcon} fixedWidth className="me-1" /> Delete
           </DropdownItem>
         </DropdownBtnMenu>
       </td>

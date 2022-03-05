@@ -11,6 +11,6 @@ interface CopyToClipboardIconProps {
 
 export const CopyToClipboardIcon: FC<CopyToClipboardIconProps> = ({ text, onCopy }) => (
   <CopyToClipboard text={text} onCopy={onCopy}>
-    <FontAwesomeIcon icon={copyIcon} className="ml-2 copy-to-clipboard-icon" />
+    <FontAwesomeIcon icon={copyIcon} className="ms-2 copy-to-clipboard-icon" />
   </CopyToClipboard>
 );

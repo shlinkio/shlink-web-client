@@ -189,7 +189,7 @@ export const ShortUrlForm = (
                   <p>
                     <Checkbox
                       inline
-                      className="mr-2"
+                      className="me-2"
                       checked={shortUrlData.findIfExists}
                       onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
                     >

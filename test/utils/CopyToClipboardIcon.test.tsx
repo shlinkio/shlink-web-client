@@ -22,6 +22,6 @@ describe('<CopyToClipboardIcon />', () => {
     expect(copyToClipboard.prop('onCopy')).toEqual(onCopy);
     expect(icon).toHaveLength(1);
     expect(icon.prop('icon')).toEqual(copyIcon);
-    expect(icon.prop('className')).toEqual('ml-2 copy-to-clipboard-icon');
+    expect(icon.prop('className')).toEqual('ms-2 copy-to-clipboard-icon');
   });
 });

@@ -106,7 +106,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
                 color="primary"
                 onClick={async () => imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`)}
               >
-                Download <FontAwesomeIcon icon={downloadIcon} className="ml-1" />
+                Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
               </Button>
             </div>
           </ForServerVersion>

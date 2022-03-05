@@ -60,7 +60,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
           onClick={() => onChange(domain)}
         >
           {domain}
-          {isDefault && <span className="float-right text-muted">default</span>}
+          {isDefault && <span className="float-end text-muted">default</span>}
         </DropdownItem>
       ))}
       <DropdownItem divider />

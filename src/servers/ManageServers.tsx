@@ -45,7 +45,7 @@ export const ManageServers = (
         <div className="col-md-6 d-flex d-md-block mb-2 mb-md-0">
           <ImportServersBtn className="flex-fill" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
           {allServers.length > 0 && (
-            <Button outline className="ml-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
+            <Button outline className="ms-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
             </Button>
           )}

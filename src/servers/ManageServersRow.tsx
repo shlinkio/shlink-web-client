@@ -31,7 +31,7 @@ export const ManageServersRow = (
       <Link to={`/server/${server.id}`}>{server.name}</Link>
     </th>
     <td className="responsive-table__cell" data-th="Base URL">{server.url}</td>
-    <td className="responsive-table__cell text-right">
+    <td className="responsive-table__cell text-end">
       <ManageServersRowDropdown server={server} />
     </td>
   </tr>
