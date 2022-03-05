@@ -21,9 +21,7 @@ export const FormGroupContainer: FC<FormGroupContainerProps> = (
 
   return (
     <FormGroup className={className ?? ''}>
-      <label htmlFor={forId.current} className={labelClassName ?? ''}>
-        {children}:
-      </label>
+      {children && <label htmlFor={forId.current} className={labelClassName ?? ''}>{children}:</label>}
       <input
         className="form-control"
         type={type ?? 'text'}

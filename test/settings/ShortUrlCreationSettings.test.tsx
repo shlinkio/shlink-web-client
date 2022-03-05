@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { DropdownItem } from 'reactstrap';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
-import { FormText } from '../../src/utils/FormText';
+import { FormText } from '../../src/utils/forms/FormText';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { DropdownBtn } from '../../src/utils/DropdownBtn';
 

@@ -5,7 +5,7 @@ import { TagsModeDropdown } from '../tags/TagsModeDropdown';
 import { capitalize } from '../utils/utils';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
-import { FormText } from '../utils/FormText';
+import { FormText } from '../utils/forms/FormText';
 import { Settings, TagsSettings as TagsSettingsOptions } from './reducers/settings';
 
 interface TagsProps {

@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from 'react';
-import { FormGroupContainer, FormGroupContainerProps } from '../../utils/FormGroupContainer';
+import { FormGroupContainer, FormGroupContainerProps } from '../../utils/forms/FormGroupContainer';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';
 import { SimpleCard } from '../../utils/SimpleCard';

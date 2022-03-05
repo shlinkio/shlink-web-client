@@ -2,7 +2,7 @@ import { FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
-import { FormText } from '../utils/FormText';
+import { FormText } from '../utils/forms/FormText';
 import { Settings } from './reducers/settings';
 
 interface RealTimeUpdatesProps {

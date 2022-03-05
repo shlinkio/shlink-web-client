@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { ShlinkDomain, ShlinkDomainRedirects } from '../../api/types';
-import { FormGroupContainer, FormGroupContainerProps } from '../../utils/FormGroupContainer';
+import { FormGroupContainer, FormGroupContainerProps } from '../../utils/forms/FormGroupContainer';
 import { handleEventPreventingDefault, nonEmptyValueOrNull } from '../../utils/utils';
 import { InfoTooltip } from '../../utils/InfoTooltip';
 

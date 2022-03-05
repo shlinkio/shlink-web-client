@@ -3,7 +3,7 @@ import { DropdownItem, FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
-import { FormText } from '../utils/FormText';
+import { FormText } from '../utils/forms/FormText';
 import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 
 interface ShortUrlCreationProps {
