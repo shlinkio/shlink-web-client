@@ -5,6 +5,7 @@ import { TagsModeDropdown } from '../tags/TagsModeDropdown';
 import { capitalize } from '../utils/utils';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
+import { FormText } from '../utils/FormText';
 import { Settings, TagsSettings as TagsSettingsOptions } from './reducers/settings';
 
 interface TagsProps {
@@ -21,7 +22,7 @@ export const TagsSettings: FC<TagsProps> = ({ settings: { tags }, setTagsSetting
         renderTitle={(tagsMode) => capitalize(tagsMode)}
         onChange={(defaultMode) => setTagsSettings({ ...tags, defaultMode })}
       />
-      <small className="form-text text-muted">Tags will be displayed as <b>{tags?.defaultMode ?? 'cards'}</b>.</small>
+      <FormText>Tags will be displayed as <b>{tags?.defaultMode ?? 'cards'}</b>.</FormText>
     </FormGroup>
     <FormGroup className="mb-0">
       <label>Default ordering for tags list:</label>

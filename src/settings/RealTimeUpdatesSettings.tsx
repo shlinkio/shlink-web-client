@@ -2,6 +2,7 @@ import { FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
+import { FormText } from '../utils/FormText';
 import { Settings } from './reducers/settings';
 
 interface RealTimeUpdatesProps {
@@ -19,9 +20,9 @@ const RealTimeUpdatesSettings = (
     <FormGroup>
       <ToggleSwitch checked={realTimeUpdates.enabled} onChange={toggleRealTimeUpdates}>
         Enable or disable real-time updates.
-        <small className="form-text text-muted">
+        <FormText>
           Real-time updates are currently being <b>{realTimeUpdates.enabled ? 'processed' : 'ignored'}</b>.
-        </small>
+        </FormText>
       </ToggleSwitch>
     </FormGroup>
     <FormGroup className="mb-0">
@@ -37,14 +38,14 @@ const RealTimeUpdatesSettings = (
         onChange={({ target }) => setRealTimeUpdatesInterval(Number(target.value))}
       />
       {realTimeUpdates.enabled && (
-        <small className="form-text text-muted">
+        <FormText>
           {realTimeUpdates.interval !== undefined && realTimeUpdates.interval > 0 && (
             <span>
               Updates will be reflected in the UI every <b>{realTimeUpdates.interval}</b> minute{realTimeUpdates.interval > 1 && 's'}.
             </span>
           )}
           {!realTimeUpdates.interval && 'Updates will be reflected in the UI as soon as they happen.'}
-        </small>
+        </FormText>
       )}
     </FormGroup>
   </SimpleCard>

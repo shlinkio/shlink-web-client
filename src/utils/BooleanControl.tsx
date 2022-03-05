@@ -20,15 +20,15 @@ const BooleanControl: FC<BooleanControlWithTypeProps> = (
   const { current: id } = useRef(uuid());
   const onChecked = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked, e);
   const typeClasses = {
-    'custom-switch': type === 'switch',
-    'custom-checkbox': type === 'checkbox',
+    'form-switch': type === 'switch',
+    'form-checkbox': type === 'checkbox',
   };
   const style = inline ? { display: 'inline-block' } : {};
 
   return (
-    <span className={classNames('custom-control', typeClasses, className)} style={style}>
-      <input type="checkbox" className="custom-control-input" id={id} checked={checked} onChange={onChecked} />
-      <label className="custom-control-label" htmlFor={id}>{children}</label>
+    <span className={classNames('form-check', typeClasses, className)} style={style}>
+      <input type="checkbox" className="form-check-input" id={id} checked={checked} onChange={onChecked} />
+      <label className="form-check-label" htmlFor={id}>{children}</label>
     </span>
   );
 };

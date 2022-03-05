@@ -19,6 +19,13 @@ body,
   color: var(--text-color);
 }
 
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 .bg-main {
   background-color: $mainColor !important;
 }
