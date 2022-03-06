@@ -1,6 +1,10 @@
 @import '../utils/base';
 @import '../utils/mixins/vertical-align';
 
+$mainCardWidth: 720px;
+$totalColumns: 12;
+$logoColumns: 5;
+
 .home {
   position: relative;
   padding-top: 15px;
@@ -21,12 +25,12 @@
 .home__logo {
   @include vertical-align();
 
-  width: calc(100% - 3rem);
+  width: calc(#{$mainCardWidth / $totalColumns * $logoColumns} - 3rem);
 }
 
 .home__main-card {
   margin: 0 auto;
-  max-width: 720px;
+  max-width: $mainCardWidth;
 
   @media (min-width: $mdMin) {
     @include vertical-align();
