@@ -24,7 +24,7 @@ a,
   text-decoration: none;
 }
 
-a:hover,
+a:not(.nav-link):not(.navbar-brand):hover,
 .btn-link:hover {
   text-decoration: underline;
 }

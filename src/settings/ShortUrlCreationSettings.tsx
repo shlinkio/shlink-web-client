@@ -4,8 +4,8 @@ import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { FormText } from '../utils/forms/FormText';
-import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 
 interface ShortUrlCreationProps {
   settings: Settings;

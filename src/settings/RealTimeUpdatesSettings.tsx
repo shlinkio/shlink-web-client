@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
 import { FormText } from '../utils/forms/FormText';
-import { Settings } from './reducers/settings';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { Settings } from './reducers/settings';
 
 interface RealTimeUpdatesProps {
   settings: Settings;

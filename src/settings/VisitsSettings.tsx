@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { SimpleCard } from '../utils/SimpleCard';
 import { DateIntervalSelector } from '../utils/dates/DateIntervalSelector';
-import { Settings, VisitsSettings as VisitsSettingsConfig } from './reducers/settings';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { Settings, VisitsSettings as VisitsSettingsConfig } from './reducers/settings';
 
 interface VisitsProps {
   settings: Settings;

@@ -59,7 +59,7 @@ const ShortUrlsRow = (
         <span className="indivisible short-urls-row__cell--relative">
           <ExternalLink href={shortUrl.shortUrl} />
           <CopyToClipboardIcon text={shortUrl.shortUrl} onCopy={setCopiedToClipboard} />
-          <span className="badge badge-warning short-urls-row__copy-hint" hidden={!copiedToClipboard}>
+          <span className="badge bg-warning text-black short-urls-row__copy-hint" hidden={!copiedToClipboard}>
             Copied short URL!
           </span>
         </span>
