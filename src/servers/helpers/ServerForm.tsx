@@ -3,7 +3,6 @@ import { InputFormGroup } from '../../utils/forms/InputFormGroup';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';
 import { SimpleCard } from '../../utils/SimpleCard';
-import './ServerForm.scss';
 
 interface ServerFormProps {
   onSubmit: (server: ServerData) => void;

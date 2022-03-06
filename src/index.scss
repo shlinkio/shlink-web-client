@@ -153,6 +153,10 @@ hr {
   color: var(--text-color);
 }
 
+.btn-close {
+  filter: var(--btn-close-filter);
+}
+
 .table-hover tbody tr:hover {
   background-color: var(--secondary-color);
 }
