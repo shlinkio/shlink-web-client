@@ -38,7 +38,7 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
 
   return (
     <SimpleCard key={page} bodyClassName={showPaginator ? 'pb-1' : ''}>
-      <table className="table table-hover mb-0">
+      <table className="table table-hover responsive-table mb-0">
         <thead className="responsive-table__header">
           <tr>
             <th className="tags-table__header-cell" onClick={orderByColumn('tag')}>

@@ -28,7 +28,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   const { error, loading, shortUrls } = shortUrlsList;
   const actionableFieldClasses = classNames({ 'short-urls-table__header-cell--with-action': !!orderByColumn });
   const orderableColumnsClasses = classNames('short-urls-table__header-cell', actionableFieldClasses);
-  const tableClasses = classNames('table table-hover', className);
+  const tableClasses = classNames('table table-hover responsive-table', className);
   const supportsTitle = supportsShortUrlTitle(selectedServer);
 
   const renderShortUrls = () => {
