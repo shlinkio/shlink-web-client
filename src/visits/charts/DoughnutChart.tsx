@@ -57,8 +57,8 @@ export const DoughnutChart: FC<DoughnutChartProps> = memo(({ stats }) => {
       <div className="col-sm-12 col-md-7">
         <Doughnut
           height={300}
-          data={chartData}
-          options={options}
+          data={chartData as any}
+          options={options as any}
           ref={(element) => {
             setChartRef(element ?? undefined);
           }}

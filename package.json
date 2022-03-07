@@ -42,7 +42,7 @@
     "qs": "^6.9.6",
     "ramda": "^0.27.2",
     "react": "^17.0.2",
-    "react-chartjs-2": "^3.0.4",
+    "react-chartjs-2": "^3.3.0",
     "react-colorful": "^5.5.1",
     "react-copy-to-clipboard": "^5.0.4",
     "react-datepicker": "^3.6.0",
