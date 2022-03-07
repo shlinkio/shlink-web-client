@@ -1,4 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
+import { FormGroup } from 'reactstrap';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
 
 describe('<ServerForm />', () => {
@@ -13,7 +14,7 @@ describe('<ServerForm />', () => {
   afterEach(jest.resetAllMocks);
 
   it('renders components', () => {
-    expect(wrapper.find('FormGroup')).toHaveLength(3);
+    expect(wrapper.find(FormGroup)).toHaveLength(3);
     expect(wrapper.find('span')).toHaveLength(1);
   });
 

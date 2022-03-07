@@ -66,9 +66,9 @@
     "workbox-strategies": "^6.1.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.13.8",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.13.8",
-    "@babel/plugin-proposal-optional-chaining": "^7.13.8",
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "@shlinkio/eslint-config-js-coding-standard": "~1.2.2",
     "@stryker-mutator/core": "^5.4.1",
     "@stryker-mutator/jest-runner": "^5.4.1",
@@ -92,9 +92,8 @@
     "@wojtekmaj/enzyme-adapter-react-17": "^0.6.5",
     "adm-zip": "^0.4.16",
     "autoprefixer": "^10.0.2",
-    "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.5.1",
-    "babel-loader": "^8.2.1",
+    "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.7",
     "babel-preset-react-app": "^10.0.0",
     "babel-runtime": "^6.26.0",
@@ -146,20 +145,6 @@
     "webpack-manifest-plugin": "^2.2.0",
     "whatwg-fetch": "^3.5.0",
     "workbox-webpack-plugin": "^6.1.5"
-  },
-  "babel": {
-    "presets": [
-      [
-        "react-app",
-        {
-          "runtime": "automatic"
-        }
-      ]
-    ],
-    "plugins": [
-      "@babel/plugin-proposal-optional-chaining",
-      "@babel/plugin-proposal-nullish-coalescing-operator"
-    ]
   },
   "browserslist": [
     ">0.2%",
