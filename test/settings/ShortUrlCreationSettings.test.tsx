@@ -54,7 +54,7 @@ describe('<ShortUrlCreationSettings />', () => {
     const wrapper = createWrapper(shortUrlCreation);
     const validateUrlText = wrapper.find(FormText).first();
 
-    expect(validateUrlText.text()).toContain(expectedText);
+    expect(validateUrlText.html()).toContain(expectedText);
   });
 
   it.each([
@@ -65,7 +65,7 @@ describe('<ShortUrlCreationSettings />', () => {
     const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
     const forwardQueryText = wrapper.find(FormText).at(1);
 
-    expect(forwardQueryText.text()).toContain(expectedText);
+    expect(forwardQueryText.html()).toContain(expectedText);
   });
 
   it.each([
@@ -82,7 +82,7 @@ describe('<ShortUrlCreationSettings />', () => {
     const dropdown = wrapper.find(DropdownBtn);
 
     expect(dropdown.prop('text')).toEqual(expectedText);
-    expect(hintText.text()).toContain(expectedHint);
+    expect(hintText.html()).toContain(expectedHint);
   });
 
   it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
