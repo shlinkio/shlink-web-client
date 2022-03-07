@@ -46,14 +46,14 @@ const Home = ({ servers }: HomeProps) => {
                 <div className="p-4 text-center">
                   <p className="mb-5">This application will help you manage your Shlink servers.</p>
                   <p>
-                    <Link to="/server/create" className="btn btn-outline-primary btn-lg mr-2">
-                      <FontAwesomeIcon icon={faPlus} /> <span className="ml-1">Add a server</span>
+                    <Link to="/server/create" className="btn btn-outline-primary btn-lg me-2">
+                      <FontAwesomeIcon icon={faPlus} /> <span className="ms-1">Add a server</span>
                     </Link>
                   </p>
                   <p className="mb-0 mt-5">
                     <ExternalLink href="https://shlink.io/documentation">
                       <small>
-                        <span className="mr-1">Learn more about Shlink</span> <FontAwesomeIcon icon={faExternalLinkAlt} />
+                        <span className="me-1">Learn more about Shlink</span> <FontAwesomeIcon icon={faExternalLinkAlt} />
                       </small>
                     </ExternalLink>
                   </p>

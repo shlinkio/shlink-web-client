@@ -3,6 +3,11 @@ import { Card, Nav, NavLink } from 'reactstrap';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import './NavPills.scss';
 
+interface NavPillsProps {
+  fill?: boolean;
+  className?: string;
+}
+
 interface NavPillProps {
   to: string;
   replace?: boolean;
@@ -14,8 +19,8 @@ export const NavPillItem: FC<NavPillProps> = ({ children, ...rest }) => (
   </NavLink>
 );
 
-export const NavPills: FC<{ fill?: boolean }> = ({ children, fill = false }) => (
-  <Card className="nav-pills__nav p-0 overflow-hidden mb-3" body>
+export const NavPills: FC<NavPillsProps> = ({ children, fill = false, className = '' }) => (
+  <Card className={`nav-pills__nav p-0 overflow-hidden ${className}`} body>
     <Nav pills fill={fill}>
       {Children.map(children, (child) => {
         if (!isValidElement(child) || child.type !== NavPillItem) {

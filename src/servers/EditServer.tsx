@@ -29,7 +29,7 @@ export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProp
         initialValues={selectedServer}
         onSubmit={handleSubmit}
       >
-        <Button outline className="mr-2" onClick={goBack}>Cancel</Button>
+        <Button outline className="me-2" onClick={goBack}>Cancel</Button>
         <Button outline color="primary">Save</Button>
       </ServerForm>
     </NoMenuLayout>

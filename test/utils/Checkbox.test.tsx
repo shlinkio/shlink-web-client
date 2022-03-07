@@ -63,7 +63,7 @@ describe('<Checkbox />', () => {
 
   it('allows setting inline rendering', () => {
     const wrapped = createComponent({ inline: true });
-    const control = wrapped.find('.custom-control');
+    const control = wrapped.find('.form-check');
 
     expect(control.prop('style')).toEqual({ display: 'inline-block' });
   });

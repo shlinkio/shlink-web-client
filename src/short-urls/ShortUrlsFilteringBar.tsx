@@ -67,7 +67,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator) => ({ selectedSer
       {selectedTags.length > 0 && (
         <h4 className="mt-3">
           {canChangeTagsMode && selectedTags.length > 1 && (
-            <div className="float-right ml-2 mt-1">
+            <div className="float-end ms-2 mt-1">
               <TooltipToggleSwitch
                 checked={tagsMode === 'all'}
                 tooltip={{ placement: 'left' }}
@@ -77,7 +77,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator) => ({ selectedSer
               </TooltipToggleSwitch>
             </div>
           )}
-          <FontAwesomeIcon icon={tagsIcon} className="short-urls-filtering-bar__tags-icon mr-1" />
+          <FontAwesomeIcon icon={tagsIcon} className="short-urls-filtering-bar__tags-icon me-1" />
           {selectedTags.map((tag) =>
             <Tag colorGenerator={colorGenerator} key={tag} text={tag} clearable onClose={() => removeTag(tag)} />)}
         </h4>

@@ -30,6 +30,8 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^.+\\.module\\.scss$': 'identity-obj-proxy',
+    // Reactstrap module resolution does not work in jest for some reason. Manually mapping it solves the problem
+    'reactstrap': '<rootDir>/node_modules/reactstrap/dist/reactstrap.umd.js',
   },
   moduleFileExtensions: [ 'js', 'ts', 'tsx', 'json' ],
 };

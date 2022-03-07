@@ -42,7 +42,7 @@ const Message: FC<MessageProps> = ({ className, children, loading = false, type 
         <Card className={getClassForType(type)} body>
           <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>
             {loading && <FontAwesomeIcon icon={preloader} spin />}
-            {loading && <span className="ml-2">{children ?? 'Loading...'}</span>}
+            {loading && <span className="ms-2">{children ?? 'Loading...'}</span>}
             {!loading && children}
           </h3>
         </Card>

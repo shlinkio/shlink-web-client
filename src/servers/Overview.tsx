@@ -86,7 +86,7 @@ export const Overview = (
         <CardHeader>
           <span className="d-sm-none">Create a short URL</span>
           <h5 className="d-none d-sm-inline">Create a short URL</h5>
-          <Link className="float-right" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
+          <Link className="float-end" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
         </CardHeader>
         <CardBody>
           <CreateShortUrl basicMode />
@@ -96,7 +96,7 @@ export const Overview = (
         <CardHeader>
           <span className="d-sm-none">Recently created URLs</span>
           <h5 className="d-none d-sm-inline">Recently created URLs</h5>
-          <Link className="float-right" to={`/server/${serverId}/list-short-urls/1`}>See all &raquo;</Link>
+          <Link className="float-end" to={`/server/${serverId}/list-short-urls/1`}>See all &raquo;</Link>
         </CardHeader>
         <CardBody>
           <ShortUrlsTable

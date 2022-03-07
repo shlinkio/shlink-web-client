@@ -3,7 +3,6 @@ import { Modal, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstra
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
-import classNames from 'classnames';
 import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
@@ -56,10 +55,8 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
       </ModalHeader>
       <ModalBody>
         <Row>
-          <FormGroup
-            className={classNames({ 'col-md-4': willRenderThreeControls, 'col-md-6': !willRenderThreeControls })}
-          >
-            <label className="mb-0">Size: {size}px</label>
+          <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
+            <label>Size: {size}px</label>
             <input
               type="range"
               className="form-control-range"
@@ -71,8 +68,8 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
             />
           </FormGroup>
           {capabilities.marginIsSupported && (
-            <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
-              <label className="mb-0">Margin: {margin}px</label>
+            <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
+              <label>Margin: {margin}px</label>
               <input
                 type="range"
                 className="form-control-range"
@@ -106,7 +103,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
                 color="primary"
                 onClick={async () => imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`)}
               >
-                Download <FontAwesomeIcon icon={downloadIcon} className="ml-1" />
+                Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
               </Button>
             </div>
           </ForServerVersion>

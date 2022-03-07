@@ -11,12 +11,27 @@
   outline: none !important;
 }
 
+:root {
+  scroll-behavior: auto;
+}
+
 html,
 body,
 #root {
   height: 100%;
   background: var(--secondary-color);
   color: var(--text-color);
+}
+
+a,
+.btn-link {
+  text-decoration: none;
+}
+
+/* stylelint-disable-next-line selector-max-pseudo-class */
+a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.btn):hover,
+.btn-link:hover {
+  text-decoration: underline;
 }
 
 .bg-main {
@@ -74,7 +89,8 @@ hr {
   border-color: var(--table-border-color);
 }
 
-.page-link:hover {
+.page-link:hover,
+.page-link:focus {
   background-color: var(--secondary-color);
 }
 
@@ -96,6 +112,22 @@ hr {
     padding-right: 0;
     padding-left: 0;
   }
+}
+
+/* Deprecated. Brought from bootstrap 4 */
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary.active, {
+  color: #ffffff;
 }
 
 .dropdown-item,
@@ -133,8 +165,13 @@ hr {
 .close,
 .close:hover,
 .table,
-.table-hover tbody tr:hover {
+.table-hover > tbody > tr:hover > *,
+.table-hover > tbody > tr > * {
   color: var(--text-color);
+}
+
+.btn-close {
+  filter: var(--btn-close-filter);
 }
 
 .table-hover tbody tr:hover {

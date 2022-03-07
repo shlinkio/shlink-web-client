@@ -103,7 +103,7 @@ describe('<EditTagModal />', () => {
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
     (wrapper.find(Popover).prop('toggle') as Function)();
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(true);
-    wrapper.find('.input-group-prepend').simulate('click');
+    wrapper.find('div').simulate('click');
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
   });
 });

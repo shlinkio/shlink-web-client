@@ -29,7 +29,7 @@ const MainHeader = (ServersDropdown: FC) => () => {
       </NavbarToggler>
 
       <Collapse navbar isOpen={isOpen}>
-        <Nav navbar className="ml-auto">
+        <Nav navbar className="ms-auto">
           <NavItem>
             <NavLink tag={Link} to={settingsPath} active={pathname.startsWith(settingsPath)}>
               <FontAwesomeIcon icon={cogsIcon} />&nbsp; Settings

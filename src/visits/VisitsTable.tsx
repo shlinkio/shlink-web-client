@@ -87,137 +87,139 @@ const VisitsTable = ({
   }, [ searchTerm ]);
 
   return (
-    <table className="table table-bordered table-hover table-sm table-responsive-sm visits-table">
-      <thead className="visits-table__header">
-        <tr>
-          <th
-            className={`${headerCellsClass} text-center`}
-            onClick={() => setSelectedVisits(
-              selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : [],
-            )}
-          >
-            <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
-          </th>
-          {supportsBots && (
-            <th className={`${headerCellsClass} text-center`} onClick={orderByColumn('potentialBot')}>
-              <FontAwesomeIcon icon={botIcon} />
-              {renderOrderIcon('potentialBot')}
-            </th>
-          )}
-          <th className={headerCellsClass} onClick={orderByColumn('date')}>
-            Date
-            {renderOrderIcon('date')}
-          </th>
-          <th className={headerCellsClass} onClick={orderByColumn('country')}>
-            Country
-            {renderOrderIcon('country')}
-          </th>
-          <th className={headerCellsClass} onClick={orderByColumn('city')}>
-            City
-            {renderOrderIcon('city')}
-          </th>
-          <th className={headerCellsClass} onClick={orderByColumn('browser')}>
-            Browser
-            {renderOrderIcon('browser')}
-          </th>
-          <th className={headerCellsClass} onClick={orderByColumn('os')}>
-            OS
-            {renderOrderIcon('os')}
-          </th>
-          <th className={headerCellsClass} onClick={orderByColumn('referer')}>
-            Referrer
-            {renderOrderIcon('referer')}
-          </th>
-          {isOrphanVisits && (
-            <th className={headerCellsClass} onClick={orderByColumn('visitedUrl')}>
-              Visited URL
-              {renderOrderIcon('visitedUrl')}
-            </th>
-          )}
-        </tr>
-        <tr>
-          <td colSpan={fullSizeColSpan} className="p-0">
-            <SearchField noBorder large={false} onChange={setSearchTerm} />
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        {!resultSet.visitsGroups[page - 1]?.length && (
+    <div className="table-responsive-md">
+      <table className="table table-bordered table-hover table-sm visits-table">
+        <thead className="visits-table__header">
           <tr>
-            <td colSpan={fullSizeColSpan} className="text-center">
-              No visits found with current filtering
-            </td>
-          </tr>
-        )}
-        {resultSet.visitsGroups[page - 1]?.map((visit, index) => {
-          const isSelected = selectedVisits.includes(visit);
-
-          return (
-            <tr
-              key={index}
-              style={{ cursor: 'pointer' }}
-              className={classNames({ 'table-active': isSelected })}
+            <th
+              className={`${headerCellsClass} text-center`}
               onClick={() => setSelectedVisits(
-                isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ],
+                selectedVisits.length < resultSet.total ? resultSet.visitsGroups.flat() : [],
               )}
             >
-              <td className="text-center">
-                {isSelected && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
-              </td>
-              {supportsBots && (
-                <td className="text-center">
-                  {visit.potentialBot && (
-                    <>
-                      <FontAwesomeIcon icon={botIcon} id={`botIcon${index}`} />
-                      <UncontrolledTooltip placement="right" target={`botIcon${index}`}>
-                        Potentially a visit from a bot or crawler
-                      </UncontrolledTooltip>
-                    </>
-                  )}
-                </td>
-              )}
-              <td><Time date={visit.date} /></td>
-              <td>{visit.country}</td>
-              <td>{visit.city}</td>
-              <td>{visit.browser}</td>
-              <td>{visit.os}</td>
-              <td>{visit.referer}</td>
-              {isOrphanVisits && <td>{(visit as NormalizedOrphanVisit).visitedUrl}</td>}
-            </tr>
-          );
-        })}
-      </tbody>
-      {resultSet.total > PAGE_SIZE && (
-        <tfoot>
+              <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
+            </th>
+            {supportsBots && (
+              <th className={`${headerCellsClass} text-center`} onClick={orderByColumn('potentialBot')}>
+                <FontAwesomeIcon icon={botIcon} />
+                {renderOrderIcon('potentialBot')}
+              </th>
+            )}
+            <th className={headerCellsClass} onClick={orderByColumn('date')}>
+              Date
+              {renderOrderIcon('date')}
+            </th>
+            <th className={headerCellsClass} onClick={orderByColumn('country')}>
+              Country
+              {renderOrderIcon('country')}
+            </th>
+            <th className={headerCellsClass} onClick={orderByColumn('city')}>
+              City
+              {renderOrderIcon('city')}
+            </th>
+            <th className={headerCellsClass} onClick={orderByColumn('browser')}>
+              Browser
+              {renderOrderIcon('browser')}
+            </th>
+            <th className={headerCellsClass} onClick={orderByColumn('os')}>
+              OS
+              {renderOrderIcon('os')}
+            </th>
+            <th className={headerCellsClass} onClick={orderByColumn('referer')}>
+              Referrer
+              {renderOrderIcon('referer')}
+            </th>
+            {isOrphanVisits && (
+              <th className={headerCellsClass} onClick={orderByColumn('visitedUrl')}>
+                Visited URL
+                {renderOrderIcon('visitedUrl')}
+              </th>
+            )}
+          </tr>
           <tr>
-            <td colSpan={fullSizeColSpan} className="visits-table__footer-cell visits-table__sticky">
-              <div className="row">
-                <div className="col-md-6">
-                  <SimplePaginator
-                    pagesCount={Math.ceil(resultSet.total / PAGE_SIZE)}
-                    currentPage={page}
-                    setCurrentPage={setPage}
-                    centered={isMobileDevice}
-                  />
-                </div>
-                <div
-                  className={classNames('col-md-6', {
-                    'd-flex align-items-center flex-row-reverse': !isMobileDevice,
-                    'text-center mt-3': isMobileDevice,
-                  })}
-                >
-                  <div>
-                    Visits <b>{prettify(start + 1)}</b> to{' '}
-                    <b>{prettify(min(end, resultSet.total))}</b> of{' '}
-                    <b>{prettify(resultSet.total)}</b>
-                  </div>
-                </div>
-              </div>
+            <td colSpan={fullSizeColSpan} className="p-0">
+              <SearchField noBorder large={false} onChange={setSearchTerm} />
             </td>
           </tr>
-        </tfoot>
-      )}
-    </table>
+        </thead>
+        <tbody>
+          {!resultSet.visitsGroups[page - 1]?.length && (
+            <tr>
+              <td colSpan={fullSizeColSpan} className="text-center">
+                No visits found with current filtering
+              </td>
+            </tr>
+          )}
+          {resultSet.visitsGroups[page - 1]?.map((visit, index) => {
+            const isSelected = selectedVisits.includes(visit);
+
+            return (
+              <tr
+                key={index}
+                style={{ cursor: 'pointer' }}
+                className={classNames({ 'table-active': isSelected })}
+                onClick={() => setSelectedVisits(
+                  isSelected ? selectedVisits.filter((v) => v !== visit) : [ ...selectedVisits, visit ],
+                )}
+              >
+                <td className="text-center">
+                  {isSelected && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
+                </td>
+                {supportsBots && (
+                  <td className="text-center">
+                    {visit.potentialBot && (
+                      <>
+                        <FontAwesomeIcon icon={botIcon} id={`botIcon${index}`} />
+                        <UncontrolledTooltip placement="right" target={`botIcon${index}`}>
+                          Potentially a visit from a bot or crawler
+                        </UncontrolledTooltip>
+                      </>
+                    )}
+                  </td>
+                )}
+                <td><Time date={visit.date} /></td>
+                <td>{visit.country}</td>
+                <td>{visit.city}</td>
+                <td>{visit.browser}</td>
+                <td>{visit.os}</td>
+                <td>{visit.referer}</td>
+                {isOrphanVisits && <td>{(visit as NormalizedOrphanVisit).visitedUrl}</td>}
+              </tr>
+            );
+          })}
+        </tbody>
+        {resultSet.total > PAGE_SIZE && (
+          <tfoot>
+            <tr>
+              <td colSpan={fullSizeColSpan} className="visits-table__footer-cell visits-table__sticky">
+                <div className="row">
+                  <div className="col-md-6">
+                    <SimplePaginator
+                      pagesCount={Math.ceil(resultSet.total / PAGE_SIZE)}
+                      currentPage={page}
+                      setCurrentPage={setPage}
+                      centered={isMobileDevice}
+                    />
+                  </div>
+                  <div
+                    className={classNames('col-md-6', {
+                      'd-flex align-items-center flex-row-reverse': !isMobileDevice,
+                      'text-center mt-3': isMobileDevice,
+                    })}
+                  >
+                    <div>
+                      Visits <b>{prettify(start + 1)}</b> to{' '}
+                      <b>{prettify(min(end, resultSet.total))}</b> of{' '}
+                      <b>{prettify(resultSet.total)}</b>
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        )}
+      </table>
+    </div>
   );
 };
 

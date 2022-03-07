@@ -147,7 +147,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
           {Object.values(sections).map(({ title, icon, subPath }, index) => (
             <NavPillItem key={index} to={buildSectionUrl(subPath)} replace>
               <FontAwesomeIcon icon={icon} />
-              <span className="ml-2 d-none d-sm-inline">{title}</span>
+              <span className="ms-2 d-none d-sm-inline">{title}</span>
             </NavPillItem>
           ))}
         </NavPills>
@@ -289,7 +289,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                 />
               </div>
               <VisitsFilterDropdown
-                className="ml-0 ml-md-2 mt-3 mt-md-0"
+                className="ms-0 ms-md-2 mt-3 mt-md-0"
                 isOrphanVisits={isOrphanVisits}
                 botsSupported={botsSupported}
                 selected={visitsFilter}
@@ -303,7 +303,7 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                 <Button
                   outline
                   disabled={highlightedVisits.length === 0}
-                  className="btn-md-block mr-2"
+                  className="btn-md-block me-2"
                   onClick={() => setSelectedVisits([])}
                 >
                   Clear selection {highlightedVisits.length > 0 && <>({prettify(highlightedVisits.length)})</>}

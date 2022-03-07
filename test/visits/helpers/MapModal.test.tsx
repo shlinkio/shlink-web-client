@@ -38,7 +38,7 @@ describe('<MapModal />', () => {
 
     expect(modal.prop('toggle')).toEqual(toggle);
     expect(modal.prop('isOpen')).toEqual(isOpen);
-    expect(header.find('.close').prop('onClick')).toEqual(toggle);
+    expect(header.find('.btn-close').prop('onClick')).toEqual(toggle);
     expect(header.text()).toContain(title);
   });
 

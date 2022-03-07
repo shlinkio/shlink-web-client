@@ -45,12 +45,12 @@ export const ManageServers = (
         <div className="col-md-6 d-flex d-md-block mb-2 mb-md-0">
           <ImportServersBtn className="flex-fill" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
           {allServers.length > 0 && (
-            <Button outline className="ml-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
+            <Button outline className="ms-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
             </Button>
           )}
         </div>
-        <div className="col-md-6 text-md-right d-flex d-md-block">
+        <div className="col-md-6 text-md-end d-flex d-md-block">
           <Button outline color="primary" className="flex-fill" tag={Link} to="/server/create">
             <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
           </Button>
@@ -58,7 +58,7 @@ export const ManageServers = (
       </Row>
 
       <SimpleCard>
-        <table className="table table-hover mb-0">
+        <table className="table table-hover responsive-table mb-0">
           <thead className="responsive-table__header">
             <tr>
               {hasAutoConnect && <th style={{ width: '50px' }} />}

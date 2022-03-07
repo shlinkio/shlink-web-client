@@ -1,6 +1,5 @@
 import { FC, useRef } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
-import { UncontrolledTooltipProps } from 'reactstrap/lib/Tooltip';
+import { UncontrolledTooltip, UncontrolledTooltipProps } from 'reactstrap';
 import { BooleanControlProps } from './BooleanControl';
 import ToggleSwitch from './ToggleSwitch';
 

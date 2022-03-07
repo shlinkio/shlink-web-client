@@ -1,4 +1,4 @@
-import { DropdownItem, DropdownItemProps } from 'reactstrap'; // eslint-disable-line import/named
+import { DropdownItem, DropdownItemProps } from 'reactstrap';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
@@ -26,7 +26,7 @@ export const VisitsFilterDropdown = (
   const onBotsClick = () => onChange({ ...selected, excludeBots: !selected?.excludeBots });
 
   return (
-    <DropdownBtn text="Filters" dropdownClassName={className} className="mr-3" right minWidth={250}>
+    <DropdownBtn text="Filters" dropdownClassName={className} className="me-3" right minWidth={250}>
       {botsSupported && (
         <>
           <DropdownItem header>Bots:</DropdownItem>

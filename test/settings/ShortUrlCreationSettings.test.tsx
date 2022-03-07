@@ -3,6 +3,7 @@ import { Mock } from 'ts-mockery';
 import { DropdownItem } from 'reactstrap';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
+import { FormText } from '../../src/utils/forms/FormText';
 import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { DropdownBtn } from '../../src/utils/DropdownBtn';
 
@@ -46,25 +47,25 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ validateUrls: true }, 'Validate URL checkbox will be checked' ],
-    [{ validateUrls: false }, 'Validate URL checkbox will be unchecked' ],
-    [ undefined, 'Validate URL checkbox will be unchecked' ],
+    [{ validateUrls: true }, '<b>Validate URL</b> checkbox will be <b>checked</b>' ],
+    [{ validateUrls: false }, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
+    [ undefined, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
   ])('shows expected helper text for URL validation', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper(shortUrlCreation);
-    const validateUrlText = wrapper.find('.form-text').first();
+    const validateUrlText = wrapper.find(FormText).first();
 
-    expect(validateUrlText.text()).toContain(expectedText);
+    expect(validateUrlText.html()).toContain(expectedText);
   });
 
   it.each([
-    [{ forwardQuery: true }, 'Forward query params on redirect checkbox will be checked' ],
-    [{ forwardQuery: false }, 'Forward query params on redirect checkbox will be unchecked' ],
-    [{}, 'Forward query params on redirect checkbox will be checked' ],
+    [{ forwardQuery: true }, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
+    [{ forwardQuery: false }, '<b>Forward query params on redirect</b> checkbox will be <b>unchecked</b>' ],
+    [{}, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
   ])('shows expected helper text for query forwarding', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
-    const forwardQueryText = wrapper.find('.form-text').at(1);
+    const forwardQueryText = wrapper.find(FormText).at(1);
 
-    expect(forwardQueryText.text()).toContain(expectedText);
+    expect(forwardQueryText.html()).toContain(expectedText);
   });
 
   it.each([
@@ -77,11 +78,11 @@ describe('<ShortUrlCreationSettings />', () => {
     [ undefined, 'Suggest tags starting with input', 'starting with' ],
   ])('shows expected texts for tags suggestions', (shortUrlCreation, expectedText, expectedHint) => {
     const wrapper = createWrapper(shortUrlCreation);
-    const hintText = wrapper.find('.form-text').last();
+    const hintText = wrapper.find(FormText).last();
     const dropdown = wrapper.find(DropdownBtn);
 
     expect(dropdown.prop('text')).toEqual(expectedText);
-    expect(hintText.text()).toContain(expectedHint);
+    expect(hintText.html()).toContain(expectedHint);
   });
 
   it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {

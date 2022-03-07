@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { Button, DropdownItem, Input, InputGroup, InputGroupAddon, UncontrolledTooltip } from 'reactstrap';
-import { InputProps } from 'reactstrap/lib/Input';
+import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip, InputProps } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { isEmpty, pipe } from 'ramda';
@@ -32,24 +31,22 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
   return inputDisplayed ? (
     <InputGroup>
       <Input
-        value={value}
+        value={value ?? ''}
         placeholder="Domain"
         onChange={(e) => onChange(e.target.value)}
       />
-      <InputGroupAddon addonType="append">
-        <Button
-          id="backToDropdown"
-          outline
-          type="button"
-          className="domains-dropdown__back-btn"
-          onClick={pipe(unselectDomain, hideInput)}
-        >
-          <FontAwesomeIcon icon={faUndo} />
-        </Button>
-        <UncontrolledTooltip target="backToDropdown" placement="left" trigger="hover">
-          Existing domains
-        </UncontrolledTooltip>
-      </InputGroupAddon>
+      <Button
+        id="backToDropdown"
+        outline
+        type="button"
+        className="domains-dropdown__back-btn"
+        onClick={pipe(unselectDomain, hideInput)}
+      >
+        <FontAwesomeIcon icon={faUndo} />
+      </Button>
+      <UncontrolledTooltip target="backToDropdown" placement="left" trigger="hover">
+        Existing domains
+      </UncontrolledTooltip>
     </InputGroup>
   ) : (
     <DropdownBtn
@@ -63,7 +60,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
           onClick={() => onChange(domain)}
         >
           {domain}
-          {isDefault && <span className="float-right text-muted">default</span>}
+          {isDefault && <span className="float-end text-muted">default</span>}
         </DropdownItem>
       ))}
       <DropdownItem divider />

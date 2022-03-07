@@ -38,16 +38,16 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
 
   return (
     <SimpleCard key={page} bodyClassName={showPaginator ? 'pb-1' : ''}>
-      <table className="table table-hover mb-0">
+      <table className="table table-hover responsive-table mb-0">
         <thead className="responsive-table__header">
           <tr>
             <th className="tags-table__header-cell" onClick={orderByColumn('tag')}>
               Tag <TableOrderIcon currentOrder={currentOrder} field="tag" />
             </th>
-            <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('shortUrls')}>
+            <th className="tags-table__header-cell text-lg-end" onClick={orderByColumn('shortUrls')}>
               Short URLs <TableOrderIcon currentOrder={currentOrder} field="shortUrls" />
             </th>
-            <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('visits')}>
+            <th className="tags-table__header-cell text-lg-end" onClick={orderByColumn('visits')}>
               Visits <TableOrderIcon currentOrder={currentOrder} field="visits" />
             </th>
             <th className="tags-table__header-cell" />

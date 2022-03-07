@@ -24,6 +24,6 @@ describe('<Settings />', () => {
     expect(items).toHaveLength(3);
     expect(items.first().prop('to')).toEqual('general');
     expect(items.at(1).prop('to')).toEqual('short-urls');
-    expect(items.last().prop('to')).toEqual('secondary-items');
+    expect(items.last().prop('to')).toEqual('other-items');
   });
 });

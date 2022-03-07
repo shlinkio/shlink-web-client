@@ -59,7 +59,7 @@ const ShortUrlsRow = (
         <span className="indivisible short-urls-row__cell--relative">
           <ExternalLink href={shortUrl.shortUrl} />
           <CopyToClipboardIcon text={shortUrl.shortUrl} onCopy={setCopiedToClipboard} />
-          <span className="badge badge-warning short-urls-row__copy-hint" hidden={!copiedToClipboard}>
+          <span className="badge bg-warning text-black short-urls-row__copy-hint" hidden={!copiedToClipboard}>
             Copied short URL!
           </span>
         </span>
@@ -73,7 +73,7 @@ const ShortUrlsRow = (
         </td>
       )}
       <td className="responsive-table__cell short-urls-row__cell" data-th="Tags">{renderTags(shortUrl.tags)}</td>
-      <td className="responsive-table__cell short-urls-row__cell text-lg-right" data-th="Visits">
+      <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount
           visitsCount={shortUrl.visitsCount}
           shortUrl={shortUrl}

@@ -40,7 +40,7 @@ const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
     <ModalBody className="map-modal__modal-body">
       <h3 className="map-modal__modal-title">
         {title}
-        <button type="button" className="close" onClick={toggle}>&times;</button>
+        <button type="button" className="btn-close float-end" onClick={toggle} />
       </h3>
       <MapContainer {...calculateMapProps(locations)}>
         <OpenStreetMapTile />
