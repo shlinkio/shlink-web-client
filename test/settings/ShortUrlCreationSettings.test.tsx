@@ -47,9 +47,9 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ validateUrls: true }, 'Validate URL checkbox will be checked' ],
-    [{ validateUrls: false }, 'Validate URL checkbox will be unchecked' ],
-    [ undefined, 'Validate URL checkbox will be unchecked' ],
+    [{ validateUrls: true }, '<b>Validate URL</b> checkbox will be <b>checked</b>' ],
+    [{ validateUrls: false }, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
+    [ undefined, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
   ])('shows expected helper text for URL validation', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper(shortUrlCreation);
     const validateUrlText = wrapper.find(FormText).first();
@@ -58,9 +58,9 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ forwardQuery: true }, 'Forward query params on redirect checkbox will be checked' ],
-    [{ forwardQuery: false }, 'Forward query params on redirect checkbox will be unchecked' ],
-    [{}, 'Forward query params on redirect checkbox will be checked' ],
+    [{ forwardQuery: true }, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
+    [{ forwardQuery: false }, '<b>Forward query params on redirect</b> checkbox will be <b>unchecked</b>' ],
+    [{}, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
   ])('shows expected helper text for query forwarding', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
     const forwardQueryText = wrapper.find(FormText).at(1);

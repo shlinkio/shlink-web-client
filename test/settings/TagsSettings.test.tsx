@@ -1,11 +1,12 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { FormGroup } from 'reactstrap';
 import { Settings, TagsMode, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
+import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
+import { FormText } from '../../src/utils/forms/FormText';
 
 describe('<TagsSettings />', () => {
   let wrapper: ShallowWrapper;
@@ -21,7 +22,7 @@ describe('<TagsSettings />', () => {
 
   it('renders expected amount of groups', () => {
     const wrapper = createWrapper();
-    const groups = wrapper.find(FormGroup);
+    const groups = wrapper.find(LabeledFormGroup);
 
     expect(groups).toHaveLength(2);
   });
@@ -34,10 +35,10 @@ describe('<TagsSettings />', () => {
   ])('shows expected tags displaying mode', (tags, expectedMode) => {
     const wrapper = createWrapper(tags);
     const dropdown = wrapper.find(TagsModeDropdown);
-    const small = wrapper.find('small');
+    const formText = wrapper.find(FormText);
 
     expect(dropdown.prop('mode')).toEqual(expectedMode);
-    expect(small.html()).toContain(`Tags will be displayed as <b>${expectedMode}</b>.`);
+    expect(formText.html()).toContain(`Tags will be displayed as <b>${expectedMode}</b>.`);
   });
 
   it.each([

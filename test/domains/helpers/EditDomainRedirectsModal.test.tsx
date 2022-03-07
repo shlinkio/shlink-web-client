@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { Button, FormGroup, ModalHeader } from 'reactstrap';
+import { Button, ModalHeader } from 'reactstrap';
 import { ShlinkDomain } from '../../../src/api/types';
 import { EditDomainRedirectsModal } from '../../../src/domains/helpers/EditDomainRedirectsModal';
 import { InfoTooltip } from '../../../src/utils/InfoTooltip';
@@ -32,7 +32,7 @@ describe('<EditDomainRedirectsModal />', () => {
   });
 
   it('expected amount of form groups and tooltips', () => {
-    const formGroups = wrapper.find(FormGroup);
+    const formGroups = wrapper.find('FormGroup');
     const tooltips = wrapper.find(InfoTooltip);
 
     expect(formGroups).toHaveLength(3);
@@ -50,7 +50,7 @@ describe('<EditDomainRedirectsModal />', () => {
   });
 
   it('saves expected values when form is submitted', () => {
-    const formGroups = wrapper.find(FormGroup);
+    const formGroups = wrapper.find('FormGroup');
 
     expect(editDomainRedirects).not.toHaveBeenCalled();
 

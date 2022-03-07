@@ -4,6 +4,7 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
 import { SimpleCard } from '../../src/utils/SimpleCard';
 import { DateIntervalSelector } from '../../src/utils/dates/DateIntervalSelector';
+import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
 
 describe('<VisitsSettings />', () => {
   let wrapper: ShallowWrapper;
@@ -21,7 +22,7 @@ describe('<VisitsSettings />', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(SimpleCard).prop('title')).toEqual('Visits');
-    expect(wrapper.find('label').prop('children')).toEqual('Default interval to load on visits sections:');
+    expect(wrapper.find(LabeledFormGroup).prop('label')).toEqual('Default interval to load on visits sections:');
     expect(wrapper.find(DateIntervalSelector)).toHaveLength(1);
   });
 
