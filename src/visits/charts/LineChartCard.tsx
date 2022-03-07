@@ -222,8 +222,8 @@ const LineChartCard = (
   };
   const renderLineChart = () => (
     <Line
-      data={generateChartData()}
-      options={options}
+      data={generateChartData() as any}
+      options={options as any}
       getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
     />
   );
