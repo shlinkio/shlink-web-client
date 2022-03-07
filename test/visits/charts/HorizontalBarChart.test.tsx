@@ -19,8 +19,8 @@ describe('<HorizontalBarChart />', () => {
 
     expect(horizontal).toHaveLength(1);
 
-    const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data');
-    const { plugins, scales } = horizontal.prop('options') ?? {};
+    const { datasets: [{ backgroundColor, borderColor }] } = horizontal.prop('data') as any;
+    const { plugins, scales } = (horizontal.prop('options') ?? {}) as any;
 
     expect(backgroundColor).toEqual(MAIN_COLOR_ALPHA);
     expect(borderColor).toEqual(MAIN_COLOR);
@@ -48,7 +48,7 @@ describe('<HorizontalBarChart />', () => {
     wrapper = shallow(<HorizontalBarChart stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(Bar);
 
-    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data');
+    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data') as any;
 
     expect(label).toEqual('Visits');
     expect(data).toEqual(expectedData);
