@@ -28,7 +28,7 @@ a,
   text-decoration: none;
 }
 
-a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):hover,
+a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.btn):hover,
 .btn-link:hover {
   text-decoration: underline;
 }
