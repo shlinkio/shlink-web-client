@@ -11,6 +11,10 @@
   outline: none !important;
 }
 
+:root {
+  scroll-behavior: auto;
+}
+
 html,
 body,
 #root {
@@ -122,7 +126,7 @@ hr {
 .btn-outline-primary:hover,
 .btn-outline-primary:active,
 .btn-outline-primary.active, {
-  color: #fff;
+  color: #ffffff;
 }
 
 .dropdown-item,
