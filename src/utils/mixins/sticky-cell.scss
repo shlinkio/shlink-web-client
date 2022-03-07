@@ -2,7 +2,6 @@
 
 @mixin sticky-cell($with-separators: true) {
   z-index: 1;
-  border: none !important;
   position: relative;
 
   &:before {
