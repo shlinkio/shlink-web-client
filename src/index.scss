@@ -28,7 +28,7 @@ a,
   text-decoration: none;
 }
 
-a:not(.nav-link):not(.navbar-brand):not(.page-link):hover,
+a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):hover,
 .btn-link:hover {
   text-decoration: underline;
 }
@@ -164,7 +164,8 @@ hr {
 .close,
 .close:hover,
 .table,
-.table-hover > tbody > tr:hover > * {
+.table-hover > tbody > tr:hover > *,
+.table-hover > tbody > tr > * {
   color: var(--text-color);
 }
 

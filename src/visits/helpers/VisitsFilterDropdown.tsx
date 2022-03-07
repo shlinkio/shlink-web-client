@@ -1,4 +1,4 @@
-import { DropdownItem, DropdownItemProps } from 'reactstrap'; // eslint-disable-line import/named
+import { DropdownItem, DropdownItemProps } from 'reactstrap';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
