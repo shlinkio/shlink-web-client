@@ -24,7 +24,7 @@ a,
   text-decoration: none;
 }
 
-a:not(.nav-link):not(.navbar-brand):hover,
+a:not(.nav-link):not(.navbar-brand):not(.page-link):hover,
 .btn-link:hover {
   text-decoration: underline;
 }
@@ -84,7 +84,8 @@ hr {
   border-color: var(--table-border-color);
 }
 
-.page-link:hover {
+.page-link:hover,
+.page-link:focus {
   background-color: var(--secondary-color);
 }
 
@@ -112,6 +113,16 @@ hr {
 .btn-block {
   display: block;
   width: 100%;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary.active, {
+  color: #fff;
 }
 
 .dropdown-item,
