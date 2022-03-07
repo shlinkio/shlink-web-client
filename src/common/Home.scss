@@ -2,7 +2,7 @@
 @import '../utils/mixins/vertical-align';
 
 $mainCardWidth: 720px;
-$fiveColumnsSize: 0.416666667; // 12 / 5 -> Can't use "/" operator in latest dart-sass
+$fiveColumnsSize: .4167; // 12 / 5 -> Can't use "/" operator in latest dart-sass
 
 .home {
   position: relative;
