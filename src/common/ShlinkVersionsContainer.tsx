@@ -11,7 +11,7 @@ export interface ShlinkVersionsContainerProps {
 
 const ShlinkVersionsContainer = ({ selectedServer, sidebar }: ShlinkVersionsContainerProps) => {
   const classes = classNames('text-center', {
-    'shlink-versions-container--with-sidebar': sidebar.hasSidebar,
+    'shlink-versions-container--with-sidebar': sidebar.sidebarPresent,
   });
 
   return (

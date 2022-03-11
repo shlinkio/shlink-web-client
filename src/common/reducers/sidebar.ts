@@ -7,19 +7,19 @@ export const SIDEBAR_NOT_PRESENT = 'shlink/common/SIDEBAR_NOT_PRESENT';
 /* eslint-enable padding-line-between-statements */
 
 export interface Sidebar {
-  hasSidebar: boolean;
+  sidebarPresent: boolean;
 }
 
 type SidebarRenderedAction = Action<string>;
 type SidebarNotRenderedAction = Action<string>;
 
 const initialState: Sidebar = {
-  hasSidebar: false,
+  sidebarPresent: false,
 };
 
 export default buildReducer<Sidebar, SidebarRenderedAction & SidebarNotRenderedAction>({
-  [SIDEBAR_PRESENT]: () => ({ hasSidebar: true }),
-  [SIDEBAR_NOT_PRESENT]: () => ({ hasSidebar: false }),
+  [SIDEBAR_PRESENT]: () => ({ sidebarPresent: true }),
+  [SIDEBAR_NOT_PRESENT]: () => ({ sidebarPresent: false }),
 }, initialState);
 
 export const sidebarPresent = buildActionCreator(SIDEBAR_PRESENT);
