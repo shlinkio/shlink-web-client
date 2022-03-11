@@ -2,8 +2,8 @@ import { Action } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 
 /* eslint-disable padding-line-between-statements */
-export const SIDEBAR_RENDERED = 'shlink/common/SIDEBAR_RENDERED';
-export const SIDEBAR_NOT_RENDERED = 'shlink/common/SIDEBAR_NOT_RENDERED';
+export const SIDEBAR_PRESENT = 'shlink/common/SIDEBAR_PRESENT';
+export const SIDEBAR_NOT_PRESENT = 'shlink/common/SIDEBAR_NOT_PRESENT';
 /* eslint-enable padding-line-between-statements */
 
 export interface Sidebar {
@@ -18,10 +18,10 @@ const initialState: Sidebar = {
 };
 
 export default buildReducer<Sidebar, SidebarRenderedAction & SidebarNotRenderedAction>({
-  [SIDEBAR_RENDERED]: () => ({ hasSidebar: true }),
-  [SIDEBAR_NOT_RENDERED]: () => ({ hasSidebar: false }),
+  [SIDEBAR_PRESENT]: () => ({ hasSidebar: true }),
+  [SIDEBAR_NOT_PRESENT]: () => ({ hasSidebar: false }),
 }, initialState);
 
-export const sidebarRendered = buildActionCreator(SIDEBAR_RENDERED);
+export const sidebarPresent = buildActionCreator(SIDEBAR_PRESENT);
 
-export const sidebarNotRendered = buildActionCreator(SIDEBAR_NOT_RENDERED);
+export const sidebarNotPresent = buildActionCreator(SIDEBAR_NOT_PRESENT);

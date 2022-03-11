@@ -22,8 +22,8 @@ describe('<MenuLayout />', () => {
 
     wrapper = shallow(
       <MenuLayout
-        sidebarNotRendered={jest.fn()}
-        sidebarRendered={jest.fn}
+        sidebarNotPresent={jest.fn()}
+        sidebarPresent={jest.fn}
         selectServer={jest.fn()}
         selectedServer={selectedServer}
       />,
