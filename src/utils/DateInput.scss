@@ -88,8 +88,9 @@
   z-index: 2;
 
   &[data-placement^='top'] .react-datepicker__triangle.react-datepicker__triangle {
-    border-top-color: var(--primary-color);
-    border-bottom-color: var(--border-color);
+    &::after {
+      border-top-color: var(--primary-color);
+    }
 
     &::before {
       border-top-color: var(--border-color);
@@ -97,8 +98,9 @@
   }
 
   &[data-placement^='bottom'] .react-datepicker__triangle.react-datepicker__triangle {
-    border-top-color: var(--border-color);
-    border-bottom-color: var(--secondary-color);
+    &::after {
+      border-bottom-color: var(--secondary-color);
+    }
 
     &::before {
       border-bottom-color: var(--border-color);
