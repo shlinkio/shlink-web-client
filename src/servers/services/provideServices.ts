@@ -30,7 +30,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'useStateFlagTimeout',
     'ManageServersRow',
   );
-  bottle.decorator('ManageServers', connect([ 'servers' ]));
+  bottle.decorator('ManageServers', withoutSelectedServer);
+  bottle.decorator('ManageServers', connect([ 'selectedServer', 'servers' ], [ 'resetSelectedServer' ]));
 
   bottle.serviceFactory('ManageServersRow', ManageServersRow, 'ManageServersRowDropdown');
 
@@ -42,7 +43,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('CreateServer', connect([ 'selectedServer', 'servers' ], [ 'createServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
-  bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer' ]));
+  bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('ServersDropdown', () => ServersDropdown);
   bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));

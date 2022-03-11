@@ -11,6 +11,11 @@ import NotFound from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
 import './MenuLayout.scss';
 
+interface MenuLayoutProps {
+  sidebarPresent: Function;
+  sidebarNotPresent: Function;
+}
+
 const MenuLayout = (
   TagsList: FC,
   ShortUrlsList: FC,
@@ -24,13 +29,19 @@ const MenuLayout = (
   Overview: FC,
   EditShortUrl: FC,
   ManageDomains: FC,
-) => withSelectedServer(({ selectedServer }) => {
+) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent }) => {
   const location = useLocation();
   const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
+  const showContent = isReachableServer(selectedServer);
 
   useEffect(() => hideSidebar(), [ location ]);
+  useEffect(() => {
+    showContent && sidebarPresent();
 
-  if (!isReachableServer(selectedServer)) {
+    return () => sidebarNotPresent();
+  }, []);
+
+  if (!showContent) {
     return <ServerError />;
   }
 

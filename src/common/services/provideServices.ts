@@ -9,6 +9,7 @@ import ErrorHandler from '../ErrorHandler';
 import ShlinkVersionsContainer from '../ShlinkVersionsContainer';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
+import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ImageDownloader } from './ImageDownloader';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
@@ -44,14 +45,18 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'EditShortUrl',
     'ManageDomains',
   );
-  bottle.decorator('MenuLayout', connect([ 'selectedServer' ], [ 'selectServer' ]));
+  bottle.decorator('MenuLayout', connect([ 'selectedServer' ], [ 'selectServer', 'sidebarPresent', 'sidebarNotPresent' ]));
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
-  bottle.decorator('ShlinkVersionsContainer', connect([ 'selectedServer' ]));
+  bottle.decorator('ShlinkVersionsContainer', connect([ 'selectedServer', 'sidebar' ]));
 
   bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
+
+  // Actions
+  bottle.serviceFactory('sidebarPresent', () => sidebarPresent);
+  bottle.serviceFactory('sidebarNotPresent', () => sidebarNotPresent);
 };
 
 export default provideServices;
