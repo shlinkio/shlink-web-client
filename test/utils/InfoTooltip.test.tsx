@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
-import Popper from 'popper.js';
+import { Placement } from '@popperjs/core';
 import { InfoTooltip } from '../../src/utils/InfoTooltip';
 
 describe('<InfoTooltip />', () => {
@@ -28,10 +28,10 @@ describe('<InfoTooltip />', () => {
   });
 
   it.each([
-    [ 'right' as Popper.Placement ],
-    [ 'left' as Popper.Placement ],
-    [ 'top' as Popper.Placement ],
-    [ 'bottom' as Popper.Placement ],
+    [ 'right' as Placement ],
+    [ 'left' as Placement ],
+    [ 'top' as Placement ],
+    [ 'bottom' as Placement ],
   ])('places tooltip where requested', (placement) => {
     const wrapper = shallow(<InfoTooltip placement={placement} />);
     const tooltip = wrapper.find(UncontrolledTooltip);
