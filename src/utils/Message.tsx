@@ -37,7 +37,7 @@ const Message: FC<MessageProps> = ({ className, children, loading = false, type 
   });
 
   return (
-    <Row noGutters className={className}>
+    <Row className={classNames('g-0', className)}>
       <div className={classes}>
         <Card className={getClassForType(type)} body>
           <h3 className={classNames('text-center mb-0', getTextClassForType(type))}>

@@ -237,7 +237,7 @@ const LineChartCard = (
             <DropdownToggle caret color="link" className="btn-sm p-0">
               Group by
             </DropdownToggle>
-            <DropdownMenu right>
+            <DropdownMenu end>
               {Object.entries(STEPS_MAP).map(([ value, menuText ]) => (
                 <DropdownItem key={value} active={step === value} onClick={() => setStep(value as Step)}>
                   {menuText}

@@ -22,7 +22,7 @@ export const DropdownBtn: FC<DropdownBtnProps> = (
   return (
     <Dropdown isOpen={isOpen} toggle={toggle} disabled={disabled} className={dropdownClassName}>
       <DropdownToggle caret className={toggleClasses} color="primary">{text}</DropdownToggle>
-      <DropdownMenu className="w-100" right={right} style={style}>{children}</DropdownMenu>
+      <DropdownMenu className="w-100" end={right} style={style}>{children}</DropdownMenu>
     </Dropdown>
   );
 };

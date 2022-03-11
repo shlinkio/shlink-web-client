@@ -9,10 +9,8 @@ interface PaginationDropdownProps {
 
 const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }: PaginationDropdownProps) => (
   <UncontrolledDropdown>
-    <DropdownToggle caret color="link" className={toggleClassName}>
-      Paginate
-    </DropdownToggle>
-    <DropdownMenu right>
+    <DropdownToggle caret color="link" className={toggleClassName}>Paginate</DropdownToggle>
+    <DropdownMenu end>
       {ranges.map((itemsPerPage) => (
         <DropdownItem key={itemsPerPage} active={itemsPerPage === value} onClick={() => setValue(itemsPerPage)}>
           <b>{itemsPerPage}</b> items per page

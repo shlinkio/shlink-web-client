@@ -42,7 +42,7 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
       </button>
       <UncontrolledTooltip placement="left" target={(() => buttonRef.current) as any}>Show in map</UncontrolledTooltip>
       <Dropdown isOpen={dropdownIsOpened} toggle={toggleDropdown} inNavbar>
-        <DropdownMenu right>
+        <DropdownMenu end>
           <DropdownItem onClick={openMapWithLocations(false)}>Show all locations</DropdownItem>
           <DropdownItem onClick={openMapWithLocations(true)}>Show locations in current page</DropdownItem>
         </DropdownMenu>

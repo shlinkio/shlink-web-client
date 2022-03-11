@@ -43,6 +43,6 @@ describe('<DropdownBtnMenu />', () => {
   ])('renders menu to right when expected', (right, expectedRight) => {
     const wrapper = createWrapper({ right });
 
-    expect(wrapper.find(DropdownMenu).prop('right')).toEqual(expectedRight);
+    expect(wrapper.find(DropdownMenu).prop('end')).toEqual(expectedRight);
   });
 });

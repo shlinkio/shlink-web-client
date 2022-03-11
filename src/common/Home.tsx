@@ -29,7 +29,7 @@ const Home = ({ servers }: HomeProps) => {
   return (
     <div className="home">
       <Card className="home__main-card">
-        <Row noGutters>
+        <Row className="g-0">
           <div className="col-md-5 d-none d-md-block">
             <div className="home__logo-wrapper">
               <div className="home__logo">

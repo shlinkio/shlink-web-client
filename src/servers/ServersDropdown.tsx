@@ -42,7 +42,7 @@ const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
       <DropdownToggle nav caret>
         <FontAwesomeIcon icon={serverIcon} /> <span className="ms-1">Servers</span>
       </DropdownToggle>
-      <DropdownMenu right style={{ right: 0 }}>{renderServers()}</DropdownMenu>
+      <DropdownMenu end style={{ right: 0 }}>{renderServers()}</DropdownMenu>
     </UncontrolledDropdown>
   );
 };

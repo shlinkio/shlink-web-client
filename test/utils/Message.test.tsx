@@ -59,6 +59,6 @@ describe('<Message />', () => {
   it.each([{ className: 'foo' }, { className: 'bar' }, {}])('renders provided classes', ({ className }) => {
     const wrapper = createWrapper({ className });
 
-    expect(wrapper.prop('className')).toEqual(className);
+    expect(wrapper.prop('className')).toEqual(`g-0${className ? ` ${className}` : ''}`);
   });
 });
