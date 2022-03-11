@@ -136,7 +136,7 @@
     "sw-precache-webpack-plugin": "^1.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "ts-mockery": "^1.2.0",
-    "typescript": "^4.4.4",
+    "typescript": "^4.6.2",
     "url-loader": "^4.1.1",
     "webpack": "^4.46.0",
     "webpack-dev-server": "^3.11.3",
