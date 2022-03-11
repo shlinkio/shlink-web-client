@@ -18,6 +18,7 @@ import settingsReducer from '../settings/reducers/settings';
 import domainsListReducer from '../domains/reducers/domainsList';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import appUpdatesReducer from '../app/reducers/appUpdates';
+import sidebarReducer from '../common/reducers/sidebar';
 import { ShlinkState } from '../container/types';
 
 export default combineReducers<ShlinkState>({
@@ -40,4 +41,5 @@ export default combineReducers<ShlinkState>({
   domainsList: domainsListReducer,
   visitsOverview: visitsOverviewReducer,
   appUpdated: appUpdatesReducer,
+  sidebar: sidebarReducer,
 });

@@ -1,13 +1,14 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import ShlinkVersionsContainer from '../../src/common/ShlinkVersionsContainer';
-import { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';
+import { SelectedServer } from '../../src/servers/data';
+import { Sidebar } from '../../src/common/reducers/sidebar';
 
 describe('<ShlinkVersionsContainer />', () => {
   let wrapper: ShallowWrapper;
 
-  const createWrapper = (selectedServer: SelectedServer) => {
-    wrapper = shallow(<ShlinkVersionsContainer selectedServer={selectedServer} />);
+  const createWrapper = (sidebar: Sidebar) => {
+    wrapper = shallow(<ShlinkVersionsContainer selectedServer={Mock.all<SelectedServer>()} sidebar={sidebar} />);
 
     return wrapper;
   };
@@ -15,12 +16,10 @@ describe('<ShlinkVersionsContainer />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ null, 'text-center' ],
-    [ Mock.of<NotFoundServer>({ serverNotFound: true }), 'text-center' ],
-    [ Mock.of<NonReachableServer>({ serverNotReachable: true }), 'text-center' ],
-    [ Mock.of<ReachableServer>({ version: '1.0.0' }), 'text-center shlink-versions-container--with-server' ],
-  ])('renders proper col classes based on type of selected server', (selectedServer, expectedClasses) => {
-    const wrapper = createWrapper(selectedServer);
+    [{ hasSidebar: false }, 'text-center' ],
+    [{ hasSidebar: true }, 'text-center shlink-versions-container--with-sidebar' ],
+  ])('renders proper col classes based on sidebar status', (sidebar, expectedClasses) => {
+    const wrapper = createWrapper(sidebar);
 
     expect(wrapper.find('div').prop('className')).toEqual(`${expectedClasses}`);
   });

@@ -43,7 +43,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('CreateServer', connect([ 'selectedServer', 'servers' ], [ 'createServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
-  bottle.decorator('EditServer', withoutSelectedServer);
   bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer', 'resetSelectedServer' ]));
 
   bottle.serviceFactory('ServersDropdown', () => ServersDropdown);

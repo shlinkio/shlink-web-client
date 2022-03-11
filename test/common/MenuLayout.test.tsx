@@ -20,7 +20,14 @@ describe('<MenuLayout />', () => {
   const createWrapper = (selectedServer: SelectedServer) => {
     (useParams as any).mockReturnValue({ serverId: 'abc123' });
 
-    wrapper = shallow(<MenuLayout selectServer={jest.fn()} selectedServer={selectedServer} />);
+    wrapper = shallow(
+      <MenuLayout
+        sidebarNotRendered={jest.fn()}
+        sidebarRendered={jest.fn}
+        selectServer={jest.fn()}
+        selectedServer={selectedServer}
+      />,
+    );
 
     return wrapper;
   };
