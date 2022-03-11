@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#589](https://github.com/shlinkio/shlink-web-client/pull/589) Fixed alignment of shlink versions footer, by basing the logic on the presence of the sidebar instead of selected server.
 
 
 ## [3.5.1] - 2022-01-08
