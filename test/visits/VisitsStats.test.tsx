@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Button, Progress } from 'reactstrap';
+import { Progress } from 'reactstrap';
 import { sum } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { Route } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { SelectedServer } from '../../src/servers/data';
 import { SortableBarChartCard } from '../../src/visits/charts/SortableBarChartCard';
 import { DoughnutChartCard } from '../../src/visits/charts/DoughnutChartCard';
+import { ExportBtn } from '../../src/utils/ExportBtn';
 
 describe('<VisitsStats />', () => {
   const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
@@ -106,7 +107,7 @@ describe('<VisitsStats />', () => {
 
   it('exports CSV when export btn is clicked', () => {
     const wrapper = createComponent({ visits });
-    const exportBtn = wrapper.find(Button).last();
+    const exportBtn = wrapper.find(ExportBtn).last();
 
     expect(exportBtn).toHaveLength(1);
     exportBtn.simulate('click');

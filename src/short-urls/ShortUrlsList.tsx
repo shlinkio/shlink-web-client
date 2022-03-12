@@ -15,6 +15,7 @@ import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from './data';
+import { ShortUrlsFilteringProps } from './ShortUrlsFilteringBar';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;
@@ -23,12 +24,10 @@ interface ShortUrlsListProps {
   settings: Settings;
 }
 
-const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteringBar: FC) => boundToMercureHub(({
-  listShortUrls,
-  shortUrlsList,
-  selectedServer,
-  settings,
-}: ShortUrlsListProps) => {
+const ShortUrlsList = (
+  ShortUrlsTable: FC<ShortUrlsTableProps>,
+  ShortUrlsFilteringBar: FC<ShortUrlsFilteringProps>,
+) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer, settings }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
@@ -66,7 +65,7 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
 
   return (
     <>
-      <div className="mb-3"><ShortUrlsFilteringBar /></div>
+      <ShortUrlsFilteringBar selectedServer={selectedServer} className="mb-3" />
       <div className="d-block d-lg-none mb-3">
         <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={actualOrderBy} onChange={handleOrderBy} />
       </div>

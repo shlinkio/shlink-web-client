@@ -50,7 +50,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
 
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator');
-  bottle.decorator('ShortUrlsFilteringBar', connect([ 'selectedServer' ]));
 
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');

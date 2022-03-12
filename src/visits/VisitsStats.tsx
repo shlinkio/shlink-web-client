@@ -2,7 +2,7 @@ import { isEmpty, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC, useRef } from 'react';
 import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie, faFileDownload } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import classNames from 'classnames';
@@ -16,6 +16,7 @@ import { SelectedServer } from '../servers/data';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
 import { NavPillItem, NavPills } from '../utils/NavPills';
+import { ExportBtn } from '../utils/ExportBtn';
 import LineChartCard from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
@@ -308,14 +309,11 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                 >
                   Clear selection {highlightedVisits.length > 0 && <>({prettify(highlightedVisits.length)})</>}
                 </Button>
-                <Button
-                  outline
-                  color="primary"
+                <ExportBtn
                   className="btn-md-block"
+                  amount={normalizedVisits.length}
                   onClick={() => exportCsv(normalizedVisits)}
-                >
-                  <FontAwesomeIcon icon={faFileDownload} /> Export ({prettify(normalizedVisits.length)})
-                </Button>
+                />
               </div>
             </div>
           )}
