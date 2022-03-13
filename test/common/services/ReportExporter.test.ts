@@ -3,6 +3,7 @@ import { CsvJson } from 'csvjson';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { NormalizedVisit } from '../../../src/visits/types';
 import { windowMock } from '../../mocks/WindowMock';
+import { ExportableShortUrl } from '../../../src/short-urls/data';
 
 describe('ReportExporter', () => {
   const toCSV = jest.fn();
@@ -40,6 +41,31 @@ describe('ReportExporter', () => {
 
     it('skips execution when list of visits is empty', () => {
       exporter.exportVisits('my_visits.csv', []);
+
+      expect(toCSV).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('exportShortUrls', () => {
+    it('parses provided short URLs to CSV', () => {
+      const shortUrls: ExportableShortUrl[] = [
+        {
+          shortUrl: 'shortUrl',
+          visits: 10,
+          title: '',
+          createdAt: '',
+          longUrl: '',
+          tags: '',
+        },
+      ];
+
+      exporter.exportShortUrls(shortUrls);
+
+      expect(toCSV).toHaveBeenCalledWith(shortUrls, { headers: 'key', wrap: true });
+    });
+
+    it('skips execution when list of visits is empty', () => {
+      exporter.exportShortUrls([]);
 
       expect(toCSV).not.toHaveBeenCalled();
     });
