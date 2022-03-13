@@ -12,9 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#543](https://github.com/shlinkio/shlink-web-client/pull/543) Redesigned settings section.
-* [#448](https://github.com/shlinkio/shlink-web-client/pull/448) Updated to bootstrap 5.
 * [#567](https://github.com/shlinkio/shlink-web-client/pull/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
+* [#448](https://github.com/shlinkio/shlink-web-client/pull/448) Updated to bootstrap v5.
 * [#524](https://github.com/shlinkio/shlink-web-client/pull/524) Updated to react-router v6.
+* [#576](https://github.com/shlinkio/shlink-web-client/pull/576) Updated to fontawesome v6.
 * [#579](https://github.com/shlinkio/shlink-web-client/pull/579) Replaced react-color with react-colorful.
 * [#564](https://github.com/shlinkio/shlink-web-client/pull/564) Updated most of the dependencies.
 

@@ -29,7 +29,7 @@ a,
 }
 
 /* stylelint-disable-next-line selector-max-pseudo-class */
-a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.btn):hover,
+a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.btn):not(.dropdown-item):hover,
 .btn-link:hover {
   text-decoration: underline;
 }
