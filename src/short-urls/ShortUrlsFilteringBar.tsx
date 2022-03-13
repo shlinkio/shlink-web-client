@@ -61,9 +61,12 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
     <div className={classNames('short-urls-filtering-bar-container', className)}>
       <SearchField initialValue={search} onChange={setSearch} />
 
-      <Row>
+      <Row className="flex-column-reverse flex-lg-row">
         <div className="col-lg-4 col-xl-6 mt-3">
           <ExportBtn className="btn-md-block" amount={4} onClick={() => {}} />
+        </div>
+        <div className="col-12 d-block d-lg-none mt-3">
+          <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
         </div>
         <div className="col-lg-8 col-xl-6 mt-3">
           <DateRangeSelector
@@ -78,7 +81,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
       </Row>
 
       {selectedTags.length > 0 && (
-        <h4 className="my-3">
+        <h4 className="mt-3">
           {canChangeTagsMode && selectedTags.length > 1 && (
             <div className="float-end ms-2 mt-1">
               <TooltipToggleSwitch
@@ -95,10 +98,6 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
             <Tag colorGenerator={colorGenerator} key={tag} text={tag} clearable onClose={() => removeTag(tag)} />)}
         </h4>
       )}
-
-      <div className="d-block d-lg-none mb-3">
-        <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
-      </div>
     </div>
   );
 };
