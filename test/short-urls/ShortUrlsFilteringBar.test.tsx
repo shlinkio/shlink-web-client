@@ -20,7 +20,8 @@ jest.mock('react-router-dom', () => ({
 
 describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
-  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>());
+  const ExportShortUrlsBtn = () => null;
+  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>(), ExportShortUrlsBtn);
   const navigate = jest.fn();
   const handleOrderBy = jest.fn();
   const now = new Date();
@@ -48,6 +49,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     expect(wrapper.find(SearchField)).toHaveLength(1);
     expect(wrapper.find(DateRangeSelector)).toHaveLength(1);
     expect(wrapper.find(OrderingDropdown)).toHaveLength(1);
+    expect(wrapper.find(ExportShortUrlsBtn)).toHaveLength(1);
   });
 
   it.each([

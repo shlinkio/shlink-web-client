@@ -33,6 +33,7 @@ describe('<ShortUrlsList />', () => {
           tags: [ 'test tag' ],
         }),
       ],
+      pagination: {},
     },
   });
   const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, ShortUrlsFilteringBar);

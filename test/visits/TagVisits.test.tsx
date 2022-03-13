@@ -6,7 +6,7 @@ import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
+import { ReportExporter } from '../../src/common/services/ReportExporter';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -20,7 +20,7 @@ describe('<TagVisits />', () => {
   const getTagVisitsMock = jest.fn();
 
   beforeEach(() => {
-    const TagVisits = createTagVisits(Mock.all<ColorGenerator>(), Mock.all<VisitsExporter>());
+    const TagVisits = createTagVisits(Mock.all<ColorGenerator>(), Mock.all<ReportExporter>());
 
     wrapper = shallow(
       <TagVisits

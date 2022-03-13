@@ -11,6 +11,7 @@ import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ImageDownloader } from './ImageDownloader';
+import { ReportExporter } from './ReportExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
@@ -19,6 +20,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.constant('axios', axios);
 
   bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
+  bottle.service('ReportExporter', ReportExporter, 'window', 'csvjson');
 
   // Components
   bottle.serviceFactory('ScrollToTop', ScrollToTop);

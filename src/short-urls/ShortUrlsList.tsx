@@ -65,6 +65,7 @@ const ShortUrlsList = (
     <>
       <ShortUrlsFilteringBar
         selectedServer={selectedServer}
+        shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
         order={actualOrderBy}
         handleOrderBy={handleOrderBy}
         className="mb-3"

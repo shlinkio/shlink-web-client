@@ -12,31 +12,30 @@ import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrp
 import { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
-import { VisitsExporter } from './VisitsExporter';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
 
-  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'VisitsExporter');
+  bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'ReportExporter');
   bottle.decorator('ShortUrlVisits', connect(
     [ 'shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings', 'selectedServer' ],
     [ 'getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
-  bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator', 'VisitsExporter');
+  bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator', 'ReportExporter');
   bottle.decorator('TagVisits', connect(
     [ 'tagVisits', 'mercureInfo', 'settings', 'selectedServer' ],
     [ 'getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
-  bottle.serviceFactory('OrphanVisits', OrphanVisits, 'VisitsExporter');
+  bottle.serviceFactory('OrphanVisits', OrphanVisits, 'ReportExporter');
   bottle.decorator('OrphanVisits', connect(
     [ 'orphanVisits', 'mercureInfo', 'settings', 'selectedServer' ],
     [ 'getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo' ],
   ));
 
-  bottle.serviceFactory('NonOrphanVisits', NonOrphanVisits, 'VisitsExporter');
+  bottle.serviceFactory('NonOrphanVisits', NonOrphanVisits, 'ReportExporter');
   bottle.decorator('NonOrphanVisits', connect(
     [ 'nonOrphanVisits', 'mercureInfo', 'settings', 'selectedServer' ],
     [ 'getNonOrphanVisits', 'cancelGetNonOrphanVisits', 'createNewVisits', 'loadMercureInfo' ],
@@ -44,7 +43,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Services
   bottle.serviceFactory('VisitsParser', () => visitsParser);
-  bottle.service('VisitsExporter', VisitsExporter, 'window', 'csvjson');
 
   // Actions
   bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');

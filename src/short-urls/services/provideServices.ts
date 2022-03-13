@@ -16,6 +16,7 @@ import QrCodeModal from '../helpers/QrCodeModal';
 import { ShortUrlForm } from '../ShortUrlForm';
 import { EditShortUrl } from '../EditShortUrl';
 import { getShortUrlDetail } from '../reducers/shortUrlDetail';
+import { ExportShortUrlsBtn } from '../helpers/ExportShortUrlsBtn';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -49,7 +50,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader', 'ForServerVersion');
   bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
 
-  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator');
+  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator', 'ExportShortUrlsBtn');
+
+  bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');
+  bottle.decorator('ExportShortUrlsBtn', connect([ 'selectedServer' ]));
 
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');

@@ -7,7 +7,7 @@ import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
+import { ReportExporter } from '../../src/common/services/ReportExporter';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -19,7 +19,7 @@ jest.mock('react-router-dom', () => ({
 describe('<ShortUrlVisits />', () => {
   let wrapper: ShallowWrapper;
   const getShortUrlVisitsMock = jest.fn();
-  const ShortUrlVisits = createShortUrlVisits(Mock.all<VisitsExporter>());
+  const ShortUrlVisits = createShortUrlVisits(Mock.all<ReportExporter>());
 
   beforeEach(() => {
     wrapper = shallow(

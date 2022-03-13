@@ -5,9 +5,8 @@ import { ExportBtn } from '../../src/utils/ExportBtn';
 
 describe('<ExportBtn />', () => {
   let wrapper: ShallowWrapper;
-  const onClick = jest.fn();
-  const createWrapper = (className?: string, amount?: number) => {
-    wrapper = shallow(<ExportBtn className={className} amount={amount} onClick={onClick} />);
+  const createWrapper = (amount?: number, loading = false) => {
+    wrapper = shallow(<ExportBtn amount={amount} loading={loading} />);
 
     return wrapper;
   };
@@ -16,16 +15,15 @@ describe('<ExportBtn />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined ],
-    [ 'foo' ],
-    [ 'bar' ],
-  ])('renders a button', (className) => {
-    const wrapper = createWrapper(className);
+    [ true, 'Exporting...' ],
+    [ false, 'Export (' ],
+  ])('renders a button', (loading, text) => {
+    const wrapper = createWrapper(undefined, loading);
 
     expect(wrapper.prop('outline')).toEqual(true);
     expect(wrapper.prop('color')).toEqual('primary');
-    expect(wrapper.prop('onClick')).toEqual(onClick);
-    expect(wrapper.prop('className')).toEqual(className);
+    expect(wrapper.prop('disabled')).toEqual(loading);
+    expect(wrapper.html()).toContain(text);
   });
 
   it.each([
@@ -34,7 +32,7 @@ describe('<ExportBtn />', () => {
     [ 10_000, '10,000' ],
     [ 10_000_000, '10,000,000' ],
   ])('renders expected amount', (amount, expectedRenderedAmount) => {
-    const wrapper = createWrapper(undefined, amount);
+    const wrapper = createWrapper(amount);
 
     expect(wrapper.html()).toContain(`Export (${expectedRenderedAmount})`);
   });
@@ -45,13 +43,5 @@ describe('<ExportBtn />', () => {
 
     expect(icon).toHaveLength(1);
     expect(icon.prop('icon')).toEqual(faFileDownload);
-  });
-
-  it('invokes callback onClick', () => {
-    const wrapper = createWrapper();
-
-    expect(onClick).not.toHaveBeenCalled();
-    wrapper.simulate('click');
-    expect(onClick).toHaveBeenCalledTimes(1);
   });
 });

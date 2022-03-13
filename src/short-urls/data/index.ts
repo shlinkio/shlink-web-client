@@ -63,3 +63,12 @@ export const SHORT_URLS_ORDERABLE_FIELDS = {
 export type ShortUrlsOrderableFields = keyof typeof SHORT_URLS_ORDERABLE_FIELDS;
 
 export type ShortUrlsOrder = Order<ShortUrlsOrderableFields>;
+
+export interface ExportableShortUrl {
+  createdAt: string;
+  title: string;
+  shortUrl: string;
+  longUrl: string;
+  tags: string;
+  visits: number;
+}

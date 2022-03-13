@@ -1,17 +1,16 @@
 import { FC } from 'react';
-import { Button } from 'reactstrap';
+import { Button, ButtonProps } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload } from '@fortawesome/free-solid-svg-icons';
 import { prettify } from './helpers/numbers';
 
-interface ExportBtnProps {
-  onClick: () => void;
+interface ExportBtnProps extends Omit<ButtonProps, 'outline' | 'color' | 'disabled'> {
   amount?: number;
-  className?: string;
+  loading?: boolean;
 }
 
-export const ExportBtn: FC<ExportBtnProps> = ({ onClick, className, amount = 0 }) => (
-  <Button outline color="primary" className={className} onClick={onClick}>
-    <FontAwesomeIcon icon={faFileDownload} /> Export ({prettify(amount)})
+export const ExportBtn: FC<ExportBtnProps> = ({ amount = 0, loading = false, ...rest }) => (
+  <Button {...rest} outline color="primary" disabled={loading}>
+    <FontAwesomeIcon icon={faFileDownload} /> {loading ? 'Exporting...' : <>Export ({prettify(amount)})</>}
   </Button>
 );

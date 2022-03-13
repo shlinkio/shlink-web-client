@@ -14,11 +14,11 @@ import { DateRange } from '../utils/dates/types';
 import { supportsAllTagsFiltering } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { TooltipToggleSwitch } from '../utils/TooltipToggleSwitch';
-import { ExportBtn } from '../utils/ExportBtn';
 import { OrderDir } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { SHORT_URLS_ORDERABLE_FIELDS, ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
+import { ExportShortUrlsBtnProps } from './helpers/ExportShortUrlsBtn';
 import './ShortUrlsFilteringBar.scss';
 
 export interface ShortUrlsFilteringProps {
@@ -26,13 +26,15 @@ export interface ShortUrlsFilteringProps {
   order: ShortUrlsOrder;
   handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
   className?: string;
+  shortUrlsAmount?: number;
 }
 
 const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
-const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilteringProps> => (
-  { selectedServer, className, order, handleOrderBy },
-) => {
+const ShortUrlsFilteringBar = (
+  colorGenerator: ColorGenerator,
+  ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
+): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy }) => {
   const [{ search, tags, startDate, endDate, tagsMode = 'any' }, toFirstPage ] = useShortUrlsQuery();
   const setDates = pipe(
     ({ startDate, endDate }: DateRange) => ({
@@ -61,7 +63,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
 
       <Row className="flex-column-reverse flex-lg-row">
         <div className="col-lg-4 col-xl-6 mt-3">
-          <ExportBtn className="btn-md-block" amount={4} onClick={() => {}} />
+          <ExportShortUrlsBtn amount={shortUrlsAmount} />
         </div>
         <div className="col-12 d-block d-lg-none mt-3">
           <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
