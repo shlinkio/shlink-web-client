@@ -14,7 +14,6 @@ export interface ShortUrlListRouteParams {
 }
 
 interface ShortUrlsQueryCommon {
-  tags?: string;
   search?: string;
   startDate?: string;
   endDate?: string;
@@ -23,10 +22,12 @@ interface ShortUrlsQueryCommon {
 
 interface ShortUrlsQuery extends ShortUrlsQueryCommon {
   orderBy?: string;
+  tags?: string;
 }
 
 interface ShortUrlsFiltering extends ShortUrlsQueryCommon {
   orderBy?: ShortUrlsOrder;
+  tags: string[];
 }
 
 export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
@@ -37,16 +38,22 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
   const query = useMemo(
     pipe(
       () => parseQuery<ShortUrlsQuery>(location.search),
-      ({ orderBy, ...rest }: ShortUrlsQuery): ShortUrlsFiltering => !orderBy ? rest : {
-        ...rest,
-        orderBy: stringToOrder<ShortUrlsOrderableFields>(orderBy),
+      ({ orderBy, tags, ...rest }: ShortUrlsQuery): ShortUrlsFiltering => {
+        const parsedOrderBy = orderBy ? stringToOrder<ShortUrlsOrderableFields>(orderBy) : undefined;
+        const parsedTags = tags?.split(',') ?? [];
+
+        return { ...rest, orderBy: parsedOrderBy, tags: parsedTags };
       },
     ),
     [ location.search ],
   );
   const toFirstPageWithExtra = (extra: Partial<ShortUrlsFiltering>) => {
-    const { orderBy, ...mergedQuery } = { ...query, ...extra };
-    const normalizedQuery: ShortUrlsQuery = { ...mergedQuery, orderBy: orderBy && orderToString(orderBy) };
+    const { orderBy, tags, ...mergedQuery } = { ...query, ...extra };
+    const normalizedQuery: ShortUrlsQuery = {
+      ...mergedQuery,
+      orderBy: orderBy && orderToString(orderBy),
+      tags: tags.length > 0 ? tags.join(',') : undefined,
+    };
     const evolvedQuery = stringifyQuery(normalizedQuery);
     const queryString = isEmpty(evolvedQuery) ? '' : `?${evolvedQuery}`;
 

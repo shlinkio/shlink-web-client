@@ -1,5 +1,5 @@
 import { pipe } from 'ramda';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Card } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
@@ -35,7 +35,6 @@ const ShortUrlsList = (
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
   );
-  const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
@@ -46,21 +45,21 @@ const ShortUrlsList = (
   const renderOrderIcon = (field: ShortUrlsOrderableFields) =>
     <TableOrderIcon currentOrder={actualOrderBy} field={field} />;
   const addTag = pipe(
-    (newTag: string) => [ ...new Set([ ...selectedTags, newTag ]) ].join(','),
-    (tags) => toFirstPage({ tags }),
+    (newTag: string) => [ ...new Set([ ...tags, newTag ]) ],
+    (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
 
   useEffect(() => {
     listShortUrls({
       page,
       searchTerm: search,
-      tags: selectedTags,
+      tags,
       startDate,
       endDate,
       orderBy: actualOrderBy,
       tagsMode,
     });
-  }, [ page, search, selectedTags, startDate, endDate, actualOrderBy, tagsMode ]);
+  }, [ page, search, tags, startDate, endDate, actualOrderBy, tagsMode ]);
 
   return (
     <>

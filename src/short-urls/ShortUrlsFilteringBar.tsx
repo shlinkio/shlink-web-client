@@ -34,7 +34,6 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
   { selectedServer, className, order, handleOrderBy },
 ) => {
   const [{ search, tags, startDate, endDate, tagsMode = 'any' }, toFirstPage ] = useShortUrlsQuery();
-  const selectedTags = tags?.split(',') ?? [];
   const setDates = pipe(
     ({ startDate, endDate }: DateRange) => ({
       startDate: formatIsoDate(startDate) ?? undefined,
@@ -47,9 +46,8 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
     (search) => toFirstPage({ search }),
   );
   const removeTag = pipe(
-    (tag: string) => selectedTags.filter((selectedTag) => selectedTag !== tag),
-    (tagsList) => tagsList.length === 0 ? undefined : tagsList.join(','),
-    (tags) => toFirstPage({ tags }),
+    (tag: string) => tags.filter((selectedTag) => selectedTag !== tag),
+    (updateTags) => toFirstPage({ tags: updateTags }),
   );
   const canChangeTagsMode = supportsAllTagsFiltering(selectedServer);
   const toggleTagsMode = pipe(
@@ -80,9 +78,9 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
         </div>
       </Row>
 
-      {selectedTags.length > 0 && (
+      {tags.length > 0 && (
         <h4 className="mt-3">
-          {canChangeTagsMode && selectedTags.length > 1 && (
+          {canChangeTagsMode && tags.length > 1 && (
             <div className="float-end ms-2 mt-1">
               <TooltipToggleSwitch
                 checked={tagsMode === 'all'}
@@ -94,7 +92,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
             </div>
           )}
           <FontAwesomeIcon icon={tagsIcon} className="short-urls-filtering-bar__tags-icon me-1" />
-          {selectedTags.map((tag) =>
+          {tags.map((tag) =>
             <Tag colorGenerator={colorGenerator} key={tag} text={tag} clearable onClose={() => removeTag(tag)} />)}
         </h4>
       )}
