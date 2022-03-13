@@ -2,7 +2,6 @@ import { pipe } from 'ramda';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Card } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
@@ -14,7 +13,7 @@ import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
-import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from './data';
+import { ShortUrlsOrderableFields } from './data';
 import { ShortUrlsFilteringProps } from './ShortUrlsFilteringBar';
 
 interface ShortUrlsListProps {
@@ -65,10 +64,12 @@ const ShortUrlsList = (
 
   return (
     <>
-      <ShortUrlsFilteringBar selectedServer={selectedServer} className="mb-3" />
-      <div className="d-block d-lg-none mb-3">
-        <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={actualOrderBy} onChange={handleOrderBy} />
-      </div>
+      <ShortUrlsFilteringBar
+        selectedServer={selectedServer}
+        order={actualOrderBy}
+        handleOrderBy={handleOrderBy}
+        className="mb-3"
+      />
       <Card body className="pb-1">
         <ShortUrlsTable
           selectedServer={selectedServer}

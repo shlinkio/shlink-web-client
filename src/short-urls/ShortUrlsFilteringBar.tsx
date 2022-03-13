@@ -15,18 +15,23 @@ import { supportsAllTagsFiltering } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { TooltipToggleSwitch } from '../utils/TooltipToggleSwitch';
 import { ExportBtn } from '../utils/ExportBtn';
+import { OrderDir } from '../utils/helpers/ordering';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { useShortUrlsQuery } from './helpers/hooks';
+import { SHORT_URLS_ORDERABLE_FIELDS, ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import './ShortUrlsFilteringBar.scss';
 
 export interface ShortUrlsFilteringProps {
   selectedServer: SelectedServer;
+  order: ShortUrlsOrder;
+  handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
   className?: string;
 }
 
 const dateOrNull = (date?: string) => date ? parseISO(date) : null;
 
 const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilteringProps> => (
-  { selectedServer, className },
+  { selectedServer, className, order, handleOrderBy },
 ) => {
   const [{ search, tags, startDate, endDate, tagsMode = 'any' }, toFirstPage ] = useShortUrlsQuery();
   const selectedTags = tags?.split(',') ?? [];
@@ -73,7 +78,7 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
       </Row>
 
       {selectedTags.length > 0 && (
-        <h4 className="mt-3">
+        <h4 className="my-3">
           {canChangeTagsMode && selectedTags.length > 1 && (
             <div className="float-end ms-2 mt-1">
               <TooltipToggleSwitch
@@ -90,6 +95,10 @@ const ShortUrlsFilteringBar = (colorGenerator: ColorGenerator): FC<ShortUrlsFilt
             <Tag colorGenerator={colorGenerator} key={tag} text={tag} clearable onClose={() => removeTag(tag)} />)}
         </h4>
       )}
+
+      <div className="d-block d-lg-none mb-3">
+        <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
+      </div>
     </div>
   );
 };
