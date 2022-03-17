@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import { splitEvery } from 'ramda';
-import { RouteChildrenProps } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { SimpleCard } from '../utils/SimpleCard';
 import SimplePaginator from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
@@ -18,10 +18,11 @@ export interface TagsTableProps extends TagsListChildrenProps {
 const TAGS_PER_PAGE = 20; // TODO Allow customizing this value in settings
 
 export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
-  { sortedTags, selectedServer, location, orderByColumn, currentOrder }: TagsTableProps & RouteChildrenProps,
+  { sortedTags, selectedServer, orderByColumn, currentOrder }: TagsTableProps,
 ) => {
   const isFirstLoad = useRef(true);
-  const { page: pageFromQuery = 1 } = parseQuery<{ page?: number | string }>(location.search);
+  const { search } = useLocation();
+  const { page: pageFromQuery = 1 } = parseQuery<{ page?: number | string }>(search);
   const [ page, setPage ] = useQueryState<number>('page', Number(pageFromQuery));
   const pages = splitEvery(TAGS_PER_PAGE, sortedTags);
   const showPaginator = pages.length > 1;
@@ -37,16 +38,16 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
 
   return (
     <SimpleCard key={page} bodyClassName={showPaginator ? 'pb-1' : ''}>
-      <table className="table table-hover mb-0">
+      <table className="table table-hover responsive-table mb-0">
         <thead className="responsive-table__header">
           <tr>
             <th className="tags-table__header-cell" onClick={orderByColumn('tag')}>
               Tag <TableOrderIcon currentOrder={currentOrder} field="tag" />
             </th>
-            <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('shortUrls')}>
+            <th className="tags-table__header-cell text-lg-end" onClick={orderByColumn('shortUrls')}>
               Short URLs <TableOrderIcon currentOrder={currentOrder} field="shortUrls" />
             </th>
-            <th className="tags-table__header-cell text-lg-right" onClick={orderByColumn('visits')}>
+            <th className="tags-table__header-cell text-lg-end" onClick={orderByColumn('visits')}>
               Visits <TableOrderIcon currentOrder={currentOrder} field="visits" />
             </th>
             <th className="tags-table__header-cell" />

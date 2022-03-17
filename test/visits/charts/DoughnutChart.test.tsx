@@ -19,9 +19,9 @@ describe('<DoughnutChart />', () => {
 
     expect(doughnut).toHaveLength(1);
 
-    const { labels, datasets } = doughnut.prop('data');
+    const { labels, datasets } = doughnut.prop('data') as any;
     const [{ data, backgroundColor, borderColor }] = datasets;
-    const { plugins, scales } = doughnut.prop('options') ?? {};
+    const { plugins, scales } = (doughnut.prop('options') ?? {}) as any;
 
     expect(labels).toEqual(keys(stats));
     expect(data).toEqual(values(stats));

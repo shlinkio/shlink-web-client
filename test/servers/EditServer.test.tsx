@@ -1,43 +1,34 @@
 import { mount, ReactWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { History, Location } from 'history';
-import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { useNavigate } from 'react-router-dom';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
 import { ServerForm } from '../../src/servers/helpers/ServerForm';
 import { ReachableServer } from '../../src/servers/data';
+
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
 describe('<EditServer />', () => {
   let wrapper: ReactWrapper;
   const ServerError = jest.fn();
   const editServerMock = jest.fn();
-  const goBack = jest.fn();
-  const historyMock = Mock.of<History>({ goBack });
-  const match = Mock.of<match<{ serverId: string }>>({
-    params: { serverId: 'abc123' },
-  });
+  const navigate = jest.fn();
   const selectedServer = Mock.of<ReachableServer>({
     id: 'abc123',
     name: 'name',
     url: 'url',
     apiKey: 'apiKey',
   });
+  const EditServer = editServerConstruct(ServerError);
 
   beforeEach(() => {
-    const EditServer = editServerConstruct(ServerError);
+    (useNavigate as any).mockReturnValue(navigate);
 
     wrapper = mount(
-      <EditServer
-        editServer={editServerMock}
-        history={historyMock}
-        match={match}
-        location={Mock.all<Location>()}
-        selectedServer={selectedServer}
-        selectServer={jest.fn()}
-      />,
+      <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />,
     );
   });
 
-  afterEach(jest.resetAllMocks);
+  afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
   it('renders components', () => {
@@ -50,6 +41,6 @@ describe('<EditServer />', () => {
     form.simulate('submit', {});
 
     expect(editServerMock).toHaveBeenCalledTimes(1);
-    expect(goBack).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(-1);
   });
 });

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
-import { ChromePicker } from 'react-color';
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover, InputGroup } from 'reactstrap';
+import { HexColorPicker } from 'react-colorful';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -37,17 +37,24 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
       <form onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>
-          <div className="input-group">
-            <div className="input-group-prepend" id="colorPickerBtn" onClick={toggleColorPicker}>
-              <div
-                className="input-group-text edit-tag-modal__color-picker-toggle"
-                style={{ backgroundColor: color, borderColor: color }}
-              >
-                <FontAwesomeIcon icon={colorIcon} className="edit-tag-modal__color-icon" />
-              </div>
+          <InputGroup>
+            <div
+              id="colorPickerBtn"
+              className="input-group-text edit-tag-modal__color-picker-toggle"
+              style={{ backgroundColor: color, borderColor: color }}
+              onClick={toggleColorPicker}
+            >
+              <FontAwesomeIcon icon={colorIcon} className="edit-tag-modal__color-icon" />
             </div>
-            <Popover isOpen={showColorPicker} toggle={toggleColorPicker} target="colorPickerBtn" placement="right">
-              <ChromePicker color={color} disableAlpha onChange={({ hex }) => setColor(hex)} />
+            <Popover
+              isOpen={showColorPicker}
+              toggle={toggleColorPicker}
+              target="colorPickerBtn"
+              placement="right"
+              hideArrow
+              popperClassName="edit-tag-modal__popover"
+            >
+              <HexColorPicker color={color} onChange={setColor} />
             </Popover>
             <Input
               value={newTagName}
@@ -55,7 +62,7 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
               required
               onChange={({ target }) => setNewTagName(target.value)}
             />
-          </div>
+          </InputGroup>
 
           {error && (
             <Result type="error" small className="mt-2">

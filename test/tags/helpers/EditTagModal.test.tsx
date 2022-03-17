@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { Button, Input, Modal, ModalHeader, Popover } from 'reactstrap';
-import { ChromePicker } from 'react-color';
+import { HexColorPicker } from 'react-colorful';
 import { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import createEditTagModal from '../../../src/tags/helpers/EditTagModal';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
@@ -92,9 +92,9 @@ describe('<EditTagModal />', () => {
   it('changes color when changing on color picker', () => {
     const wrapper = createWrapper();
 
-    expect(wrapper.find(ChromePicker).prop('color')).toEqual('red');
-    wrapper.find(ChromePicker).simulate('change', { hex: 'blue' });
-    expect(wrapper.find(ChromePicker).prop('color')).toEqual('blue');
+    expect(wrapper.find(HexColorPicker).prop('color')).toEqual('red');
+    wrapper.find(HexColorPicker).simulate('change', 'blue');
+    expect(wrapper.find(HexColorPicker).prop('color')).toEqual('blue');
   });
 
   it('allows toggling popover with different mechanisms', () => {
@@ -103,7 +103,7 @@ describe('<EditTagModal />', () => {
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
     (wrapper.find(Popover).prop('toggle') as Function)();
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(true);
-    wrapper.find('.input-group-prepend').simulate('click');
+    wrapper.find('div').simulate('click');
     expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
   });
 });

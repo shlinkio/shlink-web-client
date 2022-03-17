@@ -3,6 +3,8 @@ import { DropdownItem, FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
 import ToggleSwitch from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
+import { FormText } from '../utils/forms/FormText';
+import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 import { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 
 interface ShortUrlCreationProps {
@@ -31,10 +33,10 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           onChange={(validateUrls) => setShortUrlCreationSettings({ ...shortUrlCreation, validateUrls })}
         >
           Request validation on long URLs when creating new short URLs.
-          <small className="form-text text-muted">
+          <FormText>
             The initial state of the <b>Validate URL</b> checkbox will
             be <b>{shortUrlCreation.validateUrls ? 'checked' : 'unchecked'}</b>.
-          </small>
+          </FormText>
         </ToggleSwitch>
       </FormGroup>
       <FormGroup>
@@ -43,14 +45,13 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           onChange={(forwardQuery) => setShortUrlCreationSettings({ ...shortUrlCreation, forwardQuery })}
         >
           Make all new short URLs forward their query params to the long URL.
-          <small className="form-text text-muted">
+          <FormText>
             The initial state of the <b>Forward query params on redirect</b> checkbox will
             be <b>{shortUrlCreation.forwardQuery ?? true ? 'checked' : 'unchecked'}</b>.
-          </small>
+          </FormText>
         </ToggleSwitch>
       </FormGroup>
-      <FormGroup className="mb-0">
-        <label>Tag suggestions search mode:</label>
+      <LabeledFormGroup noMargin label="Tag suggestions search mode:">
         <DropdownBtn text={tagFilteringModeText(shortUrlCreation.tagFilteringMode)}>
           <DropdownItem
             active={!shortUrlCreation.tagFilteringMode || shortUrlCreation.tagFilteringMode === 'startsWith'}
@@ -65,10 +66,8 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
             {tagFilteringModeText('includes')}
           </DropdownItem>
         </DropdownBtn>
-        <small className="form-text text-muted">
-          {tagFilteringModeHint(shortUrlCreation.tagFilteringMode)}
-        </small>
-      </FormGroup>
+        <FormText>{tagFilteringModeHint(shortUrlCreation.tagFilteringMode)}</FormText>
+      </LabeledFormGroup>
     </SimpleCard>
   );
 };

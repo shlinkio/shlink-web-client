@@ -1,12 +1,12 @@
 import { FC, useRef } from 'react';
-import * as Popper from 'popper.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
+import { Placement } from '@popperjs/core';
 
 interface InfoTooltipProps {
   className?: string;
-  placement: Popper.Placement;
+  placement: Placement;
 }
 
 export const InfoTooltip: FC<InfoTooltipProps> = ({ className = '', placement, children }) => {

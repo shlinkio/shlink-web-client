@@ -6,11 +6,18 @@
   }
 }
 
+.responsive-table.table > :not(:first-child) {
+  @media (max-width: $responsiveTableBreakpoint) {
+    border: none;
+  }
+}
+
 .responsive-table__row {
   @media (max-width: $responsiveTableBreakpoint) {
     display: block;
     margin-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
+    border-top: 2px solid var(--border-color);
     position: relative;
   }
 }
@@ -38,5 +45,12 @@
       padding: 0;
       border: none;
     }
+  }
+}
+
+.responsive-table__cell.responsive-table__cell .btn-sm {
+  @media (max-width: $responsiveTableBreakpoint) {
+    padding: 0.1rem 0.4rem;
+    margin-top: 0.16rem;
   }
 }

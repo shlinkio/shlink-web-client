@@ -1,30 +1,31 @@
-@import '../utils/base';
+@import './base';
 
-.visits-stats__nav {
+.nav-pills__nav {
   position: sticky !important;
   top: $headerHeight - 1px;
   z-index: 2;
 }
 
-.visits-stats__nav-link {
+.nav-pills__nav-link.nav-pills__nav-link {
   border-radius: 0 !important;
   padding-bottom: calc(.5rem - 3px) !important;
-  border-bottom: 3px solid transparent;
+  border-bottom: 3px solid transparent !important;
   color: #5d6778;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
 
   @media (min-width: $smMin) and (max-width: $mdMax) {
     font-size: 89%;
   }
 }
 
-.visits-stats__nav-link:hover {
+.nav-pills__nav-link:hover {
   color: $mainColor !important;
 }
 
-.visits-stats__nav-link.active {
-  border-color: $mainColor;
+.nav-pills__nav-link.active {
+  border-color: $mainColor !important;
   background-color: var(--primary-color) !important;
   color: $mainColor !important;
 }

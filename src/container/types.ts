@@ -14,6 +14,7 @@ import { TagVisits } from '../visits/reducers/tagVisits';
 import { DomainsList } from '../domains/reducers/domainsList';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { VisitsInfo } from '../visits/types';
+import { Sidebar } from '../common/reducers/sidebar';
 
 export interface ShlinkState {
   servers: ServersMap;
@@ -25,6 +26,7 @@ export interface ShlinkState {
   shortUrlVisits: ShortUrlVisits;
   tagVisits: TagVisits;
   orphanVisits: VisitsInfo;
+  nonOrphanVisits: VisitsInfo;
   shortUrlDetail: ShortUrlDetail;
   tagsList: TagsList;
   tagDelete: TagDeletion;
@@ -34,6 +36,7 @@ export interface ShlinkState {
   domainsList: DomainsList;
   visitsOverview: VisitsOverview;
   appUpdated: boolean;
+  sidebar: Sidebar;
 }
 
 export type ConnectDecorator = (props: string[] | null, actions?: string[]) => any;

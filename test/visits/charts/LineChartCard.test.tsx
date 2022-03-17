@@ -85,7 +85,7 @@ describe('<LineChartCard />', () => {
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);
-    const { datasets } = chart.prop('data');
+    const { datasets } = chart.prop('data') as any;
 
     expect(datasets).toHaveLength(expectedLines);
   });
@@ -96,8 +96,8 @@ describe('<LineChartCard />', () => {
       Mock.of<NormalizedVisit>({ date: '2016-01-01' }),
     ]);
 
-    expect(wrapper.find(Line).prop('data').labels).toHaveLength(2);
+    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(2);
     wrapper.find(ToggleSwitch).simulate('change');
-    expect(wrapper.find(Line).prop('data').labels).toHaveLength(4);
+    expect((wrapper.find(Line).prop('data') as any).labels).toHaveLength(4);
   });
 });

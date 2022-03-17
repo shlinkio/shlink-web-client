@@ -15,6 +15,6 @@ export const DropdownBtnMenu: FC<DropdownBtnMenuProps> = ({ isOpen, toggle, chil
     <DropdownToggle size="sm" caret outline className="dropdown-btn-menu__dropdown-toggle">
       &nbsp;<FontAwesomeIcon icon={menuIcon} />&nbsp;
     </DropdownToggle>
-    <DropdownMenu right={right}>{children}</DropdownMenu>
+    <DropdownMenu end={right}>{children}</DropdownMenu>
   </ButtonDropdown>
 );

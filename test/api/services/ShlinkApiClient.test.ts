@@ -313,6 +313,20 @@ describe('ShlinkApiClient', () => {
     });
   });
 
+  describe('getNonOrphanVisits', () => {
+    it('returns non-orphan visits', async () => {
+      const expectedData: Visit[] = [];
+      const resp = { visits: expectedData };
+      const axiosSpy = createAxiosMock({ data: resp });
+      const { getNonOrphanVisits } = new ShlinkApiClient(axiosSpy, '', '');
+
+      const result = await getNonOrphanVisits();
+
+      expect(axiosSpy).toHaveBeenCalled();
+      expect(result).toEqual(expectedData);
+    });
+  });
+
   describe('editDomainRedirects', () => {
     it('returns the redirects', async () => {
       const resp = { baseUrlRedirect: null, regular404Redirect: 'foo', invalidShortUrlRedirect: 'bar' };

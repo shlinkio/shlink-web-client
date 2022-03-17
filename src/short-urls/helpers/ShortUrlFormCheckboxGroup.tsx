@@ -12,7 +12,7 @@ export const ShortUrlFormCheckboxGroup: FC<ShortUrlFormCheckboxGroupProps> = (
   { children, infoTooltip, checked, onChange },
 ) => (
   <p>
-    <Checkbox inline checked={checked} className={infoTooltip ? 'mr-2' : ''} onChange={onChange}>
+    <Checkbox inline checked={checked} className={infoTooltip ? 'me-2' : ''} onChange={onChange}>
       {children}
     </Checkbox>
     {infoTooltip && <InfoTooltip placement="right">{infoTooltip}</InfoTooltip>}

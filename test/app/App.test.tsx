@@ -1,11 +1,14 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Route } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { match } from 'react-router';
-import { History, Location } from 'history';
 import { Settings } from '../../src/settings/reducers/settings';
 import appFactory from '../../src/app/App';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
 
 describe('<App />', () => {
   let wrapper: ShallowWrapper;
@@ -21,7 +24,7 @@ describe('<App />', () => {
     () => null,
     ShlinkVersions,
   );
-  const createWrapper = (pathname = '') => {
+  const createWrapper = () => {
     wrapper = shallow(
       <App
         fetchServers={() => {}}
@@ -29,16 +32,14 @@ describe('<App />', () => {
         settings={Mock.all<Settings>()}
         appUpdated={false}
         resetAppUpdate={() => {}}
-        match={Mock.all<match>()}
-        history={Mock.all<History>()}
-        location={Mock.of<Location>({ pathname })}
       />,
     );
 
     return wrapper;
   };
 
-  afterEach(() => wrapper.unmount());
+  afterEach(jest.clearAllMocks);
+  afterEach(() => wrapper?.unmount());
 
   it('renders children components', () => {
     const wrapper = createWrapper();
@@ -52,12 +53,12 @@ describe('<App />', () => {
     const wrapper = createWrapper();
     const routes = wrapper.find(Route);
     const expectedPaths = [
-      '/',
-      '/settings',
+      undefined,
+      '/settings/*',
       '/manage-servers',
       '/server/create',
       '/server/:serverId/edit',
-      '/server/:serverId',
+      '/server/:serverId/*',
     ];
 
     expect.assertions(expectedPaths.length + 1);
@@ -72,7 +73,9 @@ describe('<App />', () => {
     [ '/bar', 'shlink-wrapper' ],
     [ '/', 'shlink-wrapper d-flex d-md-block align-items-center' ],
   ])('renders expected classes on shlink-wrapper based on current pathname', (pathname, expectedClasses) => {
-    const wrapper = createWrapper(pathname);
+    (useLocation as any).mockReturnValue({ pathname }); // eslint-disable-line @typescript-eslint/no-unsafe-call
+
+    const wrapper = createWrapper();
     const shlinkWrapper = wrapper.find('.shlink-wrapper');
 
     expect(shlinkWrapper.prop('className')).toEqual(expectedClasses);

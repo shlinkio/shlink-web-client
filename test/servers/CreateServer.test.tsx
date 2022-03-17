@@ -1,27 +1,29 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { History } from 'history';
+import { useNavigate } from 'react-router-dom';
 import createServerConstruct from '../../src/servers/CreateServer';
 import { ServerForm } from '../../src/servers/helpers/ServerForm';
 import { ServerWithId } from '../../src/servers/data';
 import { DuplicatedServersModal } from '../../src/servers/helpers/DuplicatedServersModal';
 
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
+
 describe('<CreateServer />', () => {
   let wrapper: ShallowWrapper;
   const ImportServersBtn = () => null;
   const createServerMock = jest.fn();
-  const push = jest.fn();
-  const goBack = jest.fn();
-  const historyMock = Mock.of<History>({ push, goBack });
+  const navigate = jest.fn();
   const servers = { foo: Mock.all<ServerWithId>() };
   const createWrapper = (serversImported = false, importFailed = false) => {
+    (useNavigate as any).mockReturnValue(navigate);
+
     const useStateFlagTimeout = jest.fn()
       .mockReturnValueOnce([ serversImported, () => '' ])
       .mockReturnValueOnce([ importFailed, () => '' ])
       .mockReturnValue([]);
     const CreateServer = createServerConstruct(ImportServersBtn, useStateFlagTimeout);
 
-    wrapper = shallow(<CreateServer createServer={createServerMock} history={historyMock} servers={servers} />);
+    wrapper = shallow(<CreateServer createServer={createServerMock} servers={servers} />);
 
     return wrapper;
   };
@@ -68,7 +70,7 @@ describe('<CreateServer />', () => {
     wrapper.find(DuplicatedServersModal).simulate('save');
 
     expect(createServerMock).toHaveBeenCalledTimes(1);
-    expect(push).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledTimes(1);
   });
 
   it('goes back on modal discard', () => {
@@ -76,6 +78,6 @@ describe('<CreateServer />', () => {
 
     wrapper.find(DuplicatedServersModal).simulate('discard');
 
-    expect(goBack).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(-1);
   });
 });

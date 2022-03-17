@@ -1,5 +1,4 @@
 import Bottle, { IContainer } from 'bottlejs';
-import { withRouter } from 'react-router-dom';
 import { connect as reduxConnect } from 'react-redux';
 import { pick } from 'ramda';
 import provideApiServices from '../api/services/provideServices';
@@ -34,11 +33,11 @@ const connect: ConnectDecorator = (propsFromState: string[] | null, actionServic
     actionServiceNames.reduce(mapActionService, {}),
   );
 
-provideAppServices(bottle, connect, withRouter);
-provideCommonServices(bottle, connect, withRouter);
+provideAppServices(bottle, connect);
+provideCommonServices(bottle, connect);
 provideApiServices(bottle);
-provideShortUrlsServices(bottle, connect, withRouter);
-provideServersServices(bottle, connect, withRouter);
+provideShortUrlsServices(bottle, connect);
+provideServersServices(bottle, connect);
 provideTagsServices(bottle, connect);
 provideVisitsServices(bottle, connect);
 provideUtilsServices(bottle);

@@ -222,8 +222,8 @@ const LineChartCard = (
   };
   const renderLineChart = () => (
     <Line
-      data={generateChartData()}
-      options={options}
+      data={generateChartData() as any}
+      options={options as any}
       getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
     />
   );
@@ -232,12 +232,12 @@ const LineChartCard = (
     <Card>
       <CardHeader>
         {title}
-        <div className="float-right">
+        <div className="float-end">
           <UncontrolledDropdown>
             <DropdownToggle caret color="link" className="btn-sm p-0">
               Group by
             </DropdownToggle>
-            <DropdownMenu right>
+            <DropdownMenu end>
               {Object.entries(STEPS_MAP).map(([ value, menuText ]) => (
                 <DropdownItem key={value} active={step === value} onClick={() => setStep(value as Step)}>
                   {menuText}
@@ -246,7 +246,7 @@ const LineChartCard = (
             </DropdownMenu>
           </UncontrolledDropdown>
         </div>
-        <div className="float-right mr-2">
+        <div className="float-end me-2">
           <ToggleSwitch checked={skipNoVisits} onChange={toggleSkipNoVisits}>
             <small>Skip dates with no visits</small>
           </ToggleSwitch>

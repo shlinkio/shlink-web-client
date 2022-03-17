@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { InputType } from 'reactstrap/lib/Input';
+import { InputType } from 'reactstrap/types/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import classNames from 'classnames';
@@ -86,15 +86,13 @@ export const ShortUrlForm = (
     </FormGroup>
   );
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateInputProps> = {}) => (
-    <div className="form-group">
-      <DateInput
-        selected={shortUrlData[id] ? toDate(shortUrlData[id] as string | Date) : null}
-        placeholderText={placeholder}
-        isClearable
-        onChange={(date) => setShortUrlData({ ...shortUrlData, [id]: date })}
-        {...props}
-      />
-    </div>
+    <DateInput
+      selected={shortUrlData[id] ? toDate(shortUrlData[id] as string | Date) : null}
+      placeholderText={placeholder}
+      isClearable
+      onChange={(date) => setShortUrlData({ ...shortUrlData, [id]: date })}
+      {...props}
+    />
   );
   const basicComponents = (
     <>
@@ -110,9 +108,9 @@ export const ShortUrlForm = (
       </FormGroup>
       <Row>
         {isBasicMode && renderOptionalInput('customSlug', 'Custom slug', 'text', { bsSize: 'lg' }, { className: 'col-lg-6' })}
-        <FormGroup className={isBasicMode ? 'col-lg-6' : 'col-12 mb-0'}>
+        <div className={isBasicMode ? 'col-lg-6' : 'col-12 mb-0'}>
           <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
-        </FormGroup>
+        </div>
       </Row>
     </>
   );
@@ -154,12 +152,10 @@ export const ShortUrlForm = (
                           })}
                         </div>
                       </Row>
-                      <FormGroup>
-                        <DomainSelector
-                          value={shortUrlData.domain}
-                          onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                        />
-                      </FormGroup>
+                      <DomainSelector
+                        value={shortUrlData.domain}
+                        onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                      />
                     </>
                   )}
                 </SimpleCard>
@@ -169,7 +165,9 @@ export const ShortUrlForm = (
             <div className={limitAccessCardClasses}>
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
-                {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? toDate(shortUrlData.validUntil) : undefined })}
+                <div className="mb-3">
+                  {renderDateInput('validSince', 'Enabled since...', { maxDate: shortUrlData.validUntil ? toDate(shortUrlData.validUntil) : undefined })}
+                </div>
                 {renderDateInput('validUntil', 'Enabled until...', { minDate: shortUrlData.validSince ? toDate(shortUrlData.validSince) : undefined })}
               </SimpleCard>
             </div>
@@ -189,7 +187,7 @@ export const ShortUrlForm = (
                   <p>
                     <Checkbox
                       inline
-                      className="mr-2"
+                      className="me-2"
                       checked={shortUrlData.findIfExists}
                       onChange={(findIfExists) => setShortUrlData({ ...shortUrlData, findIfExists })}
                     >

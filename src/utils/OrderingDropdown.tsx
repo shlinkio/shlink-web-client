@@ -35,7 +35,7 @@ export function OrderingDropdown<T extends string = string>(
         {isButton && order.field && `Order by: "${items[order.field]}" - "${order.dir ?? 'DESC'}"`}
       </DropdownToggle>
       <DropdownMenu
-        right={right}
+        end={right}
         className={classNames('w-100', { 'ordering-dropdown__menu--link': !isButton })}
       >
         {toPairs(items).map(([ fieldKey, fieldValue ]) => (

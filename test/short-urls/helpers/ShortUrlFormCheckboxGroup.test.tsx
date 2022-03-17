@@ -6,7 +6,7 @@ import { InfoTooltip } from '../../../src/utils/InfoTooltip';
 describe('<ShortUrlFormCheckboxGroup />', () => {
   it.each([
     [ undefined, '', 0 ],
-    [ 'This is the tooltip', 'mr-2', 1 ],
+    [ 'This is the tooltip', 'me-2', 1 ],
   ])('renders tooltip only when provided', (infoTooltip, expectedClassName, expectedAmountOfTooltips) => {
     const wrapper = shallow(<ShortUrlFormCheckboxGroup infoTooltip={infoTooltip} />);
     const checkbox = wrapper.find(Checkbox);

@@ -8,6 +8,7 @@ import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
+import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
 import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
@@ -17,6 +18,7 @@ import settingsReducer from '../settings/reducers/settings';
 import domainsListReducer from '../domains/reducers/domainsList';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import appUpdatesReducer from '../app/reducers/appUpdates';
+import sidebarReducer from '../common/reducers/sidebar';
 import { ShlinkState } from '../container/types';
 
 export default combineReducers<ShlinkState>({
@@ -29,6 +31,7 @@ export default combineReducers<ShlinkState>({
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
   orphanVisits: orphanVisitsReducer,
+  nonOrphanVisits: nonOrphanVisitsReducer,
   shortUrlDetail: shortUrlDetailReducer,
   tagsList: tagsListReducer,
   tagDelete: tagDeleteReducer,
@@ -38,4 +41,5 @@ export default combineReducers<ShlinkState>({
   domainsList: domainsListReducer,
   visitsOverview: visitsOverviewReducer,
   appUpdated: appUpdatesReducer,
+  sidebar: sidebarReducer,
 });

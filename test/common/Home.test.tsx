@@ -1,19 +1,18 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { RouteChildrenProps } from 'react-router-dom';
 import Home, { HomeProps } from '../../src/common/Home';
 import { ServerWithId } from '../../src/servers/data';
 import { ShlinkLogo } from '../../src/common/img/ShlinkLogo';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+}));
+
 describe('<Home />', () => {
   let wrapped: ShallowWrapper;
-  const defaultProps = {
-    ...Mock.all<RouteChildrenProps>(),
-    resetSelectedServer: jest.fn(),
-    servers: {},
-  };
   const createComponent = (props: Partial<HomeProps> = {}) => {
-    const actualProps = { ...defaultProps, ...props };
+    const actualProps = { resetSelectedServer: jest.fn(), servers: {}, ...props };
 
     wrapped = shallow(<Home {...actualProps} />);
 

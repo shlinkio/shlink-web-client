@@ -95,7 +95,7 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   const computeTitle = () => (
     <>
       {title}
-      <div className="float-right">
+      <div className="float-end">
         <OrderingDropdown
           isButton={false}
           right
@@ -108,9 +108,9 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
         />
       </div>
       {withPagination && Object.keys(stats).length > 50 && (
-        <div className="float-right">
+        <div className="float-end">
           <PaginationDropdown
-            toggleClassName="btn-sm p-0 mr-3"
+            toggleClassName="btn-sm p-0 me-3"
             ranges={[ 50, 100, 200, 500 ]}
             value={itemsPerPage}
             setValue={(itemsPerPage) => {
@@ -121,7 +121,7 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
         </div>
       )}
       {extraHeaderContent && (
-        <div className="float-right">
+        <div className="float-end">
           {extraHeaderContent(pagination ? activeCities : undefined)}
         </div>
       )}

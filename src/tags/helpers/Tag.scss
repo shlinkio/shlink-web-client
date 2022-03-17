@@ -2,6 +2,10 @@
   color: #fff;
 }
 
+.tag--light-bg {
+    color: #222 !important;
+}
+
 .tag:not(:last-child) {
   margin-right: 3px;
 }

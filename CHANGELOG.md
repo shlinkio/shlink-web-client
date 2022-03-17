@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.6.0] - 2022-03-17
+### Added
+* [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.
+* [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together when consuming Shlink 3.0.0.
+* [#556](https://github.com/shlinkio/shlink-web-client/pull/556) Added support to filter short URLs list by "all" tags when consuming Shlink 3.0.0.
+* [#549](https://github.com/shlinkio/shlink-web-client/pull/549) Allowed to export the list of short URLs as CSV.
+
+### Changed
+* [#543](https://github.com/shlinkio/shlink-web-client/pull/543) Redesigned settings section.
+* [#567](https://github.com/shlinkio/shlink-web-client/pull/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
+* [#448](https://github.com/shlinkio/shlink-web-client/pull/448) Updated to bootstrap v5.
+* [#524](https://github.com/shlinkio/shlink-web-client/pull/524) Updated to react-router v6.
+* [#576](https://github.com/shlinkio/shlink-web-client/pull/576) Updated to fontawesome v6.
+* [#579](https://github.com/shlinkio/shlink-web-client/pull/579) Replaced react-color with react-colorful.
+* [#564](https://github.com/shlinkio/shlink-web-client/pull/564) Updated most of the dependencies.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#589](https://github.com/shlinkio/shlink-web-client/pull/589) Fixed alignment of shlink versions footer, by basing the logic on the presence of the sidebar instead of selected server.
+
+
 ## [3.5.1] - 2022-01-08
 ### Added
 * *Nothing*

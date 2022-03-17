@@ -1,15 +1,17 @@
 import classNames from 'classnames';
-import { isReachableServer, SelectedServer } from '../servers/data';
+import { SelectedServer } from '../servers/data';
 import ShlinkVersions from './ShlinkVersions';
+import { Sidebar } from './reducers/sidebar';
 import './ShlinkVersionsContainer.scss';
 
 export interface ShlinkVersionsContainerProps {
   selectedServer: SelectedServer;
+  sidebar: Sidebar;
 }
 
-const ShlinkVersionsContainer = ({ selectedServer }: ShlinkVersionsContainerProps) => {
+const ShlinkVersionsContainer = ({ selectedServer, sidebar }: ShlinkVersionsContainerProps) => {
   const classes = classNames('text-center', {
-    'shlink-versions-container--with-server': isReachableServer(selectedServer),
+    'shlink-versions-container--with-sidebar': sidebar.sidebarPresent,
   });
 
   return (

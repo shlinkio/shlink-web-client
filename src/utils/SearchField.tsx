@@ -47,13 +47,11 @@ const SearchField = ({ onChange, className, large = true, noBorder = false, init
       />
       <FontAwesomeIcon icon={searchIcon} className="search-field__icon" />
       <div
-        className="close search-field__close"
+        className="close search-field__close btn-close"
         hidden={searchTerm === ''}
         id="search-field__close"
         onClick={() => searchTermChanged('', 0)}
-      >
-        &times;
-      </div>
+      />
     </div>
   );
 };

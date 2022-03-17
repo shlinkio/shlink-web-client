@@ -1,6 +1,7 @@
 import { Mock } from 'ts-mockery';
 import ColorGenerator from '../../../src/utils/services/ColorGenerator';
 import LocalStorage from '../../../src/utils/services/LocalStorage';
+import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
@@ -43,5 +44,20 @@ describe('ColorGenerator', () => {
     expect(colorGenerator.getColorForKey(' FoO  ')).toEqual(color);
     expect(storageMock.set).toHaveBeenCalledTimes(1);
     expect(storageMock.get).toHaveBeenCalledTimes(1);
+  });
+
+  describe('isColorLightForKey', () => {
+    it.each([
+      [ MAIN_COLOR, true ],
+      [ '#8A661C', false ],
+      [ '#F7BE05', true ],
+      [ '#5A02D8', false ],
+      [ '#202786', false ],
+    ])('returns that the color for a key is light based on the color assigned to that key', (color, isLight) => {
+      colorGenerator.setColorForKey('foo', color);
+
+      expect(isLight).toEqual(colorGenerator.isColorLightForKey('foo'));
+      expect(isLight).toEqual(colorGenerator.isColorLightForKey('foo')); // To cover when color is already calculated
+    });
   });
 });

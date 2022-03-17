@@ -1,15 +1,15 @@
-import { RouteComponentProps } from 'react-router';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
+import { useGoBack } from '../utils/helpers/hooks';
+import { ReportExporter } from '../common/services/ReportExporter';
 import VisitsStats from './VisitsStats';
 import { OrphanVisitsHeader } from './OrphanVisitsHeader';
 import { NormalizedVisit, OrphanVisitType, VisitsInfo, VisitsParams } from './types';
-import { VisitsExporter } from './services/VisitsExporter';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 
-export interface OrphanVisitsProps extends CommonVisitsProps, RouteComponentProps {
+export interface OrphanVisitsProps extends CommonVisitsProps {
   getOrphanVisits: (
     params?: ShlinkVisitsParams,
     orphanVisitsType?: OrphanVisitType,
@@ -19,15 +19,14 @@ export interface OrphanVisitsProps extends CommonVisitsProps, RouteComponentProp
   cancelGetOrphanVisits: () => void;
 }
 
-export const OrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub(({
-  history: { goBack },
-  match: { url },
+export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
   getOrphanVisits,
   orphanVisits,
   cancelGetOrphanVisits,
   settings,
   selectedServer,
 }: OrphanVisitsProps) => {
+  const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
   const loadVisits = (params: VisitsParams, doIntervalFallback?: boolean) =>
     getOrphanVisits(toApiParams(params), params.filter?.orphanVisitsType, doIntervalFallback);
@@ -37,7 +36,6 @@ export const OrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercure
       getVisits={loadVisits}
       cancelGetVisits={cancelGetOrphanVisits}
       visitsInfo={orphanVisits}
-      baseUrl={url}
       settings={settings}
       exportCsv={exportCsv}
       selectedServer={selectedServer}

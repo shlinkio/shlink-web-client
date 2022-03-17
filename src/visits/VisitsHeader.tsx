@@ -17,13 +17,13 @@ const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, childre
   <header>
     <Card body>
       <h2 className="d-flex justify-content-between align-items-center mb-0">
-        <Button color="link" size="lg" className="p-0 mr-3" onClick={goBack}>
+        <Button color="link" size="lg" className="p-0 me-3" onClick={goBack}>
           <FontAwesomeIcon icon={faArrowLeft} />
         </Button>
         <span className="text-center d-none d-sm-block">
           <small>{title}</small>
         </span>
-        <span className="badge badge-main ml-3">
+        <span className="badge badge-main ms-3">
           Visits:{' '}
           <ShortUrlVisitsCount visitsCount={visits.length} shortUrl={shortUrl} />
         </span>

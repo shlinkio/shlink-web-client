@@ -4,7 +4,7 @@
 $lightPrimaryColor: #ffffff;
 $lightPrimaryColorAlfa: rgba($lightPrimaryColor, .5);
 $lightSecondaryColor: $lightColor;
-$lightTextColor: #212529;
+$lightTextColor: #232323;
 $lightBorderColor: rgba(0, 0, 0, .125);
 $lightTableBorderColor: $mediumGrey;
 $lightActiveColor: $lightGrey;
@@ -44,6 +44,7 @@ html:not([data-theme='dark']) {
   --input-text-color: #{$lightInputTextColor};
   --table-border-color: #{$lightTableBorderColor};
   --table-highlight-color: #{$lightTableHighlightColor};
+  --btn-close-filter: initial;
 }
 
 html[data-theme='dark'] {
@@ -60,4 +61,5 @@ html[data-theme='dark'] {
   --input-text-color: #{$darkInputTextColor};
   --table-border-color: #{$darkTableBorderColor};
   --table-highlight-color: #{$darkTableHighlightColor};
+  --btn-close-filter: invert(1);
 }

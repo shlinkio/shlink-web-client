@@ -113,8 +113,8 @@ export const HorizontalBarChart: FC<HorizontalBarChartProps> = (
   const renderChartComponent = (customKey: string) => (
     <Bar
       key={`${height}_${customKey}`}
-      data={chartData}
-      options={options}
+      data={chartData as any}
+      options={options as any}
       height={height}
       getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
     />

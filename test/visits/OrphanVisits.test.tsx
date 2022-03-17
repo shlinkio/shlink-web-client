@@ -1,23 +1,26 @@
 import { shallow } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { History, Location } from 'history';
-import { match } from 'react-router'; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { OrphanVisits as createOrphanVisits } from '../../src/visits/OrphanVisits';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { VisitsInfo } from '../../src/visits/types';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { OrphanVisitsHeader } from '../../src/visits/OrphanVisitsHeader';
 import { Settings } from '../../src/settings/reducers/settings';
-import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
+import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: jest.fn().mockReturnValue(jest.fn()),
+  useParams: jest.fn().mockReturnValue({}),
+}));
 
 describe('<OrphanVisits />', () => {
   it('wraps visits stats and header', () => {
-    const goBack = jest.fn();
     const getOrphanVisits = jest.fn();
     const cancelGetOrphanVisits = jest.fn();
     const orphanVisits = Mock.all<VisitsInfo>();
-    const OrphanVisits = createOrphanVisits(Mock.all<VisitsExporter>());
+    const OrphanVisits = createOrphanVisits(Mock.all<ReportExporter>());
 
     const wrapper = shallow(
       <OrphanVisits
@@ -25,9 +28,6 @@ describe('<OrphanVisits />', () => {
         getOrphanVisits={getOrphanVisits}
         orphanVisits={orphanVisits}
         cancelGetOrphanVisits={cancelGetOrphanVisits}
-        history={Mock.of<History>({ goBack })}
-        location={Mock.all<Location>()}
-        match={Mock.of<match>({ url: 'the_base_url' })}
         settings={Mock.all<Settings>()}
         selectedServer={Mock.all<SelectedServer>()}
       />,
@@ -39,8 +39,8 @@ describe('<OrphanVisits />', () => {
     expect(header).toHaveLength(1);
     expect(stats.prop('cancelGetVisits')).toEqual(cancelGetOrphanVisits);
     expect(stats.prop('visitsInfo')).toEqual(orphanVisits);
-    expect(stats.prop('baseUrl')).toEqual('the_base_url');
+    expect(stats.prop('isOrphanVisits')).toEqual(true);
     expect(header.prop('orphanVisits')).toEqual(orphanVisits);
-    expect(header.prop('goBack')).toEqual(goBack);
+    expect(header.prop('goBack')).toEqual(expect.any(Function));
   });
 });

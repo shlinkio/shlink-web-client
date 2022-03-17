@@ -1,6 +1,9 @@
 @import '../utils/base';
 @import '../utils/mixins/vertical-align';
 
+$mainCardWidth: 720px;
+$fiveColumnsSize: .4167; // 12 / 5 -> Can't use "/" operator in latest dart-sass
+
 .home {
   position: relative;
   padding-top: 15px;
@@ -21,12 +24,12 @@
 .home__logo {
   @include vertical-align();
 
-  width: calc(100% - 3rem);
+  width: calc(#{$mainCardWidth * $fiveColumnsSize} - 3rem);
 }
 
 .home__main-card {
   margin: 0 auto;
-  max-width: 720px;
+  max-width: $mainCardWidth;
 
   @media (min-width: $mdMin) {
     @include vertical-align();

@@ -3,6 +3,11 @@ import { Mock } from 'ts-mockery';
 import asideMenuCreator from '../../src/common/AsideMenu';
 import { ReachableServer } from '../../src/servers/data';
 
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({ pathname: '' }),
+}));
+
 describe('<AsideMenu />', () => {
   let wrapped: ShallowWrapper;
   const DeleteServerButton = () => null;

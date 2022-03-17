@@ -95,7 +95,7 @@ describe('<QrCodeModal />', () => {
     const firstCol = wrapper.find(Row).find(FormGroup).first();
 
     expect(dropdownsLength).toEqual(expectedAmountOfDropdowns);
-    expect(firstCol.prop('className')).toEqual(expectedRangeClass);
+    expect(firstCol.prop('className')).toEqual(`d-grid ${expectedRangeClass}`);
   });
 
   it('saves the QR code image when clicking the Download button', () => {
