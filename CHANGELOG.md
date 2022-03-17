@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.6.0] - 2022-03-17
 ### Added
 * [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.
 * [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together when consuming Shlink 3.0.0.
