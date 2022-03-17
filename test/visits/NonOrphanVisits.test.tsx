@@ -6,7 +6,7 @@ import { VisitsInfo } from '../../src/visits/types';
 import VisitsStats from '../../src/visits/VisitsStats';
 import { NonOrphanVisitsHeader } from '../../src/visits/NonOrphanVisitsHeader';
 import { Settings } from '../../src/settings/reducers/settings';
-import { VisitsExporter } from '../../src/visits/services/VisitsExporter';
+import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
 
 jest.mock('react-router-dom', () => ({
@@ -20,7 +20,7 @@ describe('<NonOrphanVisits />', () => {
     const getNonOrphanVisits = jest.fn();
     const cancelGetNonOrphanVisits = jest.fn();
     const nonOrphanVisits = Mock.all<VisitsInfo>();
-    const NonOrphanVisits = createNonOrphanVisits(Mock.all<VisitsExporter>());
+    const NonOrphanVisits = createNonOrphanVisits(Mock.all<ReportExporter>());
 
     const wrapper = shallow(
       <NonOrphanVisits

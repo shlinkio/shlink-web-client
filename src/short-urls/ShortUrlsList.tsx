@@ -1,8 +1,7 @@
 import { pipe } from 'ramda';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Card } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
 import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
@@ -14,7 +13,8 @@ import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
 import Paginator from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
-import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from './data';
+import { ShortUrlsOrderableFields } from './data';
+import { ShortUrlsFilteringProps } from './ShortUrlsFilteringBar';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;
@@ -23,12 +23,10 @@ interface ShortUrlsListProps {
   settings: Settings;
 }
 
-const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteringBar: FC) => boundToMercureHub(({
-  listShortUrls,
-  shortUrlsList,
-  selectedServer,
-  settings,
-}: ShortUrlsListProps) => {
+const ShortUrlsList = (
+  ShortUrlsTable: FC<ShortUrlsTableProps>,
+  ShortUrlsFilteringBar: FC<ShortUrlsFilteringProps>,
+) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer, settings }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
@@ -37,7 +35,6 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
   );
-  const selectedTags = useMemo(() => tags?.split(',') ?? [], [ tags ]);
   const { pagination } = shortUrlsList?.shortUrls ?? {};
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
@@ -48,28 +45,31 @@ const ShortUrlsList = (ShortUrlsTable: FC<ShortUrlsTableProps>, ShortUrlsFilteri
   const renderOrderIcon = (field: ShortUrlsOrderableFields) =>
     <TableOrderIcon currentOrder={actualOrderBy} field={field} />;
   const addTag = pipe(
-    (newTag: string) => [ ...new Set([ ...selectedTags, newTag ]) ].join(','),
-    (tags) => toFirstPage({ tags }),
+    (newTag: string) => [ ...new Set([ ...tags, newTag ]) ],
+    (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
 
   useEffect(() => {
     listShortUrls({
       page,
       searchTerm: search,
-      tags: selectedTags,
+      tags,
       startDate,
       endDate,
       orderBy: actualOrderBy,
       tagsMode,
     });
-  }, [ page, search, selectedTags, startDate, endDate, actualOrderBy, tagsMode ]);
+  }, [ page, search, tags, startDate, endDate, actualOrderBy, tagsMode ]);
 
   return (
     <>
-      <div className="mb-3"><ShortUrlsFilteringBar /></div>
-      <div className="d-block d-lg-none mb-3">
-        <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={actualOrderBy} onChange={handleOrderBy} />
-      </div>
+      <ShortUrlsFilteringBar
+        selectedServer={selectedServer}
+        shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
+        order={actualOrderBy}
+        handleOrderBy={handleOrderBy}
+        className="mb-3"
+      />
       <Card body className="pb-1">
         <ShortUrlsTable
           selectedServer={selectedServer}

@@ -2,9 +2,9 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
+import { ReportExporter } from '../common/services/ReportExporter';
 import VisitsStats from './VisitsStats';
 import { NormalizedVisit, VisitsInfo, VisitsParams } from './types';
-import { VisitsExporter } from './services/VisitsExporter';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { NonOrphanVisitsHeader } from './NonOrphanVisitsHeader';
@@ -15,7 +15,7 @@ export interface NonOrphanVisitsProps extends CommonVisitsProps {
   cancelGetNonOrphanVisits: () => void;
 }
 
-export const NonOrphanVisits = ({ exportVisits }: VisitsExporter) => boundToMercureHub(({
+export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
   getNonOrphanVisits,
   nonOrphanVisits,
   cancelGetNonOrphanVisits,

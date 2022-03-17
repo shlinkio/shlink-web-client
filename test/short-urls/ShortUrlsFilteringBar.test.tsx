@@ -9,6 +9,7 @@ import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { TooltipToggleSwitch } from '../../src/utils/TooltipToggleSwitch';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -19,14 +20,22 @@ jest.mock('react-router-dom', () => ({
 
 describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
-  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>());
+  const ExportShortUrlsBtn = () => null;
+  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>(), ExportShortUrlsBtn);
   const navigate = jest.fn();
+  const handleOrderBy = jest.fn();
   const now = new Date();
   const createWrapper = (search = '', selectedServer?: SelectedServer) => {
     (useLocation as any).mockReturnValue({ search });
     (useNavigate as any).mockReturnValue(navigate);
 
-    wrapper = shallow(<ShortUrlsFilteringBar selectedServer={selectedServer ?? Mock.all<SelectedServer>()} />);
+    wrapper = shallow(
+      <ShortUrlsFilteringBar
+        selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+        order={{}}
+        handleOrderBy={handleOrderBy}
+      />,
+    );
 
     return wrapper;
   };
@@ -34,11 +43,13 @@ describe('<ShortUrlsFilteringBar />', () => {
   afterEach(jest.clearAllMocks);
   afterEach(() => wrapper?.unmount());
 
-  it('renders some children components SearchField', () => {
+  it('renders expected children components', () => {
     const wrapper = createWrapper();
 
     expect(wrapper.find(SearchField)).toHaveLength(1);
     expect(wrapper.find(DateRangeSelector)).toHaveLength(1);
+    expect(wrapper.find(OrderingDropdown)).toHaveLength(1);
+    expect(wrapper.find(ExportShortUrlsBtn)).toHaveLength(1);
   });
 
   it.each([
@@ -126,5 +137,20 @@ describe('<ShortUrlsFilteringBar />', () => {
     expect(navigate).not.toHaveBeenCalled();
     toggle.simulate('change');
     expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedRedirectTagsMode));
+  });
+
+  it('handles order through dropdown', () => {
+    const wrapper = createWrapper();
+
+    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
+
+    wrapper.find(OrderingDropdown).simulate('change', 'visits', 'ASC');
+    expect(handleOrderBy).toHaveBeenCalledWith('visits', 'ASC');
+
+    wrapper.find(OrderingDropdown).simulate('change', 'shortCode', 'DESC');
+    expect(handleOrderBy).toHaveBeenCalledWith('shortCode', 'DESC');
+
+    wrapper.find(OrderingDropdown).simulate('change', undefined, undefined);
+    expect(handleOrderBy).toHaveBeenCalledWith(undefined, undefined);
   });
 });

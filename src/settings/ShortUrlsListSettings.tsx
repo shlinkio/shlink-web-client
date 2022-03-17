@@ -5,12 +5,12 @@ import { SimpleCard } from '../utils/SimpleCard';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings, ShortUrlsListSettings as ShortUrlsSettings } from './reducers/settings';
 
-interface ShortUrlsListProps {
+interface ShortUrlsListSettingsProps {
   settings: Settings;
   setShortUrlsListSettings: (settings: ShortUrlsSettings) => void;
 }
 
-export const ShortUrlsListSettings: FC<ShortUrlsListProps> = (
+export const ShortUrlsListSettings: FC<ShortUrlsListSettingsProps> = (
   { settings: { shortUrlsList }, setShortUrlsListSettings },
 ) => (
   <SimpleCard title="Short URLs list" className="h-100">

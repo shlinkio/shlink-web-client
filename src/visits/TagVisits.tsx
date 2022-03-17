@@ -4,10 +4,10 @@ import ColorGenerator from '../utils/services/ColorGenerator';
 import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
+import { ReportExporter } from '../common/services/ReportExporter';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
 import VisitsStats from './VisitsStats';
-import { VisitsExporter } from './services/VisitsExporter';
 import { NormalizedVisit } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
@@ -18,7 +18,7 @@ export interface TagVisitsProps extends CommonVisitsProps {
   cancelGetTagVisits: () => void;
 }
 
-const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: VisitsExporter) => boundToMercureHub(({
+const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: ReportExporter) => boundToMercureHub(({
   getTagVisits,
   tagVisits,
   cancelGetTagVisits,

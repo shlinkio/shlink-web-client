@@ -10,7 +10,7 @@ declare module 'event-source-polyfill' {
 declare module 'csvjson' {
   export declare class CsvJson {
     public toObject<T>(content: string): T[];
-    public toCSV<T>(data: T[], options: { headers: 'full' | 'none' | 'relative' | 'key' }): string;
+    public toCSV<T>(data: T[], options: { headers: 'full' | 'none' | 'relative' | 'key'; wrap?: true }): string;
   }
 }
 
