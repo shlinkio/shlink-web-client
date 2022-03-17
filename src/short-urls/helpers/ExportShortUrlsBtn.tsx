@@ -15,7 +15,7 @@ interface ExportShortUrlsBtnConnectProps extends ExportShortUrlsBtnProps {
   selectedServer: SelectedServer;
 }
 
-const itemsPerPage = 10;
+const itemsPerPage = 20;
 
 export const ExportShortUrlsBtn = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
@@ -23,7 +23,7 @@ export const ExportShortUrlsBtn = (
 ): FC<ExportShortUrlsBtnConnectProps> => ({ amount = 0, selectedServer }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
   const [ loading,, startLoading, stopLoading ] = useToggle();
-  const exportAllUrls = () => {
+  const exportAllUrls = async () => {
     if (!isServerWithId(selectedServer)) {
       return;
     }
@@ -44,22 +44,17 @@ export const ExportShortUrlsBtn = (
     };
 
     startLoading();
-    loadAllUrls()
-      .then((shortUrls) => {
-        exportShortUrls(shortUrls.map((shortUrl) => ({
-          createdAt: shortUrl.dateCreated,
-          shortUrl: shortUrl.shortUrl,
-          longUrl: shortUrl.longUrl,
-          title: shortUrl.title ?? '',
-          tags: shortUrl.tags.join(','),
-          visits: shortUrl.visitsCount,
-        })));
-        stopLoading();
-      })
-      .catch((e) => {
-        // TODO Handle error properly
-        console.error('An error occurred while exporting short URLs', e); // eslint-disable-line no-console
-      });
+    const shortUrls = await loadAllUrls();
+
+    exportShortUrls(shortUrls.map((shortUrl) => ({
+      createdAt: shortUrl.dateCreated,
+      shortUrl: shortUrl.shortUrl,
+      longUrl: shortUrl.longUrl,
+      title: shortUrl.title ?? '',
+      tags: shortUrl.tags.join(','),
+      visits: shortUrl.visitsCount,
+    })));
+    stopLoading();
   };
 
   return <ExportBtn loading={loading} className="btn-md-block" amount={amount} onClick={exportAllUrls} />;
