@@ -108,7 +108,7 @@ export const ShortUrlForm = (
       </FormGroup>
       <Row>
         {isBasicMode && renderOptionalInput('customSlug', 'Custom slug', 'text', { bsSize: 'lg' }, { className: 'col-lg-6' })}
-        <div className={isBasicMode ? 'col-lg-6' : 'col-12 mb-0'}>
+        <div className={isBasicMode ? 'col-lg-6 mb-3' : 'col-12'}>
           <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
         </div>
       </Row>
