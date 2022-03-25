@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/uneject/static/css/main.d8bb1a67.css",
+    "main.js": "/shlink-web-client/feature/uneject/static/js/main.2cb18887.js",
+    "index.html": "/shlink-web-client/feature/uneject/index.html",
+    "main.d8bb1a67.css.map": "/shlink-web-client/feature/uneject/static/css/main.d8bb1a67.css.map",
+    "main.2cb18887.js.map": "/shlink-web-client/feature/uneject/static/js/main.2cb18887.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d8bb1a67.css",
+    "static/js/main.2cb18887.js"
+  ]
+}
