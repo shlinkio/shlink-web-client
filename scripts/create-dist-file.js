@@ -6,7 +6,7 @@ process.env.NODE_ENV = 'production';
 
 const chalk = require('chalk');
 const AdmZip = require('adm-zip');
-const fs = require('fs-extra');
+const fs = require('fs');
 
 function zipDist(version) {
   const versionFileName = `./dist/shlink-web-client_${version}_dist.zip`;

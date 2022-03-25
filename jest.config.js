@@ -15,7 +15,7 @@ module.exports = {
       lines: 85,
     },
   },
-  setupFiles: [ '<rootDir>/config/setupEnzyme.js' ],
+  setupFiles: [ '<rootDir>/config/jest/setupEnzyme.js' ],
   testMatch: [ '<rootDir>/test/**/*.test.{ts,tsx}' ],
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
