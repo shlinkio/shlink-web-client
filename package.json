@@ -16,7 +16,7 @@
     "serve:build": "serve ./build",
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node scripts/replace-version.js",
     "build:dist": "npm run build && node scripts/create-dist-file.js",
-    "test": "node scripts/test.js --env=jsdom --colors --verbose",
+    "test": "jest --env=jsdom --colors --verbose",
     "test:coverage": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary",
     "test:ci": "npm run test:coverage -- --coverageReporters=clover",
     "test:pretty": "npm run test:coverage -- --coverageReporters=html",
