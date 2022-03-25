@@ -1,6 +1,6 @@
 {
   "extends": [
-    "react-app"
+    "@shlinkio/js-coding-standard"
   ],
   "plugins": ["jest"],
   "env": {
