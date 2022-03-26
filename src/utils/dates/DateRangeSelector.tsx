@@ -25,8 +25,8 @@ export const DateRangeSelector = (
   { onDatesChange, initialDateRange, defaultText, disabled, updatable = false }: DateRangeSelectorProps,
 ) => {
   const initialIntervalIsRange = rangeIsInterval(initialDateRange);
-  const [ activeInterval, setActiveInterval ] = useState(initialIntervalIsRange ? initialDateRange : undefined);
-  const [ activeDateRange, setActiveDateRange ] = useState(initialIntervalIsRange ? undefined : initialDateRange);
+  const [activeInterval, setActiveInterval] = useState(initialIntervalIsRange ? initialDateRange : undefined);
+  const [activeDateRange, setActiveDateRange] = useState(initialIntervalIsRange ? undefined : initialDateRange);
 
   const updateDateRange = (dateRange: DateRange) => {
     setActiveInterval(dateRangeIsEmpty(dateRange) ? 'all' : undefined);
@@ -44,7 +44,7 @@ export const DateRangeSelector = (
 
     isDateInterval && updateInterval(initialDateRange);
     initialDateRange && !isDateInterval && updateDateRange(initialDateRange);
-  }, [ initialDateRange ]);
+  }, [initialDateRange]);
 
   return (
     <DropdownBtn disabled={disabled} text={rangeOrIntervalToString(activeInterval ?? activeDateRange) ?? defaultText}>

@@ -58,8 +58,8 @@ describe('serverReducer', () => {
       }));
 
     it.each([
-      [ true ],
-      [ false ],
+      [true],
+      [false],
     ])('returns state as it is when trying to set auto-connect on invalid server', (autoConnect) =>
       expect(reducer(list, {
         type: SET_AUTO_CONNECT,
@@ -149,8 +149,8 @@ describe('serverReducer', () => {
 
     describe('setAutoConnect', () => {
       it.each([
-        [ true ],
-        [ false ],
+        [true],
+        [false],
       ])('returns expected action', (autoConnect) => {
         const serverToEdit = Mock.of<RegularServer>({ id: 'abc123' });
         const result = setAutoConnect(serverToEdit, autoConnect);

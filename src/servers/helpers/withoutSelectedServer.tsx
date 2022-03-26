@@ -6,8 +6,9 @@ interface WithoutSelectedServerProps {
 
 export function withoutSelectedServer<T = {}>(WrappedComponent: FC<WithoutSelectedServerProps & T>) {
   return (props: WithoutSelectedServerProps & T) => {
+    const { resetSelectedServer } = props;
     useEffect(() => {
-      props.resetSelectedServer();
+      resetSelectedServer();
     }, []);
 
     return <WrappedComponent {...props} />;

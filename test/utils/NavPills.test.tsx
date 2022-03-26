@@ -4,9 +4,9 @@ import { NavPillItem, NavPills } from '../../src/utils/NavPills';
 
 describe('<NavPills />', () => {
   it.each([
-    [ 'Foo' ],
-    [ <span key="1">Hi!</span> ],
-    [[ <NavPillItem key="1" to="" />, <span key="2">Hi!</span> ]],
+    ['Foo'],
+    [<span key="1">Hi!</span>],
+    [[<NavPillItem key="1" to="" />, <span key="2">Hi!</span>]],
   ])('throws error when any of the children is not a NavPillItem', (children) => {
     expect.assertions(1);
 
@@ -18,9 +18,9 @@ describe('<NavPills />', () => {
   });
 
   it.each([
-    [ undefined ],
-    [ true ],
-    [ false ],
+    [undefined],
+    [true],
+    [false],
   ])('renders provided items', (fill) => {
     const wrapper = shallow(
       <NavPills fill={fill}>

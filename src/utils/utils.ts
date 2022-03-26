@@ -25,6 +25,6 @@ export type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-export const nonEmptyValueOrNull = <T>(value: T): T | null => isEmpty(value) ? null : value;
+export const nonEmptyValueOrNull = <T>(value: T): T | null => (isEmpty(value) ? null : value);
 
 export const capitalize = <T extends string>(value: T): string => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;

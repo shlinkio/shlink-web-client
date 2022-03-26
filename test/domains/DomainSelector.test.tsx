@@ -27,8 +27,8 @@ describe('<DomainSelector />', () => {
   afterEach(() => wrapper.unmount());
 
   it.each([
-    [ '', 'Domain', 'domains-dropdown__toggle-btn' ],
-    [ 'my-domain.com', 'Domain: my-domain.com', 'domains-dropdown__toggle-btn--active' ],
+    ['', 'Domain', 'domains-dropdown__toggle-btn'],
+    ['my-domain.com', 'Domain: my-domain.com', 'domains-dropdown__toggle-btn--active'],
   ])('shows dropdown by default', (value, expectedText, expectedClassName) => {
     const wrapper = createWrapper(value);
     const input = wrapper.find(InputGroup);
@@ -54,9 +54,9 @@ describe('<DomainSelector />', () => {
   });
 
   it.each([
-    [ 0, 'default.com<span class="float-end text-muted">default</span>' ],
-    [ 1, 'foo.com' ],
-    [ 2, 'bar.com' ],
+    [0, 'default.com<span class="float-end text-muted">default</span>'],
+    [1, 'foo.com'],
+    [2, 'bar.com'],
   ])('shows expected content on every item', (index, expectedContent) => {
     const item = createWrapper().find(DropdownItem).at(index);
 

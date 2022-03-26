@@ -1,4 +1,4 @@
-import { useRef, RefObject, ChangeEvent, MutableRefObject, FC, useState, useEffect } from 'react';
+import { useRef, RefObject, ChangeEvent, MutableRefObject, useState, useEffect, FC } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { complement, pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
@@ -38,9 +38,9 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
   className = '',
 }) => {
   const ref = fileRef ?? useRef<HTMLInputElement>();
-  const [ serversToCreate, setServersToCreate ] = useState<ServerData[] | undefined>();
-  const [ duplicatedServers, setDuplicatedServers ] = useState<ServerData[]>([]);
-  const [ isModalOpen,, showModal, hideModal ] = useToggle();
+  const [serversToCreate, setServersToCreate] = useState<ServerData[] | undefined>();
+  const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
+  const [isModalOpen,, showModal, hideModal] = useToggle();
   const create = pipe(createServers, onImport);
   const createAllServers = pipe(() => create(serversToCreate ?? []), hideModal);
   const createNonDuplicatedServers = pipe(
@@ -52,7 +52,7 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
       .then(setServersToCreate)
       .then(() => {
         // Reset input after processing file
-        (target as { value: string | null }).value = null;
+        (target as { value: string | null }).value = null; // eslint-disable-line no-param-reassign
       })
       .catch(onImportError);
 
@@ -62,12 +62,12 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
     }
 
     const existingServers = Object.values(servers);
-    const duplicatedServers = serversToCreate.filter(serversFiltering(existingServers));
-    const hasDuplicatedServers = !!duplicatedServers.length;
+    const dupServers = serversToCreate.filter(serversFiltering(existingServers));
+    const hasDuplicatedServers = !!dupServers.length;
 
-    !hasDuplicatedServers ? create(serversToCreate) : setDuplicatedServers(duplicatedServers);
+    !hasDuplicatedServers ? create(serversToCreate) : setDuplicatedServers(dupServers);
     hasDuplicatedServers && showModal();
-  }, [ serversToCreate ]);
+  }, [serversToCreate]);
 
   return (
     <>

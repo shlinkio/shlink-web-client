@@ -5,9 +5,9 @@ import { InfoTooltip } from '../../src/utils/InfoTooltip';
 
 describe('<InfoTooltip />', () => {
   it.each([
-    [ undefined ],
-    [ 'foo' ],
-    [ 'bar' ],
+    [undefined],
+    ['foo'],
+    ['bar'],
   ])('renders expected className on span', (className) => {
     const wrapper = shallow(<InfoTooltip placement="right" className={className} />);
     const span = wrapper.find('span');
@@ -16,10 +16,10 @@ describe('<InfoTooltip />', () => {
   });
 
   it.each([
-    [ <span key={1} /> ],
-    [ 'Foo' ],
-    [ 'Hello' ],
-    [[ 'One', 'Two', <span key={3} /> ]],
+    [<span key={1} />],
+    ['Foo'],
+    ['Hello'],
+    [['One', 'Two', <span key={3} />]],
   ])('passes children down to the nested tooltip component', (children) => {
     const wrapper = shallow(<InfoTooltip placement="right">{children}</InfoTooltip>);
     const tooltip = wrapper.find(UncontrolledTooltip);
@@ -28,10 +28,10 @@ describe('<InfoTooltip />', () => {
   });
 
   it.each([
-    [ 'right' as Placement ],
-    [ 'left' as Placement ],
-    [ 'top' as Placement ],
-    [ 'bottom' as Placement ],
+    ['right' as Placement],
+    ['left' as Placement],
+    ['top' as Placement],
+    ['bottom' as Placement],
   ])('places tooltip where requested', (placement) => {
     const wrapper = shallow(<InfoTooltip placement={placement} />);
     const tooltip = wrapper.find(UncontrolledTooltip);

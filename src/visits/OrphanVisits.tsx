@@ -44,4 +44,4 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, () => [ Topics.orphanVisits ]);
+}, () => [Topics.orphanVisits]);

@@ -7,7 +7,7 @@ import { createServers } from './servers';
 
 const responseToServersList = pipe(
   prop<any, any>('data'),
-  (data: any): ServerData[] => Array.isArray(data) ? data.filter(hasServerData) : [],
+  (data: any): ServerData[] => (Array.isArray(data) ? data.filter(hasServerData) : []),
 );
 
 export const fetchServers = ({ get }: AxiosInstance) => () => async (dispatch: Dispatch) => {

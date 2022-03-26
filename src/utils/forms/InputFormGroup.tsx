@@ -5,7 +5,6 @@ import { LabeledFormGroup } from './LabeledFormGroup';
 export interface InputFormGroupProps {
   value: string;
   onChange: (newValue: string) => void;
-  id?: string;
   type?: InputType;
   required?: boolean;
   placeholder?: string;

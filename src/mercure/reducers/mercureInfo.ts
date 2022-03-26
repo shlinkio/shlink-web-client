@@ -4,11 +4,9 @@ import { GetState } from '../../container/types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_MERCURE_INFO_START = 'shlink/mercure/GET_MERCURE_INFO_START';
 export const GET_MERCURE_INFO_ERROR = 'shlink/mercure/GET_MERCURE_INFO_ERROR';
 export const GET_MERCURE_INFO = 'shlink/mercure/GET_MERCURE_INFO';
-/* eslint-enable padding-line-between-statements */
 
 export interface MercureInfo {
   token?: string;

@@ -25,28 +25,28 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
 const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => ( // eslint-disable-line
   { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
 ) => {
-  const [ size, setSize ] = useState(300);
-  const [ margin, setMargin ] = useState(0);
-  const [ format, setFormat ] = useState<QrCodeFormat>('png');
-  const [ errorCorrection, setErrorCorrection ] = useState<QrErrorCorrection>('L');
+  const [size, setSize] = useState(300);
+  const [margin, setMargin] = useState(0);
+  const [format, setFormat] = useState<QrCodeFormat>('png');
+  const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
     marginIsSupported: supportsQrCodeMargin(selectedServer),
     errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
-  }), [ selectedServer ]);
+  }), [selectedServer]);
   const willRenderThreeControls = capabilities.marginIsSupported !== capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
-    [ shortUrl, size, format, margin, errorCorrection, capabilities ],
+    [shortUrl, size, format, margin, errorCorrection, capabilities],
   );
-  const totalSize = useMemo(() => size + margin, [ size, margin ]);
+  const totalSize = useMemo(() => size + margin, [size, margin]);
   const modalSize = useMemo(() => {
     if (totalSize < 500) {
       return undefined;
     }
 
     return totalSize < 800 ? 'lg' : 'xl';
-  }, [ totalSize ]);
+  }, [totalSize]);
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered size={modalSize}>
@@ -69,8 +69,9 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
           </FormGroup>
           {capabilities.marginIsSupported && (
             <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
-              <label>Margin: {margin}px</label>
+              <label htmlFor="marginControl">Margin: {margin}px</label>
               <input
+                id="marginControl"
                 type="range"
                 className="form-control-range"
                 value={margin}
@@ -101,7 +102,9 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Vers
               <Button
                 block
                 color="primary"
-                onClick={async () => imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`)}
+                onClick={() => {
+                  imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`).catch(() => {});
+                }}
               >
                 Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
               </Button>

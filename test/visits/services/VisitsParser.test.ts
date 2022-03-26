@@ -110,7 +110,7 @@ describe('VisitsParser', () => {
       const { referrers } = stats;
 
       expect(referrers).toEqual({
-        'Direct': 2,
+        Direct: 2,
         'google.com': 2,
         'm.facebook.com': 1,
       });
@@ -120,9 +120,9 @@ describe('VisitsParser', () => {
       const { countries } = stats;
 
       expect(countries).toEqual({
-        'Spain': 3,
+        Spain: 3,
         'United States': 1,
-        'Unknown': 1,
+        Unknown: 1,
       });
     });
 
@@ -130,9 +130,9 @@ describe('VisitsParser', () => {
       const { cities } = stats;
 
       expect(cities).toEqual({
-        'Zaragoza': 2,
+        Zaragoza: 2,
         'New York': 1,
-        'Unknown': 2,
+        Unknown: 2,
       });
     });
 
@@ -144,15 +144,15 @@ describe('VisitsParser', () => {
       const newYorkLong = 6758;
 
       expect(citiesForMap).toEqual({
-        'Zaragoza': {
+        Zaragoza: {
           cityName: 'Zaragoza',
           count: 2,
-          latLong: [ zaragozaLat, zaragozaLong ],
+          latLong: [zaragozaLat, zaragozaLong],
         },
         'New York': {
           cityName: 'New York',
           count: 1,
-          latLong: [ newYorkLat, newYorkLong ],
+          latLong: [newYorkLat, newYorkLong],
         },
       });
     });

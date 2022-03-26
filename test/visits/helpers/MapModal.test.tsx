@@ -17,12 +17,12 @@ describe('<MapModal />', () => {
     {
       cityName: 'Zaragoza',
       count: 54,
-      latLong: [ zaragozaLat, zaragozaLong ],
+      latLong: [zaragozaLat, zaragozaLong],
     },
     {
       cityName: 'New York',
       count: 7,
-      latLong: [ newYorkLat, newYorkLong ],
+      latLong: [newYorkLat, newYorkLong],
     },
   ];
 

@@ -14,7 +14,6 @@ import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_NON_ORPHAN_VISITS_START = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_START';
 export const GET_NON_ORPHAN_VISITS_ERROR = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_ERROR';
 export const GET_NON_ORPHAN_VISITS = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS';
@@ -22,7 +21,6 @@ export const GET_NON_ORPHAN_VISITS_LARGE = 'shlink/orphanVisits/GET_NON_ORPHAN_V
 export const GET_NON_ORPHAN_VISITS_CANCEL = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_CANCEL';
 export const GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED';
 export const GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL';
-/* eslint-enable padding-line-between-statements */
 
 export interface NonOrphanVisitsAction extends Action<string> {
   visits: Visit[];
@@ -59,7 +57,7 @@ export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
       .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...newVisits, ...visits ] };
+    return { ...state, visits: [...newVisits, ...visits] };
   },
 }, initialState);
 
@@ -67,10 +65,10 @@ export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder)
   query: ShlinkVisitsParams = {},
   doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
-  const { getNonOrphanVisits } = buildShlinkApiClient(getState);
+  const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) =>
-    getNonOrphanVisits({ ...query, page, itemsPerPage });
-  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, getNonOrphanVisits);
+    shlinkGetNonOrphanVisits({ ...query, page, itemsPerPage });
+  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, shlinkGetNonOrphanVisits);
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
   const extraFinishActionData: Partial<NonOrphanVisitsAction> = { query };
   const actionMap = {

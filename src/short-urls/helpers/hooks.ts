@@ -8,11 +8,6 @@ import { TagsFilteringMode } from '../../api/types';
 
 type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
 
-export interface ShortUrlListRouteParams {
-  page: string;
-  serverId: string;
-}
-
 interface ShortUrlsQueryCommon {
   search?: string;
   startDate?: string;
@@ -45,7 +40,7 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
         return { ...rest, orderBy: parsedOrderBy, tags: parsedTags };
       },
     ),
-    [ location.search ],
+    [location.search],
   );
   const toFirstPageWithExtra = (extra: Partial<ShortUrlsFiltering>) => {
     const { orderBy, tags, ...mergedQuery } = { ...query, ...extra };
@@ -57,8 +52,8 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
     const evolvedQuery = stringifyQuery(normalizedQuery);
     const queryString = isEmpty(evolvedQuery) ? '' : `?${evolvedQuery}`;
 
-    navigate(`/server/${params.serverId}/list-short-urls/1${queryString}`);
+    navigate(`/server/${params.serverId ?? ''}/list-short-urls/1${queryString}`);
   };
 
-  return [ query, toFirstPageWithExtra ];
+  return [query, toFirstPageWithExtra];
 };

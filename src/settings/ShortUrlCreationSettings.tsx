@@ -13,11 +13,12 @@ interface ShortUrlCreationProps {
 }
 
 const tagFilteringModeText = (tagFilteringMode: TagFilteringMode | undefined): string =>
-  tagFilteringMode === 'includes' ? 'Suggest tags including input' : 'Suggest tags starting with input';
-const tagFilteringModeHint = (tagFilteringMode: TagFilteringMode | undefined): ReactNode =>
+  (tagFilteringMode === 'includes' ? 'Suggest tags including input' : 'Suggest tags starting with input');
+const tagFilteringModeHint = (tagFilteringMode: TagFilteringMode | undefined): ReactNode => (
   tagFilteringMode === 'includes'
     ? <>The list of suggested tags will contain those <b>including</b> provided input.</>
-    : <>The list of suggested tags will contain those <b>starting with</b> provided input.</>;
+    : <>The list of suggested tags will contain those <b>starting with</b> provided input.</>
+);
 
 export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, setShortUrlCreationSettings }) => {
   const shortUrlCreation: ShortUrlsSettings = settings.shortUrlCreation ?? { validateUrls: false };

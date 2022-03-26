@@ -26,9 +26,9 @@ describe('<ForServerVersion />', () => {
   });
 
   it.each([
-    [ '2.0.0' as SemVerPattern, undefined, '1.8.3' as SemVer ],
-    [ undefined, '1.8.0' as SemVerPattern, '1.8.3' as SemVer ],
-    [ '1.7.0' as SemVerPattern, '1.8.0' as SemVerPattern, '1.8.3' as SemVer ],
+    ['2.0.0' as SemVerPattern, undefined, '1.8.3' as SemVer],
+    [undefined, '1.8.0' as SemVerPattern, '1.8.3' as SemVer],
+    ['1.7.0' as SemVerPattern, '1.8.0' as SemVerPattern, '1.8.3' as SemVer],
   ])('does not render children when current version does not match requirements', (min, max, version) => {
     const wrapped = renderComponent(Mock.of<ReachableServer>({ version, printableVersion: version }), min, max);
 
@@ -36,11 +36,11 @@ describe('<ForServerVersion />', () => {
   });
 
   it.each([
-    [ '2.0.0' as SemVerPattern, undefined, '2.8.3' as SemVer ],
-    [ '2.0.0' as SemVerPattern, undefined, '2.0.0' as SemVer ],
-    [ undefined, '1.8.0' as SemVerPattern, '1.8.0' as SemVer ],
-    [ undefined, '1.8.0' as SemVerPattern, '1.7.1' as SemVer ],
-    [ '1.7.0' as SemVerPattern, '1.8.0' as SemVerPattern, '1.7.3' as SemVer ],
+    ['2.0.0' as SemVerPattern, undefined, '2.8.3' as SemVer],
+    ['2.0.0' as SemVerPattern, undefined, '2.0.0' as SemVer],
+    [undefined, '1.8.0' as SemVerPattern, '1.8.0' as SemVer],
+    [undefined, '1.8.0' as SemVerPattern, '1.7.1' as SemVer],
+    ['1.7.0' as SemVerPattern, '1.8.0' as SemVerPattern, '1.7.3' as SemVer],
   ])('renders children when current version matches requirements', (min, max, version) => {
     const wrapped = renderComponent(Mock.of<ReachableServer>({ version, printableVersion: version }), min, max);
 

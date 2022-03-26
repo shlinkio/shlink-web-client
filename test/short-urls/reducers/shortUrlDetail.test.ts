@@ -62,8 +62,8 @@ describe('shortUrlDetailReducer', () => {
     });
 
     it.each([
-      [ undefined ],
-      [ Mock.all<ShortUrlsList>() ],
+      [undefined],
+      [Mock.all<ShortUrlsList>()],
       [
         Mock.of<ShortUrlsList>({
           shortUrls: { data: [] },
@@ -72,7 +72,7 @@ describe('shortUrlDetailReducer', () => {
       [
         Mock.of<ShortUrlsList>({
           shortUrls: {
-            data: [ Mock.of<ShortUrl>({ shortCode: 'this_will_not_match' }) ],
+            data: [Mock.of<ShortUrl>({ shortCode: 'this_will_not_match' })],
           },
         }),
       ],
@@ -96,7 +96,7 @@ describe('shortUrlDetailReducer', () => {
         dispatchMock,
         buildGetState(Mock.of<ShortUrlsList>({
           shortUrls: {
-            data: [ foundShortUrl ],
+            data: [foundShortUrl],
           },
         })),
       );

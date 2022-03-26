@@ -47,8 +47,8 @@ describe('<VisitsTable />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ '2.6.0' as SemVer, [ 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
-    [ '2.7.0' as SemVer, [ 'fa-robot', 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer' ]],
+    ['2.6.0' as SemVer, ['Date', 'Country', 'City', 'Browser', 'OS', 'Referrer']],
+    ['2.7.0' as SemVer, ['fa-robot', 'Date', 'Country', 'City', 'Browser', 'OS', 'Referrer']],
   ])('renders columns as expected', (version, expectedColumns) => {
     const wrapper = createServerVersionWrapper(version);
     const th = wrapper.find('thead').find('th');
@@ -68,11 +68,11 @@ describe('<VisitsTable />', () => {
   });
 
   it.each([
-    [ 50, 3 ],
-    [ 21, 2 ],
-    [ 30, 2 ],
-    [ 60, 3 ],
-    [ 115, 6 ],
+    [50, 3],
+    [21, 2],
+    [30, 2],
+    [60, 3],
+    [115, 6],
   ])('renders the expected amount of pages', (visitsCount, expectedAmountOfPages) => {
     const wrapper = createWrapper(
       rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' })),
@@ -85,7 +85,7 @@ describe('<VisitsTable />', () => {
   });
 
   it.each(
-    rangeOf(20, (value) => [ value ]),
+    rangeOf(20, (value) => [value]),
   )('does not render footer when there is only one page to render', (visitsCount) => {
     const wrapper = createWrapper(
       rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' })),
@@ -101,7 +101,7 @@ describe('<VisitsTable />', () => {
     const visits = rangeOf(10, () => Mock.of<NormalizedVisit>({ browser: '', date: '', referer: '' }));
     const wrapper = createWrapper(
       visits,
-      [ visits[1], visits[2] ],
+      [visits[1], visits[2]],
     );
 
     expect(wrapper.find('.text-primary')).toHaveLength(3);
@@ -109,11 +109,11 @@ describe('<VisitsTable />', () => {
 
     // Select one extra
     wrapper.find('tr').at(5).simulate('click');
-    expect(setSelectedVisits).toHaveBeenCalledWith([ visits[1], visits[2], visits[4] ]);
+    expect(setSelectedVisits).toHaveBeenCalledWith([visits[1], visits[2], visits[4]]);
 
     // Deselect one
     wrapper.find('tr').at(3).simulate('click');
-    expect(setSelectedVisits).toHaveBeenCalledWith([ visits[1] ]);
+    expect(setSelectedVisits).toHaveBeenCalledWith([visits[1]]);
 
     // Select all
     wrapper.find('thead').find('th').at(0).simulate('click');
@@ -128,15 +128,25 @@ describe('<VisitsTable />', () => {
       country: `Country_${index}`,
     })));
 
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_1');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td')
+      .at(2)
+      .text()).toContain('Country_1');
     wrapper.find('thead').find('th').at(1).simulate('click'); // Date column ASC
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_9');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td')
+      .at(2)
+      .text()).toContain('Country_9');
     wrapper.find('thead').find('th').at(6).simulate('click'); // Referer column - ASC
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_1');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td')
+      .at(2)
+      .text()).toContain('Country_1');
     wrapper.find('thead').find('th').at(6).simulate('click'); // Referer column - DESC
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_9');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td')
+      .at(2)
+      .text()).toContain('Country_9');
     wrapper.find('thead').find('th').at(6).simulate('click'); // Referer column - reset
-    expect(wrapper.find('tbody').find('tr').at(0).find('td').at(2).text()).toContain('Country_1');
+    expect(wrapper.find('tbody').find('tr').at(0).find('td')
+      .at(2)
+      .text()).toContain('Country_1');
   });
 
   it('filters list when writing in search box', () => {
@@ -156,10 +166,10 @@ describe('<VisitsTable />', () => {
   });
 
   it.each([
-    [ true, '2.6.0' as SemVer, 8 ],
-    [ false, '2.6.0' as SemVer, 7 ],
-    [ true, '2.7.0' as SemVer, 9 ],
-    [ false, '2.7.0' as SemVer, 8 ],
+    [true, '2.6.0' as SemVer, 8],
+    [false, '2.6.0' as SemVer, 7],
+    [true, '2.7.0' as SemVer, 9],
+    [false, '2.7.0' as SemVer, 8],
   ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, version, expectedCols) => {
     const wrapper = createOrphanVisitsWrapper(isOrphanVisits, version);
     const rowsWithColspan = wrapper.find('[colSpan]');

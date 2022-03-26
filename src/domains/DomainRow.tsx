@@ -39,7 +39,7 @@ const DefaultDomain: FC = () => (
 export const DomainRow: FC<DomainRowProps> = (
   { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
 ) => {
-  const [ isOpen, toggle ] = useToggle();
+  const [isOpen, toggle] = useToggle();
   const { domain: authority, isDefault, redirects, status } = domain;
   const canEditDomain = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
 

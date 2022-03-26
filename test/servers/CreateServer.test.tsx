@@ -18,8 +18,8 @@ describe('<CreateServer />', () => {
     (useNavigate as any).mockReturnValue(navigate);
 
     const useStateFlagTimeout = jest.fn()
-      .mockReturnValueOnce([ serversImported, () => '' ])
-      .mockReturnValueOnce([ importFailed, () => '' ])
+      .mockReturnValueOnce([serversImported, () => ''])
+      .mockReturnValueOnce([importFailed, () => ''])
       .mockReturnValue([]);
     const CreateServer = createServerConstruct(ImportServersBtn, useStateFlagTimeout);
 

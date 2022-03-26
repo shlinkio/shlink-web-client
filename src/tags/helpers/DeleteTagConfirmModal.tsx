@@ -1,4 +1,4 @@
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { TagDeletion } from '../reducers/tagDelete';
 import { TagModalProps } from '../data';
 import { Result } from '../../utils/Result';
@@ -34,10 +34,10 @@ const DeleteTagConfirmModal = (
         )}
       </ModalBody>
       <ModalFooter>
-        <button className="btn btn-link" onClick={toggle}>Cancel</button>
-        <button className="btn btn-danger" disabled={deleting} onClick={doDelete}>
+        <Button color="link" onClick={toggle}>Cancel</Button>
+        <Button color="danger" disabled={deleting} onClick={doDelete}>
           {deleting ? 'Deleting tag...' : 'Delete tag'}
-        </button>
+        </Button>
       </ModalFooter>
     </Modal>
   );

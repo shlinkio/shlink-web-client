@@ -35,7 +35,7 @@ describe('<DomainStatusIcon />', () => {
       faTimes,
       'Oops! There is some missing configuration, and short URLs shared with this domain will not work.',
     ],
-    [ 'valid' as DomainStatus, faCheck, 'Congratulations! This domain is properly configured.' ],
+    ['valid' as DomainStatus, faCheck, 'Congratulations! This domain is properly configured.'],
   ])('renders expected icon and tooltip when status is not validating', (status, expectedIcon, expectedText) => {
     const wrapper = createWrapper(status);
     const tooltip = wrapper.find(UncontrolledTooltip);
@@ -59,8 +59,8 @@ describe('<DomainStatusIcon />', () => {
   });
 
   it.each([
-    [ true, 'top-start' ],
-    [ false, 'left' ],
+    [true, 'top-start'],
+    [false, 'left'],
   ])('places the tooltip properly based on query match', (isMobile, expectedPlacement) => {
     matchMedia.mockReturnValue(Mock.of<MediaQueryList>({ matches: isMobile }));
 

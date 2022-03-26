@@ -11,7 +11,6 @@ import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_VISITS_START = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_START';
 export const GET_SHORT_URL_VISITS_ERROR = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_ERROR';
 export const GET_SHORT_URL_VISITS = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS';
@@ -19,7 +18,6 @@ export const GET_SHORT_URL_VISITS_LARGE = 'shlink/shortUrlVisits/GET_SHORT_URL_V
 export const GET_SHORT_URL_VISITS_CANCEL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_CANCEL';
 export const GET_SHORT_URL_VISITS_PROGRESS_CHANGED = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_PROGRESS_CHANGED';
 export const GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL = 'shlink/shortUrlVisits/GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL';
-/* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
 
@@ -71,7 +69,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
       )
       .map(({ visit }) => visit);
 
-    return newVisits.length === 0 ? state : { ...state, visits: [ ...newVisits, ...visits ] };
+    return newVisits.length === 0 ? state : { ...state, visits: [...newVisits, ...visits] };
   },
 }, initialState);
 
@@ -80,14 +78,14 @@ export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   query: ShlinkVisitsParams = {},
   doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
-  const { getShortUrlVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = async (page: number, itemsPerPage: number) => getShortUrlVisits(
+  const { getShortUrlVisits: shlinkGetShortUrlVisits } = buildShlinkApiClient(getState);
+  const visitsLoader = async (page: number, itemsPerPage: number) => shlinkGetShortUrlVisits(
     shortCode,
     { ...query, page, itemsPerPage },
   );
   const lastVisitLoader = lastVisitLoaderForLoader(
     doIntervalFallback,
-    async (params) => getShortUrlVisits(shortCode, { ...params, domain: query.domain }),
+    async (params) => shlinkGetShortUrlVisits(shortCode, { ...params, domain: query.domain }),
   );
   const shouldCancel = () => getState().shortUrlVisits.cancelLoad;
   const extraFinishActionData: Partial<ShortUrlVisitsAction> = { shortCode, query, domain: query.domain };

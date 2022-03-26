@@ -19,7 +19,7 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
   const longLink = shortUrl?.longUrl ?? '';
   const title = shortUrl?.title;
 
-  const renderDate = () => !shortUrl ? <small>Loading...</small> : (
+  const renderDate = () => (!shortUrl ? <small>Loading...</small> : (
     <span>
       <b id="created" className="short-url-visits-header__created-at">
         <Time date={shortUrl.dateCreated} relative />
@@ -28,7 +28,7 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
         <Time date={shortUrl.dateCreated} />
       </UncontrolledTooltip>
     </span>
-  );
+  ));
   const visitsStatsTitle = <>Visits for <ExternalLink href={shortLink} /></>;
 
   return (

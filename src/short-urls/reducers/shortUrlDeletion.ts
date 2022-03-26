@@ -6,12 +6,10 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const DELETE_SHORT_URL_START = 'shlink/deleteShortUrl/DELETE_SHORT_URL_START';
 export const DELETE_SHORT_URL_ERROR = 'shlink/deleteShortUrl/DELETE_SHORT_URL_ERROR';
 export const SHORT_URL_DELETED = 'shlink/deleteShortUrl/SHORT_URL_DELETED';
 export const RESET_DELETE_SHORT_URL = 'shlink/deleteShortUrl/RESET_DELETE_SHORT_URL';
-/* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlDeletion {
   shortCode: string;
@@ -43,10 +41,10 @@ export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
   domain?: string | null,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: DELETE_SHORT_URL_START });
-  const { deleteShortUrl } = buildShlinkApiClient(getState);
+  const { deleteShortUrl: shlinkDeleteShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    await deleteShortUrl(shortCode, domain);
+    await shlinkDeleteShortUrl(shortCode, domain);
     dispatch<DeleteShortUrlAction>({ type: SHORT_URL_DELETED, shortCode, domain });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });

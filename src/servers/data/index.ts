@@ -35,15 +35,15 @@ export const hasServerData = (server: SelectedServer | ServerData): server is Se
   !!(server as ServerData)?.url && !!(server as ServerData)?.apiKey;
 
 export const isServerWithId = (server: SelectedServer | ServerWithId): server is ServerWithId =>
-  !!server?.hasOwnProperty('id');
+  !!(server as ServerWithId)?.id;
 
 export const isReachableServer = (server: SelectedServer): server is ReachableServer =>
-  !!server?.hasOwnProperty('version');
+  !!(server as ReachableServer)?.version;
 
 export const isNotFoundServer = (server: SelectedServer): server is NotFoundServer =>
-  !!server?.hasOwnProperty('serverNotFound');
+  !!(server as NotFoundServer)?.serverNotFound;
 
-export const getServerId = (server: SelectedServer) => isServerWithId(server) ? server.id : '';
+export const getServerId = (server: SelectedServer) => (isServerWithId(server) ? server.id : '');
 
 export const serverWithIdToServerData = (server: ServerWithId): ServerData =>
-  omit<ServerWithId, 'id' | 'autoConnect'>([ 'id', 'autoConnect' ], server);
+  omit<ServerWithId, 'id' | 'autoConnect'>(['id', 'autoConnect'], server);

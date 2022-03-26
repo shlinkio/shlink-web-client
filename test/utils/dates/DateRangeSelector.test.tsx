@@ -37,16 +37,16 @@ describe('<DateRangeSelector />', () => {
   });
 
   it.each([
-    [ undefined, 0 ],
-    [ 'all' as DateInterval, 1 ],
-    [ 'today' as DateInterval, 1 ],
-    [ 'yesterday' as DateInterval, 1 ],
-    [ 'last7Days' as DateInterval, 1 ],
-    [ 'last30Days' as DateInterval, 1 ],
-    [ 'last90Days' as DateInterval, 1 ],
-    [ 'last180Days' as DateInterval, 1 ],
-    [ 'last365Days' as DateInterval, 1 ],
-    [{ startDate: new Date() }, 0 ],
+    [undefined, 0],
+    ['all' as DateInterval, 1],
+    ['today' as DateInterval, 1],
+    ['yesterday' as DateInterval, 1],
+    ['last7Days' as DateInterval, 1],
+    ['last30Days' as DateInterval, 1],
+    ['last90Days' as DateInterval, 1],
+    ['last180Days' as DateInterval, 1],
+    ['last365Days' as DateInterval, 1],
+    [{ startDate: new Date() }, 0],
   ])('sets proper element as active based on provided date range', (initialDateRange, expectedActiveIntervalItems) => {
     const wrapper = createWrapper({ initialDateRange });
     const dateIntervalItems = wrapper.find(DateIntervalDropdownItems).filterWhere(

@@ -7,21 +7,19 @@ import { ShlinkHealth } from '../../api/types';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
-/* eslint-disable padding-line-between-statements */
 export const SELECT_SERVER = 'shlink/selectedServer/SELECT_SERVER';
 export const RESET_SELECTED_SERVER = 'shlink/selectedServer/RESET_SELECTED_SERVER';
 
 export const MIN_FALLBACK_VERSION = '1.0.0';
 export const MAX_FALLBACK_VERSION = '999.999.999';
 export const LATEST_VERSION_CONSTRAINT = 'latest';
-/* eslint-enable padding-line-between-statements */
 
 export interface SelectServerAction extends Action<string> {
   selectedServer: SelectedServer;
 }
 
 const versionToSemVer = pipe(
-  (version: string) => version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
+  (version: string) => (version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version),
   toSemVer(MIN_FALLBACK_VERSION),
 );
 

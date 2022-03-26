@@ -15,15 +15,15 @@ import { TagsTableRow } from '../TagsTableRow';
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
-  bottle.decorator('TagsSelector', connect([ 'tagsList', 'settings' ], [ 'listTags' ]));
+  bottle.decorator('TagsSelector', connect(['tagsList', 'settings'], ['listTags']));
 
   bottle.serviceFactory('TagCard', TagCard, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
 
   bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
-  bottle.decorator('DeleteTagConfirmModal', connect([ 'tagDelete' ], [ 'deleteTag', 'tagDeleted' ]));
+  bottle.decorator('DeleteTagConfirmModal', connect(['tagDelete'], ['deleteTag', 'tagDeleted']));
 
   bottle.serviceFactory('EditTagModal', EditTagModal, 'ColorGenerator');
-  bottle.decorator('EditTagModal', connect([ 'tagEdit' ], [ 'editTag', 'tagEdited' ]));
+  bottle.decorator('EditTagModal', connect(['tagEdit'], ['editTag', 'tagEdited']));
 
   bottle.serviceFactory('TagsCards', TagsCards, 'TagCard');
   bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
@@ -32,8 +32,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('TagsList', TagsList, 'TagsCards', 'TagsTable');
   bottle.decorator('TagsList', connect(
-    [ 'tagsList', 'selectedServer', 'mercureInfo', 'settings' ],
-    [ 'forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo' ],
+    ['tagsList', 'selectedServer', 'mercureInfo', 'settings'],
+    ['forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   // Actions

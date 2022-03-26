@@ -13,7 +13,7 @@ interface AppUpdateBannerProps {
 }
 
 export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, toggle, forceUpdate }) => {
-  const [ isUpdating,, setUpdating ] = useToggle();
+  const [isUpdating,, setUpdating] = useToggle();
   const update = () => {
     setUpdating();
     forceUpdate();

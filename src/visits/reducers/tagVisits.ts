@@ -9,7 +9,6 @@ import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';
 export const GET_TAG_VISITS_ERROR = 'shlink/tagVisits/GET_TAG_VISITS_ERROR';
 export const GET_TAG_VISITS = 'shlink/tagVisits/GET_TAG_VISITS';
@@ -17,7 +16,6 @@ export const GET_TAG_VISITS_LARGE = 'shlink/tagVisits/GET_TAG_VISITS_LARGE';
 export const GET_TAG_VISITS_CANCEL = 'shlink/tagVisits/GET_TAG_VISITS_CANCEL';
 export const GET_TAG_VISITS_PROGRESS_CHANGED = 'shlink/tagVisits/GET_TAG_VISITS_PROGRESS_CHANGED';
 export const GET_TAG_VISITS_FALLBACK_TO_INTERVAL = 'shlink/tagVisits/GET_TAG_VISITS_FALLBACK_TO_INTERVAL';
-/* eslint-enable padding-line-between-statements */
 
 export interface TagVisits extends VisitsInfo {
   tag: string;
@@ -60,7 +58,7 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
       .filter(({ shortUrl, visit }) => shortUrl?.tags.includes(tag) && isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);
 
-    return { ...state, visits: [ ...newVisits, ...visits ] };
+    return { ...state, visits: [...newVisits, ...visits] };
   },
 }, initialState);
 
@@ -69,12 +67,12 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   query: ShlinkVisitsParams = {},
   doIntervalFallback = false,
 ) => async (dispatch: Dispatch, getState: GetState) => {
-  const { getTagVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = async (page: number, itemsPerPage: number) => getTagVisits(
+  const { getTagVisits: getVisits } = buildShlinkApiClient(getState);
+  const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
     tag,
     { ...query, page, itemsPerPage },
   );
-  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getTagVisits(tag, params));
+  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getVisits(tag, params));
   const shouldCancel = () => getState().tagVisits.cancelLoad;
   const extraFinishActionData: Partial<TagVisitsAction> = { tag, query };
   const actionMap = {

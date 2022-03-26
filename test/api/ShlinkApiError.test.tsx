@@ -4,19 +4,19 @@ import { ShlinkApiError, ShlinkApiErrorProps } from '../../src/api/ShlinkApiErro
 import { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types';
 
 describe('<ShlinkApiError />', () => {
-  let wrapper: ShallowWrapper;
+  let commonWrapper: ShallowWrapper;
   const createWrapper = (props: ShlinkApiErrorProps) => {
-    wrapper = shallow(<ShlinkApiError {...props} />);
+    commonWrapper = shallow(<ShlinkApiError {...props} />);
 
-    return wrapper;
+    return commonWrapper;
   };
 
-  afterEach(() => wrapper?.unmount());
+  afterEach(() => commonWrapper?.unmount());
 
   it.each([
-    [ undefined, 'the fallback', 'the fallback' ],
-    [ Mock.all<ProblemDetailsError>(), 'the fallback', 'the fallback' ],
-    [ Mock.of<ProblemDetailsError>({ detail: 'the detail' }), 'the fallback', 'the detail' ],
+    [undefined, 'the fallback', 'the fallback'],
+    [Mock.all<ProblemDetailsError>(), 'the fallback', 'the fallback'],
+    [Mock.of<ProblemDetailsError>({ detail: 'the detail' }), 'the fallback', 'the detail'],
   ])('renders proper message', (errorData, fallbackMessage, expectedMessage) => {
     const wrapper = createWrapper({ errorData, fallbackMessage });
 
@@ -24,9 +24,9 @@ describe('<ShlinkApiError />', () => {
   });
 
   it.each([
-    [ undefined, 0 ],
-    [ Mock.all<ProblemDetailsError>(), 0 ],
-    [ Mock.of<InvalidArgumentError>({ type: 'INVALID_ARGUMENT', invalidElements: [] }), 1 ],
+    [undefined, 0],
+    [Mock.all<ProblemDetailsError>(), 0],
+    [Mock.of<InvalidArgumentError>({ type: 'INVALID_ARGUMENT', invalidElements: [] }), 1],
   ])('renders list of invalid elements when provided error is an InvalidError', (errorData, expectedElementsCount) => {
     const wrapper = createWrapper({ errorData });
     const p = wrapper.find('p');

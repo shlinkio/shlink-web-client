@@ -12,7 +12,7 @@ interface RealTimeUpdatesProps {
   setRealTimeUpdatesInterval: (interval: number) => void;
 }
 
-const intervalValue = (interval?: number) => !interval ? '' : `${interval}`;
+const intervalValue = (interval?: number) => (!interval ? '' : `${interval}`);
 
 const RealTimeUpdatesSettings = (
   { settings: { realTimeUpdates }, toggleRealTimeUpdates, setRealTimeUpdatesInterval }: RealTimeUpdatesProps,

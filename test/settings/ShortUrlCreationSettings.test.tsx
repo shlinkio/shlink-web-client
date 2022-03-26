@@ -25,9 +25,9 @@ describe('<ShortUrlCreationSettings />', () => {
   afterEach(jest.clearAllMocks);
 
   it.each([
-    [{ validateUrls: true }, true ],
-    [{ validateUrls: false }, false ],
-    [ undefined, false ],
+    [{ validateUrls: true }, true],
+    [{ validateUrls: false }, false],
+    [undefined, false],
   ])('URL validation switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
     const wrapper = createWrapper(shortUrlCreation);
     const urlValidationToggle = wrapper.find(ToggleSwitch).first();
@@ -36,9 +36,9 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ forwardQuery: true }, true ],
-    [{ forwardQuery: false }, false ],
-    [{}, true ],
+    [{ forwardQuery: true }, true],
+    [{ forwardQuery: false }, false],
+    [{}, true],
   ])('forward query switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
     const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
     const forwardQueryToggle = wrapper.find(ToggleSwitch).last();
@@ -47,9 +47,9 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ validateUrls: true }, '<b>Validate URL</b> checkbox will be <b>checked</b>' ],
-    [{ validateUrls: false }, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
-    [ undefined, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
+    [{ validateUrls: true }, '<b>Validate URL</b> checkbox will be <b>checked</b>'],
+    [{ validateUrls: false }, '<b>Validate URL</b> checkbox will be <b>unchecked</b>'],
+    [undefined, '<b>Validate URL</b> checkbox will be <b>unchecked</b>'],
   ])('shows expected helper text for URL validation', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper(shortUrlCreation);
     const validateUrlText = wrapper.find(FormText).first();
@@ -58,9 +58,9 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [{ forwardQuery: true }, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
-    [{ forwardQuery: false }, '<b>Forward query params on redirect</b> checkbox will be <b>unchecked</b>' ],
-    [{}, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
+    [{ forwardQuery: true }, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>'],
+    [{ forwardQuery: false }, '<b>Forward query params on redirect</b> checkbox will be <b>unchecked</b>'],
+    [{}, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>'],
   ])('shows expected helper text for query forwarding', (shortUrlCreation, expectedText) => {
     const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
     const forwardQueryText = wrapper.find(FormText).at(1);
@@ -69,13 +69,13 @@ describe('<ShortUrlCreationSettings />', () => {
   });
 
   it.each([
-    [ { tagFilteringMode: 'includes' } as ShortUrlsSettings, 'Suggest tags including input', 'including' ],
+    [{ tagFilteringMode: 'includes' } as ShortUrlsSettings, 'Suggest tags including input', 'including'],
     [
       { tagFilteringMode: 'startsWith' } as ShortUrlsSettings,
       'Suggest tags starting with input',
       'starting with',
     ],
-    [ undefined, 'Suggest tags starting with input', 'starting with' ],
+    [undefined, 'Suggest tags starting with input', 'starting with'],
   ])('shows expected texts for tags suggestions', (shortUrlCreation, expectedText, expectedHint) => {
     const wrapper = createWrapper(shortUrlCreation);
     const hintText = wrapper.find(FormText).last();
@@ -85,7 +85,7 @@ describe('<ShortUrlCreationSettings />', () => {
     expect(hintText.html()).toContain(expectedHint);
   });
 
-  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
     const wrapper = createWrapper();
     const urlValidationToggle = wrapper.find(ToggleSwitch).first();
 
@@ -94,7 +94,7 @@ describe('<ShortUrlCreationSettings />', () => {
     expect(setShortUrlCreationSettings).toHaveBeenCalledWith({ validateUrls });
   });
 
-  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when forward query toggle value changes', (forwardQuery) => {
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when forward query toggle value changes', (forwardQuery) => {
     const wrapper = createWrapper();
     const urlValidationToggle = wrapper.find(ToggleSwitch).last();
 

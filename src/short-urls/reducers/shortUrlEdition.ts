@@ -9,11 +9,9 @@ import { parseApiError } from '../../api/utils';
 import { supportsTagsInPatch } from '../../utils/helpers/features';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
 export const EDIT_SHORT_URL_ERROR = 'shlink/shortUrlEdition/EDIT_SHORT_URL_ERROR';
 export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
-/* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlEdition {
   shortUrl?: ShortUrl;
@@ -49,7 +47,7 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   const { updateShortUrl, updateShortUrlTags } = buildShlinkApiClient(getState);
 
   try {
-    const [ shortUrl ] = await Promise.all([
+    const [shortUrl] = await Promise.all([
       updateShortUrl(shortCode, domain, data as any), // FIXME Parse dates
       sendTagsSeparately && data.tags ? updateShortUrlTags(shortCode, domain, data.tags) : undefined,
     ]);

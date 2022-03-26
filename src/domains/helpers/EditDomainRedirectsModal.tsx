@@ -25,9 +25,9 @@ const FormGroup: FC<InputFormGroupProps & { isLast?: boolean }> = ({ isLast, ...
 export const EditDomainRedirectsModal: FC<EditDomainRedirectsModalProps> = (
   { isOpen, toggle, domain, editDomainRedirects },
 ) => {
-  const [ baseUrlRedirect, setBaseUrlRedirect ] = useState(domain.redirects?.baseUrlRedirect ?? '');
-  const [ regular404Redirect, setRegular404Redirect ] = useState(domain.redirects?.regular404Redirect ?? '');
-  const [ invalidShortUrlRedirect, setInvalidShortUrlRedirect ] = useState(
+  const [baseUrlRedirect, setBaseUrlRedirect] = useState(domain.redirects?.baseUrlRedirect ?? '');
+  const [regular404Redirect, setRegular404Redirect] = useState(domain.redirects?.regular404Redirect ?? '');
+  const [invalidShortUrlRedirect, setInvalidShortUrlRedirect] = useState(
     domain.redirects?.invalidShortUrlRedirect ?? '',
   );
   const handleSubmit = handleEventPreventingDefault(async () => editDomainRedirects(domain.domain, {

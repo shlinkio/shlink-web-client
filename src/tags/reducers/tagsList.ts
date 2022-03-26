@@ -13,12 +13,10 @@ import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducer
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
 
-/* eslint-disable padding-line-between-statements */
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
 export const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
 export const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
 export const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
-/* eslint-enable padding-line-between-statements */
 
 type TagsStatsMap = Record<string, TagStats>;
 
@@ -58,19 +56,19 @@ const initialState = {
 
 type TagIncrease = [string, number];
 
-const renameTag = (oldName: string, newName: string) => (tag: string) => tag === oldName ? newName : tag;
+const renameTag = (oldName: string, newName: string) => (tag: string) => (tag === oldName ? newName : tag);
 const rejectTag = (tags: string[], tagToReject: string) => reject((tag) => tag === tagToReject, tags);
-const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags.reduce((stats, [ tag, increase ]) => {
-  if (!stats[tag]) {
-    return stats;
+const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags.reduce((theStats, [tag, increase]) => {
+  if (!theStats[tag]) {
+    return theStats;
   }
 
-  const tagStats = stats[tag];
+  const tagStats = theStats[tag];
 
-  tagStats.visitsCount = tagStats.visitsCount + increase;
-  stats[tag] = tagStats;
+  tagStats.visitsCount += increase;
+  theStats[tag] = tagStats; // eslint-disable-line no-param-reassign
 
-  return stats;
+  return theStats;
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
   createdVisits.reduce<Stats>((acc, { shortUrl }) => {
@@ -123,8 +121,8 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
   dispatch({ type: LIST_TAGS_START });
 
   try {
-    const { listTags } = buildShlinkApiClient(getState);
-    const { tags, stats = [] }: ShlinkTags = await listTags();
+    const { listTags: shlinkListTags } = buildShlinkApiClient(getState);
+    const { tags, stats = [] }: ShlinkTags = await shlinkListTags();
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
       acc[tag] = { shortUrlsCount, visitsCount };
 

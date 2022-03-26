@@ -6,7 +6,7 @@ const ScrollToTop = (): FC => ({ children }) => {
 
   useEffect(() => {
     scrollTo(0, 0);
-  }, [ location ]);
+  }, [location]);
 
   return <>{children}</>;
 };

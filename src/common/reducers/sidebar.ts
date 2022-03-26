@@ -1,10 +1,8 @@
 import { Action } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 
-/* eslint-disable padding-line-between-statements */
 export const SIDEBAR_PRESENT = 'shlink/common/SIDEBAR_PRESENT';
 export const SIDEBAR_NOT_PRESENT = 'shlink/common/SIDEBAR_NOT_PRESENT';
-/* eslint-enable padding-line-between-statements */
 
 export interface Sidebar {
   sidebarPresent: boolean;

@@ -20,11 +20,11 @@ describe('<DuplicatedServersModal />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [[], 0 ],
-    [[ Mock.all<ServerData>() ], 2 ],
-    [[ Mock.all<ServerData>(), Mock.all<ServerData>() ], 2 ],
-    [[ Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>() ], 3 ],
-    [[ Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>() ], 4 ],
+    [[], 0],
+    [[Mock.all<ServerData>()], 2],
+    [[Mock.all<ServerData>(), Mock.all<ServerData>()], 2],
+    [[Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>()], 3],
+    [[Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>()], 4],
   ])('renders expected amount of items', (duplicatedServers, expectedItems) => {
     const wrapper = createWrapper(duplicatedServers);
     const li = wrapper.find('li');
@@ -34,7 +34,7 @@ describe('<DuplicatedServersModal />', () => {
 
   it.each([
     [
-      [ Mock.all<ServerData>() ],
+      [Mock.all<ServerData>()],
       {
         header: 'Duplicated server',
         firstParagraph: 'There is already a server with:',
@@ -43,7 +43,7 @@ describe('<DuplicatedServersModal />', () => {
       },
     ],
     [
-      [ Mock.all<ServerData>(), Mock.all<ServerData>() ],
+      [Mock.all<ServerData>(), Mock.all<ServerData>()],
       {
         header: 'Duplicated servers',
         firstParagraph: 'The next servers already exist:',
@@ -66,7 +66,7 @@ describe('<DuplicatedServersModal />', () => {
 
   it.each([
     [[]],
-    [[ Mock.of<ServerData>({ url: 'url', apiKey: 'apiKey' }) ]],
+    [[Mock.of<ServerData>({ url: 'url', apiKey: 'apiKey' })]],
   ])('displays provided server data', (duplicatedServers) => {
     const wrapper = createWrapper(duplicatedServers);
     const li = wrapper.find('li');

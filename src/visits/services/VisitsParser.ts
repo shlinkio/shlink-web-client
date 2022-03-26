@@ -4,6 +4,7 @@ import { hasValue } from '../../utils/utils';
 import { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
 import { isNormalizedOrphanVisit, isOrphanVisit } from '../types/helpers';
 
+/* eslint-disable no-param-reassign */
 const visitHasProperty = (visit: NormalizedVisit, propertyName: keyof NormalizedVisit) =>
   !isNil(visit) && hasValue(visit[propertyName]);
 
@@ -46,10 +47,10 @@ const updateCitiesForMapForVisit = (citiesForMapStats: Record<string, CityStats>
   const currentCity = citiesForMapStats[city] || {
     cityName: city,
     count: 0,
-    latLong: [ optionalNumericToNumber(latitude), optionalNumericToNumber(longitude) ],
+    latLong: [optionalNumericToNumber(latitude), optionalNumericToNumber(longitude)],
   };
 
-  currentCity.count++;
+  currentCity.count += 1;
 
   citiesForMapStats[city] = currentCity;
 };

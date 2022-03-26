@@ -28,10 +28,10 @@ describe('<TagsSettings />', () => {
   });
 
   it.each([
-    [ undefined, 'cards' ],
-    [{}, 'cards' ],
-    [{ defaultMode: 'cards' as TagsMode }, 'cards' ],
-    [{ defaultMode: 'list' as TagsMode }, 'list' ],
+    [undefined, 'cards'],
+    [{}, 'cards'],
+    [{ defaultMode: 'cards' as TagsMode }, 'cards'],
+    [{ defaultMode: 'list' as TagsMode }, 'list'],
   ])('shows expected tags displaying mode', (tags, expectedMode) => {
     const wrapper = createWrapper(tags);
     const dropdown = wrapper.find(TagsModeDropdown);
@@ -42,8 +42,8 @@ describe('<TagsSettings />', () => {
   });
 
   it.each([
-    [ 'cards' as TagsMode ],
-    [ 'list' as TagsMode ],
+    ['cards' as TagsMode],
+    ['list' as TagsMode],
   ])('invokes setTagsSettings when tags mode changes', (defaultMode) => {
     const wrapper = createWrapper();
     const dropdown = wrapper.find(TagsModeDropdown);
@@ -54,7 +54,7 @@ describe('<TagsSettings />', () => {
   });
 
   it.each([
-    [ undefined, {}],
+    [undefined, {}],
     [{}, {}],
     [{ defaultOrdering: {} }, {}],
     [{ defaultOrdering: { field: 'tag', dir: 'DESC' } as TagsOrder }, { field: 'tag', dir: 'DESC' }],
@@ -67,10 +67,10 @@ describe('<TagsSettings />', () => {
   });
 
   it.each([
-    [ undefined, undefined ],
-    [ 'tag', 'ASC' ],
-    [ 'visits', undefined ],
-    [ 'shortUrls', 'DESC' ],
+    [undefined, undefined],
+    ['tag', 'ASC'],
+    ['visits', undefined],
+    ['shortUrls', 'DESC'],
   ])('invokes setTagsSettings when ordering changes', (field, dir) => {
     const wrapper = createWrapper();
     const dropdown = wrapper.find(OrderingDropdown);

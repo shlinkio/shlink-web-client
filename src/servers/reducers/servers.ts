@@ -4,12 +4,10 @@ import { Action } from 'redux';
 import { ServerData, ServersMap, ServerWithId } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 
-/* eslint-disable padding-line-between-statements */
 export const EDIT_SERVER = 'shlink/servers/EDIT_SERVER';
 export const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
 export const CREATE_SERVERS = 'shlink/servers/CREATE_SERVERS';
 export const SET_AUTO_CONNECT = 'shlink/servers/SET_AUTO_CONNECT';
-/* eslint-enable padding-line-between-statements */
 
 export interface CreateServersAction extends Action<string> {
   newServers: ServersMap;
@@ -37,9 +35,9 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
 export default buildReducer<ServersMap, CreateServersAction & DeleteServerAction & SetAutoConnectAction>({
   [CREATE_SERVERS]: (state, { newServers }) => ({ ...state, ...newServers }),
   [DELETE_SERVER]: (state, { serverId }) => dissoc(serverId, state),
-  [EDIT_SERVER]: (state, { serverId, serverData }: any) => !state[serverId]
-    ? state
-    : assoc(serverId, { ...state[serverId], ...serverData }, state),
+  [EDIT_SERVER]: (state, { serverId, serverData }: any) => (
+    !state[serverId] ? state : assoc(serverId, { ...state[serverId], ...serverData }, state)
+  ),
   [SET_AUTO_CONNECT]: (state, { serverId, autoConnect }) => {
     if (!state[serverId]) {
       return state;
@@ -50,7 +48,7 @@ export default buildReducer<ServersMap, CreateServersAction & DeleteServerAction
     }
 
     return fromPairs(
-      toPairs(state).map(([ evaluatedServerId, server ]) => [
+      toPairs(state).map(([evaluatedServerId, server]) => [
         evaluatedServerId,
         { ...server, autoConnect: evaluatedServerId === serverId },
       ]),
@@ -66,7 +64,7 @@ export const createServers = pipe(
   (newServers: ServersMap) => ({ type: CREATE_SERVERS, newServers }),
 );
 
-export const createServer = (server: ServerWithId) => createServers([ server ]);
+export const createServer = (server: ServerWithId) => createServers([server]);
 
 export const editServer = (serverId: string, serverData: Partial<ServerData>) => ({
   type: EDIT_SERVER,

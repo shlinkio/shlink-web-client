@@ -37,9 +37,9 @@ describe('<DropdownBtnMenu />', () => {
   });
 
   it.each([
-    [ undefined, true ],
-    [ true, true ],
-    [ false, false ],
+    [undefined, true],
+    [true, true],
+    [false, false],
   ])('renders menu to right when expected', (right, expectedRight) => {
     const wrapper = createWrapper({ right });
 

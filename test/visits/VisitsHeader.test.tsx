@@ -5,7 +5,7 @@ import { Visit } from '../../src/visits/types';
 
 describe('<VisitsHeader />', () => {
   let wrapper: ShallowWrapper;
-  const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
+  const visits = [Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>()];
   const title = 'My header title';
   const goBack = jest.fn();
 

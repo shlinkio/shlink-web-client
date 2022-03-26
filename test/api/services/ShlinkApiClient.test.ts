@@ -11,13 +11,13 @@ describe('ShlinkApiClient', () => {
   const createAxiosMock = (data: AxiosRequestConfig = {}) => jest.fn(createAxios(data)) as unknown as AxiosInstance;
   const createApiClient = (data: AxiosRequestConfig) => new ShlinkApiClient(createAxios(data), '', '');
   const shortCodesWithDomainCombinations: [ string, OptionalString ][] = [
-    [ 'abc123', null ],
-    [ 'abc123', undefined ],
-    [ 'abc123', 'example.com' ],
+    ['abc123', null],
+    ['abc123', undefined],
+    ['abc123', 'example.com'],
   ];
 
   describe('listShortUrls', () => {
-    const expectedList = [ 'foo', 'bar' ];
+    const expectedList = ['foo', 'bar'];
 
     it('properly returns short URLs list', async () => {
       const { listShortUrls } = createApiClient({
@@ -32,9 +32,9 @@ describe('ShlinkApiClient', () => {
     });
 
     it.each([
-      [ { field: 'visits', dir: 'DESC' } as ShortUrlsOrder, 'visits-DESC' ],
-      [ { field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, 'longUrl-ASC' ],
-      [ { field: 'longUrl', dir: undefined } as ShortUrlsOrder, undefined ],
+      [{ field: 'visits', dir: 'DESC' } as ShortUrlsOrder, 'visits-DESC'],
+      [{ field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, 'longUrl-ASC'],
+      [{ field: 'longUrl', dir: undefined } as ShortUrlsOrder, undefined],
     ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
       const axiosSpy = createAxiosMock({
         data: expectedList,
@@ -73,7 +73,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getShortUrlVisits', () => {
     it('properly returns short URL visits', async () => {
-      const expectedVisits = [ 'foo', 'bar' ];
+      const expectedVisits = ['foo', 'bar'];
       const axiosSpy = createAxiosMock({
         data: {
           visits: {
@@ -95,7 +95,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getTagVisits', () => {
     it('properly returns tag visits', async () => {
-      const expectedVisits = [ 'foo', 'bar' ];
+      const expectedVisits = ['foo', 'bar'];
       const axiosSpy = createAxiosMock({
         data: {
           visits: {
@@ -136,7 +136,7 @@ describe('ShlinkApiClient', () => {
 
   describe('updateShortUrlTags', () => {
     it.each(shortCodesWithDomainCombinations)('properly updates short URL tags', async (shortCode, domain) => {
-      const expectedTags = [ 'foo', 'bar' ];
+      const expectedTags = ['foo', 'bar'];
       const axiosSpy = createAxiosMock({
         data: { tags: expectedTags },
       });
@@ -176,7 +176,7 @@ describe('ShlinkApiClient', () => {
 
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
-      const expectedTags = [ 'foo', 'bar' ];
+      const expectedTags = ['foo', 'bar'];
       const axiosSpy = createAxiosMock({
         data: {
           tags: { data: expectedTags },
@@ -193,7 +193,7 @@ describe('ShlinkApiClient', () => {
 
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
-      const tags = [ 'foo', 'bar' ];
+      const tags = ['foo', 'bar'];
       const axiosSpy = createAxiosMock();
       const { deleteTags } = new ShlinkApiClient(axiosSpy, '', '');
 
@@ -273,7 +273,7 @@ describe('ShlinkApiClient', () => {
 
   describe('listDomains', () => {
     it('returns domains', async () => {
-      const expectedData = { data: [ Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>() ] };
+      const expectedData = { data: [Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>()] };
       const resp = { domains: expectedData };
       const axiosSpy = createAxiosMock({ data: resp });
       const { listDomains } = new ShlinkApiClient(axiosSpy, '', '');

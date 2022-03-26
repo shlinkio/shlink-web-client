@@ -22,9 +22,9 @@ const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIENT_VERS
 
   return (
     <small className="text-muted">
-      {isReachableServer(selectedServer) &&
+      {isReachableServer(selectedServer) && (
         <>Server: <VersionLink project="shlink" version={selectedServer.printableVersion} /> - </>
-      }
+      )}
       Client: <VersionLink project="shlink-web-client" version={normalizedClientVersion} />
     </small>
   );

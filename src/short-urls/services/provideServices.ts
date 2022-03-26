@@ -22,8 +22,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'ShortUrlsFilteringBar');
   bottle.decorator('ShortUrlsList', connect(
-    [ 'selectedServer', 'mercureInfo', 'shortUrlsList', 'settings' ],
-    [ 'listShortUrls', 'createNewVisits', 'loadMercureInfo' ],
+    ['selectedServer', 'mercureInfo', 'shortUrlsList', 'settings'],
+    ['listShortUrls', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('ShortUrlsTable', ShortUrlsTable, 'ShortUrlsRow');
@@ -35,25 +35,25 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
-    connect([ 'shortUrlCreationResult', 'selectedServer', 'settings' ], [ 'createShortUrl', 'resetCreateShortUrl' ]),
+    connect(['shortUrlCreationResult', 'selectedServer', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
   );
 
   bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');
   bottle.decorator('EditShortUrl', connect(
-    [ 'shortUrlDetail', 'shortUrlEdition', 'selectedServer', 'settings' ],
-    [ 'getShortUrlDetail', 'editShortUrl' ],
+    ['shortUrlDetail', 'shortUrlEdition', 'selectedServer', 'settings'],
+    ['getShortUrlDetail', 'editShortUrl'],
   ));
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
-  bottle.decorator('DeleteShortUrlModal', connect([ 'shortUrlDeletion' ], [ 'deleteShortUrl', 'resetDeleteShortUrl' ]));
+  bottle.decorator('DeleteShortUrlModal', connect(['shortUrlDeletion'], ['deleteShortUrl', 'resetDeleteShortUrl']));
 
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader', 'ForServerVersion');
-  bottle.decorator('QrCodeModal', connect([ 'selectedServer' ]));
+  bottle.decorator('QrCodeModal', connect(['selectedServer']));
 
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator', 'ExportShortUrlsBtn');
 
   bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');
-  bottle.decorator('ExportShortUrlsBtn', connect([ 'selectedServer' ]));
+  bottle.decorator('ExportShortUrlsBtn', connect(['selectedServer']));
 
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');

@@ -14,7 +14,7 @@ export interface DeleteServerButtonProps {
 const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<DeleteServerButtonProps> => (
   { server, className, children, textClassName },
 ) => {
-  const [ isModalOpen, , showModal, hideModal ] = useToggle();
+  const [isModalOpen, , showModal, hideModal] = useToggle();
 
   return (
     <>

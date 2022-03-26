@@ -15,9 +15,9 @@ describe('<TooltipToggleSwitch />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ 'foo' ],
-    [ 'bar' ],
-    [ 'baz' ],
+    ['foo'],
+    ['bar'],
+    ['baz'],
   ])('shows children inside tooltip', (children) => {
     const wrapper = createWrapper({ children });
     const tooltip = wrapper.find(UncontrolledTooltip);

@@ -33,8 +33,8 @@ export interface TagsListProps {
 const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableProps>) => boundToMercureHub((
   { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
-  const [ mode, setMode ] = useState<TagsMode>(settings.tags?.defaultMode ?? 'cards');
-  const [ order, setOrder ] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
+  const [mode, setMode] = useState<TagsMode>(settings.tags?.defaultMode ?? 'cards');
+  const [order, setOrder] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
   const resolveSortedTags = pipe(
     () => tagsList.filteredTags.map((tag): NormalizedTag => ({
       tag,
@@ -103,6 +103,6 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
       {renderContent()}
     </>
   );
-}, () => [ Topics.visits ]);
+}, () => [Topics.visits]);
 
 export default TagsList;

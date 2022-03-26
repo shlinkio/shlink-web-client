@@ -27,8 +27,8 @@ describe('<ChartCard />', () => {
   });
 
   it.each([
-    [ 'the title', 'the title' ],
-    [ () => 'the title from func', 'the title from func' ],
+    ['the title', 'the title'],
+    [() => 'the title from func', 'the title from func'],
   ])('properly renders title by parsing provided value', (title, expectedTitle) => {
     const wrapper = createWrapper(title);
     const header = wrapper.find(CardHeader);

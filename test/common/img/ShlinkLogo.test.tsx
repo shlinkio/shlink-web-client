@@ -13,9 +13,9 @@ describe('<ShlinkLogo />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined, MAIN_COLOR ],
-    [ 'red', 'red' ],
-    [ 'white', 'white' ],
+    [undefined, MAIN_COLOR],
+    ['red', 'red'],
+    ['white', 'white'],
   ])('renders expected color', (color, expectedColor) => {
     const wrapper = createWrapper({ color });
 
@@ -23,9 +23,9 @@ describe('<ShlinkLogo />', () => {
   });
 
   it.each([
-    [ undefined, undefined ],
-    [ 'foo', 'foo' ],
-    [ 'bar', 'bar' ],
+    [undefined, undefined],
+    ['foo', 'foo'],
+    ['bar', 'bar'],
   ])('renders expected class', (className, expectedClassName) => {
     const wrapper = createWrapper({ className });
 

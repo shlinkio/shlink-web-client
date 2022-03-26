@@ -15,7 +15,7 @@ export interface DropdownBtnProps {
 export const DropdownBtn: FC<DropdownBtnProps> = (
   { text, disabled = false, className = '', children, dropdownClassName, right = false, minWidth },
 ) => {
-  const [ isOpen, toggle ] = useToggle();
+  const [isOpen, toggle] = useToggle();
   const toggleClasses = `dropdown-btn__toggle btn-block ${className}`;
   const style = { minWidth: minWidth && `${minWidth}px` };
 

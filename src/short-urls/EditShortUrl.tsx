@@ -63,9 +63,9 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const { domain } = parseQuery<{ domain?: string }>(search);
   const initialState = useMemo(
     () => getInitialState(shortUrl, shortUrlCreationSettings),
-    [ shortUrl, shortUrlCreationSettings ],
+    [shortUrl, shortUrlCreationSettings],
   );
-  const [ savingSucceeded,, isSuccessful, isNotSuccessful ] = useToggle();
+  const [savingSucceeded,, isSuccessful, isNotSuccessful] = useToggle();
 
   useEffect(() => {
     params.shortCode && getShortUrlDetail(params.shortCode, domain);

@@ -32,14 +32,14 @@ export interface ShortUrlFormProps {
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
-const toDate = (date?: string | Date): Date | undefined => typeof date === 'string' ? parseISO(date) : date;
+const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
 const dynamicColClasses = (flag: boolean) => ({ 'col-sm-6': flag, 'col-sm-12': !flag });
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
-  const [ shortUrlData, setShortUrlData ] = useState(initialState);
+  const [shortUrlData, setShortUrlData] = useState(initialState);
   const isEdit = mode === 'edit';
   const isBasicMode = mode === 'create-basic';
   const hadTitleOriginally = hasValue(initialState.title);
@@ -48,9 +48,9 @@ export const ShortUrlForm = (
   const resolveNewTitle = (): OptionalString => {
     const hasNewTitle = hasValue(shortUrlData.title);
     const matcher = cond<never, OptionalString>([
-      [ () => !hasNewTitle && !hadTitleOriginally, () => undefined ],
-      [ () => !hasNewTitle && hadTitleOriginally, () => null ],
-      [ T, () => shortUrlData.title ],
+      [() => !hasNewTitle && !hadTitleOriginally, () => undefined],
+      [() => !hasNewTitle && hadTitleOriginally, () => null],
+      [T, () => shortUrlData.title],
     ]);
 
     return matcher();
@@ -65,7 +65,7 @@ export const ShortUrlForm = (
 
   useEffect(() => {
     setShortUrlData(initialState);
-  }, [ initialState ]);
+  }, [initialState]);
 
   const renderOptionalInput = (
     id: NonDateFields,

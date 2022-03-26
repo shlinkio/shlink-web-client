@@ -44,9 +44,9 @@ describe('visitsOverviewReducer', () => {
     });
 
     it.each([
-      [ 50, 53 ],
-      [ 0, 3 ],
-      [ undefined, 3 ],
+      [50, 53],
+      [0, 3],
+      [undefined, 3],
     ])('returns updated amounts on CREATE_VISITS', (providedOrphanVisitsCount, expectedOrphanVisitsCount) => {
       const { visitsCount, orphanVisitsCount } = reducer(
         state({ visitsCount: 100, orphanVisitsCount: providedOrphanVisitsCount }),

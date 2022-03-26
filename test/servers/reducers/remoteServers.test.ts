@@ -80,7 +80,7 @@ describe('remoteServersReducer', () => {
           },
         },
       ],
-      [ '<html></html>', {}],
+      ['<html></html>', {}],
       [{}, {}],
     ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
       get.mockResolvedValue(mockedValue);

@@ -17,7 +17,7 @@ interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
 const DeleteShortUrlModal = (
   { shortUrl, toggle, isOpen, shortUrlDeletion, resetDeleteShortUrl, deleteShortUrl }: DeleteShortUrlModalConnectProps,
 ) => {
-  const [ inputValue, setInputValue ] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => resetDeleteShortUrl, []);
 

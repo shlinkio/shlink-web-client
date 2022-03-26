@@ -16,9 +16,9 @@ describe('<TableOrderIcon />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ 'foo', undefined ],
-    [ 'bar', 'DESC' as OrderDir ],
-    [ 'bar', 'ASC' as OrderDir ],
+    ['foo', undefined],
+    ['bar', 'DESC' as OrderDir],
+    ['bar', 'ASC' as OrderDir],
   ])('renders empty when not all conditions are met', (field, dir) => {
     const wrapper = createWrapper(field, dir);
 
@@ -26,8 +26,8 @@ describe('<TableOrderIcon />', () => {
   });
 
   it.each([
-    [ 'DESC' as OrderDir, caretDownIcon ],
-    [ 'ASC' as OrderDir, caretUpIcon ],
+    ['DESC' as OrderDir, caretDownIcon],
+    ['ASC' as OrderDir, caretUpIcon],
   ])('renders an icon when all conditions are met', (dir, expectedIcon) => {
     const wrapper = createWrapper('foo', dir);
 
@@ -36,9 +36,9 @@ describe('<TableOrderIcon />', () => {
   });
 
   it.each([
-    [ undefined, 'ms-1' ],
-    [ 'foo', 'foo' ],
-    [ 'bar', 'bar' ],
+    [undefined, 'ms-1'],
+    ['foo', 'foo'],
+    ['bar', 'bar'],
   ])('renders expected classname', (className, expectedClassName) => {
     const wrapper = createWrapper('foo', 'ASC', className);
 

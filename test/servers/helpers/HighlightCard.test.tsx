@@ -16,8 +16,8 @@ describe('<HighlightCard />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined ],
-    [ false ],
+    [undefined],
+    [false],
   ])('renders expected components', (link) => {
     const wrapper = createWrapper({ title: 'foo', link: link as undefined | false });
 
@@ -30,9 +30,9 @@ describe('<HighlightCard />', () => {
   });
 
   it.each([
-    [ 'foo' ],
-    [ 'bar' ],
-    [ 'baz' ],
+    ['foo'],
+    ['bar'],
+    ['baz'],
   ])('renders provided title', (title) => {
     const wrapper = createWrapper({ title });
     const cardTitle = wrapper.find(CardTitle);
@@ -41,9 +41,9 @@ describe('<HighlightCard />', () => {
   });
 
   it.each([
-    [ 'foo' ],
-    [ 'bar' ],
-    [ 'baz' ],
+    ['foo'],
+    ['bar'],
+    ['baz'],
   ])('renders provided children', (children) => {
     const wrapper = createWrapper({ title: 'foo', children });
     const cardText = wrapper.find(CardText);
@@ -52,9 +52,9 @@ describe('<HighlightCard />', () => {
   });
 
   it.each([
-    [ 'foo' ],
-    [ 'bar' ],
-    [ 'baz' ],
+    ['foo'],
+    ['bar'],
+    ['baz'],
   ])('adds extra props when a link is provided', (link) => {
     const wrapper = createWrapper({ title: 'foo', link });
 

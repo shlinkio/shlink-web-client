@@ -6,11 +6,9 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { groupNewVisitsByType } from '../types/helpers';
 import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_OVERVIEW_START = 'shlink/visitsOverview/GET_OVERVIEW_START';
 export const GET_OVERVIEW_ERROR = 'shlink/visitsOverview/GET_OVERVIEW_ERROR';
 export const GET_OVERVIEW = 'shlink/visitsOverview/GET_OVERVIEW';
-/* eslint-enable padding-line-between-statements */
 
 export interface VisitsOverview {
   visitsCount: number;

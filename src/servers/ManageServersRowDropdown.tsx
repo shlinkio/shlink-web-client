@@ -25,8 +25,8 @@ interface ManageServersRowDropdownConnectProps extends ManageServersRowDropdownP
 export const ManageServersRowDropdown = (
   DeleteServerModal: FC<DeleteServerModalProps>,
 ): FC<ManageServersRowDropdownConnectProps> => ({ server, setAutoConnect }) => {
-  const [ isMenuOpen, toggleMenu ] = useToggle();
-  const [ isModalOpen,, showModal, hideModal ] = useToggle();
+  const [isMenuOpen, toggleMenu] = useToggle();
+  const [isModalOpen,, showModal, hideModal] = useToggle();
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;

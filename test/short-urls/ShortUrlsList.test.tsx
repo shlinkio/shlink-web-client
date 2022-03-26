@@ -30,7 +30,7 @@ describe('<ShortUrlsList />', () => {
           shortCode: 'testShortCode',
           shortUrl: 'https://www.example.com/testShortUrl',
           longUrl: 'https://www.example.com/testLongUrl',
-          tags: [ 'test tag' ],
+          tags: ['test tag'],
         }),
       ],
       pagination: {},
@@ -106,9 +106,9 @@ describe('<ShortUrlsList />', () => {
   });
 
   it.each([
-    [ Mock.of<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC' ],
-    [ Mock.of<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC' ],
-    [ Mock.of<ShortUrlsOrder>(), undefined, undefined ],
+    [Mock.of<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC'],
+    [Mock.of<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC'],
+    [Mock.of<ShortUrlsOrder>(), undefined, undefined],
   ])('has expected initial ordering', (initialOrderBy, field, dir) => {
     const wrapper = createWrapper(initialOrderBy);
 

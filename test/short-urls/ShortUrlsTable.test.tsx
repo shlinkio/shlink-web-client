@@ -62,10 +62,10 @@ describe('<ShortUrlsTable />', () => {
   });
 
   it.each([
-    [ '2.6.0' as SemVer ],
-    [ '2.6.1' as SemVer ],
-    [ '2.7.0' as SemVer ],
-    [ '3.0.0' as SemVer ],
+    ['2.6.0' as SemVer],
+    ['2.6.1' as SemVer],
+    ['2.7.0' as SemVer],
+    ['3.0.0' as SemVer],
   ])('should render composed column when server supports title', (version) => {
     const wrapper = createWrapper(Mock.of<ReachableServer>({ version }));
     const composedColumn = wrapper.find('table').find('th').at(2);

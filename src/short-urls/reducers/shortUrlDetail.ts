@@ -9,11 +9,9 @@ import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
 export const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';
 export const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
-/* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlDetail {
   shortUrl?: ShortUrl;
@@ -46,7 +44,7 @@ export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   try {
     const { shortUrlsList } = getState();
     const shortUrl = shortUrlsList?.shortUrls?.data.find(
-      (shortUrl) => shortUrlMatches(shortUrl, shortCode, domain),
+      (url) => shortUrlMatches(url, shortCode, domain),
     ) ?? await buildShlinkApiClient(getState).getShortUrl(shortCode, domain);
 
     dispatch<ShortUrlDetailAction>({ shortUrl, type: GET_SHORT_URL_DETAIL });

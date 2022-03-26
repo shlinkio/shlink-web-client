@@ -21,7 +21,7 @@ describe('<DeleteServerModal />', () => {
       <DeleteServerModal
         server={Mock.of<ServerWithId>({ name: serverName })}
         toggle={toggleMock}
-        isOpen={true}
+        isOpen
         deleteServer={deleteServerMock}
       />,
     );

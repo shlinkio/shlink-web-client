@@ -16,7 +16,7 @@ interface SearchFieldProps {
 }
 
 const SearchField = ({ onChange, className, large = true, noBorder = false, initialValue = '' }: SearchFieldProps) => {
-  const [ searchTerm, setSearchTerm ] = useState(initialValue);
+  const [searchTerm, setSearchTerm] = useState(initialValue);
 
   const resetTimer = () => {
     timer && clearTimeout(timer);

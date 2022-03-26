@@ -70,11 +70,11 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('shortCode')}>
             Short URL {renderOrderIcon?.('shortCode')}
           </th>
-          {!supportsTitle && (
+          {!supportsTitle ? (
             <th className={orderableColumnsClasses} onClick={orderByColumn?.('longUrl')}>
               Long URL {renderOrderIcon?.('longUrl')}
             </th>
-          ) || (
+          ) : (
             <th className="short-urls-table__header-cell">
               <span className={actionableFieldClasses} onClick={orderByColumn?.('title')}>
                 Title {renderOrderIcon?.('title')}
