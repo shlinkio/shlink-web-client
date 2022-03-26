@@ -12,7 +12,7 @@ describe('ReportExporter', () => {
 
   beforeEach(jest.clearAllMocks);
   beforeEach(() => {
-    (global as any).Blob = class Blob {}; // eslint-disable-line @typescript-eslint/no-extraneous-class
+    (global as any).Blob = class Blob {};
     (global as any).URL = { createObjectURL: () => '' };
 
     exporter = new ReportExporter(windowMock, csvToJsonMock);

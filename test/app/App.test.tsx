@@ -73,7 +73,7 @@ describe('<App />', () => {
     ['/bar', 'shlink-wrapper'],
     ['/', 'shlink-wrapper d-flex d-md-block align-items-center'],
   ])('renders expected classes on shlink-wrapper based on current pathname', (pathname, expectedClasses) => {
-    (useLocation as any).mockReturnValue({ pathname }); // eslint-disable-line @typescript-eslint/no-unsafe-call
+    (useLocation as any).mockReturnValue({ pathname });
 
     const wrapper = createWrapper();
     const shlinkWrapper = wrapper.find('.shlink-wrapper');

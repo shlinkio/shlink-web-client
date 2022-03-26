@@ -76,7 +76,6 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
-  // eslint-disable-next-line valid-jsdoc
   /**
    * @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead
    */

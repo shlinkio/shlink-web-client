@@ -31,7 +31,7 @@ export const highlightedVisitsToStats = <T extends NormalizedVisit>(
 export const toApiParams = ({ page, itemsPerPage, filter, dateRange }: VisitsParams): ShlinkVisitsParams => {
   const startDate = (dateRange?.startDate && formatIsoDate(dateRange?.startDate)) ?? undefined;
   const endDate = (dateRange?.endDate && formatIsoDate(dateRange?.endDate)) ?? undefined;
-  const excludeBots = filter?.excludeBots || undefined; // eslint-disable-line @typescript-eslint/prefer-nullish-coalescing
+  const excludeBots = filter?.excludeBots || undefined;
 
   return { page, itemsPerPage, startDate, endDate, excludeBots };
 };

@@ -22,7 +22,7 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => ( // eslint-disable-line
+const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<Versions>) => (
   { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
 ) => {
   const [size, setSize] = useState(300);

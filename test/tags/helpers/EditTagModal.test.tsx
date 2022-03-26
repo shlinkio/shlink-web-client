@@ -83,7 +83,7 @@ describe('<EditTagModal />', () => {
     expect(editTag).not.toHaveBeenCalled();
     expect(tagEdited).not.toHaveBeenCalled();
 
-    await form.simulate('submit', { preventDefault: jest.fn() }); // eslint-disable-line @typescript-eslint/await-thenable
+    await form.simulate('submit', { preventDefault: jest.fn() });
 
     expect(editTag).toHaveBeenCalled();
     expect(tagEdited).toHaveBeenCalled();

@@ -58,7 +58,7 @@ describe('<DeleteTagConfirmModal />', () => {
     const footer = wrapper.find(ModalFooter);
     const delBtn = footer.find(Button).last();
 
-    await delBtn.simulate('click'); // eslint-disable-line @typescript-eslint/await-thenable
+    await delBtn.simulate('click');
 
     expect(deleteTag).toHaveBeenCalledTimes(1);
     expect(deleteTag).toHaveBeenCalledWith(tag);

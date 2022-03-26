@@ -36,7 +36,7 @@ export const useToggle = (initialValue = false): ToggleResult => {
 
 export const useSwipeable = (showSidebar: () => void, hideSidebar: () => void) => {
   const swipeMenuIfNoModalExists = (callback: () => void) => (e: any) => {
-    const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some( // eslint-disable-line @typescript-eslint/no-unsafe-call
+    const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some(
       ({ classList }) => classList?.contains('visits-table'),
     );
 

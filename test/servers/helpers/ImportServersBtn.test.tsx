@@ -78,7 +78,7 @@ describe('<ImportServersBtn />', () => {
     const wrapper = createWrapper();
     const file = wrapper.find('.import-servers-btn__csv-select');
 
-    await file.simulate('change', { target: { files: [''] } }); // eslint-disable-line @typescript-eslint/await-thenable
+    await file.simulate('change', { target: { files: [''] } });
 
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
   });

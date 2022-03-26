@@ -33,6 +33,6 @@ render(
 // Learn more about service workers: https://cra.link/PWA
 registerServiceWorker({
   onUpdate() {
-    store.dispatch(appUpdateAvailable()); // eslint-disable-line @typescript-eslint/no-unsafe-call
+    store.dispatch(appUpdateAvailable());
   },
 });
