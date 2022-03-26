@@ -3,10 +3,10 @@ import { formatIsoDate } from '../../utils/helpers/date';
 import { ShlinkVisitsParams } from '../../api/types';
 import { CreateVisit, NormalizedOrphanVisit, NormalizedVisit, OrphanVisit, Stats, Visit, VisitsParams } from './index';
 
-export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => !!(visit as OrphanVisit).visitedUrl;
+export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => (visit as OrphanVisit).visitedUrl !== undefined;
 
 export const isNormalizedOrphanVisit = (visit: NormalizedVisit): visit is NormalizedOrphanVisit =>
-  !!(visit as NormalizedOrphanVisit).visitedUrl;
+  (visit as NormalizedOrphanVisit).visitedUrl !== undefined;
 
 export interface GroupedNewVisits {
   orphanVisits: CreateVisit[];

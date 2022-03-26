@@ -13,7 +13,7 @@ import { QrErrorCorrectionDropdown } from '../../../src/short-urls/helpers/qr-co
 
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
-  const saveImage = jest.fn();
+  const saveImage = jest.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }), () => null);
   const shortUrl = 'https://doma.in/abc123';
   const createWrapper = (version: SemVer = '2.6.0') => {
