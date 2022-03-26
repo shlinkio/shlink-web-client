@@ -14,7 +14,7 @@
     "implicit-arrow-linebreak": "off",
     "no-restricted-globals": "off",
     "default-case": "off",
-    "max-len": ["error", { "code":  120, "ignoreComments": true, "ignoreStrings": true }],
+    "max-len": ["error", { "code":  120, "ignoreComments": true, "ignoreStrings": true, "ignoreTemplateLiterals": true }],
     "import/no-cycle": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
