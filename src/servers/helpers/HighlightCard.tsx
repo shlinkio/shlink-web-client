@@ -10,7 +10,7 @@ export interface HighlightCardProps {
   link?: string | false;
 }
 
-const buildExtraProps = (link?: string | false) => !link ? {} : { tag: Link, to: link };
+const buildExtraProps = (link?: string | false) => (!link ? {} : { tag: Link, to: link });
 
 export const HighlightCard: FC<HighlightCardProps> = ({ children, title, link }) => (
   <Card className="highlight-card" body {...buildExtraProps(link)}>

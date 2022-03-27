@@ -12,7 +12,7 @@ describe('<ManageServers />', () => {
   const serversExporter = Mock.of<ServersExporter>({ exportServers });
   const ImportServersBtn = () => null;
   const ManageServersRow = () => null;
-  const useStateFlagTimeout = jest.fn().mockReturnValue([ false, jest.fn() ]);
+  const useStateFlagTimeout = jest.fn().mockReturnValue([false, jest.fn()]);
   const ManageServers = createManageServers(serversExporter, ImportServersBtn, useStateFlagTimeout, ManageServersRow);
   let wrapper: ShallowWrapper;
   const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
@@ -52,8 +52,8 @@ describe('<ManageServers />', () => {
   });
 
   it.each([
-    [ createServerMock('foo'), 3 ],
-    [ createServerMock('foo', true), 4 ],
+    [createServerMock('foo'), 3],
+    [createServerMock('foo', true), 4],
   ])('shows different amount of columns if there are at least one auto-connect server', (server, expectedCols) => {
     const wrapper = createWrapper({ server });
     const row = wrapper.find(ManageServersRow);
@@ -63,8 +63,8 @@ describe('<ManageServers />', () => {
   });
 
   it.each([
-    [{}, 1 ],
-    [{ foo: createServerMock('foo') }, 2 ],
+    [{}, 1],
+    [{ foo: createServerMock('foo') }, 2],
   ])('shows export button if the list of servers is not empty', (servers, expectedButtons) => {
     const wrapper = createWrapper(servers);
     const exportBtn = wrapper.find(Button);
@@ -82,7 +82,7 @@ describe('<ManageServers />', () => {
   });
 
   it('shows an error message if an error occurs while importing servers', () => {
-    useStateFlagTimeout.mockReturnValue([ true, jest.fn() ]);
+    useStateFlagTimeout.mockReturnValue([true, jest.fn()]);
 
     const wrapper = createWrapper({ foo: createServerMock('foo') });
     const result = wrapper.find(Result);

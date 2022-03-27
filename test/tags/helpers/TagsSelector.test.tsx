@@ -8,8 +8,8 @@ import { Settings } from '../../../src/settings/reducers/settings';
 describe('<TagsSelector />', () => {
   const onChange = jest.fn();
   const TagsSelector = createTagsSelector(Mock.all<ColorGenerator>());
-  const tags = [ 'foo', 'bar' ];
-  const tagsList = Mock.of<TagsList>({ tags: [ ...tags, 'baz' ] });
+  const tags = ['foo', 'bar'];
+  const tagsList = Mock.of<TagsList>({ tags: [...tags, 'baz'] });
   let wrapper: ShallowWrapper;
 
   beforeEach(jest.clearAllMocks);
@@ -57,9 +57,9 @@ describe('<TagsSelector />', () => {
   });
 
   it.each([
-    [ 'The-New-Tag', [ ...tags, 'the-new-tag' ]],
-    [ 'comma,separated,tags', [ ...tags, 'comma', 'separated', 'tags' ]],
-    [ 'foo', tags ],
+    ['The-New-Tag', [...tags, 'the-new-tag']],
+    ['comma,separated,tags', [...tags, 'comma', 'separated', 'tags']],
+    ['foo', tags],
   ])('invokes onChange when new tags are added', (newTag, expectedTags) => {
     wrapper.simulate('addition', { name: newTag });
 
@@ -67,11 +67,11 @@ describe('<TagsSelector />', () => {
   });
 
   it.each([
-    [ 0, 'bar' ],
-    [ 1, 'foo' ],
+    [0, 'bar'],
+    [1, 'foo'],
   ])('invokes onChange when tags are deleted', (index, expected) => {
     wrapper.simulate('delete', index);
 
-    expect(onChange).toHaveBeenCalledWith([ expected ]);
+    expect(onChange).toHaveBeenCalledWith([expected]);
   });
 });

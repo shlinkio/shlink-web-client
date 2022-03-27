@@ -1,10 +1,8 @@
 import { Action } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 
-/* eslint-disable padding-line-between-statements */
 export const APP_UPDATE_AVAILABLE = 'shlink/appUpdates/APP_UPDATE_AVAILABLE';
 export const RESET_APP_UPDATE = 'shlink/appUpdates/RESET_APP_UPDATE';
-/* eslint-enable padding-line-between-statements */
 
 const initialState = false;
 

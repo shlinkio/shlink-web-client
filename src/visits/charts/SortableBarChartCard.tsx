@@ -17,9 +17,9 @@ interface SortableBarChartCardProps extends Omit<HorizontalBarChartProps, 'max'>
   extraHeaderContent?: Function;
 }
 
-const toLowerIfString = (value: any) => type(value) === 'String' ? toLower(value) : value; // eslint-disable-line @typescript-eslint/no-unsafe-return
-const pickKeyFromPair = ([ key ]: StatsRow) => key;
-const pickValueFromPair = ([ , value ]: StatsRow) => value;
+const toLowerIfString = (value: any) => (type(value) === 'String' ? toLower(value) : value);
+const pickKeyFromPair = ([key]: StatsRow) => key;
+const pickValueFromPair = ([, value]: StatsRow) => value;
 
 export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   stats,
@@ -30,15 +30,15 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   withPagination = true,
   ...rest
 }) => {
-  const [ order, setOrder ] = useState<Order<string>>({});
-  const [ currentPage, setCurrentPage ] = useState(1);
-  const [ itemsPerPage, setItemsPerPage ] = useState(50);
+  const [order, setOrder] = useState<Order<string>>({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(50);
 
-  const getSortedPairsForStats = (stats: Stats, sortingItems: Record<string, string>) => {
-    const pairs = toPairs(stats);
+  const getSortedPairsForStats = (statsToSort: Stats, sorting: Record<string, string>) => {
+    const pairs = toPairs(statsToSort);
     const sortedPairs = !order.field ? pairs : sortBy(
       pipe<StatsRow, string | number, string | number>(
-        order.field === Object.keys(sortingItems)[0] ? pickKeyFromPair : pickValueFromPair,
+        order.field === Object.keys(sorting)[0] ? pickKeyFromPair : pickValueFromPair,
         toLowerIfString,
       ),
       pairs,
@@ -56,16 +56,16 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
     const firstPageLength = pages[0].length;
 
     // Using the "hidden" key, the chart will just replace the label by an empty string
-    return [ ...page, ...rangeOf(firstPageLength - page.length, (i): StatsRow => [ `hidden_${i}`, 0 ]) ];
+    return [...page, ...rangeOf(firstPageLength - page.length, (i): StatsRow => [`hidden_${i}`, 0])];
   };
   const renderPagination = (pagesCount: number) =>
     <SimplePaginator currentPage={currentPage} pagesCount={pagesCount} setCurrentPage={setCurrentPage} />;
-  const determineStats = (stats: Stats, highlightedStats: Stats | undefined, sortingItems: Record<string, string>) => {
-    const sortedPairs = getSortedPairsForStats(stats, sortingItems);
+  const determineStats = (statsToSort: Stats, sorting: Record<string, string>, theHighlightedStats?: Stats) => {
+    const sortedPairs = getSortedPairsForStats(statsToSort, sorting);
     const sortedKeys = sortedPairs.map(pickKeyFromPair);
     // The highlighted stats have to be ordered based on the regular stats, not on its own values
-    const sortedHighlightedPairs = highlightedStats && toPairs(
-      { ...zipObj(sortedKeys, sortedKeys.map(() => 0)), ...highlightedStats },
+    const sortedHighlightedPairs = theHighlightedStats && toPairs(
+      { ...zipObj(sortedKeys, sortedKeys.map(() => 0)), ...theHighlightedStats },
     );
 
     if (sortedPairs.length <= itemsPerPage) {
@@ -88,8 +88,8 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
 
   const { currentPageStats, currentPageHighlightedStats, pagination, max } = determineStats(
     stats,
-    highlightedStats && Object.keys(highlightedStats).length > 0 ? highlightedStats : undefined,
     sortingItems,
+    highlightedStats && Object.keys(highlightedStats).length > 0 ? highlightedStats : undefined,
   );
   const activeCities = Object.keys(currentPageStats);
   const computeTitle = () => (
@@ -111,10 +111,10 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
         <div className="float-end">
           <PaginationDropdown
             toggleClassName="btn-sm p-0 me-3"
-            ranges={[ 50, 100, 200, 500 ]}
+            ranges={[50, 100, 200, 500]}
             value={itemsPerPage}
-            setValue={(itemsPerPage) => {
-              setItemsPerPage(itemsPerPage);
+            setValue={(value) => {
+              setItemsPerPage(value);
               setCurrentPage(1);
             }}
           />

@@ -45,9 +45,9 @@ describe('selectedServerReducer', () => {
     afterEach(jest.clearAllMocks);
 
     it.each([
-      [ version, version, `v${version}` ],
-      [ 'latest', MAX_FALLBACK_VERSION, 'latest' ],
-      [ '%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%' ],
+      [version, version, `v${version}`],
+      ['latest', MAX_FALLBACK_VERSION, 'latest'],
+      ['%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%'],
     ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
       const id = uuid();
       const getState = createGetStateMock(id);

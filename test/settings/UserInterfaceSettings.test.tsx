@@ -20,9 +20,9 @@ describe('<UserInterfaceSettings />', () => {
   afterEach(jest.clearAllMocks);
 
   it.each([
-    [{ theme: 'dark' as Theme }, true ],
-    [{ theme: 'light' as Theme }, false ],
-    [ undefined, false ],
+    [{ theme: 'dark' as Theme }, true],
+    [{ theme: 'light' as Theme }, false],
+    [undefined, false],
   ])('toggles switch if theme is dark', (ui, expectedChecked) => {
     const wrapper = createWrapper(ui);
     const toggle = wrapper.find(ToggleSwitch);
@@ -31,9 +31,9 @@ describe('<UserInterfaceSettings />', () => {
   });
 
   it.each([
-    [{ theme: 'dark' as Theme }, faMoon ],
-    [{ theme: 'light' as Theme }, faSun ],
-    [ undefined, faSun ],
+    [{ theme: 'dark' as Theme }, faMoon],
+    [{ theme: 'light' as Theme }, faSun],
+    [undefined, faSun],
   ])('shows different icons based on theme', (ui, expectedIcon) => {
     const wrapper = createWrapper(ui);
     const icon = wrapper.find(FontAwesomeIcon);
@@ -42,8 +42,8 @@ describe('<UserInterfaceSettings />', () => {
   });
 
   it.each([
-    [ true, 'dark' ],
-    [ false, 'light' ],
+    [true, 'dark'],
+    [false, 'light'],
   ])('invokes setUiSettings when theme toggle value changes', (checked, theme) => {
     const wrapper = createWrapper();
     const toggle = wrapper.find(ToggleSwitch);

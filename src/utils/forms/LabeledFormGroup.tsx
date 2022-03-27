@@ -7,6 +7,7 @@ interface LabeledFormGroupProps {
   labelClassName?: string;
 }
 
+/* eslint-disable jsx-a11y/label-has-associated-control */
 export const LabeledFormGroup: FC<LabeledFormGroupProps> = (
   { children, label, className = '', labelClassName = '', noMargin = false },
 ) => (

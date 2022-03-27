@@ -26,11 +26,11 @@ describe('<DomainRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined ],
-    [ Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<Domain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn' ],
-    [ Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined ],
+    [Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
+    [Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined],
+    [Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
+    [Mock.of<Domain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
+    [Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined],
     [
       Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
       Mock.of<ReachableServer>({ version: '2.10.0' }),
@@ -85,11 +85,11 @@ describe('<DomainRow />', () => {
   });
 
   it.each([
-    [ undefined, 3 ],
-    [ Mock.of<ShlinkDomainRedirects>(), 3 ],
-    [ Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo' }), 2 ],
-    [ Mock.of<ShlinkDomainRedirects>({ invalidShortUrlRedirect: 'foo' }), 2 ],
-    [ Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo', regular404Redirect: 'foo' }), 1 ],
+    [undefined, 3],
+    [Mock.of<ShlinkDomainRedirects>(), 3],
+    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo' }), 2],
+    [Mock.of<ShlinkDomainRedirects>({ invalidShortUrlRedirect: 'foo' }), 2],
+    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo', regular404Redirect: 'foo' }), 1],
     [
       Mock.of<ShlinkDomainRedirects>(
         { baseUrlRedirect: 'foo', regular404Redirect: 'foo', invalidShortUrlRedirect: 'foo' },

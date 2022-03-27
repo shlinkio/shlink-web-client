@@ -43,12 +43,12 @@ describe('<TagsTable />', () => {
   });
 
   it.each([
-    [[ 'foo', 'bar', 'baz' ], 3 ],
-    [[ 'foo' ], 1 ],
-    [ tags(19), 19 ],
-    [ tags(20), 20 ],
-    [ tags(30), 20 ],
-    [ tags(100), 20 ],
+    [['foo', 'bar', 'baz'], 3],
+    [['foo'], 1],
+    [tags(19), 19],
+    [tags(20), 20],
+    [tags(30), 20],
+    [tags(100), 20],
   ])('renders as many rows as there are in current page', (filteredTags, expectedRows) => {
     const wrapper = createWrapper(filteredTags);
     const tagRows = wrapper.find(TagsTableRow);
@@ -57,12 +57,12 @@ describe('<TagsTable />', () => {
   });
 
   it.each([
-    [[ 'foo', 'bar', 'baz' ], 0 ],
-    [[ 'foo' ], 0 ],
-    [ tags(19), 0 ],
-    [ tags(20), 0 ],
-    [ tags(30), 1 ],
-    [ tags(100), 1 ],
+    [['foo', 'bar', 'baz'], 0],
+    [['foo'], 0],
+    [tags(19), 0],
+    [tags(20), 0],
+    [tags(30), 1],
+    [tags(100), 1],
   ])('renders paginator if there are more than one page', (filteredTags, expectedPaginators) => {
     const wrapper = createWrapper(filteredTags);
     const paginator = wrapper.find(SimplePaginator);
@@ -71,12 +71,12 @@ describe('<TagsTable />', () => {
   });
 
   it.each([
-    [ 1, 20, 0 ],
-    [ 2, 20, 20 ],
-    [ 3, 20, 40 ],
-    [ 4, 20, 60 ],
-    [ 5, 7, 80 ],
-    [ 6, 0, 0 ],
+    [1, 20, 0],
+    [2, 20, 20],
+    [3, 20, 40],
+    [4, 20, 60],
+    [5, 7, 80],
+    [6, 0, 0],
   ])('renders page from query if present', (page, expectedRows, offset) => {
     const wrapper = createWrapper(tags(87), `page=${page}`);
     const tagRows = wrapper.find(TagsTableRow);

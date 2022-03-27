@@ -31,41 +31,41 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ManageServersRow',
   );
   bottle.decorator('ManageServers', withoutSelectedServer);
-  bottle.decorator('ManageServers', connect([ 'selectedServer', 'servers' ], [ 'resetSelectedServer' ]));
+  bottle.decorator('ManageServers', connect(['selectedServer', 'servers'], ['resetSelectedServer']));
 
   bottle.serviceFactory('ManageServersRow', ManageServersRow, 'ManageServersRowDropdown');
 
   bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
-  bottle.decorator('ManageServersRowDropdown', connect(null, [ 'setAutoConnect' ]));
+  bottle.decorator('ManageServersRowDropdown', connect(null, ['setAutoConnect']));
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', withoutSelectedServer);
-  bottle.decorator('CreateServer', connect([ 'selectedServer', 'servers' ], [ 'createServer', 'resetSelectedServer' ]));
+  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
-  bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer', 'resetSelectedServer' ]));
+  bottle.decorator('EditServer', connect(['selectedServer'], ['editServer', 'selectServer', 'resetSelectedServer']));
 
   bottle.serviceFactory('ServersDropdown', () => ServersDropdown);
-  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
+  bottle.decorator('ServersDropdown', connect(['servers', 'selectedServer']));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
-  bottle.decorator('DeleteServerModal', connect(null, [ 'deleteServer' ]));
+  bottle.decorator('DeleteServerModal', connect(null, ['deleteServer']));
 
   bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
 
   bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
-  bottle.decorator('ImportServersBtn', connect([ 'servers' ], [ 'createServers' ]));
+  bottle.decorator('ImportServersBtn', connect(['servers'], ['createServers']));
 
   bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
-  bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));
+  bottle.decorator('ForServerVersion', connect(['selectedServer']));
 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
-  bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
+  bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
 
   bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl', 'ForServerVersion');
   bottle.decorator('Overview', connect(
-    [ 'shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview' ],
-    [ 'listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview' ],
+    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview'],
+    ['listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview'],
   ));
 
   // Services

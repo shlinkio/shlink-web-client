@@ -43,6 +43,6 @@ const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: ReportExpor
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />
     </VisitsStats>
   );
-}, () => [ Topics.visits ]);
+}, () => [Topics.visits]);
 
 export default TagVisits;

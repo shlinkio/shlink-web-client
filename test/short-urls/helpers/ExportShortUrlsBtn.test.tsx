@@ -30,9 +30,9 @@ describe('<ExportShortUrlsBtn />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined, 0 ],
-    [ 1, 1 ],
-    [ 4578, 4578 ],
+    [undefined, 0],
+    [1, 1],
+    [4578, 4578],
   ])('renders expected amount', (amount, expectedAmount) => {
     const wrapper = createWrapper(amount);
 
@@ -40,8 +40,8 @@ describe('<ExportShortUrlsBtn />', () => {
   });
 
   it.each([
-    [ null ],
-    [ Mock.of<NotFoundServer>() ],
+    [null],
+    [Mock.of<NotFoundServer>()],
   ])('does nothing on click if selected server is not reachable', (selectedServer) => {
     const wrapper = createWrapper(0, selectedServer);
 
@@ -51,12 +51,12 @@ describe('<ExportShortUrlsBtn />', () => {
   });
 
   it.each([
-    [ 10, 1 ],
-    [ 30, 2 ],
-    [ 39, 2 ],
-    [ 40, 2 ],
-    [ 41, 3 ],
-    [ 385, 20 ],
+    [10, 1],
+    [30, 2],
+    [39, 2],
+    [40, 2],
+    [41, 3],
+    [385, 20],
   ])('loads proper amount of pages based on the amount of results', async (amount, expectedPageLoads) => {
     const wrapper = createWrapper(amount, Mock.of<ReachableServer>({ id: '123' }));
 

@@ -20,12 +20,12 @@ export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
       <ModalBody>
         <p>{hasMultipleServers ? 'The next servers already exist:' : 'There is already a server with:'}</p>
         <ul>
-          {duplicatedServers.map(({ url, apiKey }, index) => !hasMultipleServers ? (
+          {duplicatedServers.map(({ url, apiKey }, index) => (!hasMultipleServers ? (
             <Fragment key={index}>
               <li>URL: <b>{url}</b></li>
               <li>API key: <b>{apiKey}</b></li>
             </Fragment>
-          ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>)}
+          ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>))}
         </ul>
         <span>
           {hasMultipleServers ? 'Do you want to ignore duplicated servers' : 'Do you want to save this server anyway'}?

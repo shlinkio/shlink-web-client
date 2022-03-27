@@ -18,7 +18,7 @@ describe('<ShortUrlsRow />', () => {
   const mockFunction = () => null;
   const ShortUrlsRowMenu = mockFunction;
   const stateFlagTimeout = jest.fn(() => true);
-  const useStateFlagTimeout = jest.fn(() => [ false, stateFlagTimeout ]) as StateFlagTimeout;
+  const useStateFlagTimeout = jest.fn(() => [false, stateFlagTimeout]) as StateFlagTimeout;
   const colorGenerator = Mock.of<ColorGenerator>({
     getColorForKey: jest.fn(),
     setColorForKey: jest.fn(),
@@ -29,7 +29,7 @@ describe('<ShortUrlsRow />', () => {
     shortUrl: 'http://doma.in/abc123',
     longUrl: 'http://foo.com/bar',
     dateCreated: formatISO(parseDate('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss')),
-    tags: [ 'nodejs', 'reactjs' ],
+    tags: ['nodejs', 'reactjs'],
     visitsCount: 45,
     domain: null,
     meta: {
@@ -51,9 +51,9 @@ describe('<ShortUrlsRow />', () => {
   afterEach(() => wrapper.unmount());
 
   it.each([
-    [ null, 6 ],
-    [ undefined, 6 ],
-    [ 'The title', 7 ],
+    [null, 6],
+    [undefined, 6],
+    ['The title', 7],
   ])('renders expected amount of columns', (title, expectedAmount) => {
     const wrapper = createWrapper(title);
     const cols = wrapper.find('td');

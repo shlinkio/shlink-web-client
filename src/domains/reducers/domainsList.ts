@@ -10,13 +10,11 @@ import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import { EDIT_DOMAIN_REDIRECTS, EditDomainRedirectsAction } from './domainRedirects';
 
-/* eslint-disable padding-line-between-statements */
 export const LIST_DOMAINS_START = 'shlink/domainsList/LIST_DOMAINS_START';
 export const LIST_DOMAINS_ERROR = 'shlink/domainsList/LIST_DOMAINS_ERROR';
 export const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
 export const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
 export const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
-/* eslint-enable padding-line-between-statements */
 
 export interface DomainsList {
   domains: Domain[];
@@ -55,10 +53,10 @@ export type DomainsCombinedAction = ListDomainsAction
 & ValidateDomain;
 
 export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
-  (d: Domain): Domain => d.domain !== domain ? d : { ...d, redirects };
+  (d: Domain): Domain => (d.domain !== domain ? d : { ...d, redirects });
 
 export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
-  (d: Domain): Domain => d.domain !== domain ? d : { ...d, status };
+  (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
 
 export default buildReducer<DomainsList, DomainsCombinedAction>({
   [LIST_DOMAINS_START]: () => ({ ...initialState, loading: true }),
@@ -86,15 +84,15 @@ export const listDomains = (buildShlinkApiClient: ShlinkApiClientBuilder) => () 
   getState: GetState,
 ) => {
   dispatch({ type: LIST_DOMAINS_START });
-  const { listDomains } = buildShlinkApiClient(getState);
+  const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
 
   try {
-    const { domains, defaultRedirects } = await listDomains().then(({ data, defaultRedirects }) => ({
+    const resp = await shlinkListDomains().then(({ data, defaultRedirects }) => ({
       domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
       defaultRedirects,
     }));
 
-    dispatch<ListDomainsAction>({ type: LIST_DOMAINS, domains, defaultRedirects });
+    dispatch<ListDomainsAction>({ type: LIST_DOMAINS, ...resp });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: LIST_DOMAINS_ERROR, errorData: parseApiError(e) });
   }

@@ -16,8 +16,8 @@ describe('<ShlinkVersionsContainer />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [{ sidebarPresent: false }, 'text-center' ],
-    [{ sidebarPresent: true }, 'text-center shlink-versions-container--with-sidebar' ],
+    [{ sidebarPresent: false }, 'text-center'],
+    [{ sidebarPresent: true }, 'text-center shlink-versions-container--with-sidebar'],
   ])('renders proper col classes based on sidebar status', (sidebar, expectedClasses) => {
     const wrapper = createWrapper(sidebar);
 

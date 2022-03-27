@@ -9,7 +9,7 @@ describe('<AppUpdateBanner />', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<AppUpdateBanner isOpen={true} toggle={toggle} forceUpdate={forceUpdate} />);
+    wrapper = shallow(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
   });
 
   afterEach(jest.clearAllMocks);

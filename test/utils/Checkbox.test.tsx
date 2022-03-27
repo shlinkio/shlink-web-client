@@ -16,7 +16,7 @@ describe('<Checkbox />', () => {
   afterEach(() => wrapped?.unmount());
 
   it('includes extra class names when provided', () => {
-    const classNames = [ 'foo', 'bar', 'baz' ];
+    const classNames = ['foo', 'bar', 'baz'];
 
     expect.assertions(classNames.length);
     classNames.forEach((className) => {
@@ -27,7 +27,7 @@ describe('<Checkbox />', () => {
   });
 
   it('marks input as checked if defined', () => {
-    const checkeds = [ true, false ];
+    const checkeds = [true, false];
 
     expect.assertions(checkeds.length);
     checkeds.forEach((checked) => {
@@ -39,7 +39,7 @@ describe('<Checkbox />', () => {
   });
 
   it('renders provided children inside the label', () => {
-    const labels = [ 'foo', 'bar', 'baz' ];
+    const labels = ['foo', 'bar', 'baz'];
 
     expect.assertions(labels.length);
     labels.forEach((children) => {

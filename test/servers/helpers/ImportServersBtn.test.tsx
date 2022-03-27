@@ -41,9 +41,9 @@ describe('<ImportServersBtn />', () => {
   });
 
   it.each([
-    [ undefined, '' ],
-    [ 'foo', 'foo' ],
-    [ 'bar', 'bar' ],
+    [undefined, ''],
+    ['foo', 'foo'],
+    ['bar', 'bar'],
   ])('allows a class name to be provided', (providedClassName, expectedClassName) => {
     const wrapper = createWrapper({ className: providedClassName });
 
@@ -51,9 +51,9 @@ describe('<ImportServersBtn />', () => {
   });
 
   it.each([
-    [ undefined, true ],
-    [ 'foo', false ],
-    [ 'bar', false ],
+    [undefined, true],
+    ['foo', false],
+    ['bar', false],
   ])('has expected text', (children, expectToHaveDefaultText) => {
     const wrapper = createWrapper({ children });
 
@@ -78,14 +78,14 @@ describe('<ImportServersBtn />', () => {
     const wrapper = createWrapper();
     const file = wrapper.find('.import-servers-btn__csv-select');
 
-    await file.simulate('change', { target: { files: [ '' ] } }); // eslint-disable-line @typescript-eslint/await-thenable
+    await file.simulate('change', { target: { files: [''] } });
 
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
   });
 
   it.each([
-    [ 'discard' ],
-    [ 'save' ],
+    ['discard'],
+    ['save'],
   ])('invokes callback in DuplicatedServersModal events', (event) => {
     const wrapper = createWrapper();
 

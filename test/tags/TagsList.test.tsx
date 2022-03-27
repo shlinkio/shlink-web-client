@@ -65,7 +65,7 @@ describe('<TagsList />', () => {
   });
 
   it('renders proper component based on the display mode', () => {
-    const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
+    const wrapper = createWrapper({ filteredTags: ['foo', 'bar'], stats: {} });
 
     expect(wrapper.find(TagsCards)).toHaveLength(1);
     expect(wrapper.find(TagsTable)).toHaveLength(0);
@@ -97,7 +97,7 @@ describe('<TagsList />', () => {
   });
 
   it('can update current order via orderByColumn from table component', () => {
-    const wrapper = createWrapper({ filteredTags: [ 'foo', 'bar' ], stats: {} });
+    const wrapper = createWrapper({ filteredTags: ['foo', 'bar'], stats: {} });
     const callOrderBy = (field: TagsOrderableFields) => {
       ((wrapper.find(TagsTable).prop('orderByColumn') as Function)(field) as Function)();
     };

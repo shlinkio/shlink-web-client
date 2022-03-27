@@ -13,7 +13,7 @@ export interface TagsSelectorProps {
 }
 
 interface TagsSelectorConnectProps extends TagsSelectorProps {
-  listTags: Function;
+  listTags: () => void;
   tagsList: TagsList;
   settings: Settings;
 }
@@ -47,14 +47,14 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       addOnBlur
       placeholderText={placeholder ?? 'Add tags to the URL'}
       minQueryLength={1}
-      delimiters={[ 'Enter', 'Tab', ',' ]}
+      delimiters={['Enter', 'Tab', ',']}
       suggestionsTransform={
         searchMode === 'includes'
           ? (query, suggestions) => suggestions.filter(({ name }) => name.includes(query))
           : undefined
       }
       onDelete={(removedTagIndex) => {
-        const tagsCopy = [ ...selectedTags ];
+        const tagsCopy = [...selectedTags];
 
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
@@ -62,7 +62,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       onAddition={({ name: newTag }) => onChange(
         // * Avoid duplicated tags (thanks to the Set),
         // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
-        [ ...new Set([ ...selectedTags, ...newTag.toLowerCase().split(',') ]) ],
+        [...new Set([...selectedTags, ...newTag.toLowerCase().split(',')])],
       )}
     />
   );

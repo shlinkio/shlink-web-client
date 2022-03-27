@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { ServerWithId } from './data';
 
@@ -37,8 +37,8 @@ const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
         </p>
       </ModalBody>
       <ModalFooter>
-        <button className="btn btn-link" onClick={toggle}>Cancel</button>
-        <button className="btn btn-danger" onClick={() => closeModal()}>Delete</button>
+        <Button color="link" onClick={toggle}>Cancel</Button>
+        <Button color="danger" onClick={() => closeModal()}>Delete</Button>
       </ModalFooter>
     </Modal>
   );

@@ -9,8 +9,10 @@ export interface ShlinkApiErrorProps {
 export const ShlinkApiError = ({ errorData, fallbackMessage }: ShlinkApiErrorProps) => (
   <>
     {errorData?.detail ?? fallbackMessage}
-    {isInvalidArgumentError(errorData) &&
-      <p className="mb-0">Invalid elements: [{errorData.invalidElements.join(', ')}]</p>
-    }
+    {isInvalidArgumentError(errorData) && (
+      <p className="mb-0">
+        Invalid elements: [{errorData.invalidElements.join(', ')}]
+      </p>
+    )}
   </>
 );

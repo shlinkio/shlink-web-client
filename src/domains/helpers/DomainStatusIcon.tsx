@@ -18,7 +18,7 @@ interface DomainStatusIconProps {
 export const DomainStatusIcon: FC<DomainStatusIconProps> = ({ status, matchMedia = window.matchMedia }) => {
   const ref = useRef<HTMLSpanElement>();
   const matchesMobile = () => matchMedia('(max-width: 991px)').matches;
-  const [ isMobile, setIsMobile ] = useState<boolean>(matchesMobile());
+  const [isMobile, setIsMobile] = useState<boolean>(matchesMobile());
 
   useEffect(() => {
     const listener = () => setIsMobile(matchesMobile());

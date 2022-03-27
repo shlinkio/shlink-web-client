@@ -16,9 +16,9 @@ export interface HorizontalBarChartProps {
   onClick?: (label: string) => void;
 }
 
-const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;
+const dropLabelIfHidden = (label: string) => (label.startsWith('hidden') ? '' : label);
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
-const determineHeight = (labels: string[]): number | undefined => labels.length > 20 ? labels.length * 10 : undefined;
+const determineHeight = (labels: string[]): number | undefined => (labels.length > 20 ? labels.length * 10 : undefined);
 
 const generateChartDatasets = (
   data: number[],
@@ -34,7 +34,7 @@ const generateChartDatasets = (
   };
 
   if (highlightedData.every((value) => value === 0)) {
-    return [ mainDataset ];
+    return [mainDataset];
   }
 
   const highlightedDataset: ChartDataset = {
@@ -45,7 +45,7 @@ const generateChartDatasets = (
     borderWidth: 2,
   };
 
-  return [ mainDataset, highlightedDataset ];
+  return [mainDataset, highlightedDataset];
 };
 const generateChartData = (
   labels: string[],
@@ -58,7 +58,7 @@ const generateChartData = (
 });
 
 type ClickedCharts = [{ index: number }] | [];
-const chartElementAtEvent = (labels: string[], onClick?: (label: string) => void) => ([ chart ]: ClickedCharts) => {
+const chartElementAtEvent = (labels: string[], onClick?: (label: string) => void) => ([chart]: ClickedCharts) => {
   if (!onClick || !chart) {
     return;
   }

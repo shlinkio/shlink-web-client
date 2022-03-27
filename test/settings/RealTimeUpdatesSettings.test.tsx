@@ -62,10 +62,10 @@ describe('<RealTimeUpdatesSettings />', () => {
   });
 
   it.each([
-    [ 1, 'minute' ],
-    [ 2, 'minutes' ],
-    [ 10, 'minutes' ],
-    [ 100, 'minutes' ],
+    [1, 'minute'],
+    [2, 'minutes'],
+    [10, 'minutes'],
+    [100, 'minutes'],
   ])('shows expected children when interval is greater than 0', (interval, minutesWord) => {
     const wrapper = createWrapper({ enabled: true, interval });
     const span = wrapper.find('span');
@@ -78,7 +78,7 @@ describe('<RealTimeUpdatesSettings />', () => {
     expect(input.prop('value')).toEqual(`${interval}`);
   });
 
-  it.each([[ undefined ], [ 0 ]])('shows expected children when interval is 0 or undefined', (interval) => {
+  it.each([[undefined], [0]])('shows expected children when interval is 0 or undefined', (interval) => {
     const wrapper = createWrapper({ enabled: true, interval });
     const span = wrapper.find('span');
     const formText = wrapper.find(FormText).at(1);

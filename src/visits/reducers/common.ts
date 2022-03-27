@@ -11,7 +11,7 @@ const PARALLEL_REQUESTS_COUNT = 4;
 const PARALLEL_STARTING_PAGE = 2;
 
 const isLastPage = ({ currentPage, pagesCount }: ShlinkPaginator): boolean => currentPage >= pagesCount;
-const calcProgress = (total: number, current: number): number => current * 100 / total;
+const calcProgress = (total: number, current: number): number => (current * 100) / total;
 
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
 type LastVisitLoader = () => Promise<Visit | undefined>;
@@ -73,7 +73,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
   };
 
   try {
-    const [ visits, lastVisit ] = await Promise.all([ loadVisits(), lastVisitLoader() ]);
+    const [visits, lastVisit] = await Promise.all([loadVisits(), lastVisitLoader()]);
 
     dispatch(
       !visits.length && lastVisit

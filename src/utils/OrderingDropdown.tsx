@@ -38,7 +38,7 @@ export function OrderingDropdown<T extends string = string>(
         end={right}
         className={classNames('w-100', { 'ordering-dropdown__menu--link': !isButton })}
       >
-        {toPairs(items).map(([ fieldKey, fieldValue ]) => (
+        {toPairs(items).map(([fieldKey, fieldValue]) => (
           <DropdownItem key={fieldKey} active={order.field === fieldKey} onClick={handleItemClick(fieldKey as T)}>
             {fieldValue}
             {order.field === fieldKey && (

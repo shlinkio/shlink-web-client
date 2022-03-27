@@ -7,7 +7,7 @@ describe('<PaginationDropdown />', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<PaginationDropdown ranges={[ 10, 50, 100, 200 ]} value={50} setValue={setValue} />);
+    wrapper = shallow(<PaginationDropdown ranges={[10, 50, 100, 200]} value={50} setValue={setValue} />);
   });
 
   afterEach(jest.clearAllMocks);
@@ -20,11 +20,11 @@ describe('<PaginationDropdown />', () => {
   });
 
   it.each([
-    [ 0, 10 ],
-    [ 1, 50 ],
-    [ 2, 100 ],
-    [ 3, 200 ],
-    [ 5, Infinity ],
+    [0, 10],
+    [1, 50],
+    [2, 100],
+    [3, 200],
+    [5, Infinity],
   ])('sets expected value when an item is clicked', (index, expectedValue) => {
     const item = wrapper.find(DropdownItem).at(index);
 

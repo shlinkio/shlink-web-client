@@ -79,9 +79,9 @@ const determineInitialStep = (oldestVisitDate: string): Step => {
   const now = new Date();
   const oldestDate = parseISO(oldestVisitDate);
   const matcher = cond<never, Step | undefined>([
-    [ () => differenceInDays(now, oldestDate) <= 2, always<Step>('hourly') ], // Less than 2 days
-    [ () => differenceInMonths(now, oldestDate) <= 1, always<Step>('daily') ], // Between 2 days and 1 month
-    [ () => differenceInMonths(now, oldestDate) <= 6, always<Step>('weekly') ], // Between 1 and 6 months
+    [() => differenceInDays(now, oldestDate) <= 2, always<Step>('hourly')], // Less than 2 days
+    [() => differenceInMonths(now, oldestDate) <= 1, always<Step>('daily')], // Between 2 days and 1 month
+    [() => differenceInMonths(now, oldestDate) <= 6, always<Step>('weekly')], // Between 1 and 6 months
   ]);
 
   return matcher() ?? 'monthly';
@@ -126,12 +126,12 @@ const generateLabelsAndGroupedVisits = (
   skipNoElements: boolean,
 ): [string[], number[]] => {
   if (skipNoElements) {
-    return [ Object.keys(groupedVisitsWithGaps), Object.values(groupedVisitsWithGaps) ];
+    return [Object.keys(groupedVisitsWithGaps), Object.values(groupedVisitsWithGaps)];
   }
 
   const labels = generateLabels(step, visits);
 
-  return [ labels, fillTheGaps(groupedVisitsWithGaps, labels) ];
+  return [labels, fillTheGaps(groupedVisitsWithGaps, labels)];
 };
 
 const generateDataset = (data: number[], label: string, color: string): ChartDataset => ({
@@ -149,7 +149,7 @@ const chartElementAtEvent = (
   labels: string[],
   datasetsByPoint: Record<string, NormalizedVisit[]>,
   setSelectedVisits?: (visits: NormalizedVisit[]) => void,
-) => ([ chart ]: [{ index: number }]) => {
+) => ([chart]: [{ index: number }]) => {
   if (!setSelectedVisits || !chart) {
     return;
   }
@@ -160,7 +160,7 @@ const chartElementAtEvent = (
     setSelectedVisits([]);
     selectedLabel = null;
   } else {
-    setSelectedVisits(labels[index] && datasetsByPoint[labels[index]] || []);
+    setSelectedVisits(labels[index] ? datasetsByPoint[labels[index]] : []);
     selectedLabel = labels[index] ?? null;
   }
 };
@@ -168,31 +168,31 @@ const chartElementAtEvent = (
 const LineChartCard = (
   { title, visits, highlightedVisits, highlightedLabel = 'Selected', setSelectedVisits }: LineChartCardProps,
 ) => {
-  const [ step, setStep ] = useState<Step>(
+  const [step, setStep] = useState<Step>(
     visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly',
   );
-  const [ skipNoVisits, toggleSkipNoVisits ] = useToggle(true);
+  const [skipNoVisits, toggleSkipNoVisits] = useToggle(true);
 
-  const datasetsByPoint = useMemo(() => visitsToDatasetGroups(step, visits), [ step, visits ]);
-  const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [ step, visits ]);
-  const [ labels, groupedVisits ] = useMemo(
+  const datasetsByPoint = useMemo(() => visitsToDatasetGroups(step, visits), [step, visits]);
+  const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [step, visits]);
+  const [labels, groupedVisits] = useMemo(
     () => generateLabelsAndGroupedVisits(visits, groupedVisitsWithGaps, step, skipNoVisits),
-    [ visits, step, skipNoVisits ],
+    [visits, step, skipNoVisits],
   );
   const groupedHighlighted = useMemo(
     () => fillTheGaps(groupVisitsByStep(step, reverse(highlightedVisits)), labels),
-    [ highlightedVisits, step, labels ],
+    [highlightedVisits, step, labels],
   );
   const generateChartDatasets = (): ChartDataset[] => {
     const mainDataset = generateDataset(groupedVisits, 'Visits', MAIN_COLOR);
 
     if (highlightedVisits.length === 0) {
-      return [ mainDataset ];
+      return [mainDataset];
     }
 
     const highlightedDataset = generateDataset(groupedHighlighted, highlightedLabel, HIGHLIGHTED_COLOR);
 
-    return [ mainDataset, highlightedDataset ];
+    return [mainDataset, highlightedDataset];
   };
   const generateChartData = (): ChartData => ({ labels, datasets: generateChartDatasets() });
 
@@ -238,7 +238,7 @@ const LineChartCard = (
               Group by
             </DropdownToggle>
             <DropdownMenu end>
-              {Object.entries(STEPS_MAP).map(([ value, menuText ]) => (
+              {Object.entries(STEPS_MAP).map(([value, menuText]) => (
                 <DropdownItem key={value} active={step === value} onClick={() => setStep(value as Step)}>
                   {menuText}
                 </DropdownItem>

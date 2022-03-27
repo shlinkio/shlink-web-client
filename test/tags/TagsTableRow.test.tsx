@@ -26,8 +26,8 @@ describe('<TagsTableRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined, '0', '0' ],
-    [{ shortUrls: 10, visits: 3480 }, '10', '3,480' ],
+    [undefined, '0', '0'],
+    [{ shortUrls: 10, visits: 3480 }, '10', '3,480'],
   ])('shows expected tag stats', (stats, expectedShortUrls, expectedVisits) => {
     const wrapper = createWrapper(stats);
     const links = wrapper.find(Link);

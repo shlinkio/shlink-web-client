@@ -6,10 +6,10 @@ import { migrateDeprecatedSettings } from '../settings/helpers';
 import { ShlinkState } from './types';
 
 const isProduction = process.env.NODE_ENV !== 'production';
-const composeEnhancers: Function = !isProduction && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers: Function = !isProduction ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : compose;
 
 const localStorageConfig: RLSOptions = {
-  states: [ 'settings', 'servers' ],
+  states: ['settings', 'servers'],
   namespace: 'shlink',
   namespaceSeparator: '.',
   debounce: 300,

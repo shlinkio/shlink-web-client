@@ -36,8 +36,8 @@ describe('<MenuLayout />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ null, NoMenuLayout ],
-    [ Mock.of<NotFoundServer>({ serverNotFound: true }), ServerError ],
+    [null, NoMenuLayout],
+    [Mock.of<NotFoundServer>({ serverNotFound: true }), ServerError],
   ])('returns error when server is not found', (selectedServer, ExpectedComp) => {
     const wrapper = createWrapper(selectedServer);
     const comp = wrapper.find(ExpectedComp);
@@ -53,12 +53,12 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    [ '2.5.0' as SemVer, 9 ],
-    [ '2.6.0' as SemVer, 10 ],
-    [ '2.7.0' as SemVer, 10 ],
-    [ '2.8.0' as SemVer, 11 ],
-    [ '2.10.0' as SemVer, 11 ],
-    [ '3.0.0' as SemVer, 12 ],
+    ['2.5.0' as SemVer, 9],
+    ['2.6.0' as SemVer, 10],
+    ['2.7.0' as SemVer, 10],
+    ['2.8.0' as SemVer, 11],
+    ['2.10.0' as SemVer, 11],
+    ['3.0.0' as SemVer, 12],
   ])('has expected amount of routes based on selected server\'s version', (version, expectedAmountOfRoutes) => {
     const selectedServer = Mock.of<ReachableServer>({ version });
     const wrapper = createWrapper(selectedServer).dive();

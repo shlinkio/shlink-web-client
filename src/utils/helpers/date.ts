@@ -15,15 +15,15 @@ const formatDateFromFormat = (date?: NullableDate, theFormat?: string): Optional
   return theFormat ? format(date, theFormat) : formatISO(date);
 };
 
-export const formatDate = (format = 'yyyy-MM-dd') => (date?: NullableDate) => formatDateFromFormat(date, format);
+export const formatDate = (theFormat = 'yyyy-MM-dd') => (date?: NullableDate) => formatDateFromFormat(date, theFormat);
 
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
 
 export const formatInternational = formatDate();
 
-export const parseDate = (date: string, format: string) => parse(date, format, new Date());
+export const parseDate = (date: string, theFormat: string) => parse(date, theFormat, new Date());
 
-export const parseISO = (date: DateOrString): Date => isDateObject(date) ? date : stdParseISO(date);
+export const parseISO = (date: DateOrString): Date => (isDateObject(date) ? date : stdParseISO(date));
 
 export const isBetween = (date: DateOrString, start?: DateOrString, end?: DateOrString): boolean => {
   try {

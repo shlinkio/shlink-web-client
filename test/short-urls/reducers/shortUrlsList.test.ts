@@ -67,11 +67,11 @@ describe('shortUrlsListReducer', () => {
     });
 
     it.each([
-      [[ createNewShortUrlVisit(11) ], 11 ],
-      [[ createNewShortUrlVisit(30) ], 30 ],
-      [[ createNewShortUrlVisit(20), createNewShortUrlVisit(40) ], 40 ],
-      [[{}], 10 ],
-      [[], 10 ],
+      [[createNewShortUrlVisit(11)], 11],
+      [[createNewShortUrlVisit(30)], 30],
+      [[createNewShortUrlVisit(20), createNewShortUrlVisit(40)], 40],
+      [[{}], 10],
+      [[], 10],
     ])('updates visits count on CREATE_VISITS', (createdVisits, expectedCount) => {
       const state = {
         shortUrls: Mock.of<ShlinkShortUrlsResponse>({
@@ -155,9 +155,9 @@ describe('shortUrlsListReducer', () => {
     it.each([
       ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
         const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'notMatching' });
-        const list = [ Mock.of<ShortUrl>({ shortCode: 'foo' }), Mock.of<ShortUrl>({ shortCode: 'bar' }) ];
+        const list = [Mock.of<ShortUrl>({ shortCode: 'foo' }), Mock.of<ShortUrl>({ shortCode: 'bar' })];
 
-        return [ editedShortUrl, list, list ];
+        return [editedShortUrl, list, list];
       })(),
       ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
         const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
@@ -165,9 +165,9 @@ describe('shortUrlsListReducer', () => {
           Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'old_one' }),
           Mock.of<ShortUrl>({ shortCode: 'bar' }),
         ];
-        const expectedList = [ editedShortUrl, list[1] ];
+        const expectedList = [editedShortUrl, list[1]];
 
-        return [ editedShortUrl, list, expectedList ];
+        return [editedShortUrl, list, expectedList];
       })(),
     ])('updates matching short URL on SHORT_URL_EDITED', (editedShortUrl, initialList, expectedList) => {
       const state = {

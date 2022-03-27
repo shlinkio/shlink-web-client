@@ -22,7 +22,6 @@ const Home = ({ servers }: HomeProps) => {
   useEffect(() => {
     // Try to redirect to the first server marked as auto-connect
     const autoConnectServer = serversList.find(({ autoConnect }) => autoConnect);
-
     autoConnectServer && navigate(`/server/${autoConnectServer.id}`);
   }, []);
 

@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import DeleteTagConfirmModal from '../../../src/tags/helpers/DeleteTagConfirmModal';
 import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
 
@@ -30,11 +30,11 @@ describe('<DeleteTagConfirmModal />', () => {
     wrapper = createWrapper({ error: false, deleting: false });
     const body = wrapper.find(ModalBody);
     const footer = wrapper.find(ModalFooter);
-    const delBtn = footer.find('.btn-danger');
+    const delBtn = footer.find(Button).last();
 
     expect(body.html()).toContain(`Are you sure you want to delete tag <b>${tag}</b>?`);
     expect(delBtn.prop('disabled')).toEqual(false);
-    expect(delBtn.text()).toEqual('Delete tag');
+    expect(delBtn.html()).toContain('>Delete tag<');
   });
 
   it('shows error message when deletion failed', () => {
@@ -47,18 +47,18 @@ describe('<DeleteTagConfirmModal />', () => {
   it('shows loading status while deleting', () => {
     wrapper = createWrapper({ error: false, deleting: true });
     const footer = wrapper.find(ModalFooter);
-    const delBtn = footer.find('.btn-danger');
+    const delBtn = footer.find(Button).last();
 
     expect(delBtn.prop('disabled')).toEqual(true);
-    expect(delBtn.text()).toEqual('Deleting tag...');
+    expect(delBtn.html()).toContain('>Deleting tag...<');
   });
 
   it('deletes tag modal when btn is clicked', async () => {
     wrapper = createWrapper({ error: false, deleting: true });
     const footer = wrapper.find(ModalFooter);
-    const delBtn = footer.find('.btn-danger');
+    const delBtn = footer.find(Button).last();
 
-    await delBtn.simulate('click'); // eslint-disable-line @typescript-eslint/await-thenable
+    await delBtn.simulate('click');
 
     expect(deleteTag).toHaveBeenCalledTimes(1);
     expect(deleteTag).toHaveBeenCalledWith(tag);

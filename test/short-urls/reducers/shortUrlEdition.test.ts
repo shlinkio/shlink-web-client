@@ -48,7 +48,7 @@ describe('shortUrlEditionReducer', () => {
 
     afterEach(jest.clearAllMocks);
 
-    it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches short URL on success', async (domain) => {
+    it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
       await editShortUrl(buildShlinkApiClient)(shortCode, domain, { longUrl })(dispatch, createGetState());
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
@@ -60,12 +60,12 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it.each([
-      [ null, { tags: [ 'foo', 'bar' ] }, 1 ],
-      [ null, {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.6.0' }), {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.6.0' }), { tags: [ 'foo', 'bar' ] }, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.5.0' }), {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.5.0' }), { tags: [ 'foo', 'bar' ] }, 1 ],
+      [null, { tags: ['foo', 'bar'] }, 1],
+      [null, {}, 0],
+      [Mock.of<ReachableServer>({ version: '2.6.0' }), {}, 0],
+      [Mock.of<ReachableServer>({ version: '2.6.0' }), { tags: ['foo', 'bar'] }, 0],
+      [Mock.of<ReachableServer>({ version: '2.5.0' }), {}, 0],
+      [Mock.of<ReachableServer>({ version: '2.5.0' }), { tags: ['foo', 'bar'] }, 1],
     ])(
       'sends tags separately when appropriate, based on selected server and the payload',
       async (server, payload, expectedTagsCalls) => {

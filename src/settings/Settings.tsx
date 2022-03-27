@@ -25,9 +25,9 @@ const Settings = (
     </NavPills>
 
     <Routes>
-      <Route path="general" element={<SettingsSections items={[ <UserInterface key="one" />, <RealTimeUpdates key="two" /> ]} />} />
-      <Route path="short-urls" element={<SettingsSections items={[ <ShortUrlCreation key="one" />, <ShortUrlsList key="two" /> ]} />} />
-      <Route path="other-items" element={<SettingsSections items={[ <Tags key="one" />, <Visits key="two" /> ]} />} />
+      <Route path="general" element={<SettingsSections items={[<UserInterface />, <RealTimeUpdates />]} />} />
+      <Route path="short-urls" element={<SettingsSections items={[<ShortUrlCreation />, <ShortUrlsList />]} />} />
+      <Route path="other-items" element={<SettingsSections items={[<Tags />, <Visits />]} />} />
       <Route path="*" element={<Navigate replace to="general" />} />
     </Routes>
   </NoMenuLayout>

@@ -4,8 +4,8 @@ import { SimpleCard } from '../../src/utils/SimpleCard';
 
 describe('<SimpleCard />', () => {
   it.each([
-    [{}, 0 ],
-    [{ title: 'Cool title' }, 1 ],
+    [{}, 0],
+    [{ title: 'Cool title' }, 1],
   ])('renders header only if title is provided', (props, expectedAmountOfHeaders) => {
     const wrapper = shallow(<SimpleCard {...props} />);
 

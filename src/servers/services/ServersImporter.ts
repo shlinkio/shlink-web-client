@@ -29,8 +29,8 @@ export class ServersImporter {
           }
 
           resolve(servers);
-        } catch (e) {
-          reject(e);
+        } catch (error) {
+          reject(error);
         }
       });
       reader.readAsText(file);

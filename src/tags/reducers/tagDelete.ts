@@ -6,12 +6,10 @@ import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
 export const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
 export const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
 export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
-/* eslint-enable padding-line-between-statements */
 
 export interface TagDeletion {
   deleting: boolean;
@@ -42,7 +40,7 @@ export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag:
   const { deleteTags } = buildShlinkApiClient(getState);
 
   try {
-    await deleteTags([ tag ]);
+    await deleteTags([tag]);
     dispatch({ type: DELETE_TAG });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });

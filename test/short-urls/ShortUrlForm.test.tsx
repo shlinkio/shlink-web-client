@@ -41,7 +41,7 @@ describe('<ShortUrlForm />', () => {
     const validUntil = parseDate('2017-01-06', 'yyyy-MM-dd');
 
     wrapper.find(Input).first().simulate('change', { target: { value: 'https://long-domain.com/foo/bar' } });
-    wrapper.find('TagsSelector').simulate('change', [ 'tag_foo', 'tag_bar' ]);
+    wrapper.find('TagsSelector').simulate('change', ['tag_foo', 'tag_bar']);
     wrapper.find('#customSlug').simulate('change', { target: { value: 'my-slug' } });
     wrapper.find(DomainSelector).simulate('change', 'example.com');
     wrapper.find('#maxVisits').simulate('change', { target: { value: '20' } });
@@ -53,7 +53,7 @@ describe('<ShortUrlForm />', () => {
     expect(createShortUrl).toHaveBeenCalledTimes(1);
     expect(createShortUrl).toHaveBeenCalledWith({
       longUrl: 'https://long-domain.com/foo/bar',
-      tags: [ 'tag_foo', 'tag_bar' ],
+      tags: ['tag_foo', 'tag_bar'],
       customSlug: 'my-slug',
       domain: 'example.com',
       validSince: formatISO(validSince),
@@ -66,12 +66,12 @@ describe('<ShortUrlForm />', () => {
   });
 
   it.each([
-    [ null, 'create' as Mode, 4 ],
-    [ null, 'create-basic' as Mode, 0 ],
-    [ Mock.of<ReachableServer>({ version: '2.6.0' }), 'create' as Mode, 4 ],
-    [ Mock.of<ReachableServer>({ version: '2.5.0' }), 'create' as Mode, 4 ],
-    [ Mock.of<ReachableServer>({ version: '2.6.0' }), 'edit' as Mode, 4 ],
-    [ Mock.of<ReachableServer>({ version: '2.5.0' }), 'edit' as Mode, 3 ],
+    [null, 'create' as Mode, 4],
+    [null, 'create-basic' as Mode, 0],
+    [Mock.of<ReachableServer>({ version: '2.6.0' }), 'create' as Mode, 4],
+    [Mock.of<ReachableServer>({ version: '2.5.0' }), 'create' as Mode, 4],
+    [Mock.of<ReachableServer>({ version: '2.6.0' }), 'edit' as Mode, 4],
+    [Mock.of<ReachableServer>({ version: '2.5.0' }), 'edit' as Mode, 3],
   ])(
     'renders expected amount of cards based on server capabilities and mode',
     (selectedServer, mode, expectedAmountOfCards) => {
@@ -83,16 +83,16 @@ describe('<ShortUrlForm />', () => {
   );
 
   it.each([
-    [ null, 'new title', 'new title' ],
-    [ undefined, 'new title', 'new title' ],
-    [ '', 'new title', 'new title' ],
-    [ null, '', undefined ],
-    [ null, null, undefined ],
-    [ '', '', undefined ],
-    [ undefined, undefined, undefined ],
-    [ 'old title', null, null ],
-    [ 'old title', undefined, null ],
-    [ 'old title', '', null ],
+    [null, 'new title', 'new title'],
+    [undefined, 'new title', 'new title'],
+    ['', 'new title', 'new title'],
+    [null, '', undefined],
+    [null, null, undefined],
+    ['', '', undefined],
+    [undefined, undefined, undefined],
+    ['old title', null, null],
+    ['old title', undefined, null],
+    ['old title', '', null],
   ])('sends expected title based on original and new values', (originalTitle, newTitle, expectedSentTitle) => {
     const wrapper = createWrapper(Mock.of<ReachableServer>({ version: '2.6.0' }), 'create', originalTitle);
 

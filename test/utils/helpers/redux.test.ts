@@ -6,9 +6,9 @@ describe('redux', () => {
 
   describe('buildActionCreator', () => {
     it.each([
-      [ 'foo', { type: 'foo' }],
-      [ 'bar', { type: 'bar' }],
-      [ 'something', { type: 'something' }],
+      ['foo', { type: 'foo' }],
+      ['bar', { type: 'bar' }],
+      ['something', { type: 'something' }],
     ])('returns an action creator', (type, expected) => {
       const actionCreator = buildActionCreator(type);
 
@@ -37,8 +37,8 @@ describe('redux', () => {
     });
 
     it.each([
-      [ 'foo', 'foo result', fooActionHandler, barActionHandler ],
-      [ 'bar', 'bar result', barActionHandler, fooActionHandler ],
+      ['foo', 'foo result', fooActionHandler, barActionHandler],
+      ['bar', 'bar result', barActionHandler, fooActionHandler],
     ])(
       'returns a reducer which calls corresponding action handler',
       (type, expected, invokedActionHandler, notInvokedActionHandler) => {
@@ -49,9 +49,9 @@ describe('redux', () => {
     );
 
     it.each([
-      [ undefined, initialState ],
-      [ 'foo', 'foo' ],
-      [ 'something', 'something' ],
+      [undefined, initialState],
+      ['foo', 'foo'],
+      ['something', 'something'],
     ])('returns a reducer which calls action handler with provided state or initial', (state, expected) => {
       reducer(state, { type: 'foo' });
 

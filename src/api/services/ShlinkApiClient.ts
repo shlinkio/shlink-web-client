@@ -21,7 +21,7 @@ import {
 import { stringifyQuery } from '../../utils/helpers/query';
 import { orderToString } from '../../utils/helpers/ordering';
 
-const buildShlinkBaseUrl = (url: string) => url ? `${url}/rest/v2` : '';
+const buildShlinkBaseUrl = (url: string) => (url ? `${url}/rest/v2` : '');
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
   const { orderBy = {}, ...rest } = params;
@@ -76,7 +76,6 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
-  // eslint-disable-next-line valid-jsdoc
   /**
    * @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead
    */
@@ -91,10 +90,9 @@ export default class ShlinkApiClient {
   public readonly updateShortUrl = async (
     shortCode: string,
     domain: OptionalString,
-    data: ShlinkShortUrlData,
+    edit: ShlinkShortUrlData,
   ): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, data)
-      .then(({ data }) => data);
+    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, edit).then(({ data }) => data);
 
   public readonly listTags = async (): Promise<ShlinkTags> =>
     this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })

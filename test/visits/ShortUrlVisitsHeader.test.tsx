@@ -42,9 +42,9 @@ describe('<ShortUrlVisitsHeader />', () => {
   });
 
   it.each([
-    [ null, longUrl ],
-    [ undefined, longUrl ],
-    [ 'My cool title', 'My cool title' ],
+    [null, longUrl],
+    [undefined, longUrl],
+    ['My cool title', 'My cool title'],
   ])('shows the long URL and title', (title, expectedContent) => {
     const wrapper = createWrapper(title);
     const longUrlLink = wrapper.find(ExternalLink).last();

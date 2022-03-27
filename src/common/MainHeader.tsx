@@ -9,11 +9,11 @@ import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 
 const MainHeader = (ServersDropdown: FC) => () => {
-  const [ isOpen, toggleOpen, , close ] = useToggle();
+  const [isOpen, toggleOpen, , close] = useToggle();
   const location = useLocation();
   const { pathname } = location;
 
-  useEffect(close, [ location ]);
+  useEffect(close, [location]);
 
   const settingsPath = '/settings';
   const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isOpen });

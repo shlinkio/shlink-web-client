@@ -14,7 +14,7 @@ describe('<SimplePaginator />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  it.each([ -3, -2, 0, 1 ])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
+  it.each([-3, -2, 0, 1])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
     expect(createWrapper(pagesCount).text()).toEqual('');
   });
 

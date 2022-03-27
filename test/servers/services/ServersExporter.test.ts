@@ -35,7 +35,7 @@ describe('ServersExporter', () => {
     beforeEach(() => {
       originalConsole = global.console;
       global.console = Mock.of<Console>({ error });
-      (global as any).Blob = class Blob {}; // eslint-disable-line @typescript-eslint/no-extraneous-class
+      (global as any).Blob = class Blob {};
       (global as any).URL = { createObjectURL: () => '' };
     });
     afterEach(() => {

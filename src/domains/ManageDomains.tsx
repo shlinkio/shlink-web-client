@@ -18,7 +18,7 @@ interface ManageDomainsProps {
   selectedServer: SelectedServer;
 }
 
-const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', '' ];
+const headers = ['', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', ''];
 
 export const ManageDomains: FC<ManageDomainsProps> = (
   { listDomains, domainsList, filterDomains, editDomainRedirects, checkDomainHealth, selectedServer },

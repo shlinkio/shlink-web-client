@@ -32,10 +32,10 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
-  const [ serversImported, setServersImported ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
-  const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
-  const [ isConfirmModalOpen, toggleConfirmModal ] = useToggle();
-  const [ serverData, setServerData ] = useState<ServerData | undefined>();
+  const [serversImported, setServersImported] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+  const [errorImporting, setErrorImporting] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+  const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
+  const [serverData, setServerData] = useState<ServerData | undefined>();
   const save = () => {
     if (!serverData) {
       return;
@@ -53,13 +53,14 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
     );
 
     serverExists ? toggleConfirmModal() : save();
-  }, [ serverData ]);
+  }, [serverData]);
 
   return (
     <NoMenuLayout>
       <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={setServerData}>
-        {!hasServers &&
-          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />}
+        {!hasServers && (
+          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />
+        )}
         {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
         <Button outline color="primary" className="ms-2">Create server</Button>
       </ServerForm>
@@ -69,7 +70,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
 
       <DuplicatedServersModal
         isOpen={isConfirmModalOpen}
-        duplicatedServers={serverData ? [ serverData ] : []}
+        duplicatedServers={serverData ? [serverData] : []}
         onDiscard={goBack}
         onSave={save}
       />

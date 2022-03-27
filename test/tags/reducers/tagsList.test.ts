@@ -33,7 +33,7 @@ describe('tagsListReducer', () => {
     });
 
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
-      const tags = [ 'foo', 'bar', 'baz' ];
+      const tags = ['foo', 'bar', 'baz'];
 
       expect(reducer(undefined, { type: LIST_TAGS, tags } as any)).toEqual({
         tags,
@@ -44,9 +44,9 @@ describe('tagsListReducer', () => {
     });
 
     it('removes provided tag from filtered and regular tags on TAG_DELETED', () => {
-      const tags = [ 'foo', 'bar', 'baz' ];
+      const tags = ['foo', 'bar', 'baz'];
       const tag = 'foo';
-      const expectedTags = [ 'bar', 'baz' ];
+      const expectedTags = ['bar', 'baz'];
 
       expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_DELETED, tag } as any)).toEqual({
         tags: expectedTags,
@@ -55,10 +55,10 @@ describe('tagsListReducer', () => {
     });
 
     it('renames provided tag from filtered and regular tags on TAG_EDITED', () => {
-      const tags = [ 'foo', 'bar', 'baz' ];
+      const tags = ['foo', 'bar', 'baz'];
       const oldName = 'bar';
       const newName = 'renamed';
-      const expectedTags = [ 'foo', 'renamed', 'baz' ].sort();
+      const expectedTags = ['foo', 'renamed', 'baz'].sort();
 
       expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_EDITED, oldName, newName } as any)).toEqual({
         tags: expectedTags,
@@ -67,9 +67,9 @@ describe('tagsListReducer', () => {
     });
 
     it('filters original list of tags by provided search term on FILTER_TAGS', () => {
-      const tags = [ 'foo', 'bar', 'baz', 'foo2', 'fo' ];
+      const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const searchTerm = 'fo';
-      const filteredTags = [ 'foo', 'foo2', 'fo' ];
+      const filteredTags = ['foo', 'foo2', 'fo'];
 
       expect(reducer(state({ tags }), { type: FILTER_TAGS, searchTerm } as any)).toEqual({
         tags,
@@ -78,11 +78,11 @@ describe('tagsListReducer', () => {
     });
 
     it.each([
-      [[ 'foo', 'foo3', 'bar3', 'fo' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo', 'foo3', 'bar3' ]],
-      [[ 'foo', 'bar' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo' ]],
-      [[ 'new', 'tag' ], [ 'foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag' ]],
+      [['foo', 'foo3', 'bar3', 'fo'], ['foo', 'bar', 'baz', 'foo2', 'fo', 'foo3', 'bar3']],
+      [['foo', 'bar'], ['foo', 'bar', 'baz', 'foo2', 'fo']],
+      [['new', 'tag'], ['foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag']],
     ])('appends new short URL\'s tags to the list of tags on CREATE_SHORT_URL', (shortUrlTags, expectedTags) => {
-      const tags = [ 'foo', 'bar', 'baz', 'foo2', 'fo' ];
+      const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const result = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
       expect(reducer(state({ tags }), { type: CREATE_SHORT_URL, result } as any)).toEqual({
@@ -116,11 +116,11 @@ describe('tagsListReducer', () => {
     it('does nothing when loading', async () => assertNoAction(state({ loading: true })));
     it(
       'does nothing when list is not empty',
-      async () => assertNoAction(state({ loading: false, tags: [ 'foo', 'bar' ] })),
+      async () => assertNoAction(state({ loading: false, tags: ['foo', 'bar'] })),
     );
 
     it('dispatches loaded lists when no error occurs', async () => {
-      const tags = [ 'foo', 'bar', 'baz' ];
+      const tags = ['foo', 'bar', 'baz'];
 
       listTagsMock.mockResolvedValue({ tags, stats: [] });
       buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });

@@ -29,7 +29,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
-  bottle.decorator('Home', connect([ 'servers' ], [ 'resetSelectedServer' ]));
+  bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
   bottle.serviceFactory(
     'MenuLayout',
@@ -47,12 +47,12 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'EditShortUrl',
     'ManageDomains',
   );
-  bottle.decorator('MenuLayout', connect([ 'selectedServer' ], [ 'selectServer', 'sidebarPresent', 'sidebarNotPresent' ]));
+  bottle.decorator('MenuLayout', connect(['selectedServer'], ['selectServer', 'sidebarPresent', 'sidebarNotPresent']));
 
   bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
-  bottle.decorator('ShlinkVersionsContainer', connect([ 'selectedServer', 'sidebar' ]));
+  bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer', 'sidebar']));
 
   bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
 

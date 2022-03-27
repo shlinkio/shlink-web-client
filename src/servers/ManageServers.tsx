@@ -26,16 +26,16 @@ export const ManageServers = (
   ManageServersRow: FC<ManageServersRowProps>,
 ): FC<ManageServersProps> => ({ servers }) => {
   const allServers = Object.values(servers);
-  const [ serversList, setServersList ] = useState(allServers);
+  const [serversList, setServersList] = useState(allServers);
   const filterServers = (searchTerm: string) => setServersList(
     allServers.filter(({ name, url }) => `${name} ${url}`.match(searchTerm)),
   );
   const hasAutoConnect = serversList.some(({ autoConnect }) => !!autoConnect);
-  const [ errorImporting, setErrorImporting ] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+  const [errorImporting, setErrorImporting] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
 
   useEffect(() => {
     setServersList(Object.values(servers));
-  }, [ servers ]);
+  }, [servers]);
 
   return (
     <NoMenuLayout>
@@ -61,17 +61,17 @@ export const ManageServers = (
         <table className="table table-hover responsive-table mb-0">
           <thead className="responsive-table__header">
             <tr>
-              {hasAutoConnect && <th style={{ width: '50px' }} />}
+              {hasAutoConnect && <th aria-label="Auto-connect" style={{ width: '50px' }} />}
               <th>Name</th>
               <th>Base URL</th>
-              <th />
+              <th aria-label="Options" />
             </tr>
           </thead>
           <tbody>
             {!serversList.length && <tr className="text-center"><td colSpan={4}>No servers found.</td></tr>}
-            {serversList.map((server) =>
-              <ManageServersRow key={server.id} server={server} hasAutoConnect={hasAutoConnect} />)
-            }
+            {serversList.map((server) => (
+              <ManageServersRow key={server.id} server={server} hasAutoConnect={hasAutoConnect} />
+            ))}
           </tbody>
         </table>
       </SimpleCard>

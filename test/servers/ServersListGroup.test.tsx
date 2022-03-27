@@ -40,7 +40,7 @@ describe('<ServersListGroup />', () => {
   });
 
   it.each([
-    [ servers ],
+    [servers],
     [[]],
   ])('shows servers list', (servers) => {
     const wrapped = createComponent({ servers });
@@ -50,9 +50,9 @@ describe('<ServersListGroup />', () => {
   });
 
   it.each([
-    [ true, 'servers-list__list-group servers-list__list-group--embedded' ],
-    [ false, 'servers-list__list-group' ],
-    [ undefined, 'servers-list__list-group' ],
+    [true, 'servers-list__list-group servers-list__list-group--embedded'],
+    [false, 'servers-list__list-group'],
+    [undefined, 'servers-list__list-group'],
   ])('renders proper classes for embedded', (embedded, expectedClasses) => {
     const wrapped = createComponent({ servers, embedded });
     const listGroup = wrapped.find(ListGroup);

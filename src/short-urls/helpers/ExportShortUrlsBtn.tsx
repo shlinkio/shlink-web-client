@@ -22,7 +22,7 @@ export const ExportShortUrlsBtn = (
   { exportShortUrls }: ReportExporter,
 ): FC<ExportShortUrlsBtnConnectProps> => ({ amount = 0, selectedServer }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
-  const [ loading,, startLoading, stopLoading ] = useToggle();
+  const [loading,, startLoading, stopLoading] = useToggle();
   const exportAllUrls = async () => {
     if (!isServerWithId(selectedServer)) {
       return;

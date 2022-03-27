@@ -15,8 +15,8 @@ describe('<ExportBtn />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ true, 'Exporting...' ],
-    [ false, 'Export (' ],
+    [true, 'Exporting...'],
+    [false, 'Export ('],
   ])('renders a button', (loading, text) => {
     const wrapper = createWrapper(undefined, loading);
 
@@ -27,10 +27,10 @@ describe('<ExportBtn />', () => {
   });
 
   it.each([
-    [ undefined, '0' ],
-    [ 10, '10' ],
-    [ 10_000, '10,000' ],
-    [ 10_000_000, '10,000,000' ],
+    [undefined, '0'],
+    [10, '10'],
+    [10_000, '10,000'],
+    [10_000_000, '10,000,000'],
   ])('renders expected amount', (amount, expectedRenderedAmount) => {
     const wrapper = createWrapper(amount);
 

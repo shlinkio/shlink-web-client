@@ -27,8 +27,8 @@ describe('<VisitsSettings />', () => {
   });
 
   it.each([
-    [ Mock.all<Settings>(), 'last30Days' ],
-    [ Mock.of<Settings>({ visits: {} }), 'last30Days' ],
+    [Mock.all<Settings>(), 'last30Days'],
+    [Mock.of<Settings>({ visits: {} }), 'last30Days'],
     [
       Mock.of<Settings>({
         visits: {

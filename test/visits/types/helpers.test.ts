@@ -26,7 +26,7 @@ describe('visitsTypeHelpers', () => {
         ];
 
         return [
-          [ ...orphanVisits, ...regularVisits ],
+          [...orphanVisits, ...regularVisits],
           { orphanVisits, regularVisits },
         ];
       })(),
@@ -43,7 +43,7 @@ describe('visitsTypeHelpers', () => {
           }),
         ];
 
-        return [ orphanVisits, { orphanVisits, regularVisits: [] }];
+        return [orphanVisits, { orphanVisits, regularVisits: [] }];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
         const regularVisits: CreateVisit[] = [
@@ -52,7 +52,7 @@ describe('visitsTypeHelpers', () => {
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
         ];
 
-        return [ regularVisits, { orphanVisits: [], regularVisits }];
+        return [regularVisits, { orphanVisits: [], regularVisits }];
       })(),
     ])('groups new visits as expected', (createdVisits, expectedResult) => {
       expect(groupNewVisitsByType(createdVisits)).toEqual(expectedResult);
@@ -61,7 +61,7 @@ describe('visitsTypeHelpers', () => {
 
   describe('toApiParams', () => {
     it.each([
-      [ { page: 5, itemsPerPage: 100 } as VisitsParams, { page: 5, itemsPerPage: 100 } as ShlinkVisitsParams ],
+      [{ page: 5, itemsPerPage: 100 } as VisitsParams, { page: 5, itemsPerPage: 100 } as ShlinkVisitsParams],
       [
         {
           page: 1,

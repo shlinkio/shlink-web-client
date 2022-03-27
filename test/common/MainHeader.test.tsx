@@ -32,11 +32,11 @@ describe('<MainHeader />', () => {
   });
 
   it.each([
-    [ '/foo', false ],
-    [ '/bar', false ],
-    [ '/settings', true ],
-    [ '/settings/foo', true ],
-    [ '/settings/bar', true ],
+    ['/foo', false],
+    ['/bar', false],
+    ['/settings', true],
+    ['/settings/foo', true],
+    ['/settings/bar', true],
   ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
     const wrapper = createWrapper(currentPath);
     const settingsLink = wrapper.find(NavLink);

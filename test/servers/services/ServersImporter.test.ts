@@ -4,7 +4,7 @@ import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
-  const servers: RegularServer[] = [ Mock.all<RegularServer>(), Mock.all<RegularServer>() ];
+  const servers: RegularServer[] = [Mock.all<RegularServer>(), Mock.all<RegularServer>()];
   const toObject = jest.fn().mockReturnValue(servers);
   const csvjsonMock = Mock.of<CsvJson>({ toObject });
   const readAsText = jest.fn();
@@ -37,7 +37,7 @@ describe('ServersImporter', () => {
 
     it.each([
       [{}],
-      [ undefined ],
+      [undefined],
       [[{ foo: 'bar' }]],
       [
         [

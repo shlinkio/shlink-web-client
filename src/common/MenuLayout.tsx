@@ -31,10 +31,10 @@ const MenuLayout = (
   ManageDomains: FC,
 ) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent }) => {
   const location = useLocation();
-  const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
+  const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   const showContent = isReachableServer(selectedServer);
 
-  useEffect(() => hideSidebar(), [ location ]);
+  useEffect(() => hideSidebar(), [location]);
   useEffect(() => {
     showContent && sidebarPresent();
 

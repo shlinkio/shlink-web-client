@@ -11,16 +11,16 @@ interface ServerFormProps {
 }
 
 export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
-  const [ name, setName ] = useState('');
-  const [ url, setUrl ] = useState('');
-  const [ apiKey, setApiKey ] = useState('');
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const [apiKey, setApiKey] = useState('');
   const handleSubmit = handleEventPreventingDefault(() => onSubmit({ name, url, apiKey }));
 
   useEffect(() => {
     initialValues && setName(initialValues.name);
     initialValues && setUrl(initialValues.url);
     initialValues && setApiKey(initialValues.apiKey);
-  }, [ initialValues ]);
+  }, [initialValues]);
 
   return (
     <form className="server-form" onSubmit={handleSubmit}>

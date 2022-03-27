@@ -39,16 +39,16 @@ describe('<HorizontalBarChart />', () => {
   });
 
   it.each([
-    [{ foo: 23 }, [ 100, 456 ], [ 23, 0 ]],
-    [{ foo: 50 }, [ 73, 456 ], [ 50, 0 ]],
-    [{ bar: 45 }, [ 123, 411 ], [ 0, 45 ]],
-    [{ bar: 20, foo: 13 }, [ 110, 436 ], [ 13, 20 ]],
-    [ undefined, [ 123, 456 ], undefined ],
+    [{ foo: 23 }, [100, 456], [23, 0]],
+    [{ foo: 50 }, [73, 456], [50, 0]],
+    [{ bar: 45 }, [123, 411], [0, 45]],
+    [{ bar: 20, foo: 13 }, [110, 436], [13, 20]],
+    [undefined, [123, 456], undefined],
   ])('splits highlighted data from regular data', (highlightedStats, expectedData, expectedHighlightedData) => {
     wrapper = shallow(<HorizontalBarChart stats={stats} highlightedStats={highlightedStats} />);
     const horizontal = wrapper.find(Bar);
 
-    const { datasets: [{ data, label }, highlightedData ] } = horizontal.prop('data') as any;
+    const { datasets: [{ data, label }, highlightedData] } = horizontal.prop('data') as any;
 
     expect(label).toEqual('Visits');
     expect(data).toEqual(expectedData);

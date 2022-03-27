@@ -60,7 +60,7 @@ describe('shortUrlDeletionReducer', () => {
     });
 
     it.each(
-      [[ undefined ], [ null ], [ 'example.com' ]],
+      [[undefined], [null], ['example.com']],
     )('dispatches proper actions if API client request succeeds', async (domain) => {
       const apiClientMock = Mock.of<ShlinkApiClient>({
         deleteShortUrl: jest.fn(() => ''),

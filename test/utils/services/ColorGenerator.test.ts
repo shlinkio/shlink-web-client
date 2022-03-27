@@ -48,11 +48,11 @@ describe('ColorGenerator', () => {
 
   describe('isColorLightForKey', () => {
     it.each([
-      [ MAIN_COLOR, true ],
-      [ '#8A661C', false ],
-      [ '#F7BE05', true ],
-      [ '#5A02D8', false ],
-      [ '#202786', false ],
+      [MAIN_COLOR, true],
+      ['#8A661C', false],
+      ['#F7BE05', true],
+      ['#5A02D8', false],
+      ['#202786', false],
     ])('returns that the color for a key is light based on the color assigned to that key', (color, isLight) => {
       colorGenerator.setColorForKey('foo', color);
 

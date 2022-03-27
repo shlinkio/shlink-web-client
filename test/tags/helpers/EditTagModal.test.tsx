@@ -46,8 +46,8 @@ describe('<EditTagModal />', () => {
   });
 
   it.each([
-    [ true, 'Saving...' ],
-    [ false, 'Save' ],
+    [true, 'Saving...'],
+    [false, 'Save'],
   ])('renders submit button in expected state', (editing, expectedText) => {
     const wrapper = createWrapper({ editing });
     const submitBtn = wrapper.find(Button).findWhere((btn) => btn.prop('color') === 'primary');
@@ -57,8 +57,8 @@ describe('<EditTagModal />', () => {
   });
 
   it.each([
-    [ true, 1 ],
-    [ false, 0 ],
+    [true, 1],
+    [false, 0],
   ])('displays error result in case of error', (error, expectedResultCount) => {
     const wrapper = createWrapper({ error, errorData: Mock.all<ProblemDetailsError>() });
     const result = wrapper.find(Result);
@@ -83,7 +83,7 @@ describe('<EditTagModal />', () => {
     expect(editTag).not.toHaveBeenCalled();
     expect(tagEdited).not.toHaveBeenCalled();
 
-    await form.simulate('submit', { preventDefault: jest.fn() }); // eslint-disable-line @typescript-eslint/await-thenable
+    await form.simulate('submit', { preventDefault: jest.fn() });
 
     expect(editTag).toHaveBeenCalled();
     expect(tagEdited).toHaveBeenCalled();

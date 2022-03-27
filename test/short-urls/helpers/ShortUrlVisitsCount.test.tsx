@@ -15,7 +15,7 @@ describe('<ShortUrlVisitsCount />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  it.each([ undefined, {}])('just returns visits when no maxVisits is provided', (meta) => {
+  it.each([undefined, {}])('just returns visits when no maxVisits is provided', (meta) => {
     const visitsCount = 45;
     const wrapper = createWrapper(visitsCount, Mock.of<ShortUrl>({ meta }));
     const maxVisitsHelper = wrapper.find('.short-urls-visits-count__max-visits-control');

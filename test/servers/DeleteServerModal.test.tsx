@@ -1,5 +1,5 @@
 import { shallow, ShallowWrapper } from 'enzyme';
-import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import DeleteServerModal from '../../src/servers/DeleteServerModal';
@@ -21,7 +21,7 @@ describe('<DeleteServerModal />', () => {
       <DeleteServerModal
         server={Mock.of<ServerWithId>({ name: serverName })}
         toggle={toggleMock}
-        isOpen={true}
+        isOpen
         deleteServer={deleteServerMock}
       />,
     );
@@ -45,7 +45,7 @@ describe('<DeleteServerModal />', () => {
   });
 
   it('toggles when clicking cancel button', () => {
-    const cancelBtn = wrapper.find('button').first();
+    const cancelBtn = wrapper.find(Button).first();
 
     cancelBtn.simulate('click');
 
@@ -55,7 +55,7 @@ describe('<DeleteServerModal />', () => {
   });
 
   it('deletes server when clicking accept button', () => {
-    const acceptBtn = wrapper.find('button').last();
+    const acceptBtn = wrapper.find(Button).last();
 
     acceptBtn.simulate('click');
 

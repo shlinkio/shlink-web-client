@@ -39,4 +39,4 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
       <NonOrphanVisitsHeader nonOrphanVisits={nonOrphanVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, () => [ Topics.visits ]);
+}, () => [Topics.visits]);
