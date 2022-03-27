@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/nanoid/static/css/main.d8bb1a67.css",
+    "main.js": "/shlink-web-client/feature/nanoid/static/js/main.3e49bb58.js",
+    "index.html": "/shlink-web-client/feature/nanoid/index.html",
+    "main.d8bb1a67.css.map": "/shlink-web-client/feature/nanoid/static/css/main.d8bb1a67.css.map",
+    "main.3e49bb58.js.map": "/shlink-web-client/feature/nanoid/static/js/main.3e49bb58.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d8bb1a67.css",
+    "static/js/main.3e49bb58.js"
+  ]
+}
