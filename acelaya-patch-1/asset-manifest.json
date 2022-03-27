@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/acelaya-patch-1/static/css/main.d8bb1a67.css",
+    "main.js": "/shlink-web-client/acelaya-patch-1/static/js/main.6da0970d.js",
+    "index.html": "/shlink-web-client/acelaya-patch-1/index.html",
+    "main.d8bb1a67.css.map": "/shlink-web-client/acelaya-patch-1/static/css/main.d8bb1a67.css.map",
+    "main.6da0970d.js.map": "/shlink-web-client/acelaya-patch-1/static/js/main.6da0970d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d8bb1a67.css",
+    "static/js/main.6da0970d.js"
+  ]
+}
