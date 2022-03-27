@@ -1,8 +1,8 @@
 import { assoc, dissoc, fromPairs, map, pipe, reduce, toPairs } from 'ramda';
-import { v4 as uuid } from 'uuid';
 import { Action } from 'redux';
 import { ServerData, ServersMap, ServerWithId } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
+import { generateId } from '../../utils/utils';
 
 export const EDIT_SERVER = 'shlink/servers/EDIT_SERVER';
 export const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
@@ -29,7 +29,7 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
     return server as ServerWithId;
   }
 
-  return assoc('id', uuid(), server);
+  return assoc('id', generateId(), server);
 };
 
 export default buildReducer<ServersMap, CreateServersAction & DeleteServerAction & SetAutoConnectAction>({

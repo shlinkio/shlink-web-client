@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { Mock } from 'ts-mockery';
 import reducer, {
   selectServer,
@@ -10,6 +9,7 @@ import reducer, {
 } from '../../../src/servers/reducers/selectedServer';
 import { ShlinkState } from '../../../src/container/types';
 import { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
+import { generateId } from '../../../src/utils/utils';
 
 describe('selectedServerReducer', () => {
   describe('reducer', () => {
@@ -49,7 +49,7 @@ describe('selectedServerReducer', () => {
       ['latest', MAX_FALLBACK_VERSION, 'latest'],
       ['%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%'],
     ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
-      const id = uuid();
+      const id = generateId();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = {
         ...selectedServer,
@@ -68,7 +68,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('invokes dependencies', async () => {
-      const id = uuid();
+      const id = generateId();
       const getState = createGetStateMock(id);
 
       await selectServer(buildApiClient, loadMercureInfo)(id)(jest.fn(), getState);
@@ -78,7 +78,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when health endpoint fails', async () => {
-      const id = uuid();
+      const id = generateId();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = Mock.of<NonReachableServer>({ ...selectedServer, serverNotReachable: true });
 
@@ -92,7 +92,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when server is not found', async () => {
-      const id = uuid();
+      const id = generateId();
       const getState = jest.fn(() => Mock.of<ShlinkState>({ servers: {} }));
       const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 

@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
 import { Button } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { Result } from '../utils/Result';
@@ -9,6 +8,7 @@ import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
+import { generateId } from '../utils/utils';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
@@ -41,7 +41,7 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
       return;
     }
 
-    const id = uuid();
+    const id = generateId();
 
     createServer({ ...serverData, id });
     navigate(`/server/${id}`);

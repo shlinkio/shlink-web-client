@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useRef } from 'react';
 import classNames from 'classnames';
-import { v4 as uuid } from 'uuid';
 import { identity } from 'ramda';
+import { generateId } from './utils';
 
 export interface BooleanControlProps {
   checked?: boolean;
@@ -17,7 +17,7 @@ interface BooleanControlWithTypeProps extends BooleanControlProps {
 const BooleanControl: FC<BooleanControlWithTypeProps> = (
   { checked = false, onChange = identity, className, children, type, inline = false },
 ) => {
-  const { current: id } = useRef(uuid());
+  const { current: id } = useRef(generateId());
   const onChecked = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked, e);
   const typeClasses = {
     'form-switch': type === 'switch',

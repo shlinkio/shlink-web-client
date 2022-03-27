@@ -1,5 +1,6 @@
 import { isEmpty, isNil, pipe, range } from 'ramda';
 import { SyntheticEvent } from 'react';
+import { customAlphabet } from 'nanoid';
 
 export const rangeOf = <T>(size: number, mappingFn: (value: number) => T, startAt = 1): T[] =>
   range(startAt, size + 1).map(mappingFn);
@@ -28,3 +29,5 @@ export type RecursivePartial<T> = {
 export const nonEmptyValueOrNull = <T>(value: T): T | null => (isEmpty(value) ? null : value);
 
 export const capitalize = <T extends string>(value: T): string => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+
+export const generateId = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
