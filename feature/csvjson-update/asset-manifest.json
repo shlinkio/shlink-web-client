@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/csvjson-update/static/css/main.d8bb1a67.css",
+    "main.js": "/shlink-web-client/feature/csvjson-update/static/js/main.6e6016f4.js",
+    "index.html": "/shlink-web-client/feature/csvjson-update/index.html",
+    "main.d8bb1a67.css.map": "/shlink-web-client/feature/csvjson-update/static/css/main.d8bb1a67.css.map",
+    "main.6e6016f4.js.map": "/shlink-web-client/feature/csvjson-update/static/js/main.6e6016f4.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d8bb1a67.css",
+    "static/js/main.6e6016f4.js"
+  ]
+}
