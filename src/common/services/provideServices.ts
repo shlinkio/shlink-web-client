@@ -20,7 +20,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.constant('axios', axios);
 
   bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
-  bottle.service('ReportExporter', ReportExporter, 'window', 'csvjson');
+  bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components
   bottle.serviceFactory('ScrollToTop', ScrollToTop);
