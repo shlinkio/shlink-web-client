@@ -1,4 +1,3 @@
-import csvjson from 'csvjson';
 import Bottle from 'bottlejs';
 import CreateServer from '../CreateServer';
 import ServersDropdown from '../ServersDropdown';
@@ -69,10 +68,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   // Services
-  bottle.constant('csvjson', csvjson);
   bottle.constant('fileReaderFactory', () => new FileReader());
-  bottle.service('ServersImporter', ServersImporter, 'csvjson', 'fileReaderFactory');
-  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'csvjson');
+  bottle.service('ServersImporter', ServersImporter, 'csvToJson', 'fileReaderFactory');
+  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'jsonToCsv');
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');

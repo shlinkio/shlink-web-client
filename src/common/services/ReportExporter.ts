@@ -1,13 +1,10 @@
-import { CsvJson } from 'csvjson';
 import { NormalizedVisit } from '../../visits/types';
 import { ExportableShortUrl } from '../../short-urls/data';
 import { saveCsv } from '../../utils/helpers/files';
+import { JsonToCsv } from '../../utils/helpers/csvjson';
 
 export class ReportExporter {
-  public constructor(
-    private readonly window: Window,
-    private readonly csvjson: CsvJson,
-  ) {}
+  public constructor(private readonly window: Window, private readonly jsonToCsv: JsonToCsv) {}
 
   public readonly exportVisits = (filename: string, visits: NormalizedVisit[]) => {
     if (!visits.length) {
@@ -26,7 +23,7 @@ export class ReportExporter {
   };
 
   private readonly exportCsv = (filename: string, rows: object[]) => {
-    const csv = this.csvjson.toCSV(rows, { headers: 'key', wrap: true });
+    const csv = this.jsonToCsv(rows);
 
     saveCsv(this.window, csv, filename);
   };
