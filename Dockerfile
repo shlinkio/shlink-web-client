@@ -2,7 +2,7 @@ FROM node:16.13-alpine as node
 COPY . /shlink-web-client
 ARG VERSION="latest"
 ENV VERSION ${VERSION}
-RUN cd /shlink-web-client && npm ci && npm run build
+RUN cd /shlink-web-client && npm ci && NODE_ENV=production npm run build
 
 FROM nginx:1.21-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
