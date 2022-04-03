@@ -50,7 +50,7 @@
     "react-dom": "^18.0.0",
     "react-external-link": "^1.2.2",
     "react-leaflet": "^3.2.5",
-    "react-redux": "^7.2.8",
+    "react-redux": "^8.0.0-beta.4",
     "react-router-dom": "^6.3.0",
     "react-swipeable": "^6.2.0",
     "react-tag-autocomplete": "^6.3.0",
