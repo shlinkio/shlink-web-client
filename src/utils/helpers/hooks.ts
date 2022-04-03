@@ -2,6 +2,7 @@ import { useState, useRef, EffectCallback, DependencyList, useEffect } from 'rea
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { useNavigate } from 'react-router-dom';
 import { parseQuery, stringifyQuery } from './query';
+import { v4 as uuid } from 'uuid';
 
 const DEFAULT_DELAY = 2000;
 
@@ -81,4 +82,9 @@ export const useGoBack = () => {
   const navigate = useNavigate();
 
   return () => navigate(-1);
+};
+
+export const useDomId = (): string => {
+  const { current: id } = useRef(`dom-${uuid()}`);
+  return id;
 };
