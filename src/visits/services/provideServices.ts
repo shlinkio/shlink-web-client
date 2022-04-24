@@ -12,6 +12,7 @@ import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrp
 import { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
+import { DomainVisits } from '../DomainVisits';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
@@ -28,6 +29,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ['tagVisits', 'mercureInfo', 'settings', 'selectedServer'],
     ['getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
+
+  bottle.serviceFactory('DomainVisits', DomainVisits);
 
   bottle.serviceFactory('OrphanVisits', OrphanVisits, 'ReportExporter');
   bottle.decorator('OrphanVisits', connect(

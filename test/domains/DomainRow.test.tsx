@@ -25,7 +25,7 @@ describe('<DomainRow />', () => {
 
   afterEach(() => wrapper?.unmount());
 
-  it.each([
+  it.skip.each([
     [Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
     [Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined],
     [Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],

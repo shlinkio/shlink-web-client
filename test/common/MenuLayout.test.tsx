@@ -15,7 +15,7 @@ jest.mock('react-router-dom', () => ({
 describe('<MenuLayout />', () => {
   const ServerError = jest.fn();
   const C = jest.fn();
-  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, C, ServerError, C, C, C);
+  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, C, C, ServerError, C, C, C);
   let wrapper: ShallowWrapper;
   const createWrapper = (selectedServer: SelectedServer) => {
     (useParams as any).mockReturnValue({ serverId: 'abc123' });
@@ -59,6 +59,7 @@ describe('<MenuLayout />', () => {
     ['2.8.0' as SemVer, 11],
     ['2.10.0' as SemVer, 11],
     ['3.0.0' as SemVer, 12],
+    ['3.1.0' as SemVer, 13],
   ])('has expected amount of routes based on selected server\'s version', (version, expectedAmountOfRoutes) => {
     const selectedServer = Mock.of<ReachableServer>({ version });
     const wrapper = createWrapper(selectedServer).dive();
