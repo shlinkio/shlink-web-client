@@ -7,6 +7,7 @@ import shortUrlDeletionReducer from '../short-urls/reducers/shortUrlDeletion';
 import shortUrlEditionReducer from '../short-urls/reducers/shortUrlEdition';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
+import domainVisitsReducer from '../visits/reducers/domainVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
 import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
 import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
@@ -30,6 +31,7 @@ export default combineReducers<ShlinkState>({
   shortUrlEdition: shortUrlEditionReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
+  domainVisits: domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
   nonOrphanVisits: nonOrphanVisitsReducer,
   shortUrlDetail: shortUrlDetailReducer,

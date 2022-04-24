@@ -7,6 +7,7 @@ import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
+import { cancelGetDomainVisits, getDomainVisits } from '../reducers/domainVisits';
 import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits';
 import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrphanVisits';
 import { ConnectDecorator } from '../../container/types';
@@ -30,7 +31,11 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ['getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
-  bottle.serviceFactory('DomainVisits', DomainVisits);
+  bottle.serviceFactory('DomainVisits', DomainVisits, 'ReportExporter');
+  bottle.decorator('DomainVisits', connect(
+    ['domainVisits', 'mercureInfo', 'settings', 'selectedServer'],
+    ['getDomainVisits', 'cancelGetDomainVisits', 'createNewVisits', 'loadMercureInfo'],
+  ));
 
   bottle.serviceFactory('OrphanVisits', OrphanVisits, 'ReportExporter');
   bottle.decorator('OrphanVisits', connect(
@@ -53,6 +58,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
+
+  bottle.serviceFactory('getDomainVisits', getDomainVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('cancelGetDomainVisits', () => cancelGetDomainVisits);
 
   bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetOrphanVisits', () => cancelGetOrphanVisits);

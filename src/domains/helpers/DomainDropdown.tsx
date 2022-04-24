@@ -27,14 +27,17 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
 
   return (
     <DropdownBtnMenu isOpen={isOpen} toggle={toggle}>
-      <DropdownItem disabled={!canBeEdited} onClick={!canBeEdited ? undefined : toggleModal}>
-        <FontAwesomeIcon fixedWidth icon={editIcon} /> Edit redirects
-      </DropdownItem>
       {withVisits && (
-        <DropdownItem tag={Link} to={`/server/${serverId}/domain/${isDefault ? 'DEFAULT' : domain.domain}/visits`}>
+        <DropdownItem
+          tag={Link}
+          to={`/server/${serverId}/domain/${domain.domain}${domain.isDefault ? '_DEFAULT' : ''}/visits`}
+        >
           <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
         </DropdownItem>
       )}
+      <DropdownItem disabled={!canBeEdited} onClick={!canBeEdited ? undefined : toggleModal}>
+        <FontAwesomeIcon fixedWidth icon={editIcon} /> Edit redirects
+      </DropdownItem>
 
       <EditDomainRedirectsModal
         domain={domain}
