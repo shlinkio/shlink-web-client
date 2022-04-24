@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [#622](https://github.com/shlinkio/shlink-web-client/pull/622) Added support to load domain visits when consuming Shlink 3.1.0 or newer.
 
 ### Changed
 * [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
