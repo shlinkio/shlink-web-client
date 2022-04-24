@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/react-18/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/feature/react-18/static/js/main.9b08e47e.js",
+    "index.html": "/shlink-web-client/feature/react-18/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/feature/react-18/static/css/main.bed97ed6.css.map",
+    "main.9b08e47e.js.map": "/shlink-web-client/feature/react-18/static/js/main.9b08e47e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.9b08e47e.js"
+  ]
+}
