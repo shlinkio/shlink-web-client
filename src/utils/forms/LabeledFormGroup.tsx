@@ -1,11 +1,11 @@
-import { FC, ReactNode } from 'react';
+import { FC, PropsWithChildren, ReactNode } from 'react';
 
-interface LabeledFormGroupProps {
+type LabeledFormGroupProps = PropsWithChildren<{
   label: ReactNode;
   noMargin?: boolean;
   className?: string;
   labelClassName?: string;
-}
+}>;
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 export const LabeledFormGroup: FC<LabeledFormGroupProps> = (

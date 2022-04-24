@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -7,10 +7,10 @@ import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons
 import { ServerWithId } from './data';
 import './ServersListGroup.scss';
 
-interface ServersListGroupProps {
+type ServersListGroupProps = PropsWithChildren<{
   servers: ServerWithId[];
   embedded?: boolean;
-}
+}>;
 
 const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   <ListGroupItem tag={Link} to={`/server/${id}`} className="servers-list__server-item">

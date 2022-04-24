@@ -8,12 +8,12 @@ import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
-import { Versions } from '../utils/helpers/version';
 import { Topics } from '../mercure/helpers/Topics';
 import { ShlinkShortUrlsListParams } from '../api/types';
 import { supportsNonOrphanVisits, supportsOrphanVisits } from '../utils/helpers/features';
 import { getServerId, SelectedServer } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
+import { ForServerVersionProps } from './helpers/ForServerVersion';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
@@ -28,7 +28,7 @@ interface OverviewConnectProps {
 export const Overview = (
   ShortUrlsTable: FC<ShortUrlsTableProps>,
   CreateShortUrl: FC<CreateShortUrlProps>,
-  ForServerVersion: FC<Versions>,
+  ForServerVersion: FC<ForServerVersionProps>,
 ) => boundToMercureHub(({
   shortUrlsList,
   listShortUrls,

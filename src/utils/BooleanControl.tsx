@@ -1,14 +1,14 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import { identity } from 'ramda';
 import { useDomId } from './helpers/hooks';
 
-export interface BooleanControlProps {
+export type BooleanControlProps = PropsWithChildren<{
   checked?: boolean;
   onChange?: (checked: boolean, e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   inline?: boolean;
-}
+}>;
 
 interface BooleanControlWithTypeProps extends BooleanControlProps {
   type: 'switch' | 'checkbox';

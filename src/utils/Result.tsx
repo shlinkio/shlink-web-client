@@ -1,15 +1,15 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Row } from 'reactstrap';
 import classNames from 'classnames';
 import { SimpleCard } from './SimpleCard';
 
 export type ResultType = 'success' | 'error' | 'warning';
 
-export interface ResultProps {
+export type ResultProps = PropsWithChildren<{
   type: ResultType;
   className?: string;
   small?: boolean;
-}
+}>;
 
 export const Result: FC<ResultProps> = ({ children, type, className, small = false }) => (
   <Row className={className}>

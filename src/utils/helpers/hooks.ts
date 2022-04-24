@@ -1,8 +1,8 @@
 import { useState, useRef, EffectCallback, DependencyList, useEffect } from 'react';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { useNavigate } from 'react-router-dom';
-import { parseQuery, stringifyQuery } from './query';
 import { v4 as uuid } from 'uuid';
+import { parseQuery, stringifyQuery } from './query';
 
 const DEFAULT_DELAY = 2000;
 

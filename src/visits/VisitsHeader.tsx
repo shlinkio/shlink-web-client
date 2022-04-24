@@ -1,17 +1,17 @@
 import { Button, Card } from 'reactstrap';
-import { FC, ReactNode } from 'react';
+import { FC, PropsWithChildren, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
 import { ShortUrl } from '../short-urls/data';
 import { Visit } from './types';
 
-interface VisitsHeaderProps {
+type VisitsHeaderProps = PropsWithChildren<{
   visits: Visit[];
   goBack: () => void;
   title: ReactNode;
   shortUrl?: ShortUrl;
-}
+}>;
 
 const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, children, title }) => (
   <header>

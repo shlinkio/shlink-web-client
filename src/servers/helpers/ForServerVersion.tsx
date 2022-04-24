@@ -1,12 +1,14 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { versionMatch, Versions } from '../../utils/helpers/version';
 import { isReachableServer, SelectedServer } from '../data';
 
-interface ForServerVersionProps extends Versions {
+export type ForServerVersionProps = PropsWithChildren<Versions>;
+
+interface ForServerVersionConnectProps extends ForServerVersionProps {
   selectedServer: SelectedServer;
 }
 
-const ForServerVersion: FC<ForServerVersionProps> = ({ minVersion, maxVersion, selectedServer, children }) => {
+const ForServerVersion: FC<ForServerVersionConnectProps> = ({ minVersion, maxVersion, selectedServer, children }) => {
   if (!isReachableServer(selectedServer)) {
     return null;
   }

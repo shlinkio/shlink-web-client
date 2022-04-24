@@ -1,3 +1,5 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 
-export const FormText: FC = ({ children }) => <small className="form-text text-muted d-block">{children}</small>;
+export const FormText: FC<PropsWithChildren<unknown>> = ({ children }) => (
+  <small className="form-text text-muted d-block">{children}</small>
+);
