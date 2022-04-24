@@ -1,14 +1,14 @@
-import { ChangeEvent, FC, useRef } from 'react';
+import { ChangeEvent, FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
-import { v4 as uuid } from 'uuid';
 import { identity } from 'ramda';
+import { useDomId } from './helpers/hooks';
 
-export interface BooleanControlProps {
+export type BooleanControlProps = PropsWithChildren<{
   checked?: boolean;
   onChange?: (checked: boolean, e: ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   inline?: boolean;
-}
+}>;
 
 interface BooleanControlWithTypeProps extends BooleanControlProps {
   type: 'switch' | 'checkbox';
@@ -17,7 +17,7 @@ interface BooleanControlWithTypeProps extends BooleanControlProps {
 const BooleanControl: FC<BooleanControlWithTypeProps> = (
   { checked = false, onChange = identity, className, children, type, inline = false },
 ) => {
-  const { current: id } = useRef(uuid());
+  const id = useDomId();
   const onChecked = (e: ChangeEvent<HTMLInputElement>) => onChange(e.target.checked, e);
   const typeClasses = {
     'form-switch': type === 'switch',

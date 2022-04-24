@@ -1,8 +1,8 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt as mapIcon } from '@fortawesome/free-solid-svg-icons';
 import { Button, Dropdown, DropdownItem, DropdownMenu, UncontrolledTooltip } from 'reactstrap';
-import { useToggle } from '../../utils/helpers/hooks';
+import { useDomId, useToggle } from '../../utils/helpers/hooks';
 import { CityStats } from '../types';
 import MapModal from './MapModal';
 import './OpenMapModalBtn.scss';
@@ -17,7 +17,7 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
   const [mapIsOpened, , openMap, closeMap] = useToggle();
   const [dropdownIsOpened, toggleDropdown, openDropdown] = useToggle();
   const [locationsToShow, setLocationsToShow] = useState<CityStats[]>([]);
-  const buttonRef = useRef<HTMLElement>();
+  const id = useDomId();
 
   const filterLocations = (cities: CityStats[]) => cities.filter(({ cityName }) => activeCities.includes(cityName));
   const onClick = () => {
@@ -37,10 +37,10 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
 
   return (
     <>
-      <Button color="link" className="open-map-modal-btn__btn" ref={buttonRef as any} onClick={onClick}>
+      <Button color="link" className="open-map-modal-btn__btn" id={id} onClick={onClick}>
         <FontAwesomeIcon icon={mapIcon} />
       </Button>
-      <UncontrolledTooltip placement="left" target={(() => buttonRef.current) as any}>Show in map</UncontrolledTooltip>
+      <UncontrolledTooltip placement="left" target={id}>Show in map</UncontrolledTooltip>
       <Dropdown isOpen={dropdownIsOpened} toggle={toggleDropdown} inNavbar>
         <DropdownMenu end>
           <DropdownItem onClick={openMapWithLocations(false)}>Show all locations</DropdownItem>

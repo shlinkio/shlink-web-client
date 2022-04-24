@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Changed
+* [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
 * [#594](https://github.com/shlinkio/shlink-web-client/pull/594) Updated to a new coding standard.
 * [#603](https://github.com/shlinkio/shlink-web-client/pull/603) Migrated to new and maintained dependencies to parse CSV<->JSON.
 

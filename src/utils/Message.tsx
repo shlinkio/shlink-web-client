@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Card, Row } from 'reactstrap';
 import classNames from 'classnames';
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
@@ -23,12 +23,12 @@ const getTextClassForType = (type: MessageType) => {
   return map[type];
 };
 
-export interface MessageProps {
+export type MessageProps = PropsWithChildren<{
   className?: string;
   loading?: boolean;
   fullWidth?: boolean;
   type?: MessageType;
-}
+}>;
 
 const Message: FC<MessageProps> = ({ className, children, loading = false, type = 'default', fullWidth = false }) => {
   const classes = classNames({

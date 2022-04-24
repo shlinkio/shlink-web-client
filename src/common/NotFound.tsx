@@ -1,10 +1,8 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 import { SimpleCard } from '../utils/SimpleCard';
 
-interface NotFoundProps {
-  to?: string;
-}
+type NotFoundProps = PropsWithChildren<{ to?: string }>;
 
 const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
   <div className="home">

@@ -25,7 +25,7 @@ module.exports = {
   },
   transformIgnorePatterns: [
     '<rootDir>/.stryker-tmp',
-    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
+    '/node_modules\\/(?!react-leaflet)\.(js|jsx|ts|tsx)$',
     '^.+\\.module\\.scss$',
   ],
   moduleNameMapper: {

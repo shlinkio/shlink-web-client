@@ -1,14 +1,14 @@
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, PropsWithChildren, ReactNode, useEffect, useState } from 'react';
 import { InputFormGroup } from '../../utils/forms/InputFormGroup';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ServerData } from '../data';
 import { SimpleCard } from '../../utils/SimpleCard';
 
-interface ServerFormProps {
+type ServerFormProps = PropsWithChildren<{
   onSubmit: (server: ServerData) => void;
   initialValues?: ServerData;
   title?: ReactNode;
-}
+}>;
 
 export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
   const [name, setName] = useState('');

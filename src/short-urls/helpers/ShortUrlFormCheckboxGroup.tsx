@@ -1,12 +1,12 @@
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, PropsWithChildren } from 'react';
 import Checkbox from '../../utils/Checkbox';
 import { InfoTooltip } from '../../utils/InfoTooltip';
 
-interface ShortUrlFormCheckboxGroupProps {
+type ShortUrlFormCheckboxGroupProps = PropsWithChildren<{
   checked?: boolean;
   onChange?: (checked: boolean, e: ChangeEvent<HTMLInputElement>) => void;
   infoTooltip?: string;
-}
+}>;
 
 export const ShortUrlFormCheckboxGroup: FC<ShortUrlFormCheckboxGroupProps> = (
   { children, infoTooltip, checked, onChange },

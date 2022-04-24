@@ -1,16 +1,16 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { useToggle } from './helpers/hooks';
 import './DropdownBtn.scss';
 
-export interface DropdownBtnProps {
+export type DropdownBtnProps = PropsWithChildren<{
   text: string;
   disabled?: boolean;
   className?: string;
   dropdownClassName?: string;
   right?: boolean;
   minWidth?: number;
-}
+}>;
 
 export const DropdownBtn: FC<DropdownBtnProps> = (
   { text, disabled = false, className = '', children, dropdownClassName, right = false, minWidth },

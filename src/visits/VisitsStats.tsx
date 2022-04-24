@@ -1,5 +1,5 @@
 import { isEmpty, propEq, values } from 'ramda';
-import { useState, useEffect, useMemo, FC, useRef } from 'react';
+import { useState, useEffect, useMemo, FC, useRef, PropsWithChildren } from 'react';
 import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
@@ -27,7 +27,7 @@ import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
 
-export interface VisitsStatsProps {
+export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
@@ -36,7 +36,7 @@ export interface VisitsStatsProps {
   domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
-}
+}>;
 
 interface VisitsNavLinkProps {
   title: string;

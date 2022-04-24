@@ -1,4 +1,4 @@
-import { useRef, RefObject, ChangeEvent, MutableRefObject, useState, useEffect, FC } from 'react';
+import { useRef, RefObject, ChangeEvent, MutableRefObject, useState, useEffect, FC, PropsWithChildren } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { complement, pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
@@ -11,12 +11,12 @@ import './ImportServersBtn.scss';
 
 type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
-export interface ImportServersBtnProps {
+export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
   onImportError?: (error: Error) => void;
   tooltipPlacement?: 'top' | 'bottom';
   className?: string;
-}
+}>;
 
 interface ImportServersBtnConnectProps extends ImportServersBtnProps {
   createServers: (servers: ServerData[]) => void;
