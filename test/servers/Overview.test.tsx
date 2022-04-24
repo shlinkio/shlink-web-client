@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { Link, MemoryRouter } from 'react-router-dom';
@@ -15,7 +15,7 @@ describe('<Overview />', () => {
   let wrapper: ReactWrapper;
   const ShortUrlsTable = () => null;
   const CreateShortUrl = () => null;
-  const ForServerVersion: FC = ({ children }) => <>{children}</>;
+  const ForServerVersion: FC<PropsWithChildren<unknown>> = ({ children }) => <>{children}</>;
   const listShortUrls = jest.fn();
   const listTags = jest.fn();
   const loadVisitsOverview = jest.fn();
