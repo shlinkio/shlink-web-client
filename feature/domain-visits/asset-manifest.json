@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/shlink-web-client/feature/domain-visits/static/css/main.bed97ed6.css",
-    "main.js": "/shlink-web-client/feature/domain-visits/static/js/main.c9cacfb3.js",
+    "main.js": "/shlink-web-client/feature/domain-visits/static/js/main.9ee7c810.js",
     "index.html": "/shlink-web-client/feature/domain-visits/index.html",
     "main.bed97ed6.css.map": "/shlink-web-client/feature/domain-visits/static/css/main.bed97ed6.css.map",
-    "main.c9cacfb3.js.map": "/shlink-web-client/feature/domain-visits/static/js/main.c9cacfb3.js.map"
+    "main.9ee7c810.js.map": "/shlink-web-client/feature/domain-visits/static/js/main.9ee7c810.js.map"
   },
   "entrypoints": [
     "static/css/main.bed97ed6.css",
-    "static/js/main.c9cacfb3.js"
+    "static/js/main.9ee7c810.js"
   ]
 }
