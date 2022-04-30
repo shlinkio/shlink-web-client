@@ -10,7 +10,8 @@ import reducer, {
   GET_DOMAIN_VISITS_CANCEL,
   GET_DOMAIN_VISITS_PROGRESS_CHANGED,
   GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL,
-  DomainVisits, DEFAULT_DOMAIN
+  DomainVisits,
+  DEFAULT_DOMAIN,
 } from '../../../src/visits/reducers/domainVisits';
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
