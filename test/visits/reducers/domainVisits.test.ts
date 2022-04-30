@@ -10,7 +10,7 @@ import reducer, {
   GET_DOMAIN_VISITS_CANCEL,
   GET_DOMAIN_VISITS_PROGRESS_CHANGED,
   GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL,
-  DomainVisits,
+  DomainVisits, DEFAULT_DOMAIN
 } from '../../../src/visits/reducers/domainVisits';
 import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
@@ -20,6 +20,7 @@ import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import { DateInterval } from '../../../src/utils/dates/types';
+import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('domainVisitsReducer', () => {
   const now = new Date();
@@ -71,13 +72,16 @@ describe('domainVisitsReducer', () => {
     });
 
     it.each([
-      [{ domain: 'foo.com' }, visitsMocks.length + 1],
-      [{ domain: 'bar.com' }, visitsMocks.length],
+      [{ domain: 'foo.com' }, 'foo.com', visitsMocks.length + 1],
+      [{ domain: 'bar.com' }, 'foo.com', visitsMocks.length],
+      [Mock.of<DomainVisits>({ domain: 'foo.com' }), 'foo.com', visitsMocks.length + 1],
+      [Mock.of<DomainVisits>({ domain: DEFAULT_DOMAIN }), null, visitsMocks.length + 1],
       [
         Mock.of<DomainVisits>({
           domain: 'foo.com',
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
         }),
+        'foo.com',
         visitsMocks.length,
       ],
       [
@@ -85,6 +89,7 @@ describe('domainVisitsReducer', () => {
           domain: 'foo.com',
           query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
         }),
+        'foo.com',
         visitsMocks.length,
       ],
       [
@@ -95,6 +100,7 @@ describe('domainVisitsReducer', () => {
             endDate: formatIsoDate(subDays(now, 2)) ?? undefined,
           },
         }),
+        'foo.com',
         visitsMocks.length,
       ],
       [
@@ -105,6 +111,7 @@ describe('domainVisitsReducer', () => {
             endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
           },
         }),
+        'foo.com',
         visitsMocks.length + 1,
       ],
       [
@@ -115,12 +122,11 @@ describe('domainVisitsReducer', () => {
             endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
           },
         }),
+        'foo.com',
         visitsMocks.length,
       ],
-    ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
-      const shortUrl = {
-        domain: 'foo.com',
-      };
+    ])('prepends new visits on CREATE_VISIT', (state, shortUrlDomain, expectedVisits) => {
+      const shortUrl = Mock.of<ShortUrl>({ domain: shortUrlDomain });
       const prevState = buildState({
         ...state,
         visits: visitsMocks,
