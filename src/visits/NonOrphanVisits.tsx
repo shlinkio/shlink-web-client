@@ -7,7 +7,7 @@ import VisitsStats from './VisitsStats';
 import { NormalizedVisit, VisitsInfo, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
-import { NonOrphanVisitsHeader } from './NonOrphanVisitsHeader';
+import VisitsHeader from './VisitsHeader';
 
 export interface NonOrphanVisitsProps extends CommonVisitsProps {
   getNonOrphanVisits: (params?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
@@ -36,7 +36,7 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
       exportCsv={exportCsv}
       selectedServer={selectedServer}
     >
-      <NonOrphanVisitsHeader nonOrphanVisits={nonOrphanVisits} goBack={goBack} />
+      <VisitsHeader title="Non-orphan visits" goBack={goBack} visits={nonOrphanVisits.visits} />
     </VisitsStats>
   );
 }, () => [Topics.visits]);

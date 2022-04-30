@@ -115,6 +115,28 @@ describe('ShlinkApiClient', () => {
     });
   });
 
+  describe('getDomainVisits', () => {
+    it('properly returns domain visits', async () => {
+      const expectedVisits = ['foo', 'bar'];
+      const axiosSpy = createAxiosMock({
+        data: {
+          visits: {
+            data: expectedVisits,
+          },
+        },
+      });
+      const { getDomainVisits } = new ShlinkApiClient(axiosSpy, '', '');
+
+      const actualVisits = await getDomainVisits('foo.com', {});
+
+      expect({ data: expectedVisits }).toEqual(actualVisits);
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: '/domains/foo.com/visits',
+        method: 'GET',
+      }));
+    });
+  });
+
   describe('getShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };

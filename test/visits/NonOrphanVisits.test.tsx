@@ -4,10 +4,10 @@ import { NonOrphanVisits as createNonOrphanVisits } from '../../src/visits/NonOr
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { VisitsInfo } from '../../src/visits/types';
 import VisitsStats from '../../src/visits/VisitsStats';
-import { NonOrphanVisitsHeader } from '../../src/visits/NonOrphanVisitsHeader';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
+import VisitsHeader from '../../src/visits/VisitsHeader';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -33,14 +33,14 @@ describe('<NonOrphanVisits />', () => {
       />,
     ).dive();
     const stats = wrapper.find(VisitsStats);
-    const header = wrapper.find(NonOrphanVisitsHeader);
+    const header = wrapper.find(VisitsHeader);
 
     expect(stats).toHaveLength(1);
     expect(header).toHaveLength(1);
     expect(stats.prop('cancelGetVisits')).toEqual(cancelGetNonOrphanVisits);
     expect(stats.prop('visitsInfo')).toEqual(nonOrphanVisits);
     expect(stats.prop('isOrphanVisits')).not.toBeDefined();
-    expect(header.prop('nonOrphanVisits')).toEqual(nonOrphanVisits);
+    expect(header.prop('visits')).toEqual(nonOrphanVisits.visits);
     expect(header.prop('goBack')).toEqual(expect.any(Function));
   });
 });

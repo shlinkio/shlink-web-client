@@ -15,8 +15,9 @@ module.exports = {
       lines: 85,
     },
   },
-  setupFiles: [ '<rootDir>/config/jest/setupEnzyme.js' ],
-  testMatch: [ '<rootDir>/test/**/*.test.{ts,tsx}' ],
+  setupFiles: ['<rootDir>/config/jest/setupEnzyme.js'],
+  setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.ts'],
+  testMatch: ['<rootDir>/test/**/*.test.{ts,tsx}'],
   testEnvironment: 'jsdom',
   testURL: 'http://localhost',
   transform: {
@@ -33,5 +34,5 @@ module.exports = {
     // Reactstrap module resolution does not work in jest for some reason. Manually mapping it solves the problem
     'reactstrap': '<rootDir>/node_modules/reactstrap/dist/reactstrap.umd.js',
   },
-  moduleFileExtensions: [ 'js', 'ts', 'tsx', 'json' ],
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
 };
