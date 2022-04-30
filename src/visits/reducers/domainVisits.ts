@@ -22,7 +22,6 @@ export const DEFAULT_DOMAIN = 'DEFAULT';
 
 export interface DomainVisits extends VisitsInfo {
   domain: string;
-  domainId: string;
 }
 
 export interface DomainVisitsAction extends Action<string> {
@@ -40,7 +39,6 @@ type DomainVisitsCombinedAction = DomainVisitsAction
 const initialState: DomainVisits = {
   visits: [],
   domain: '',
-  domainId: '',
   loading: false,
   loadingLarge: false,
   error: false,
