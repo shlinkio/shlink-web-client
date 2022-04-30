@@ -1,11 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { Button, UncontrolledTooltip } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBan as forbiddenIcon, faEdit as editIcon } from '@fortawesome/free-solid-svg-icons';
 import { ShlinkDomainRedirects } from '../../src/api/types';
 import { DomainRow } from '../../src/domains/DomainRow';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { SelectedServer } from '../../src/servers/data';
 import { Domain } from '../../src/domains/data';
 
 describe('<DomainRow />', () => {
@@ -24,65 +21,6 @@ describe('<DomainRow />', () => {
   };
 
   afterEach(() => wrapper?.unmount());
-
-  it.skip.each([
-    [Mock.of<Domain>({ domain: '', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
-    [Mock.of<Domain>({ domain: '', isDefault: false }), undefined, 0, 0, undefined],
-    [Mock.of<Domain>({ domain: 'foo.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
-    [Mock.of<Domain>({ domain: 'foo.bar.com', isDefault: true }), undefined, 1, 1, 'defaultDomainBtn'],
-    [Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }), undefined, 0, 0, undefined],
-    [
-      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
-      Mock.of<ReachableServer>({ version: '2.10.0' }),
-      1,
-      0,
-      undefined,
-    ],
-    [
-      Mock.of<Domain>({ domain: 'foo.baz', isDefault: true }),
-      Mock.of<ReachableServer>({ version: '2.9.0' }),
-      1,
-      1,
-      'defaultDomainBtn',
-    ],
-    [
-      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
-      Mock.of<ReachableServer>({ version: '2.9.0' }),
-      0,
-      0,
-      undefined,
-    ],
-    [
-      Mock.of<Domain>({ domain: 'foo.baz', isDefault: false }),
-      Mock.of<ReachableServer>({ version: '2.10.0' }),
-      0,
-      0,
-      undefined,
-    ],
-  ])('shows proper components based on provided domain and selectedServer', (
-    domain,
-    selectedServer,
-    expectedDefaultDomainIcons,
-    expectedDisabledComps,
-    expectedDomainId,
-  ) => {
-    const wrapper = createWrapper(domain, selectedServer);
-    const defaultDomainComp = wrapper.find('td').first().find('DefaultDomain');
-    const disabledBtn = wrapper.find(Button).findWhere((btn) => !!btn.prop('disabled'));
-    const tooltip = wrapper.find(UncontrolledTooltip);
-    const button = wrapper.find(Button);
-    const icon = wrapper.find(FontAwesomeIcon);
-
-    expect(defaultDomainComp).toHaveLength(expectedDefaultDomainIcons);
-    expect(disabledBtn).toHaveLength(expectedDisabledComps);
-    expect(button.prop('disabled')).toEqual(expectedDisabledComps > 0);
-    expect(icon.prop('icon')).toEqual(expectedDisabledComps > 0 ? forbiddenIcon : editIcon);
-    expect(tooltip).toHaveLength(expectedDisabledComps);
-
-    if (expectedDisabledComps > 0) {
-      expect(tooltip.prop('target')).toEqual(expectedDomainId);
-    }
-  });
 
   it.each([
     [undefined, 3],

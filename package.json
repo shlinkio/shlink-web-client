@@ -71,6 +71,8 @@
     "@stryker-mutator/core": "^5.6.1",
     "@stryker-mutator/jest-runner": "^5.6.1",
     "@stryker-mutator/typescript-checker": "^5.6.1",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.1.1",
     "@types/classnames": "^2.3.1",
     "@types/enzyme": "^3.10.11",
     "@types/jest": "^27.4.1",

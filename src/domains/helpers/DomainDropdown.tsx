@@ -10,6 +10,7 @@ import { Domain } from '../data';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { supportsDefaultDomainRedirectsEdition, supportsDomainVisits } from '../../utils/helpers/features';
 import { getServerId, SelectedServer } from '../../servers/data';
+import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 
 interface DomainDropdownProps {
   domain: Domain;
@@ -30,7 +31,7 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
       {withVisits && (
         <DropdownItem
           tag={Link}
-          to={`/server/${serverId}/domain/${domain.domain}${domain.isDefault ? '_DEFAULT' : ''}/visits`}
+          to={`/server/${serverId}/domain/${domain.domain}${domain.isDefault ? `_${DEFAULT_DOMAIN}` : ''}/visits`}
         >
           <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
         </DropdownItem>
