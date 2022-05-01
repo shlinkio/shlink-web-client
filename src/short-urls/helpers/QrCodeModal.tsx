@@ -7,11 +7,7 @@ import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
-import {
-  supportsQrCodeSizeInQuery,
-  supportsQrCodeMargin,
-  supportsQrErrorCorrection,
-} from '../../utils/helpers/features';
+import { supportsQrErrorCorrection } from '../../utils/helpers/features';
 import { ImageDownloader } from '../../common/services/ImageDownloader';
 import { ForServerVersionProps } from '../../servers/helpers/ForServerVersion';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
@@ -30,11 +26,9 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForS
   const [format, setFormat] = useState<QrCodeFormat>('png');
   const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
   const capabilities: QrCodeCapabilities = useMemo(() => ({
-    useSizeInPath: !supportsQrCodeSizeInQuery(selectedServer),
-    marginIsSupported: supportsQrCodeMargin(selectedServer),
     errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
   }), [selectedServer]);
-  const willRenderThreeControls = capabilities.marginIsSupported !== capabilities.errorCorrectionIsSupported;
+  const willRenderThreeControls = !capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
     [shortUrl, size, format, margin, errorCorrection, capabilities],
@@ -67,21 +61,19 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForS
               onChange={(e) => setSize(Number(e.target.value))}
             />
           </FormGroup>
-          {capabilities.marginIsSupported && (
-            <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
-              <label htmlFor="marginControl">Margin: {margin}px</label>
-              <input
-                id="marginControl"
-                type="range"
-                className="form-control-range"
-                value={margin}
-                step={1}
-                min={0}
-                max={100}
-                onChange={(e) => setMargin(Number(e.target.value))}
-              />
-            </FormGroup>
-          )}
+          <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
+            <label htmlFor="marginControl">Margin: {margin}px</label>
+            <input
+              id="marginControl"
+              type="range"
+              className="form-control-range"
+              value={margin}
+              step={1}
+              min={0}
+              max={100}
+              onChange={(e) => setMargin(Number(e.target.value))}
+            />
+          </FormGroup>
           <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
             <QrFormatDropdown format={format} setFormat={setFormat} />
           </FormGroup>
