@@ -80,17 +80,6 @@ export default class ShlinkApiClient {
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
-  /**
-   * @deprecated. If using Shlink 2.6.0 or greater, use updateShortUrl instead
-   */
-  public readonly updateShortUrlTags = async (
-    shortCode: string,
-    domain: OptionalString,
-    tags: string[],
-  ): Promise<string[]> =>
-    this.performRequest<{ tags: string[] }>(`/short-urls/${shortCode}/tags`, 'PUT', { domain }, { tags })
-      .then(({ data }) => data.tags);
-
   public readonly updateShortUrl = async (
     shortCode: string,
     domain: OptionalString,

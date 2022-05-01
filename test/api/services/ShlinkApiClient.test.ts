@@ -156,25 +156,6 @@ describe('ShlinkApiClient', () => {
     });
   });
 
-  describe('updateShortUrlTags', () => {
-    it.each(shortCodesWithDomainCombinations)('properly updates short URL tags', async (shortCode, domain) => {
-      const expectedTags = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock({
-        data: { tags: expectedTags },
-      });
-      const { updateShortUrlTags } = new ShlinkApiClient(axiosSpy, '', '');
-
-      const result = await updateShortUrlTags(shortCode, domain, expectedTags);
-
-      expect(expectedTags).toEqual(result);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: `/short-urls/${shortCode}/tags`,
-        method: 'PUT',
-        params: domain ? { domain } : {},
-      }));
-    });
-  });
-
   describe('updateShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly updates short URL meta', async (shortCode, domain) => {
       const meta = {

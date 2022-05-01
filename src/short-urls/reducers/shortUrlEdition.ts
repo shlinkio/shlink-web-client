@@ -6,7 +6,6 @@ import { EditShortUrlData, ShortUrl } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
-import { supportsTagsInPatch } from '../../utils/helpers/features';
 import { ApiErrorAction } from '../../api/types/actions';
 
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
@@ -42,15 +41,10 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_START });
 
-  const { selectedServer } = getState();
-  const sendTagsSeparately = !supportsTagsInPatch(selectedServer);
-  const { updateShortUrl, updateShortUrlTags } = buildShlinkApiClient(getState);
+  const { updateShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    const [shortUrl] = await Promise.all([
-      updateShortUrl(shortCode, domain, data as any), // FIXME Parse dates
-      sendTagsSeparately && data.tags ? updateShortUrlTags(shortCode, domain, data.tags) : undefined,
-    ]);
+    const shortUrl = await updateShortUrl(shortCode, domain, data as any); // FIXME parse dates;
 
     dispatch<ShortUrlEditedAction>({ shortUrl, type: SHORT_URL_EDITED });
   } catch (e: any) {
