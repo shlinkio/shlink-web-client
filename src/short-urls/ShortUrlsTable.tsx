@@ -2,7 +2,6 @@ import { FC, ReactNode } from 'react';
 import { isEmpty } from 'ramda';
 import classNames from 'classnames';
 import { SelectedServer } from '../servers/data';
-import { supportsShortUrlTitle } from '../utils/helpers/features';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
 import { ShortUrlsOrderableFields } from './data';
@@ -29,7 +28,6 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   const actionableFieldClasses = classNames({ 'short-urls-table__header-cell--with-action': !!orderByColumn });
   const orderableColumnsClasses = classNames('short-urls-table__header-cell', actionableFieldClasses);
   const tableClasses = classNames('table table-hover responsive-table', className);
-  const supportsTitle = supportsShortUrlTitle(selectedServer);
 
   const renderShortUrls = () => {
     if (error) {
@@ -70,21 +68,15 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('shortCode')}>
             Short URL {renderOrderIcon?.('shortCode')}
           </th>
-          {!supportsTitle ? (
-            <th className={orderableColumnsClasses} onClick={orderByColumn?.('longUrl')}>
-              Long URL {renderOrderIcon?.('longUrl')}
-            </th>
-          ) : (
-            <th className="short-urls-table__header-cell">
-              <span className={actionableFieldClasses} onClick={orderByColumn?.('title')}>
-                Title {renderOrderIcon?.('title')}
-              </span>
-              &nbsp;&nbsp;/&nbsp;&nbsp;
-              <span className={actionableFieldClasses} onClick={orderByColumn?.('longUrl')}>
-                <span className="indivisible">Long URL</span> {renderOrderIcon?.('longUrl')}
-              </span>
-            </th>
-          )}
+          <th className="short-urls-table__header-cell">
+            <span className={actionableFieldClasses} onClick={orderByColumn?.('title')}>
+              Title {renderOrderIcon?.('title')}
+            </span>
+            &nbsp;&nbsp;/&nbsp;&nbsp;
+            <span className={actionableFieldClasses} onClick={orderByColumn?.('longUrl')}>
+              <span className="indivisible">Long URL</span> {renderOrderIcon?.('longUrl')}
+            </span>
+          </th>
           <th className="short-urls-table__header-cell">Tags</th>
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('visits')}>
             <span className="indivisible">Visits {renderOrderIcon?.('visits')}</span>
