@@ -2,10 +2,9 @@ import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/types/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
-import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
-import { supportsCrawlableVisits, supportsForwardQuery, supportsShortUrlTitle } from '../utils/helpers/features';
+import { supportsCrawlableVisits, supportsForwardQuery } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
@@ -33,7 +32,6 @@ export interface ShortUrlFormProps {
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
-const dynamicColClasses = (flag: boolean) => ({ 'col-sm-6': flag, 'col-sm-12': !flag });
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
@@ -115,13 +113,9 @@ export const ShortUrlForm = (
     </>
   );
 
-  const supportsTitle = supportsShortUrlTitle(selectedServer);
-  const showCustomizeCard = supportsTitle || !isEdit;
-  const limitAccessCardClasses = classNames('mb-3', dynamicColClasses(showCustomizeCard));
   const showCrawlableControl = supportsCrawlableVisits(selectedServer);
   const showForwardQueryControl = supportsForwardQuery(selectedServer);
   const showBehaviorCard = showCrawlableControl || showForwardQueryControl;
-  const extraChecksCardClasses = classNames('mb-3', dynamicColClasses(showBehaviorCard));
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -133,36 +127,34 @@ export const ShortUrlForm = (
           </SimpleCard>
 
           <Row>
-            {showCustomizeCard && (
-              <div className="col-sm-6 mb-3">
-                <SimpleCard title="Customize the short URL">
-                  {supportsTitle && renderOptionalInput('title', 'Title')}
-                  {!isEdit && (
-                    <>
-                      <Row>
-                        <div className="col-lg-6">
-                          {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-                            disabled: hasValue(shortUrlData.shortCodeLength),
-                          })}
-                        </div>
-                        <div className="col-lg-6">
-                          {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-                            min: 4,
-                            disabled: hasValue(shortUrlData.customSlug),
-                          })}
-                        </div>
-                      </Row>
-                      <DomainSelector
-                        value={shortUrlData.domain}
-                        onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                      />
-                    </>
-                  )}
-                </SimpleCard>
-              </div>
-            )}
+            <div className="col-sm-6 mb-3">
+              <SimpleCard title="Customize the short URL">
+                {renderOptionalInput('title', 'Title')}
+                {!isEdit && (
+                  <>
+                    <Row>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                          disabled: hasValue(shortUrlData.shortCodeLength),
+                        })}
+                      </div>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                          min: 4,
+                          disabled: hasValue(shortUrlData.customSlug),
+                        })}
+                      </div>
+                    </Row>
+                    <DomainSelector
+                      value={shortUrlData.domain}
+                      onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                    />
+                  </>
+                )}
+              </SimpleCard>
+            </div>
 
-            <div className={limitAccessCardClasses}>
+            <div className="col-sm-6 mb-3">
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
                 <div className="mb-3">
@@ -174,7 +166,7 @@ export const ShortUrlForm = (
           </Row>
 
           <Row>
-            <div className={extraChecksCardClasses}>
+            <div className="col-sm-6 mb-3">
               <SimpleCard title="Extra checks">
                 <ShortUrlFormCheckboxGroup
                   infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."

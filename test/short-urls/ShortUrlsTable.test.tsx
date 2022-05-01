@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { SemVer } from '../../src/utils/helpers/version';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 
 describe('<ShortUrlsTable />', () => {
@@ -61,13 +60,8 @@ describe('<ShortUrlsTable />', () => {
     });
   });
 
-  it.each([
-    ['2.6.0' as SemVer],
-    ['2.6.1' as SemVer],
-    ['2.7.0' as SemVer],
-    ['3.0.0' as SemVer],
-  ])('should render composed column when server supports title', (version) => {
-    const wrapper = createWrapper(Mock.of<ReachableServer>({ version }));
+  it('should render composed title column', () => {
+    const wrapper = createWrapper(Mock.of<ReachableServer>({ version: '2.0.0' }));
     const composedColumn = wrapper.find('table').find('th').at(2);
     const text = composedColumn.text();
 

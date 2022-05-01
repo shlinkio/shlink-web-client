@@ -66,16 +66,12 @@ describe('<ShortUrlForm />', () => {
   });
 
   it.each([
-    [null, 'create' as Mode, 4],
-    [null, 'create-basic' as Mode, 0],
-    [Mock.of<ReachableServer>({ version: '2.6.0' }), 'create' as Mode, 4],
-    [Mock.of<ReachableServer>({ version: '2.5.0' }), 'create' as Mode, 4],
-    [Mock.of<ReachableServer>({ version: '2.6.0' }), 'edit' as Mode, 4],
-    [Mock.of<ReachableServer>({ version: '2.5.0' }), 'edit' as Mode, 3],
+    ['create' as Mode, 4],
+    ['create-basic' as Mode, 0],
   ])(
     'renders expected amount of cards based on server capabilities and mode',
-    (selectedServer, mode, expectedAmountOfCards) => {
-      const wrapper = createWrapper(selectedServer, mode);
+    (mode, expectedAmountOfCards) => {
+      const wrapper = createWrapper(null, mode);
       const cards = wrapper.find(SimpleCard);
 
       expect(cards).toHaveLength(expectedAmountOfCards);
