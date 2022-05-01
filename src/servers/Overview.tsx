@@ -10,7 +10,7 @@ import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Topics } from '../mercure/helpers/Topics';
 import { ShlinkShortUrlsListParams } from '../api/types';
-import { supportsNonOrphanVisits, supportsOrphanVisits } from '../utils/helpers/features';
+import { supportsNonOrphanVisits } from '../utils/helpers/features';
 import { getServerId, SelectedServer } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
 import { ForServerVersionProps } from './helpers/ForServerVersion';
@@ -42,7 +42,6 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
   const serverId = getServerId(selectedServer);
-  const linkToOrphanVisits = supportsOrphanVisits(selectedServer);
   const linkToNonOrphanVisits = supportsNonOrphanVisits(selectedServer);
   const navigate = useNavigate();
 
@@ -61,7 +60,7 @@ export const Overview = (
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Orphan visits" link={linkToOrphanVisits && `/server/${serverId}/orphan-visits`}>
+          <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
             <ForServerVersion minVersion="2.6.0">
               {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
             </ForServerVersion>

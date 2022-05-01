@@ -77,10 +77,11 @@ describe('<Overview />', () => {
     const wrapper = createWrapper();
     const links = wrapper.find(Link);
 
-    expect(links).toHaveLength(4);
-    expect(links.at(0).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
-    expect(links.at(1).prop('to')).toEqual(`/server/${serverId}/manage-tags`);
-    expect(links.at(2).prop('to')).toEqual(`/server/${serverId}/create-short-url`);
-    expect(links.at(3).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
+    expect(links).toHaveLength(5);
+    expect(links.at(0).prop('to')).toEqual(`/server/${serverId}/orphan-visits`);
+    expect(links.at(1).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
+    expect(links.at(2).prop('to')).toEqual(`/server/${serverId}/manage-tags`);
+    expect(links.at(3).prop('to')).toEqual(`/server/${serverId}/create-short-url`);
+    expect(links.at(4).prop('to')).toEqual(`/server/${serverId}/list-short-urls/1`);
   });
 });

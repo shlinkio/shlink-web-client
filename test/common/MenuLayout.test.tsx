@@ -53,7 +53,6 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    ['2.5.0' as SemVer, 9],
     ['2.6.0' as SemVer, 10],
     ['2.7.0' as SemVer, 10],
     ['2.8.0' as SemVer, 11],

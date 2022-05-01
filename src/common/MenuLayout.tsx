@@ -5,12 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import {
-  supportsDomainRedirects,
-  supportsDomainVisits,
-  supportsNonOrphanVisits,
-  supportsOrphanVisits,
-} from '../utils/helpers/features';
+import { supportsDomainRedirects, supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
 import NotFound from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
@@ -51,7 +46,6 @@ const MenuLayout = (
     return <ServerError />;
   }
 
-  const addOrphanVisitsRoute = supportsOrphanVisits(selectedServer);
   const addNonOrphanVisitsRoute = supportsNonOrphanVisits(selectedServer);
   const addManageDomainsRoute = supportsDomainRedirects(selectedServer);
   const addDomainVisitsRoute = supportsDomainVisits(selectedServer);
@@ -76,7 +70,7 @@ const MenuLayout = (
                 <Route path="/short-code/:shortCode/edit" element={<EditShortUrl />} />
                 <Route path="/tag/:tag/visits/*" element={<TagVisits />} />
                 {addDomainVisitsRoute && <Route path="/domain/:domain/visits/*" element={<DomainVisits />} />}
-                {addOrphanVisitsRoute && <Route path="/orphan-visits/*" element={<OrphanVisits />} />}
+                <Route path="/orphan-visits/*" element={<OrphanVisits />} />
                 {addNonOrphanVisitsRoute && <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />}
                 <Route path="/manage-tags" element={<TagsList />} />
                 {addManageDomainsRoute && <Route path="/manage-domains" element={<ManageDomains />} />}
