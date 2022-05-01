@@ -19,7 +19,9 @@ module.exports = {
   setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.ts'],
   testMatch: ['<rootDir>/test/**/*.test.{ts,tsx}'],
   testEnvironment: 'jsdom',
-  testURL: 'http://localhost',
+  testEnvironmentOptions: {
+    url: 'http://localhost',
+  },
   transform: {
     '^.+\\.(ts|tsx|js)$': '<rootDir>/node_modules/babel-jest',
     '^(?!.*\\.(ts|tsx|js|json)$)': '<rootDir>/config/jest/fileTransform.js',
