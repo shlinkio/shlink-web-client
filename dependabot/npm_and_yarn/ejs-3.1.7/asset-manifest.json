@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/css/main.bed97ed6.css",
-    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/js/main.420a19c9.js",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/js/main.656814ac.js",
     "index.html": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/index.html",
     "main.bed97ed6.css.map": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/css/main.bed97ed6.css.map",
-    "main.420a19c9.js.map": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/js/main.420a19c9.js.map"
+    "main.656814ac.js.map": "/shlink-web-client/dependabot/npm_and_yarn/ejs-3.1.7/static/js/main.656814ac.js.map"
   },
   "entrypoints": [
     "static/css/main.bed97ed6.css",
-    "static/js/main.420a19c9.js"
+    "static/js/main.656814ac.js"
   ]
 }
