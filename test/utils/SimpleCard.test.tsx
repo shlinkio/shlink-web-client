@@ -1,30 +1,24 @@
-import { shallow } from 'enzyme';
-import { Card, CardBody, CardHeader } from 'reactstrap';
+import { render, screen } from '@testing-library/react';
 import { SimpleCard } from '../../src/utils/SimpleCard';
 
 describe('<SimpleCard />', () => {
-  it.each([
-    [{}, 0],
-    [{ title: 'Cool title' }, 1],
-  ])('renders header only if title is provided', (props, expectedAmountOfHeaders) => {
-    const wrapper = shallow(<SimpleCard {...props} />);
+  it('does not render title if not provided', () => {
+    render(<SimpleCard />);
+    expect(screen.queryByRole('heading')).not.toBeInTheDocument();
+  });
 
-    expect(wrapper.find(CardHeader)).toHaveLength(expectedAmountOfHeaders);
+  it('renders provided title', () => {
+    render(<SimpleCard title="Cool title" />);
+    expect(screen.getByRole('heading')).toHaveTextContent('Cool title');
   });
 
   it('renders children inside body', () => {
-    const wrapper = shallow(<SimpleCard>Hello world</SimpleCard>);
-    const body = wrapper.find(CardBody);
-
-    expect(body).toHaveLength(1);
-    expect(body.html()).toContain('Hello world');
+    render(<SimpleCard>Hello world</SimpleCard>);
+    expect(screen.getByText('Hello world')).toBeInTheDocument();
   });
 
-  it('passes extra props to nested card', () => {
-    const wrapper = shallow(<SimpleCard className="foo" color="primary">Hello world</SimpleCard>);
-    const card = wrapper.find(Card);
-
-    expect(card.prop('className')).toEqual('foo');
-    expect(card.prop('color')).toEqual('primary');
+  it.each(['primary', 'danger', 'warning'])('passes extra props to nested card', (color) => {
+    const { container } = render(<SimpleCard className="foo" color={color}>Hello world</SimpleCard>);
+    expect(container.firstChild).toHaveAttribute('class', `foo card bg-${color}`);
   });
 });
