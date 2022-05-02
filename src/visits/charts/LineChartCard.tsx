@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, MutableRefObject, useRef } from 'react';
 import {
   Card,
   CardHeader,
@@ -8,7 +8,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import { Line } from 'react-chartjs-2';
+import { getElementAtEvent, Line } from 'react-chartjs-2';
 import { always, cond, countBy, reverse } from 'ramda';
 import {
   add,
@@ -21,7 +21,7 @@ import {
   startOfISOWeek,
   endOfISOWeek,
 } from 'date-fns';
-import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -148,8 +148,9 @@ let selectedLabel: string | null = null;
 const chartElementAtEvent = (
   labels: string[],
   datasetsByPoint: Record<string, NormalizedVisit[]>,
+  [chart]: InteractionItem[],
   setSelectedVisits?: (visits: NormalizedVisit[]) => void,
-) => ([chart]: [{ index: number }]) => {
+) => {
   if (!setSelectedVisits || !chart) {
     return;
   }
@@ -160,7 +161,7 @@ const chartElementAtEvent = (
     setSelectedVisits([]);
     selectedLabel = null;
   } else {
-    setSelectedVisits(labels[index] ? datasetsByPoint[labels[index]] : []);
+    setSelectedVisits(labels[index] && datasetsByPoint[labels[index]] ? datasetsByPoint[labels[index]] : []);
     selectedLabel = labels[index] ?? null;
   }
 };
@@ -172,6 +173,8 @@ const LineChartCard = (
     visits.length > 0 ? determineInitialStep(visits[visits.length - 1].date) : 'monthly',
   );
   const [skipNoVisits, toggleSkipNoVisits] = useToggle(true);
+  const refWithHighlightedVisits = useRef(null);
+  const refWithoutHighlightedVisits = useRef(null);
 
   const datasetsByPoint = useMemo(() => visitsToDatasetGroups(step, visits), [step, visits]);
   const groupedVisitsWithGaps = useMemo(() => groupVisitsByStep(step, reverse(visits)), [step, visits]);
@@ -220,11 +223,13 @@ const LineChartCard = (
     },
     onHover: pointerOnHover,
   };
-  const renderLineChart = () => (
+  const renderLineChart = (theRef: MutableRefObject<any>) => (
     <Line
+      ref={theRef}
       data={generateChartData() as any}
       options={options as any}
-      getElementAtEvent={chartElementAtEvent(labels, datasetsByPoint, setSelectedVisits) as any}
+      onClick={(e) =>
+        chartElementAtEvent(labels, datasetsByPoint, getElementAtEvent(theRef.current, e), setSelectedVisits)}
     />
   );
 
@@ -255,8 +260,8 @@ const LineChartCard = (
       <CardBody className="line-chart-card__body">
         {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
         {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
-        {highlightedVisits.length > 0 && renderLineChart()}
-        {highlightedVisits.length === 0 && renderLineChart()}
+        {highlightedVisits.length > 0 && renderLineChart(refWithHighlightedVisits)}
+        {highlightedVisits.length === 0 && renderLineChart(refWithoutHighlightedVisits)}
       </CardBody>
     </Card>
   );

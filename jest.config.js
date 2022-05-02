@@ -26,13 +26,14 @@ module.exports = {
   },
   transformIgnorePatterns: [
     '<rootDir>/.stryker-tmp',
-    '/node_modules\\/(?!react-leaflet)\.(js|jsx|ts|tsx)$',
+    'node_modules\/(?!(\@react-leaflet|react-leaflet|leaflet|react-chartjs-2)\/)',
     '^.+\\.module\\.scss$',
   ],
   moduleNameMapper: {
     '^.+\\.module\\.scss$': 'identity-obj-proxy',
     // Reactstrap module resolution does not work in jest for some reason. Manually mapping it solves the problem
     'reactstrap': '<rootDir>/node_modules/reactstrap/dist/reactstrap.umd.js',
+    'react-chartjs-2': '<rootDir>/node_modules/react-chartjs-2/dist/index.js',
   },
   moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
 };

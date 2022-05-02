@@ -6,6 +6,7 @@ import { container } from './container';
 import { store } from './container/store';
 import { fixLeafletIcons } from './utils/helpers/leaflet';
 import { register as registerServiceWorker } from './serviceWorkerRegistration';
+import 'chart.js/auto'; // TODO Import specific ones to reduce bundle size https://react-chartjs-2.js.org/docs/migration-to-v4/#tree-shaking
 import 'react-datepicker/dist/react-datepicker.css';
 import 'leaflet/dist/leaflet.css';
 import './index.scss';
