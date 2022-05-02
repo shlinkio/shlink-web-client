@@ -14,7 +14,7 @@ import { QrErrorCorrectionDropdown } from '../../../src/short-urls/helpers/qr-co
 describe('<QrCodeModal />', () => {
   let wrapper: ShallowWrapper;
   const saveImage = jest.fn().mockReturnValue(Promise.resolve());
-  const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }), () => null);
+  const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }));
   const shortUrl = 'https://doma.in/abc123';
   const createWrapper = (version: SemVer = '2.6.0') => {
     const selectedServer = Mock.of<ReachableServer>({ version });
@@ -99,7 +99,7 @@ describe('<QrCodeModal />', () => {
   });
 
   it('saves the QR code image when clicking the Download button', () => {
-    const wrapper = createWrapper();
+    const wrapper = createWrapper('2.9.0');
     const downloadBtn = wrapper.find(Button);
 
     expect(saveImage).not.toHaveBeenCalled();

@@ -1,4 +1,4 @@
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Modal, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
@@ -7,9 +7,8 @@ import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
-import { supportsQrErrorCorrection } from '../../utils/helpers/features';
+import { supportsNonRestCors, supportsQrErrorCorrection } from '../../utils/helpers/features';
 import { ImageDownloader } from '../../common/services/ImageDownloader';
-import { ForServerVersionProps } from '../../servers/helpers/ForServerVersion';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 import './QrCodeModal.scss';
@@ -18,7 +17,7 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForServerVersionProps>) => (
+const QrCodeModal = (imageDownloader: ImageDownloader) => (
   { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
 ) => {
   const [size, setSize] = useState(300);
@@ -28,6 +27,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForS
   const capabilities: QrCodeCapabilities = useMemo(() => ({
     errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
   }), [selectedServer]);
+  const displayDownloadBtn = supportsNonRestCors(selectedServer);
   const willRenderThreeControls = !capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
@@ -89,7 +89,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForS
             <CopyToClipboardIcon text={qrCodeUrl} />
           </div>
           <img src={qrCodeUrl} className="qr-code-modal__img" alt="QR code" />
-          <ForServerVersion minVersion="2.9.0">
+          {displayDownloadBtn && (
             <div className="mt-3">
               <Button
                 block
@@ -101,7 +101,7 @@ const QrCodeModal = (imageDownloader: ImageDownloader, ForServerVersion: FC<ForS
                 Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
               </Button>
             </div>
-          </ForServerVersion>
+          )}
         </div>
       </ModalBody>
     </Modal>
