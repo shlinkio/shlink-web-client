@@ -12,7 +12,7 @@ export const GET_OVERVIEW = 'shlink/visitsOverview/GET_OVERVIEW';
 
 export interface VisitsOverview {
   visitsCount: number;
-  orphanVisitsCount?: number;
+  orphanVisitsCount: number;
   loading: boolean;
   error: boolean;
 }

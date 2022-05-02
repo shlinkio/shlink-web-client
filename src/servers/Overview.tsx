@@ -13,7 +13,6 @@ import { ShlinkShortUrlsListParams } from '../api/types';
 import { supportsNonOrphanVisits } from '../utils/helpers/features';
 import { getServerId, SelectedServer } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
-import { ForServerVersionProps } from './helpers/ForServerVersion';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
@@ -28,7 +27,6 @@ interface OverviewConnectProps {
 export const Overview = (
   ShortUrlsTable: FC<ShortUrlsTableProps>,
   CreateShortUrl: FC<CreateShortUrlProps>,
-  ForServerVersion: FC<ForServerVersionProps>,
 ) => boundToMercureHub(({
   shortUrlsList,
   listShortUrls,
@@ -61,12 +59,7 @@ export const Overview = (
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
           <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
-            <ForServerVersion minVersion="2.6.0">
-              {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
-            </ForServerVersion>
-            <ForServerVersion maxVersion="2.5.*">
-              <small className="text-muted"><i>Shlink 2.6 is needed</i></small>
-            </ForServerVersion>
+            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount)}
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
