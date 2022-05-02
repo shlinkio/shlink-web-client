@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
 * [#595](https://github.com/shlinkio/shlink-web-client/pull/595) Updated to react-chartjs-2 v4.1.0.
 * [#594](https://github.com/shlinkio/shlink-web-client/pull/594) Updated to a new coding standard.
+* [#627](https://github.com/shlinkio/shlink-web-client/pull/627) Updated to Jest 28.
 * [#603](https://github.com/shlinkio/shlink-web-client/pull/603) Migrated to new and maintained dependencies to parse CSV<->JSON.
 * [#619](https://github.com/shlinkio/shlink-web-client/pull/619) Introduced react testing library, to progressively replace enzyme.
 
