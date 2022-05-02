@@ -1,70 +1,43 @@
-import { ChangeEvent, PropsWithChildren } from 'react';
-import { mount, ReactWrapper } from 'enzyme';
-import { Mock } from 'ts-mockery';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Checkbox from '../../src/utils/Checkbox';
-import { BooleanControlProps } from '../../src/utils/BooleanControl';
 
 describe('<Checkbox />', () => {
-  let wrapped: ReactWrapper;
-
-  const createComponent = (props: PropsWithChildren<BooleanControlProps> = {}) => {
-    wrapped = mount(<Checkbox {...props} />);
-
-    return wrapped;
-  };
-
-  afterEach(() => wrapped?.unmount());
-
-  it('includes extra class names when provided', () => {
-    const classNames = ['foo', 'bar', 'baz'];
-
-    expect.assertions(classNames.length);
-    classNames.forEach((className) => {
-      const wrapped = createComponent({ className });
-
-      expect(wrapped.prop('className')).toContain(className);
-    });
+  it.each([['foo'], ['bar'], ['baz']])('includes extra class names when provided', (className) => {
+    const { container } = render(<Checkbox className={className} />);
+    expect(container.firstChild).toHaveAttribute('class', `form-check form-checkbox ${className}`);
   });
 
-  it('marks input as checked if defined', () => {
-    const checkeds = [true, false];
+  it.each([[true], [false]])('marks input as checked if defined', (checked) => {
+    render(<Checkbox checked={checked}>Foo</Checkbox>);
 
-    expect.assertions(checkeds.length);
-    checkeds.forEach((checked) => {
-      const wrapped = createComponent({ checked });
-      const input = wrapped.find('input');
-
-      expect(input.prop('checked')).toEqual(checked);
-    });
+    if (checked) {
+      expect(screen.getByLabelText('Foo')).toBeChecked();
+    } else {
+      expect(screen.getByLabelText('Foo')).not.toBeChecked();
+    }
   });
 
-  it('renders provided children inside the label', () => {
-    const labels = ['foo', 'bar', 'baz'];
-
-    expect.assertions(labels.length);
-    labels.forEach((children) => {
-      const wrapped = createComponent({ children });
-      const label = wrapped.find('label');
-
-      expect(label.text()).toEqual(children);
-    });
+  it.each([['foo'], ['bar'], ['baz']])('renders provided children inside the label', (children) => {
+    render(<Checkbox>{children}</Checkbox>);
+    expect(screen.getByText(children)).toHaveAttribute('class', 'form-check-label');
   });
 
-  it('changes checked status on input change', () => {
+  it.each([[true], [false]])('changes checked status on input change', (checked) => {
     const onChange = jest.fn();
-    const e = Mock.of<ChangeEvent<HTMLInputElement>>({ target: { checked: false } });
-    const wrapped = createComponent({ checked: true, onChange });
-    const input = wrapped.find('input');
+    render(<Checkbox onChange={onChange} checked={checked}>Foo</Checkbox>);
 
-    (input.prop('onChange') as Function)(e);
-
-    expect(onChange).toHaveBeenCalledWith(false, e);
+    expect(onChange).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByLabelText('Foo'));
+    expect(onChange).toHaveBeenCalledWith(!checked, expect.anything());
   });
 
-  it('allows setting inline rendering', () => {
-    const wrapped = createComponent({ inline: true });
-    const control = wrapped.find('.form-check');
+  it.each([[true], [false]])('allows setting inline rendering', (inline) => {
+    const { container } = render(<Checkbox inline={inline} />);
 
-    expect(control.prop('style')).toEqual({ display: 'inline-block' });
+    if (inline) {
+      expect(container.firstChild).toHaveAttribute('style', 'display: inline-block;');
+    } else {
+      expect(container.firstChild).not.toHaveAttribute('style');
+    }
   });
 });
