@@ -12,7 +12,7 @@ import { SelectedServer } from '../servers/data';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
-import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
+import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
 import { ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import './ShortUrlForm.scss';
