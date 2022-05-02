@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/react-testing-lib/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/feature/react-testing-lib/static/js/main.3ab4b9db.js",
+    "index.html": "/shlink-web-client/feature/react-testing-lib/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/feature/react-testing-lib/static/css/main.bed97ed6.css.map",
+    "main.3ab4b9db.js.map": "/shlink-web-client/feature/react-testing-lib/static/js/main.3ab4b9db.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.3ab4b9db.js"
+  ]
+}
