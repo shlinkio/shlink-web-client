@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/jest-28/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/feature/jest-28/static/js/main.d63b527a.js",
+    "index.html": "/shlink-web-client/feature/jest-28/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/feature/jest-28/static/css/main.bed97ed6.css.map",
+    "main.d63b527a.js.map": "/shlink-web-client/feature/jest-28/static/js/main.d63b527a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.d63b527a.js"
+  ]
+}
