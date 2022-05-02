@@ -59,7 +59,7 @@ export const Overview = (
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
           <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
-            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
+            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount)}
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">

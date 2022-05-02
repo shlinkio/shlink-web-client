@@ -8,7 +8,6 @@ import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
-import { ForServerVersion } from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
@@ -54,9 +53,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
   bottle.decorator('ImportServersBtn', connect(['servers'], ['createServers']));
-
-  bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
-  bottle.decorator('ForServerVersion', connect(['selectedServer']));
 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
   bottle.decorator('ServerError', connect(['servers', 'selectedServer']));

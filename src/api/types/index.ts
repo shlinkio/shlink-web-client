@@ -46,7 +46,7 @@ export interface ShlinkVisits {
 
 export interface ShlinkVisitsOverview {
   visitsCount: number;
-  orphanVisitsCount?: number; // Optional only for versions older than 2.6.0
+  orphanVisitsCount: number;
 }
 
 export interface ShlinkVisitsParams {
