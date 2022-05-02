@@ -8,7 +8,9 @@ interface ForServerVersionConnectProps extends ForServerVersionProps {
   selectedServer: SelectedServer;
 }
 
-const ForServerVersion: FC<ForServerVersionConnectProps> = ({ minVersion, maxVersion, selectedServer, children }) => {
+export const ForServerVersion: FC<ForServerVersionConnectProps> = (
+  { minVersion, maxVersion, selectedServer, children },
+) => {
   if (!isReachableServer(selectedServer)) {
     return null;
   }
@@ -22,5 +24,3 @@ const ForServerVersion: FC<ForServerVersionConnectProps> = ({ minVersion, maxVer
 
   return <>{children}</>;
 };
-
-export default ForServerVersion;

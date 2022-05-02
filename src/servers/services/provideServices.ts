@@ -8,7 +8,7 @@ import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
-import ForServerVersion from '../helpers/ForServerVersion';
+import { ForServerVersion } from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
