@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/more-rtl-tests/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/feature/more-rtl-tests/static/js/main.4575a386.js",
+    "index.html": "/shlink-web-client/feature/more-rtl-tests/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/feature/more-rtl-tests/static/css/main.bed97ed6.css.map",
+    "main.4575a386.js.map": "/shlink-web-client/feature/more-rtl-tests/static/js/main.4575a386.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.4575a386.js"
+  ]
+}
