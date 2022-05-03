@@ -6,10 +6,10 @@ interface ErrorHandlerState {
   hasError: boolean;
 }
 
-const ErrorHandlerCreator = (
+export const ErrorHandler = (
   { location }: Window,
   { error }: Console,
-) => class ErrorHandler extends Component<any, ErrorHandlerState> {
+) => class extends Component<any, ErrorHandlerState> {
   public constructor(props: object) {
     super(props);
     this.state = { hasError: false };
@@ -44,5 +44,3 @@ const ErrorHandlerCreator = (
     return children;
   }
 };
-
-export default ErrorHandlerCreator;

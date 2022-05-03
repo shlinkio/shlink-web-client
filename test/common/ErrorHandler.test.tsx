@@ -1,38 +1,44 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Button } from 'reactstrap';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import createErrorHandler from '../../src/common/ErrorHandler';
-import { SimpleCard } from '../../src/utils/SimpleCard';
+import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
+
+const ComponentWithError = () => {
+  throw new Error('Error!!');
+};
 
 describe('<ErrorHandler />', () => {
+  const reload = jest.fn();
   const window = Mock.of<Window>({
-    location: {
-      reload: jest.fn(),
-    },
+    location: { reload },
   });
-  const console = Mock.of<Console>({ error: jest.fn() });
-  let wrapper: ShallowWrapper;
+  const cons = Mock.of<Console>({ error: jest.fn() });
+  const ErrorHandler = createErrorHandler(window, cons);
 
   beforeEach(() => {
-    const ErrorHandler = createErrorHandler(window, console);
-
-    wrapper = shallow(<ErrorHandler children={<span>Foo</span>} />);
+    jest.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
   });
-
-  afterEach(() => wrapper.unmount());
+  afterEach(jest.resetAllMocks);
 
   it('renders children when no error has occurred', () => {
-    expect(wrapper.text()).toEqual('Foo');
-    expect(wrapper.find(Button)).toHaveLength(0);
+    render(<ErrorHandler children={<span>Foo</span>} />);
+
+    expect(screen.getByText('Foo')).toBeInTheDocument();
+    expect(screen.queryByText('Oops! This is awkward :S')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
   it('renders error page when error has occurred', () => {
-    wrapper.setState({ hasError: true });
+    render(<ErrorHandler children={<ComponentWithError />} />);
 
-    expect(wrapper.find(SimpleCard).contains('Oops! This is awkward :S')).toEqual(true);
-    expect(wrapper.find(SimpleCard).contains(
-      'It seems that something went wrong. Try refreshing the page or just click this button.',
-    )).toEqual(true);
-    expect(wrapper.find(Button)).toHaveLength(1);
+    expect(screen.getByText('Oops! This is awkward :S')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('reloads page on button click', () => {
+    render(<ErrorHandler children={<ComponentWithError />} />);
+
+    expect(reload).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button'));
+    expect(reload).toHaveBeenCalled();
   });
 });
