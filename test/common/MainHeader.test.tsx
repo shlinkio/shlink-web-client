@@ -1,34 +1,24 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { useLocation } from 'react-router-dom';
-import { Collapse, NavbarToggler, NavLink } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import createMainHeader from '../../src/common/MainHeader';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { MainHeader as createMainHeader } from '../../src/common/MainHeader';
 
 describe('<MainHeader />', () => {
-  const ServersDropdown = () => null;
-  const MainHeader = createMainHeader(ServersDropdown);
-  let wrapper: ShallowWrapper;
+  const MainHeader = createMainHeader(() => <>ServersDropdown</>);
+  const setUp = (pathname = '') => {
+    const history = createMemoryHistory();
+    history.push(pathname);
 
-  const createWrapper = (pathname = '') => {
-    (useLocation as any).mockReturnValue({ pathname });
-
-    wrapper = shallow(<MainHeader />);
-
-    return wrapper;
+    return render(
+      <Router location={history.location} navigator={history}>
+        <MainHeader />
+      </Router>,
+    );
   };
 
-  afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
-
   it('renders ServersDropdown', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.find(ServersDropdown)).toHaveLength(1);
+    setUp();
+    expect(screen.getByText('ServersDropdown')).toBeInTheDocument();
   });
 
   it.each([
@@ -38,31 +28,38 @@ describe('<MainHeader />', () => {
     ['/settings/foo', true],
     ['/settings/bar', true],
   ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
-    const wrapper = createWrapper(currentPath);
-    const settingsLink = wrapper.find(NavLink);
+    setUp(currentPath);
 
-    expect(settingsLink.prop('active')).toEqual(isActive);
+    if (isActive) {
+      expect(screen.getByText(/Settings$/).getAttribute('class')).toContain('active');
+    } else {
+      expect(screen.getByText(/Settings$/).getAttribute('class')).not.toContain('active');
+    }
   });
 
   it('renders expected class based on the nav bar state', () => {
-    const wrapper = createWrapper();
+    setUp();
 
-    expect(wrapper.find(NavbarToggler).find(FontAwesomeIcon).prop('className')).toEqual('main-header__toggle-icon');
-    wrapper.find(NavbarToggler).simulate('click');
-    expect(wrapper.find(NavbarToggler).find(FontAwesomeIcon).prop('className')).toEqual(
-      'main-header__toggle-icon main-header__toggle-icon--opened',
+    const toggle = screen.getByLabelText('Toggle navigation');
+    const icon = toggle.firstChild;
+
+    expect(icon).toHaveAttribute('class', expect.stringMatching(/main-header__toggle-icon$/));
+    fireEvent.click(toggle);
+    expect(icon).toHaveAttribute(
+      'class',
+      expect.stringMatching(/main-header__toggle-icon main-header__toggle-icon--opened$/),
     );
-    wrapper.find(NavbarToggler).simulate('click');
-    expect(wrapper.find(NavbarToggler).find(FontAwesomeIcon).prop('className')).toEqual('main-header__toggle-icon');
+    fireEvent.click(toggle);
+    expect(icon).toHaveAttribute('class', expect.stringMatching(/main-header__toggle-icon$/));
   });
 
-  it('opens Collapse when clicking toggle', () => {
-    const wrapper = createWrapper();
+  it('opens Collapse when clicking toggle', async () => {
+    const { container } = setUp();
+    const collapse = container.querySelector('.collapse');
+    const toggle = screen.getByLabelText('Toggle navigation');
 
-    expect(wrapper.find(Collapse).prop('isOpen')).toEqual(false);
-    wrapper.find(NavbarToggler).simulate('click');
-    expect(wrapper.find(Collapse).prop('isOpen')).toEqual(true);
-    wrapper.find(NavbarToggler).simulate('click');
-    expect(wrapper.find(Collapse).prop('isOpen')).toEqual(false);
+    expect(collapse).not.toHaveAttribute('class', expect.stringContaining('show'));
+    fireEvent.click(toggle);
+    await waitFor(() => expect(collapse).toHaveAttribute('class', expect.stringContaining('show')));
   });
 });
