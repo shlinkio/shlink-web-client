@@ -24,7 +24,7 @@ export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, toggle, forc
       <h4 className="mb-4">This app has just been updated!</h4>
       <p className="mb-0">
         Restart it to enjoy the new features.
-        <Button disabled={isUpdating} className="ms-2" color="secondary" size="sm" onClick={update}>
+        <Button role="button" disabled={isUpdating} className="ms-2" color="secondary" size="sm" onClick={update}>
           {!isUpdating && <>Restart now <FontAwesomeIcon icon={reloadIcon} className="ms-1" /></>}
           {isUpdating && <>Restarting...</>}
         </Button>
