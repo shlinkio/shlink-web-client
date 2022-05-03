@@ -1,71 +1,61 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Route, useLocation } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { Mock } from 'ts-mockery';
 import { Settings } from '../../src/settings/reducers/settings';
-import appFactory from '../../src/app/App';
-import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
+import { App as createApp } from '../../src/app/App';
 
 describe('<App />', () => {
-  let wrapper: ShallowWrapper;
-  const MainHeader = () => null;
-  const ShlinkVersions = () => null;
-  const App = appFactory(
-    MainHeader,
-    () => null,
-    () => null,
-    () => null,
-    () => null,
-    () => null,
-    () => null,
-    ShlinkVersions,
+  const App = createApp(
+    () => <>MainHeader</>,
+    () => <>Home</>,
+    () => <>MenuLayout</>,
+    () => <>CreateServer</>,
+    () => <>EditServer</>,
+    () => <>SettingsComp</>,
+    () => <>ManageServers</>,
+    () => <>ShlinkVersions</>,
   );
-  const createWrapper = () => {
-    wrapper = shallow(
-      <App
-        fetchServers={() => {}}
-        servers={{}}
-        settings={Mock.all<Settings>()}
-        appUpdated={false}
-        resetAppUpdate={() => {}}
-      />,
-    );
+  const setUp = (activeRoute = '/') => {
+    const history = createMemoryHistory();
+    history.push(activeRoute);
 
-    return wrapper;
+    return render(
+      <Router location={history.location} navigator={history}>
+        <App
+          fetchServers={() => {}}
+          servers={{}}
+          settings={Mock.all<Settings>()}
+          appUpdated
+          resetAppUpdate={() => {}}
+        />
+      </Router>,
+    );
   };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders children components', () => {
-    const wrapper = createWrapper();
+    setUp();
 
-    expect(wrapper.find(MainHeader)).toHaveLength(1);
-    expect(wrapper.find(ShlinkVersions)).toHaveLength(1);
-    expect(wrapper.find(AppUpdateBanner)).toHaveLength(1);
+    expect(screen.getByText('MainHeader')).toBeInTheDocument();
+    expect(screen.getByText('ShlinkVersions')).toBeInTheDocument();
+    expect(screen.getByText('This app has just been updated!')).toBeInTheDocument();
   });
 
-  it('renders app main routes', () => {
-    const wrapper = createWrapper();
-    const routes = wrapper.find(Route);
-    const expectedPaths = [
-      undefined,
-      '/settings/*',
-      '/manage-servers',
-      '/server/create',
-      '/server/:serverId/edit',
-      '/server/:serverId/*',
-    ];
-
-    expect.assertions(expectedPaths.length + 1);
-    expect(routes).toHaveLength(expectedPaths.length + 1);
-    expectedPaths.forEach((path, index) => {
-      expect(routes.at(index).prop('path')).toEqual(path);
-    });
+  it.each([
+    ['/settings/foo', 'SettingsComp'],
+    ['/settings/bar', 'SettingsComp'],
+    ['/manage-servers', 'ManageServers'],
+    ['/server/create', 'CreateServer'],
+    ['/server/abc123/edit', 'EditServer'],
+    ['/server/def456/edit', 'EditServer'],
+    ['/server/abc123/foo', 'MenuLayout'],
+    ['/server/def456/bar', 'MenuLayout'],
+    ['/other', 'Oops! We could not find requested route.'],
+  ])('renders expected route', async (activeRoute, expectedComponent) => {
+    setUp(activeRoute);
+    expect(await screen.findByText(expectedComponent)).toBeInTheDocument();
   });
 
   it.each([
@@ -73,11 +63,9 @@ describe('<App />', () => {
     ['/bar', 'shlink-wrapper'],
     ['/', 'shlink-wrapper d-flex d-md-block align-items-center'],
   ])('renders expected classes on shlink-wrapper based on current pathname', (pathname, expectedClasses) => {
-    (useLocation as any).mockReturnValue({ pathname });
+    const { container } = setUp(pathname);
+    const shlinkWrapper = container.querySelector('.shlink-wrapper');
 
-    const wrapper = createWrapper();
-    const shlinkWrapper = wrapper.find('.shlink-wrapper');
-
-    expect(shlinkWrapper.prop('className')).toEqual(expectedClasses);
+    expect(shlinkWrapper).toHaveAttribute('class', expectedClasses);
   });
 });

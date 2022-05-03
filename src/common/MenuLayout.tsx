@@ -7,7 +7,7 @@ import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
 import { supportsDomainRedirects, supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
-import NotFound from './NotFound';
+import { NotFound } from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
 import './MenuLayout.scss';
 

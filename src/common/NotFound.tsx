@@ -4,7 +4,7 @@ import { SimpleCard } from '../utils/SimpleCard';
 
 type NotFoundProps = PropsWithChildren<{ to?: string }>;
 
-const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
+export const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
   <div className="home">
     <SimpleCard className="p-4">
       <h2>Oops! We could not find requested route.</h2>
@@ -17,5 +17,3 @@ const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
     </SimpleCard>
   </div>
 );
-
-export default NotFound;
