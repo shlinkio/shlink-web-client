@@ -1,6 +1,6 @@
 import Bottle from 'bottlejs';
 import { appUpdateAvailable, resetAppUpdate } from '../reducers/appUpdates';
-import App from '../App';
+import { App } from '../App';
 import { ConnectDecorator } from '../../container/types';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {

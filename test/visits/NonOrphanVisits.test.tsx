@@ -9,12 +9,6 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useParams: jest.fn().mockReturnValue({}),
-}));
-
 describe('<NonOrphanVisits />', () => {
   const exportVisits = jest.fn();
   const getNonOrphanVisits = jest.fn();

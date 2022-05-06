@@ -1,7 +1,7 @@
 import { useEffect, FC } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import NotFound from '../common/NotFound';
+import { NotFound } from '../common/NotFound';
 import { ServersMap } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
 import { changeThemeInMarkup } from '../utils/theme';
@@ -17,7 +17,7 @@ interface AppProps {
   appUpdated: boolean;
 }
 
-const App = (
+export const App = (
   MainHeader: FC,
   Home: FC,
   MenuLayout: FC,
@@ -65,5 +65,3 @@ const App = (
     </div>
   );
 };
-
-export default App;

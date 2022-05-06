@@ -8,7 +8,7 @@ import { useToggle } from '../utils/helpers/hooks';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 
-const MainHeader = (ServersDropdown: FC) => () => {
+export const MainHeader = (ServersDropdown: FC) => () => {
   const [isOpen, toggleOpen, , close] = useToggle();
   const location = useLocation();
   const { pathname } = location;
@@ -41,5 +41,3 @@ const MainHeader = (ServersDropdown: FC) => () => {
     </Navbar>
   );
 };
-
-export default MainHeader;

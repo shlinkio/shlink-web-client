@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
-import NotFound from '../../src/common/NotFound';
+import { NotFound } from '../../src/common/NotFound';
 import { SimpleCard } from '../../src/utils/SimpleCard';
 
 describe('<NotFound />', () => {

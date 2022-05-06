@@ -10,11 +10,11 @@ import { ServersMap } from '../servers/data';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './Home.scss';
 
-export interface HomeProps {
+interface HomeProps {
   servers: ServersMap;
 }
 
-const Home = ({ servers }: HomeProps) => {
+export const Home = ({ servers }: HomeProps) => {
   const navigate = useNavigate();
   const serversList = values(servers);
   const hasServers = !isEmpty(serversList);
@@ -65,5 +65,3 @@ const Home = ({ servers }: HomeProps) => {
     </div>
   );
 };
-
-export default Home;
