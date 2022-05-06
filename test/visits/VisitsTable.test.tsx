@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import VisitsTable, { VisitsTableProps } from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
-import SimplePaginator from '../../src/common/SimplePaginator';
+import { SimplePaginator } from '../../src/common/SimplePaginator';
 import SearchField from '../../src/utils/SearchField';
 import { NormalizedVisit } from '../../src/visits/types';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';

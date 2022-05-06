@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import { rangeOf } from '../../utils/utils';
 import { Order } from '../../utils/helpers/ordering';
-import SimplePaginator from '../../common/SimplePaginator';
+import { SimplePaginator } from '../../common/SimplePaginator';
 import { roundTen } from '../../utils/helpers/numbers';
 import { OrderingDropdown } from '../../utils/OrderingDropdown';
 import PaginationDropdown from '../../utils/PaginationDropdown';
