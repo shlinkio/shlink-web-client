@@ -1,17 +1,10 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import ShlinkVersions, { ShlinkVersionsProps } from '../../src/common/ShlinkVersions';
 import { NonReachableServer, NotFoundServer, ReachableServer } from '../../src/servers/data';
 
 describe('<ShlinkVersions />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props: ShlinkVersionsProps) => {
-    wrapper = shallow(<ShlinkVersions {...props} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (props: ShlinkVersionsProps) => render(<ShlinkVersions {...props} />);
 
   it.each([
     ['1.2.3', Mock.of<ReachableServer>({ version: '1.0.0', printableVersion: 'foo' }), 'v1.2.3', 'foo'],
@@ -22,15 +15,19 @@ describe('<ShlinkVersions />', () => {
   ])(
     'displays expected versions when selected server is reachable',
     (clientVersion, selectedServer, expectedClientVersion, expectedServerVersion) => {
-      const wrapper = createWrapper({ clientVersion, selectedServer });
-      const links = wrapper.find('VersionLink');
-      const serverLink = links.at(0);
-      const clientLink = links.at(1);
+      setUp({ clientVersion, selectedServer });
+      const [serverLink, clientLink] = screen.getAllByRole('link');
 
-      expect(serverLink.prop('project')).toEqual('shlink');
-      expect(serverLink.prop('version')).toEqual(expectedServerVersion);
-      expect(clientLink.prop('project')).toEqual('shlink-web-client');
-      expect(clientLink.prop('version')).toEqual(expectedClientVersion);
+      expect(serverLink).toHaveAttribute(
+        'href',
+        `https://github.com/shlinkio/shlink/releases/${expectedServerVersion}`,
+      );
+      expect(serverLink).toHaveTextContent(expectedServerVersion);
+      expect(clientLink).toHaveAttribute(
+        'href',
+        `https://github.com/shlinkio/shlink-web-client/releases/${expectedClientVersion}`,
+      );
+      expect(clientLink).toHaveTextContent(expectedClientVersion);
     },
   );
 
@@ -39,10 +36,10 @@ describe('<ShlinkVersions />', () => {
     ['1.2.3', Mock.of<NotFoundServer>({ serverNotFound: true })],
     ['1.2.3', Mock.of<NonReachableServer>({ serverNotReachable: true })],
   ])('displays only client version when selected server is not reachable', (clientVersion, selectedServer) => {
-    const wrapper = createWrapper({ clientVersion, selectedServer });
-    const links = wrapper.find('VersionLink');
+    setUp({ clientVersion, selectedServer });
+    const links = screen.getAllByRole('link');
 
     expect(links).toHaveLength(1);
-    expect(links.at(0).prop('project')).toEqual('shlink-web-client');
+    expect(links[0]).toHaveAttribute('href', 'https://github.com/shlinkio/shlink-web-client/releases/v1.2.3');
   });
 });
