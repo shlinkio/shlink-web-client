@@ -3,7 +3,7 @@ import Bottle from 'bottlejs';
 import ScrollToTop from '../ScrollToTop';
 import { MainHeader } from '../MainHeader';
 import { Home } from '../Home';
-import MenuLayout from '../MenuLayout';
+import { MenuLayout } from '../MenuLayout';
 import AsideMenu from '../AsideMenu';
 import { ErrorHandler } from '../ErrorHandler';
 import ShlinkVersionsContainer from '../ShlinkVersionsContainer';

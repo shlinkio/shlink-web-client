@@ -1,70 +1,89 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Route, useParams } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { Router, useParams } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import { Mock } from 'ts-mockery';
-import createMenuLayout from '../../src/common/MenuLayout';
+import { MenuLayout as createMenuLayout } from '../../src/common/MenuLayout';
 import { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';
-import { NoMenuLayout } from '../../src/common/NoMenuLayout';
 import { SemVer } from '../../src/utils/helpers/version';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({}),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
+jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useParams: jest.fn() }));
 
 describe('<MenuLayout />', () => {
-  const ServerError = jest.fn();
-  const C = jest.fn();
-  const MenuLayout = createMenuLayout(C, C, C, C, C, C, C, C, C, ServerError, C, C, C);
-  let wrapper: ShallowWrapper;
-  const createWrapper = (selectedServer: SelectedServer) => {
-    (useParams as any).mockReturnValue({ serverId: 'abc123' });
+  const MenuLayout = createMenuLayout(
+    () => <>TagsList</>,
+    () => <>ShortUrlsList</>,
+    () => <>AsideMenu</>,
+    () => <>CreateShortUrl</>,
+    () => <>ShortUrlVisits</>,
+    () => <>TagVisits</>,
+    () => <>DomainVisits</>,
+    () => <>OrphanVisits</>,
+    () => <>NonOrphanVisits</>,
+    () => <>ServerError</>,
+    () => <>Overview</>,
+    () => <>EditShortUrl</>,
+    () => <>ManageDomains</>,
+  );
+  const setUp = (selectedServer: SelectedServer, currentPath = '/') => {
+    const history = createMemoryHistory();
+    history.push(currentPath);
 
-    wrapper = shallow(
-      <MenuLayout
-        sidebarNotPresent={jest.fn()}
-        sidebarPresent={jest.fn()}
-        selectServer={jest.fn()}
-        selectedServer={selectedServer}
-      />,
+    return render(
+      <Router location={history.location} navigator={history}>
+        <MenuLayout
+          sidebarNotPresent={jest.fn()}
+          sidebarPresent={jest.fn()}
+          selectServer={jest.fn()}
+          selectedServer={selectedServer}
+        />
+      </Router>,
     );
-
-    return wrapper;
   };
 
+  beforeEach(() => {
+    (useParams as any).mockReturnValue({ serverId: 'abc123' });
+  });
+
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it.each([
-    [null, NoMenuLayout],
-    [Mock.of<NotFoundServer>({ serverNotFound: true }), ServerError],
-  ])('returns error when server is not found', (selectedServer, ExpectedComp) => {
-    const wrapper = createWrapper(selectedServer);
-    const comp = wrapper.find(ExpectedComp);
+  it('shows loading indicator while loading server', () => {
+    setUp(null);
 
-    expect(comp).toHaveLength(1);
-  });
-
-  it('returns error if server is not reachable', () => {
-    const wrapper = createWrapper(Mock.of<NonReachableServer>()).dive();
-    const serverError = wrapper.find(ServerError);
-
-    expect(serverError).toHaveLength(1);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.queryByText('ServerError')).not.toBeInTheDocument();
   });
 
   it.each([
-    ['2.6.0' as SemVer, 10],
-    ['2.7.0' as SemVer, 10],
-    ['2.8.0' as SemVer, 11],
-    ['2.10.0' as SemVer, 11],
-    ['3.0.0' as SemVer, 12],
-    ['3.1.0' as SemVer, 13],
-  ])('has expected amount of routes based on selected server\'s version', (version, expectedAmountOfRoutes) => {
-    const selectedServer = Mock.of<ReachableServer>({ version });
-    const wrapper = createWrapper(selectedServer).dive();
-    const routes = wrapper.find(Route);
+    [Mock.of<NotFoundServer>({ serverNotFound: true })],
+    [Mock.of<NonReachableServer>({ serverNotReachable: true })],
+  ])('shows error for non reachable servers', (selectedServer) => {
+    setUp(selectedServer);
 
-    expect(routes).toHaveLength(expectedAmountOfRoutes);
-    expect(routes.findWhere((element) => element.prop('index'))).toHaveLength(1);
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    expect(screen.getByText('ServerError')).toBeInTheDocument();
   });
+
+  it.each([
+    ['3.0.0' as SemVer, '/overview', 'Overview'],
+    ['3.0.0' as SemVer, '/list-short-urls/1', 'ShortUrlsList'],
+    ['3.0.0' as SemVer, '/create-short-url', 'CreateShortUrl'],
+    ['3.0.0' as SemVer, '/short-code/abc123/visits/foo', 'ShortUrlVisits'],
+    ['3.0.0' as SemVer, '/short-code/abc123/edit', 'EditShortUrl'],
+    ['3.0.0' as SemVer, '/tag/foo/visits/foo', 'TagVisits'],
+    ['3.0.0' as SemVer, '/orphan-visits/foo', 'OrphanVisits'],
+    ['3.0.0' as SemVer, '/manage-tags', 'TagsList'],
+    ['3.0.0' as SemVer, '/not-found', 'Oops! We could not find requested route.'],
+    ['3.0.0' as SemVer, '/domain/domain.com/visits/foo', 'Oops! We could not find requested route.'],
+    ['3.1.0' as SemVer, '/domain/domain.com/visits/foo', 'DomainVisits'],
+    ['2.10.0' as SemVer, '/non-orphan-visits/foo', 'Oops! We could not find requested route.'],
+    ['3.0.0' as SemVer, '/non-orphan-visits/foo', 'NonOrphanVisits'],
+    ['2.7.0' as SemVer, '/manage-domains', 'Oops! We could not find requested route.'],
+    ['2.8.0' as SemVer, '/manage-domains', 'ManageDomains'],
+  ])(
+    'renders expected component based on location and server version',
+    (version, currentPath, expectedContent) => {
+      setUp(Mock.of<ReachableServer>({ version }), currentPath);
+      expect(screen.getByText(expectedContent)).toBeInTheDocument();
+    },
+  );
 });

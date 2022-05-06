@@ -16,7 +16,7 @@ interface MenuLayoutProps {
   sidebarNotPresent: Function;
 }
 
-const MenuLayout = (
+export const MenuLayout = (
   TagsList: FC,
   ShortUrlsList: FC,
   AsideMenu: FC<AsideMenuProps>,
@@ -86,5 +86,3 @@ const MenuLayout = (
     </>
   );
 }, ServerError);
-
-export default MenuLayout;
