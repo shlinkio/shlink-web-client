@@ -1,21 +1,14 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import createScrollToTop from '../../src/common/ScrollToTop';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { ScrollToTop } from '../../src/common/ScrollToTop';
 
 describe('<ScrollToTop />', () => {
-  let wrapper: ShallowWrapper;
-
-  beforeEach(() => {
-    const ScrollToTop = createScrollToTop();
-
-    wrapper = shallow(<ScrollToTop>Foobar</ScrollToTop>);
+  it.each([
+    ['Foobar'],
+    ['Barfoo'],
+    ['Something'],
+  ])('just renders children', (children) => {
+    render(<MemoryRouter><ScrollToTop>{children}</ScrollToTop></MemoryRouter>);
+    expect(screen.getByText(children)).toBeInTheDocument();
   });
-
-  afterEach(() => wrapper.unmount());
-
-  it('just renders children', () => expect(wrapper.text()).toEqual('Foobar'));
 });

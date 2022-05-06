@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Bottle from 'bottlejs';
-import ScrollToTop from '../ScrollToTop';
+import { ScrollToTop } from '../ScrollToTop';
 import { MainHeader } from '../MainHeader';
 import { Home } from '../Home';
 import { MenuLayout } from '../MenuLayout';
@@ -23,7 +23,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components
-  bottle.serviceFactory('ScrollToTop', ScrollToTop);
+  bottle.serviceFactory('ScrollToTop', () => ScrollToTop);
 
   bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');
 
