@@ -9,10 +9,10 @@ module.exports = {
   ],
   coverageThreshold: {
     global: {
-      statements: 85,
+      statements: 90,
       branches: 80,
-      functions: 80,
-      lines: 85,
+      functions: 85,
+      lines: 90,
     },
   },
   setupFiles: ['<rootDir>/config/jest/setupBeforeEnzyme.js', '<rootDir>/config/jest/setupEnzyme.js'],
