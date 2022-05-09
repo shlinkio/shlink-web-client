@@ -1,108 +1,70 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ManageDomains } from '../../src/domains/ManageDomains';
-import Message from '../../src/utils/Message';
-import { Result } from '../../src/utils/Result';
-import SearchField from '../../src/utils/SearchField';
 import { ProblemDetailsError, ShlinkDomain } from '../../src/api/types';
-import { ShlinkApiError } from '../../src/api/ShlinkApiError';
-import { DomainRow } from '../../src/domains/DomainRow';
 import { SelectedServer } from '../../src/servers/data';
 
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();
   const filterDomains = jest.fn();
-  let wrapper: ShallowWrapper;
-  const createWrapper = (domainsList: DomainsList) => {
-    wrapper = shallow(
-      <ManageDomains
-        listDomains={listDomains}
-        filterDomains={filterDomains}
-        editDomainRedirects={jest.fn()}
-        checkDomainHealth={jest.fn()}
-        domainsList={domainsList}
-        selectedServer={Mock.all<SelectedServer>()}
-      />,
-    );
-
-    return wrapper;
-  };
+  const setUp = (domainsList: DomainsList) => render(
+    <ManageDomains
+      listDomains={listDomains}
+      filterDomains={filterDomains}
+      editDomainRedirects={jest.fn()}
+      checkDomainHealth={jest.fn()}
+      domainsList={domainsList}
+      selectedServer={Mock.all<SelectedServer>()}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('shows loading message while domains are loading', () => {
-    const wrapper = createWrapper(Mock.of<DomainsList>({ loading: true, filteredDomains: [] }));
-    const message = wrapper.find(Message);
-    const searchField = wrapper.find(SearchField);
-    const result = wrapper.find(Result);
-    const apiError = wrapper.find(ShlinkApiError);
+    setUp(Mock.of<DomainsList>({ loading: true, filteredDomains: [] }));
 
-    expect(message).toHaveLength(1);
-    expect(message.prop('loading')).toEqual(true);
-    expect(searchField).toHaveLength(0);
-    expect(result).toHaveLength(0);
-    expect(apiError).toHaveLength(0);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.queryByText('Error loading domains :(')).not.toBeInTheDocument();
   });
 
-  it('shows error result when domains loading fails', () => {
-    const errorData = Mock.of<ProblemDetailsError>();
-    const wrapper = createWrapper(Mock.of<DomainsList>(
-      { loading: false, error: true, errorData, filteredDomains: [] },
-    ));
-    const message = wrapper.find(Message);
-    const searchField = wrapper.find(SearchField);
-    const result = wrapper.find(Result);
-    const apiError = wrapper.find(ShlinkApiError);
+  it.each([
+    [undefined, 'Error loading domains :('],
+    [Mock.of<ProblemDetailsError>(), 'Error loading domains :('],
+    [Mock.of<ProblemDetailsError>({ detail: 'Foo error!!' }), 'Foo error!!'],
+  ])('shows error result when domains loading fails', (errorData, expectedErrorMessage) => {
+    setUp(Mock.of<DomainsList>({ loading: false, error: true, errorData, filteredDomains: [] }));
 
-    expect(result).toHaveLength(1);
-    expect(result.prop('type')).toEqual('error');
-    expect(apiError).toHaveLength(1);
-    expect(apiError.prop('errorData')).toEqual(errorData);
-    expect(searchField).toHaveLength(1);
-    expect(message).toHaveLength(0);
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
   });
 
-  it('filters domains when SearchField changes', () => {
-    const wrapper = createWrapper(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
-    const searchField = wrapper.find(SearchField);
+  it('filters domains when SearchField changes', async () => {
+    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
 
     expect(filterDomains).not.toHaveBeenCalled();
-    searchField.simulate('change');
-    expect(filterDomains).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: 'Foo' } });
+    await waitFor(() => expect(filterDomains).toHaveBeenCalledTimes(1));
   });
 
-  it('shows expected headers', () => {
-    const wrapper = createWrapper(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
-    const headerCells = wrapper.find('th');
+  it('shows expected headers and one row when list of domains is empty', () => {
+    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
 
-    expect(headerCells).toHaveLength(7);
+    expect(screen.getAllByRole('columnheader')).toHaveLength(7);
+    expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 
-  it('one row when list of domains is empty', () => {
-    const wrapper = createWrapper(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
-    const tableBody = wrapper.find('tbody');
-    const regularRows = tableBody.find('tr');
-    const domainRows = tableBody.find(DomainRow);
-
-    expect(regularRows).toHaveLength(1);
-    expect(regularRows.html()).toContain('No results found');
-    expect(domainRows).toHaveLength(0);
-  });
-
-  it('as many DomainRows as domains are provided', () => {
+  it('has many rows if multiple domains are provided', () => {
     const filteredDomains = [
       Mock.of<ShlinkDomain>({ domain: 'foo' }),
       Mock.of<ShlinkDomain>({ domain: 'bar' }),
       Mock.of<ShlinkDomain>({ domain: 'baz' }),
     ];
-    const wrapper = createWrapper(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains }));
-    const tableBody = wrapper.find('tbody');
-    const regularRows = tableBody.find('tr');
-    const domainRows = tableBody.find(DomainRow);
+    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains }));
 
-    expect(regularRows).toHaveLength(0);
-    expect(domainRows).toHaveLength(filteredDomains.length);
+    expect(screen.getAllByRole('row')).toHaveLength(filteredDomains.length + 1);
+    expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('bar')).toBeInTheDocument();
+    expect(screen.getByText('baz')).toBeInTheDocument();
   });
 });

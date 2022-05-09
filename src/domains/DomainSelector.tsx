@@ -40,6 +40,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
         outline
         type="button"
         className="domains-dropdown__back-btn"
+        aria-label="Back to domains list"
         onClick={pipe(unselectDomain, hideInput)}
       >
         <FontAwesomeIcon icon={faUndo} />

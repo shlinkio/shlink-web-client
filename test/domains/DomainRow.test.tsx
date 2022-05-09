@@ -1,4 +1,4 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkDomainRedirects } from '../../src/api/types';
 import { DomainRow } from '../../src/domains/DomainRow';
@@ -6,42 +6,71 @@ import { SelectedServer } from '../../src/servers/data';
 import { Domain } from '../../src/domains/data';
 
 describe('<DomainRow />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (domain: Domain, selectedServer = Mock.all<SelectedServer>()) => {
-    wrapper = shallow(
-      <DomainRow
-        domain={domain}
-        selectedServer={selectedServer}
-        editDomainRedirects={jest.fn()}
-        checkDomainHealth={jest.fn()}
-      />,
-    );
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
-
-  it.each([
-    [undefined, 3],
-    [Mock.of<ShlinkDomainRedirects>(), 3],
-    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo' }), 2],
-    [Mock.of<ShlinkDomainRedirects>({ invalidShortUrlRedirect: 'foo' }), 2],
-    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo', regular404Redirect: 'foo' }), 1],
+  const redirectsCombinations = [
+    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'foo' })],
+    [Mock.of<ShlinkDomainRedirects>({ invalidShortUrlRedirect: 'bar' })],
+    [Mock.of<ShlinkDomainRedirects>({ baseUrlRedirect: 'baz', regular404Redirect: 'foo' })],
     [
       Mock.of<ShlinkDomainRedirects>(
-        { baseUrlRedirect: 'foo', regular404Redirect: 'foo', invalidShortUrlRedirect: 'foo' },
+        { baseUrlRedirect: 'baz', regular404Redirect: 'bar', invalidShortUrlRedirect: 'foo' },
       ),
-      0,
     ],
-  ])('shows expected redirects', (redirects, expectedNoRedirects) => {
-    const wrapper = createWrapper(Mock.of<Domain>({ domain: '', isDefault: true, redirects }));
-    const noRedirects = wrapper.find('Nr');
-    const cells = wrapper.find('td');
+  ];
+  const setUp = (domain: Domain, defaultRedirects?: ShlinkDomainRedirects) => render(
+    <DomainRow
+      domain={domain}
+      defaultRedirects={defaultRedirects}
+      selectedServer={Mock.all<SelectedServer>()}
+      editDomainRedirects={jest.fn()}
+      checkDomainHealth={jest.fn()}
+    />,
+  );
 
-    expect(noRedirects).toHaveLength(expectedNoRedirects);
-    redirects?.baseUrlRedirect && expect(cells.at(1).html()).toContain(redirects.baseUrlRedirect);
-    redirects?.regular404Redirect && expect(cells.at(2).html()).toContain(redirects.regular404Redirect);
-    redirects?.invalidShortUrlRedirect && expect(cells.at(3).html()).toContain(redirects.invalidShortUrlRedirect);
+  it.each(redirectsCombinations)('shows expected redirects', (redirects) => {
+    setUp(Mock.of<Domain>({ domain: '', isDefault: true, redirects }));
+    const cells = screen.getAllByRole('cell');
+
+    redirects?.baseUrlRedirect && expect(cells[1]).toHaveTextContent(redirects.baseUrlRedirect);
+    redirects?.regular404Redirect && expect(cells[2]).toHaveTextContent(redirects.regular404Redirect);
+    redirects?.invalidShortUrlRedirect && expect(cells[3]).toHaveTextContent(redirects.invalidShortUrlRedirect);
+    expect(screen.queryByText('(as fallback)')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    [undefined],
+    [Mock.of<ShlinkDomainRedirects>()],
+  ])('shows expected "no redirects"', (redirects) => {
+    setUp(Mock.of<Domain>({ domain: '', isDefault: true, redirects }));
+    const cells = screen.getAllByRole('cell');
+
+    expect(cells[1]).toHaveTextContent('No redirect');
+    expect(cells[2]).toHaveTextContent('No redirect');
+    expect(cells[3]).toHaveTextContent('No redirect');
+    expect(screen.queryByText('(as fallback)')).not.toBeInTheDocument();
+  });
+
+  it.each(redirectsCombinations)('shows expected fallback redirects', (fallbackRedirects) => {
+    setUp(Mock.of<Domain>({ domain: '', isDefault: true }), fallbackRedirects);
+    const cells = screen.getAllByRole('cell');
+
+    fallbackRedirects?.baseUrlRedirect && expect(cells[1]).toHaveTextContent(
+      `${fallbackRedirects.baseUrlRedirect} (as fallback)`,
+    );
+    fallbackRedirects?.regular404Redirect && expect(cells[2]).toHaveTextContent(
+      `${fallbackRedirects.regular404Redirect} (as fallback)`,
+    );
+    fallbackRedirects?.invalidShortUrlRedirect && expect(cells[3]).toHaveTextContent(
+      `${fallbackRedirects.invalidShortUrlRedirect} (as fallback)`,
+    );
+  });
+
+  it.each([[true], [false]])('shows icon on default domain only', (isDefault) => {
+    const { container } = setUp(Mock.of<Domain>({ domain: '', isDefault }));
+
+    if (isDefault) {
+      expect(container.querySelector('#defaultDomainIcon')).toBeInTheDocument();
+    } else {
+      expect(container.querySelector('#defaultDomainIcon')).not.toBeInTheDocument();
+    }
   });
 });

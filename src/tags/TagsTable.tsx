@@ -2,7 +2,7 @@ import { FC, useEffect, useRef } from 'react';
 import { splitEvery } from 'ramda';
 import { useLocation } from 'react-router-dom';
 import { SimpleCard } from '../utils/SimpleCard';
-import SimplePaginator from '../common/SimplePaginator';
+import { SimplePaginator } from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
-import SimplePaginator from '../../src/common/SimplePaginator';
+import { SimplePaginator } from '../../src/common/SimplePaginator';
 import { NormalizedTag } from '../../src/tags/data';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useLocation: jest.fn() }));
