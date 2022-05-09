@@ -17,7 +17,9 @@ interface SimplePaginatorProps {
   centered?: boolean;
 }
 
-export const SimplePaginator: FC<SimplePaginatorProps> = ({ pagesCount, currentPage, setCurrentPage, centered = true }) => {
+export const SimplePaginator: FC<SimplePaginatorProps> = (
+  { pagesCount, currentPage, setCurrentPage, centered = true },
+) => {
   if (pagesCount < 2) {
     return null;
   }
