@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
@@ -17,9 +18,10 @@ describe('<EditServer />', () => {
     apiKey: 'the_api_key',
   });
   const EditServer = editServerConstruct(ServerError);
-  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => render(
-    <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />,
-  );
+  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => ({
+    user: userEvent.setup(),
+    ...render(<EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />),
+  });
 
   beforeEach(() => {
     (useNavigate as any).mockReturnValue(navigate);
@@ -48,16 +50,18 @@ describe('<EditServer />', () => {
     expect(screen.getByDisplayValue('the_api_key')).toBeInTheDocument();
   });
 
-  it('edits server and redirects to it when form is submitted', () => {
-    setUp();
+  it('edits server and redirects to it when form is submitted', async () => {
+    const { user } = setUp();
 
-    fireEvent.change(screen.getByDisplayValue('the_name'), { target: { value: 'the_new_name' } });
-    fireEvent.change(screen.getByDisplayValue('the_url'), { target: { value: 'the_new_url' } });
+    await user.type(screen.getByDisplayValue('the_name'), ' edited');
+    await user.type(screen.getByDisplayValue('the_url'), ' edited');
+    // TODO Using fire event because userEvent.click on the Submit button does not submit the form
+    // await user.click(screen.getByRole('button', { name: 'Save' }));
     fireEvent.submit(screen.getByRole('form'));
 
     expect(editServerMock).toHaveBeenCalledWith('abc123', {
-      name: 'the_new_name',
-      url: 'the_new_url',
+      name: 'the_name edited',
+      url: 'the_url edited',
       apiKey: 'the_api_key',
     });
     expect(navigate).toHaveBeenCalledWith(-1);
