@@ -5,22 +5,22 @@ $lightPrimaryColor: #ffffff;
 $lightPrimaryColorAlfa: rgba($lightPrimaryColor, .5);
 $lightSecondaryColor: $lightColor;
 $lightTextColor: #232323;
-$lightBorderColor: rgba(0, 0, 0, .125);
+$lightBorderColor: rgb(0 0 0 / .125);
 $lightTableBorderColor: $mediumGrey;
 $lightActiveColor: $lightGrey;
 $lightBrandColor: $mainColor;
 $lightInputColor: $lightPrimaryColor;
 $lightInputTextColor: #495057;
 $lightDisabledInputColor: $lightColor;
-$lightBorderInputColor: rgba(0, 0, 0, .19);
-$lightTableHighlightColor: rgba(0, 0, 0, .075);
+$lightBorderInputColor: rgb(0 0 0 / .19);
+$lightTableHighlightColor: rgb(0 0 0 / .075);
 
 // Dark theme colors
 $darkPrimaryColor: #161b22;
 $darkPrimaryColorAlfa: rgba($darkPrimaryColor, .8);
 $darkSecondaryColor: #0f131a;
-$darkTextColor: rgb(201, 209, 217);
-$darkBorderColor: rgba(255, 255, 255, .15);
+$darkTextColor: rgb(201 209 217);
+$darkBorderColor: rgb(255 255 255 / .15);
 $darkTableBorderColor: #393d43;
 $darkActiveColor: $darkSecondaryColor;
 $darkBrandColor: #0b2d4e;

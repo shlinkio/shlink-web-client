@@ -4,7 +4,7 @@
 .aside-menu {
   width: $asideMenuWidth;
   background-color: var(--primary-color);
-  box-shadow: rgba(0, 0, 0, .05) 0 8px 15px;
+  box-shadow: rgb(0 0 0 / .05) 0 8px 15px;
   position: fixed !important;
   padding-top: 13px;
   padding-bottom: 10px;
@@ -23,7 +23,7 @@
   @media (max-width: $smMax) {
     transition: left 300ms;
     top: $headerHeight - 3px;
-    box-shadow: -10px 0 50px 11px rgba(0, 0, 0, .55);
+    box-shadow: -10px 0 50px 11px rgb(0 0 0 / .55);
   }
 }
 
