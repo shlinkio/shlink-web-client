@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ManageDomains } from '../../src/domains/ManageDomains';
@@ -8,16 +9,19 @@ import { SelectedServer } from '../../src/servers/data';
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();
   const filterDomains = jest.fn();
-  const setUp = (domainsList: DomainsList) => render(
-    <ManageDomains
-      listDomains={listDomains}
-      filterDomains={filterDomains}
-      editDomainRedirects={jest.fn()}
-      checkDomainHealth={jest.fn()}
-      domainsList={domainsList}
-      selectedServer={Mock.all<SelectedServer>()}
-    />,
-  );
+  const setUp = (domainsList: DomainsList) => ({
+    user: userEvent.setup(),
+    ...render(
+      <ManageDomains
+        listDomains={listDomains}
+        filterDomains={filterDomains}
+        editDomainRedirects={jest.fn()}
+        checkDomainHealth={jest.fn()}
+        domainsList={domainsList}
+        selectedServer={Mock.all<SelectedServer>()}
+      />,
+    ),
+  });
 
   afterEach(jest.clearAllMocks);
 
@@ -40,11 +44,11 @@ describe('<ManageDomains />', () => {
   });
 
   it('filters domains when SearchField changes', async () => {
-    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
+    const { user } = setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
 
     expect(filterDomains).not.toHaveBeenCalled();
-    fireEvent.change(screen.getByPlaceholderText('Search...'), { target: { value: 'Foo' } });
-    await waitFor(() => expect(filterDomains).toHaveBeenCalledTimes(1));
+    await user.type(screen.getByPlaceholderText('Search...'), 'Foo');
+    await waitFor(() => expect(filterDomains).toHaveBeenCalledWith('Foo'));
   });
 
   it('shows expected headers and one row when list of domains is empty', () => {

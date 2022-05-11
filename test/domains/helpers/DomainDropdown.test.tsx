@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
@@ -8,15 +9,18 @@ import { SemVer } from '../../../src/utils/helpers/version';
 
 describe('<DomainDropdown />', () => {
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
-  const setUp = (domain?: Domain, selectedServer?: SelectedServer) => render(
-    <MemoryRouter>
-      <DomainDropdown
-        domain={domain ?? Mock.all<Domain>()}
-        selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
-        editDomainRedirects={editDomainRedirects}
-      />
-    </MemoryRouter>,
-  );
+  const setUp = (domain?: Domain, selectedServer?: SelectedServer) => ({
+    user: userEvent.setup(),
+    ...render(
+      <MemoryRouter>
+        <DomainDropdown
+          domain={domain ?? Mock.all<Domain>()}
+          selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+          editDomainRedirects={editDomainRedirects}
+        />
+      </MemoryRouter>,
+    ),
+  });
 
   afterEach(jest.clearAllMocks);
 
@@ -61,25 +65,25 @@ describe('<DomainDropdown />', () => {
     ['bar.org'],
     ['baz.net'],
   ])('displays modal when editing redirects', async (domain) => {
-    setUp(Mock.of<Domain>({ domain, isDefault: false }));
+    const { user } = setUp(Mock.of<Domain>({ domain, isDefault: false }));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.queryByRole('form')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByText('Edit redirects'));
+    await user.click(screen.getByText('Edit redirects'));
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
 
     expect(editDomainRedirects).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByText('Save'));
+    await user.click(screen.getByText('Save'));
     expect(editDomainRedirects).toHaveBeenCalledWith(domain, expect.anything());
 
     await waitForElementToBeRemoved(() => screen.queryByRole('dialog'));
   });
 
   it('displays dropdown when clicked', async () => {
-    setUp();
+    const { user } = setUp();
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { expanded: false }));
+    await user.click(screen.getByRole('button', { expanded: false }));
     expect(await screen.findByRole('menu')).toBeInTheDocument();
   });
 });

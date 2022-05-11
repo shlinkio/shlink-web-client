@@ -1,11 +1,15 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
 
 describe('<DomainStatusIcon />', () => {
   const matchMedia = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: false }));
-  const setUp = (status: DomainStatus) => render(<DomainStatusIcon status={status} matchMedia={matchMedia} />);
+  const setUp = (status: DomainStatus) => ({
+    user: userEvent.setup(),
+    ...render(<DomainStatusIcon status={status} matchMedia={matchMedia} />),
+  });
 
   beforeEach(jest.clearAllMocks);
 
@@ -22,9 +26,9 @@ describe('<DomainStatusIcon />', () => {
     ['invalid' as DomainStatus],
     ['valid' as DomainStatus],
   ])('renders proper tooltip based on state', async (status) => {
-    const { container } = setUp(status);
+    const { container, user } = setUp(status);
 
-    container.firstChild && fireEvent.mouseOver(container.firstChild);
+    container.firstElementChild && await user.hover(container.firstElementChild);
     expect(await screen.findByRole('tooltip')).toMatchSnapshot();
   });
 });

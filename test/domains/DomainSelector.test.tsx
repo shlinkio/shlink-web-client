@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
@@ -12,9 +13,10 @@ describe('<DomainSelector />', () => {
       Mock.of<ShlinkDomain>({ domain: 'bar.com' }),
     ],
   });
-  const setUp = (value = '') => render(
-    <DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />,
-  );
+  const setUp = (value = '') => ({
+    user: userEvent.setup(),
+    ...render(<DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />),
+  });
 
   afterEach(jest.clearAllMocks);
 
@@ -22,8 +24,7 @@ describe('<DomainSelector />', () => {
     ['', 'Domain', 'domains-dropdown__toggle-btn'],
     ['my-domain.com', 'Domain: my-domain.com', 'domains-dropdown__toggle-btn--active'],
   ])('shows dropdown by default', async (value, expectedText, expectedClassName) => {
-    setUp(value);
-
+    const { user } = setUp(value);
     const btn = screen.getByRole('button', { name: expectedText });
 
     expect(screen.queryByPlaceholderText('Domain')).not.toBeInTheDocument();
@@ -31,25 +32,25 @@ describe('<DomainSelector />', () => {
       'class',
       `dropdown-btn__toggle btn-block ${expectedClassName} dropdown-toggle btn btn-primary`,
     );
-    fireEvent.click(btn);
+    await user.click(btn);
 
     await waitFor(() => expect(screen.getByRole('menu')).toBeInTheDocument());
     expect(screen.getAllByRole('menuitem')).toHaveLength(4);
   });
 
   it('allows toggling between dropdown and input', async () => {
-    setUp();
+    const { user } = setUp();
 
     expect(screen.queryByPlaceholderText('Domain')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Domain' })).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Domain' }));
-    fireEvent.click(await screen.findByText('New domain'));
+    await user.click(screen.getByRole('button', { name: 'Domain' }));
+    await user.click(await screen.findByText('New domain'));
 
     expect(screen.getByPlaceholderText('Domain')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Domain' })).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Back to domains list' }));
+    await user.click(screen.getByRole('button', { name: 'Back to domains list' }));
 
     expect(screen.queryByPlaceholderText('Domain')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Domain' })).toBeInTheDocument();
@@ -60,9 +61,9 @@ describe('<DomainSelector />', () => {
     [1, 'foo.com'],
     [2, 'bar.com'],
   ])('shows expected content on every item', async (index, expectedContent) => {
-    setUp();
+    const { user } = setUp();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Domain' }));
+    await user.click(screen.getByRole('button', { name: 'Domain' }));
     const items = await screen.findAllByRole('menuitem');
 
     expect(items[index]).toHaveTextContent(expectedContent);

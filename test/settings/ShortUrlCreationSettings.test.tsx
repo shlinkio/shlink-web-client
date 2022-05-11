@@ -1,16 +1,20 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
 
 describe('<ShortUrlCreationSettings />', () => {
   const setShortUrlCreationSettings = jest.fn();
-  const setUp = (shortUrlCreation?: ShortUrlsSettings) => render(
-    <ShortUrlCreationSettings
-      settings={Mock.of<Settings>({ shortUrlCreation })}
-      setShortUrlCreationSettings={setShortUrlCreationSettings}
-    />,
-  );
+  const setUp = (shortUrlCreation?: ShortUrlsSettings) => ({
+    user: userEvent.setup(),
+    ...render(
+      <ShortUrlCreationSettings
+        settings={Mock.of<Settings>({ shortUrlCreation })}
+        setShortUrlCreationSettings={setShortUrlCreationSettings}
+      />,
+    ),
+  });
 
   afterEach(jest.clearAllMocks);
 
@@ -75,28 +79,27 @@ describe('<ShortUrlCreationSettings />', () => {
     expect(screen.getByText(/^The list of suggested tags will contain those/)).toHaveTextContent(expectedHint);
   });
 
-  it.each([[true], [false]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
-    setUp({ validateUrls });
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', async (validateUrls) => {
+    const { user } = setUp({ validateUrls });
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByLabelText(/^Request validation on long URLs when creating new short URLs/));
+    await user.click(screen.getByLabelText(/^Request validation on long URLs when creating new short URLs/));
     expect(setShortUrlCreationSettings).toHaveBeenCalledWith({ validateUrls: !validateUrls });
   });
 
-  it.each([[true], [false]])('invokes setShortUrlCreationSettings when forward query toggle value changes', (forwardQuery) => {
-    setUp({ validateUrls: true, forwardQuery });
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when forward query toggle value changes', async (forwardQuery) => {
+    const { user } = setUp({ validateUrls: true, forwardQuery });
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByLabelText(/^Make all new short URLs forward their query params to the long URL/));
+    await user.click(screen.getByLabelText(/^Make all new short URLs forward their query params to the long URL/));
     expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining({ forwardQuery: !forwardQuery }));
   });
 
   it('invokes setShortUrlCreationSettings when dropdown value changes', async () => {
-    setUp();
-
+    const { user } = setUp();
     const clickItem = async (name: string) => {
-      fireEvent.click(screen.getByRole('button', { name: 'Suggest tags starting with input' }));
-      fireEvent.click(await screen.findByRole('menuitem', { name }));
+      await user.click(screen.getByRole('button', { name: 'Suggest tags starting with input' }));
+      await user.click(await screen.findByRole('menuitem', { name }));
     };
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
