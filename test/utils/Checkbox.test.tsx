@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Checkbox from '../../src/utils/Checkbox';
 
 describe('<Checkbox />', () => {
@@ -22,12 +23,13 @@ describe('<Checkbox />', () => {
     expect(screen.getByText(children)).toHaveAttribute('class', 'form-check-label');
   });
 
-  it.each([[true], [false]])('changes checked status on input change', (checked) => {
+  it.each([[true], [false]])('changes checked status on input change', async (checked) => {
+    const user = userEvent.setup();
     const onChange = jest.fn();
     render(<Checkbox onChange={onChange} checked={checked}>Foo</Checkbox>);
 
     expect(onChange).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByLabelText('Foo'));
+    await user.click(screen.getByLabelText('Foo'));
     expect(onChange).toHaveBeenCalledWith(!checked, expect.anything());
   });
 

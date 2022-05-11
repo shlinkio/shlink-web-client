@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
 
@@ -34,11 +35,12 @@ describe('<ErrorHandler />', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('reloads page on button click', () => {
+  it('reloads page on button click', async () => {
+    const user = userEvent.setup();
     render(<ErrorHandler children={<ComponentWithError />} />);
 
     expect(reload).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('button'));
     expect(reload).toHaveBeenCalled();
   });
 });
