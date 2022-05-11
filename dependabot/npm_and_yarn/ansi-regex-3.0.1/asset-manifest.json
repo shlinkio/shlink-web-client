@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/ansi-regex-3.0.1/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/ansi-regex-3.0.1/static/js/main.3ca33d74.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/ansi-regex-3.0.1/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/dependabot/npm_and_yarn/ansi-regex-3.0.1/static/css/main.bed97ed6.css.map",
+    "main.3ca33d74.js.map": "/shlink-web-client/dependabot/npm_and_yarn/ansi-regex-3.0.1/static/js/main.3ca33d74.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.3ca33d74.js"
+  ]
+}
