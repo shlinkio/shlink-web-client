@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/ini-1.3.8/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/ini-1.3.8/static/js/main.dd18646f.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/ini-1.3.8/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/dependabot/npm_and_yarn/ini-1.3.8/static/css/main.bed97ed6.css.map",
+    "main.dd18646f.js.map": "/shlink-web-client/dependabot/npm_and_yarn/ini-1.3.8/static/js/main.dd18646f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.dd18646f.js"
+  ]
+}
