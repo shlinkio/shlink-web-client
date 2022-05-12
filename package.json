@@ -67,7 +67,8 @@
     "workbox-strategies": "^6.5.1"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~2.0.0",
+    "@shlinkio/eslint-config-js-coding-standard": "~2.0.2",
+    "@shlinkio/stylelint-config-css-coding-standard": "~1.0.1",
     "@stryker-mutator/core": "^6.0.2",
     "@stryker-mutator/jest-runner": "^6.0.2",
     "@stryker-mutator/typescript-checker": "^6.0.2",
@@ -103,10 +104,6 @@
     "serve": "^13.0.2",
     "stryker-cli": "^1.0.2",
     "stylelint": "^14.8.2",
-    "stylelint-config-recommended-scss": "^6.0.0",
-    "stylelint-config-standard": "^25.0.0",
-    "stylelint-scss": "^4.2.0",
-    "stylelint-selector-bem-pattern": "^2.1.1",
     "ts-mockery": "^1.2.0",
     "typescript": "^4.6.2",
     "webpack": "^5.70.0"
