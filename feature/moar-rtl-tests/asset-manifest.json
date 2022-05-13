@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/moar-rtl-tests/static/css/main.bed97ed6.css",
+    "main.js": "/shlink-web-client/feature/moar-rtl-tests/static/js/main.74eb0e04.js",
+    "index.html": "/shlink-web-client/feature/moar-rtl-tests/index.html",
+    "main.bed97ed6.css.map": "/shlink-web-client/feature/moar-rtl-tests/static/css/main.bed97ed6.css.map",
+    "main.74eb0e04.js.map": "/shlink-web-client/feature/moar-rtl-tests/static/js/main.74eb0e04.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bed97ed6.css",
+    "static/js/main.74eb0e04.js"
+  ]
+}
