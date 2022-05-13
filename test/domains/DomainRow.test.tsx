@@ -17,13 +17,17 @@ describe('<DomainRow />', () => {
     ],
   ];
   const setUp = (domain: Domain, defaultRedirects?: ShlinkDomainRedirects) => render(
-    <DomainRow
-      domain={domain}
-      defaultRedirects={defaultRedirects}
-      selectedServer={Mock.all<SelectedServer>()}
-      editDomainRedirects={jest.fn()}
-      checkDomainHealth={jest.fn()}
-    />,
+    <table>
+      <tbody>
+        <DomainRow
+          domain={domain}
+          defaultRedirects={defaultRedirects}
+          selectedServer={Mock.all<SelectedServer>()}
+          editDomainRedirects={jest.fn()}
+          checkDomainHealth={jest.fn()}
+        />
+      </tbody>
+    </table>,
   );
 
   it.each(redirectsCombinations)('shows expected redirects', (redirects) => {
