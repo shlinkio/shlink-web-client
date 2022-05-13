@@ -1,6 +1,6 @@
+import { screen } from '@testing-library/react';
 import { DoughnutChart } from '../../../src/visits/charts/DoughnutChart';
 import { setUpCanvas } from '../../__mocks__/setUpCanvas';
-import { screen } from '@testing-library/react';
 
 describe('<DoughnutChart />', () => {
   const stats = {
@@ -20,5 +20,5 @@ describe('<DoughnutChart />', () => {
 
     expect(screen.getByText('foo')).toBeInTheDocument();
     expect(screen.getByText('bar')).toBeInTheDocument();
-  })
+  });
 });
