@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DoughnutChart /> renders Doughnut with expected props 1`] = `
+Array [
+  Object {
+    "props": Object {
+      "a": 1,
+      "b": 0,
+      "c": 0,
+      "d": 1,
+      "e": 0,
+      "f": 0,
+    },
+    "transform": Array [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0,
+    ],
+    "type": "setTransform",
+  },
+]
+`;
