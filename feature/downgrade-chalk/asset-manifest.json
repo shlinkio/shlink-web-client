@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/downgrade-chalk/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/downgrade-chalk/static/js/main.0c13f669.js",
+    "index.html": "/shlink-web-client/feature/downgrade-chalk/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/downgrade-chalk/static/css/main.1ccaf016.css.map",
+    "main.0c13f669.js.map": "/shlink-web-client/feature/downgrade-chalk/static/js/main.0c13f669.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.0c13f669.js"
+  ]
+}
