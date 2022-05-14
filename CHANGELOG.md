@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#622](https://github.com/shlinkio/shlink-web-client/pull/622) Added support to load domain visits when consuming Shlink 3.1.0 or newer.
+* [#582](https://github.com/shlinkio/shlink-web-client/pull/582) Improved filtering short URLs by tag.
+
+  Now, a new full tags selector component is available, which allows selecting any of the existing tags and also composes a toggle to filter by "any" tag or "all" tags.
 
 ### Changed
 * [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
