@@ -12,10 +12,11 @@ export interface OrderingDropdownProps<T extends string = string> {
   onChange: (orderField?: T, orderDir?: OrderDir) => void;
   isButton?: boolean;
   right?: boolean;
+  prefixed?: boolean;
 }
 
 export function OrderingDropdown<T extends string = string>(
-  { items, order, onChange, isButton = true, right = false }: OrderingDropdownProps<T>,
+  { items, order, onChange, isButton = true, right = false, prefixed = true }: OrderingDropdownProps<T>,
 ) {
   const handleItemClick = (fieldKey: T) => () => {
     const newOrderDir = determineOrderDir(fieldKey, order.field, order.dir);
@@ -28,11 +29,14 @@ export function OrderingDropdown<T extends string = string>(
       <DropdownToggle
         caret
         color={isButton ? 'primary' : 'link'}
-        className={classNames({ 'dropdown-btn__toggle btn-block': isButton, 'btn-sm p-0': !isButton })}
+        className={classNames({
+          'dropdown-btn__toggle btn-block pe-4 overflow-hidden': isButton,
+          'btn-sm p-0': !isButton,
+        })}
       >
         {!isButton && <>Order by</>}
-        {isButton && !order.field && <>Order by...</>}
-        {isButton && order.field && `Order by: "${items[order.field]}" - "${order.dir ?? 'DESC'}"`}
+        {isButton && !order.field && <i>Order by...</i>}
+        {isButton && order.field && <>{prefixed && 'Order by: '}{items[order.field]} - <small>{order.dir ?? 'DESC'}</small></>}
       </DropdownToggle>
       <DropdownMenu
         end={right}

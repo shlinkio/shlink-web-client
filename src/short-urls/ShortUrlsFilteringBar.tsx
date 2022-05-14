@@ -85,7 +85,12 @@ const ShortUrlsFilteringBar = (
           <ExportShortUrlsBtn amount={shortUrlsAmount} />
         </div>
         <div className="col-6 d-lg-none mt-3">
-          <OrderingDropdown items={SHORT_URLS_ORDERABLE_FIELDS} order={order} onChange={handleOrderBy} />
+          <OrderingDropdown
+            prefixed={false}
+            items={SHORT_URLS_ORDERABLE_FIELDS}
+            order={order}
+            onChange={handleOrderBy}
+          />
         </div>
       </Row>
     </div>

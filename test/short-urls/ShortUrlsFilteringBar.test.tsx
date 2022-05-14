@@ -7,7 +7,6 @@ import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { TooltipToggleSwitch } from '../../src/utils/TooltipToggleSwitch';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 
 jest.mock('react-router-dom', () => ({
@@ -16,6 +15,8 @@ jest.mock('react-router-dom', () => ({
   useParams: jest.fn().mockReturnValue({ serverId: '1' }),
   useLocation: jest.fn().mockReturnValue({}),
 }));
+
+const TooltipToggleSwitch = () => null; // TODO Drop this!
 
 describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
