@@ -7,7 +7,7 @@ import { TagsList } from '../../src/tags/reducers/tagsList';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Result } from '../../src/utils/Result';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
-import SearchField from '../../src/utils/SearchField';
+import { SearchField } from '../../src/utils/SearchField';
 import { Settings } from '../../src/settings/reducers/settings';
 import { TagsOrderableFields } from '../../src/tags/data/TagsListChildrenProps';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';

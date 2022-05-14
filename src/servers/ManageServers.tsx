@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import { SimpleCard } from '../utils/SimpleCard';
-import SearchField from '../utils/SearchField';
+import { SearchField } from '../utils/SearchField';
 import { Result } from '../utils/Result';
 import { StateFlagTimeout } from '../utils/helpers/hooks';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';

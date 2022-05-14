@@ -1,5 +1,5 @@
 import Bottle from 'bottlejs';
-import ShortUrlsFilteringBar from '../ShortUrlsFilteringBar';
+import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
 import ShortUrlsList from '../ShortUrlsList';
 import ShortUrlsRow from '../helpers/ShortUrlsRow';
 import ShortUrlsRowMenu from '../helpers/ShortUrlsRowMenu';
@@ -50,7 +50,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
   bottle.decorator('QrCodeModal', connect(['selectedServer']));
 
-  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator', 'ExportShortUrlsBtn');
+  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ExportShortUrlsBtn', 'TagsSelector');
 
   bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');
   bottle.decorator('ExportShortUrlsBtn', connect(['selectedServer']));

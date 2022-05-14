@@ -10,6 +10,7 @@ export interface TagsSelectorProps {
   selectedTags: string[];
   onChange: (tags: string[]) => void;
   placeholder?: string;
+  allowNew?: boolean;
 }
 
 interface TagsSelectorConnectProps extends TagsSelectorProps {
@@ -21,7 +22,7 @@ interface TagsSelectorConnectProps extends TagsSelectorProps {
 const toComponentTag = (tag: string) => ({ id: tag, name: tag });
 
 const TagsSelector = (colorGenerator: ColorGenerator) => (
-  { selectedTags, onChange, placeholder, listTags, tagsList, settings }: TagsSelectorConnectProps,
+  { selectedTags, onChange, placeholder, listTags, tagsList, settings, allowNew = true }: TagsSelectorConnectProps,
 ) => {
   useEffect(() => {
     listTags();
@@ -43,7 +44,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       tagComponent={ReactTagsTag}
       suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
       suggestionComponent={ReactTagsSuggestion}
-      allowNew
+      allowNew={allowNew}
       addOnBlur
       placeholderText={placeholder ?? 'Add tags to the URL'}
       minQueryLength={1}
