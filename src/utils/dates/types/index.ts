@@ -88,13 +88,13 @@ export const dateToMatchingInterval = (date: DateOrString): DateInterval => {
   const theDate: Date = parseISO(date);
 
   return cond<never, DateInterval>([
-    [ () => isBeforeOrEqual(startOfDay(new Date()), theDate), () => 'today' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(1), theDate), () => 'yesterday' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(7), theDate), () => 'last7Days' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(30), theDate), () => 'last30Days' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(90), theDate), () => 'last90Days' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(180), theDate), () => 'last180Days' ],
-    [ () => isBeforeOrEqual(startOfDaysAgo(365), theDate), () => 'last365Days' ],
-    [ T, () => 'all' ],
+    [() => isBeforeOrEqual(startOfDay(new Date()), theDate), () => 'today'],
+    [() => isBeforeOrEqual(startOfDaysAgo(1), theDate), () => 'yesterday'],
+    [() => isBeforeOrEqual(startOfDaysAgo(7), theDate), () => 'last7Days'],
+    [() => isBeforeOrEqual(startOfDaysAgo(30), theDate), () => 'last30Days'],
+    [() => isBeforeOrEqual(startOfDaysAgo(90), theDate), () => 'last90Days'],
+    [() => isBeforeOrEqual(startOfDaysAgo(180), theDate), () => 'last180Days'],
+    [() => isBeforeOrEqual(startOfDaysAgo(365), theDate), () => 'last365Days'],
+    [T, () => 'all'],
   ])();
 };

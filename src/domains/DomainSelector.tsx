@@ -19,7 +19,7 @@ interface DomainSelectorConnectProps extends DomainSelectorProps {
 }
 
 export const DomainSelector = ({ listDomains, value, domainsList, onChange }: DomainSelectorConnectProps) => {
-  const [ inputDisplayed,, showInput, hideInput ] = useToggle();
+  const [inputDisplayed,, showInput, hideInput] = useToggle();
   const { domains } = domainsList;
   const valueIsEmpty = isEmpty(value);
   const unselectDomain = () => onChange('');
@@ -40,6 +40,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
         outline
         type="button"
         className="domains-dropdown__back-btn"
+        aria-label="Back to domains list"
         onClick={pipe(unselectDomain, hideInput)}
       >
         <FontAwesomeIcon icon={faUndo} />
@@ -56,7 +57,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
       {domains.map(({ domain, isDefault }) => (
         <DropdownItem
           key={domain}
-          active={value === domain || isDefault && valueIsEmpty}
+          active={(value === domain || isDefault) && valueIsEmpty}
           onClick={() => onChange(domain)}
         >
           {domain}

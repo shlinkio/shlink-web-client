@@ -6,10 +6,10 @@ interface ErrorHandlerState {
   hasError: boolean;
 }
 
-const ErrorHandler = (
+export const ErrorHandler = (
   { location }: Window,
   { error }: Console,
-) => class ErrorHandler extends Component<any, ErrorHandlerState> {
+) => class extends Component<any, ErrorHandlerState> {
   public constructor(props: object) {
     super(props);
     this.state = { hasError: false };
@@ -26,7 +26,8 @@ const ErrorHandler = (
   }
 
   public render(): ReactNode {
-    if (this.state.hasError) {
+    const { hasError } = this.state;
+    if (hasError) {
       return (
         <div className="home">
           <SimpleCard className="p-4">
@@ -39,8 +40,7 @@ const ErrorHandler = (
       );
     }
 
-    return this.props.children;
+    const { children } = this.props;
+    return children;
   }
 };
-
-export default ErrorHandler;

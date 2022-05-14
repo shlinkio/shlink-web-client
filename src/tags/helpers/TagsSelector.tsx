@@ -10,10 +10,11 @@ export interface TagsSelectorProps {
   selectedTags: string[];
   onChange: (tags: string[]) => void;
   placeholder?: string;
+  allowNew?: boolean;
 }
 
 interface TagsSelectorConnectProps extends TagsSelectorProps {
-  listTags: Function;
+  listTags: () => void;
   tagsList: TagsList;
   settings: Settings;
 }
@@ -21,7 +22,7 @@ interface TagsSelectorConnectProps extends TagsSelectorProps {
 const toComponentTag = (tag: string) => ({ id: tag, name: tag });
 
 const TagsSelector = (colorGenerator: ColorGenerator) => (
-  { selectedTags, onChange, placeholder, listTags, tagsList, settings }: TagsSelectorConnectProps,
+  { selectedTags, onChange, placeholder, listTags, tagsList, settings, allowNew = true }: TagsSelectorConnectProps,
 ) => {
   useEffect(() => {
     listTags();
@@ -43,18 +44,18 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       tagComponent={ReactTagsTag}
       suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
       suggestionComponent={ReactTagsSuggestion}
-      allowNew
+      allowNew={allowNew}
       addOnBlur
       placeholderText={placeholder ?? 'Add tags to the URL'}
       minQueryLength={1}
-      delimiters={[ 'Enter', 'Tab', ',' ]}
+      delimiters={['Enter', 'Tab', ',']}
       suggestionsTransform={
         searchMode === 'includes'
           ? (query, suggestions) => suggestions.filter(({ name }) => name.includes(query))
           : undefined
       }
       onDelete={(removedTagIndex) => {
-        const tagsCopy = [ ...selectedTags ];
+        const tagsCopy = [...selectedTags];
 
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
@@ -62,7 +63,7 @@ const TagsSelector = (colorGenerator: ColorGenerator) => (
       onAddition={({ name: newTag }) => onChange(
         // * Avoid duplicated tags (thanks to the Set),
         // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
-        [ ...new Set([ ...selectedTags, ...newTag.toLowerCase().split(',') ]) ],
+        [...new Set([...selectedTags, ...newTag.toLowerCase().split(',')])],
       )}
     />
   );

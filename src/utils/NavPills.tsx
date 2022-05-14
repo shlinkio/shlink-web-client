@@ -1,17 +1,17 @@
-import { FC, Children, isValidElement } from 'react';
+import { FC, Children, isValidElement, PropsWithChildren } from 'react';
 import { Card, Nav, NavLink } from 'reactstrap';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import './NavPills.scss';
 
-interface NavPillsProps {
+type NavPillsProps = PropsWithChildren<{
   fill?: boolean;
   className?: string;
-}
+}>;
 
-interface NavPillProps {
+type NavPillProps = PropsWithChildren<{
   to: string;
   replace?: boolean;
-}
+}>;
 
 export const NavPillItem: FC<NavPillProps> = ({ children, ...rest }) => (
   <NavLink className="nav-pills__nav-link" tag={RouterNavLink} {...rest}>

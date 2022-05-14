@@ -13,9 +13,9 @@ describe('<Result />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ 'success' as ResultType, 'bg-main text-white' ],
-    [ 'error' as ResultType, 'bg-danger text-white' ],
-    [ 'warning' as ResultType, 'bg-warning' ],
+    ['success' as ResultType, 'bg-main text-white'],
+    ['error' as ResultType, 'bg-danger text-white'],
+    ['warning' as ResultType, 'bg-warning'],
   ])('renders expected classes based on type', (type, expectedClasses) => {
     const wrapper = createWrapper({ type });
     const innerCard = wrapper.find(SimpleCard);
@@ -24,9 +24,9 @@ describe('<Result />', () => {
   });
 
   it.each([
-    [ undefined ],
-    [ 'foo' ],
-    [ 'bar' ],
+    [undefined],
+    ['foo'],
+    ['bar'],
   ])('renders provided classes in root element', (className) => {
     const wrapper = createWrapper({ type: 'success', className });
 

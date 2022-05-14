@@ -1,11 +1,12 @@
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { homepage } from '../package.json';
+import pack from '../package.json';
 import { container } from './container';
 import { store } from './container/store';
 import { fixLeafletIcons } from './utils/helpers/leaflet';
 import { register as registerServiceWorker } from './serviceWorkerRegistration';
+import 'chart.js/auto'; // TODO Import specific ones to reduce bundle size https://react-chartjs-2.js.org/docs/migration-to-v4/#tree-shaking
 import 'react-datepicker/dist/react-datepicker.css';
 import 'leaflet/dist/leaflet.css';
 import './index.scss';
@@ -15,9 +16,9 @@ fixLeafletIcons();
 
 const { App, ScrollToTop, ErrorHandler, appUpdateAvailable } = container;
 
-render(
+createRoot(document.getElementById('root')!).render( // eslint-disable-line @typescript-eslint/no-non-null-assertion
   <Provider store={store}>
-    <BrowserRouter basename={homepage}>
+    <BrowserRouter basename={pack.homepage}>
       <ErrorHandler>
         <ScrollToTop>
           <App />
@@ -25,14 +26,11 @@ render(
       </ErrorHandler>
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root'),
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
 registerServiceWorker({
   onUpdate() {
-    store.dispatch(appUpdateAvailable()); // eslint-disable-line @typescript-eslint/no-unsafe-call
+    store.dispatch(appUpdateAvailable());
   },
 });

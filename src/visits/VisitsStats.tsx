@@ -1,5 +1,5 @@
 import { isEmpty, propEq, values } from 'ramda';
-import { useState, useEffect, useMemo, FC, useRef } from 'react';
+import { useState, useEffect, useMemo, FC, useRef, PropsWithChildren } from 'react';
 import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
@@ -27,7 +27,7 @@ import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
 
-export interface VisitsStatsProps {
+export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
@@ -36,7 +36,7 @@ export interface VisitsStatsProps {
   domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
-}
+}>;
 
 interface VisitsNavLinkProps {
   title: string;
@@ -67,13 +67,13 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   isOrphanVisits = false,
 }) => {
   const { visits, loading, loadingLarge, error, errorData, progress, fallbackInterval } = visitsInfo;
-  const [ initialInterval, setInitialInterval ] = useState<DateInterval>(
+  const [initialInterval, setInitialInterval] = useState<DateInterval>(
     fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
   );
-  const [ dateRange, setDateRange ] = useState<DateRange>(intervalToDateRange(initialInterval));
-  const [ highlightedVisits, setHighlightedVisits ] = useState<NormalizedVisit[]>([]);
-  const [ highlightedLabel, setHighlightedLabel ] = useState<string | undefined>();
-  const [ visitsFilter, setVisitsFilter ] = useState<VisitsFilter>({});
+  const [dateRange, setDateRange] = useState<DateRange>(intervalToDateRange(initialInterval));
+  const [highlightedVisits, setHighlightedVisits] = useState<NormalizedVisit[]>([]);
+  const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
+  const [visitsFilter, setVisitsFilter] = useState<VisitsFilter>({});
   const botsSupported = supportsBotVisits(selectedServer);
   const isFirstLoad = useRef(true);
 
@@ -82,10 +82,10 @@ const VisitsStats: FC<VisitsStatsProps> = ({
 
     return !subPath ? `${query}` : `${subPath}${query}`;
   };
-  const normalizedVisits = useMemo(() => normalizeVisits(visits), [ visits ]);
+  const normalizedVisits = useMemo(() => normalizeVisits(visits), [visits]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
-    [ normalizedVisits ],
+    [normalizedVisits],
   );
   const mapLocations = values(citiesForMap);
 
@@ -111,10 +111,10 @@ const VisitsStats: FC<VisitsStatsProps> = ({
   useEffect(() => {
     getVisits({ dateRange, filter: visitsFilter }, isFirstLoad.current);
     isFirstLoad.current = false;
-  }, [ dateRange, visitsFilter ]);
+  }, [dateRange, visitsFilter]);
   useEffect(() => {
     fallbackInterval && setInitialInterval(fallbackInterval);
-  }, [ fallbackInterval ]);
+  }, [fallbackInterval]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
@@ -235,10 +235,9 @@ const VisitsStats: FC<VisitsStatsProps> = ({
                       stats={cities}
                       highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
                       highlightedLabel={highlightedLabel}
-                      extraHeaderContent={(activeCities: string[]) =>
-                        mapLocations.length > 0 &&
+                      extraHeaderContent={(activeCities: string[]) => mapLocations.length > 0 && (
                         <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
-                      }
+                      )}
                       sortingItems={{
                         name: 'City name',
                         amount: 'Visits amount',

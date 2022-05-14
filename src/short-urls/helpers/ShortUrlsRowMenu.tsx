@@ -23,9 +23,9 @@ const ShortUrlsRowMenu = (
   DeleteShortUrlModal: ShortUrlModal,
   QrCodeModal: ShortUrlModal,
 ) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
-  const [ isOpen, toggle ] = useToggle();
-  const [ isQrModalOpen, toggleQrCode ] = useToggle();
-  const [ isDeleteModalOpen, toggleDelete ] = useToggle();
+  const [isOpen, toggle] = useToggle();
+  const [isQrModalOpen, toggleQrCode] = useToggle();
+  const [isDeleteModalOpen, toggleDelete] = useToggle();
 
   return (
     <DropdownBtnMenu toggle={toggle} isOpen={isOpen}>

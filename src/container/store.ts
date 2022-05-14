@@ -5,11 +5,12 @@ import reducers from '../reducers';
 import { migrateDeprecatedSettings } from '../settings/helpers';
 import { ShlinkState } from './types';
 
-const isProduction = process.env.NODE_ENV !== 'production';
+const isProduction = process.env.NODE_ENV === 'production';
+// eslint-disable-next-line no-mixed-operators
 const composeEnhancers: Function = !isProduction && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const localStorageConfig: RLSOptions = {
-  states: [ 'settings', 'servers' ],
+  states: ['settings', 'servers'],
   namespace: 'shlink',
   namespaceSeparator: '.',
   debounce: 300,

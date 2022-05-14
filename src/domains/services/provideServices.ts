@@ -8,12 +8,12 @@ import { editDomainRedirects } from '../reducers/domainRedirects';
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('DomainSelector', () => DomainSelector);
-  bottle.decorator('DomainSelector', connect([ 'domainsList' ], [ 'listDomains' ]));
+  bottle.decorator('DomainSelector', connect(['domainsList'], ['listDomains']));
 
   bottle.serviceFactory('ManageDomains', () => ManageDomains);
   bottle.decorator('ManageDomains', connect(
-    [ 'domainsList', 'selectedServer' ],
-    [ 'listDomains', 'filterDomains', 'editDomainRedirects', 'checkDomainHealth' ],
+    ['domainsList', 'selectedServer'],
+    ['listDomains', 'filterDomains', 'editDomainRedirects', 'checkDomainHealth'],
   ));
 
   // Actions

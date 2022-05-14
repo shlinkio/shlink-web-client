@@ -14,13 +14,13 @@ describe('helpers', () => {
     const onTokenExpired = jest.fn();
 
     it.each([
-      [ Mock.of<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' }) ],
-      [ Mock.of<MercureInfo>({ loading: false, error: true, mercureHubUrl: 'foo' }) ],
-      [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: 'foo' }) ],
-      [ Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined }) ],
-      [ Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined }) ],
+      [Mock.of<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' })],
+      [Mock.of<MercureInfo>({ loading: false, error: true, mercureHubUrl: 'foo' })],
+      [Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: 'foo' })],
+      [Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined })],
+      [Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined })],
     ])('does not bind an EventSource when loading, error or no hub URL', (mercureInfo) => {
-      bindToMercureTopic(mercureInfo, [ '' ], identity, () => {});
+      bindToMercureTopic(mercureInfo, [''], identity, () => {});
 
       expect(EventSourcePolyfill).not.toHaveBeenCalled();
       expect(onMessage).not.toHaveBeenCalled();
@@ -40,7 +40,7 @@ describe('helpers', () => {
         error: false,
         mercureHubUrl,
         token,
-      }, [ topic ], onMessage, onTokenExpired);
+      }, [topic], onMessage, onTokenExpired);
 
       expect(EventSourcePolyfill).toHaveBeenCalledWith(hubUrl, {
         headers: {
@@ -48,7 +48,7 @@ describe('helpers', () => {
         },
       });
 
-      const [ es ] = (EventSourcePolyfill as any).mock.instances as EventSourcePolyfill[];
+      const [es] = (EventSourcePolyfill as any).mock.instances as EventSourcePolyfill[];
 
       es.onmessage?.({ data: '{"foo": "bar"}' });
       es.onerror?.({ status: 401 });

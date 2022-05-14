@@ -8,7 +8,7 @@ const { ceil } = Math;
 const TAGS_GROUPS_AMOUNT = 4;
 
 export const TagsCards = (TagCard: FC<TagCardProps>): FC<TagsListChildrenProps> => ({ sortedTags, selectedServer }) => {
-  const [ displayedTag, setDisplayedTag ] = useState<string | undefined>();
+  const [displayedTag, setDisplayedTag] = useState<string | undefined>();
   const tagsCount = sortedTags.length;
   const tagsGroups = splitEvery(ceil(tagsCount / TAGS_GROUPS_AMOUNT), sortedTags);
 

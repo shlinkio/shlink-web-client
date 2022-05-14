@@ -37,7 +37,7 @@ const generateChartData = (labels: string[], data: number[]): ChartData => ({
 });
 
 export const DoughnutChart: FC<DoughnutChartProps> = memo(({ stats }) => {
-  const [ chartRef, setChartRef ] = useState<Chart | undefined>(); // Cannot use useRef here
+  const [chartRef, setChartRef] = useState<Chart | undefined>(); // Cannot use useRef here
   const labels = keys(stats);
   const data = values(stats);
 

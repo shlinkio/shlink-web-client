@@ -59,6 +59,6 @@ const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub((
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, (_, params) => [ Topics.shortUrlVisits(params.shortCode) ]);
+}, (_, params) => [Topics.shortUrlVisits(params.shortCode)]);
 
 export default ShortUrlVisits;

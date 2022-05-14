@@ -10,7 +10,7 @@ import { Result } from '../../../src/utils/Result';
 describe('<CreateShortUrlResult />', () => {
   let wrapper: ShallowWrapper;
   const copyToClipboard = jest.fn();
-  const useStateFlagTimeout = jest.fn(() => [ false, copyToClipboard ]) as StateFlagTimeout;
+  const useStateFlagTimeout = jest.fn(() => [false, copyToClipboard]) as StateFlagTimeout;
   const CreateShortUrlResult = createCreateShortUrlResult(useStateFlagTimeout);
   const createWrapper = (result: ShortUrl | null = null, error = false) => {
     wrapper = shallow(

@@ -73,8 +73,8 @@ describe('<ManageServersRowDropdown />', () => {
   });
 
   it.each([
-    [ true, 'Do not auto-connect' ],
-    [ false, 'Auto-connect' ],
+    [true, 'Do not auto-connect'],
+    [false, 'Auto-connect'],
   ])('shows different auto-connect toggle text depending on current server status', (autoConnect, expectedText) => {
     const wrapper = createWrapper(autoConnect);
     const item = wrapper.find(DropdownItem).at(2);

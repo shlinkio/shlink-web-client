@@ -1,19 +1,13 @@
 import { FC, useEffect } from 'react';
-import { Button, UncontrolledTooltip } from 'reactstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBan as forbiddenIcon,
-  faDotCircle as defaultDomainIcon,
-  faEdit as editIcon,
-} from '@fortawesome/free-solid-svg-icons';
+import { faDotCircle as defaultDomainIcon } from '@fortawesome/free-solid-svg-icons';
 import { ShlinkDomainRedirects } from '../api/types';
-import { useToggle } from '../utils/helpers/hooks';
 import { OptionalString } from '../utils/utils';
 import { SelectedServer } from '../servers/data';
-import { supportsDefaultDomainRedirectsEdition } from '../utils/helpers/features';
-import { EditDomainRedirectsModal } from './helpers/EditDomainRedirectsModal';
 import { Domain } from './data';
 import { DomainStatusIcon } from './helpers/DomainStatusIcon';
+import { DomainDropdown } from './helpers/DomainDropdown';
 
 interface DomainRowProps {
   domain: Domain;
@@ -39,9 +33,7 @@ const DefaultDomain: FC = () => (
 export const DomainRow: FC<DomainRowProps> = (
   { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
 ) => {
-  const [ isOpen, toggle ] = useToggle();
   const { domain: authority, isDefault, redirects, status } = domain;
-  const canEditDomain = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
 
   useEffect(() => {
     checkDomainHealth(domain.domain);
@@ -64,25 +56,8 @@ export const DomainRow: FC<DomainRowProps> = (
         <DomainStatusIcon status={status} />
       </td>
       <td className="responsive-table__cell text-end">
-        <span id={!canEditDomain ? 'defaultDomainBtn' : undefined}>
-          <Button outline size="sm" disabled={!canEditDomain} onClick={!canEditDomain ? undefined : toggle}>
-            <FontAwesomeIcon fixedWidth icon={!canEditDomain ? forbiddenIcon : editIcon} />
-          </Button>
-        </span>
-        {!canEditDomain && (
-          <UncontrolledTooltip target="defaultDomainBtn" placement="left">
-            Redirects for default domain cannot be edited here.
-            <br />
-            Use config options or env vars directly on the server.
-          </UncontrolledTooltip>
-        )}
+        <DomainDropdown domain={domain} editDomainRedirects={editDomainRedirects} selectedServer={selectedServer} />
       </td>
-      <EditDomainRedirectsModal
-        domain={domain}
-        isOpen={isOpen}
-        toggle={toggle}
-        editDomainRedirects={editDomainRedirects}
-      />
     </tr>
   );
 };

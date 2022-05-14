@@ -25,7 +25,7 @@ describe('settingsReducer', () => {
   });
 
   describe('toggleRealTimeUpdates', () => {
-    it.each([[ true ], [ false ]])('updates settings with provided value and then loads updates again', (enabled) => {
+    it.each([[true], [false]])('updates settings with provided value and then loads updates again', (enabled) => {
       const result = toggleRealTimeUpdates(enabled);
 
       expect(result).toEqual({ type: SET_SETTINGS, realTimeUpdates: { enabled } });
@@ -33,7 +33,7 @@ describe('settingsReducer', () => {
   });
 
   describe('setRealTimeUpdatesInterval', () => {
-    it.each([[ 0 ], [ 1 ], [ 2 ], [ 10 ]])('updates settings with provided value and then loads updates again', (interval) => {
+    it.each([[0], [1], [2], [10]])('updates settings with provided value and then loads updates again', (interval) => {
       const result = setRealTimeUpdatesInterval(interval);
 
       expect(result).toEqual({ type: SET_SETTINGS, realTimeUpdates: { interval } });

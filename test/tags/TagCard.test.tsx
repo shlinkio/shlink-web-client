@@ -16,7 +16,7 @@ describe('<TagCard />', () => {
       <TagCard
         tag={{ tag, visits: 23257, shortUrls: 48 }}
         selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-        displayed={true}
+        displayed
         toggle={() => {}}
       />,
     );
@@ -30,8 +30,8 @@ describe('<TagCard />', () => {
   afterEach(jest.resetAllMocks);
 
   it.each([
-    [ 'ssr', '/server/1/list-short-urls/1?tags=ssr' ],
-    [ 'ssr-&-foo', '/server/1/list-short-urls/1?tags=ssr-%26-foo' ],
+    ['ssr', '/server/1/list-short-urls/1?tags=ssr'],
+    ['ssr-&-foo', '/server/1/list-short-urls/1?tags=ssr-%26-foo'],
   ])('shows a TagBullet and a link to the list filtering by the tag', (tag, expectedLink) => {
     const wrapper = createWrapper(tag);
     const links = wrapper.find(Link);

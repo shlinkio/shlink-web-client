@@ -24,8 +24,8 @@ describe('<ShortUrlsListSettings />', () => {
   afterEach(jest.clearAllMocks);
 
   it.each([
-    [ undefined, DEFAULT_SHORT_URLS_ORDERING ],
-    [{}, DEFAULT_SHORT_URLS_ORDERING ],
+    [undefined, DEFAULT_SHORT_URLS_ORDERING],
+    [{}, DEFAULT_SHORT_URLS_ORDERING],
     [{ defaultOrdering: {} }, {}],
     [{ defaultOrdering: { field: 'longUrl', dir: 'DESC' } as ShortUrlsOrder }, { field: 'longUrl', dir: 'DESC' }],
     [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as ShortUrlsOrder }, { field: 'visits', dir: 'ASC' }],
@@ -37,10 +37,10 @@ describe('<ShortUrlsListSettings />', () => {
   });
 
   it.each([
-    [ undefined, undefined ],
-    [ 'longUrl', 'ASC' ],
-    [ 'visits', undefined ],
-    [ 'title', 'DESC' ],
+    [undefined, undefined],
+    ['longUrl', 'ASC'],
+    ['visits', undefined],
+    ['title', 'DESC'],
   ])('invokes setSettings when ordering changes', (field, dir) => {
     const wrapper = createWrapper();
     const dropdown = wrapper.find(OrderingDropdown);

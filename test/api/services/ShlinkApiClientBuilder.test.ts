@@ -16,7 +16,7 @@ describe('ShlinkApiClientBuilder', () => {
 
   it('creates new instances when provided params are different', async () => {
     const builder = createBuilder();
-    const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
+    const [firstApiClient, secondApiClient, thirdApiClient] = await Promise.all([
       builder(server({ url: 'foo', apiKey: 'bar' })),
       builder(server({ url: 'bar', apiKey: 'bar' })),
       builder(server({ url: 'bar', apiKey: 'foo' })),
@@ -30,7 +30,7 @@ describe('ShlinkApiClientBuilder', () => {
   it('returns existing instances when provided params are the same', async () => {
     const builder = createBuilder();
     const selectedServer = server({ url: 'foo', apiKey: 'bar' });
-    const [ firstApiClient, secondApiClient, thirdApiClient ] = await Promise.all([
+    const [firstApiClient, secondApiClient, thirdApiClient] = await Promise.all([
       builder(selectedServer),
       builder(selectedServer),
       builder(selectedServer),

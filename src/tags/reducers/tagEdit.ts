@@ -8,11 +8,9 @@ import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
 export const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
 export const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
-/* eslint-enable padding-line-between-statements */
 
 export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
 
@@ -41,7 +39,7 @@ export default buildReducer<TagEdition, EditTagAction & ApiErrorAction>({
   [EDIT_TAG_START]: (state) => ({ ...state, editing: true, error: false }),
   [EDIT_TAG_ERROR]: (state, { errorData }) => ({ ...state, editing: false, error: true, errorData }),
   [EDIT_TAG]: (_, action) => ({
-    ...pick([ 'oldName', 'newName' ], action),
+    ...pick(['oldName', 'newName'], action),
     editing: false,
     error: false,
   }),
@@ -53,10 +51,10 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
   color: string,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_TAG_START });
-  const { editTag } = buildShlinkApiClient(getState);
+  const { editTag: shlinkEditTag } = buildShlinkApiClient(getState);
 
   try {
-    await editTag(oldName, newName);
+    await shlinkEditTag(oldName, newName);
     colorGenerator.setColorForKey(newName, color);
     dispatch({ type: EDIT_TAG, oldName, newName });
   } catch (e: any) {

@@ -36,8 +36,8 @@ const InfoModal = ({ isOpen, toggle }: { isOpen: boolean; toggle: () => void }) 
   </Modal>
 );
 
-const UseExistingIfFoundInfoIcon = () => {
-  const [ isModalOpen, toggleModal ] = useToggle();
+export const UseExistingIfFoundInfoIcon = () => {
+  const [isModalOpen, toggleModal] = useToggle();
 
   return (
     <>
@@ -48,5 +48,3 @@ const UseExistingIfFoundInfoIcon = () => {
     </>
   );
 };
-
-export default UseExistingIfFoundInfoIcon;

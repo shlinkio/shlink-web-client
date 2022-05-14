@@ -49,7 +49,7 @@ a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.bt
 }
 
 .card {
-  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  box-shadow: 0 .125rem .25rem rgb(0 0 0 / .075);
   background-color: var(--primary-color);
   border-color: var(--border-color);
 }

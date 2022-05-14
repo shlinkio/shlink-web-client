@@ -34,7 +34,7 @@ describe('<OpenMapModalBtn />', () => {
   });
 
   it('opens dropdown instead of modal when a list of active cities has been provided', () => {
-    const wrapper = createWrapper([ 'bar' ]);
+    const wrapper = createWrapper(['bar']);
 
     wrapper.find('.open-map-modal-btn__btn').simulate('click');
 
@@ -43,7 +43,7 @@ describe('<OpenMapModalBtn />', () => {
   });
 
   it('filters out non-active cities from list of locations', () => {
-    const wrapper = createWrapper([ 'bar' ]);
+    const wrapper = createWrapper(['bar']);
 
     wrapper.find('.open-map-modal-btn__btn').simulate('click');
     wrapper.find(Dropdown).find(DropdownItem).at(1).simulate('click');

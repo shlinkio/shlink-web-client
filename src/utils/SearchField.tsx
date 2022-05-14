@@ -15,8 +15,8 @@ interface SearchFieldProps {
   initialValue?: string;
 }
 
-const SearchField = ({ onChange, className, large = true, noBorder = false, initialValue = '' }: SearchFieldProps) => {
-  const [ searchTerm, setSearchTerm ] = useState(initialValue);
+export const SearchField = ({ onChange, className, large = true, noBorder = false, initialValue = '' }: SearchFieldProps) => {
+  const [searchTerm, setSearchTerm] = useState(initialValue);
 
   const resetTimer = () => {
     timer && clearTimeout(timer);
@@ -55,5 +55,3 @@ const SearchField = ({ onChange, className, large = true, noBorder = false, init
     </div>
   );
 };
-
-export default SearchField;

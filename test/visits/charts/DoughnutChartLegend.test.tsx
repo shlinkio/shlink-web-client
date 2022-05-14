@@ -4,10 +4,10 @@ import { Chart, ChartDataset } from 'chart.js';
 import { DoughnutChartLegend } from '../../../src/visits/charts/DoughnutChartLegend';
 
 describe('<DoughnutChartLegend />', () => {
-  const labels = [ 'foo', 'bar', 'baz', 'foo2', 'bar2' ];
-  const colors = [ 'foo_color', 'bar_color', 'baz_color' ];
+  const labels = ['foo', 'bar', 'baz', 'foo2', 'bar2'];
+  const colors = ['foo_color', 'bar_color', 'baz_color'];
   const defaultColor = 'red';
-  const datasets = [ Mock.of<ChartDataset>({ backgroundColor: colors }) ];
+  const datasets = [Mock.of<ChartDataset>({ backgroundColor: colors })];
   const chart = Mock.of<Chart>({
     config: {
       data: { labels, datasets },

@@ -30,7 +30,7 @@ describe('domainsListReducer', () => {
     Mock.of<Domain>({ domain: 'foo', status: 'validating' }),
     Mock.of<Domain>({ domain: 'boo', status: 'validating' }),
   ];
-  const domains = [ ...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' }) ];
+  const domains = [...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' })];
 
   beforeEach(jest.clearAllMocks);
 
@@ -64,9 +64,9 @@ describe('domainsListReducer', () => {
     });
 
     it.each([
-      [ 'foo' ],
-      [ 'bar' ],
-      [ 'does_not_exist' ],
+      ['foo'],
+      ['bar'],
+      ['does_not_exist'],
     ])('replaces redirects on proper domain on EDIT_DOMAIN_REDIRECTS', (domain) => {
       const redirects: ShlinkDomainRedirects = {
         baseUrlRedirect: 'bar',
@@ -84,9 +84,9 @@ describe('domainsListReducer', () => {
     });
 
     it.each([
-      [ 'foo' ],
-      [ 'bar' ],
-      [ 'does_not_exist' ],
+      ['foo'],
+      ['bar'],
+      ['does_not_exist'],
     ])('replaces status on proper domain on VALIDATE_DOMAIN', (domain) => {
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
@@ -124,9 +124,9 @@ describe('domainsListReducer', () => {
 
   describe('filterDomains', () => {
     it.each([
-      [ 'foo' ],
-      [ 'bar' ],
-      [ 'something' ],
+      ['foo'],
+      ['bar'],
+      ['something'],
     ])('creates action as expected', (searchTerm) => {
       expect(filterDomainsAction(searchTerm)).toEqual({ type: FILTER_DOMAINS, searchTerm });
     });
@@ -166,8 +166,8 @@ describe('domainsListReducer', () => {
     });
 
     it.each([
-      [ 'pass', 'valid' ],
-      [ 'fail', 'invalid' ],
+      ['pass', 'valid'],
+      ['fail', 'invalid'],
     ])('dispatches proper status based on status returned from health endpoint', async (
       healthStatus,
       expectedStatus,

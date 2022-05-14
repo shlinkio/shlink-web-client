@@ -38,7 +38,7 @@ describe('<ServerError />', () => {
     const wrapperText = wrapper.html();
     const textPairs = Object.entries(textsToFind);
 
-    textPairs.forEach(([ text, shouldBeFound ]) => {
+    textPairs.forEach(([text, shouldBeFound]) => {
       if (shouldBeFound) {
         expect(wrapperText).toContain(text);
       } else {

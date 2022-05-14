@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import { supportsDomainRedirects, supportsNonOrphanVisits, supportsOrphanVisits } from '../utils/helpers/features';
+import { supportsDomainRedirects, supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
-import NotFound from './NotFound';
+import { NotFound } from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
 import './MenuLayout.scss';
 
@@ -16,13 +16,14 @@ interface MenuLayoutProps {
   sidebarNotPresent: Function;
 }
 
-const MenuLayout = (
+export const MenuLayout = (
   TagsList: FC,
   ShortUrlsList: FC,
   AsideMenu: FC<AsideMenuProps>,
   CreateShortUrl: FC,
   ShortUrlVisits: FC,
   TagVisits: FC,
+  DomainVisits: FC,
   OrphanVisits: FC,
   NonOrphanVisits: FC,
   ServerError: FC,
@@ -31,10 +32,10 @@ const MenuLayout = (
   ManageDomains: FC,
 ) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent }) => {
   const location = useLocation();
-  const [ sidebarVisible, toggleSidebar, showSidebar, hideSidebar ] = useToggle();
+  const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   const showContent = isReachableServer(selectedServer);
 
-  useEffect(() => hideSidebar(), [ location ]);
+  useEffect(() => hideSidebar(), [location]);
   useEffect(() => {
     showContent && sidebarPresent();
 
@@ -45,9 +46,9 @@ const MenuLayout = (
     return <ServerError />;
   }
 
-  const addOrphanVisitsRoute = supportsOrphanVisits(selectedServer);
   const addNonOrphanVisitsRoute = supportsNonOrphanVisits(selectedServer);
   const addManageDomainsRoute = supportsDomainRedirects(selectedServer);
+  const addDomainVisitsRoute = supportsDomainVisits(selectedServer);
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 
@@ -68,7 +69,8 @@ const MenuLayout = (
                 <Route path="/short-code/:shortCode/visits/*" element={<ShortUrlVisits />} />
                 <Route path="/short-code/:shortCode/edit" element={<EditShortUrl />} />
                 <Route path="/tag/:tag/visits/*" element={<TagVisits />} />
-                {addOrphanVisitsRoute && <Route path="/orphan-visits/*" element={<OrphanVisits />} />}
+                {addDomainVisitsRoute && <Route path="/domain/:domain/visits/*" element={<DomainVisits />} />}
+                <Route path="/orphan-visits/*" element={<OrphanVisits />} />
                 {addNonOrphanVisitsRoute && <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />}
                 <Route path="/manage-tags" element={<TagsList />} />
                 {addManageDomainsRoute && <Route path="/manage-domains" element={<ManageDomains />} />}
@@ -84,5 +86,3 @@ const MenuLayout = (
     </>
   );
 }, ServerError);
-
-export default MenuLayout;

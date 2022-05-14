@@ -21,9 +21,9 @@ interface EditTagModalProps extends TagModalProps {
 const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   { tag, editTag, toggle, tagEdited, isOpen, tagEdit }: EditTagModalProps,
 ) => {
-  const [ newTagName, setNewTagName ] = useState(tag);
-  const [ color, setColor ] = useState(getColorForKey(tag));
-  const [ showColorPicker, toggleColorPicker, , hideColorPicker ] = useToggle();
+  const [newTagName, setNewTagName] = useState(tag);
+  const [color, setColor] = useState(getColorForKey(tag));
+  const [showColorPicker, toggleColorPicker, , hideColorPicker] = useToggle();
   const { editing, error, errorData } = tagEdit;
   const saveTag = handleEventPreventingDefault(
     async () => editTag(tag, newTagName, color)

@@ -20,8 +20,8 @@ const bottle = new Bottle();
 
 export const { container } = bottle;
 
-const lazyService = <T extends Function, K>(container: IContainer, serviceName: string) =>
-  (...args: any[]) => (container[serviceName] as T)(...args) as K;
+const lazyService = <T extends Function, K>(cont: IContainer, serviceName: string) =>
+  (...args: any[]) => (cont[serviceName] as T)(...args) as K;
 const mapActionService = (map: LazyActionMap, actionName: string): LazyActionMap => ({
   ...map,
   // Wrap actual action service in a function so that it is lazily created the first time it is called

@@ -1,12 +1,10 @@
 import { Mock } from 'ts-mockery';
-import { CsvJson } from 'csvjson';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
-  const servers: RegularServer[] = [ Mock.all<RegularServer>(), Mock.all<RegularServer>() ];
-  const toObject = jest.fn().mockReturnValue(servers);
-  const csvjsonMock = Mock.of<CsvJson>({ toObject });
+  const servers: RegularServer[] = [Mock.all<RegularServer>(), Mock.all<RegularServer>()];
+  const csvjsonMock = jest.fn().mockResolvedValue(servers);
   const readAsText = jest.fn();
   const fileReaderMock = Mock.of<FileReader>({
     readAsText,
@@ -28,16 +26,14 @@ describe('ServersImporter', () => {
     it('rejects with error if parsing the file fails', async () => {
       const expectedError = new Error('Error parsing file');
 
-      toObject.mockImplementation(() => {
-        throw expectedError;
-      });
+      csvjsonMock.mockRejectedValue(expectedError);
 
       await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(expectedError);
     });
 
     it.each([
       [{}],
-      [ undefined ],
+      [undefined],
       [[{ foo: 'bar' }]],
       [
         [
@@ -59,7 +55,7 @@ describe('ServersImporter', () => {
         ],
       ],
     ])('rejects with error if provided file does not parse to valid list of servers', async (parsedObject) => {
-      toObject.mockReturnValue(parsedObject);
+      csvjsonMock.mockResolvedValue(parsedObject);
 
       await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(
         new Error('Provided file does not have the right format.'),
@@ -80,13 +76,13 @@ describe('ServersImporter', () => {
         },
       ];
 
-      toObject.mockReturnValue(expectedServers);
+      csvjsonMock.mockResolvedValue(expectedServers);
 
       const result = await importer.importServersFromFile(Mock.all<File>());
 
       expect(result).toEqual(expectedServers);
       expect(readAsText).toHaveBeenCalledTimes(1);
-      expect(toObject).toHaveBeenCalledTimes(1);
+      expect(csvjsonMock).toHaveBeenCalledTimes(1);
     });
   });
 });

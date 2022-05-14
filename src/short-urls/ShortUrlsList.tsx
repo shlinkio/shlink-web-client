@@ -30,8 +30,8 @@ const ShortUrlsList = (
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
-  const [{ tags, search, startDate, endDate, orderBy, tagsMode }, toFirstPage ] = useShortUrlsQuery();
-  const [ actualOrderBy, setActualOrderBy ] = useState(
+  const [{ tags, search, startDate, endDate, orderBy, tagsMode }, toFirstPage] = useShortUrlsQuery();
+  const [actualOrderBy, setActualOrderBy] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
   );
@@ -45,7 +45,7 @@ const ShortUrlsList = (
   const renderOrderIcon = (field: ShortUrlsOrderableFields) =>
     <TableOrderIcon currentOrder={actualOrderBy} field={field} />;
   const addTag = pipe(
-    (newTag: string) => [ ...new Set([ ...tags, newTag ]) ],
+    (newTag: string) => [...new Set([...tags, newTag])],
     (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
 
@@ -59,7 +59,7 @@ const ShortUrlsList = (
       orderBy: actualOrderBy,
       tagsMode,
     });
-  }, [ page, search, tags, startDate, endDate, actualOrderBy, tagsMode ]);
+  }, [page, search, tags, startDate, endDate, actualOrderBy, tagsMode]);
 
   return (
     <>
@@ -82,6 +82,6 @@ const ShortUrlsList = (
       </Card>
     </>
   );
-}, () => [ Topics.visits ]);
+}, () => [Topics.visits]);
 
 export default ShortUrlsList;

@@ -1,123 +1,117 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
-import { DropdownItem } from 'reactstrap';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
-import { FormText } from '../../src/utils/forms/FormText';
-import ToggleSwitch from '../../src/utils/ToggleSwitch';
-import { DropdownBtn } from '../../src/utils/DropdownBtn';
 
 describe('<ShortUrlCreationSettings />', () => {
-  let wrapper: ShallowWrapper;
   const setShortUrlCreationSettings = jest.fn();
-  const createWrapper = (shortUrlCreation?: ShortUrlsSettings) => {
-    wrapper = shallow(
+  const setUp = (shortUrlCreation?: ShortUrlsSettings) => ({
+    user: userEvent.setup(),
+    ...render(
       <ShortUrlCreationSettings
         settings={Mock.of<Settings>({ shortUrlCreation })}
         setShortUrlCreationSettings={setShortUrlCreationSettings}
       />,
-    );
+    ),
+  });
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
   it.each([
-    [{ validateUrls: true }, true ],
-    [{ validateUrls: false }, false ],
-    [ undefined, false ],
-  ])('URL validation switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
-    const wrapper = createWrapper(shortUrlCreation);
-    const urlValidationToggle = wrapper.find(ToggleSwitch).first();
+    [{ validateUrls: true }, true],
+    [{ validateUrls: false }, false],
+    [undefined, false],
+  ])('URL validation switch has proper initial state', (shortUrlCreation, expectedChecked) => {
+    const matcher = /^Request validation on long URLs when creating new short URLs/;
 
-    expect(urlValidationToggle.prop('checked')).toEqual(expectedChecked);
+    setUp(shortUrlCreation);
+
+    const checkbox = screen.getByLabelText(matcher);
+    const label = screen.getByText(matcher);
+
+    if (expectedChecked) {
+      expect(checkbox).toBeChecked();
+      expect(label).toHaveTextContent('Validate URL checkbox will be checked');
+      expect(label).not.toHaveTextContent('Validate URL checkbox will be unchecked');
+    } else {
+      expect(checkbox).not.toBeChecked();
+      expect(label).toHaveTextContent('Validate URL checkbox will be unchecked');
+      expect(label).not.toHaveTextContent('Validate URL checkbox will be checked');
+    }
   });
 
   it.each([
-    [{ forwardQuery: true }, true ],
-    [{ forwardQuery: false }, false ],
-    [{}, true ],
+    [{ forwardQuery: true }, true],
+    [{ forwardQuery: false }, false],
+    [{}, true],
   ])('forward query switch is toggled if option is true', (shortUrlCreation, expectedChecked) => {
-    const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
-    const forwardQueryToggle = wrapper.find(ToggleSwitch).last();
+    const matcher = /^Make all new short URLs forward their query params to the long URL/;
 
-    expect(forwardQueryToggle.prop('checked')).toEqual(expectedChecked);
+    setUp({ validateUrls: true, ...shortUrlCreation });
+
+    const checkbox = screen.getByLabelText(matcher);
+    const label = screen.getByText(matcher);
+
+    if (expectedChecked) {
+      expect(checkbox).toBeChecked();
+      expect(label).toHaveTextContent('Forward query params on redirect checkbox will be checked');
+      expect(label).not.toHaveTextContent('Forward query params on redirect checkbox will be unchecked');
+    } else {
+      expect(checkbox).not.toBeChecked();
+      expect(label).toHaveTextContent('Forward query params on redirect checkbox will be unchecked');
+      expect(label).not.toHaveTextContent('Forward query params on redirect checkbox will be checked');
+    }
   });
 
   it.each([
-    [{ validateUrls: true }, '<b>Validate URL</b> checkbox will be <b>checked</b>' ],
-    [{ validateUrls: false }, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
-    [ undefined, '<b>Validate URL</b> checkbox will be <b>unchecked</b>' ],
-  ])('shows expected helper text for URL validation', (shortUrlCreation, expectedText) => {
-    const wrapper = createWrapper(shortUrlCreation);
-    const validateUrlText = wrapper.find(FormText).first();
-
-    expect(validateUrlText.html()).toContain(expectedText);
-  });
-
-  it.each([
-    [{ forwardQuery: true }, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
-    [{ forwardQuery: false }, '<b>Forward query params on redirect</b> checkbox will be <b>unchecked</b>' ],
-    [{}, '<b>Forward query params on redirect</b> checkbox will be <b>checked</b>' ],
-  ])('shows expected helper text for query forwarding', (shortUrlCreation, expectedText) => {
-    const wrapper = createWrapper({ validateUrls: true, ...shortUrlCreation });
-    const forwardQueryText = wrapper.find(FormText).at(1);
-
-    expect(forwardQueryText.html()).toContain(expectedText);
-  });
-
-  it.each([
-    [ { tagFilteringMode: 'includes' } as ShortUrlsSettings, 'Suggest tags including input', 'including' ],
+    [{ tagFilteringMode: 'includes' } as ShortUrlsSettings, 'Suggest tags including input', 'including'],
     [
       { tagFilteringMode: 'startsWith' } as ShortUrlsSettings,
       'Suggest tags starting with input',
       'starting with',
     ],
-    [ undefined, 'Suggest tags starting with input', 'starting with' ],
+    [undefined, 'Suggest tags starting with input', 'starting with'],
   ])('shows expected texts for tags suggestions', (shortUrlCreation, expectedText, expectedHint) => {
-    const wrapper = createWrapper(shortUrlCreation);
-    const hintText = wrapper.find(FormText).last();
-    const dropdown = wrapper.find(DropdownBtn);
+    setUp(shortUrlCreation);
 
-    expect(dropdown.prop('text')).toEqual(expectedText);
-    expect(hintText.html()).toContain(expectedHint);
+    expect(screen.getByRole('button', { name: expectedText })).toBeInTheDocument();
+    expect(screen.getByText(/^The list of suggested tags will contain those/)).toHaveTextContent(expectedHint);
   });
 
-  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', (validateUrls) => {
-    const wrapper = createWrapper();
-    const urlValidationToggle = wrapper.find(ToggleSwitch).first();
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when URL validation toggle value changes', async (validateUrls) => {
+    const { user } = setUp({ validateUrls });
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
-    urlValidationToggle.simulate('change', validateUrls);
-    expect(setShortUrlCreationSettings).toHaveBeenCalledWith({ validateUrls });
+    await user.click(screen.getByLabelText(/^Request validation on long URLs when creating new short URLs/));
+    expect(setShortUrlCreationSettings).toHaveBeenCalledWith({ validateUrls: !validateUrls });
   });
 
-  it.each([[ true ], [ false ]])('invokes setShortUrlCreationSettings when forward query toggle value changes', (forwardQuery) => {
-    const wrapper = createWrapper();
-    const urlValidationToggle = wrapper.find(ToggleSwitch).last();
+  it.each([[true], [false]])('invokes setShortUrlCreationSettings when forward query toggle value changes', async (forwardQuery) => {
+    const { user } = setUp({ validateUrls: true, forwardQuery });
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
-    urlValidationToggle.simulate('change', forwardQuery);
-    expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining({ forwardQuery }));
+    await user.click(screen.getByLabelText(/^Make all new short URLs forward their query params to the long URL/));
+    expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining({ forwardQuery: !forwardQuery }));
   });
 
-  it('invokes setShortUrlCreationSettings when dropdown value changes', () => {
-    const wrapper = createWrapper();
-    const firstDropdownItem = wrapper.find(DropdownItem).first();
-    const secondDropdownItem = wrapper.find(DropdownItem).last();
+  it('invokes setShortUrlCreationSettings when dropdown value changes', async () => {
+    const { user } = setUp();
+    const clickItem = async (name: string) => {
+      await user.click(screen.getByRole('button', { name: 'Suggest tags starting with input' }));
+      await user.click(await screen.findByRole('menuitem', { name }));
+    };
 
     expect(setShortUrlCreationSettings).not.toHaveBeenCalled();
 
-    firstDropdownItem.simulate('click');
-    expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining(
-      { tagFilteringMode: 'startsWith' },
-    ));
-
-    secondDropdownItem.simulate('click');
+    await clickItem('Suggest tags including input');
     expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining(
       { tagFilteringMode: 'includes' },
+    ));
+
+    await clickItem('Suggest tags starting with input');
+    expect(setShortUrlCreationSettings).toHaveBeenCalledWith(expect.objectContaining(
+      { tagFilteringMode: 'startsWith' },
     ));
   });
 });

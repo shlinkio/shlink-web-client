@@ -7,12 +7,10 @@ import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 
-/* eslint-disable padding-line-between-statements */
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
-/* eslint-enable padding-line-between-statements */
 
 export interface ShortUrlCreation {
   result: ShortUrl | null;
@@ -43,10 +41,10 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
   getState: GetState,
 ) => {
   dispatch({ type: CREATE_SHORT_URL_START });
-  const { createShortUrl } = buildShlinkApiClient(getState);
+  const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    const result = await createShortUrl(data);
+    const result = await shlinkCreateShortUrl(data);
 
     dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
   } catch (e: any) {

@@ -10,8 +10,8 @@ import reducer, {
 describe('sidebarReducer', () => {
   describe('reducer', () => {
     it.each([
-      [ SIDEBAR_PRESENT, { sidebarPresent: true }],
-      [ SIDEBAR_NOT_PRESENT, { sidebarPresent: false }],
+      [SIDEBAR_PRESENT, { sidebarPresent: true }],
+      [SIDEBAR_NOT_PRESENT, { sidebarPresent: false }],
     ])('returns expected on %s', (type, expected) => {
       expect(reducer(Mock.all<Sidebar>(), { type })).toEqual(expected);
     });

@@ -3,7 +3,7 @@ import Message from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';
-import SearchField from '../utils/SearchField';
+import { SearchField } from '../utils/SearchField';
 import { ShlinkDomainRedirects } from '../api/types';
 import { SelectedServer } from '../servers/data';
 import { DomainsList } from './reducers/domainsList';
@@ -18,7 +18,7 @@ interface ManageDomainsProps {
   selectedServer: SelectedServer;
 }
 
-const headers = [ '', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', '' ];
+const headers = ['', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', ''];
 
 export const ManageDomains: FC<ManageDomainsProps> = (
   { listDomains, domainsList, filterDomains, editDomainRedirects, checkDomainHealth, selectedServer },

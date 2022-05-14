@@ -1,16 +1,16 @@
-import { FC, MouseEventHandler } from 'react';
+import { FC, MouseEventHandler, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import ColorGenerator from '../../utils/services/ColorGenerator';
 import './Tag.scss';
 
-interface TagProps {
+type TagProps = PropsWithChildren<{
   colorGenerator: ColorGenerator;
   text: string;
   className?: string;
   clearable?: boolean;
   onClick?: MouseEventHandler;
   onClose?: MouseEventHandler;
-}
+}>;
 
 const Tag: FC<TagProps> = ({ text, children, clearable, className = '', colorGenerator, onClick, onClose }) => (
   <span

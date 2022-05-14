@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.7.0] - 2022-05-14
+### Added
+* [#622](https://github.com/shlinkio/shlink-web-client/pull/622) Added support to load domain visits when consuming Shlink 3.1.0 or newer.
+* [#582](https://github.com/shlinkio/shlink-web-client/pull/582) Improved filtering short URLs by tag.
+
+  Now, a new full tags selector component is available, which allows selecting any of the existing tags and also composes a toggle to filter by "any" tag or "all" tags.
+
+### Changed
+* [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
+* [#595](https://github.com/shlinkio/shlink-web-client/pull/595) Updated to react-chartjs-2 v4.1.0.
+* [#594](https://github.com/shlinkio/shlink-web-client/pull/594) Updated to a new coding standard.
+* [#627](https://github.com/shlinkio/shlink-web-client/pull/627) Updated to Jest 28.
+* [#603](https://github.com/shlinkio/shlink-web-client/pull/603) Migrated to new and maintained dependencies to parse CSV<->JSON.
+* [#610](https://github.com/shlinkio/shlink-web-client/pull/610) Migrated to a maintained coding style for CSS.
+* [#619](https://github.com/shlinkio/shlink-web-client/pull/619) Introduced react testing library, to progressively replace enzyme.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* [#623](https://github.com/shlinkio/shlink-web-client/pull/623) Dropped support for Shlink older than 2.6.0.
+
+### Fixed
+* *Nothing*
+
+
 ## [3.6.0] - 2022-03-17
 ### Added
 * [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.

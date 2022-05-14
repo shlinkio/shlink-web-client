@@ -11,13 +11,13 @@ describe('<ShortUrlDetailLink />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ undefined, undefined ],
-    [ null, null ],
-    [ Mock.of<ReachableServer>({ id: '1' }), null ],
-    [ Mock.of<ReachableServer>({ id: '1' }), undefined ],
-    [ Mock.of<NotFoundServer>(), Mock.all<ShortUrl>() ],
-    [ null, Mock.all<ShortUrl>() ],
-    [ undefined, Mock.all<ShortUrl>() ],
+    [undefined, undefined],
+    [null, null],
+    [Mock.of<ReachableServer>({ id: '1' }), null],
+    [Mock.of<ReachableServer>({ id: '1' }), undefined],
+    [Mock.of<NotFoundServer>(), Mock.all<ShortUrl>()],
+    [null, Mock.all<ShortUrl>()],
+    [undefined, Mock.all<ShortUrl>()],
   ])('only renders a plain span when either server or short URL are not set', (selectedServer, shortUrl) => {
     wrapper = shallow(
       <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">

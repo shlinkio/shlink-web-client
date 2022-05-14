@@ -8,7 +8,7 @@ import reducer, {
 } from '../../../src/short-urls/reducers/shortUrlEdition';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
-import { ReachableServer, SelectedServer } from '../../../src/servers/data';
+import { SelectedServer } from '../../../src/servers/data';
 
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
@@ -41,14 +41,13 @@ describe('shortUrlEditionReducer', () => {
 
   describe('editShortUrl', () => {
     const updateShortUrl = jest.fn().mockResolvedValue(shortUrl);
-    const updateShortUrlTags = jest.fn().mockResolvedValue([]);
-    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl, updateShortUrlTags });
+    const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
     const dispatch = jest.fn();
     const createGetState = (selectedServer: SelectedServer = null) => () => Mock.of<ShlinkState>({ selectedServer });
 
     afterEach(jest.clearAllMocks);
 
-    it.each([[ undefined ], [ null ], [ 'example.com' ]])('dispatches short URL on success', async (domain) => {
+    it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
       await editShortUrl(buildShlinkApiClient)(shortCode, domain, { longUrl })(dispatch, createGetState());
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
@@ -58,25 +57,6 @@ describe('shortUrlEditionReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_START });
       expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_EDITED, shortUrl });
     });
-
-    it.each([
-      [ null, { tags: [ 'foo', 'bar' ] }, 1 ],
-      [ null, {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.6.0' }), {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.6.0' }), { tags: [ 'foo', 'bar' ] }, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.5.0' }), {}, 0 ],
-      [ Mock.of<ReachableServer>({ version: '2.5.0' }), { tags: [ 'foo', 'bar' ] }, 1 ],
-    ])(
-      'sends tags separately when appropriate, based on selected server and the payload',
-      async (server, payload, expectedTagsCalls) => {
-        const getState = createGetState(server);
-
-        await editShortUrl(buildShlinkApiClient)(shortCode, null, payload)(dispatch, getState);
-
-        expect(updateShortUrl).toHaveBeenCalled();
-        expect(updateShortUrlTags).toHaveBeenCalledTimes(expectedTagsCalls);
-      },
-    );
 
     it('dispatches error on failure', async () => {
       const error = new Error();

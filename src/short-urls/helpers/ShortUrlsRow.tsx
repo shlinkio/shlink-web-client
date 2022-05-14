@@ -23,8 +23,8 @@ const ShortUrlsRow = (
   colorGenerator: ColorGenerator,
   useStateFlagTimeout: StateFlagTimeout,
 ) => ({ shortUrl, selectedServer, onTagClick }: ShortUrlsRowProps) => {
-  const [ copiedToClipboard, setCopiedToClipboard ] = useStateFlagTimeout();
-  const [ active, setActive ] = useStateFlagTimeout(false, 500);
+  const [copiedToClipboard, setCopiedToClipboard] = useStateFlagTimeout();
+  const [active, setActive] = useStateFlagTimeout(false, 500);
   const isFirstRun = useRef(true);
 
   const renderTags = (tags: string[]) => {
@@ -48,7 +48,7 @@ const ShortUrlsRow = (
     } else {
       setActive();
     }
-  }, [ shortUrl.visitsCount ]);
+  }, [shortUrl.visitsCount]);
 
   return (
     <tr className="responsive-table__row">

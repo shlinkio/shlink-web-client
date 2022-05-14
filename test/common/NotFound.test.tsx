@@ -1,47 +1,32 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Link } from 'react-router-dom';
-import NotFound from '../../src/common/NotFound';
-import { SimpleCard } from '../../src/utils/SimpleCard';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+import { NotFound } from '../../src/common/NotFound';
 
 describe('<NotFound />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props = {}) => {
-    wrapper = shallow(<NotFound {...props} />).find(SimpleCard);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (props = {}) => render(<MemoryRouter><NotFound {...props} /></MemoryRouter>);
 
   it('shows expected error title', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.contains('Oops! We could not find requested route.')).toEqual(true);
+    setUp();
+    expect(screen.getByText('Oops! We could not find requested route.')).toBeInTheDocument();
   });
 
   it('shows expected error message', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.contains(
+    setUp();
+    expect(screen.getByText(
       'Use your browser\'s back button to navigate to the page you have previously come from, or just press this button.',
-    )).toEqual(true);
+    )).toBeInTheDocument();
   });
 
-  it('shows a link to the home', () => {
-    const wrapper = createWrapper();
-    const link = wrapper.find(Link);
+  it.each([
+    [{}, '/', 'Home'],
+    [{ to: '/foo/bar', children: 'Hello' }, '/foo/bar', 'Hello'],
+    [{ to: '/baz-bar', children: <>Foo</> }, '/baz-bar', 'Foo'],
+  ])('shows expected link and text', (props, expectedLink, expectedText) => {
+    setUp(props);
+    const link = screen.getByRole('link');
 
-    expect(link.prop('to')).toEqual('/');
-    expect(link.prop('className')).toEqual('btn btn-outline-primary btn-lg');
-    expect(link.prop('children')).toEqual('Home');
-  });
-
-  it('shows a link with provided props', () => {
-    const wrapper = createWrapper({ to: '/foo/bar', children: 'Hello' });
-    const link = wrapper.find(Link);
-
-    expect(link.prop('to')).toEqual('/foo/bar');
-    expect(link.prop('className')).toEqual('btn btn-outline-primary btn-lg');
-    expect(link.prop('children')).toEqual('Hello');
+    expect(link).toHaveAttribute('href', expectedLink);
+    expect(link).toHaveTextContent(expectedText);
+    expect(link).toHaveAttribute('class', 'btn btn-outline-primary btn-lg');
   });
 });

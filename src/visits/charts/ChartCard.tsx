@@ -1,11 +1,11 @@
 import { Card, CardHeader, CardBody, CardFooter } from 'reactstrap';
-import { FC, ReactNode } from 'react';
+import { FC, PropsWithChildren, ReactNode } from 'react';
 import './ChartCard.scss';
 
-interface ChartCardProps {
+type ChartCardProps = PropsWithChildren<{
   title: Function | string;
   footer?: ReactNode;
-}
+}>;
 
 export const ChartCard: FC<ChartCardProps> = ({ title, footer, children }) => (
   <Card>

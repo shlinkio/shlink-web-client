@@ -31,28 +31,28 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'TagsSettings',
   );
   bottle.decorator('Settings', withoutSelectedServer);
-  bottle.decorator('Settings', connect(null, [ 'resetSelectedServer' ]));
+  bottle.decorator('Settings', connect(null, ['resetSelectedServer']));
 
   bottle.serviceFactory('RealTimeUpdatesSettings', () => RealTimeUpdatesSettings);
   bottle.decorator(
     'RealTimeUpdatesSettings',
-    connect([ 'settings' ], [ 'toggleRealTimeUpdates', 'setRealTimeUpdatesInterval' ]),
+    connect(['settings'], ['toggleRealTimeUpdates', 'setRealTimeUpdatesInterval']),
   );
 
   bottle.serviceFactory('ShortUrlCreationSettings', () => ShortUrlCreationSettings);
-  bottle.decorator('ShortUrlCreationSettings', connect([ 'settings' ], [ 'setShortUrlCreationSettings' ]));
+  bottle.decorator('ShortUrlCreationSettings', connect(['settings'], ['setShortUrlCreationSettings']));
 
   bottle.serviceFactory('UserInterfaceSettings', () => UserInterfaceSettings);
-  bottle.decorator('UserInterfaceSettings', connect([ 'settings' ], [ 'setUiSettings' ]));
+  bottle.decorator('UserInterfaceSettings', connect(['settings'], ['setUiSettings']));
 
   bottle.serviceFactory('VisitsSettings', () => VisitsSettings);
-  bottle.decorator('VisitsSettings', connect([ 'settings' ], [ 'setVisitsSettings' ]));
+  bottle.decorator('VisitsSettings', connect(['settings'], ['setVisitsSettings']));
 
   bottle.serviceFactory('TagsSettings', () => TagsSettings);
-  bottle.decorator('TagsSettings', connect([ 'settings' ], [ 'setTagsSettings' ]));
+  bottle.decorator('TagsSettings', connect(['settings'], ['setTagsSettings']));
 
   bottle.serviceFactory('ShortUrlsListSettings', () => ShortUrlsListSettings);
-  bottle.decorator('ShortUrlsListSettings', connect([ 'settings' ], [ 'setShortUrlsListSettings' ]));
+  bottle.decorator('ShortUrlsListSettings', connect(['settings'], ['setShortUrlsListSettings']));
 
   // Actions
   bottle.serviceFactory('toggleRealTimeUpdates', () => toggleRealTimeUpdates);

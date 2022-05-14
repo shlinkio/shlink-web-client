@@ -1,5 +1,4 @@
 import { Mock } from 'ts-mockery';
-import { CsvJson } from 'csvjson';
 import ServersExporter from '../../../src/servers/services/ServersExporter';
 import LocalStorage from '../../../src/utils/services/LocalStorage';
 import { appendChild, removeChild, windowMock } from '../../mocks/WindowMock';
@@ -22,9 +21,7 @@ describe('ServersExporter', () => {
   const erroneousToCsv = jest.fn(() => {
     throw new Error('');
   });
-  const createCsvjsonMock = (throwError = false) => Mock.of<CsvJson>({
-    toCSV: throwError ? erroneousToCsv : jest.fn(() => ''),
-  });
+  const createCsvjsonMock = (throwError = false) => (throwError ? erroneousToCsv : jest.fn(() => ''));
 
   beforeEach(jest.clearAllMocks);
 
@@ -35,7 +32,7 @@ describe('ServersExporter', () => {
     beforeEach(() => {
       originalConsole = global.console;
       global.console = Mock.of<Console>({ error });
-      (global as any).Blob = class Blob {}; // eslint-disable-line @typescript-eslint/no-extraneous-class
+      (global as any).Blob = class Blob {};
       (global as any).URL = { createObjectURL: () => '' };
     });
     afterEach(() => {

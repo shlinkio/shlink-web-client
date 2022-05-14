@@ -1,17 +1,16 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { InputType } from 'reactstrap/types/lib/Input';
 import { LabeledFormGroup } from './LabeledFormGroup';
 
-export interface InputFormGroupProps {
+export type InputFormGroupProps = PropsWithChildren<{
   value: string;
   onChange: (newValue: string) => void;
-  id?: string;
   type?: InputType;
   required?: boolean;
   placeholder?: string;
   className?: string;
   labelClassName?: string;
-}
+}>;
 
 export const InputFormGroup: FC<InputFormGroupProps> = (
   { children, value, onChange, type, required, placeholder, className, labelClassName },

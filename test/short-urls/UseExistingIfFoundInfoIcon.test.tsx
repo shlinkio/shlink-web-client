@@ -1,22 +1,14 @@
-import { mount, ReactWrapper } from 'enzyme';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Modal } from 'reactstrap';
-import UseExistingIfFoundInfoIcon from '../../src/short-urls/UseExistingIfFoundInfoIcon';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { UseExistingIfFoundInfoIcon } from '../../src/short-urls/UseExistingIfFoundInfoIcon';
 
 describe('<UseExistingIfFoundInfoIcon />', () => {
-  let wrapped: ReactWrapper;
+  it('shows modal when icon is clicked', async () => {
+    const user = userEvent.setup();
+    render(<UseExistingIfFoundInfoIcon />);
 
-  beforeEach(() => {
-    wrapped = mount(<UseExistingIfFoundInfoIcon />);
-  });
-
-  afterEach(() => wrapped.unmount());
-
-  it('shows modal when icon is clicked', () => {
-    const icon = wrapped.find(FontAwesomeIcon);
-
-    expect(wrapped.find(Modal).prop('isOpen')).toEqual(false);
-    icon.simulate('click');
-    expect(wrapped.find(Modal).prop('isOpen')).toEqual(true);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await user.click(screen.getByTitle('What does this mean?').firstElementChild as Element);
+    expect(await screen.findByRole('dialog')).toBeInTheDocument();
   });
 });

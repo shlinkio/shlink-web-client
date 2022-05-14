@@ -1,28 +1,23 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { identity } from 'ramda';
-import { PaginationItem } from 'reactstrap';
-import SimplePaginator from '../../src/common/SimplePaginator';
+import { render, screen } from '@testing-library/react';
+import { SimplePaginator } from '../../src/common/SimplePaginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<SimplePaginator />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (pagesCount: number, currentPage = 1) => {
-    wrapper = shallow(<SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={identity} />);
+  const setUp = (pagesCount: number, currentPage = 1) => render(
+    <SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={jest.fn()} />,
+  );
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
-
-  it.each([ -3, -2, 0, 1 ])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
-    expect(createWrapper(pagesCount).text()).toEqual('');
+  it.each([-3, -2, 0, 1])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
+    const { container } = setUp(pagesCount);
+    expect(container.firstChild).toEqual(null);
   });
 
   describe('ELLIPSIS are rendered where expected', () => {
     const getItemsForPages = (pagesCount: number, currentPage: number) => {
-      const paginator = createWrapper(pagesCount, currentPage);
-      const items = paginator.find(PaginationItem);
-      const itemsWithEllipsis = items.filterWhere((item) => item?.key()?.includes(ELLIPSIS));
+      setUp(pagesCount, currentPage);
+
+      const items = screen.getAllByRole('link');
+      const itemsWithEllipsis = items.filter((item) => item.innerHTML.includes(ELLIPSIS));
 
       return { items, itemsWithEllipsis };
     };
@@ -30,22 +25,22 @@ describe('<SimplePaginator />', () => {
     it('renders first ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(9, 7);
 
-      expect(items.at(2).html()).toContain(ELLIPSIS);
+      expect(items[1]).toHaveTextContent(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(1);
     });
 
     it('renders last ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(9, 2);
 
-      expect(items.at(items.length - 3).html()).toContain(ELLIPSIS);
+      expect(items[items.length - 2]).toHaveTextContent(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(1);
     });
 
     it('renders both ELLIPSIS', () => {
       const { items, itemsWithEllipsis } = getItemsForPages(20, 9);
 
-      expect(items.at(2).html()).toContain(ELLIPSIS);
-      expect(items.at(items.length - 3).html()).toContain(ELLIPSIS);
+      expect(items[1]).toHaveTextContent(ELLIPSIS);
+      expect(items[items.length - 2]).toHaveTextContent(ELLIPSIS);
       expect(itemsWithEllipsis).toHaveLength(2);
     });
   });

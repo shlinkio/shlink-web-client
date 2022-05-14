@@ -71,8 +71,8 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it.each([
-      [{ shortCode: 'abc123' }, visitsMocks.length + 1 ],
-      [{ shortCode: 'def456' }, visitsMocks.length ],
+      [{ shortCode: 'abc123' }, visitsMocks.length + 1],
+      [{ shortCode: 'def456' }, visitsMocks.length],
       [
         Mock.of<ShortUrlVisits>({
           shortCode: 'abc123',
@@ -173,9 +173,9 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it.each([
-      [ undefined, undefined ],
-      [{}, undefined ],
-      [{ domain: 'foobar.com' }, 'foobar.com' ],
+      [undefined, undefined],
+      [{}, undefined],
+      [{ domain: 'foobar.com' }, 'foobar.com'],
     ])('dispatches start and success when promise is resolved', async (query, domain) => {
       const visits = visitsMocks;
       const shortCode = 'abc123';
@@ -215,20 +215,20 @@ describe('shortUrlVisitsReducer', () => {
 
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(expectedRequests);
       expect(dispatchMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        visits: [ ...visitsMocks, ...visitsMocks, ...visitsMocks ],
+        visits: [...visitsMocks, ...visitsMocks, ...visitsMocks],
       }));
     });
 
     it.each([
       [
-        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) }) ],
+        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) })],
         { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last7Days' },
       ],
       [
-        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) }) ],
+        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) })],
         { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last365Days' },
       ],
-      [[], expect.objectContaining({ type: GET_SHORT_URL_VISITS }) ],
+      [[], expect.objectContaining({ type: GET_SHORT_URL_VISITS })],
     ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
       const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
         data,

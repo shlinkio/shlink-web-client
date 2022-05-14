@@ -4,10 +4,10 @@ import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import VisitsStats from './VisitsStats';
-import { OrphanVisitsHeader } from './OrphanVisitsHeader';
 import { NormalizedVisit, OrphanVisitType, VisitsInfo, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
+import VisitsHeader from './VisitsHeader';
 
 export interface OrphanVisitsProps extends CommonVisitsProps {
   getOrphanVisits: (
@@ -41,7 +41,7 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       selectedServer={selectedServer}
       isOrphanVisits
     >
-      <OrphanVisitsHeader orphanVisits={orphanVisits} goBack={goBack} />
+      <VisitsHeader title="Orphan visits" goBack={goBack} visits={orphanVisits.visits} />
     </VisitsStats>
   );
-}, () => [ Topics.orphanVisits ]);
+}, () => [Topics.orphanVisits]);

@@ -28,11 +28,11 @@ describe('utils', () => {
 
   describe('nonEmptyValueOrNull', () => {
     it.each([
-      [ '', null ],
-      [ 'Hello', 'Hello' ],
-      [[], null ],
-      [[ 1, 2, 3 ], [ 1, 2, 3 ]],
-      [{}, null ],
+      ['', null],
+      ['Hello', 'Hello'],
+      [[], null],
+      [[1, 2, 3], [1, 2, 3]],
+      [{}, null],
       [{ foo: 'bar' }, { foo: 'bar' }],
     ])('returns expected value based on input', (value, expected) => {
       expect(nonEmptyValueOrNull(value)).toEqual(expected);
@@ -41,10 +41,10 @@ describe('utils', () => {
 
   describe('capitalize', () => {
     it.each([
-      [ 'foo', 'Foo' ],
-      [ 'BAR', 'BAR' ],
-      [ 'bAZ', 'BAZ' ],
-      [ 'with spaces', 'With spaces' ],
+      ['foo', 'Foo'],
+      ['BAR', 'BAR'],
+      ['bAZ', 'BAZ'],
+      ['with spaces', 'With spaces'],
     ])('sets first letter in uppercase', (value, expectedResult) => {
       expect(capitalize(value)).toEqual(expectedResult);
     });

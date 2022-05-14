@@ -1,6 +1,7 @@
 import { useState, useRef, EffectCallback, DependencyList, useEffect } from 'react';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 import { parseQuery, stringifyQuery } from './query';
 
 const DEFAULT_DELAY = 2000;
@@ -11,7 +12,7 @@ export const useStateFlagTimeout = (
   setTimeout: (callback: Function, timeout: number) => number,
   clearTimeout: (timer: number) => void,
 ): StateFlagTimeout => (initialValue = false, delay = DEFAULT_DELAY) => {
-  const [ flag, setFlag ] = useState<boolean>(initialValue);
+  const [flag, setFlag] = useState<boolean>(initialValue);
   const timeout = useRef<number | undefined>(undefined);
   const callback = () => {
     setFlag(!initialValue);
@@ -23,20 +24,20 @@ export const useStateFlagTimeout = (
     timeout.current = setTimeout(() => setFlag(initialValue), delay);
   };
 
-  return [ flag, callback ];
+  return [flag, callback];
 };
 
 type ToggleResult = [ boolean, () => void, () => void, () => void ];
 
 export const useToggle = (initialValue = false): ToggleResult => {
-  const [ flag, setFlag ] = useState<boolean>(initialValue);
+  const [flag, setFlag] = useState<boolean>(initialValue);
 
-  return [ flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false) ];
+  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
 };
 
 export const useSwipeable = (showSidebar: () => void, hideSidebar: () => void) => {
   const swipeMenuIfNoModalExists = (callback: () => void) => (e: any) => {
-    const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some( // eslint-disable-line @typescript-eslint/no-unsafe-call
+    const swippedOnVisitsTable = (e.event.composedPath() as HTMLElement[]).some(
       ({ classList }) => classList?.contains('visits-table'),
     );
 
@@ -55,17 +56,17 @@ export const useSwipeable = (showSidebar: () => void, hideSidebar: () => void) =
 };
 
 export const useQueryState = <T>(paramName: string, initialState: T): [ T, (newValue: T) => void ] => {
-  const [ value, setValue ] = useState(initialState);
-  const setValueWithLocation = (value: T) => {
+  const [value, setValue] = useState(initialState);
+  const setValueWithLocation = (valueToSet: T) => {
     const { location, history } = window;
     const query = parseQuery<any>(location.search);
 
-    query[paramName] = value;
+    query[paramName] = valueToSet;
     history.pushState(null, '', `${location.pathname}?${stringifyQuery(query)}`);
-    setValue(value);
+    setValue(valueToSet);
   };
 
-  return [ value, setValueWithLocation ];
+  return [value, setValueWithLocation];
 };
 
 export const useEffectExceptFirstTime = (callback: EffectCallback, deps: DependencyList): void => {
@@ -81,4 +82,9 @@ export const useGoBack = () => {
   const navigate = useNavigate();
 
   return () => navigate(-1);
+};
+
+export const useDomId = (): string => {
+  const { current: id } = useRef(`dom-${uuid()}`);
+  return id;
 };

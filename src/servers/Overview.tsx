@@ -8,10 +8,9 @@ import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
-import { Versions } from '../utils/helpers/version';
 import { Topics } from '../mercure/helpers/Topics';
 import { ShlinkShortUrlsListParams } from '../api/types';
-import { supportsNonOrphanVisits, supportsOrphanVisits } from '../utils/helpers/features';
+import { supportsNonOrphanVisits } from '../utils/helpers/features';
 import { getServerId, SelectedServer } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
 
@@ -28,7 +27,6 @@ interface OverviewConnectProps {
 export const Overview = (
   ShortUrlsTable: FC<ShortUrlsTableProps>,
   CreateShortUrl: FC<CreateShortUrlProps>,
-  ForServerVersion: FC<Versions>,
 ) => boundToMercureHub(({
   shortUrlsList,
   listShortUrls,
@@ -42,7 +40,6 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
   const serverId = getServerId(selectedServer);
-  const linkToOrphanVisits = supportsOrphanVisits(selectedServer);
   const linkToNonOrphanVisits = supportsNonOrphanVisits(selectedServer);
   const navigate = useNavigate();
 
@@ -61,13 +58,8 @@ export const Overview = (
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Orphan visits" link={linkToOrphanVisits && `/server/${serverId}/orphan-visits`}>
-            <ForServerVersion minVersion="2.6.0">
-              {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount ?? 0)}
-            </ForServerVersion>
-            <ForServerVersion maxVersion="2.5.*">
-              <small className="text-muted"><i>Shlink 2.6 is needed</i></small>
-            </ForServerVersion>
+          <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
+            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount)}
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
@@ -109,4 +101,4 @@ export const Overview = (
       </Card>
     </>
   );
-}, () => [ Topics.visits, Topics.orphanVisits ]);
+}, () => [Topics.visits, Topics.orphanVisits]);

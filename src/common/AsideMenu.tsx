@@ -17,7 +17,6 @@ import './AsideMenu.scss';
 
 export interface AsideMenuProps {
   selectedServer: SelectedServer;
-  className?: string;
   showOnMobile?: boolean;
 }
 

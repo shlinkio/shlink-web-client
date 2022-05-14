@@ -57,10 +57,10 @@ describe('<SortableBarChartCard />', () => {
       };
     });
 
-    it('name - ASC', () => assert('name', 'ASC', [ 'Bar', 'Foo' ], [ 50, 100 ]));
-    it('name - DESC', () => assert('name', 'DESC', [ 'Foo', 'Bar' ], [ 100, 50 ]));
-    it('value - ASC', () => assert('value', 'ASC', [ 'Bar', 'Foo' ], [ 50, 100 ]));
-    it('value - DESC', () => assert('value', 'DESC', [ 'Foo', 'Bar' ], [ 100, 50 ]));
+    it('name - ASC', () => assert('name', 'ASC', ['Bar', 'Foo'], [50, 100]));
+    it('name - DESC', () => assert('name', 'DESC', ['Foo', 'Bar'], [100, 50]));
+    it('value - ASC', () => assert('value', 'ASC', ['Bar', 'Foo'], [50, 100]));
+    it('value - DESC', () => assert('value', 'DESC', ['Foo', 'Bar'], [100, 50]));
   });
 
   describe('renders properly paginated stats when pagination is set', () => {
@@ -83,7 +83,7 @@ describe('<SortableBarChartCard />', () => {
       };
     });
 
-    const buildExpected = (size: number): string[] => [ 'Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`) ];
+    const buildExpected = (size: number): string[] => ['Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`)];
 
     it('50 items per page', () => assert(50, buildExpected(50)));
     it('100 items per page', () => assert(100, buildExpected(100)));

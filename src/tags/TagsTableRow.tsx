@@ -21,9 +21,9 @@ export const TagsTableRow = (
   EditTagModal: FC<TagModalProps>,
   colorGenerator: ColorGenerator,
 ) => ({ tag, selectedServer }: TagsTableRowProps) => {
-  const [ isDeleteModalOpen, toggleDelete ] = useToggle();
-  const [ isEditModalOpen, toggleEdit ] = useToggle();
-  const [ isDropdownOpen, toggleDropdown ] = useToggle();
+  const [isDeleteModalOpen, toggleDelete] = useToggle();
+  const [isEditModalOpen, toggleEdit] = useToggle();
+  const [isDropdownOpen, toggleDropdown] = useToggle();
   const serverId = getServerId(selectedServer);
 
   return (

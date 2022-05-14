@@ -1,6 +1,6 @@
 import Bottle from 'bottlejs';
 import { appUpdateAvailable, resetAppUpdate } from '../reducers/appUpdates';
-import App from '../App';
+import { App } from '../App';
 import { ConnectDecorator } from '../../container/types';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
@@ -17,7 +17,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ManageServers',
     'ShlinkVersionsContainer',
   );
-  bottle.decorator('App', connect([ 'servers', 'settings', 'appUpdated' ], [ 'fetchServers', 'resetAppUpdate' ]));
+  bottle.decorator('App', connect(['servers', 'settings', 'appUpdated'], ['fetchServers', 'resetAppUpdate']));
 
   // Actions
   bottle.serviceFactory('appUpdateAvailable', () => appUpdateAvailable);

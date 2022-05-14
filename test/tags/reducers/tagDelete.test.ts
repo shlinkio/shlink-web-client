@@ -59,7 +59,7 @@ describe('tagDeleteReducer', () => {
       await dispatchable(dispatch, getState);
 
       expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
+      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [tag]);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
@@ -79,7 +79,7 @@ describe('tagDeleteReducer', () => {
       }
 
       expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [ tag ]);
+      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [tag]);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });

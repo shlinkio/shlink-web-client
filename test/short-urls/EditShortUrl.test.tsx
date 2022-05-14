@@ -60,7 +60,7 @@ describe('<EditShortUrl />', () => {
   });
 
   it.each([
-    [ undefined, { longUrl: '', validateUrl: true }, true ],
+    [undefined, { longUrl: '', validateUrl: true }, true],
     [
       Mock.of<ShortUrl>({ meta: {} }),
       {

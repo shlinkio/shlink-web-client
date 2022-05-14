@@ -25,9 +25,9 @@ const TagCard = (
   EditTagModal: FC<TagModalProps>,
   colorGenerator: ColorGenerator,
 ) => ({ tag, selectedServer, displayed, toggle }: TagCardProps) => {
-  const [ isDeleteModalOpen, toggleDelete ] = useToggle();
-  const [ isEditModalOpen, toggleEdit ] = useToggle();
-  const [ hasTitle,, displayTitle ] = useToggle();
+  const [isDeleteModalOpen, toggleDelete] = useToggle();
+  const [isEditModalOpen, toggleEdit] = useToggle();
+  const [hasTitle,, displayTitle] = useToggle();
   const titleRef = useRef<HTMLElement>();
   const serverId = getServerId(selectedServer);
 
@@ -35,7 +35,7 @@ const TagCard = (
     if (isTruncated(titleRef.current)) {
       displayTitle();
     }
-  }, [ titleRef.current ]);
+  }, [titleRef.current]);
 
   return (
     <Card className="tag-card">

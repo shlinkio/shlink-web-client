@@ -1,4 +1,3 @@
-import csvjson from 'csvjson';
 import Bottle from 'bottlejs';
 import CreateServer from '../CreateServer';
 import ServersDropdown from '../ServersDropdown';
@@ -9,7 +8,6 @@ import ImportServersBtn from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
-import ForServerVersion from '../helpers/ForServerVersion';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
@@ -31,48 +29,44 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ManageServersRow',
   );
   bottle.decorator('ManageServers', withoutSelectedServer);
-  bottle.decorator('ManageServers', connect([ 'selectedServer', 'servers' ], [ 'resetSelectedServer' ]));
+  bottle.decorator('ManageServers', connect(['selectedServer', 'servers'], ['resetSelectedServer']));
 
   bottle.serviceFactory('ManageServersRow', ManageServersRow, 'ManageServersRowDropdown');
 
   bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
-  bottle.decorator('ManageServersRowDropdown', connect(null, [ 'setAutoConnect' ]));
+  bottle.decorator('ManageServersRowDropdown', connect(null, ['setAutoConnect']));
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
   bottle.decorator('CreateServer', withoutSelectedServer);
-  bottle.decorator('CreateServer', connect([ 'selectedServer', 'servers' ], [ 'createServer', 'resetSelectedServer' ]));
+  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
-  bottle.decorator('EditServer', connect([ 'selectedServer' ], [ 'editServer', 'selectServer', 'resetSelectedServer' ]));
+  bottle.decorator('EditServer', connect(['selectedServer'], ['editServer', 'selectServer', 'resetSelectedServer']));
 
   bottle.serviceFactory('ServersDropdown', () => ServersDropdown);
-  bottle.decorator('ServersDropdown', connect([ 'servers', 'selectedServer' ]));
+  bottle.decorator('ServersDropdown', connect(['servers', 'selectedServer']));
 
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
-  bottle.decorator('DeleteServerModal', connect(null, [ 'deleteServer' ]));
+  bottle.decorator('DeleteServerModal', connect(null, ['deleteServer']));
 
   bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
 
   bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
-  bottle.decorator('ImportServersBtn', connect([ 'servers' ], [ 'createServers' ]));
-
-  bottle.serviceFactory('ForServerVersion', () => ForServerVersion);
-  bottle.decorator('ForServerVersion', connect([ 'selectedServer' ]));
+  bottle.decorator('ImportServersBtn', connect(['servers'], ['createServers']));
 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
-  bottle.decorator('ServerError', connect([ 'servers', 'selectedServer' ]));
+  bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
 
-  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl', 'ForServerVersion');
+  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
   bottle.decorator('Overview', connect(
-    [ 'shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview' ],
-    [ 'listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview' ],
+    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview'],
+    ['listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview'],
   ));
 
   // Services
-  bottle.constant('csvjson', csvjson);
   bottle.constant('fileReaderFactory', () => new FileReader());
-  bottle.service('ServersImporter', ServersImporter, 'csvjson', 'fileReaderFactory');
-  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'csvjson');
+  bottle.service('ServersImporter', ServersImporter, 'csvToJson', 'fileReaderFactory');
+  bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'jsonToCsv');
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');

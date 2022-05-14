@@ -1,21 +1,18 @@
-import { Mock } from 'ts-mockery';
-import { CsvJson } from 'csvjson';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { NormalizedVisit } from '../../../src/visits/types';
 import { windowMock } from '../../mocks/WindowMock';
 import { ExportableShortUrl } from '../../../src/short-urls/data';
 
 describe('ReportExporter', () => {
-  const toCSV = jest.fn();
-  const csvToJsonMock = Mock.of<CsvJson>({ toCSV });
+  const jsonToCsv = jest.fn();
   let exporter: ReportExporter;
 
   beforeEach(jest.clearAllMocks);
   beforeEach(() => {
-    (global as any).Blob = class Blob {}; // eslint-disable-line @typescript-eslint/no-extraneous-class
+    (global as any).Blob = class Blob {};
     (global as any).URL = { createObjectURL: () => '' };
 
-    exporter = new ReportExporter(windowMock, csvToJsonMock);
+    exporter = new ReportExporter(windowMock, jsonToCsv);
   });
 
   describe('exportVisits', () => {
@@ -36,13 +33,13 @@ describe('ReportExporter', () => {
 
       exporter.exportVisits('my_visits.csv', visits);
 
-      expect(toCSV).toHaveBeenCalledWith(visits, { headers: 'key', wrap: true });
+      expect(jsonToCsv).toHaveBeenCalledWith(visits);
     });
 
     it('skips execution when list of visits is empty', () => {
       exporter.exportVisits('my_visits.csv', []);
 
-      expect(toCSV).not.toHaveBeenCalled();
+      expect(jsonToCsv).not.toHaveBeenCalled();
     });
   });
 
@@ -61,13 +58,13 @@ describe('ReportExporter', () => {
 
       exporter.exportShortUrls(shortUrls);
 
-      expect(toCSV).toHaveBeenCalledWith(shortUrls, { headers: 'key', wrap: true });
+      expect(jsonToCsv).toHaveBeenCalledWith(shortUrls);
     });
 
     it('skips execution when list of visits is empty', () => {
       exporter.exportShortUrls([]);
 
-      expect(toCSV).not.toHaveBeenCalled();
+      expect(jsonToCsv).not.toHaveBeenCalled();
     });
   });
 });

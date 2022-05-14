@@ -17,7 +17,9 @@ interface SimplePaginatorProps {
   centered?: boolean;
 }
 
-const SimplePaginator: FC<SimplePaginatorProps> = ({ pagesCount, currentPage, setCurrentPage, centered = true }) => {
+export const SimplePaginator: FC<SimplePaginatorProps> = (
+  { pagesCount, currentPage, setCurrentPage, centered = true },
+) => {
   if (pagesCount < 2) {
     return null;
   }
@@ -35,7 +37,9 @@ const SimplePaginator: FC<SimplePaginatorProps> = ({ pagesCount, currentPage, se
           disabled={pageIsEllipsis(pageNumber)}
           active={currentPage === pageNumber}
         >
-          <PaginationLink tag="span" onClick={onClick(pageNumber)}>{prettifyPageNumber(pageNumber)}</PaginationLink>
+          <PaginationLink role="link" tag="span" onClick={onClick(pageNumber)}>
+            {prettifyPageNumber(pageNumber)}
+          </PaginationLink>
         </PaginationItem>
       ))}
       <PaginationItem disabled={currentPage >= pagesCount}>
@@ -44,5 +48,3 @@ const SimplePaginator: FC<SimplePaginatorProps> = ({ pagesCount, currentPage, se
     </Pagination>
   );
 };
-
-export default SimplePaginator;

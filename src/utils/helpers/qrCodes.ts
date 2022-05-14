@@ -2,8 +2,6 @@ import { isEmpty } from 'ramda';
 import { stringifyQuery } from './query';
 
 export interface QrCodeCapabilities {
-  useSizeInPath: boolean;
-  marginIsSupported: boolean;
   errorCorrectionIsSupported: boolean;
 }
 
@@ -21,13 +19,13 @@ export interface QrCodeOptions {
 export const buildQrCodeUrl = (
   shortUrl: string,
   { size, format, margin, errorCorrection }: QrCodeOptions,
-  { useSizeInPath, marginIsSupported, errorCorrectionIsSupported }: QrCodeCapabilities,
+  { errorCorrectionIsSupported }: QrCodeCapabilities,
 ): string => {
-  const baseUrl = `${shortUrl}/qr-code${useSizeInPath ? `/${size}` : ''}`;
+  const baseUrl = `${shortUrl}/qr-code`;
   const query = stringifyQuery({
-    size: useSizeInPath ? undefined : size,
+    size,
     format,
-    margin: marginIsSupported && margin > 0 ? margin : undefined,
+    margin: margin > 0 ? margin : undefined,
     errorCorrection: errorCorrectionIsSupported ? errorCorrection : undefined,
   });
 

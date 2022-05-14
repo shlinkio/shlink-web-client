@@ -27,13 +27,13 @@ describe('<LineChartCard />', () => {
   });
 
   it.each([
-    [[], 'monthly' ],
-    [[{ date: formatISO(subDays(new Date(), 1)) }], 'hourly' ],
-    [[{ date: formatISO(subDays(new Date(), 3)) }], 'daily' ],
-    [[{ date: formatISO(subMonths(new Date(), 2)) }], 'weekly' ],
-    [[{ date: formatISO(subMonths(new Date(), 6)) }], 'weekly' ],
-    [[{ date: formatISO(subMonths(new Date(), 7)) }], 'monthly' ],
-    [[{ date: formatISO(subYears(new Date(), 1)) }], 'monthly' ],
+    [[], 'monthly'],
+    [[{ date: formatISO(subDays(new Date(), 1)) }], 'hourly'],
+    [[{ date: formatISO(subDays(new Date(), 3)) }], 'daily'],
+    [[{ date: formatISO(subMonths(new Date(), 2)) }], 'weekly'],
+    [[{ date: formatISO(subMonths(new Date(), 6)) }], 'weekly'],
+    [[{ date: formatISO(subMonths(new Date(), 7)) }], 'monthly'],
+    [[{ date: formatISO(subYears(new Date(), 1)) }], 'monthly'],
   ])('renders group menu and selects proper grouping item based on visits dates', (visits, expectedActiveItem) => {
     const wrapper = createWrapper(visits.map((visit) => Mock.of<NormalizedVisit>(visit)));
     const items = wrapper.find(DropdownItem);
@@ -80,8 +80,8 @@ describe('<LineChartCard />', () => {
   });
 
   it.each([
-    [[ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], [], 1 ],
-    [[ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], [ Mock.of<NormalizedVisit>({ date: '2016-04-01' }) ], 2 ],
+    [[Mock.of<NormalizedVisit>({ date: '2016-04-01' })], [], 1],
+    [[Mock.of<NormalizedVisit>({ date: '2016-04-01' })], [Mock.of<NormalizedVisit>({ date: '2016-04-01' })], 2],
   ])('renders chart with expected data', (visits, highlightedVisits, expectedLines) => {
     const wrapper = createWrapper(visits, highlightedVisits);
     const chart = wrapper.find(Line);

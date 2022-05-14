@@ -1,5 +1,6 @@
 import { ShlinkState } from '../../container/types';
 
+/* eslint-disable no-param-reassign */
 export const migrateDeprecatedSettings = (state: Partial<ShlinkState>): Partial<ShlinkState> => {
   if (!state.settings) {
     return state;

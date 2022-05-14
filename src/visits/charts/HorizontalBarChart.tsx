@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import { FC, MutableRefObject, useRef } from 'react';
+import { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import { keys, values } from 'ramda';
-import { Bar } from 'react-chartjs-2';
+import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { prettify } from '../../utils/helpers/numbers';
@@ -16,9 +16,9 @@ export interface HorizontalBarChartProps {
   onClick?: (label: string) => void;
 }
 
-const dropLabelIfHidden = (label: string) => label.startsWith('hidden') ? '' : label;
+const dropLabelIfHidden = (label: string) => (label.startsWith('hidden') ? '' : label);
 const statsAreDefined = (stats: Stats | undefined): stats is Stats => !!stats && Object.keys(stats).length > 0;
-const determineHeight = (labels: string[]): number | undefined => labels.length > 20 ? labels.length * 10 : undefined;
+const determineHeight = (labels: string[]): number | undefined => (labels.length > 20 ? labels.length * 10 : undefined);
 
 const generateChartDatasets = (
   data: number[],
@@ -34,7 +34,7 @@ const generateChartDatasets = (
   };
 
   if (highlightedData.every((value) => value === 0)) {
-    return [ mainDataset ];
+    return [mainDataset];
   }
 
   const highlightedDataset: ChartDataset = {
@@ -45,7 +45,7 @@ const generateChartDatasets = (
     borderWidth: 2,
   };
 
-  return [ mainDataset, highlightedDataset ];
+  return [mainDataset, highlightedDataset];
 };
 const generateChartData = (
   labels: string[],
@@ -57,8 +57,7 @@ const generateChartData = (
   datasets: generateChartDatasets(data, highlightedData, highlightedLabel),
 });
 
-type ClickedCharts = [{ index: number }] | [];
-const chartElementAtEvent = (labels: string[], onClick?: (label: string) => void) => ([ chart ]: ClickedCharts) => {
+const chartElementAtEvent = (labels: string[], [chart]: InteractionItem[], onClick?: (label: string) => void) => {
   if (!onClick || !chart) {
     return;
   }
@@ -80,6 +79,8 @@ export const HorizontalBarChart: FC<HorizontalBarChartProps> = (
     }, { ...stats }),
   );
   const highlightedData = fillTheGaps(highlightedStats ?? {}, labels);
+  const refWithStats = useRef(null);
+  const refWithoutStats = useRef(null);
 
   const options: ChartOptions = {
     plugins: {
@@ -110,13 +111,14 @@ export const HorizontalBarChart: FC<HorizontalBarChartProps> = (
   const height = determineHeight(labels);
 
   // Provide a key based on the height, to force re-render every time the dataset changes (example, due to pagination)
-  const renderChartComponent = (customKey: string) => (
+  const renderChartComponent = (customKey: string, theRef: MutableRefObject<any>) => (
     <Bar
+      ref={theRef}
       key={`${height}_${customKey}`}
       data={chartData as any}
       options={options as any}
       height={height}
-      getElementAtEvent={chartElementAtEvent(labels, onClick) as any}
+      onClick={(e) => chartElementAtEvent(labels, getElementAtEvent(theRef.current, e), onClick)}
     />
   );
 
@@ -124,8 +126,8 @@ export const HorizontalBarChart: FC<HorizontalBarChartProps> = (
     <>
       {/* It's VERY IMPORTANT to render two different components here, as one has 1 dataset and the other has 2 */}
       {/* Using the same component causes a crash when switching from 1 to 2 datasets, and then back to 1 dataset */}
-      {highlightedStats !== undefined && renderChartComponent('with_stats')}
-      {highlightedStats === undefined && renderChartComponent('without_stats')}
+      {highlightedStats !== undefined && renderChartComponent('with_stats', refWithStats)}
+      {highlightedStats === undefined && renderChartComponent('without_stats', refWithoutStats)}
     </>
   );
 };

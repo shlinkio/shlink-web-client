@@ -1,36 +1,28 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkApiError, ShlinkApiErrorProps } from '../../src/api/ShlinkApiError';
 import { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types';
 
 describe('<ShlinkApiError />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props: ShlinkApiErrorProps) => {
-    wrapper = shallow(<ShlinkApiError {...props} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (props: ShlinkApiErrorProps) => render(<ShlinkApiError {...props} />);
 
   it.each([
-    [ undefined, 'the fallback', 'the fallback' ],
-    [ Mock.all<ProblemDetailsError>(), 'the fallback', 'the fallback' ],
-    [ Mock.of<ProblemDetailsError>({ detail: 'the detail' }), 'the fallback', 'the detail' ],
+    [undefined, 'the fallback', 'the fallback'],
+    [Mock.all<ProblemDetailsError>(), 'the fallback', 'the fallback'],
+    [Mock.of<ProblemDetailsError>({ detail: 'the detail' }), 'the fallback', 'the detail'],
   ])('renders proper message', (errorData, fallbackMessage, expectedMessage) => {
-    const wrapper = createWrapper({ errorData, fallbackMessage });
+    const { container } = setUp({ errorData, fallbackMessage });
 
-    expect(wrapper.text()).toContain(expectedMessage);
+    expect(container.firstChild).toHaveTextContent(expectedMessage);
+    expect(screen.queryByRole('paragraph')).not.toBeInTheDocument();
   });
 
   it.each([
-    [ undefined, 0 ],
-    [ Mock.all<ProblemDetailsError>(), 0 ],
-    [ Mock.of<InvalidArgumentError>({ type: 'INVALID_ARGUMENT', invalidElements: [] }), 1 ],
+    [undefined, 0],
+    [Mock.all<ProblemDetailsError>(), 0],
+    [Mock.of<InvalidArgumentError>({ type: 'INVALID_ARGUMENT', invalidElements: [] }), 1],
   ])('renders list of invalid elements when provided error is an InvalidError', (errorData, expectedElementsCount) => {
-    const wrapper = createWrapper({ errorData });
-    const p = wrapper.find('p');
-
-    expect(p).toHaveLength(expectedElementsCount);
+    setUp({ errorData });
+    expect(screen.queryAllByText(/^Invalid elements/)).toHaveLength(expectedElementsCount);
   });
 });

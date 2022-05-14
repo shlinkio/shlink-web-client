@@ -1,34 +1,30 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render } from '@testing-library/react';
 import { ShlinkLogo, ShlinkLogoProps } from '../../../src/common/img/ShlinkLogo';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('<ShlinkLogo />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props: ShlinkLogoProps) => {
-    wrapper = shallow(<ShlinkLogo {...props} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (props: ShlinkLogoProps) => render(<ShlinkLogo {...props} />);
 
   it.each([
-    [ undefined, MAIN_COLOR ],
-    [ 'red', 'red' ],
-    [ 'white', 'white' ],
+    [undefined, MAIN_COLOR],
+    ['red', 'red'],
+    ['white', 'white'],
   ])('renders expected color', (color, expectedColor) => {
-    const wrapper = createWrapper({ color });
-
-    expect(wrapper.find('g').prop('fill')).toEqual(expectedColor);
+    const { container } = setUp({ color });
+    expect(container.querySelector('g')).toHaveAttribute('fill', expectedColor);
   });
 
   it.each([
-    [ undefined, undefined ],
-    [ 'foo', 'foo' ],
-    [ 'bar', 'bar' ],
+    [undefined, undefined],
+    ['foo', 'foo'],
+    ['bar', 'bar'],
   ])('renders expected class', (className, expectedClassName) => {
-    const wrapper = createWrapper({ className });
+    const { container } = setUp({ className });
 
-    expect(wrapper.prop('className')).toEqual(expectedClassName);
+    if (expectedClassName) {
+      expect(container.firstChild).toHaveAttribute('class', expectedClassName);
+    } else {
+      expect(container.firstChild).not.toHaveAttribute('class');
+    }
   });
 });

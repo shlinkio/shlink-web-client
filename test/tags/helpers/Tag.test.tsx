@@ -26,8 +26,8 @@ describe('<Tag />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ true ],
-    [ false ],
+    [true],
+    [false],
   ])('includes an extra class when the color is light', (isLight) => {
     isColorLightForKey.mockReturnValue(isLight);
 
@@ -37,11 +37,11 @@ describe('<Tag />', () => {
   });
 
   it.each([
-    [ MAIN_COLOR ],
-    [ '#8A661C' ],
-    [ '#F7BE05' ],
-    [ '#5A02D8' ],
-    [ '#202786' ],
+    [MAIN_COLOR],
+    ['#8A661C'],
+    ['#F7BE05'],
+    ['#5A02D8'],
+    ['#202786'],
   ])('includes generated color as backgroundColor', (generatedColor) => {
     getColorForKey.mockReturnValue(generatedColor);
 
@@ -64,9 +64,9 @@ describe('<Tag />', () => {
   });
 
   it.each([
-    [ true, 1, 'auto' ],
-    [ false, 0, 'pointer' ],
-    [ undefined, 0, 'pointer' ],
+    [true, 1, 'auto'],
+    [false, 0, 'pointer'],
+    [undefined, 0, 'pointer'],
   ])('includes a close component when the tag is clearable', (clearable, expectedCloseBtnAmount, expectedCursor) => {
     const wrapper = createWrapper('foo', clearable);
 
@@ -75,8 +75,8 @@ describe('<Tag />', () => {
   });
 
   it.each([
-    [ undefined, 'foo' ],
-    [ 'bar', 'bar' ],
+    [undefined, 'foo'],
+    ['bar', 'bar'],
   ])('falls back to text as children when no children are provided', (children, expectedChildren) => {
     const wrapper = createWrapper('foo', false, children);
 

@@ -2,10 +2,9 @@ import { FC, useEffect, useState } from 'react';
 import { InputType } from 'reactstrap/types/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
-import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import DateInput, { DateInputProps } from '../utils/DateInput';
-import { supportsCrawlableVisits, supportsForwardQuery, supportsShortUrlTitle } from '../utils/helpers/features';
+import { supportsCrawlableVisits, supportsForwardQuery } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
 import Checkbox from '../utils/Checkbox';
@@ -13,7 +12,7 @@ import { SelectedServer } from '../servers/data';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DomainSelectorProps } from '../domains/DomainSelector';
 import { formatIsoDate } from '../utils/helpers/date';
-import UseExistingIfFoundInfoIcon from './UseExistingIfFoundInfoIcon';
+import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
 import { ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import './ShortUrlForm.scss';
@@ -32,14 +31,13 @@ export interface ShortUrlFormProps {
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
-const toDate = (date?: string | Date): Date | undefined => typeof date === 'string' ? parseISO(date) : date;
-const dynamicColClasses = (flag: boolean) => ({ 'col-sm-6': flag, 'col-sm-12': !flag });
+const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
 
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
-  const [ shortUrlData, setShortUrlData ] = useState(initialState);
+  const [shortUrlData, setShortUrlData] = useState(initialState);
   const isEdit = mode === 'edit';
   const isBasicMode = mode === 'create-basic';
   const hadTitleOriginally = hasValue(initialState.title);
@@ -48,9 +46,9 @@ export const ShortUrlForm = (
   const resolveNewTitle = (): OptionalString => {
     const hasNewTitle = hasValue(shortUrlData.title);
     const matcher = cond<never, OptionalString>([
-      [ () => !hasNewTitle && !hadTitleOriginally, () => undefined ],
-      [ () => !hasNewTitle && hadTitleOriginally, () => null ],
-      [ T, () => shortUrlData.title ],
+      [() => !hasNewTitle && !hadTitleOriginally, () => undefined],
+      [() => !hasNewTitle && hadTitleOriginally, () => null],
+      [T, () => shortUrlData.title],
     ]);
 
     return matcher();
@@ -65,7 +63,7 @@ export const ShortUrlForm = (
 
   useEffect(() => {
     setShortUrlData(initialState);
-  }, [ initialState ]);
+  }, [initialState]);
 
   const renderOptionalInput = (
     id: NonDateFields,
@@ -108,20 +106,16 @@ export const ShortUrlForm = (
       </FormGroup>
       <Row>
         {isBasicMode && renderOptionalInput('customSlug', 'Custom slug', 'text', { bsSize: 'lg' }, { className: 'col-lg-6' })}
-        <div className={isBasicMode ? 'col-lg-6' : 'col-12 mb-0'}>
+        <div className={isBasicMode ? 'col-lg-6 mb-3' : 'col-12'}>
           <TagsSelector selectedTags={shortUrlData.tags ?? []} onChange={changeTags} />
         </div>
       </Row>
     </>
   );
 
-  const supportsTitle = supportsShortUrlTitle(selectedServer);
-  const showCustomizeCard = supportsTitle || !isEdit;
-  const limitAccessCardClasses = classNames('mb-3', dynamicColClasses(showCustomizeCard));
   const showCrawlableControl = supportsCrawlableVisits(selectedServer);
   const showForwardQueryControl = supportsForwardQuery(selectedServer);
   const showBehaviorCard = showCrawlableControl || showForwardQueryControl;
-  const extraChecksCardClasses = classNames('mb-3', dynamicColClasses(showBehaviorCard));
 
   return (
     <form className="short-url-form" onSubmit={submit}>
@@ -133,36 +127,34 @@ export const ShortUrlForm = (
           </SimpleCard>
 
           <Row>
-            {showCustomizeCard && (
-              <div className="col-sm-6 mb-3">
-                <SimpleCard title="Customize the short URL">
-                  {supportsTitle && renderOptionalInput('title', 'Title')}
-                  {!isEdit && (
-                    <>
-                      <Row>
-                        <div className="col-lg-6">
-                          {renderOptionalInput('customSlug', 'Custom slug', 'text', {
-                            disabled: hasValue(shortUrlData.shortCodeLength),
-                          })}
-                        </div>
-                        <div className="col-lg-6">
-                          {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
-                            min: 4,
-                            disabled: hasValue(shortUrlData.customSlug),
-                          })}
-                        </div>
-                      </Row>
-                      <DomainSelector
-                        value={shortUrlData.domain}
-                        onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
-                      />
-                    </>
-                  )}
-                </SimpleCard>
-              </div>
-            )}
+            <div className="col-sm-6 mb-3">
+              <SimpleCard title="Customize the short URL">
+                {renderOptionalInput('title', 'Title')}
+                {!isEdit && (
+                  <>
+                    <Row>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('customSlug', 'Custom slug', 'text', {
+                          disabled: hasValue(shortUrlData.shortCodeLength),
+                        })}
+                      </div>
+                      <div className="col-lg-6">
+                        {renderOptionalInput('shortCodeLength', 'Short code length', 'number', {
+                          min: 4,
+                          disabled: hasValue(shortUrlData.customSlug),
+                        })}
+                      </div>
+                    </Row>
+                    <DomainSelector
+                      value={shortUrlData.domain}
+                      onChange={(domain?: string) => setShortUrlData({ ...shortUrlData, domain })}
+                    />
+                  </>
+                )}
+              </SimpleCard>
+            </div>
 
-            <div className={limitAccessCardClasses}>
+            <div className="col-sm-6 mb-3">
               <SimpleCard title="Limit access to the short URL">
                 {renderOptionalInput('maxVisits', 'Maximum number of visits allowed', 'number', { min: 1 })}
                 <div className="mb-3">
@@ -174,7 +166,7 @@ export const ShortUrlForm = (
           </Row>
 
           <Row>
-            <div className={extraChecksCardClasses}>
+            <div className="col-sm-6 mb-3">
               <SimpleCard title="Extra checks">
                 <ShortUrlFormCheckboxGroup
                   infoTooltip="If checked, Shlink will try to reach the long URL, failing in case it's not publicly accessible."

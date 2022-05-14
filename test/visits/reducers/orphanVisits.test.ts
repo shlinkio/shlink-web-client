@@ -70,7 +70,7 @@ describe('orphanVisitsReducer', () => {
     });
 
     it.each([
-      [{}, visitsMocks.length + 2 ],
+      [{}, visitsMocks.length + 2],
       [
         Mock.of<VisitsInfo>({
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
@@ -152,7 +152,7 @@ describe('orphanVisitsReducer', () => {
     });
 
     it.each([
-      [ undefined ],
+      [undefined],
       [{}],
     ])('dispatches start and success when promise is resolved', async (query) => {
       const visits = visitsMocks.map((visit) => ({ ...visit, visitedUrl: '' }));
@@ -175,14 +175,14 @@ describe('orphanVisitsReducer', () => {
 
     it.each([
       [
-        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) }) ],
+        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) })],
         { type: GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last7Days' },
       ],
       [
-        [ Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) }) ],
+        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) })],
         { type: GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last365Days' },
       ],
-      [[], expect.objectContaining({ type: GET_ORPHAN_VISITS }) ],
+      [[], expect.objectContaining({ type: GET_ORPHAN_VISITS })],
     ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
       const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
         data,

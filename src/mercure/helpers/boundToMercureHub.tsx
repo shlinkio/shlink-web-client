@@ -23,7 +23,7 @@ export function boundToMercureHub<T = {}>(
     const params = useParams();
 
     useEffect(() => {
-      const onMessage = (visit: CreateVisit) => interval ? pendingUpdates.add(visit) : createNewVisits([ visit ]);
+      const onMessage = (visit: CreateVisit) => (interval ? pendingUpdates.add(visit) : createNewVisits([visit]));
       const topics = getTopicsForProps(props, params);
       const closeEventSource = bindToMercureTopic(mercureInfo, topics, onMessage, loadMercureInfo);
 
@@ -32,12 +32,12 @@ export function boundToMercureHub<T = {}>(
       }
 
       const timer = setInterval(() => {
-        createNewVisits([ ...pendingUpdates ]);
+        createNewVisits([...pendingUpdates]);
         pendingUpdates.clear();
       }, interval * 1000 * 60);
 
       return pipe(() => clearInterval(timer), () => closeEventSource?.());
-    }, [ mercureInfo ]);
+    }, [mercureInfo]);
 
     return <WrappedComponent {...props} />;
   };

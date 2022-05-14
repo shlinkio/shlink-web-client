@@ -24,8 +24,8 @@ describe('<ManageServersRow />', () => {
   afterEach(() => wrapper?.unmount());
 
   it.each([
-    [ true, 4 ],
-    [ false, 3 ],
+    [true, 4],
+    [false, 3],
   ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
     const wrapper = createWrapper(hasAutoConnect);
     const td = wrapper.find('td');
@@ -43,8 +43,8 @@ describe('<ManageServersRow />', () => {
   });
 
   it.each([
-    [ true, 1 ],
-    [ false, 0 ],
+    [true, 1],
+    [false, 0],
   ])('renders auto-connect icon only if server is autoConnect', (autoConnect, expectedIcons) => {
     const wrapper = createWrapper(true, autoConnect);
     const icon = wrapper.find(FontAwesomeIcon);

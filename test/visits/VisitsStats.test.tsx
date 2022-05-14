@@ -16,7 +16,7 @@ import { DoughnutChartCard } from '../../src/visits/charts/DoughnutChartCard';
 import { ExportBtn } from '../../src/utils/ExportBtn';
 
 describe('<VisitsStats />', () => {
-  const visits = [ Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>() ];
+  const visits = [Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>()];
 
   let wrapper: ShallowWrapper;
   const getVisitsMock = jest.fn();
