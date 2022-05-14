@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/short-url-filtering/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/short-url-filtering/static/js/main.5d07a0fe.js",
+    "index.html": "/shlink-web-client/feature/short-url-filtering/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/short-url-filtering/static/css/main.1ccaf016.css.map",
+    "main.5d07a0fe.js.map": "/shlink-web-client/feature/short-url-filtering/static/js/main.5d07a0fe.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.5d07a0fe.js"
+  ]
+}
