@@ -20,7 +20,6 @@ export function OrderingDropdown<T extends string = string>(
 ) {
   const handleItemClick = (fieldKey: T) => () => {
     const newOrderDir = determineOrderDir(fieldKey, order.field, order.dir);
-
     onChange(newOrderDir ? fieldKey : undefined, newOrderDir);
   };
 

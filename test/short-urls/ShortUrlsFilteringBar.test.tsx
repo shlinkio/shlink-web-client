@@ -1,156 +1,136 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
-import { formatISO } from 'date-fns';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { endOfDay, formatISO, startOfDay } from 'date-fns';
+import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import filteringBarCreator from '../../src/short-urls/ShortUrlsFilteringBar';
-import SearchField from '../../src/utils/SearchField';
-import Tag from '../../src/tags/helpers/Tag';
-import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
+import { DateRange } from '../../src/utils/dates/types';
+import { formatDate } from '../../src/utils/helpers/date';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn(),
   useParams: jest.fn().mockReturnValue({ serverId: '1' }),
+  useNavigate: jest.fn(),
   useLocation: jest.fn().mockReturnValue({}),
 }));
 
-const TooltipToggleSwitch = () => null; // TODO Drop this!
-
 describe('<ShortUrlsFilteringBar />', () => {
-  let wrapper: ShallowWrapper;
-  const ExportShortUrlsBtn = () => null;
-  const ShortUrlsFilteringBar = filteringBarCreator(ExportShortUrlsBtn, () => null);
+  const ShortUrlsFilteringBar = filteringBarCreator(() => <>ExportShortUrlsBtn</>, () => <>TagsSelector</>);
   const navigate = jest.fn();
   const handleOrderBy = jest.fn();
   const now = new Date();
-  const createWrapper = (search = '', selectedServer?: SelectedServer) => {
+  const setUp = (search = '', selectedServer?: SelectedServer) => {
     (useLocation as any).mockReturnValue({ search });
     (useNavigate as any).mockReturnValue(navigate);
 
-    wrapper = shallow(
-      <ShortUrlsFilteringBar
-        selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
-        order={{}}
-        handleOrderBy={handleOrderBy}
-      />,
-    );
-
-    return wrapper;
+    return {
+      user: userEvent.setup(),
+      ...render(
+        <MemoryRouter>
+          <ShortUrlsFilteringBar
+            selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+            order={{}}
+            handleOrderBy={handleOrderBy}
+          />
+        </MemoryRouter>,
+      ),
+    };
   };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders expected children components', () => {
-    const wrapper = createWrapper();
+    setUp();
 
-    expect(wrapper.find(SearchField)).toHaveLength(1);
-    expect(wrapper.find(DateRangeSelector)).toHaveLength(1);
-    expect(wrapper.find(OrderingDropdown)).toHaveLength(1);
-    expect(wrapper.find(ExportShortUrlsBtn)).toHaveLength(1);
+    expect(screen.getByText('ExportShortUrlsBtn')).toBeInTheDocument();
+    expect(screen.getByText('TagsSelector')).toBeInTheDocument();
+  });
+
+  it('redirects to first page when search field changes', async () => {
+    const { user } = setUp();
+
+    expect(navigate).not.toHaveBeenCalled();
+    await user.type(screen.getByPlaceholderText('Search...'), 'search-term');
+    await waitFor(() => expect(navigate).toHaveBeenCalledWith('/server/1/list-short-urls/1?search=search-term'));
   });
 
   it.each([
-    ['tags=foo,bar,baz', 3],
-    ['tags=foo,baz', 2],
-    ['', 0],
-    ['foo=bar', 0],
-  ])('renders the proper amount of tags', (search, expectedTagComps) => {
-    const wrapper = createWrapper(search);
-
-    expect(wrapper.find(Tag)).toHaveLength(expectedTagComps);
-  });
-
-  it('redirects to first page when search field changes', () => {
-    const wrapper = createWrapper();
-    const searchField = wrapper.find(SearchField);
-
-    expect(navigate).not.toHaveBeenCalled();
-    searchField.simulate('change', 'search-term');
-    expect(navigate).toHaveBeenCalledWith('/server/1/list-short-urls/1?search=search-term');
-  });
-
-  it('redirects to first page when a tag is removed', () => {
-    const wrapper = createWrapper('tags=foo,bar');
-    const tag = wrapper.find(Tag).first();
-
-    expect(navigate).not.toHaveBeenCalled();
-    tag.simulate('close');
-    expect(navigate).toHaveBeenCalledWith('/server/1/list-short-urls/1?tags=bar');
-  });
-
-  it.each([
-    [{ startDate: now }, `startDate=${encodeURIComponent(formatISO(now))}`],
-    [{ endDate: now }, `endDate=${encodeURIComponent(formatISO(now))}`],
+    [{ startDate: now } as DateRange, `startDate=${encodeURIComponent(formatISO(startOfDay(now)))}`],
+    [{ endDate: now } as DateRange, `endDate=${encodeURIComponent(formatISO(endOfDay(now)))}`],
     [
-      { startDate: now, endDate: now },
-      `startDate=${encodeURIComponent(formatISO(now))}&endDate=${encodeURIComponent(formatISO(now))}`,
+      { startDate: now, endDate: now } as DateRange,
+      `startDate=${encodeURIComponent(formatISO(startOfDay(now)))}&endDate=${encodeURIComponent(formatISO(endOfDay(now)))}`,
     ],
-  ])('redirects to first page when date range changes', (dates, expectedQuery) => {
-    const wrapper = createWrapper();
-    const dateRange = wrapper.find(DateRangeSelector);
+  ])('redirects to first page when date range changes', async (dates, expectedQuery) => {
+    const { user } = setUp();
+
+    await user.click(screen.getByRole('button', { name: 'All short URLs' }));
+    expect(await screen.findByRole('menu')).toBeInTheDocument();
 
     expect(navigate).not.toHaveBeenCalled();
-    dateRange.simulate('datesChange', dates);
-    expect(navigate).toHaveBeenCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
+    dates.startDate && await user.type(screen.getByPlaceholderText('Since...'), formatDate()(dates.startDate) ?? '');
+    dates.endDate && await user.type(screen.getByPlaceholderText('Until...'), formatDate()(dates.endDate) ?? '');
+    expect(navigate).toHaveBeenLastCalledWith(`/server/1/list-short-urls/1?${expectedQuery}`);
   });
 
   it.each([
-    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '3.0.0' }), 1],
-    ['tags=foo,bar', Mock.of<ReachableServer>({ version: '3.1.0' }), 1],
-    ['tags=foo', Mock.of<ReachableServer>({ version: '3.0.0' }), 0],
-    ['', Mock.of<ReachableServer>({ version: '3.0.0' }), 0],
-    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '2.10.0' }), 0],
-    ['', Mock.of<ReachableServer>({ version: '2.10.0' }), 0],
+    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '3.0.0' }), true],
+    ['tags=foo,bar', Mock.of<ReachableServer>({ version: '3.1.0' }), true],
+    ['tags=foo', Mock.of<ReachableServer>({ version: '3.0.0' }), false],
+    ['', Mock.of<ReachableServer>({ version: '3.0.0' }), false],
+    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '2.10.0' }), false],
+    ['', Mock.of<ReachableServer>({ version: '2.10.0' }), false],
   ])(
     'renders tags mode toggle if the server supports it and there is more than one tag selected',
-    (search, selectedServer, expectedTagToggleComponents) => {
-      const wrapper = createWrapper(search, selectedServer);
-      const toggle = wrapper.find(TooltipToggleSwitch);
+    (search, selectedServer, shouldHaveComponent) => {
+      setUp(search, selectedServer);
 
-      expect(toggle).toHaveLength(expectedTagToggleComponents);
+      if (shouldHaveComponent) {
+        expect(screen.getByLabelText('Change tags mode')).toBeInTheDocument();
+      } else {
+        expect(screen.queryByLabelText('Change tags mode')).not.toBeInTheDocument();
+      }
     },
   );
 
   it.each([
-    ['', 'Short URLs including any tag.', false],
-    ['&tagsMode=all', 'Short URLs including all tags.', true],
-    ['&tagsMode=any', 'Short URLs including any tag.', false],
-  ])('expected tags mode tooltip title', (initialTagsMode, expectedToggleText, expectedChecked) => {
-    const wrapper = createWrapper(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
-    const toggle = wrapper.find(TooltipToggleSwitch);
+    ['', 'With any of the tags.'],
+    ['&tagsMode=all', 'With all the tags.'],
+    ['&tagsMode=any', 'With any of the tags.'],
+  ])('expected tags mode tooltip title', async (initialTagsMode, expectedToggleText) => {
+    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
 
-    expect(toggle.prop('children')).toEqual(expectedToggleText);
-    expect(toggle.prop('checked')).toEqual(expectedChecked);
+    await user.hover(screen.getByLabelText('Change tags mode'));
+    expect(await screen.findByRole('tooltip')).toHaveTextContent(expectedToggleText);
   });
 
   it.each([
     ['', 'tagsMode=all'],
     ['&tagsMode=all', 'tagsMode=any'],
     ['&tagsMode=any', 'tagsMode=all'],
-  ])('redirects to first page when tags mode changes', (initialTagsMode, expectedRedirectTagsMode) => {
-    const wrapper = createWrapper(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
-    const toggle = wrapper.find(TooltipToggleSwitch);
+  ])('redirects to first page when tags mode changes', async (initialTagsMode, expectedRedirectTagsMode) => {
+    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
 
     expect(navigate).not.toHaveBeenCalled();
-    toggle.simulate('change');
+    await user.click(screen.getByLabelText('Change tags mode'));
     expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedRedirectTagsMode));
   });
 
-  it('handles order through dropdown', () => {
-    const wrapper = createWrapper();
+  it('handles order through dropdown', async () => {
+    const { user } = setUp();
+    const clickMenuItem = async (name: string | RegExp) => {
+      await user.click(screen.getByRole('button', { name: 'Order by...' }));
+      await user.click(await screen.findByRole('menuitem', { name }));
+    };
 
-    expect(wrapper.find(OrderingDropdown).prop('order')).toEqual({});
+    await clickMenuItem(/^Short URL/);
+    expect(handleOrderBy).toHaveBeenCalledWith('shortCode', 'ASC');
 
-    wrapper.find(OrderingDropdown).simulate('change', 'visits', 'ASC');
-    expect(handleOrderBy).toHaveBeenCalledWith('visits', 'ASC');
+    await clickMenuItem(/^Title/);
+    expect(handleOrderBy).toHaveBeenCalledWith('title', 'ASC');
 
-    wrapper.find(OrderingDropdown).simulate('change', 'shortCode', 'DESC');
-    expect(handleOrderBy).toHaveBeenCalledWith('shortCode', 'DESC');
-
-    wrapper.find(OrderingDropdown).simulate('change', undefined, undefined);
-    expect(handleOrderBy).toHaveBeenCalledWith(undefined, undefined);
+    await clickMenuItem(/^Long URL/);
+    expect(handleOrderBy).toHaveBeenCalledWith('longUrl', 'ASC');
   });
 });

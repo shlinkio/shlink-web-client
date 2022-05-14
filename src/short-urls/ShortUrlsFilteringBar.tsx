@@ -60,7 +60,7 @@ const ShortUrlsFilteringBar = (
         <TagsSelector allowNew={false} placeholder="With tags..." selectedTags={tags} onChange={changeTagSelection} />
         {canChangeTagsMode && tags.length > 1 && (
           <>
-            <Button outline color="secondary" onClick={toggleTagsMode} id="tagsModeBtn">
+            <Button outline color="secondary" onClick={toggleTagsMode} id="tagsModeBtn" aria-label="Change tags mode">
               <FontAwesomeIcon className="short-urls-filtering-bar__tags-icon" icon={tagsMode === 'all' ? faTags : faTag} />
             </Button>
             <UncontrolledTooltip target="tagsModeBtn" placement="left">

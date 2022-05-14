@@ -1,5 +1,6 @@
 import DateInput from '../DateInput';
 import { DateRange } from './types';
+import { endOfDay } from 'date-fns';
 
 interface DateRangeRowProps extends DateRange {
   onStartDateChange: (date: Date | null) => void;
@@ -29,7 +30,7 @@ const DateRangeRow = (
         isClearable
         minDate={startDate ?? undefined}
         disabled={disabled}
-        onChange={onEndDateChange}
+        onChange={(date) => onEndDateChange(date && endOfDay(date))}
       />
     </div>
   </div>
