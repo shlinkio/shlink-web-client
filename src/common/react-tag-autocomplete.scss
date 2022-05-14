@@ -1,11 +1,5 @@
 @import '../utils/base';
 
-.input-group > .react-tags {
-  flex: 1 1 auto;
-  width: 1%;
-  min-width: 0;
-}
-
 .react-tags {
   position: relative;
   padding: 5px 0 0 6px;
@@ -20,6 +14,12 @@
 
   /* clicking anywhere will focus the input */
   cursor: text;
+}
+
+.input-group > .react-tags {
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
 }
 
 .card .react-tags {
