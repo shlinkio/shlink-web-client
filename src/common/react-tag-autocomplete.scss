@@ -10,7 +10,7 @@
   position: relative;
   padding: 5px 0 0 6px;
   border-radius: .3rem;
-  background-color: var(--input-color);
+  background-color: var(--primary-color);
   border: 1px solid var(--input-border-color);
   transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 
@@ -20,6 +20,10 @@
 
   /* clicking anywhere will focus the input */
   cursor: text;
+}
+
+.card .react-tags {
+  background-color: var(--input-color);
 }
 
 .react-tags.is-focused {
@@ -82,7 +86,7 @@
   font-size: 1.25rem;
   line-height: inherit;
   color: var(--input-text-color);
-  background-color: var(--input-color);
+  background-color: inherit;
 
   /* prevent autoresize overflowing the container */
   max-width: 100%;
@@ -92,6 +96,10 @@
   padding: 0;
   border: 0;
   outline: none;
+}
+
+.react-tags__search-input::placeholder {
+  color: #6c757d;
 }
 
 .react-tags__search-input::-ms-clear {
