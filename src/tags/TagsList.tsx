@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
 import { pipe } from 'ramda';
 import Message from '../utils/Message';
-import SearchField from '../utils/SearchField';
+import { SearchField } from '../utils/SearchField';
 import { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Result } from '../utils/Result';

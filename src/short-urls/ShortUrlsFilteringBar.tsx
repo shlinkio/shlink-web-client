@@ -5,7 +5,7 @@ import { Button, InputGroup, Row, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag, faTags } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
-import SearchField from '../utils/SearchField';
+import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import { DateRange } from '../utils/dates/types';
@@ -29,7 +29,7 @@ export interface ShortUrlsFilteringProps {
 
 const dateOrNull = (date?: string) => (date ? parseISO(date) : null);
 
-const ShortUrlsFilteringBar = (
+export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
   TagsSelector: FC<TagsSelectorProps>,
 ): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy }) => {
@@ -96,5 +96,3 @@ const ShortUrlsFilteringBar = (
     </div>
   );
 };
-
-export default ShortUrlsFilteringBar;

@@ -1,5 +1,5 @@
 import Bottle from 'bottlejs';
-import ShortUrlsFilteringBar from '../ShortUrlsFilteringBar';
+import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
 import ShortUrlsList from '../ShortUrlsList';
 import ShortUrlsRow from '../helpers/ShortUrlsRow';
 import ShortUrlsRowMenu from '../helpers/ShortUrlsRowMenu';

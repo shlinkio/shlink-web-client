@@ -4,7 +4,7 @@ import { Button } from 'reactstrap';
 import ServersExporter from '../../src/servers/services/ServersExporter';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
 import { ServersMap, ServerWithId } from '../../src/servers/data';
-import SearchField from '../../src/utils/SearchField';
+import { SearchField } from '../../src/utils/SearchField';
 import { Result } from '../../src/utils/Result';
 
 describe('<ManageServers />', () => {

@@ -5,7 +5,7 @@ import { faCheck as checkIcon, faRobot as botIcon } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import { SimplePaginator } from '../common/SimplePaginator';
-import SearchField from '../utils/SearchField';
+import { SearchField } from '../utils/SearchField';
 import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
 import { prettify } from '../utils/helpers/numbers';
 import { supportsBotVisits } from '../utils/helpers/features';

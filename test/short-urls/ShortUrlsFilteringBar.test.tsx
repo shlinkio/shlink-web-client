@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
-import filteringBarCreator from '../../src/short-urls/ShortUrlsFilteringBar';
+import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-urls/ShortUrlsFilteringBar';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { DateRange } from '../../src/utils/dates/types';
 import { formatDate } from '../../src/utils/helpers/date';
