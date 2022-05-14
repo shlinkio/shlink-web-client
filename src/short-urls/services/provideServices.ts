@@ -50,7 +50,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
   bottle.decorator('QrCodeModal', connect(['selectedServer']));
 
-  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ColorGenerator', 'ExportShortUrlsBtn');
+  bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ExportShortUrlsBtn', 'TagsSelector');
 
   bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');
   bottle.decorator('ExportShortUrlsBtn', connect(['selectedServer']));

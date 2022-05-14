@@ -6,7 +6,6 @@ import filteringBarCreator from '../../src/short-urls/ShortUrlsFilteringBar';
 import SearchField from '../../src/utils/SearchField';
 import Tag from '../../src/tags/helpers/Tag';
 import { DateRangeSelector } from '../../src/utils/dates/DateRangeSelector';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { TooltipToggleSwitch } from '../../src/utils/TooltipToggleSwitch';
 import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
@@ -21,7 +20,7 @@ jest.mock('react-router-dom', () => ({
 describe('<ShortUrlsFilteringBar />', () => {
   let wrapper: ShallowWrapper;
   const ExportShortUrlsBtn = () => null;
-  const ShortUrlsFilteringBar = filteringBarCreator(Mock.all<ColorGenerator>(), ExportShortUrlsBtn);
+  const ShortUrlsFilteringBar = filteringBarCreator(ExportShortUrlsBtn, () => null);
   const navigate = jest.fn();
   const handleOrderBy = jest.fn();
   const now = new Date();
