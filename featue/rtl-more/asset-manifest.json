@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/featue/rtl-more/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/featue/rtl-more/static/js/main.6e2f92d9.js",
+    "index.html": "/shlink-web-client/featue/rtl-more/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/featue/rtl-more/static/css/main.1ccaf016.css.map",
+    "main.6e2f92d9.js.map": "/shlink-web-client/featue/rtl-more/static/js/main.6e2f92d9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.6e2f92d9.js"
+  ]
+}
