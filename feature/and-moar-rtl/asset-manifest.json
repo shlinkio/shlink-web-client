@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/and-moar-rtl/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/and-moar-rtl/static/js/main.a8372bcf.js",
+    "index.html": "/shlink-web-client/feature/and-moar-rtl/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/and-moar-rtl/static/css/main.1ccaf016.css.map",
+    "main.a8372bcf.js.map": "/shlink-web-client/feature/and-moar-rtl/static/js/main.a8372bcf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.a8372bcf.js"
+  ]
+}
