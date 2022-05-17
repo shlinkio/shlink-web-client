@@ -1,6 +1,6 @@
 import Bottle from 'bottlejs';
 import CreateServer from '../CreateServer';
-import ServersDropdown from '../ServersDropdown';
+import { ServersDropdown } from '../ServersDropdown';
 import DeleteServerModal from '../DeleteServerModal';
 import DeleteServerButton from '../DeleteServerButton';
 import { EditServer } from '../EditServer';

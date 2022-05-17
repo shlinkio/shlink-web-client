@@ -10,7 +10,7 @@ export interface ServersDropdownProps {
   selectedServer: SelectedServer;
 }
 
-const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
+export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
   const serversList = values(servers);
 
   const renderServers = () => {
@@ -46,5 +46,3 @@ const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
     </UncontrolledDropdown>
   );
 };
-
-export default ServersDropdown;
