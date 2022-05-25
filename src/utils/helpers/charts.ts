@@ -11,8 +11,6 @@ export const pointerOnHover = ({ native }: ChartEvent, [firstElement]: ActiveEle
   canvas.style.cursor = firstElement ? 'pointer' : 'default';
 };
 
-export const renderChartLabel = ({ dataset, formattedValue }: TooltipItem<ChartType>) =>
-  `${dataset.label}: ${prettify(formattedValue)}`;
+export const renderChartLabel = ({ dataset, raw }: TooltipItem<ChartType>) => `${dataset.label}: ${prettify(`${raw}`)}`;
 
-export const renderPieChartLabel = ({ label, formattedValue }: TooltipItem<ChartType>) =>
-  `${label}: ${prettify(formattedValue)}`;
+export const renderPieChartLabel = ({ label, raw }: TooltipItem<ChartType>) => `${label}: ${prettify(`${raw}`)}`;
