@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/fix-nan/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/fix-nan/static/js/main.d6847e71.js",
+    "index.html": "/shlink-web-client/feature/fix-nan/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/fix-nan/static/css/main.1ccaf016.css.map",
+    "main.d6847e71.js.map": "/shlink-web-client/feature/fix-nan/static/js/main.d6847e71.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.d6847e71.js"
+  ]
+}
