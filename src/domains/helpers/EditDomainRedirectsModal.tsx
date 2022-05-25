@@ -38,7 +38,7 @@ export const EditDomainRedirectsModal: FC<EditDomainRedirectsModalProps> = (
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered>
-      <form onSubmit={handleSubmit}>
+      <form name="domainRedirectsModal" onSubmit={handleSubmit}>
         <ModalHeader toggle={toggle}>Edit redirects for <b>{domain.domain}</b></ModalHeader>
         <ModalBody>
           <FormGroup value={baseUrlRedirect} onChange={setBaseUrlRedirect}>

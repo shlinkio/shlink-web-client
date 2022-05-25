@@ -14,7 +14,7 @@ jobs:
       - name: Use node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.13
+          node-version: 16.15
       - name: Generate release assets
         run: npm ci && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
       - name: Publish release with assets

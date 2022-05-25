@@ -1,29 +1,39 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { ReactNode } from 'react';
+import userEvent from '@testing-library/user-event';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import deleteServerButtonConstruct from '../../src/servers/DeleteServerButton';
 import { ServerWithId } from '../../src/servers/data';
 
 describe('<DeleteServerButton />', () => {
-  let wrapper: ShallowWrapper;
-  const DeleteServerModal = () => null;
-
-  beforeEach(() => {
-    const DeleteServerButton = deleteServerButtonConstruct(DeleteServerModal);
-
-    wrapper = shallow(<DeleteServerButton server={Mock.all<ServerWithId>()} className="button" />);
-  });
-  afterEach(() => wrapper.unmount());
-
-  it('renders a button and a modal', () => {
-    expect(wrapper.find('.button')).toHaveLength(1);
-    expect(wrapper.find(DeleteServerModal)).toHaveLength(1);
+  const DeleteServerButton = deleteServerButtonConstruct(
+    ({ isOpen }) => <>DeleteServerModal {isOpen ? '[Open]' : '[Closed]'}</>,
+  );
+  const setUp = (children?: ReactNode) => ({
+    user: userEvent.setup(),
+    ...render(
+      <DeleteServerButton server={Mock.all<ServerWithId>()} textClassName="button">{children}</DeleteServerButton>,
+    ),
   });
 
-  it('displays modal when button is clicked', () => {
-    const btn = wrapper.find('.button');
+  it.each([
+    ['Foo bar'],
+    ['baz'],
+    ['something'],
+    [undefined],
+  ])('renders expected content', (children) => {
+    const { container } = setUp(children);
+    expect(container.firstChild).toBeTruthy();
+    expect(container.firstChild).toMatchSnapshot();
+  });
 
-    expect(wrapper.find(DeleteServerModal).prop('isOpen')).toEqual(false);
-    btn.simulate('click');
-    expect(wrapper.find(DeleteServerModal).prop('isOpen')).toEqual(true);
+  it('displays modal when button is clicked', async () => {
+    const { user, container } = setUp();
+
+    expect(screen.getByText(/DeleteServerModal/)).toHaveTextContent(/Closed/);
+    expect(screen.getByText(/DeleteServerModal/)).not.toHaveTextContent(/Open/);
+    container.firstElementChild && await user.click(container.firstElementChild);
+
+    await waitFor(() => expect(screen.getByText(/DeleteServerModal/)).toHaveTextContent(/Open/));
   });
 });

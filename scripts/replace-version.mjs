@@ -1,4 +1,4 @@
-const fs = require('fs');
+import fs from 'fs';
 
 function replaceVersionPlaceholder(version) {
   const staticJsFilesPath = './build/static/js';
