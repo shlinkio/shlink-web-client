@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/async-2.6.4/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/async-2.6.4/static/js/main.7de4cbca.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/async-2.6.4/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/dependabot/npm_and_yarn/async-2.6.4/static/css/main.1ccaf016.css.map",
+    "main.7de4cbca.js.map": "/shlink-web-client/dependabot/npm_and_yarn/async-2.6.4/static/js/main.7de4cbca.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.7de4cbca.js"
+  ]
+}
