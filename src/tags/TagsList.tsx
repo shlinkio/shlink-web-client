@@ -30,7 +30,7 @@ export interface TagsListProps {
   settings: Settings;
 }
 
-const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableProps>) => boundToMercureHub((
+export const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableProps>) => boundToMercureHub((
   { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
 ) => {
   const [mode, setMode] = useState<TagsMode>(settings.tags?.defaultMode ?? 'cards');
@@ -104,5 +104,3 @@ const TagsList = (TagsCards: FC<TagsListChildrenProps>, TagsTable: FC<TagsTableP
     </>
   );
 }, () => [Topics.visits]);
-
-export default TagsList;

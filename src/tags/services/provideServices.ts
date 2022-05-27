@@ -3,7 +3,7 @@ import TagsSelector from '../helpers/TagsSelector';
 import TagCard from '../TagCard';
 import DeleteTagConfirmModal from '../helpers/DeleteTagConfirmModal';
 import EditTagModal from '../helpers/EditTagModal';
-import TagsList from '../TagsList';
+import { TagsList } from '../TagsList';
 import { filterTags, listTags } from '../reducers/tagsList';
 import { deleteTag, tagDeleted } from '../reducers/tagDelete';
 import { editTag, tagEdited } from '../reducers/tagEdit';
