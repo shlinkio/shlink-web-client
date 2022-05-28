@@ -1,10 +1,10 @@
 import Bottle from 'bottlejs';
-import CreateServer from '../CreateServer';
+import { CreateServer } from '../CreateServer';
 import { ServersDropdown } from '../ServersDropdown';
-import DeleteServerModal from '../DeleteServerModal';
-import DeleteServerButton from '../DeleteServerButton';
+import { DeleteServerModal } from '../DeleteServerModal';
+import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
-import ImportServersBtn from '../helpers/ImportServersBtn';
+import { ImportServersBtn } from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';

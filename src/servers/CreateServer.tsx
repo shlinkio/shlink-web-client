@@ -26,7 +26,7 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   </div>
 );
 
-const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
+export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
   { servers, createServer }: CreateServerProps,
 ) => {
   const navigate = useNavigate();
@@ -77,5 +77,3 @@ const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagT
     </NoMenuLayout>
   );
 };
-
-export default CreateServer;

@@ -15,7 +15,7 @@ import reducer, {
 } from '../../../src/domains/reducers/domainsList';
 import { EDIT_DOMAIN_REDIRECTS } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { Domain } from '../../../src/domains/data';
 import { ShlinkState } from '../../../src/container/types';
 import { SelectedServer, ServerData } from '../../../src/servers/data';

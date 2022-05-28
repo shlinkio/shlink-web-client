@@ -14,7 +14,7 @@ interface DeleteServerModalConnectProps extends DeleteServerModalProps {
   deleteServer: (server: ServerWithId) => void;
 }
 
-const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
+export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
   { server, toggle, isOpen, deleteServer, redirectHome = true },
 ) => {
   const navigate = useNavigate();
@@ -43,5 +43,3 @@ const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
     </Modal>
   );
 };
-
-export default DeleteServerModal;

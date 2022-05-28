@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { prop } from 'ramda';
 import { hasServerData, SelectedServer, ServerWithId } from '../../servers/data';
 import { GetState } from '../../container/types';
-import ShlinkApiClient from './ShlinkApiClient';
+import { ShlinkApiClient } from './ShlinkApiClient';
 
 const apiClients: Record<string, ShlinkApiClient> = {};
 
@@ -12,7 +12,7 @@ const getSelectedServerFromState = (getState: GetState): SelectedServer => prop(
 
 export type ShlinkApiClientBuilder = (getStateOrSelectedServer: GetState | ServerWithId) => ShlinkApiClient;
 
-const buildShlinkApiClient = (axios: AxiosInstance): ShlinkApiClientBuilder => (
+export const buildShlinkApiClient = (axios: AxiosInstance): ShlinkApiClientBuilder => (
   getStateOrSelectedServer: GetState | ServerWithId,
 ) => {
   const server = isGetState(getStateOrSelectedServer)
@@ -32,5 +32,3 @@ const buildShlinkApiClient = (axios: AxiosInstance): ShlinkApiClientBuilder => (
 
   return apiClients[clientKey];
 };
-
-export default buildShlinkApiClient;

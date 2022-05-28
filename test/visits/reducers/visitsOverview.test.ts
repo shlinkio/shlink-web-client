@@ -8,7 +8,7 @@ import reducer, {
   loadVisitsOverview,
 } from '../../../src/visits/reducers/visitsOverview';
 import { CREATE_VISITS, CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShlinkState } from '../../../src/container/types';
 import { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';

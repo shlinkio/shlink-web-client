@@ -1,5 +1,5 @@
 import Bottle from 'bottlejs';
-import RealTimeUpdatesSettings from '../RealTimeUpdatesSettings';
+import { RealTimeUpdatesSettings } from '../RealTimeUpdatesSettings';
 import Settings from '../Settings';
 import {
   setRealTimeUpdatesInterval,

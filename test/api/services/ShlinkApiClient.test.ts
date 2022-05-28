@@ -1,6 +1,6 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Mock } from 'ts-mockery';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';

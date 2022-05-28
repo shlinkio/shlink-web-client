@@ -14,7 +14,7 @@ interface RealTimeUpdatesProps {
 
 const intervalValue = (interval?: number) => (!interval ? '' : `${interval}`);
 
-const RealTimeUpdatesSettings = (
+export const RealTimeUpdatesSettings = (
   { settings: { realTimeUpdates }, toggleRealTimeUpdates, setRealTimeUpdatesInterval }: RealTimeUpdatesProps,
 ) => (
   <SimpleCard title="Real-time updates" className="h-100">
@@ -52,5 +52,3 @@ const RealTimeUpdatesSettings = (
     </LabeledFormGroup>
   </SimpleCard>
 );
-
-export default RealTimeUpdatesSettings;
