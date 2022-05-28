@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/mar-tests/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/mar-tests/static/js/main.f975490f.js",
+    "index.html": "/shlink-web-client/feature/mar-tests/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/mar-tests/static/css/main.1ccaf016.css.map",
+    "main.f975490f.js.map": "/shlink-web-client/feature/mar-tests/static/js/main.f975490f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.f975490f.js"
+  ]
+}
