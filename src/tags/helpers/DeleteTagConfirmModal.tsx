@@ -22,9 +22,7 @@ export const DeleteTagConfirmModal = (
 
   return (
     <Modal toggle={toggle} isOpen={isOpen} centered>
-      <ModalHeader toggle={toggle}>
-        <span className="text-danger">Delete tag</span>
-      </ModalHeader>
+      <ModalHeader toggle={toggle} className="text-danger">Delete tag</ModalHeader>
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?
         {error && (

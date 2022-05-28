@@ -1,69 +1,60 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Link } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { TagCard as createTagCard } from '../../src/tags/TagCard';
-import { TagBullet } from '../../src/tags/helpers/TagBullet';
 import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { ReachableServer } from '../../src/servers/data';
 
 describe('<TagCard />', () => {
-  let wrapper: ShallowWrapper;
-  const DeleteTagConfirmModal = jest.fn();
-  const EditTagModal = jest.fn();
-  const TagCard = createTagCard(DeleteTagConfirmModal, EditTagModal, Mock.all<ColorGenerator>());
-  const createWrapper = (tag = 'ssr') => {
-    wrapper = shallow(
-      <TagCard
-        tag={{ tag, visits: 23257, shortUrls: 48 }}
-        selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-        displayed
-        toggle={() => {}}
-      />,
-    );
+  const TagCard = createTagCard(
+    ({ isOpen }) => <span>DeleteTagConfirmModal {isOpen ? '[Open]' : '[Closed]'}</span>,
+    ({ isOpen }) => <span>EditTagModal {isOpen ? '[Open]' : '[Closed]'}</span>,
+    Mock.of<ColorGenerator>({ getColorForKey: () => '' }),
+  );
+  const setUp = (tag = 'ssr') => ({
+    user: userEvent.setup(),
+    ...render(
+      <MemoryRouter>
+        <TagCard
+          tag={{ tag, visits: 23257, shortUrls: 48 }}
+          selectedServer={Mock.of<ReachableServer>({ id: '1' })}
+          displayed
+          toggle={() => {}}
+        />
+      </MemoryRouter>,
+    ),
+  });
 
-    return wrapper;
-  };
-
-  beforeEach(() => createWrapper());
-
-  afterEach(() => wrapper.unmount());
   afterEach(jest.resetAllMocks);
 
   it.each([
-    ['ssr', '/server/1/list-short-urls/1?tags=ssr'],
-    ['ssr-&-foo', '/server/1/list-short-urls/1?tags=ssr-%26-foo'],
-  ])('shows a TagBullet and a link to the list filtering by the tag', (tag, expectedLink) => {
-    const wrapper = createWrapper(tag);
-    const links = wrapper.find(Link);
-    const bullet = wrapper.find(TagBullet);
+    ['ssr', '/server/1/list-short-urls/1?tags=ssr', '/server/1/tag/ssr/visits'],
+    ['ssr-&-foo', '/server/1/list-short-urls/1?tags=ssr-%26-foo', '/server/1/tag/ssr-&-foo/visits'],
+  ])('shows expected links for provided tags', (tag, shortUrlsLink, visitsLink) => {
+    setUp(tag);
 
-    expect(links.at(0).prop('to')).toEqual(expectedLink);
-    expect(bullet.prop('tag')).toEqual(tag);
+    expect(screen.getByText('48').parentNode).toHaveAttribute('href', shortUrlsLink);
+    expect(screen.getByText('23,257').parentNode).toHaveAttribute('href', visitsLink);
   });
 
-  it('displays delete modal when delete btn is clicked', () => {
-    const delBtn = wrapper.find('.tag-card__btn').at(0);
+  it('displays delete modal when delete btn is clicked', async () => {
+    const { user } = setUp();
 
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(false);
-    delBtn.simulate('click');
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(true);
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).not.toHaveTextContent('[Open]');
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).toHaveTextContent('[Closed]');
+    await user.click(screen.getByLabelText('Delete tag'));
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).toHaveTextContent('[Open]');
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).not.toHaveTextContent('[Closed]');
   });
 
-  it('displays edit modal when edit btn is clicked', () => {
-    const editBtn = wrapper.find('.tag-card__btn').at(1);
+  it('displays edit modal when edit btn is clicked', async () => {
+    const { user } = setUp();
 
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(false);
-    editBtn.simulate('click');
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(true);
-  });
-
-  it('shows expected tag stats', () => {
-    const links = wrapper.find(Link);
-
-    expect(links).toHaveLength(2);
-    expect(links.at(0).prop('to')).toEqual('/server/1/list-short-urls/1?tags=ssr');
-    expect(links.at(0).text()).toContain('48');
-    expect(links.at(1).prop('to')).toEqual('/server/1/tag/ssr/visits');
-    expect(links.at(1).text()).toContain('23,257');
+    expect(screen.getByText(/^EditTagModal/)).not.toHaveTextContent('[Open]');
+    expect(screen.getByText(/^EditTagModal/)).toHaveTextContent('[Closed]');
+    await user.click(screen.getByLabelText('Edit tag'));
+    expect(screen.getByText(/^EditTagModal/)).toHaveTextContent('[Open]');
+    expect(screen.getByText(/^EditTagModal/)).not.toHaveTextContent('[Closed]');
   });
 });

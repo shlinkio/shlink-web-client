@@ -40,10 +40,16 @@ export const TagCard = (
   return (
     <Card className="tag-card">
       <CardHeader className="tag-card__header">
-        <Button color="link" size="sm" className="tag-card__btn tag-card__btn--last" onClick={toggleDelete}>
+        <Button
+          aria-label="Delete tag"
+          color="link"
+          size="sm"
+          className="tag-card__btn tag-card__btn--last"
+          onClick={toggleDelete}
+        >
           <FontAwesomeIcon icon={deleteIcon} />
         </Button>
-        <Button color="link" size="sm" className="tag-card__btn" onClick={toggleEdit}>
+        <Button aria-label="Edit tag" color="link" size="sm" className="tag-card__btn" onClick={toggleEdit}>
           <FontAwesomeIcon icon={editIcon} />
         </Button>
         <h5
