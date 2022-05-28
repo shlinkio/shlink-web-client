@@ -7,7 +7,7 @@ import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { TagVisits as TagVisitsState } from './reducers/tagVisits';
 import TagVisitsHeader from './TagVisitsHeader';
-import VisitsStats from './VisitsStats';
+import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';

@@ -4,7 +4,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Settings, UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
-import ToggleSwitch from '../../src/utils/ToggleSwitch';
+import { ToggleSwitch } from '../../src/utils/ToggleSwitch';
 import { Theme } from '../../src/utils/theme';
 
 describe('<UserInterfaceSettings />', () => {

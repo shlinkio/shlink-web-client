@@ -17,7 +17,7 @@ import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
 import { NavPillItem, NavPills } from '../utils/NavPills';
 import { ExportBtn } from '../utils/ExportBtn';
-import LineChartCard from './charts/LineChartCard';
+import { LineChartCard } from './charts/LineChartCard';
 import VisitsTable from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
 import OpenMapModalBtn from './helpers/OpenMapModalBtn';
@@ -55,7 +55,7 @@ const sections: Record<Section, VisitsNavLinkProps> = {
 
 let selectedBar: string | undefined;
 
-const VisitsStats: FC<VisitsStatsProps> = ({
+export const VisitsStats: FC<VisitsStatsProps> = ({
   children,
   visitsInfo,
   getVisits,
@@ -325,5 +325,3 @@ const VisitsStats: FC<VisitsStatsProps> = ({
     </>
   );
 };
-
-export default VisitsStats;

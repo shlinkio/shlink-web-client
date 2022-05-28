@@ -9,7 +9,7 @@ import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
-import VisitsStats from './VisitsStats';
+import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';

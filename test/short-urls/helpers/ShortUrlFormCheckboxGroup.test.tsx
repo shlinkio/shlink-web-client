@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import { ShortUrlFormCheckboxGroup } from '../../../src/short-urls/helpers/ShortUrlFormCheckboxGroup';
-import Checkbox from '../../../src/utils/Checkbox';
+import { Checkbox } from '../../../src/utils/Checkbox';
 import { InfoTooltip } from '../../../src/utils/InfoTooltip';
 
 describe('<ShortUrlFormCheckboxGroup />', () => {

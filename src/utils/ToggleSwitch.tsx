@@ -1,6 +1,4 @@
 import { FC } from 'react';
 import BooleanControl, { BooleanControlProps } from './BooleanControl';
 
-const ToggleSwitch: FC<BooleanControlProps> = (props) => <BooleanControl type="switch" {...props} />;
-
-export default ToggleSwitch;
+export const ToggleSwitch: FC<BooleanControlProps> = (props) => <BooleanControl type="switch" {...props} />;

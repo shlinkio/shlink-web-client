@@ -7,7 +7,7 @@ import {
   Settings,
 } from '../../src/settings/reducers/settings';
 import RealTimeUpdatesSettings from '../../src/settings/RealTimeUpdatesSettings';
-import ToggleSwitch from '../../src/utils/ToggleSwitch';
+import { ToggleSwitch } from '../../src/utils/ToggleSwitch';
 import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
 
 describe('<RealTimeUpdatesSettings />', () => {

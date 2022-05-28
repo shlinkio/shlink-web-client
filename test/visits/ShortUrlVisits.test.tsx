@@ -5,7 +5,7 @@ import createShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/Shor
 import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import VisitsStats from '../../src/visits/VisitsStats';
+import { VisitsStats } from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 

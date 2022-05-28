@@ -7,7 +7,7 @@ import DateInput, { DateInputProps } from '../utils/DateInput';
 import { supportsCrawlableVisits, supportsForwardQuery } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
-import Checkbox from '../utils/Checkbox';
+import { Checkbox } from '../utils/Checkbox';
 import { SelectedServer } from '../servers/data';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DomainSelectorProps } from '../domains/DomainSelector';

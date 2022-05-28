@@ -1,6 +1,6 @@
 import { FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
-import ToggleSwitch from '../utils/ToggleSwitch';
+import { ToggleSwitch } from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
