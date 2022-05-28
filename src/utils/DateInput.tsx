@@ -8,7 +8,7 @@ import './DateInput.scss';
 
 export type DateInputProps = ReactDatePickerProps;
 
-const DateInput = (props: DateInputProps) => {
+export const DateInput = (props: DateInputProps) => {
   const { className, isClearable, selected } = props;
   const showCalendarIcon = !isClearable || isNil(selected);
   const ref = useRef<{ input: HTMLInputElement }>();
@@ -32,5 +32,3 @@ const DateInput = (props: DateInputProps) => {
     </div>
   );
 };
-
-export default DateInput;

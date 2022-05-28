@@ -3,7 +3,7 @@ import { ExternalLink } from 'react-external-link';
 import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { Time } from '../utils/Time';
 import { ShortUrlVisits } from './reducers/shortUrlVisits';
-import VisitsHeader from './VisitsHeader';
+import { VisitsHeader } from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';
 
 interface ShortUrlVisitsHeaderProps {
@@ -12,7 +12,7 @@ interface ShortUrlVisitsHeaderProps {
   goBack: () => void;
 }
 
-const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortUrlVisitsHeaderProps) => {
+export const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortUrlVisitsHeaderProps) => {
   const { shortUrl, loading } = shortUrlDetail;
   const { visits } = shortUrlVisits;
   const shortLink = shortUrl?.shortUrl ?? '';
@@ -43,5 +43,3 @@ const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }: ShortU
     </VisitsHeader>
   );
 };
-
-export default ShortUrlVisitsHeader;

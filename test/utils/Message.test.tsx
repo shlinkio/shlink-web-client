@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { PropsWithChildren } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Card } from 'reactstrap';
-import Message, { MessageProps } from '../../src/utils/Message';
+import { Message, MessageProps } from '../../src/utils/Message';
 
 describe('<Message />', () => {
   let wrapper: ShallowWrapper;

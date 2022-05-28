@@ -7,7 +7,7 @@ interface PaginationDropdownProps {
   toggleClassName?: string;
 }
 
-const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }: PaginationDropdownProps) => (
+export const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }: PaginationDropdownProps) => (
   <UncontrolledDropdown>
     <DropdownToggle caret color="link" className={toggleClassName}>Paginate</DropdownToggle>
     <DropdownMenu end>
@@ -23,5 +23,3 @@ const PaginationDropdown = ({ toggleClassName, ranges, value, setValue }: Pagina
     </DropdownMenu>
   </UncontrolledDropdown>
 );
-
-export default PaginationDropdown;

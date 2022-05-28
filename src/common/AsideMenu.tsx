@@ -34,7 +34,7 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
   </NavLink>
 );
 
-const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
+export const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   { selectedServer, showOnMobile = false }: AsideMenuProps,
 ) => {
   const hasId = isServerWithId(selectedServer);
@@ -89,5 +89,3 @@ const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
     </aside>
   );
 };
-
-export default AsideMenu;

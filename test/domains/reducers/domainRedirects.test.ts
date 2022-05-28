@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import {
   EDIT_DOMAIN_REDIRECTS,
   EDIT_DOMAIN_REDIRECTS_ERROR,

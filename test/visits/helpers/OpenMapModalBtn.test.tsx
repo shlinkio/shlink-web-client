@@ -1,8 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Dropdown, DropdownItem, UncontrolledTooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import OpenMapModalBtn from '../../../src/visits/helpers/OpenMapModalBtn';
-import MapModal from '../../../src/visits/helpers/MapModal';
+import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
+import { MapModal } from '../../../src/visits/helpers/MapModal';
 import { CityStats } from '../../../src/visits/types';
 
 describe('<OpenMapModalBtn />', () => {

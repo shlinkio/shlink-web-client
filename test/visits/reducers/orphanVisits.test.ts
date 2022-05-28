@@ -15,7 +15,7 @@ import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit, VisitsInfo } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import { DateInterval } from '../../../src/utils/dates/types';

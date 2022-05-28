@@ -26,7 +26,7 @@ import { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';
-import ToggleSwitch from '../../utils/ToggleSwitch';
+import { ToggleSwitch } from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
@@ -166,7 +166,7 @@ const chartElementAtEvent = (
   }
 };
 
-const LineChartCard = (
+export const LineChartCard = (
   { title, visits, highlightedVisits, highlightedLabel = 'Selected', setSelectedVisits }: LineChartCardProps,
 ) => {
   const [step, setStep] = useState<Step>(
@@ -235,7 +235,7 @@ const LineChartCard = (
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader role="heading">
         {title}
         <div className="float-end">
           <UncontrolledDropdown>
@@ -266,5 +266,3 @@ const LineChartCard = (
     </Card>
   );
 };
-
-export default LineChartCard;

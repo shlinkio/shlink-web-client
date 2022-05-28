@@ -27,7 +27,7 @@ interface ImportServersBtnConnectProps extends ImportServersBtnProps {
 const serversFiltering = (servers: ServerData[]) =>
   ({ url, apiKey }: ServerData) => servers.some((server) => server.url === url && server.apiKey === apiKey);
 
-const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
+export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
   createServers,
   servers,
   fileRef,
@@ -89,5 +89,3 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
     </>
   );
 };
-
-export default ImportServersBtn;

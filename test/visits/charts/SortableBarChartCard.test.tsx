@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { range } from 'ramda';
 import { OrderingDropdown } from '../../../src/utils/OrderingDropdown';
-import PaginationDropdown from '../../../src/utils/PaginationDropdown';
+import { PaginationDropdown } from '../../../src/utils/PaginationDropdown';
 import { rangeOf } from '../../../src/utils/utils';
 import { OrderDir } from '../../../src/utils/helpers/ordering';
 import { Stats } from '../../../src/visits/types';

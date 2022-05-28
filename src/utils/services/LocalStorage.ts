@@ -1,7 +1,7 @@
 const PREFIX = 'shlink';
 const buildPath = (path: string) => `${PREFIX}.${path}`;
 
-export default class LocalStorage {
+export class LocalStorage {
   public constructor(private readonly localStorage: Storage) {}
 
   public readonly get = <T>(key: string): T | undefined => {

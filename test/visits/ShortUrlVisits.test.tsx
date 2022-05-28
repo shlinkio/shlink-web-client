@@ -1,11 +1,11 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
-import createShortUrlVisits, { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
-import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
+import { ShortUrlVisits as createShortUrlVisits, ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
+import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import VisitsStats from '../../src/visits/VisitsStats';
+import { VisitsStats } from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 

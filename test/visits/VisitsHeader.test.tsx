@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import VisitsHeader from '../../src/visits/VisitsHeader';
+import { VisitsHeader } from '../../src/visits/VisitsHeader';
 import { Visit } from '../../src/visits/types';
 
 describe('<VisitsHeader />', () => {

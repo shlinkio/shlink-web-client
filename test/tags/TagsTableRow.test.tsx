@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
 import { ReachableServer } from '../../src/servers/data';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { DropdownBtnMenu } from '../../src/utils/DropdownBtnMenu';
 
 describe('<TagsTableRow />', () => {

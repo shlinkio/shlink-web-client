@@ -5,7 +5,7 @@ import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '../../utils/helpers/hooks';
 import { handleEventPreventingDefault } from '../../utils/utils';
-import ColorGenerator from '../../utils/services/ColorGenerator';
+import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { TagModalProps } from '../data';
 import { TagEdition } from '../reducers/tagEdit';
 import { Result } from '../../utils/Result';
@@ -18,7 +18,7 @@ interface EditTagModalProps extends TagModalProps {
   tagEdited: (oldName: string, newName: string, color: string) => void;
 }
 
-const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
+export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   { tag, editTag, toggle, tagEdited, isOpen, tagEdit }: EditTagModalProps,
 ) => {
   const [newTagName, setNewTagName] = useState(tag);
@@ -78,5 +78,3 @@ const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
     </Modal>
   );
 };
-
-export default EditTagModal;

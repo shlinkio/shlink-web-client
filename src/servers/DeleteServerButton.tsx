@@ -11,7 +11,7 @@ export type DeleteServerButtonProps = PropsWithChildren<{
   textClassName?: string;
 }>;
 
-const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<DeleteServerButtonProps> => (
+export const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<DeleteServerButtonProps> => (
   { server, className, children, textClassName },
 ) => {
   const [isModalOpen, , showModal, hideModal] = useToggle();
@@ -27,5 +27,3 @@ const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<D
     </>
   );
 };
-
-export default DeleteServerButton;

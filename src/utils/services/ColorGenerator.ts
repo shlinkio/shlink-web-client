@@ -1,6 +1,6 @@
 import { isNil } from 'ramda';
 import { rangeOf } from '../utils';
-import LocalStorage from './LocalStorage';
+import { LocalStorage } from './LocalStorage';
 
 const HEX_COLOR_LENGTH = 6;
 const HEX_DIGITS = '0123456789ABCDEF';
@@ -15,7 +15,7 @@ const hexColorToRgbArray = (colorHex: string): number[] =>
 // HSP by Darel Rex Finley https://alienryderflex.com/hsp.html
 const perceivedLightness = (r = 0, g = 0, b = 0) => round(sqrt(0.299 * r ** 2 + 0.587 * g ** 2 + 0.114 * b ** 2));
 
-export default class ColorGenerator {
+export class ColorGenerator {
   private readonly colors: Record<string, string>;
   private readonly lights: Record<string, boolean>;
 

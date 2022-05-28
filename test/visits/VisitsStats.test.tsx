@@ -3,11 +3,11 @@ import { Progress } from 'reactstrap';
 import { sum } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { Route } from 'react-router-dom';
-import VisitStats from '../../src/visits/VisitsStats';
-import Message from '../../src/utils/Message';
+import { VisitsStats } from '../../src/visits/VisitsStats';
+import { Message } from '../../src/utils/Message';
 import { Visit, VisitsInfo } from '../../src/visits/types';
-import LineChartCard from '../../src/visits/charts/LineChartCard';
-import VisitsTable from '../../src/visits/VisitsTable';
+import { LineChartCard } from '../../src/visits/charts/LineChartCard';
+import { VisitsTable } from '../../src/visits/VisitsTable';
 import { Result } from '../../src/utils/Result';
 import { Settings } from '../../src/settings/reducers/settings';
 import { SelectedServer } from '../../src/servers/data';
@@ -24,7 +24,7 @@ describe('<VisitsStats />', () => {
 
   const createComponent = (visitsInfo: Partial<VisitsInfo>) => {
     wrapper = shallow(
-      <VisitStats
+      <VisitsStats
         getVisits={getVisitsMock}
         visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
         cancelGetVisits={() => {}}

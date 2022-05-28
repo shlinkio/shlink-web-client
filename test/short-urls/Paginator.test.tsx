@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { PaginationItem, PaginationLink } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import Paginator from '../../src/short-urls/Paginator';
+import { Paginator } from '../../src/short-urls/Paginator';
 import { ShlinkPaginator } from '../../src/api/types';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 

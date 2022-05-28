@@ -8,8 +8,8 @@ import reducer, {
   editTag,
   EditTagAction,
 } from '../../../src/tags/reducers/tagEdit';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
-import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('tagEditReducer', () => {

@@ -10,7 +10,7 @@ interface DeleteTagConfirmModalProps extends TagModalProps {
   tagDelete: TagDeletion;
 }
 
-const DeleteTagConfirmModal = (
+export const DeleteTagConfirmModal = (
   { tag, toggle, isOpen, deleteTag, tagDelete, tagDeleted }: DeleteTagConfirmModalProps,
 ) => {
   const { deleting, error, errorData } = tagDelete;
@@ -22,9 +22,7 @@ const DeleteTagConfirmModal = (
 
   return (
     <Modal toggle={toggle} isOpen={isOpen} centered>
-      <ModalHeader toggle={toggle}>
-        <span className="text-danger">Delete tag</span>
-      </ModalHeader>
+      <ModalHeader toggle={toggle} className="text-danger">Delete tag</ModalHeader>
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?
         {error && (
@@ -42,5 +40,3 @@ const DeleteTagConfirmModal = (
     </Modal>
   );
 };
-
-export default DeleteTagConfirmModal;

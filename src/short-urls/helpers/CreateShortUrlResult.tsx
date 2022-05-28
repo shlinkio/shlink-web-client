@@ -16,7 +16,7 @@ export interface CreateShortUrlResultProps extends ShortUrlCreation {
   canBeClosed?: boolean;
 }
 
-const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
+export const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
   { error, errorData, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
   const [showCopyTooltip, setShowCopyTooltip] = useStateFlagTimeout();
@@ -61,5 +61,3 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
     </Result>
   );
 };
-
-export default CreateShortUrlResult;

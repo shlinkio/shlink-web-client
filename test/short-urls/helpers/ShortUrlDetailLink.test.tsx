@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import ShortUrlDetailLink, { LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
+import { ShortUrlDetailLink, LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
 import { NotFoundServer, ReachableServer } from '../../../src/servers/data';
 import { ShortUrl } from '../../../src/short-urls/data';
 

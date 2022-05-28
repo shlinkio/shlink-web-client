@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { ExternalLink } from 'react-external-link';
 import { Button, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import createQrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
+import { QrCodeModal as createQrCodeModal } from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';

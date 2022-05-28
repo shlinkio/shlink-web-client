@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
-import DeleteServerModal from '../../src/servers/DeleteServerModal';
+import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import { ServerWithId } from '../../src/servers/data';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));

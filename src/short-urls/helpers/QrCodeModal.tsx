@@ -17,7 +17,7 @@ interface QrCodeModalConnectProps extends ShortUrlModalProps {
   selectedServer: SelectedServer;
 }
 
-const QrCodeModal = (imageDownloader: ImageDownloader) => (
+export const QrCodeModal = (imageDownloader: ImageDownloader) => (
   { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
 ) => {
   const [size, setSize] = useState(300);
@@ -107,5 +107,3 @@ const QrCodeModal = (imageDownloader: ImageDownloader) => (
     </Modal>
   );
 };
-
-export default QrCodeModal;

@@ -8,8 +8,8 @@ import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
-import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
-import VisitsStats from './VisitsStats';
+import { ShortUrlVisitsHeader } from './ShortUrlVisitsHeader';
+import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
@@ -22,7 +22,7 @@ export interface ShortUrlVisitsProps extends CommonVisitsProps {
   cancelGetShortUrlVisits: () => void;
 }
 
-const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
+export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
   shortUrlVisits,
   shortUrlDetail,
   getShortUrlVisits,
@@ -60,5 +60,3 @@ const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub((
     </VisitsStats>
   );
 }, (_, params) => [Topics.shortUrlVisits(params.shortCode)]);
-
-export default ShortUrlVisits;

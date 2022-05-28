@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { prettify } from '../../utils/helpers/numbers';
 import { ShortUrl } from '../data';
 import { SelectedServer } from '../../servers/data';
-import ShortUrlDetailLink from './ShortUrlDetailLink';
+import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
 
 interface ShortUrlVisitsCountProps {
@@ -16,7 +16,9 @@ interface ShortUrlVisitsCountProps {
   active?: boolean;
 }
 
-const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCountProps) => {
+export const ShortUrlVisitsCount = (
+  { visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCountProps,
+) => {
   const maxVisits = shortUrl?.meta?.maxVisits;
   const visitsLink = (
     <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
@@ -57,5 +59,3 @@ const ShortUrlVisitsCount = ({ visitsCount, shortUrl, selectedServer, active = f
     </>
   );
 };
-
-export default ShortUrlVisitsCount;

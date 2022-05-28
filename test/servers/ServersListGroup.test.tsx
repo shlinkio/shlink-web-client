@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ListGroup } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import ServersListGroup from '../../src/servers/ServersListGroup';
+import { ServersListGroup } from '../../src/servers/ServersListGroup';
 import { ServerWithId } from '../../src/servers/data';
 
 describe('<ServersListGroup />', () => {

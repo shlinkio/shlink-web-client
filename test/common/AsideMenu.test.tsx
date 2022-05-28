@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import asideMenuCreator from '../../src/common/AsideMenu';
+import { AsideMenu as createAsideMenu } from '../../src/common/AsideMenu';
 import { ReachableServer } from '../../src/servers/data';
 import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<AsideMenu />', () => {
-  const AsideMenu = asideMenuCreator(() => <>DeleteServerButton</>);
+  const AsideMenu = createAsideMenu(() => <>DeleteServerButton</>);
   const setUp = (version: SemVer, id: string | false = 'abc123') => render(
     <MemoryRouter>
       <AsideMenu selectedServer={Mock.of<ReachableServer>({ id: id || undefined, version })} />

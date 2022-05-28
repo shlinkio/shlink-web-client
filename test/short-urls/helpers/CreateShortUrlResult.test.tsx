@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
+import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
 import { Result } from '../../../src/utils/Result';
@@ -11,7 +11,7 @@ describe('<CreateShortUrlResult />', () => {
   let wrapper: ShallowWrapper;
   const copyToClipboard = jest.fn();
   const useStateFlagTimeout = jest.fn(() => [false, copyToClipboard]) as StateFlagTimeout;
-  const CreateShortUrlResult = createCreateShortUrlResult(useStateFlagTimeout);
+  const CreateShortUrlResult = createResult(useStateFlagTimeout);
   const createWrapper = (result: ShortUrl | null = null, error = false) => {
     wrapper = shallow(
       <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,

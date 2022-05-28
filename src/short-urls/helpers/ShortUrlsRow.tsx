@@ -1,14 +1,14 @@
 import { FC, useEffect, useRef } from 'react';
 import { isEmpty } from 'ramda';
 import { ExternalLink } from 'react-external-link';
-import ColorGenerator from '../../utils/services/ColorGenerator';
+import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { StateFlagTimeout } from '../../utils/helpers/hooks';
-import Tag from '../../tags/helpers/Tag';
+import { Tag } from '../../tags/helpers/Tag';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { ShortUrl } from '../data';
 import { Time } from '../../utils/Time';
-import ShortUrlVisitsCount from './ShortUrlVisitsCount';
+import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
@@ -18,7 +18,7 @@ export interface ShortUrlsRowProps {
   shortUrl: ShortUrl;
 }
 
-const ShortUrlsRow = (
+export const ShortUrlsRow = (
   ShortUrlsRowMenu: FC<ShortUrlsRowMenuProps>,
   colorGenerator: ColorGenerator,
   useStateFlagTimeout: StateFlagTimeout,
@@ -87,5 +87,3 @@ const ShortUrlsRow = (
     </tr>
   );
 };
-
-export default ShortUrlsRow;

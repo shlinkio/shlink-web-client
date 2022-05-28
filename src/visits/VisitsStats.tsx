@@ -7,7 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
-import Message from '../utils/Message';
+import { Message } from '../utils/Message';
 import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
@@ -17,10 +17,10 @@ import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
 import { NavPillItem, NavPills } from '../utils/NavPills';
 import { ExportBtn } from '../utils/ExportBtn';
-import LineChartCard from './charts/LineChartCard';
-import VisitsTable from './VisitsTable';
+import { LineChartCard } from './charts/LineChartCard';
+import { VisitsTable } from './VisitsTable';
 import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
-import OpenMapModalBtn from './helpers/OpenMapModalBtn';
+import { OpenMapModalBtn } from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
 import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
@@ -55,7 +55,7 @@ const sections: Record<Section, VisitsNavLinkProps> = {
 
 let selectedBar: string | undefined;
 
-const VisitsStats: FC<VisitsStatsProps> = ({
+export const VisitsStats: FC<VisitsStatsProps> = ({
   children,
   visitsInfo,
   getVisits,
@@ -325,5 +325,3 @@ const VisitsStats: FC<VisitsStatsProps> = ({
     </>
   );
 };
-
-export default VisitsStats;

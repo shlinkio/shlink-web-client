@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
-import createServerConstruct from '../../src/servers/CreateServer';
+import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
 import { ServerForm } from '../../src/servers/helpers/ServerForm';
 import { ServerWithId } from '../../src/servers/data';
 import { DuplicatedServersModal } from '../../src/servers/helpers/DuplicatedServersModal';
@@ -21,7 +21,7 @@ describe('<CreateServer />', () => {
       .mockReturnValueOnce([serversImported, () => ''])
       .mockReturnValueOnce([importFailed, () => ''])
       .mockReturnValue([]);
-    const CreateServer = createServerConstruct(ImportServersBtn, useStateFlagTimeout);
+    const CreateServer = createCreateServer(ImportServersBtn, useStateFlagTimeout);
 
     wrapper = shallow(<CreateServer createServer={createServerMock} servers={servers} />);
 

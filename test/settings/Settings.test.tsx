@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import { Route } from 'react-router-dom';
-import createSettings from '../../src/settings/Settings';
+import { Settings as createSettings } from '../../src/settings/Settings';
 import { NoMenuLayout } from '../../src/common/NoMenuLayout';
 import { NavPillItem } from '../../src/utils/NavPills';
 

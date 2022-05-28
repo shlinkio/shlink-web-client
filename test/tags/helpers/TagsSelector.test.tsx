@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import createTagsSelector from '../../../src/tags/helpers/TagsSelector';
-import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { TagsSelector as createTagsSelector } from '../../../src/tags/helpers/TagsSelector';
+import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { TagsList } from '../../../src/tags/reducers/tagsList';
 import { Settings } from '../../../src/settings/reducers/settings';
 

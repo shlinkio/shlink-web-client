@@ -9,7 +9,7 @@ import reducer, {
   CreateShortUrlAction,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlCreationReducer', () => {

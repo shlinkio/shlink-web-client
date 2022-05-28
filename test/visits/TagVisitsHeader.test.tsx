@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import Tag from '../../src/tags/helpers/Tag';
-import TagVisitsHeader from '../../src/visits/TagVisitsHeader';
+import { Tag } from '../../src/tags/helpers/Tag';
+import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
 import { TagVisits } from '../../src/visits/reducers/tagVisits';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 
 describe('<TagVisitsHeader />', () => {
   let wrapper: ShallowWrapper;

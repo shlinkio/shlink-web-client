@@ -3,11 +3,11 @@ import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
-import VisitsStats from './VisitsStats';
+import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsInfo, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
-import VisitsHeader from './VisitsHeader';
+import { VisitsHeader } from './VisitsHeader';
 
 export interface NonOrphanVisitsProps extends CommonVisitsProps {
   getNonOrphanVisits: (params?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;

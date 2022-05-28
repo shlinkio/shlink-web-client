@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import createShortUrlsCreator from '../../src/short-urls/CreateShortUrl';
+import { CreateShortUrl as createShortUrlsCreator } from '../../src/short-urls/CreateShortUrl';
 import { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
 import { Settings } from '../../src/settings/reducers/settings';
 

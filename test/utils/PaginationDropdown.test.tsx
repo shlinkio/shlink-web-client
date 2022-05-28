@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { DropdownItem } from 'reactstrap';
-import PaginationDropdown from '../../src/utils/PaginationDropdown';
+import { PaginationDropdown } from '../../src/utils/PaginationDropdown';
 
 describe('<PaginationDropdown />', () => {
   const setValue = jest.fn();

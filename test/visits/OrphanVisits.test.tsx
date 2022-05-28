@@ -3,11 +3,11 @@ import { Mock } from 'ts-mockery';
 import { OrphanVisits as createOrphanVisits } from '../../src/visits/OrphanVisits';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { VisitsInfo } from '../../src/visits/types';
-import VisitsStats from '../../src/visits/VisitsStats';
+import { VisitsStats } from '../../src/visits/VisitsStats';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
-import VisitsHeader from '../../src/visits/VisitsHeader';
+import { VisitsHeader } from '../../src/visits/VisitsHeader';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

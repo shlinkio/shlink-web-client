@@ -4,7 +4,7 @@ import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { Input } from 'reactstrap';
 import { ShortUrlForm as createShortUrlForm, Mode } from '../../src/short-urls/ShortUrlForm';
-import DateInput from '../../src/utils/DateInput';
+import { DateInput } from '../../src/utils/DateInput';
 import { ShortUrlData } from '../../src/short-urls/data';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { SimpleCard } from '../../src/utils/SimpleCard';

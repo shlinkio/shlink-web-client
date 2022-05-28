@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Mock } from 'ts-mockery';
-import ShortUrlVisitsCount from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
+import { ShortUrlVisitsCount } from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
 import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<ShortUrlVisitsCount />', () => {
