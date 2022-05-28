@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Mock } from 'ts-mockery';
-import DateInput, { DateInputProps } from '../../src/utils/DateInput';
+import { DateInput, DateInputProps } from '../../src/utils/DateInput';
 
 describe('<DateInput />', () => {
   let wrapped: ShallowWrapper;

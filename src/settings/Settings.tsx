@@ -9,7 +9,7 @@ const SettingsSections: FC<{ items: ReactNode[] }> = ({ items }) => (
   </>
 );
 
-const Settings = (
+export const Settings = (
   RealTimeUpdates: FC,
   ShortUrlCreation: FC,
   ShortUrlsList: FC,
@@ -32,5 +32,3 @@ const Settings = (
     </Routes>
   </NoMenuLayout>
 );
-
-export default Settings;

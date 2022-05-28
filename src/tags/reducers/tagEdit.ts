@@ -2,7 +2,7 @@ import { pick } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
-import ColorGenerator from '../../utils/services/ColorGenerator';
+import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';

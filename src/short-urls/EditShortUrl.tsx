@@ -8,7 +8,7 @@ import { SelectedServer } from '../servers/data';
 import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
 import { OptionalString } from '../utils/utils';
 import { parseQuery } from '../utils/helpers/query';
-import Message from '../utils/Message';
+import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { useGoBack, useToggle } from '../utils/helpers/hooks';

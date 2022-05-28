@@ -10,7 +10,7 @@ import {
   rangeIsInterval,
   dateRangeIsEmpty,
 } from './types';
-import DateRangeRow from './DateRangeRow';
+import { DateRangeRow } from './DateRangeRow';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
 
 export interface DateRangeSelectorProps {

@@ -1,7 +1,7 @@
 import Bottle from 'bottlejs';
 import { useStateFlagTimeout } from '../helpers/hooks';
-import LocalStorage from './LocalStorage';
-import ColorGenerator from './ColorGenerator';
+import { LocalStorage } from './LocalStorage';
+import { ColorGenerator } from './ColorGenerator';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
 
 const provideServices = (bottle: Bottle) => {

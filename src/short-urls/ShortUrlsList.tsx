@@ -11,7 +11,7 @@ import { ShlinkShortUrlsListParams } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableProps } from './ShortUrlsTable';
-import Paginator from './Paginator';
+import { Paginator } from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { ShortUrlsOrderableFields } from './data';
 import { ShortUrlsFilteringProps } from './ShortUrlsFilteringBar';
@@ -23,7 +23,7 @@ interface ShortUrlsListProps {
   settings: Settings;
 }
 
-const ShortUrlsList = (
+export const ShortUrlsList = (
   ShortUrlsTable: FC<ShortUrlsTableProps>,
   ShortUrlsFilteringBar: FC<ShortUrlsFilteringProps>,
 ) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer, settings }: ShortUrlsListProps) => {
@@ -83,5 +83,3 @@ const ShortUrlsList = (
     </>
   );
 }, () => [Topics.visits]);
-
-export default ShortUrlsList;

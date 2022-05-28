@@ -5,9 +5,9 @@ import { FC, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
-import ColorGenerator from '../utils/services/ColorGenerator';
+import { ColorGenerator } from '../utils/services/ColorGenerator';
 import { getServerId, SelectedServer } from '../servers/data';
-import TagBullet from './helpers/TagBullet';
+import { TagBullet } from './helpers/TagBullet';
 import { NormalizedTag, TagModalProps } from './data';
 import './TagCard.scss';
 
@@ -20,7 +20,7 @@ export interface TagCardProps {
 
 const isTruncated = (el: HTMLElement | undefined): boolean => !!el && el.scrollWidth > el.clientWidth;
 
-const TagCard = (
+export const TagCard = (
   DeleteTagConfirmModal: FC<TagModalProps>,
   EditTagModal: FC<TagModalProps>,
   colorGenerator: ColorGenerator,
@@ -82,5 +82,3 @@ const TagCard = (
     </Card>
   );
 };
-
-export default TagCard;

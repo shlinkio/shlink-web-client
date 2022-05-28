@@ -1,5 +1,5 @@
 import { endOfDay } from 'date-fns';
-import DateInput from '../DateInput';
+import { DateInput } from '../DateInput';
 import { DateRange } from './types';
 
 interface DateRangeRowProps extends DateRange {
@@ -8,7 +8,7 @@ interface DateRangeRowProps extends DateRange {
   disabled?: boolean;
 }
 
-const DateRangeRow = (
+export const DateRangeRow = (
   { startDate = null, endDate = null, disabled = false, onStartDateChange, onEndDateChange }: DateRangeRowProps,
 ) => (
   <div className="row">
@@ -35,5 +35,3 @@ const DateRangeRow = (
     </div>
   </div>
 );
-
-export default DateRangeRow;

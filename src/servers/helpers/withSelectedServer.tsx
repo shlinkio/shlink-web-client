@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Message from '../../utils/Message';
+import { Message } from '../../utils/Message';
 import { isNotFoundServer, SelectedServer } from '../data';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
 

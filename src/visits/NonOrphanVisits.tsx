@@ -7,7 +7,7 @@ import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsInfo, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
-import VisitsHeader from './VisitsHeader';
+import { VisitsHeader } from './VisitsHeader';
 
 export interface NonOrphanVisitsProps extends CommonVisitsProps {
   getNonOrphanVisits: (params?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;

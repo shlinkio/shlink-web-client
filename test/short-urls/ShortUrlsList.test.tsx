@@ -2,11 +2,11 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { ReactElement } from 'react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
-import shortUrlsListCreator from '../../src/short-urls/ShortUrlsList';
+import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
 import { ShortUrlsOrderableFields, ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
-import Paginator from '../../src/short-urls/Paginator';
+import { Paginator } from '../../src/short-urls/Paginator';
 import { ReachableServer } from '../../src/servers/data';
 import { Settings } from '../../src/settings/reducers/settings';
 
@@ -36,7 +36,7 @@ describe('<ShortUrlsList />', () => {
       pagination: {},
     },
   });
-  const ShortUrlsList = shortUrlsListCreator(ShortUrlsTable, ShortUrlsFilteringBar);
+  const ShortUrlsList = createShortUrlsList(ShortUrlsTable, ShortUrlsFilteringBar);
   const createWrapper = (defaultOrdering: ShortUrlsOrder = {}) => shallow(
     <ShortUrlsList
       {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}

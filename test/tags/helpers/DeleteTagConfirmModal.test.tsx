@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import DeleteTagConfirmModal from '../../../src/tags/helpers/DeleteTagConfirmModal';
+import { DeleteTagConfirmModal } from '../../../src/tags/helpers/DeleteTagConfirmModal';
 import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
 
 describe('<DeleteTagConfirmModal />', () => {

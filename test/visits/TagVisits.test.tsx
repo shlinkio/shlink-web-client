@@ -1,8 +1,8 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import createTagVisits, { TagVisitsProps } from '../../src/visits/TagVisits';
-import TagVisitsHeader from '../../src/visits/TagVisitsHeader';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { TagVisits as createTagVisits, TagVisitsProps } from '../../src/visits/TagVisits';
+import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
+import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import { VisitsStats } from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';

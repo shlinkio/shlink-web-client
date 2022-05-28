@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
 import { shallow, ShallowWrapper } from 'enzyme';
 import { ReactNode } from 'react';
-import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
-import Tag from '../../../src/tags/helpers/Tag';
+import { Tag } from '../../../src/tags/helpers/Tag';
 
 describe('<Tag />', () => {
   const onClick = jest.fn();

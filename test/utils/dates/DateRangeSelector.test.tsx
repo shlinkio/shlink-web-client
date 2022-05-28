@@ -4,7 +4,7 @@ import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
-import DateRangeRow from '../../../src/utils/dates/DateRangeRow';
+import { DateRangeRow } from '../../../src/utils/dates/DateRangeRow';
 
 describe('<DateRangeSelector />', () => {
   let wrapper: ShallowWrapper;

@@ -29,13 +29,13 @@ const calculateMapProps = (locations: CityStats[]): MapContainerProps => {
   }
 
   // When there's only one location, an error is thrown if trying to calculate the bounds.
-  // When that happens, we use zoom and center as a workaround
+  // When that happens, we use "zoom" and "center" as a workaround
   const [{ latLong: center }] = locations;
 
   return { zoom: 10, center };
 };
 
-const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
+export const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
   <Modal toggle={toggle} isOpen={isOpen} className="map-modal__modal" contentClassName="map-modal__modal-content">
     <ModalBody className="map-modal__modal-body">
       <h3 className="map-modal__modal-title">
@@ -53,5 +53,3 @@ const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProps) => (
     </ModalBody>
   </Modal>
 );
-
-export default MapModal;

@@ -13,11 +13,10 @@ export interface ShortUrlDetailLinkProps {
 
 const buildUrl = ({ id }: ServerWithId, { shortCode, domain }: ShortUrl, suffix: LinkSuffix) => {
   const query = domain ? `?domain=${domain}` : '';
-
   return `/server/${id}/short-code/${shortCode}/${suffix}${query}`;
 };
 
-const ShortUrlDetailLink: FC<ShortUrlDetailLinkProps & Record<string | number, any>> = (
+export const ShortUrlDetailLink: FC<ShortUrlDetailLinkProps & Record<string | number, any>> = (
   { selectedServer, shortUrl, suffix, children, ...rest },
 ) => {
   if (!selectedServer || !isServerWithId(selectedServer) || !shortUrl) {
@@ -26,5 +25,3 @@ const ShortUrlDetailLink: FC<ShortUrlDetailLinkProps & Record<string | number, a
 
   return <Link to={buildUrl(selectedServer, shortUrl, suffix)} {...rest}>{children}</Link>;
 };
-
-export default ShortUrlDetailLink;

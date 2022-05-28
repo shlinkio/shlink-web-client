@@ -4,7 +4,7 @@ import { faMapMarkedAlt as mapIcon } from '@fortawesome/free-solid-svg-icons';
 import { Button, Dropdown, DropdownItem, DropdownMenu, UncontrolledTooltip } from 'reactstrap';
 import { useDomId, useToggle } from '../../utils/helpers/hooks';
 import { CityStats } from '../types';
-import MapModal from './MapModal';
+import { MapModal } from './MapModal';
 import './OpenMapModalBtn.scss';
 
 interface OpenMapModalBtnProps {
@@ -13,7 +13,7 @@ interface OpenMapModalBtnProps {
   locations?: CityStats[];
 }
 
-const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapModalBtnProps) => {
+export const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapModalBtnProps) => {
   const [mapIsOpened, , openMap, closeMap] = useToggle();
   const [dropdownIsOpened, toggleDropdown, openDropdown] = useToggle();
   const [locationsToShow, setLocationsToShow] = useState<CityStats[]>([]);
@@ -51,5 +51,3 @@ const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: OpenMapMo
     </>
   );
 };
-
-export default OpenMapModalBtn;

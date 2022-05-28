@@ -11,7 +11,7 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { ShortUrl, ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
-import ShortUrlDetailLink from './ShortUrlDetailLink';
+import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 
 export interface ShortUrlsRowMenuProps {
   selectedServer: SelectedServer;
@@ -19,7 +19,7 @@ export interface ShortUrlsRowMenuProps {
 }
 type ShortUrlModal = FC<ShortUrlModalProps>;
 
-const ShortUrlsRowMenu = (
+export const ShortUrlsRowMenu = (
   DeleteShortUrlModal: ShortUrlModal,
   QrCodeModal: ShortUrlModal,
 ) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
@@ -51,5 +51,3 @@ const ShortUrlsRowMenu = (
     </DropdownBtnMenu>
   );
 };
-
-export default ShortUrlsRowMenu;

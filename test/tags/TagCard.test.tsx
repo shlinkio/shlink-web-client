@@ -1,9 +1,9 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import { Link } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import createTagCard from '../../src/tags/TagCard';
-import TagBullet from '../../src/tags/helpers/TagBullet';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { TagCard as createTagCard } from '../../src/tags/TagCard';
+import { TagBullet } from '../../src/tags/helpers/TagBullet';
+import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { ReachableServer } from '../../src/servers/data';
 
 describe('<TagCard />', () => {

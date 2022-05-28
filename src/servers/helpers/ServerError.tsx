@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import Message from '../../utils/Message';
+import { Message } from '../../utils/Message';
 import { ServersListGroup } from '../ServersListGroup';
 import { DeleteServerButtonProps } from '../DeleteServerButton';
 import { isServerWithId, SelectedServer, ServersMap } from '../data';

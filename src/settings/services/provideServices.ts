@@ -1,6 +1,6 @@
 import Bottle from 'bottlejs';
 import { RealTimeUpdatesSettings } from '../RealTimeUpdatesSettings';
-import Settings from '../Settings';
+import { Settings } from '../Settings';
 import {
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
