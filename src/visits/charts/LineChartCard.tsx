@@ -235,7 +235,7 @@ export const LineChartCard = (
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader role="heading">
         {title}
         <div className="float-end">
           <UncontrolledDropdown>
