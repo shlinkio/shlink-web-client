@@ -1,13 +1,13 @@
 import { parseISO, format as formatDate, getUnixTime, formatDistance } from 'date-fns';
 import { isDateObject } from './helpers/date';
 
-export interface DateProps {
+export interface TimeProps {
   date: Date | string;
   format?: string;
   relative?: boolean;
 }
 
-export const Time = ({ date, format = 'yyyy-MM-dd HH:mm', relative = false }: DateProps) => {
+export const Time = ({ date, format = 'yyyy-MM-dd HH:mm', relative = false }: TimeProps) => {
   const dateObject = isDateObject(date) ? date : parseISO(date);
 
   return (
