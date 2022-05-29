@@ -6,7 +6,7 @@ import { formatISO } from 'date-fns';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
 import { Tag } from '../../../src/tags/helpers/Tag';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
-import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
+import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
@@ -17,8 +17,8 @@ describe('<ShortUrlsRow />', () => {
   let wrapper: ShallowWrapper;
   const mockFunction = () => null;
   const ShortUrlsRowMenu = mockFunction;
-  const stateFlagTimeout = jest.fn(() => true);
-  const useStateFlagTimeout = jest.fn(() => [false, stateFlagTimeout]) as StateFlagTimeout;
+  const timeoutToggle = jest.fn(() => true);
+  const useTimeoutToggle = jest.fn(() => [false, timeoutToggle]) as TimeoutToggle;
   const colorGenerator = Mock.of<ColorGenerator>({
     getColorForKey: jest.fn(),
     setColorForKey: jest.fn(),
@@ -38,7 +38,7 @@ describe('<ShortUrlsRow />', () => {
       maxVisits: null,
     },
   };
-  const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useStateFlagTimeout);
+  const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useTimeoutToggle);
   const createWrapper = (title?: string | null) => {
     wrapper = shallow(
       <ShortUrlsRow selectedServer={server} shortUrl={{ ...shortUrl, title }} onTagClick={mockFunction} />,
@@ -129,8 +129,8 @@ describe('<ShortUrlsRow />', () => {
     const menu = col.find(CopyToClipboardIcon);
 
     expect(menu).toHaveLength(1);
-    expect(stateFlagTimeout).not.toHaveBeenCalled();
+    expect(timeoutToggle).not.toHaveBeenCalled();
     menu.simulate('copy');
-    expect(stateFlagTimeout).toHaveBeenCalledTimes(1);
+    expect(timeoutToggle).toHaveBeenCalledTimes(1);
   });
 });

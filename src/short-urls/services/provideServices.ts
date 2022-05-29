@@ -27,9 +27,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   bottle.serviceFactory('ShortUrlsTable', ShortUrlsTable, 'ShortUrlsRow');
-  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useStateFlagTimeout');
+  bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useTimeoutToggle');
   bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'QrCodeModal');
-  bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useStateFlagTimeout');
+  bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useTimeoutToggle');
   bottle.serviceFactory('ShortUrlForm', ShortUrlForm, 'TagsSelector', 'DomainSelector');
 
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');

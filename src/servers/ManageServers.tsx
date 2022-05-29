@@ -7,7 +7,7 @@ import { NoMenuLayout } from '../common/NoMenuLayout';
 import { SimpleCard } from '../utils/SimpleCard';
 import { SearchField } from '../utils/SearchField';
 import { Result } from '../utils/Result';
-import { StateFlagTimeout } from '../utils/helpers/hooks';
+import { TimeoutToggle } from '../utils/helpers/hooks';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServersMap } from './data';
 import { ManageServersRowProps } from './ManageServersRow';
@@ -22,7 +22,7 @@ const SHOW_IMPORT_MSG_TIME = 4000;
 export const ManageServers = (
   serversExporter: ServersExporter,
   ImportServersBtn: FC<ImportServersBtnProps>,
-  useStateFlagTimeout: StateFlagTimeout,
+  useTimeoutToggle: TimeoutToggle,
   ManageServersRow: FC<ManageServersRowProps>,
 ): FC<ManageServersProps> => ({ servers }) => {
   const allServers = Object.values(servers);
@@ -31,7 +31,7 @@ export const ManageServers = (
     allServers.filter(({ name, url }) => `${name} ${url}`.match(searchTerm)),
   );
   const hasAutoConnect = serversList.some(({ autoConnect }) => !!autoConnect);
-  const [errorImporting, setErrorImporting] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+  const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
 
   useEffect(() => {
     setServersList(Object.values(servers));

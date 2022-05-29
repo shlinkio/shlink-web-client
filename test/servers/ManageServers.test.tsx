@@ -12,8 +12,8 @@ describe('<ManageServers />', () => {
   const serversExporter = Mock.of<ServersExporter>({ exportServers });
   const ImportServersBtn = () => null;
   const ManageServersRow = () => null;
-  const useStateFlagTimeout = jest.fn().mockReturnValue([false, jest.fn()]);
-  const ManageServers = createManageServers(serversExporter, ImportServersBtn, useStateFlagTimeout, ManageServersRow);
+  const useTimeoutToggle = jest.fn().mockReturnValue([false, jest.fn()]);
+  const ManageServers = createManageServers(serversExporter, ImportServersBtn, useTimeoutToggle, ManageServersRow);
   let wrapper: ShallowWrapper;
   const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
@@ -82,7 +82,7 @@ describe('<ManageServers />', () => {
   });
 
   it('shows an error message if an error occurs while importing servers', () => {
-    useStateFlagTimeout.mockReturnValue([true, jest.fn()]);
+    useTimeoutToggle.mockReturnValue([true, jest.fn()]);
 
     const wrapper = createWrapper({ foo: createServerMock('foo') });
     const result = wrapper.find(Result);

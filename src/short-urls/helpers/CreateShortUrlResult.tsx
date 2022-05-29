@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';
-import { StateFlagTimeout } from '../../utils/helpers/hooks';
+import { TimeoutToggle } from '../../utils/helpers/hooks';
 import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
@@ -16,10 +16,10 @@ export interface CreateShortUrlResultProps extends ShortUrlCreation {
   canBeClosed?: boolean;
 }
 
-export const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
+export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
   { error, errorData, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
-  const [showCopyTooltip, setShowCopyTooltip] = useStateFlagTimeout();
+  const [showCopyTooltip, setShowCopyTooltip] = useTimeoutToggle();
 
   useEffect(() => {
     resetCreateShortUrl();
