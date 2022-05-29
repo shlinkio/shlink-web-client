@@ -25,7 +25,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ManageServers,
     'ServersExporter',
     'ImportServersBtn',
-    'useStateFlagTimeout',
+    'useTimeoutToggle',
     'ManageServersRow',
   );
   bottle.decorator('ManageServers', withoutSelectedServer);
@@ -36,7 +36,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
   bottle.decorator('ManageServersRowDropdown', connect(null, ['setAutoConnect']));
 
-  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
+  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useTimeoutToggle');
   bottle.decorator('CreateServer', withoutSelectedServer);
   bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
 

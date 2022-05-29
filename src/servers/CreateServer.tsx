@@ -4,7 +4,7 @@ import { Button } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { Result } from '../utils/Result';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import { StateFlagTimeout, useGoBack, useToggle } from '../utils/helpers/hooks';
+import { TimeoutToggle, useGoBack, useToggle } from '../utils/helpers/hooks';
 import { ServerForm } from './helpers/ServerForm';
 import { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerData, ServersMap, ServerWithId } from './data';
@@ -26,14 +26,14 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   </div>
 );
 
-export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useStateFlagTimeout: StateFlagTimeout) => (
+export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTimeoutToggle: TimeoutToggle) => (
   { servers, createServer }: CreateServerProps,
 ) => {
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
-  const [serversImported, setServersImported] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
-  const [errorImporting, setErrorImporting] = useStateFlagTimeout(false, SHOW_IMPORT_MSG_TIME);
+  const [serversImported, setServersImported] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
+  const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData | undefined>();
   const save = () => {
