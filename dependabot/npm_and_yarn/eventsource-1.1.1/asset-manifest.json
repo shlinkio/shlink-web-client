@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/eventsource-1.1.1/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/eventsource-1.1.1/static/js/main.5a0f42c1.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/eventsource-1.1.1/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/dependabot/npm_and_yarn/eventsource-1.1.1/static/css/main.1ccaf016.css.map",
+    "main.5a0f42c1.js.map": "/shlink-web-client/dependabot/npm_and_yarn/eventsource-1.1.1/static/js/main.5a0f42c1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.5a0f42c1.js"
+  ]
+}
