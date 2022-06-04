@@ -1,30 +1,24 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
-import { InputFormGroup } from '../../../src/utils/forms/InputFormGroup';
 
 describe('<ServerForm />', () => {
-  let wrapper: ShallowWrapper;
   const onSubmit = jest.fn();
+  const setUp = () => render(<ServerForm onSubmit={onSubmit}>Something</ServerForm>);
 
-  beforeEach(() => {
-    wrapper = shallow(<ServerForm onSubmit={onSubmit}><span>Something</span></ServerForm>);
-  });
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.resetAllMocks);
 
   it('renders components', () => {
-    expect(wrapper.find(InputFormGroup)).toHaveLength(3);
-    expect(wrapper.find('span')).toHaveLength(1);
+    setUp();
+
+    expect(screen.getAllByRole('textbox')).toHaveLength(3);
+    expect(screen.getByText('Something')).toBeInTheDocument();
   });
 
-  it('invokes submit callback when submit event is triggered', () => {
-    const form = wrapper.find('form');
-    const preventDefault = jest.fn();
+  it('invokes submit callback when submit event is triggered', async () => {
+    setUp();
 
-    form.simulate('submit', { preventDefault });
-
-    expect(preventDefault).toHaveBeenCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
+    fireEvent.submit(screen.getByRole('form'), { preventDefault: jest.fn() });
     expect(onSubmit).toHaveBeenCalled();
   });
 });
