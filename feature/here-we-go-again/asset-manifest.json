@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/here-we-go-again/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/here-we-go-again/static/js/main.86da80a1.js",
+    "index.html": "/shlink-web-client/feature/here-we-go-again/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/here-we-go-again/static/css/main.1ccaf016.css.map",
+    "main.86da80a1.js.map": "/shlink-web-client/feature/here-we-go-again/static/js/main.86da80a1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.86da80a1.js"
+  ]
+}
