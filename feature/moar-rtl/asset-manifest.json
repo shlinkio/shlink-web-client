@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/shlink-web-client/feature/moar-rtl/static/css/main.1ccaf016.css",
-    "main.js": "/shlink-web-client/feature/moar-rtl/static/js/main.60a6894b.js",
+    "main.js": "/shlink-web-client/feature/moar-rtl/static/js/main.b5ebdbea.js",
     "index.html": "/shlink-web-client/feature/moar-rtl/index.html",
     "main.1ccaf016.css.map": "/shlink-web-client/feature/moar-rtl/static/css/main.1ccaf016.css.map",
-    "main.60a6894b.js.map": "/shlink-web-client/feature/moar-rtl/static/js/main.60a6894b.js.map"
+    "main.b5ebdbea.js.map": "/shlink-web-client/feature/moar-rtl/static/js/main.b5ebdbea.js.map"
   },
   "entrypoints": [
     "static/css/main.1ccaf016.css",
-    "static/js/main.60a6894b.js"
+    "static/js/main.b5ebdbea.js"
   ]
 }
