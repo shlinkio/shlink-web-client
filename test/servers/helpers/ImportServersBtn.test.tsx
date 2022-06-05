@@ -1,46 +1,41 @@
-import { ReactNode } from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
-import { UncontrolledTooltip } from 'reactstrap';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import {
   ImportServersBtn as createImportServersBtn,
   ImportServersBtnProps,
 } from '../../../src/servers/helpers/ImportServersBtn';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
-import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
+import { ServersMap, ServerWithId } from '../../../src/servers/data';
 
 describe('<ImportServersBtn />', () => {
-  let wrapper: ShallowWrapper;
   const onImportMock = jest.fn();
   const createServersMock = jest.fn();
   const importServersFromFile = jest.fn().mockResolvedValue([]);
   const serversImporterMock = Mock.of<ServersImporter>({ importServersFromFile });
-  const click = jest.fn();
-  const fileRef = { current: Mock.of<HTMLInputElement>({ click }) };
   const ImportServersBtn = createImportServersBtn(serversImporterMock);
-  const createWrapper = (props: Partial<ImportServersBtnProps & { children: ReactNode }> = {}) => {
-    wrapper = shallow(
+  const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => ({
+    user: userEvent.setup(),
+    ...render(
       <ImportServersBtn
-        servers={{}}
+        servers={servers}
         {...props}
-        fileRef={fileRef}
         createServers={createServersMock}
         onImport={onImportMock}
       />,
-    );
-
-    return wrapper;
-  };
+    ),
+  });
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper.unmount());
 
-  it('renders a button, a tooltip and a file input', () => {
-    const wrapper = createWrapper();
+  it('shows tooltip on button hover', async () => {
+    const { user } = setUp();
 
-    expect(wrapper.find('#importBtn')).toHaveLength(1);
-    expect(wrapper.find(UncontrolledTooltip)).toHaveLength(1);
-    expect(wrapper.find('.import-servers-btn__csv-select')).toHaveLength(1);
+    expect(screen.queryByText(/^You can create servers by importing a CSV file/)).not.toBeInTheDocument();
+    await user.hover(screen.getByRole('button'));
+    await waitFor(
+      () => expect(screen.getByText(/^You can create servers by importing a CSV file/)).toBeInTheDocument(),
+    );
   });
 
   it.each([
@@ -48,53 +43,43 @@ describe('<ImportServersBtn />', () => {
     ['foo', 'foo'],
     ['bar', 'bar'],
   ])('allows a class name to be provided', (providedClassName, expectedClassName) => {
-    const wrapper = createWrapper({ className: providedClassName });
-
-    expect(wrapper.find('#importBtn').prop('className')).toEqual(expectedClassName);
+    setUp({ className: providedClassName });
+    expect(screen.getByRole('button')).toHaveAttribute('class', expect.stringContaining(expectedClassName));
   });
 
   it.each([
-    [undefined, true],
-    ['foo', false],
-    ['bar', false],
-  ])('has expected text', (children, expectToHaveDefaultText) => {
-    const wrapper = createWrapper({ children });
-
-    if (expectToHaveDefaultText) {
-      expect(wrapper.find('#importBtn').html()).toContain('Import from file');
-    } else {
-      expect(wrapper.find('#importBtn').html()).toContain(children);
-      expect(wrapper.find('#importBtn').html()).not.toContain('Import from file');
-    }
-  });
-
-  it('triggers click on file ref when button is clicked', () => {
-    const wrapper = createWrapper();
-    const btn = wrapper.find('#importBtn');
-
-    btn.simulate('click');
-
-    expect(click).toHaveBeenCalledTimes(1);
+    [undefined, 'Import from file'],
+    ['foo', 'foo'],
+    ['bar', 'bar'],
+  ])('has expected text', (children, expectedText) => {
+    setUp({ children });
+    expect(screen.getByRole('button')).toHaveTextContent(expectedText);
   });
 
   it('imports servers when file input changes', async () => {
-    const wrapper = createWrapper();
-    const file = wrapper.find('.import-servers-btn__csv-select');
+    const { container } = setUp();
+    const input = container.querySelector('[type=file]');
 
-    await file.simulate('change', { target: { files: [''] } });
-
+    input && fireEvent.change(input, { target: { files: [''] } });
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
   });
 
   it.each([
-    ['discard'],
-    ['save'],
-  ])('invokes callback in DuplicatedServersModal events', (event) => {
-    const wrapper = createWrapper();
+    ['Save anyway', true],
+    ['Discard', false],
+  ])('creates expected servers depending on selected option in modal', async (btnName, savesDuplicatedServers) => {
+    const existingServer = Mock.of<ServerWithId>({ id: 'abc', url: 'existingUrl', apiKey: 'existingApiKey' });
+    const newServer = Mock.of<ServerWithId>({ url: 'newUrl', apiKey: 'newApiKey' });
+    const { container, user } = setUp({}, { abc: existingServer });
+    const input = container.querySelector('[type=file]');
+    importServersFromFile.mockResolvedValue([existingServer, newServer]);
 
-    wrapper.find(DuplicatedServersModal).simulate(event);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    input && fireEvent.change(input, { target: { files: [''] } });
+    await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
+    await user.click(screen.getByRole('button', { name: btnName }));
 
-    expect(createServersMock).toHaveBeenCalledTimes(1);
+    expect(createServersMock).toHaveBeenCalledWith(savesDuplicatedServers ? [existingServer, newServer] : [newServer]);
     expect(onImportMock).toHaveBeenCalledTimes(1);
   });
 });
