@@ -10,6 +10,7 @@ import { getServerId, SelectedServer } from '../servers/data';
 import { TagBullet } from './helpers/TagBullet';
 import { NormalizedTag, TagModalProps } from './data';
 import './TagCard.scss';
+import { mutableRefToElementRef } from '../utils/helpers/components';
 
 export interface TagCardProps {
   tag: NormalizedTag;
@@ -28,7 +29,7 @@ export const TagCard = (
   const [isDeleteModalOpen, toggleDelete] = useToggle();
   const [isEditModalOpen, toggleEdit] = useToggle();
   const [hasTitle,, displayTitle] = useToggle();
-  const titleRef = useRef<HTMLElement>();
+  const titleRef = useRef<HTMLHeadingElement | undefined>();
   const serverId = getServerId(selectedServer);
 
   useEffect(() => {
@@ -55,9 +56,7 @@ export const TagCard = (
         <h5
           className="tag-card__tag-title text-ellipsis"
           title={hasTitle ? tag.tag : undefined}
-          ref={(el) => {
-            titleRef.current = el ?? undefined;
-          }}
+          ref={mutableRefToElementRef(titleRef)}
         >
           <TagBullet tag={tag.tag} colorGenerator={colorGenerator} />
           <span className="tag-card__tag-name" onClick={toggle}>{tag.tag}</span>

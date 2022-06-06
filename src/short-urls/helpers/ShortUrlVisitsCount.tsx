@@ -8,6 +8,7 @@ import { ShortUrl } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
+import { mutableRefToElementRef } from '../../utils/helpers/components';
 
 interface ShortUrlVisitsCountProps {
   shortUrl?: ShortUrl | null;
@@ -35,7 +36,7 @@ export const ShortUrlVisitsCount = (
   }
 
   const prettifiedMaxVisits = prettify(maxVisits);
-  const tooltipRef = useRef<HTMLElement | null>();
+  const tooltipRef = useRef<HTMLElement | undefined>();
 
   return (
     <>
@@ -43,9 +44,7 @@ export const ShortUrlVisitsCount = (
         {visitsLink}
         <small
           className="short-urls-visits-count__max-visits-control"
-          ref={(el) => {
-            tooltipRef.current = el;
-          }}
+          ref={mutableRefToElementRef(tooltipRef)}
         >
           {' '}/ {prettifiedMaxVisits}{' '}
           <sup>
