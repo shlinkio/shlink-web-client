@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/rtl-again/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/rtl-again/static/js/main.1f166c3f.js",
+    "index.html": "/shlink-web-client/feature/rtl-again/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/rtl-again/static/css/main.1ccaf016.css.map",
+    "main.1f166c3f.js.map": "/shlink-web-client/feature/rtl-again/static/js/main.1f166c3f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.1f166c3f.js"
+  ]
+}
