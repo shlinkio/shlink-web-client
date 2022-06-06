@@ -8,6 +8,7 @@ import {
   faCircleNotch as loadingStatusIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { MediaMatcher } from '../../utils/types';
+import { mutableRefToElementRef } from '../../utils/helpers/components';
 import { DomainStatus } from '../data';
 
 interface DomainStatusIconProps {
@@ -34,11 +35,7 @@ export const DomainStatusIcon: FC<DomainStatusIconProps> = ({ status, matchMedia
 
   return (
     <>
-      <span
-        ref={(el: HTMLSpanElement) => {
-          ref.current = el;
-        }}
-      >
+      <span ref={mutableRefToElementRef(ref)}>
         {status === 'valid'
           ? <FontAwesomeIcon fixedWidth icon={checkIcon} className="text-muted" />
           : <FontAwesomeIcon fixedWidth icon={invalidIcon} className="text-danger" />}
