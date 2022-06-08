@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/rtl-why-not/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/rtl-why-not/static/js/main.57a5b393.js",
+    "index.html": "/shlink-web-client/feature/rtl-why-not/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/rtl-why-not/static/css/main.1ccaf016.css.map",
+    "main.57a5b393.js.map": "/shlink-web-client/feature/rtl-why-not/static/js/main.57a5b393.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.57a5b393.js"
+  ]
+}
