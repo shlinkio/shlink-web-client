@@ -55,7 +55,6 @@ export const CreateShortUrl = (
         mode={basicMode ? 'create-basic' : 'create'}
         onSave={async (data: ShortUrlData) => {
           resetCreateShortUrl();
-
           return createShortUrl(data);
         }}
       />
