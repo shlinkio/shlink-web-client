@@ -1,27 +1,30 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { CopyToClipboardIcon } from '../../src/utils/CopyToClipboardIcon';
 
 describe('<CopyToClipboardIcon />', () => {
-  let wrapper: ShallowWrapper;
-  const onCopy = () => {};
-
-  beforeEach(() => {
-    wrapper = shallow(<CopyToClipboardIcon text="foo" onCopy={onCopy} />);
+  const onCopy = jest.fn();
+  const setUp = (text = 'foo') => ({
+    user: userEvent.setup(),
+    ...render(<CopyToClipboardIcon text={text} onCopy={onCopy} />),
   });
-  afterEach(() => wrapper?.unmount());
+
+  afterEach(jest.clearAllMocks);
 
   it('wraps expected components', () => {
-    const copyToClipboard = wrapper.find(CopyToClipboard);
-    const icon = wrapper.find(FontAwesomeIcon);
+    const { container } = setUp();
+    expect(container).toMatchSnapshot();
+  });
 
-    expect(copyToClipboard).toHaveLength(1);
-    expect(copyToClipboard.prop('text')).toEqual('foo');
-    expect(copyToClipboard.prop('onCopy')).toEqual(onCopy);
-    expect(icon).toHaveLength(1);
-    expect(icon.prop('icon')).toEqual(copyIcon);
-    expect(icon.prop('className')).toEqual('ms-2 copy-to-clipboard-icon');
+  it.each([
+    ['text'],
+    ['bar'],
+    ['baz'],
+  ])('copies content to clipboard when clicked', async (text) => {
+    const { user, container } = setUp(text);
+
+    expect(onCopy).not.toHaveBeenCalled();
+    container.firstElementChild && await user.click(container.firstElementChild);
+    expect(onCopy).toHaveBeenCalledWith(text, false);
   });
 });
