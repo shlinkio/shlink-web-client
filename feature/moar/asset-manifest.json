@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/moar/static/css/main.1ccaf016.css",
+    "main.js": "/shlink-web-client/feature/moar/static/js/main.fd614127.js",
+    "index.html": "/shlink-web-client/feature/moar/index.html",
+    "main.1ccaf016.css.map": "/shlink-web-client/feature/moar/static/css/main.1ccaf016.css.map",
+    "main.fd614127.js.map": "/shlink-web-client/feature/moar/static/js/main.fd614127.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1ccaf016.css",
+    "static/js/main.fd614127.js"
+  ]
+}
