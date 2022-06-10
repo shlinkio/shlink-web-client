@@ -14,3 +14,4 @@ jobs:
       node-version: 16.15
       with-mutation-tests: true
       publish-coverage: true
+      force-install: true
