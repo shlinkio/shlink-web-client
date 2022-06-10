@@ -1,35 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { DateInput, DateInputProps } from '../../src/utils/DateInput';
 
 describe('<DateInput />', () => {
-  let wrapped: ShallowWrapper;
-
-  const createComponent = (props: Partial<DateInputProps> = {}) => {
-    wrapped = shallow(<DateInput {...Mock.of<DateInputProps>(props)} />);
-
-    return wrapped;
-  };
-
-  afterEach(() => wrapped?.unmount());
-
-  it('wraps a DatePicker', () => {
-    wrapped = createComponent();
+  const setUp = (props: Partial<DateInputProps> = {}) => ({
+    user: userEvent.setup(),
+    ...render(<DateInput {...Mock.of<DateInputProps>(props)} />),
   });
 
   it('shows calendar icon when input is not clearable', () => {
-    wrapped = createComponent({ isClearable: false });
-    expect(wrapped.find(FontAwesomeIcon)).toHaveLength(1);
+    setUp({ isClearable: false });
+    expect(screen.getByRole('img', { hidden: true })).toBeInTheDocument();
   });
 
   it('shows calendar icon when input is clearable but selected value is nil', () => {
-    wrapped = createComponent({ isClearable: true, selected: null });
-    expect(wrapped.find(FontAwesomeIcon)).toHaveLength(1);
+    setUp({ isClearable: true, selected: null });
+    expect(screen.getByRole('img', { hidden: true })).toBeInTheDocument();
   });
 
   it('does not show calendar icon when input is clearable', () => {
-    wrapped = createComponent({ isClearable: true, selected: new Date() });
-    expect(wrapped.find(FontAwesomeIcon)).toHaveLength(0);
+    setUp({ isClearable: true, selected: new Date() });
+    expect(screen.queryByRole('img', { hidden: true })).not.toBeInTheDocument();
+  });
+
+  it('shows popper on element click', async () => {
+    const { user, container } = setUp({ placeholderText: 'foo' });
+
+    expect(container.querySelector('.react-datepicker')).not.toBeInTheDocument();
+    await user.click(screen.getByPlaceholderText('foo'));
+    await waitFor(() => expect(container.querySelector('.react-datepicker')).toBeInTheDocument());
   });
 });
