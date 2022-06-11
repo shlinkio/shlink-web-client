@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import { rangeOf } from '../../utils/utils';
 import { Order } from '../../utils/helpers/ordering';
@@ -14,7 +14,7 @@ interface SortableBarChartCardProps extends Omit<HorizontalBarChartProps, 'max'>
   title: Function | string;
   sortingItems: Record<string, string>;
   withPagination?: boolean;
-  extraHeaderContent?: Function;
+  extraHeaderContent?: (activeCities?: string[]) => ReactNode;
 }
 
 const toLowerIfString = (value: any) => (type(value) === 'String' ? toLower(value) : value);

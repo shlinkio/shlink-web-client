@@ -40,7 +40,7 @@ export const MapModal = ({ toggle, isOpen, title, locations = [] }: MapModalProp
     <ModalBody className="map-modal__modal-body">
       <h3 className="map-modal__modal-title">
         {title}
-        <button type="button" className="btn-close float-end" onClick={toggle} />
+        <button type="button" className="btn-close float-end" aria-label="Close" onClick={toggle} />
       </h3>
       <MapContainer {...calculateMapProps(locations)}>
         <OpenStreetMapTile />
