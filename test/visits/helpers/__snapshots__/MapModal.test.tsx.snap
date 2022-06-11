@@ -22,6 +22,7 @@ exports[`<MapModal /> renders expected map 1`] = `
         >
           Foobar
           <button
+            aria-label="Close"
             class="btn-close float-end"
             type="button"
           />
