@@ -235,7 +235,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
                       stats={cities}
                       highlightedStats={highlightedVisitsToStats(highlightedVisits, 'city')}
                       highlightedLabel={highlightedLabel}
-                      extraHeaderContent={(activeCities: string[]) => mapLocations.length > 0 && (
+                      extraHeaderContent={(activeCities) => mapLocations.length > 0 && (
                         <OpenMapModalBtn modalTitle="Cities" locations={mapLocations} activeCities={activeCities} />
                       )}
                       sortingItems={{

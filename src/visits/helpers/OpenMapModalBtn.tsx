@@ -9,7 +9,7 @@ import './OpenMapModalBtn.scss';
 
 interface OpenMapModalBtnProps {
   modalTitle: string;
-  activeCities: string[];
+  activeCities?: string[];
   locations?: CityStats[];
 }
 
@@ -19,7 +19,9 @@ export const OpenMapModalBtn = ({ modalTitle, activeCities, locations = [] }: Op
   const [locationsToShow, setLocationsToShow] = useState<CityStats[]>([]);
   const id = useDomId();
 
-  const filterLocations = (cities: CityStats[]) => cities.filter(({ cityName }) => activeCities.includes(cityName));
+  const filterLocations = (cities: CityStats[]) => (
+    !activeCities ? cities : cities.filter(({ cityName }) => activeCities?.includes(cityName))
+  );
   const onClick = () => {
     if (!activeCities) {
       setLocationsToShow(locations);

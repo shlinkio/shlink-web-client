@@ -1,61 +1,54 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Dropdown, DropdownItem, UncontrolledTooltip } from 'reactstrap';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
-import { MapModal } from '../../../src/visits/helpers/MapModal';
 import { CityStats } from '../../../src/visits/types';
 
 describe('<OpenMapModalBtn />', () => {
-  let wrapper: ShallowWrapper;
   const title = 'Foo';
   const locations = [
-    Mock.of<CityStats>({ cityName: 'foo', count: 30 }),
-    Mock.of<CityStats>({ cityName: 'bar', count: 45 }),
+    Mock.of<CityStats>({ cityName: 'foo', count: 30, latLong: [5, 5] }),
+    Mock.of<CityStats>({ cityName: 'bar', count: 45, latLong: [88, 88] }),
   ];
-  const createWrapper = (activeCities: string[] = []) => {
-    wrapper = shallow(<OpenMapModalBtn modalTitle={title} locations={locations} activeCities={activeCities} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
-
-  it('renders expected content', () => {
-    const wrapper = createWrapper();
-    const button = wrapper.find('.open-map-modal-btn__btn');
-    const tooltip = wrapper.find(UncontrolledTooltip);
-    const dropdown = wrapper.find(Dropdown);
-    const modal = wrapper.find(MapModal);
-
-    expect(button).toHaveLength(1);
-    expect(tooltip).toHaveLength(1);
-    expect(dropdown).toHaveLength(1);
-    expect(modal).toHaveLength(1);
+  const setUp = (activeCities?: string[]) => ({
+    user: userEvent.setup(),
+    ...render(<OpenMapModalBtn modalTitle={title} locations={locations} activeCities={activeCities} />),
   });
 
-  it('opens dropdown instead of modal when a list of active cities has been provided', () => {
-    const wrapper = createWrapper(['bar']);
+  it('renders tooltip on button hover and opens modal on click', async () => {
+    const { user } = setUp();
 
-    wrapper.find('.open-map-modal-btn__btn').simulate('click');
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
 
-    expect(wrapper.find(Dropdown).prop('isOpen')).toEqual(true);
-    expect(wrapper.find(MapModal).prop('isOpen')).toEqual(false);
+    await user.click(screen.getByRole('button'));
+    await waitFor(() => expect(screen.getByRole('tooltip')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
   });
 
-  it('filters out non-active cities from list of locations', () => {
-    const wrapper = createWrapper(['bar']);
+  it('opens dropdown instead of modal when a list of active cities has been provided', async () => {
+    const { user } = setUp(['bar']);
 
-    wrapper.find('.open-map-modal-btn__btn').simulate('click');
-    wrapper.find(Dropdown).find(DropdownItem).at(1).simulate('click');
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 
-    const modal = wrapper.find(MapModal);
+    await user.click(screen.getByRole('button'));
 
-    expect(modal.prop('title')).toEqual(title);
-    expect(modal.prop('locations')).toEqual([
-      {
-        cityName: 'bar',
-        count: 45,
-      },
-    ]);
+    await waitFor(() => expect(screen.getByRole('menu')).toBeInTheDocument());
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['Show all locations'],
+    ['Show locations in current page'],
+  ])('filters out non-active cities from list of locations', async (name) => {
+    const { user } = setUp(['bar']);
+
+    await user.click(screen.getByRole('button'));
+    await user.click(screen.getByRole('menuitem', { name }));
+
+    expect(await screen.findByRole('dialog')).toMatchSnapshot();
   });
 });
