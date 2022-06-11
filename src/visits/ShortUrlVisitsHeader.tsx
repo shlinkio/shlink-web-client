@@ -35,7 +35,7 @@ export const ShortUrlVisitsHeader = ({ shortUrlDetail, shortUrlVisits, goBack }:
     <VisitsHeader title={visitsStatsTitle} goBack={goBack} visits={visits} shortUrl={shortUrl}>
       <hr />
       <div>Created: {renderDate()}</div>
-      <div>
+      <div className="long-url-container">
         {`${title ? 'Title' : 'Long URL'}: `}
         {loading && <small>Loading...</small>}
         {!loading && <ExternalLink href={longLink}>{title ?? longLink}</ExternalLink>}
