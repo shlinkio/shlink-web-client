@@ -1,35 +1,27 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Tag } from '../../src/tags/helpers/Tag';
 import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
 import { TagVisits } from '../../src/visits/reducers/tagVisits';
 import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 
 describe('<TagVisitsHeader />', () => {
-  let wrapper: ShallowWrapper;
   const tagVisits = Mock.of<TagVisits>({
     tag: 'foo',
-    visits: [{}, {}, {}],
+    visits: [{}, {}, {}, {}],
   });
   const goBack = jest.fn();
-
-  beforeEach(() => {
-    wrapper = shallow(
-      <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={Mock.all<ColorGenerator>()} />,
-    );
-  });
-  afterEach(() => wrapper.unmount());
+  const colorGenerator = Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' });
+  const setUp = () => render(<TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />);
 
   it('shows expected visits', () => {
-    expect(wrapper.prop('visits')).toEqual(tagVisits.visits);
+    const { container } = setUp();
+
+    expect(screen.getAllByText('Visits for')).toHaveLength(2);
+    expect(container.querySelector('.badge:not(.tag)')).toHaveTextContent(`Visits: ${tagVisits.visits.length}`);
   });
 
   it('shows title for tag', () => {
-    const title = shallow(wrapper.prop('title'));
-    const tag = title.find(Tag).first();
-
-    expect(tag.prop('text')).toEqual(tagVisits.tag);
-
-    title.unmount();
+    const { container } = setUp();
+    expect(container.querySelector('.badge.tag')).toHaveTextContent(tagVisits.tag);
   });
 });
