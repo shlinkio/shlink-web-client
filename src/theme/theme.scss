@@ -31,6 +31,7 @@ $darkBorderInputColor: $darkBorderColor;
 $darkTableHighlightColor: $darkBorderColor;
 
 html:not([data-theme='dark']) {
+  --color-scheme: initial;
   --primary-color: #{$lightPrimaryColor};
   --primary-color-alfa: #{$lightPrimaryColorAlfa};
   --secondary-color: #{$lightSecondaryColor};
@@ -48,6 +49,7 @@ html:not([data-theme='dark']) {
 }
 
 html[data-theme='dark'] {
+  --color-scheme: dark;
   --primary-color: #{$darkPrimaryColor};
   --primary-color-alfa: #{$darkPrimaryColorAlfa};
   --secondary-color: #{$darkSecondaryColor};
