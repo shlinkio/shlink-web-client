@@ -1,107 +1,54 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { useLocation, useParams } from 'react-router-dom';
 import { EditShortUrl as createEditShortUrl } from '../../src/short-urls/EditShortUrl';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
-import { ShlinkApiError } from '../../src/api/ShlinkApiError';
 import { ShortUrl } from '../../src/short-urls/data';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useParams: jest.fn().mockReturnValue({}),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
-
 describe('<EditShortUrl />', () => {
-  let wrapper: ShallowWrapper;
-  const ShortUrlForm = () => null;
-  const getShortUrlDetail = jest.fn();
-  const editShortUrl = jest.fn(async () => Promise.resolve());
   const shortUrlCreation = { validateUrls: true };
-  const EditShortUrl = createEditShortUrl(ShortUrlForm);
-  const createWrapper = (detail: Partial<ShortUrlDetail> = {}, edition: Partial<ShortUrlEdition> = {}) => {
-    (useParams as any).mockReturnValue({ shortCode: 'the_base_url' });
-    (useLocation as any).mockReturnValue({ search: '' });
-
-    wrapper = shallow(
+  const EditShortUrl = createEditShortUrl(() => <span>ShortUrlForm</span>);
+  const setUp = (detail: Partial<ShortUrlDetail> = {}, edition: Partial<ShortUrlEdition> = {}) => render(
+    <MemoryRouter>
       <EditShortUrl
         settings={Mock.of<Settings>({ shortUrlCreation })}
         selectedServer={null}
         shortUrlDetail={Mock.of<ShortUrlDetail>(detail)}
         shortUrlEdition={Mock.of<ShortUrlEdition>(edition)}
-        getShortUrlDetail={getShortUrlDetail}
-        editShortUrl={editShortUrl}
-      />,
-    );
-
-    return wrapper;
-  };
-
-  beforeEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
+        getShortUrlDetail={jest.fn()}
+        editShortUrl={jest.fn(async () => Promise.resolve())}
+      />
+    </MemoryRouter>,
+  );
 
   it('renders loading message while loading detail', () => {
-    const wrapper = createWrapper({ loading: true });
+    setUp({ loading: true });
 
-    expect(wrapper.prop('loading')).toEqual(true);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.queryByText('ShortUrlForm')).not.toBeInTheDocument();
   });
 
   it('renders error when loading detail fails', () => {
-    const wrapper = createWrapper({ error: true });
-    const form = wrapper.find(ShortUrlForm);
-    const apiError = wrapper.find(ShlinkApiError);
+    setUp({ error: true });
 
-    expect(form).toHaveLength(0);
-    expect(apiError).toHaveLength(1);
-    expect(apiError.prop('fallbackMessage')).toEqual('An error occurred while loading short URL detail :(');
+    expect(screen.getByText('An error occurred while loading short URL detail :(')).toBeInTheDocument();
+    expect(screen.queryByText('ShortUrlForm')).not.toBeInTheDocument();
   });
 
-  it.each([
-    [undefined, { longUrl: '', validateUrl: true }, true],
-    [
-      Mock.of<ShortUrl>({ meta: {} }),
-      {
-        longUrl: undefined,
-        tags: undefined,
-        title: undefined,
-        domain: undefined,
-        validSince: undefined,
-        validUntil: undefined,
-        maxVisits: undefined,
-        validateUrl: true,
-      },
-      false,
-    ],
-  ])('renders form when detail properly loads', (shortUrl, expectedInitialState, saving) => {
-    const wrapper = createWrapper({ shortUrl }, { saving });
-    const form = wrapper.find(ShortUrlForm);
-    const apiError = wrapper.find(ShlinkApiError);
+  it('renders form when detail properly loads', () => {
+    setUp({ shortUrl: Mock.of<ShortUrl>({ meta: {} }) });
 
-    expect(form).toHaveLength(1);
-    expect(apiError).toHaveLength(0);
-    expect(form.prop('initialState')).toEqual(expectedInitialState);
-    expect(form.prop('saving')).toEqual(saving);
-    expect(editShortUrl).not.toHaveBeenCalled();
-
-    form.simulate('save', {});
-
-    if (shortUrl) {
-      expect(editShortUrl).toHaveBeenCalledWith(shortUrl.shortCode, shortUrl.domain, {});
-    } else {
-      expect(editShortUrl).not.toHaveBeenCalled();
-    }
+    expect(screen.getByText('ShortUrlForm')).toBeInTheDocument();
+    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
+    expect(screen.queryByText('An error occurred while loading short URL detail :(')).not.toBeInTheDocument();
   });
 
   it('shows error when saving data has failed', () => {
-    const wrapper = createWrapper({}, { error: true });
-    const form = wrapper.find(ShortUrlForm);
-    const apiError = wrapper.find(ShlinkApiError);
+    setUp({}, { error: true });
 
-    expect(form).toHaveLength(1);
-    expect(apiError).toHaveLength(1);
-    expect(apiError.prop('fallbackMessage')).toEqual('An error occurred while updating short URL :(');
+    expect(screen.getByText('An error occurred while updating short URL :(')).toBeInTheDocument();
+    expect(screen.getByText('ShortUrlForm')).toBeInTheDocument();
   });
 });

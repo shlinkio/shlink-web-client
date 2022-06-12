@@ -5,7 +5,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { SelectedServer } from '../servers/data';
-import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
+import { Settings } from '../settings/reducers/settings';
 import { OptionalString } from '../utils/utils';
 import { parseQuery } from '../utils/helpers/query';
 import { Message } from '../utils/Message';
@@ -14,8 +14,9 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { useGoBack, useToggle } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
-import { EditShortUrlData, ShortUrl, ShortUrlData } from './data';
+import { EditShortUrlData } from './data';
 import { ShortUrlEdition } from './reducers/shortUrlEdition';
+import { shortUrlDataFromShortUrl } from './helpers';
 
 interface EditShortUrlConnectProps {
   settings: Settings;
@@ -25,27 +26,6 @@ interface EditShortUrlConnectProps {
   getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
   editShortUrl: (shortUrl: string, domain: OptionalString, data: EditShortUrlData) => Promise<void>;
 }
-
-const getInitialState = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSettings): ShortUrlData => {
-  const validateUrl = settings?.validateUrls ?? false;
-
-  if (!shortUrl) {
-    return { longUrl: '', validateUrl };
-  }
-
-  return {
-    longUrl: shortUrl.longUrl,
-    tags: shortUrl.tags,
-    title: shortUrl.title ?? undefined,
-    domain: shortUrl.domain ?? undefined,
-    validSince: shortUrl.meta.validSince ?? undefined,
-    validUntil: shortUrl.meta.validUntil ?? undefined,
-    maxVisits: shortUrl.meta.maxVisits ?? undefined,
-    crawlable: shortUrl.crawlable,
-    forwardQuery: shortUrl.forwardQuery,
-    validateUrl,
-  };
-};
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   settings: { shortUrlCreation: shortUrlCreationSettings },
@@ -62,7 +42,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const { saving, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
   const initialState = useMemo(
-    () => getInitialState(shortUrl, shortUrlCreationSettings),
+    () => shortUrlDataFromShortUrl(shortUrl, shortUrlCreationSettings),
     [shortUrl, shortUrlCreationSettings],
   );
   const [savingSucceeded,, isSuccessful, isNotSuccessful] = useToggle();
