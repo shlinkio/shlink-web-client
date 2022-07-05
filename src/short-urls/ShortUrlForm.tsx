@@ -118,7 +118,7 @@ export const ShortUrlForm = (
   const showBehaviorCard = showCrawlableControl || showForwardQueryControl;
 
   return (
-    <form className="short-url-form" onSubmit={submit}>
+    <form name="shortUrlForm" className="short-url-form" onSubmit={submit}>
       {isBasicMode && basicComponents}
       {!isBasicMode && (
         <>

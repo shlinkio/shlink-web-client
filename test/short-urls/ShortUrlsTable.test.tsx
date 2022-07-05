@@ -1,71 +1,68 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 
 describe('<ShortUrlsTable />', () => {
-  let wrapper: ShallowWrapper;
   const shortUrlsList = Mock.all<ShortUrlsList>();
   const orderByColumn = jest.fn();
-  const ShortUrlsRow = () => null;
-  const ShortUrlsTable = shortUrlsTableCreator(ShortUrlsRow);
-
-  const createWrapper = (server: SelectedServer = null) => {
-    wrapper = shallow(
+  const ShortUrlsTable = shortUrlsTableCreator(() => <span>ShortUrlsRow</span>);
+  const setUp = (server: SelectedServer = null) => ({
+    user: userEvent.setup(),
+    ...render(
       <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
-    );
-
-    return wrapper;
-  };
-
-  beforeEach(() => createWrapper());
-  afterEach(jest.resetAllMocks);
-  afterEach(() => wrapper?.unmount());
-
-  it('should render inner table by default', () => {
-    expect(wrapper.find('table')).toHaveLength(1);
+    ),
   });
 
-  it('should render table header by default', () => {
-    expect(wrapper.find('table').find('thead')).toHaveLength(1);
+  afterEach(jest.resetAllMocks);
+
+  it('should render inner table by default', () => {
+    setUp();
+    expect(screen.getByRole('table')).toBeInTheDocument();
+  });
+
+  it('should render row groups by default', () => {
+    setUp();
+    expect(screen.getAllByRole('rowgroup')).toHaveLength(2);
   });
 
   it('should render 6 table header cells by default', () => {
-    expect(wrapper.find('table').find('thead').find('tr').find('th')).toHaveLength(6);
+    setUp();
+    expect(screen.getAllByRole('columnheader')).toHaveLength(6);
   });
 
-  it('should render 6 table header cells without order by icon by default', () => {
-    const thElements = wrapper.find('table').find('thead').find('tr').find('th');
-
-    thElements.forEach((thElement) => {
-      expect(thElement.find(FontAwesomeIcon)).toHaveLength(0);
-    });
+  it('should render table header cells without "order by" icon by default', () => {
+    setUp();
+    expect(screen.queryByRole('img', { hidden: true })).not.toBeInTheDocument();
   });
 
   it('should render table header cells with conditional order by icon', () => {
-    const getThElementForSortableField = (orderableField: string) => wrapper.find('table')
-      .find('thead')
-      .find('tr')
-      .find('th')
-      .filterWhere((e) => e.text().includes(SHORT_URLS_ORDERABLE_FIELDS[orderableField as ShortUrlsOrderableFields]));
+    setUp();
+
+    const getThElementForSortableField = (orderableField: string) => screen.getAllByRole('columnheader').find(
+      ({ innerHTML }) => innerHTML.includes(SHORT_URLS_ORDERABLE_FIELDS[orderableField as ShortUrlsOrderableFields]),
+    );
     const sortableFields = Object.keys(SHORT_URLS_ORDERABLE_FIELDS).filter((sortableField) => sortableField !== 'title');
 
-    expect.assertions(sortableFields.length);
+    expect.assertions(sortableFields.length * 2);
     sortableFields.forEach((sortableField) => {
-      getThElementForSortableField(sortableField).simulate('click');
+      const element = getThElementForSortableField(sortableField);
+
+      expect(element).toBeDefined();
+      element && fireEvent.click(element);
       expect(orderByColumn).toHaveBeenCalled();
     });
   });
 
   it('should render composed title column', () => {
-    const wrapper = createWrapper(Mock.of<ReachableServer>({ version: '2.0.0' }));
-    const composedColumn = wrapper.find('table').find('th').at(2);
-    const text = composedColumn.text();
+    setUp(Mock.of<ReachableServer>({ version: '2.0.0' }));
 
-    expect(text).toContain('Title');
-    expect(text).toContain('Long URL');
+    const { innerHTML } = screen.getAllByRole('columnheader')[2];
+
+    expect(innerHTML).toContain('Title');
+    expect(innerHTML).toContain('Long URL');
   });
 });
