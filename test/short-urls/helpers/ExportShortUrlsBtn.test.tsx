@@ -1,15 +1,10 @@
 import { Mock } from 'ts-mockery';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import { NotFoundServer, ReachableServer, SelectedServer } from '../../../src/servers/data';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useParams: jest.fn().mockReturnValue({}),
-  useLocation: jest.fn().mockReturnValue({}),
-}));
 
 describe('<ExportShortUrlsBtn />', () => {
   const listShortUrls = jest.fn();
@@ -17,35 +12,33 @@ describe('<ExportShortUrlsBtn />', () => {
   const exportShortUrls = jest.fn();
   const reportExporter = Mock.of<ReportExporter>({ exportShortUrls });
   const ExportShortUrlsBtn = createExportShortUrlsBtn(buildShlinkApiClient, reportExporter);
-  let wrapper: ShallowWrapper;
-  const createWrapper = (amount?: number, selectedServer?: SelectedServer) => {
-    wrapper = shallow(
-      <ExportShortUrlsBtn selectedServer={selectedServer ?? Mock.all<SelectedServer>()} amount={amount} />,
-    );
-
-    return wrapper;
-  };
+  const setUp = (amount?: number, selectedServer?: SelectedServer) => ({
+    user: userEvent.setup(),
+    ...render(
+      <MemoryRouter>
+        <ExportShortUrlsBtn selectedServer={selectedServer ?? Mock.all<SelectedServer>()} amount={amount} />
+      </MemoryRouter>,
+    ),
+  });
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it.each([
-    [undefined, 0],
-    [1, 1],
-    [4578, 4578],
+    [undefined, '0'],
+    [1, '1'],
+    [4578, '4,578'],
   ])('renders expected amount', (amount, expectedAmount) => {
-    const wrapper = createWrapper(amount);
-
-    expect(wrapper.prop('amount')).toEqual(expectedAmount);
+    setUp(amount);
+    expect(screen.getByText(/Export/)).toHaveTextContent(`Export (${expectedAmount})`);
   });
 
   it.each([
     [null],
     [Mock.of<NotFoundServer>()],
-  ])('does nothing on click if selected server is not reachable', (selectedServer) => {
-    const wrapper = createWrapper(0, selectedServer);
+  ])('does nothing on click if selected server is not reachable', async (selectedServer) => {
+    const { user } = setUp(0, selectedServer);
 
-    wrapper.simulate('click');
+    await user.click(screen.getByRole('button'));
     expect(listShortUrls).not.toHaveBeenCalled();
     expect(exportShortUrls).not.toHaveBeenCalled();
   });
@@ -58,13 +51,13 @@ describe('<ExportShortUrlsBtn />', () => {
     [41, 3],
     [385, 20],
   ])('loads proper amount of pages based on the amount of results', async (amount, expectedPageLoads) => {
-    const wrapper = createWrapper(amount, Mock.of<ReachableServer>({ id: '123' }));
-
     listShortUrls.mockResolvedValue({ data: [] });
+    const { user } = setUp(amount, Mock.of<ReachableServer>({ id: '123' }));
 
-    await (wrapper.prop('onClick') as Function)();
+    await user.click(screen.getByRole('button'));
+    await waitForElementToBeRemoved(() => screen.getByText('Exporting...'));
 
     expect(listShortUrls).toHaveBeenCalledTimes(expectedPageLoads);
-    expect(exportShortUrls).toHaveBeenCalledTimes(1);
+    expect(exportShortUrls).toHaveBeenCalled();
   });
 });
