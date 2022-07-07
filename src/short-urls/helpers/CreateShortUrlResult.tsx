@@ -43,7 +43,7 @@ export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
   return (
     <Result type="success" className="mt-3">
       {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-end pointer" onClick={resetCreateShortUrl} />}
-      <b>Great!</b> The short URL is <b>{shortUrl}</b>
+      <span><b>Great!</b> The short URL is <b>{shortUrl}</b></span>
 
       <CopyToClipboard text={shortUrl} onCopy={setShowCopyTooltip}>
         <button
