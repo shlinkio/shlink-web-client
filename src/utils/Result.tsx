@@ -15,6 +15,7 @@ export const Result: FC<ResultProps> = ({ children, type, className, small = fal
   <Row className={className}>
     <div className={classNames({ 'col-md-10 offset-md-1': !small, 'col-12': small })}>
       <SimpleCard
+        role="document"
         className={classNames('text-center', {
           'bg-main': type === 'success',
           'bg-danger': type === 'error',
