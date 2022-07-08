@@ -1,27 +1,26 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
 import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
-import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
-import { DropdownBtn } from '../../../src/utils/DropdownBtn';
 
 describe('<DateIntervalSelector />', () => {
-  let wrapper: ShallowWrapper;
   const activeInterval: DateInterval = 'last7Days';
   const onChange = jest.fn();
-
-  beforeEach(() => {
-    wrapper = shallow(<DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />);
+  const setUp = () => ({
+    user: userEvent.setup(),
+    ...render(<DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />),
   });
-  afterEach(() => wrapper?.unmount());
 
-  it('passes props down to nested DateIntervalDropdownItems', () => {
-    const items = wrapper.find(DateIntervalDropdownItems);
-    const dropdown = wrapper.find(DropdownBtn);
+  it('passes props down to nested DateIntervalDropdownItems', async () => {
+    const { user } = setUp();
+    const btn = screen.getByRole('button');
 
-    expect(dropdown.prop('text')).toEqual(rangeOrIntervalToString(activeInterval));
-    expect(items).toHaveLength(1);
-    expect(items.prop('onChange')).toEqual(onChange);
-    expect(items.prop('active')).toEqual(activeInterval);
-    expect(items.prop('allText')).toEqual('All text');
+    await user.click(btn);
+    await waitFor(() => expect(screen.getByRole('menu')).toBeInTheDocument());
+
+    const items = screen.getAllByRole('menuitem');
+
+    expect(btn).toHaveTextContent(rangeOrIntervalToString(activeInterval) ?? '');
+    expect(items).toHaveLength(8);
   });
 });
