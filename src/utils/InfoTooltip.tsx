@@ -5,7 +5,7 @@ import { UncontrolledTooltip } from 'reactstrap';
 import { Placement } from '@popperjs/core';
 import { mutableRefToElementRef } from './helpers/components';
 
-type InfoTooltipProps = PropsWithChildren<{
+export type InfoTooltipProps = PropsWithChildren<{
   className?: string;
   placement: Placement;
 }>;
