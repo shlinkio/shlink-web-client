@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
-import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ServersExporter from '../../src/servers/services/ServersExporter';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
 import { ServersMap, ServerWithId } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ManageServers />', () => {
   const exportServers = jest.fn();
@@ -19,10 +19,9 @@ describe('<ManageServers />', () => {
   const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
   );
-  const setUp = (servers: ServersMap = {}) => ({
-    user: userEvent.setup(),
-    ...render(<MemoryRouter><ManageServers servers={servers} /></MemoryRouter>),
-  });
+  const setUp = (servers: ServersMap = {}) => renderWithEvents(
+    <MemoryRouter><ManageServers servers={servers} /></MemoryRouter>,
+  );
 
   afterEach(jest.clearAllMocks);
 

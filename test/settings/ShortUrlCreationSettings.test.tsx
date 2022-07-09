@@ -1,20 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ShortUrlCreationSettings />', () => {
   const setShortUrlCreationSettings = jest.fn();
-  const setUp = (shortUrlCreation?: ShortUrlsSettings) => ({
-    user: userEvent.setup(),
-    ...render(
-      <ShortUrlCreationSettings
-        settings={Mock.of<Settings>({ shortUrlCreation })}
-        setShortUrlCreationSettings={setShortUrlCreationSettings}
-      />,
-    ),
-  });
+  const setUp = (shortUrlCreation?: ShortUrlsSettings) => renderWithEvents(
+    <ShortUrlCreationSettings
+      settings={Mock.of<Settings>({ shortUrlCreation })}
+      setShortUrlCreationSettings={setShortUrlCreationSettings}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
 

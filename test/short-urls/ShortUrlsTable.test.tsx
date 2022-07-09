@@ -1,21 +1,18 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ShortUrlsTable />', () => {
   const shortUrlsList = Mock.all<ShortUrlsList>();
   const orderByColumn = jest.fn();
   const ShortUrlsTable = shortUrlsTableCreator(() => <span>ShortUrlsRow</span>);
-  const setUp = (server: SelectedServer = null) => ({
-    user: userEvent.setup(),
-    ...render(
-      <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
-    ),
-  });
+  const setUp = (server: SelectedServer = null) => renderWithEvents(
+    <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
+  );
 
   afterEach(jest.resetAllMocks);
 

@@ -1,18 +1,15 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
 import { ServerData } from '../../../src/servers/data';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {
   const onDiscard = jest.fn();
   const onSave = jest.fn();
-  const setUp = (duplicatedServers: ServerData[] = []) => ({
-    user: userEvent.setup(),
-    ...render(
-      <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
-    ),
-  });
+  const setUp = (duplicatedServers: ServerData[] = []) => renderWithEvents(
+    <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
+  );
 
   beforeEach(jest.clearAllMocks);
 

@@ -1,18 +1,17 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<CreateShortUrlResult />', () => {
   const copyToClipboard = jest.fn();
   const useTimeoutToggle = jest.fn(() => [false, copyToClipboard]) as TimeoutToggle;
   const CreateShortUrlResult = createResult(useTimeoutToggle);
-  const setUp = (result: ShortUrl | null = null, error = false) => ({
-    user: userEvent.setup(),
-    ...render(<CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />),
-  });
+  const setUp = (result: ShortUrl | null = null, error = false) => renderWithEvents(
+    <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

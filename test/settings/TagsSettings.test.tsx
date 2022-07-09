@@ -1,17 +1,16 @@
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Settings, TagsMode, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 import { capitalize } from '../../src/utils/utils';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<TagsSettings />', () => {
   const setTagsSettings = jest.fn();
-  const setUp = (tags?: TagsSettingsOptions) => ({
-    user: userEvent.setup(),
-    ...render(<TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />),
-  });
+  const setUp = (tags?: TagsSettingsOptions) => renderWithEvents(
+    <TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

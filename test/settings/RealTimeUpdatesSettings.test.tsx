@@ -1,25 +1,22 @@
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import {
   RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
   Settings,
 } from '../../src/settings/reducers/settings';
 import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {
   const toggleRealTimeUpdates = jest.fn();
   const setRealTimeUpdatesInterval = jest.fn();
-  const setUp = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => ({
-    user: userEvent.setup(),
-    ...render(
-      <RealTimeUpdatesSettings
-        settings={Mock.of<Settings>({ realTimeUpdates })}
-        toggleRealTimeUpdates={toggleRealTimeUpdates}
-        setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
-      />,
-    ),
-  });
+  const setUp = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => renderWithEvents(
+    <RealTimeUpdatesSettings
+      settings={Mock.of<Settings>({ realTimeUpdates })}
+      toggleRealTimeUpdates={toggleRealTimeUpdates}
+      setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
 

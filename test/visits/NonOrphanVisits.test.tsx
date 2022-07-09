@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
@@ -9,6 +8,7 @@ import { Visit, VisitsInfo } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<NonOrphanVisits />', () => {
   const exportVisits = jest.fn();
@@ -16,21 +16,18 @@ describe('<NonOrphanVisits />', () => {
   const cancelGetNonOrphanVisits = jest.fn();
   const nonOrphanVisits = Mock.of<VisitsInfo>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const NonOrphanVisits = createNonOrphanVisits(Mock.of<ReportExporter>({ exportVisits }));
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <NonOrphanVisits
-          {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
-          getNonOrphanVisits={getNonOrphanVisits}
-          cancelGetNonOrphanVisits={cancelGetNonOrphanVisits}
-          nonOrphanVisits={nonOrphanVisits}
-          settings={Mock.all<Settings>()}
-          selectedServer={Mock.all<SelectedServer>()}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
+      <NonOrphanVisits
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        getNonOrphanVisits={getNonOrphanVisits}
+        cancelGetNonOrphanVisits={cancelGetNonOrphanVisits}
+        nonOrphanVisits={nonOrphanVisits}
+        settings={Mock.all<Settings>()}
+        selectedServer={Mock.all<SelectedServer>()}
+      />
+    </MemoryRouter>,
+  );
 
   it('wraps visits stats and header', () => {
     setUp();

@@ -2,12 +2,24 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { DeleteTagConfirmModal } from '../../../src/tags/helpers/DeleteTagConfirmModal';
 import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<DeleteTagConfirmModal />', () => {
-  let wrapper: ShallowWrapper;
   const tag = 'nodejs';
   const deleteTag = jest.fn();
   const tagDeleted = jest.fn();
+  const setUp = (tagDelete: TagDeletion) => renderWithEvents(
+    <DeleteTagConfirmModal
+      tag={tag}
+      toggle={() => ''}
+      isOpen
+      deleteTag={deleteTag}
+      tagDeleted={tagDeleted}
+      tagDelete={tagDelete}
+    />,
+  );
+
+  let wrapper: ShallowWrapper;
   const createWrapper = (tagDelete: TagDeletion) => {
     wrapper = shallow(
       <DeleteTagConfirmModal
@@ -22,8 +34,8 @@ describe('<DeleteTagConfirmModal />', () => {
 
     return wrapper;
   };
-
   afterEach(() => wrapper?.unmount());
+
   afterEach(jest.resetAllMocks);
 
   it('asks confirmation for provided tag to be deleted', () => {

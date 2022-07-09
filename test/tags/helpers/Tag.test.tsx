@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ReactNode } from 'react';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 import { Tag } from '../../../src/tags/helpers/Tag';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 const hexToRgb = (hex: string) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -25,14 +25,11 @@ describe('<Tag />', () => {
   const isColorLightForKey = jest.fn(() => false);
   const getColorForKey = jest.fn(() => MAIN_COLOR);
   const colorGenerator = Mock.of<ColorGenerator>({ getColorForKey, isColorLightForKey });
-  const setUp = (text: string, clearable?: boolean, children?: ReactNode) => ({
-    user: userEvent.setup(),
-    ...render(
-      <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
-        {children}
-      </Tag>,
-    ),
-  });
+  const setUp = (text: string, clearable?: boolean, children?: ReactNode) => renderWithEvents(
+    <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
+      {children}
+    </Tag>,
+  );
 
   afterEach(jest.clearAllMocks);
 

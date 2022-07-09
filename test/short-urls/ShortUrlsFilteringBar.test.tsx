@@ -1,5 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-ur
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { DateRange } from '../../src/utils/dates/types';
 import { formatDate } from '../../src/utils/helpers/date';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -24,18 +24,15 @@ describe('<ShortUrlsFilteringBar />', () => {
     (useLocation as any).mockReturnValue({ search });
     (useNavigate as any).mockReturnValue(navigate);
 
-    return {
-      user: userEvent.setup(),
-      ...render(
-        <MemoryRouter>
-          <ShortUrlsFilteringBar
-            selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
-            order={{}}
-            handleOrderBy={handleOrderBy}
-          />
-        </MemoryRouter>,
-      ),
-    };
+    return renderWithEvents(
+      <MemoryRouter>
+        <ShortUrlsFilteringBar
+          selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+          order={{}}
+          handleOrderBy={handleOrderBy}
+        />
+      </MemoryRouter>,
+    );
   };
 
   afterEach(jest.clearAllMocks);

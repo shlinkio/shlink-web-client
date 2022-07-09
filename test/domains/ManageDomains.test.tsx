@@ -1,27 +1,24 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ManageDomains } from '../../src/domains/ManageDomains';
 import { ProblemDetailsError, ShlinkDomain } from '../../src/api/types';
 import { SelectedServer } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();
   const filterDomains = jest.fn();
-  const setUp = (domainsList: DomainsList) => ({
-    user: userEvent.setup(),
-    ...render(
-      <ManageDomains
-        listDomains={listDomains}
-        filterDomains={filterDomains}
-        editDomainRedirects={jest.fn()}
-        checkDomainHealth={jest.fn()}
-        domainsList={domainsList}
-        selectedServer={Mock.all<SelectedServer>()}
-      />,
-    ),
-  });
+  const setUp = (domainsList: DomainsList) => renderWithEvents(
+    <ManageDomains
+      listDomains={listDomains}
+      filterDomains={filterDomains}
+      editDomainRedirects={jest.fn()}
+      checkDomainHealth={jest.fn()}
+      domainsList={domainsList}
+      selectedServer={Mock.all<SelectedServer>()}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
 

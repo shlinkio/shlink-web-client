@@ -1,10 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { formatDistance, parseISO } from 'date-fns';
 import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ShortUrlVisitsHeader />', () => {
   const dateCreated = '2018-01-01T10:00:00+00:00';
@@ -23,12 +23,9 @@ describe('<ShortUrlVisitsHeader />', () => {
       },
       loading: false,
     });
-    return {
-      user: userEvent.setup(),
-      ...render(
-        <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />,
-      ),
-    };
+    return renderWithEvents(
+      <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />,
+    );
   };
 
   it('shows when the URL was created', async () => {

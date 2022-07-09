@@ -1,5 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import {
   ImportServersBtn as createImportServersBtn,
@@ -7,6 +6,7 @@ import {
 } from '../../../src/servers/helpers/ImportServersBtn';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { ServersMap, ServerWithId } from '../../../src/servers/data';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
   const onImportMock = jest.fn();
@@ -14,17 +14,14 @@ describe('<ImportServersBtn />', () => {
   const importServersFromFile = jest.fn().mockResolvedValue([]);
   const serversImporterMock = Mock.of<ServersImporter>({ importServersFromFile });
   const ImportServersBtn = createImportServersBtn(serversImporterMock);
-  const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => ({
-    user: userEvent.setup(),
-    ...render(
-      <ImportServersBtn
-        servers={servers}
-        {...props}
-        createServers={createServersMock}
-        onImport={onImportMock}
-      />,
-    ),
-  });
+  const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithEvents(
+    <ImportServersBtn
+      servers={servers}
+      {...props}
+      createServers={createServersMock}
+      onImport={onImportMock}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
 

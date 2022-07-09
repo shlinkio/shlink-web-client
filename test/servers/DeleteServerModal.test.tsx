@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import { ServerWithId } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
@@ -15,17 +15,14 @@ describe('<DeleteServerModal />', () => {
   const setUp = () => {
     (useNavigate as any).mockReturnValue(navigate);
 
-    return {
-      user: userEvent.setup(),
-      ...render(
-        <DeleteServerModal
-          server={Mock.of<ServerWithId>({ name: serverName })}
-          toggle={toggleMock}
-          isOpen
-          deleteServer={deleteServerMock}
-        />,
-      ),
-    };
+    return renderWithEvents(
+      <DeleteServerModal
+        server={Mock.of<ServerWithId>({ name: serverName })}
+        toggle={toggleMock}
+        isOpen
+        deleteServer={deleteServerMock}
+      />,
+    );
   };
 
   afterEach(jest.clearAllMocks);

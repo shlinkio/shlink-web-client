@@ -1,13 +1,12 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DateInput, DateInputProps } from '../../src/utils/DateInput';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<DateInput />', () => {
-  const setUp = (props: Partial<DateInputProps> = {}) => ({
-    user: userEvent.setup(),
-    ...render(<DateInput {...Mock.of<DateInputProps>(props)} />),
-  });
+  const setUp = (props: Partial<DateInputProps> = {}) => renderWithEvents(
+    <DateInput {...Mock.of<DateInputProps>(props)} />,
+  );
 
   it('shows calendar icon when input is not clearable', () => {
     setUp({ isClearable: false });

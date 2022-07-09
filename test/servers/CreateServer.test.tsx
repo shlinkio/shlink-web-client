@@ -1,9 +1,9 @@
-import userEvent from '@testing-library/user-event';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
 import { ServerWithId } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
@@ -22,10 +22,7 @@ describe('<CreateServer />', () => {
     });
     const CreateServer = createCreateServer(() => <>ImportServersBtn</>, useTimeoutToggle);
 
-    return {
-      user: userEvent.setup(),
-      ...render(<CreateServer createServer={createServerMock} servers={servers} />),
-    };
+    return renderWithEvents(<CreateServer createServer={createServerMock} servers={servers} />);
   };
 
   beforeEach(jest.clearAllMocks);

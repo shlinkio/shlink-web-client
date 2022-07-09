@@ -1,28 +1,25 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { TagsList as createTagsList, TagsListProps } from '../../src/tags/TagsList';
 import { TagsList } from '../../src/tags/reducers/tagsList';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Settings } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = jest.fn();
   const TagsListComp = createTagsList(() => <>TagsCards</>, () => <>TagsTable</>);
-  const setUp = (tagsList: Partial<TagsList>) => ({
-    user: userEvent.setup(),
-    ...render(
-      <TagsListComp
-        {...Mock.all<TagsListProps>()}
-        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
-        forceListTags={identity}
-        filterTags={filterTags}
-        tagsList={Mock.of<TagsList>(tagsList)}
-        settings={Mock.all<Settings>()}
-      />,
-    ),
-  });
+  const setUp = (tagsList: Partial<TagsList>) => renderWithEvents(
+    <TagsListComp
+      {...Mock.all<TagsListProps>()}
+      {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+      forceListTags={identity}
+      filterTags={filterTags}
+      tagsList={Mock.of<TagsList>(tagsList)}
+      settings={Mock.all<Settings>()}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
 

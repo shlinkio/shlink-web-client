@@ -1,14 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
   const toggle = jest.fn();
   const forceUpdate = jest.fn();
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />),
-  });
+  const setUp = () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
 
   afterEach(jest.clearAllMocks);
 

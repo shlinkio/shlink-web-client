@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { FC } from 'react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reduce
 import { ReachableServer } from '../../src/servers/data';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlsTableProps } from '../../src/short-urls/ShortUrlsTable';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -36,20 +36,17 @@ describe('<ShortUrlsList />', () => {
     },
   });
   const ShortUrlsList = createShortUrlsList(ShortUrlsTable, ShortUrlsFilteringBar);
-  const setUp = (defaultOrdering: ShortUrlsOrder = {}) => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <ShortUrlsList
-          {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
-          listShortUrls={listShortUrlsMock}
-          shortUrlsList={shortUrlsList}
-          selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-          settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = (defaultOrdering: ShortUrlsOrder = {}) => renderWithEvents(
+    <MemoryRouter>
+      <ShortUrlsList
+        {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
+        listShortUrls={listShortUrlsMock}
+        shortUrlsList={shortUrlsList}
+        selectedServer={Mock.of<ReachableServer>({ id: '1' })}
+        settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
+      />
+    </MemoryRouter>,
+  );
 
   beforeEach(() => {
     (useNavigate as any).mockReturnValue(navigate);

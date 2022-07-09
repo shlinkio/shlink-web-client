@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
@@ -10,6 +9,7 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -24,21 +24,18 @@ describe('<TagVisits />', () => {
     Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),
     Mock.of<ReportExporter>({ exportVisits }),
   );
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <TagVisits
-          {...Mock.all<TagVisitsProps>()}
-          {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
-          getTagVisits={getTagVisitsMock}
-          tagVisits={tagVisits}
-          settings={Mock.all<Settings>()}
-          cancelGetTagVisits={() => {}}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
+      <TagVisits
+        {...Mock.all<TagVisitsProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        getTagVisits={getTagVisitsMock}
+        tagVisits={tagVisits}
+        settings={Mock.all<Settings>()}
+        cancelGetTagVisits={() => {}}
+      />
+    </MemoryRouter>,
+  );
 
   it('wraps visits stats and header', () => {
     setUp();
