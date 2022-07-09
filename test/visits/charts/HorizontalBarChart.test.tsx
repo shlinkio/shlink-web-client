@@ -1,5 +1,5 @@
 import { HorizontalBarChart, HorizontalBarChartProps } from '../../../src/visits/charts/HorizontalBarChart';
-import { setUpCanvas } from '../../__mocks__/setUpCanvas';
+import { setUpCanvas } from '../../__mocks__/setUpTest';
 
 describe('<HorizontalBarChart />', () => {
   const setUp = (props: HorizontalBarChartProps) => setUpCanvas(<HorizontalBarChart {...props} />);

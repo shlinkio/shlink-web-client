@@ -1,19 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { TagsCards as createTagsCards } from '../../src/tags/TagsCards';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
 import { NormalizedTag } from '../../src/tags/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<TagsCards />', () => {
   const amountOfTags = 10;
   const sortedTags = rangeOf(amountOfTags, (i) => Mock.of<NormalizedTag>({ tag: `tag_${i}` }));
   const TagsCards = createTagsCards(() => <span>TagCard</span>);
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(<TagsCards sortedTags={sortedTags} selectedServer={Mock.all<SelectedServer>()} />),
-  });
+  const setUp = () => renderWithEvents(
+    <TagsCards sortedTags={sortedTags} selectedServer={Mock.all<SelectedServer>()} />,
+  );
 
   it('renders the proper amount of groups and cards based on the amount of tags', () => {
     const { container } = setUp();

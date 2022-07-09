@@ -1,13 +1,12 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Placement } from '@popperjs/core';
 import { InfoTooltip, InfoTooltipProps } from '../../src/utils/InfoTooltip';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<InfoTooltip />', () => {
-  const setUp = (props: Partial<InfoTooltipProps> = {}) => ({
-    user: userEvent.setup(),
-    ...render(<InfoTooltip placement="right" {...props} />),
-  });
+  const setUp = (props: Partial<InfoTooltipProps> = {}) => renderWithEvents(
+    <InfoTooltip placement="right" {...props} />,
+  );
 
   it.each([
     [undefined],

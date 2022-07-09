@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import { NotFoundServer, ReachableServer, SelectedServer } from '../../../src/servers/data';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<ExportShortUrlsBtn />', () => {
   const listShortUrls = jest.fn();
@@ -12,14 +12,11 @@ describe('<ExportShortUrlsBtn />', () => {
   const exportShortUrls = jest.fn();
   const reportExporter = Mock.of<ReportExporter>({ exportShortUrls });
   const ExportShortUrlsBtn = createExportShortUrlsBtn(buildShlinkApiClient, reportExporter);
-  const setUp = (amount?: number, selectedServer?: SelectedServer) => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <ExportShortUrlsBtn selectedServer={selectedServer ?? Mock.all<SelectedServer>()} amount={amount} />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = (amount?: number, selectedServer?: SelectedServer) => renderWithEvents(
+    <MemoryRouter>
+      <ExportShortUrlsBtn selectedServer={selectedServer ?? Mock.all<SelectedServer>()} amount={amount} />
+    </MemoryRouter>,
+  );
 
   afterEach(jest.clearAllMocks);
 

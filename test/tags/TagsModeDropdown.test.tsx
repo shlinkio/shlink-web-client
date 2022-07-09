@@ -1,14 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { TagsMode } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<TagsModeDropdown />', () => {
   const onChange = jest.fn();
-  const setUp = (mode: TagsMode) => ({
-    user: userEvent.setup(),
-    ...render(<TagsModeDropdown mode={mode} onChange={onChange} />),
-  });
+  const setUp = (mode: TagsMode) => renderWithEvents(<TagsModeDropdown mode={mode} onChange={onChange} />);
 
   afterEach(jest.clearAllMocks);
 

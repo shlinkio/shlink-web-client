@@ -1,15 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Settings } from '../../src/settings/reducers/settings';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<VisitsSettings />', () => {
   const setVisitsSettings = jest.fn();
-  const setUp = (settings: Partial<Settings> = {}) => ({
-    user: userEvent.setup(),
-    ...render(<VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />),
-  });
+  const setUp = (settings: Partial<Settings> = {}) => renderWithEvents(
+    <VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
 import { CityStats } from '../../../src/visits/types';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<OpenMapModalBtn />', () => {
   const title = 'Foo';
@@ -10,10 +10,9 @@ describe('<OpenMapModalBtn />', () => {
     Mock.of<CityStats>({ cityName: 'foo', count: 30, latLong: [5, 5] }),
     Mock.of<CityStats>({ cityName: 'bar', count: 45, latLong: [88, 88] }),
   ];
-  const setUp = (activeCities?: string[]) => ({
-    user: userEvent.setup(),
-    ...render(<OpenMapModalBtn modalTitle={title} locations={locations} activeCities={activeCities} />),
-  });
+  const setUp = (activeCities?: string[]) => renderWithEvents(
+    <OpenMapModalBtn modalTitle={title} locations={locations} activeCities={activeCities} />,
+  );
 
   it('renders tooltip on button hover and opens modal on click', async () => {
     const { user } = setUp();

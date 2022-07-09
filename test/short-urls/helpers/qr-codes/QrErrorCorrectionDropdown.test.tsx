@@ -1,17 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { QrErrorCorrection } from '../../../../src/utils/helpers/qrCodes';
 import { QrErrorCorrectionDropdown } from '../../../../src/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
+import { renderWithEvents } from '../../../__mocks__/setUpTest';
 
 describe('<QrErrorCorrectionDropdown />', () => {
   const initialErrorCorrection: QrErrorCorrection = 'Q';
   const setErrorCorrection = jest.fn();
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

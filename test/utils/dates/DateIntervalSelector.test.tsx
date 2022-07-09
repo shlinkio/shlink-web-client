@@ -1,15 +1,14 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
 import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<DateIntervalSelector />', () => {
   const activeInterval: DateInterval = 'last7Days';
   const onChange = jest.fn();
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(<DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />),
-  });
+  const setUp = () => renderWithEvents(
+    <DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />,
+  );
 
   it('passes props down to nested DateIntervalDropdownItems', async () => {
     const { user } = setUp();

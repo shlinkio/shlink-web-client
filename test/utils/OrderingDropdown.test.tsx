@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { values } from 'ramda';
 import { OrderingDropdown, OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
 import { OrderDir } from '../../src/utils/helpers/ordering';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<OrderingDropdown />', () => {
   const items = {
@@ -10,10 +10,9 @@ describe('<OrderingDropdown />', () => {
     bar: 'Bar',
     baz: 'Hello World',
   };
-  const setUp = (props: Partial<OrderingDropdownProps> = {}) => ({
-    user: userEvent.setup(),
-    ...render(<OrderingDropdown items={items} order={{}} onChange={jest.fn()} {...props} />),
-  });
+  const setUp = (props: Partial<OrderingDropdownProps> = {}) => renderWithEvents(
+    <OrderingDropdown items={items} order={{}} onChange={jest.fn()} {...props} />,
+  );
   const setUpWithDisplayedMenu = async (props: Partial<OrderingDropdownProps> = {}) => {
     const result = setUp(props);
     const { user } = result;

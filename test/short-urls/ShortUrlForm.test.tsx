@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup';
 import { formatISO } from 'date-fns';
 import { Mock } from 'ts-mockery';
@@ -7,13 +6,13 @@ import { ShortUrlForm as createShortUrlForm, Mode } from '../../src/short-urls/S
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { parseDate } from '../../src/utils/helpers/date';
 import { OptionalString } from '../../src/utils/utils';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ShortUrlForm />', () => {
   const createShortUrl = jest.fn(async () => Promise.resolve());
   const ShortUrlForm = createShortUrlForm(() => <span>TagsSelector</span>, () => <span>DomainSelector</span>);
-  const setUp = (selectedServer: SelectedServer = null, mode: Mode = 'create', title?: OptionalString) => ({
-    user: userEvent.setup(),
-    ...render(
+  const setUp = (selectedServer: SelectedServer = null, mode: Mode = 'create', title?: OptionalString) =>
+    renderWithEvents(
       <ShortUrlForm
         selectedServer={selectedServer}
         mode={mode}
@@ -21,8 +20,7 @@ describe('<ShortUrlForm />', () => {
         initialState={{ validateUrl: true, findIfExists: false, title, longUrl: '' }}
         onSave={createShortUrl}
       />,
-    ),
-  });
+    );
 
   afterEach(jest.clearAllMocks);
 

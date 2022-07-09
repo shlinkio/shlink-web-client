@@ -1,13 +1,9 @@
-import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { CopyToClipboardIcon } from '../../src/utils/CopyToClipboardIcon';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<CopyToClipboardIcon />', () => {
   const onCopy = jest.fn();
-  const setUp = (text = 'foo') => ({
-    user: userEvent.setup(),
-    ...render(<CopyToClipboardIcon text={text} onCopy={onCopy} />),
-  });
+  const setUp = (text = 'foo') => renderWithEvents(<CopyToClipboardIcon text={text} onCopy={onCopy} />);
 
   afterEach(jest.clearAllMocks);
 

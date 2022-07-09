@@ -1,14 +1,13 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
 import { DATE_INTERVALS, DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
 import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<DateIntervalDropdownItems />', () => {
   const onChange = jest.fn();
   const setUp = async () => {
-    const user = userEvent.setup();
-    const renderResult = render(
+    const { user, ...renderResult } = renderWithEvents(
       <DropdownBtn text="text">
         <DateIntervalDropdownItems allText="All" active="last180Days" onChange={onChange} />
       </DropdownBtn>,

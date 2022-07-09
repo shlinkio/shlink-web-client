@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
@@ -11,29 +10,27 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {
   const getShortUrlVisitsMock = jest.fn();
   const exportVisits = jest.fn();
   const shortUrlVisits = Mock.of<ShortUrlVisitsState>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const ShortUrlVisits = createShortUrlVisits(Mock.of<ReportExporter>({ exportVisits }));
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <ShortUrlVisits
-          {...Mock.all<ShortUrlVisitsProps>()}
-          {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
-          getShortUrlDetail={identity}
-          getShortUrlVisits={getShortUrlVisitsMock}
-          shortUrlVisits={shortUrlVisits}
-          shortUrlDetail={Mock.all<ShortUrlDetail>()}
-          settings={Mock.all<Settings>()}
-          cancelGetShortUrlVisits={() => {}}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
+      <ShortUrlVisits
+        {...Mock.all<ShortUrlVisitsProps>()}
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        getShortUrlDetail={identity}
+        getShortUrlVisits={getShortUrlVisitsMock}
+        shortUrlVisits={shortUrlVisits}
+        shortUrlDetail={Mock.all<ShortUrlDetail>()}
+        settings={Mock.all<Settings>()}
+        cancelGetShortUrlVisits={() => {}}
+      />
+    </MemoryRouter>,
+  );
 
   it('wraps visits stats and header', () => {
     setUp();

@@ -1,21 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { OrphanVisitType, VisitsFilter } from '../../../src/visits/types';
 import { VisitsFilterDropdown } from '../../../src/visits/helpers/VisitsFilterDropdown';
+import { renderWithEvents } from '../../__mocks__/setUpTest';
 
 describe('<VisitsFilterDropdown />', () => {
   const onChange = jest.fn();
-  const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true, botsSupported = true) => ({
-    user: userEvent.setup(),
-    ...render(
-      <VisitsFilterDropdown
-        isOrphanVisits={isOrphanVisits}
-        botsSupported={botsSupported}
-        selected={selected}
-        onChange={onChange}
-      />,
-    ),
-  });
+  const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true, botsSupported = true) => renderWithEvents(
+    <VisitsFilterDropdown
+      isOrphanVisits={isOrphanVisits}
+      botsSupported={botsSupported}
+      selected={selected}
+      onChange={onChange}
+    />,
+  );
 
   beforeEach(jest.clearAllMocks);
 

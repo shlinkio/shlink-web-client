@@ -4,7 +4,7 @@ import { formatISO, subDays, subMonths, subYears } from 'date-fns';
 import { Mock } from 'ts-mockery';
 import { LineChartCard } from '../../../src/visits/charts/LineChartCard';
 import { NormalizedVisit } from '../../../src/visits/types';
-import { setUpCanvas } from '../../__mocks__/setUpCanvas';
+import { setUpCanvas } from '../../__mocks__/setUpTest';
 
 describe('<LineChartCard />', () => {
   const setUp = (visits: NormalizedVisit[] = [], highlightedVisits: NormalizedVisit[] = []) => ({

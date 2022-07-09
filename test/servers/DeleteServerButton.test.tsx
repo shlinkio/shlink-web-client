@@ -1,20 +1,17 @@
 import { ReactNode } from 'react';
-import userEvent from '@testing-library/user-event';
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteServerButton as createDeleteServerButton } from '../../src/servers/DeleteServerButton';
 import { ServerWithId } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<DeleteServerButton />', () => {
   const DeleteServerButton = createDeleteServerButton(
     ({ isOpen }) => <>DeleteServerModal {isOpen ? '[Open]' : '[Closed]'}</>,
   );
-  const setUp = (children?: ReactNode) => ({
-    user: userEvent.setup(),
-    ...render(
-      <DeleteServerButton server={Mock.all<ServerWithId>()} textClassName="button">{children}</DeleteServerButton>,
-    ),
-  });
+  const setUp = (children?: ReactNode) => renderWithEvents(
+    <DeleteServerButton server={Mock.all<ServerWithId>()} textClassName="button">{children}</DeleteServerButton>,
+  );
 
   it.each([
     ['Foo bar'],

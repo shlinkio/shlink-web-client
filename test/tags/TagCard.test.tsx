@@ -1,10 +1,10 @@
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { TagCard as createTagCard } from '../../src/tags/TagCard';
 import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { ReachableServer } from '../../src/servers/data';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<TagCard />', () => {
   const TagCard = createTagCard(
@@ -12,19 +12,16 @@ describe('<TagCard />', () => {
     ({ isOpen }) => <span>EditTagModal {isOpen ? '[Open]' : '[Closed]'}</span>,
     Mock.of<ColorGenerator>({ getColorForKey: () => '' }),
   );
-  const setUp = (tag = 'ssr') => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <TagCard
-          tag={{ tag, visits: 23257, shortUrls: 48 }}
-          selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-          displayed
-          toggle={() => {}}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = (tag = 'ssr') => renderWithEvents(
+    <MemoryRouter>
+      <TagCard
+        tag={{ tag, visits: 23257, shortUrls: 48 }}
+        selectedServer={Mock.of<ReachableServer>({ id: '1' })}
+        displayed
+        toggle={() => {}}
+      />
+    </MemoryRouter>,
+  );
 
   afterEach(jest.resetAllMocks);
 

@@ -1,9 +1,9 @@
-import userEvent from '@testing-library/user-event';
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown as createManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
+import { renderWithEvents } from '../__mocks__/setUpTest';
 
 describe('<ManageServersRowDropdown />', () => {
   const ManageServersRowDropdown = createManageServersRowDropdown(
@@ -12,14 +12,11 @@ describe('<ManageServersRowDropdown />', () => {
   const setAutoConnect = jest.fn();
   const setUp = (autoConnect = false) => {
     const server = Mock.of<ServerWithId>({ id: 'abc123', autoConnect });
-    return {
-      user: userEvent.setup(),
-      ...render(
-        <MemoryRouter>
-          <ManageServersRowDropdown setAutoConnect={setAutoConnect} server={server} />
-        </MemoryRouter>,
-      ),
-    };
+    return renderWithEvents(
+      <MemoryRouter>
+        <ManageServersRowDropdown setAutoConnect={setAutoConnect} server={server} />
+      </MemoryRouter>,
+    );
   };
 
   afterEach(jest.clearAllMocks);

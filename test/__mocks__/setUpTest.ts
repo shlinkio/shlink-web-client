@@ -1,5 +1,6 @@
 import { ReactElement } from 'react';
 import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 export const setUpCanvas = (element: ReactElement) => {
   const result = render(element);
@@ -8,3 +9,8 @@ export const setUpCanvas = (element: ReactElement) => {
 
   return { ...result, events: getEvents(), getEvents };
 };
+
+export const renderWithEvents = (element: ReactElement) => ({
+  user: userEvent.setup(),
+  ...render(element),
+});
