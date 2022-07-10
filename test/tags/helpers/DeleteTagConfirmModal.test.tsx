@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { DeleteTagConfirmModal } from '../../../src/tags/helpers/DeleteTagConfirmModal';
 import { TagDeletion } from '../../../src/tags/reducers/tagDelete';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DeleteTagConfirmModal />', () => {
   const tag = 'nodejs';

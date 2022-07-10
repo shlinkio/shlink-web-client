@@ -6,7 +6,7 @@ import { ShortUrlForm as createShortUrlForm, Mode } from '../../src/short-urls/S
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { parseDate } from '../../src/utils/helpers/date';
 import { OptionalString } from '../../src/utils/utils';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlForm />', () => {
   const createShortUrl = jest.fn(async () => Promise.resolve());

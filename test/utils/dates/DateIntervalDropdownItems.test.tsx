@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
 import { DATE_INTERVALS, DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
 import { DropdownBtn } from '../../../src/utils/DropdownBtn';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalDropdownItems />', () => {
   const onChange = jest.fn();

@@ -9,7 +9,7 @@ import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reduce
 import { ReachableServer } from '../../src/servers/data';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlsTableProps } from '../../src/short-urls/ShortUrlsTable';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

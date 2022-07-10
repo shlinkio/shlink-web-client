@@ -10,7 +10,7 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {
   const getShortUrlVisitsMock = jest.fn();

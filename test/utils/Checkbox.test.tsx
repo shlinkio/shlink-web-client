@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Checkbox } from '../../src/utils/Checkbox';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<Checkbox />', () => {
   it.each([['foo'], ['bar'], ['baz']])('includes extra class names when provided', (className) => {

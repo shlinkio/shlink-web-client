@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ShlinkDomain } from '../../src/api/types';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DomainSelector />', () => {
   const domainsList = Mock.of<DomainsList>({

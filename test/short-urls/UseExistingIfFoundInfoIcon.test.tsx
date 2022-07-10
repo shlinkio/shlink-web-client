@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { UseExistingIfFoundInfoIcon } from '../../src/short-urls/UseExistingIfFoundInfoIcon';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UseExistingIfFoundInfoIcon />', () => {
   it('shows modal when icon is clicked', async () => {

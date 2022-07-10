@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Placement } from '@popperjs/core';
 import { InfoTooltip, InfoTooltipProps } from '../../src/utils/InfoTooltip';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<InfoTooltip />', () => {
   const setUp = (props: Partial<InfoTooltipProps> = {}) => renderWithEvents(

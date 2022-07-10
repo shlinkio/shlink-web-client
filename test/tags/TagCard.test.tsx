@@ -4,7 +4,7 @@ import { Mock } from 'ts-mockery';
 import { TagCard as createTagCard } from '../../src/tags/TagCard';
 import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { ReachableServer } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagCard />', () => {
   const TagCard = createTagCard(

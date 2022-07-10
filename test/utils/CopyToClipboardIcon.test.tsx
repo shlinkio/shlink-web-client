@@ -1,5 +1,5 @@
 import { CopyToClipboardIcon } from '../../src/utils/CopyToClipboardIcon';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<CopyToClipboardIcon />', () => {
   const onCopy = jest.fn();

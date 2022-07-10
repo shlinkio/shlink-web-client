@@ -5,7 +5,7 @@ import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
 import { Domain } from '../../../src/domains/data';
 import { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import { SemVer } from '../../../src/utils/helpers/version';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainDropdown />', () => {
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);

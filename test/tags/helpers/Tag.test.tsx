@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 import { Tag } from '../../../src/tags/helpers/Tag';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 const hexToRgb = (hex: string) => {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);

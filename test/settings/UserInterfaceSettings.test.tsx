@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { Settings, UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
 import { Theme } from '../../src/utils/theme';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {
   const setUiSettings = jest.fn();

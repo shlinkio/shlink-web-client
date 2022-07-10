@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Settings } from '../../src/settings/reducers/settings';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsSettings />', () => {
   const setVisitsSettings = jest.fn();

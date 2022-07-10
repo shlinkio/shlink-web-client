@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<CreateShortUrlResult />', () => {
   const copyToClipboard = jest.fn();

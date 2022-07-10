@@ -5,7 +5,7 @@ import {
   Settings,
 } from '../../src/settings/reducers/settings';
 import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {
   const toggleRealTimeUpdates = jest.fn();

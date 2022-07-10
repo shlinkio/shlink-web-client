@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { values } from 'ramda';
 import { OrderingDropdown, OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
 import { OrderDir } from '../../src/utils/helpers/ordering';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrderingDropdown />', () => {
   const items = {

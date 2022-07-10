@@ -4,7 +4,7 @@ import { TagsCards as createTagsCards } from '../../src/tags/TagsCards';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
 import { NormalizedTag } from '../../src/tags/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsCards />', () => {
   const amountOfTags = 10;

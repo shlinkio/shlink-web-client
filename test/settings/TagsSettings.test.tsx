@@ -4,7 +4,7 @@ import { Settings, TagsMode, TagsSettings as TagsSettingsOptions } from '../../s
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 import { capitalize } from '../../src/utils/utils';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsSettings />', () => {
   const setTagsSettings = jest.fn();

@@ -3,7 +3,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteServerButton as createDeleteServerButton } from '../../src/servers/DeleteServerButton';
 import { ServerWithId } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DeleteServerButton />', () => {
   const DeleteServerButton = createDeleteServerButton(

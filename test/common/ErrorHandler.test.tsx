@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 const ComponentWithError = () => {
   throw new Error('Error!!');

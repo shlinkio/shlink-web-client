@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
 import { CityStats } from '../../../src/visits/types';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<OpenMapModalBtn />', () => {
   const title = 'Foo';

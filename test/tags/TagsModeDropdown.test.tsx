@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { TagsMode } from '../../src/settings/reducers/settings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsModeDropdown />', () => {
   const onChange = jest.fn();
