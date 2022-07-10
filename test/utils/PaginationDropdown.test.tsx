@@ -1,22 +1,23 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { PaginationDropdown } from '../../src/utils/PaginationDropdown';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<PaginationDropdown />', () => {
   const setValue = jest.fn();
-  let wrapper: ShallowWrapper;
+  const setUp = async () => {
+    const result = renderWithEvents(<PaginationDropdown ranges={[10, 50, 100, 200]} value={50} setValue={setValue} />);
+    const { user } = result;
 
-  beforeEach(() => {
-    wrapper = shallow(<PaginationDropdown ranges={[10, 50, 100, 200]} value={50} setValue={setValue} />);
-  });
+    await user.click(screen.getByRole('button'));
+
+    return result;
+  };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('renders expected amount of items', () => {
-    const items = wrapper.find(DropdownItem);
-
-    expect(items).toHaveLength(6);
+  it('renders expected amount of items', async () => {
+    await setUp();
+    expect(screen.getAllByRole('menuitem')).toHaveLength(5);
   });
 
   it.each([
@@ -24,12 +25,11 @@ describe('<PaginationDropdown />', () => {
     [1, 50],
     [2, 100],
     [3, 200],
-    [5, Infinity],
-  ])('sets expected value when an item is clicked', (index, expectedValue) => {
-    const item = wrapper.find(DropdownItem).at(index);
+  ])('sets expected value when an item is clicked', async (index, expectedValue) => {
+    const { user } = await setUp();
 
     expect(setValue).not.toHaveBeenCalled();
-    item.simulate('click');
+    await user.click(screen.getAllByRole('menuitem')[index]);
     expect(setValue).toHaveBeenCalledWith(expectedValue);
   });
 });
