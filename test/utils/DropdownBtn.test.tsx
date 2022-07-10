@@ -1,30 +1,23 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownMenu, DropdownToggle } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { PropsWithChildren } from 'react';
 import { DropdownBtn, DropdownBtnProps } from '../../src/utils/DropdownBtn';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtn />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props: PropsWithChildren<DropdownBtnProps>) => {
-    wrapper = shallow(<DropdownBtn children="foo" {...props} />);
+  const setUp = (props: PropsWithChildren<DropdownBtnProps>) => renderWithEvents(
+    <DropdownBtn children="foo" {...props} />,
+  );
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
-
-  it.each([['foo'], ['bar'], ['baz']])('displays provided text', (text) => {
-    const wrapper = createWrapper({ text });
-    const toggle = wrapper.find(DropdownToggle);
-
-    expect(toggle.prop('children')).toContain(text);
+  it.each([['foo'], ['bar'], ['baz']])('displays provided text in button', (text) => {
+    setUp({ text });
+    expect(screen.getByRole('button')).toHaveTextContent(text);
   });
 
-  it.each([['foo'], ['bar'], ['baz']])('displays provided children', (children) => {
-    const wrapper = createWrapper({ text: '', children });
-    const menu = wrapper.find(DropdownMenu);
+  it.each([['foo'], ['bar'], ['baz']])('displays provided children in menu', async (children) => {
+    const { user } = setUp({ text: '', children });
 
-    expect(menu.html()).toContain(children);
+    await user.click(screen.getByRole('button'));
+    expect(screen.getByRole('menu')).toHaveTextContent(children);
   });
 
   it.each([
@@ -33,20 +26,21 @@ describe('<DropdownBtn />', () => {
     ['foo', 'dropdown-btn__toggle btn-block foo'],
     ['bar', 'dropdown-btn__toggle btn-block bar'],
   ])('includes provided classes', (className, expectedClasses) => {
-    const wrapper = createWrapper({ text: '', className });
-    const toggle = wrapper.find(DropdownToggle);
-
-    expect(toggle.prop('className')?.trim()).toEqual(expectedClasses);
+    setUp({ text: '', className });
+    expect(screen.getByRole('button')).toHaveClass(expectedClasses);
   });
 
   it.each([
-    [100, { minWidth: '100px' }],
-    [250, { minWidth: '250px' }],
-    [undefined, {}],
-  ])('renders proper styles when minWidth is provided', (minWidth, expectedStyle) => {
-    const wrapper = createWrapper({ text: '', minWidth });
-    const style = wrapper.find(DropdownMenu).prop('style');
+    [100, 'min-width: 100px; '],
+    [250, 'min-width: 250px; '],
+    [undefined, ''],
+  ])('renders proper styles when minWidth is provided', async (minWidth, expectedStyle) => {
+    const { user } = setUp({ text: '', minWidth });
 
-    expect(style).toEqual(expectedStyle);
+    await user.click(screen.getByRole('button'));
+    expect(screen.getByRole('menu')).toHaveAttribute(
+      'style',
+      `${expectedStyle}position: absolute; left: 0px; top: 0px;`,
+    );
   });
 });
