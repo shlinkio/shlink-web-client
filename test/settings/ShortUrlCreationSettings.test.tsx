@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlCreationSettings />', () => {
   const setShortUrlCreationSettings = jest.fn();

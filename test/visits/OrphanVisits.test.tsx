@@ -8,7 +8,7 @@ import { Visit, VisitsInfo } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrphanVisits />', () => {
   const getOrphanVisits = jest.fn();

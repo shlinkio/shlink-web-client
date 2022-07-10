@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
 import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalSelector />', () => {
   const activeInterval: DateInterval = 'last7Days';

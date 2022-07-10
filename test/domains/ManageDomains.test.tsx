@@ -4,7 +4,7 @@ import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ManageDomains } from '../../src/domains/ManageDomains';
 import { ProblemDetailsError, ShlinkDomain } from '../../src/api/types';
 import { SelectedServer } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();

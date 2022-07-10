@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import ServersExporter from '../../src/servers/services/ServersExporter';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
 import { ServersMap, ServerWithId } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {
   const exportServers = jest.fn();

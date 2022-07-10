@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
 import { ServerWithId } from '../../src/servers/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 

@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkDomain } from '../../../src/api/types';
 import { EditDomainRedirectsModal } from '../../../src/domains/helpers/EditDomainRedirectsModal';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditDomainRedirectsModal />', () => {
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);

@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
   const toggle = jest.fn();

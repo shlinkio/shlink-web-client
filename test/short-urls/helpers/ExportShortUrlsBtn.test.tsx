@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import { NotFoundServer, ReachableServer, SelectedServer } from '../../../src/servers/data';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ExportShortUrlsBtn />', () => {
   const listShortUrls = jest.fn();

@@ -5,7 +5,7 @@ import { TagsList as createTagsList, TagsListProps } from '../../src/tags/TagsLi
 import { TagsList } from '../../src/tags/reducers/tagsList';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Settings } from '../../src/settings/reducers/settings';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = jest.fn();

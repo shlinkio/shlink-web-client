@@ -3,7 +3,7 @@ import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown as createManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServersRowDropdown />', () => {
   const ManageServersRowDropdown = createManageServersRowDropdown(

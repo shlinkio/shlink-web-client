@@ -6,7 +6,7 @@ import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-ur
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { DateRange } from '../../src/utils/dates/types';
 import { formatDate } from '../../src/utils/helpers/date';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

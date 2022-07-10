@@ -6,7 +6,7 @@ import {
 } from '../../../src/servers/helpers/ImportServersBtn';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { ServersMap, ServerWithId } from '../../../src/servers/data';
-import { renderWithEvents } from '../../__mocks__/setUpTest';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
   const onImportMock = jest.fn();

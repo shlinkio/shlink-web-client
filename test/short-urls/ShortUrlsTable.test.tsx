@@ -4,7 +4,7 @@ import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/Sh
 import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsTable />', () => {
   const shortUrlsList = Mock.all<ShortUrlsList>();

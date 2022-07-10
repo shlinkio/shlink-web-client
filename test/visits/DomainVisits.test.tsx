@@ -9,7 +9,7 @@ import { DomainVisits } from '../../src/visits/reducers/domainVisits';
 import { Settings } from '../../src/settings/reducers/settings';
 import { SelectedServer } from '../../src/servers/data';
 import { Visit } from '../../src/visits/types';
-import { renderWithEvents } from '../__mocks__/setUpTest';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
