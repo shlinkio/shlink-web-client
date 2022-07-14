@@ -1,15 +1,12 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { ReactNode } from 'react';
+import { screen } from '@testing-library/react';
 import { range } from 'ramda';
-import { OrderingDropdown } from '../../../src/utils/OrderingDropdown';
-import { PaginationDropdown } from '../../../src/utils/PaginationDropdown';
 import { rangeOf } from '../../../src/utils/utils';
-import { OrderDir } from '../../../src/utils/helpers/ordering';
 import { Stats } from '../../../src/visits/types';
 import { SortableBarChartCard } from '../../../src/visits/charts/SortableBarChartCard';
-import { HorizontalBarChart } from '../../../src/visits/charts/HorizontalBarChart';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<SortableBarChartCard />', () => {
-  let wrapper: ShallowWrapper;
   const sortingItems = {
     name: 'Name',
     amount: 'Amount',
@@ -18,98 +15,63 @@ describe('<SortableBarChartCard />', () => {
     Foo: 100,
     Bar: 50,
   };
-  const createWrapper = (withPagination = false, extraStats = {}) => {
-    wrapper = shallow(
-      <SortableBarChartCard
-        title="Foo"
-        stats={{ ...stats, ...extraStats }}
-        sortingItems={sortingItems}
-        withPagination={withPagination}
-      />,
-    );
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (withPagination = false, extraStats = {}, extra?: (foo?: string[]) => ReactNode) => renderWithEvents(
+    <SortableBarChartCard
+      title="Foo"
+      stats={{ ...stats, ...extraStats }}
+      sortingItems={sortingItems}
+      withPagination={withPagination}
+      extraHeaderContent={extra}
+    />,
+  );
 
   it('renders stats unchanged when no ordering is set', () => {
-    const wrapper = createWrapper();
-    const chart = wrapper.find(HorizontalBarChart);
+    const { container } = setUp();
 
-    expect(chart.prop('stats')).toEqual(stats);
+    expect(container.firstChild).not.toBeNull();
+    expect(container.firstChild).toMatchSnapshot();
   });
 
-  describe('renders properly ordered stats when ordering is set', () => {
-    let assert: (sortName: string, sortDir: OrderDir, keys: string[], values: number[]) => void;
+  it.each([
+    ['Name', 1],
+    ['Amount', 1],
+    ['Name', 2],
+    ['Amount', 2],
+  ])('renders properly ordered stats when ordering is set', async (name, clicks) => {
+    const { user } = setUp();
 
-    beforeEach(() => {
-      const wrapper = createWrapper();
-      const dropdown = wrapper.renderProp('title' as never)().find(OrderingDropdown);
+    await user.click(screen.getByRole('button'));
+    await Promise.all(rangeOf(clicks, async () => user.click(screen.getByRole('menuitem', { name }))));
 
-      assert = (sortName: string, sortDir: OrderDir, keys: string[], values: number[]) => {
-        dropdown.prop('onChange')(sortName, sortDir);
-
-        const stats = wrapper.find(HorizontalBarChart).prop('stats');
-
-        expect(Object.keys(stats)).toEqual(keys);
-        expect(Object.values(stats)).toEqual(values);
-      };
-    });
-
-    it('name - ASC', () => assert('name', 'ASC', ['Bar', 'Foo'], [50, 100]));
-    it('name - DESC', () => assert('name', 'DESC', ['Foo', 'Bar'], [100, 50]));
-    it('value - ASC', () => assert('value', 'ASC', ['Bar', 'Foo'], [50, 100]));
-    it('value - DESC', () => assert('value', 'DESC', ['Foo', 'Bar'], [100, 50]));
+    expect(screen.getByRole('document')).toMatchSnapshot();
   });
 
-  describe('renders properly paginated stats when pagination is set', () => {
-    let assert: (itemsPerPage: number, expectedStats: string[]) => void;
+  it.each([
+    [0],
+    [1],
+    [2],
+    [3],
+  ])('renders properly paginated stats when pagination is set', async (itemIndex) => {
+    const { user } = setUp(true, range(1, 159).reduce<Stats>((accum, value) => {
+      accum[`key_${value}`] = value;
+      return accum;
+    }, {}));
 
-    beforeEach(() => {
-      const wrapper = createWrapper(true, range(1, 159).reduce<Stats>((accum, value) => {
-        accum[`key_${value}`] = value;
+    await user.click(screen.getAllByRole('button')[1]);
+    await user.click(screen.getAllByRole('menuitem')[itemIndex]);
 
-        return accum;
-      }, {}));
-      const dropdown = wrapper.renderProp('title' as never)().find(PaginationDropdown);
-
-      assert = (itemsPerPage: number, expectedStats: string[]) => {
-        dropdown.prop('setValue')(itemsPerPage);
-
-        const stats = wrapper.find(HorizontalBarChart).prop('stats');
-
-        expect(Object.keys(stats)).toEqual(expectedStats);
-      };
-    });
-
-    const buildExpected = (size: number): string[] => ['Foo', 'Bar', ...rangeOf(size - 2, (i) => `key_${i}`)];
-
-    it('50 items per page', () => assert(50, buildExpected(50)));
-    it('100 items per page', () => assert(100, buildExpected(100)));
-    it('200 items per page', () => assert(200, buildExpected(160)));
-    it('500 items per page', () => assert(500, buildExpected(160)));
+    expect(screen.getByRole('document')).toMatchSnapshot();
   });
 
   it('renders extra header content', () => {
-    const wrapper = shallow(
+    setUp(false, {}, () => (
       <span>
-        <SortableBarChartCard
-          title="Foo"
-          stats={stats}
-          sortingItems={sortingItems}
-          extraHeaderContent={() => (
-            <span>
-              <span className="foo-span">Foo</span>
-              <span className="bar-span">Bar</span>
-            </span>
-          )}
-        />
-      </span>,
-    ).find(SortableBarChartCard);
-    const header = wrapper.renderProp('extraHeaderContent')();
+        <span className="foo-span">Foo in header</span>
+        <span className="bar-span">Bar in header</span>
+      </span>
+    ));
 
-    expect(header.find('.foo-span')).toHaveLength(1);
-    expect(header.find('.bar-span')).toHaveLength(1);
+    expect(screen.getByText('Foo in header')).toHaveClass('foo-span');
+    expect(screen.getByText('Bar in header')).toHaveClass('bar-span');
   });
 });

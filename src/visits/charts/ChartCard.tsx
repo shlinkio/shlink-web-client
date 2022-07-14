@@ -8,7 +8,7 @@ type ChartCardProps = PropsWithChildren<{
 }>;
 
 export const ChartCard: FC<ChartCardProps> = ({ title, footer, children }) => (
-  <Card>
+  <Card role="document">
     <CardHeader className="chart-card__header">{typeof title === 'function' ? title() : title}</CardHeader>
     <CardBody>{children}</CardBody>
     {footer && <CardFooter className="chart-card__footer--sticky">{footer}</CardFooter>}
