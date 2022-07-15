@@ -1,87 +1,75 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { identity } from 'ramda';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { ProblemDetailsError } from '../../../src/api/types';
-import { Result } from '../../../src/utils/Result';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DeleteShortUrlModal />', () => {
-  let wrapper: ShallowWrapper;
   const shortUrl = Mock.of<ShortUrl>({
     tags: [],
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
   });
   const deleteShortUrl = jest.fn(async () => Promise.resolve());
-  const createWrapper = (shortUrlDeletion: Partial<ShortUrlDeletion>) => {
-    wrapper = shallow(
-      <DeleteShortUrlModal
-        isOpen
-        shortUrl={shortUrl}
-        shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
-        toggle={() => {}}
-        deleteShortUrl={deleteShortUrl}
-        resetDeleteShortUrl={() => {}}
-      />,
-    );
+  const setUp = (shortUrlDeletion: Partial<ShortUrlDeletion>) => renderWithEvents(
+    <DeleteShortUrlModal
+      isOpen
+      shortUrl={shortUrl}
+      shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
+      deleteShortUrl={deleteShortUrl}
+      toggle={() => {}}
+      resetDeleteShortUrl={() => {}}
+    />,
+  );
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
   it('shows generic error when non-threshold error occurs', () => {
-    const wrapper = createWrapper({
+    setUp({
       loading: false,
       error: true,
       shortCode: 'abc123',
       errorData: Mock.of<ProblemDetailsError>({ type: 'OTHER_ERROR' }),
     });
-    const error = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
-
-    expect(error).toHaveLength(1);
-    expect(error.html()).toContain('Something went wrong while deleting the URL :(');
+    expect(screen.getByText('Something went wrong while deleting the URL :(')).toBeInTheDocument();
   });
 
   it('disables submit button when loading', () => {
-    const wrapper = createWrapper({
+    setUp({
       loading: true,
       error: false,
       shortCode: 'abc123',
     });
-    const submit = wrapper.find('.btn-danger');
-
-    expect(submit).toHaveLength(1);
-    expect(submit.prop('disabled')).toEqual(true);
-    expect(submit.html()).toContain('Deleting...');
+    expect(screen.getByRole('button', { name: 'Deleting...' })).toHaveAttribute('disabled');
   });
 
-  it('enables submit button when proper short code is provided', () => {
+  it('enables submit button when proper short code is provided', async () => {
     const shortCode = 'abc123';
-    const wrapper = createWrapper({
+    const { user } = setUp({
       loading: false,
       error: false,
       shortCode,
     });
+    const getDeleteBtn = () => screen.getByRole('button', { name: 'Delete' });
 
-    expect(wrapper.find('.btn-danger').prop('disabled')).toEqual(true);
-    wrapper.find('.form-control').simulate('change', { target: { value: shortCode } });
-    expect(wrapper.find('.btn-danger').prop('disabled')).toEqual(false);
+    expect(getDeleteBtn()).toHaveAttribute('disabled');
+    await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
+    expect(getDeleteBtn()).not.toHaveAttribute('disabled');
   });
 
-  it('tries to delete short URL when form is submit', () => {
+  it('tries to delete short URL when form is submit', async () => {
     const shortCode = 'abc123';
-    const wrapper = createWrapper({
+    const { user } = setUp({
       loading: false,
       error: false,
       shortCode,
     });
 
     expect(deleteShortUrl).not.toHaveBeenCalled();
-    wrapper.find('form').simulate('submit', { preventDefault: identity });
+    await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
+    await user.click(screen.getByRole('button', { name: 'Delete' }));
     expect(deleteShortUrl).toHaveBeenCalledTimes(1);
   });
 });
