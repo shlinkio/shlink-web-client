@@ -1,18 +1,17 @@
 import { screen } from '@testing-library/react';
-import { shallow, ShallowWrapper } from 'enzyme';
 import { Mock } from 'ts-mockery';
-import { DropdownItem } from 'reactstrap';
 import { MemoryRouter } from 'react-router-dom';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
 import { ReachableServer } from '../../src/servers/data';
-import { DropdownBtnMenu } from '../../src/utils/DropdownBtnMenu';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<TagsTableRow />', () => {
-  const DeleteTagConfirmModal = () => null;
-  const EditTagModal = () => null;
-  const TagsTableRow = createTagsTableRow(DeleteTagConfirmModal, EditTagModal, colorGeneratorMock);
+  const TagsTableRow = createTagsTableRow(
+    ({ isOpen }) => <td>DeleteTagConfirmModal {isOpen ? 'OPEN' : 'CLOSED'}</td>,
+    ({ isOpen }) => <td>EditTagModal {isOpen ? 'OPEN' : 'CLOSED'}</td>,
+    colorGeneratorMock,
+  );
   const setUp = (tagStats?: { visits?: number; shortUrls?: number }) => renderWithEvents(
     <MemoryRouter>
       <table>
@@ -25,19 +24,6 @@ describe('<TagsTableRow />', () => {
       </table>
     </MemoryRouter>,
   );
-
-  let wrapper: ShallowWrapper;
-  const createWrapper = (tagStats?: { visits?: number; shortUrls?: number }) => {
-    wrapper = shallow(
-      <TagsTableRow
-        tag={{ tag: 'foo&bar', visits: tagStats?.visits ?? 0, shortUrls: tagStats?.shortUrls ?? 0 }}
-        selectedServer={Mock.of<ReachableServer>({ id: 'abc123' })}
-      />,
-    );
-
-    return wrapper;
-  };
-  afterEach(() => wrapper?.unmount());
 
   it.each([
     [undefined, '0', '0'],
@@ -56,36 +42,31 @@ describe('<TagsTableRow />', () => {
     expect(visitsLink).toHaveAttribute('href', '/server/abc123/tag/foo&bar/visits');
   });
 
-  it('allows toggling dropdown menu', () => {
-    const wrapper = createWrapper();
+  it('allows toggling dropdown menu', async () => {
+    const { user } = setUp();
 
-    expect(wrapper.find(DropdownBtnMenu).prop('isOpen')).toEqual(false);
-    (wrapper.find(DropdownBtnMenu).prop('toggle') as Function)();
-    expect(wrapper.find(DropdownBtnMenu).prop('isOpen')).toEqual(true);
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button'));
+    expect(screen.queryByRole('menu')).toBeInTheDocument();
   });
 
-  it('allows toggling modals through dropdown items', () => {
-    const wrapper = createWrapper();
-    const items = wrapper.find(DropdownItem);
+  it('allows toggling modals through dropdown items', async () => {
+    const { user } = setUp();
+    const clickItemOnIndex = async (index: 0 | 1) => {
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getAllByRole('menuitem')[index]);
+    };
 
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(false);
-    items.first().simulate('click');
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(true);
+    expect(screen.getByText(/^EditTagModal/)).toHaveTextContent('CLOSED');
+    expect(screen.getByText(/^EditTagModal/)).not.toHaveTextContent('OPEN');
+    await clickItemOnIndex(0);
+    expect(screen.getByText(/^EditTagModal/)).toHaveTextContent('OPEN');
+    expect(screen.getByText(/^EditTagModal/)).not.toHaveTextContent('CLOSED');
 
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(false);
-    items.last().simulate('click');
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(true);
-  });
-
-  it('allows toggling modals through the modals themselves', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(false);
-    (wrapper.find(EditTagModal).prop('toggle') as Function)();
-    expect(wrapper.find(EditTagModal).prop('isOpen')).toEqual(true);
-
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(false);
-    (wrapper.find(DeleteTagConfirmModal).prop('toggle') as Function)();
-    expect(wrapper.find(DeleteTagConfirmModal).prop('isOpen')).toEqual(true);
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).toHaveTextContent('CLOSED');
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).not.toHaveTextContent('OPEN');
+    await clickItemOnIndex(1);
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).toHaveTextContent('OPEN');
+    expect(screen.getByText(/^DeleteTagConfirmModal/)).not.toHaveTextContent('CLOSED');
   });
 });
