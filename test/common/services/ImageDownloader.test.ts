@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
 import { AxiosInstance } from 'axios';
 import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
-import { windowMock } from '../../mocks/WindowMock';
+import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ImageDownloader', () => {
   const get = jest.fn();

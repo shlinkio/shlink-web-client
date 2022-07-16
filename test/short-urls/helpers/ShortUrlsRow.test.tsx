@@ -2,22 +2,17 @@ import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
-import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
 import { parseDate } from '../../../src/utils/helpers/date';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { OptionalString } from '../../../src/utils/utils';
+import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = jest.fn(() => true);
   const useTimeoutToggle = jest.fn(() => [false, timeoutToggle]) as TimeoutToggle;
-  const colorGenerator = Mock.of<ColorGenerator>({
-    getColorForKey: jest.fn(() => 'red'),
-    setColorForKey: jest.fn(),
-    isColorLightForKey: jest.fn(() => false),
-  });
   const server = Mock.of<ReachableServer>({ url: 'https://doma.in' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
@@ -33,7 +28,7 @@ describe('<ShortUrlsRow />', () => {
       maxVisits: null,
     },
   };
-  const ShortUrlsRow = createShortUrlsRow(() => <span>ShortUrlsRowMenu</span>, colorGenerator, useTimeoutToggle);
+  const ShortUrlsRow = createShortUrlsRow(() => <span>ShortUrlsRowMenu</span>, colorGeneratorMock, useTimeoutToggle);
   const setUp = (title?: OptionalString, tags: string[] = []) => renderWithEvents(
     <table>
       <tbody>
