@@ -1,35 +1,30 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { assoc, toString } from 'ramda';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { ExternalLink } from 'react-external-link';
 import { formatISO } from 'date-fns';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
-import { Tag } from '../../../src/tags/helpers/Tag';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
-import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
-import { Time } from '../../../src/utils/Time';
 import { parseDate } from '../../../src/utils/helpers/date';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
+import { OptionalString } from '../../../src/utils/utils';
 
 describe('<ShortUrlsRow />', () => {
-  let wrapper: ShallowWrapper;
-  const mockFunction = () => null;
-  const ShortUrlsRowMenu = mockFunction;
   const timeoutToggle = jest.fn(() => true);
   const useTimeoutToggle = jest.fn(() => [false, timeoutToggle]) as TimeoutToggle;
   const colorGenerator = Mock.of<ColorGenerator>({
-    getColorForKey: jest.fn(),
+    getColorForKey: jest.fn(() => 'red'),
     setColorForKey: jest.fn(),
+    isColorLightForKey: jest.fn(() => false),
   });
   const server = Mock.of<ReachableServer>({ url: 'https://doma.in' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
-    shortUrl: 'http://doma.in/abc123',
-    longUrl: 'http://foo.com/bar',
+    shortUrl: 'https://doma.in/abc123',
+    longUrl: 'https://foo.com/bar',
     dateCreated: formatISO(parseDate('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss')),
-    tags: ['nodejs', 'reactjs'],
+    tags: [],
     visitsCount: 45,
     domain: null,
     meta: {
@@ -38,99 +33,73 @@ describe('<ShortUrlsRow />', () => {
       maxVisits: null,
     },
   };
-  const ShortUrlsRow = createShortUrlsRow(ShortUrlsRowMenu, colorGenerator, useTimeoutToggle);
-  const createWrapper = (title?: string | null) => {
-    wrapper = shallow(
-      <ShortUrlsRow selectedServer={server} shortUrl={{ ...shortUrl, title }} onTagClick={mockFunction} />,
-    );
-
-    return wrapper;
-  };
-
-  beforeEach(() => createWrapper());
-  afterEach(() => wrapper.unmount());
+  const ShortUrlsRow = createShortUrlsRow(() => <span>ShortUrlsRowMenu</span>, colorGenerator, useTimeoutToggle);
+  const setUp = (title?: OptionalString, tags: string[] = []) => renderWithEvents(
+    <table>
+      <tbody>
+        <ShortUrlsRow selectedServer={server} shortUrl={{ ...shortUrl, title, tags }} onTagClick={() => null} />
+      </tbody>
+    </table>,
+  );
 
   it.each([
     [null, 6],
     [undefined, 6],
     ['The title', 7],
   ])('renders expected amount of columns', (title, expectedAmount) => {
-    const wrapper = createWrapper(title);
-    const cols = wrapper.find('td');
-
-    expect(cols).toHaveLength(expectedAmount);
+    setUp(title);
+    expect(screen.getAllByRole('cell')).toHaveLength(expectedAmount);
   });
 
   it('renders date in first column', () => {
-    const col = wrapper.find('td').first();
-    const date = col.find(Time);
-
-    expect(date.html()).toContain('>2018-05-23 18:30</time>');
+    setUp();
+    expect(screen.getAllByRole('cell')[0]).toHaveTextContent('2018-05-23 18:30');
   });
 
-  it('renders short URL in second row', () => {
-    const col = wrapper.find('td').at(1);
-    const link = col.find(ExternalLink);
+  it.each([
+    [1, shortUrl.shortUrl],
+    [2, shortUrl.longUrl],
+  ])('renders expected links on corresponding columns', (colIndex, expectedLink) => {
+    setUp();
 
-    expect(link.prop('href')).toEqual(shortUrl.shortUrl);
+    const col = screen.getAllByRole('cell')[colIndex];
+    const link = col.querySelector('a');
+
+    expect(link).toHaveAttribute('href', expectedLink);
   });
 
-  it('renders long URL in third row', () => {
-    const col = wrapper.find('td').at(2);
-    const link = col.find(ExternalLink);
+  it.each([
+    ['My super cool title', 'My super cool title'],
+    [undefined, shortUrl.longUrl],
+  ])('renders title when short URL has it', (title, expectedContent) => {
+    setUp(title);
 
-    expect(link.prop('href')).toEqual(shortUrl.longUrl);
+    const titleSharedCol = screen.getAllByRole('cell')[2];
+
+    expect(titleSharedCol.querySelector('a')).toHaveAttribute('href', shortUrl.longUrl);
+    expect(titleSharedCol).toHaveTextContent(expectedContent);
   });
 
-  it('renders title when short URL has it', () => {
-    const wrapper = createWrapper('My super cool title');
-    const cols = wrapper.find('td');
-    const titleSharedCol = cols.at(2).find(ExternalLink);
-    const dedicatedShortUrlCol = cols.at(3).find(ExternalLink);
+  it.each([
+    [[], ['No tags']],
+    [['nodejs', 'reactjs'], ['nodejs', 'reactjs']],
+  ])('renders list of tags in fourth row', (tags, expectedContents) => {
+    setUp(undefined, tags);
+    const cell = screen.getAllByRole('cell')[3];
 
-    expect(titleSharedCol).toHaveLength(1);
-    expect(dedicatedShortUrlCol).toHaveLength(1);
-    expect(titleSharedCol.prop('href')).toEqual(shortUrl.longUrl);
-    expect(dedicatedShortUrlCol.prop('href')).toEqual(shortUrl.longUrl);
-    expect(titleSharedCol.html()).toContain('My super cool title');
-    expect(dedicatedShortUrlCol.prop('children')).not.toBeDefined();
-  });
-
-  describe('renders list of tags in fourth row', () => {
-    it('with tags', () => {
-      const col = wrapper.find('td').at(3);
-      const tags = col.find(Tag);
-
-      expect(tags).toHaveLength(shortUrl.tags.length);
-      shortUrl.tags.forEach((tagValue, index) => {
-        const tag = tags.at(index);
-
-        expect(tag.prop('text')).toEqual(tagValue);
-      });
-    });
-
-    it('without tags', () => {
-      wrapper.setProps({ shortUrl: assoc('tags', [], shortUrl) });
-
-      const col = wrapper.find('td').at(3);
-
-      expect(col.text()).toContain('No tags');
-    });
+    expectedContents.forEach((content) => expect(cell).toHaveTextContent(content));
   });
 
   it('renders visits count in fifth row', () => {
-    const col = wrapper.find('td').at(4);
-
-    expect(col.html()).toContain(toString(shortUrl.visitsCount));
+    setUp();
+    expect(screen.getAllByRole('cell')[4]).toHaveTextContent(`${shortUrl.visitsCount}`);
   });
 
-  it('updates state when copied to clipboard', () => {
-    const col = wrapper.find('td').at(1);
-    const menu = col.find(CopyToClipboardIcon);
+  it('updates state when copied to clipboard', async () => {
+    const { user } = setUp();
 
-    expect(menu).toHaveLength(1);
     expect(timeoutToggle).not.toHaveBeenCalled();
-    menu.simulate('copy');
+    await user.click(screen.getByRole('img', { hidden: true }));
     expect(timeoutToggle).toHaveBeenCalledTimes(1);
   });
 });
