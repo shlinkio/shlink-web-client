@@ -2,15 +2,15 @@ import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { TagCard as createTagCard } from '../../src/tags/TagCard';
-import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { ReachableServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
+import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<TagCard />', () => {
   const TagCard = createTagCard(
     ({ isOpen }) => <span>DeleteTagConfirmModal {isOpen ? '[Open]' : '[Closed]'}</span>,
     ({ isOpen }) => <span>EditTagModal {isOpen ? '[Open]' : '[Closed]'}</span>,
-    Mock.of<ColorGenerator>({ getColorForKey: () => '' }),
+    colorGeneratorMock,
   );
   const setUp = (tag = 'ssr') => renderWithEvents(
     <MemoryRouter>
