@@ -1,6 +1,6 @@
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { NormalizedVisit } from '../../../src/visits/types';
-import { windowMock } from '../../mocks/WindowMock';
+import { windowMock } from '../../__mocks__/Window.mock';
 import { ExportableShortUrl } from '../../../src/short-urls/data';
 
 describe('ReportExporter', () => {
