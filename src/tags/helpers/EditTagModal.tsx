@@ -34,7 +34,7 @@ export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
 
   return (
     <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
-      <form onSubmit={saveTag}>
+      <form name="editTag" onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>
           <InputGroup>
