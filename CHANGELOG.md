@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#671](https://github.com/shlinkio/shlink-web-client/pull/671) Added proper color-scheme in root element based on selected theme.
 
 ### Changed
-* *Nothing*
+* [#688](https://github.com/shlinkio/shlink-web-client/pull/688) Finalized migration from enzyme to react-testing-library.
 
 ### Deprecated
 * *Nothing*
