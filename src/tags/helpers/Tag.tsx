@@ -19,6 +19,8 @@ export const Tag: FC<TagProps> = ({ text, children, clearable, className = '', c
     onClick={onClick}
   >
     {children ?? text}
-    {clearable && <span aria-label="Close" className="close tag__close-selected-tag" onClick={onClose}>&times;</span>}
+    {clearable && (
+      <span aria-label={`Remove ${text}`} className="close tag__close-selected-tag" onClick={onClose}>&times;</span>
+    )}
   </span>
 );

@@ -1,46 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Button, Input, Modal, ModalHeader, Popover } from 'reactstrap';
-import { HexColorPicker } from 'react-colorful';
 import { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import { EditTagModal as createEditTagModal } from '../../../src/tags/helpers/EditTagModal';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
-import { Result } from '../../../src/utils/Result';
 import { ProblemDetailsError } from '../../../src/api/types';
-import { ShlinkApiError } from '../../../src/api/ShlinkApiError';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditTagModal />', () => {
-  const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'red') }));
+  const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'green') }));
   const editTag = jest.fn().mockReturnValue(Promise.resolve());
   const tagEdited = jest.fn().mockReturnValue(Promise.resolve());
   const toggle = jest.fn();
-  let wrapper: ShallowWrapper;
-  const createWrapper = (tagEdit: Partial<TagEdition> = {}) => {
+  const setUp = (tagEdit: Partial<TagEdition> = {}) => {
     const edition = Mock.of<TagEdition>(tagEdit);
-
-    wrapper = shallow(
+    return renderWithEvents(
       <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={tagEdited} toggle={toggle} />,
     );
-
-    return wrapper;
   };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('allows modal to be toggled with different mechanisms', () => {
-    const wrapper = createWrapper();
-    const modal = wrapper.find(Modal);
-    const modalHeader = wrapper.find(ModalHeader);
-    const cancelBtn = wrapper.find(Button).findWhere((btn) => btn.prop('type') === 'button');
+  it('allows modal to be toggled with different mechanisms', async () => {
+    const { user } = setUp();
 
     expect(toggle).not.toHaveBeenCalled();
 
-    (modal.prop('toggle') as Function)();
-    (modalHeader.prop('toggle') as Function)();
-    cancelBtn.simulate('click');
+    await user.click(screen.getByLabelText('Close'));
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
-    expect(toggle).toHaveBeenCalledTimes(3);
+    expect(toggle).toHaveBeenCalledTimes(2);
     expect(editTag).not.toHaveBeenCalled();
     expect(tagEdited).not.toHaveBeenCalled();
   });
@@ -48,62 +36,54 @@ describe('<EditTagModal />', () => {
   it.each([
     [true, 'Saving...'],
     [false, 'Save'],
-  ])('renders submit button in expected state', (editing, expectedText) => {
-    const wrapper = createWrapper({ editing });
-    const submitBtn = wrapper.find(Button).findWhere((btn) => btn.prop('color') === 'primary');
-
-    expect(submitBtn.html()).toContain(expectedText);
-    expect(submitBtn.prop('disabled')).toEqual(editing);
+  ])('renders submit button in expected state', (editing, name) => {
+    setUp({ editing });
+    expect(screen.getByRole('button', { name })).toBeInTheDocument();
   });
 
   it.each([
     [true, 1],
     [false, 0],
   ])('displays error result in case of error', (error, expectedResultCount) => {
-    const wrapper = createWrapper({ error, errorData: Mock.all<ProblemDetailsError>() });
-    const result = wrapper.find(Result);
-    const apiError = wrapper.find(ShlinkApiError);
-
-    expect(result).toHaveLength(expectedResultCount);
-    expect(apiError).toHaveLength(expectedResultCount);
+    setUp({ error, errorData: Mock.all<ProblemDetailsError>() });
+    expect(screen.queryAllByText('Something went wrong while editing the tag :(')).toHaveLength(expectedResultCount);
   });
 
-  it('updates tag value when text changes', () => {
-    const wrapper = createWrapper();
+  it('updates tag value when text changes', async () => {
+    const { user } = setUp();
+    const getInput = () => screen.getByPlaceholderText('Tag');
 
-    expect(wrapper.find(Input).prop('value')).toEqual('foo');
-    wrapper.find(Input).simulate('change', { target: { value: 'bar' } });
-    expect(wrapper.find(Input).prop('value')).toEqual('bar');
+    expect(getInput()).toHaveValue('foo');
+    await user.clear(getInput());
+    await user.type(getInput(), 'bar');
+    expect(getInput()).toHaveValue('bar');
   });
 
   it('invokes all functions on form submit', async () => {
-    const wrapper = createWrapper();
-    const form = wrapper.find('form');
+    const { user } = setUp();
 
     expect(editTag).not.toHaveBeenCalled();
     expect(tagEdited).not.toHaveBeenCalled();
 
-    await form.simulate('submit', { preventDefault: jest.fn() });
+    await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(editTag).toHaveBeenCalled();
     expect(tagEdited).toHaveBeenCalled();
   });
 
-  it('changes color when changing on color picker', () => {
-    const wrapper = createWrapper();
+  it('changes color when changing on color picker', async () => {
+    const { user } = setUp();
+    const colorBtn = screen.getByRole('img', { hidden: true });
+    // const initialColor = colorBtn.parentElement?.style.backgroundColor;
 
-    expect(wrapper.find(HexColorPicker).prop('color')).toEqual('red');
-    wrapper.find(HexColorPicker).simulate('change', 'blue');
-    expect(wrapper.find(HexColorPicker).prop('color')).toEqual('blue');
-  });
+    await user.click(colorBtn);
+    await waitFor(() => screen.getByRole('tooltip'));
+    await user.click(screen.getByLabelText('Hue'));
+    await user.click(screen.getByLabelText('Color'));
+    await user.click(colorBtn);
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument());
 
-  it('allows toggling popover with different mechanisms', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
-    (wrapper.find(Popover).prop('toggle') as Function)();
-    expect(wrapper.find(Popover).prop('isOpen')).toEqual(true);
-    wrapper.find('div').simulate('click');
-    expect(wrapper.find(Popover).prop('isOpen')).toEqual(false);
+    // I need to figure this one out
+    // await waitFor(() => expect(initialColor).not.toEqual(colorBtn.parentElement?.style.backgroundColor));
   });
 });

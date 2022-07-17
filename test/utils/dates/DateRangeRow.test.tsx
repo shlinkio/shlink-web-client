@@ -1,39 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { DateRangeRow } from '../../../src/utils/dates/DateRangeRow';
-import { DateInput } from '../../../src/utils/DateInput';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeRow />', () => {
-  let wrapper: ShallowWrapper;
   const onEndDateChange = jest.fn();
   const onStartDateChange = jest.fn();
+  const setUp = () => renderWithEvents(
+    <DateRangeRow onEndDateChange={onEndDateChange} onStartDateChange={onStartDateChange} />,
+  );
 
-  beforeEach(() => {
-    wrapper = shallow(<DateRangeRow onEndDateChange={onEndDateChange} onStartDateChange={onStartDateChange} />);
-  });
-  afterEach(() => {
-    wrapper.unmount();
-    jest.clearAllMocks();
-  });
+  afterEach(jest.clearAllMocks);
 
   it('renders two date inputs', () => {
-    const dateInput = wrapper.find(DateInput);
-
-    expect(dateInput).toHaveLength(2);
+    setUp();
+    expect(screen.getAllByRole('textbox')).toHaveLength(2);
   });
 
-  it('invokes start date callback when change event is triggered on first input', () => {
-    const dateInput = wrapper.find(DateInput).first();
+  it('invokes start date callback when change event is triggered on first input', async () => {
+    const { user } = setUp();
 
     expect(onStartDateChange).not.toHaveBeenCalled();
-    dateInput.simulate('change');
+    await user.type(screen.getByPlaceholderText('Since...'), '2020-05-05');
     expect(onStartDateChange).toHaveBeenCalled();
   });
 
-  it('invokes end date callback when change event is triggered on second input', () => {
-    const dateInput = wrapper.find(DateInput).last();
+  it('invokes end date callback when change event is triggered on second input', async () => {
+    const { user } = setUp();
 
     expect(onEndDateChange).not.toHaveBeenCalled();
-    dateInput.simulate('change');
+    await user.type(screen.getByPlaceholderText('Until...'), '2022-05-05');
     expect(onEndDateChange).toHaveBeenCalled();
   });
 });

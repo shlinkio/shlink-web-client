@@ -139,7 +139,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     }
 
     if (isEmpty(visits)) {
-      return <Message>There are no visits matching current filter  :(</Message>;
+      return <Message>There are no visits matching current filter</Message>;
     }
 
     return (
