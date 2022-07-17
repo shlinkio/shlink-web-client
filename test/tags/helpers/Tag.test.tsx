@@ -75,7 +75,7 @@ describe('<Tag />', () => {
     container.firstElementChild && await user.click(container.firstElementChild);
     expect(onClick).toHaveBeenCalledTimes(1);
 
-    await user.click(screen.getByLabelText('Close'));
+    await user.click(screen.getByLabelText(/^Remove/));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -86,7 +86,7 @@ describe('<Tag />', () => {
   ])('includes a close component when the tag is clearable', (clearable, expectedCloseBtnAmount, expectedCursor) => {
     const { container } = setUp('foo', clearable);
 
-    expect(screen.queryAllByLabelText('Close')).toHaveLength(expectedCloseBtnAmount);
+    expect(screen.queryAllByLabelText(/^Remove/)).toHaveLength(expectedCloseBtnAmount);
     expect(container.firstChild).toHaveAttribute('style', expect.stringContaining(`cursor: ${expectedCursor}`));
   });
 

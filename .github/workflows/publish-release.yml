@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 16.15
       - name: Generate release assets
-        run: npm ci --force && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
+        run: npm ci && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
       - name: Publish release with assets
         uses: docker://antonyurchenko/git-release:latest
         env:
