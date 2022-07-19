@@ -45,7 +45,7 @@
     "react": "^18.1.0",
     "react-chartjs-2": "^4.1.0",
     "react-colorful": "^5.5.1",
-    "react-copy-to-clipboard": "^5.0.4",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-datepicker": "^4.7.0",
     "react-dom": "^18.1.0",
     "react-external-link": "^2.0.0",
