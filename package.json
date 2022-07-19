@@ -52,7 +52,7 @@
     "react-leaflet": "^4.0.0",
     "react-redux": "^8.0.0",
     "react-router-dom": "^6.3.0",
-    "react-swipeable": "^6.2.0",
+    "react-swipeable": "^7.0.0",
     "react-tag-autocomplete": "^6.3.0",
     "reactstrap": "^9.0.1",
     "redux": "^4.2.0",
