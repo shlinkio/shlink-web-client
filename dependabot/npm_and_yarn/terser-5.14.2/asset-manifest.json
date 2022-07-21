@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/terser-5.14.2/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/terser-5.14.2/static/js/main.5d40066a.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/terser-5.14.2/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/dependabot/npm_and_yarn/terser-5.14.2/static/css/main.604c7914.css.map",
+    "main.5d40066a.js.map": "/shlink-web-client/dependabot/npm_and_yarn/terser-5.14.2/static/js/main.5d40066a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.5d40066a.js"
+  ]
+}
