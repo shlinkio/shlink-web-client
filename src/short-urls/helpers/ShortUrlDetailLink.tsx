@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { isServerWithId, SelectedServer, ServerWithId } from '../../servers/data';
 import { ShortUrl } from '../data';
+import { urlEncodeShortCode } from './index';
 
 export type LinkSuffix = 'visits' | 'edit';
 
@@ -13,7 +14,7 @@ export interface ShortUrlDetailLinkProps {
 
 const buildUrl = ({ id }: ServerWithId, { shortCode, domain }: ShortUrl, suffix: LinkSuffix) => {
   const query = domain ? `?domain=${domain}` : '';
-  return `/server/${id}/short-code/${shortCode}/${suffix}${query}`;
+  return `/server/${id}/short-code/${urlEncodeShortCode(shortCode)}/${suffix}${query}`;
 };
 
 export const ShortUrlDetailLink: FC<ShortUrlDetailLinkProps & Record<string | number, any>> = (

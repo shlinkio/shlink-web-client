@@ -13,6 +13,7 @@ import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
+import { urlDecodeShortCode } from '../short-urls/helpers';
 
 export interface ShortUrlVisitsProps extends CommonVisitsProps {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
@@ -36,14 +37,14 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
   const goBack = useGoBack();
   const { domain } = parseQuery<{ domain?: string }>(search);
   const loadVisits = (params: VisitsParams, doIntervalFallback?: boolean) =>
-    getShortUrlVisits(shortCode, { ...toApiParams(params), domain }, doIntervalFallback);
+    getShortUrlVisits(urlDecodeShortCode(shortCode), { ...toApiParams(params), domain }, doIntervalFallback);
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(
     `short-url_${shortUrlDetail.shortUrl?.shortUrl.replace(/https?:\/\//g, '')}_visits.csv`,
     visits,
   );
 
   useEffect(() => {
-    getShortUrlDetail(shortCode, domain);
+    getShortUrlDetail(urlDecodeShortCode(shortCode), domain);
   }, []);
 
   return (
@@ -59,4 +60,4 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, (_, params) => [Topics.shortUrlVisits(params.shortCode)]);
+}, (_, params) => (params.shortCode ? [Topics.shortUrlVisits(urlDecodeShortCode(params.shortCode))] : []));

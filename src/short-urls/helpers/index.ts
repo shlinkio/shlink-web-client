@@ -40,3 +40,9 @@ export const shortUrlDataFromShortUrl = (shortUrl?: ShortUrl, settings?: ShortUr
     validateUrl,
   };
 };
+
+const MULTI_SEGMENT_SEPARATOR = '__';
+
+export const urlEncodeShortCode = (shortCode: string): string => shortCode.replaceAll('/', MULTI_SEGMENT_SEPARATOR);
+
+export const urlDecodeShortCode = (shortCode: string): string => shortCode.replaceAll(MULTI_SEGMENT_SEPARATOR, '/');
