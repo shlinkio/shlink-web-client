@@ -19,7 +19,7 @@ jobs:
           node-version: 16.15
       - name: Build
         run: |
-          npm ci && \
+          npm ci --force && \
           node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
           rm src/service-worker.ts && \
           npm run build

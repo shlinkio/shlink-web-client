@@ -1,30 +1,38 @@
-import { shallow } from 'enzyme';
-import { UncontrolledTooltip } from 'reactstrap';
+import { screen, waitFor } from '@testing-library/react';
 import { Placement } from '@popperjs/core';
-import { InfoTooltip } from '../../src/utils/InfoTooltip';
+import { InfoTooltip, InfoTooltipProps } from '../../src/utils/InfoTooltip';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<InfoTooltip />', () => {
+  const setUp = (props: Partial<InfoTooltipProps> = {}) => renderWithEvents(
+    <InfoTooltip placement="right" {...props} />,
+  );
+
   it.each([
     [undefined],
     ['foo'],
     ['bar'],
   ])('renders expected className on span', (className) => {
-    const wrapper = shallow(<InfoTooltip placement="right" className={className} />);
-    const span = wrapper.find('span');
+    const { container } = setUp({ className });
 
-    expect(span.prop('className')).toEqual(className ?? '');
+    if (className) {
+      expect(container.firstChild).toHaveClass(className);
+    } else {
+      expect(container.firstChild).toHaveAttribute('class', '');
+    }
   });
 
   it.each([
-    [<span key={1} />],
-    ['Foo'],
-    ['Hello'],
-    [['One', 'Two', <span key={3} />]],
-  ])('passes children down to the nested tooltip component', (children) => {
-    const wrapper = shallow(<InfoTooltip placement="right">{children}</InfoTooltip>);
-    const tooltip = wrapper.find(UncontrolledTooltip);
+    [<span key={1}>foo</span>, 'foo'],
+    ['Foo', 'Foo'],
+    ['Hello', 'Hello'],
+    [['One', 'Two', <span key={3} />], 'OneTwo'],
+  ])('passes children down to the nested tooltip component', async (children, expectedContent) => {
+    const { container, user } = setUp({ children });
 
-    expect(tooltip.prop('children')).toEqual(children);
+    container.firstElementChild && await user.hover(container.firstElementChild);
+    await waitFor(() => expect(screen.getByRole('tooltip')).toBeInTheDocument());
+    expect(screen.getByRole('tooltip')).toHaveTextContent(expectedContent);
   });
 
   it.each([
@@ -32,10 +40,11 @@ describe('<InfoTooltip />', () => {
     ['left' as Placement],
     ['top' as Placement],
     ['bottom' as Placement],
-  ])('places tooltip where requested', (placement) => {
-    const wrapper = shallow(<InfoTooltip placement={placement} />);
-    const tooltip = wrapper.find(UncontrolledTooltip);
+  ])('places tooltip where requested', async (placement) => {
+    const { container, user } = setUp({ placement });
 
-    expect(tooltip.prop('placement')).toEqual(placement);
+    container.firstElementChild && await user.hover(container.firstElementChild);
+    await waitFor(() => expect(screen.getByRole('tooltip')).toBeInTheDocument());
+    expect(screen.getByRole('tooltip').parentNode).toHaveAttribute('data-popper-placement', placement);
   });
 });

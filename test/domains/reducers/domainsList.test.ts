@@ -15,7 +15,7 @@ import reducer, {
 } from '../../../src/domains/reducers/domainsList';
 import { EDIT_DOMAIN_REDIRECTS } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { Domain } from '../../../src/domains/data';
 import { ShlinkState } from '../../../src/container/types';
 import { SelectedServer, ServerData } from '../../../src/servers/data';
@@ -28,7 +28,7 @@ describe('domainsListReducer', () => {
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ listDomains, health });
   const filteredDomains = [
     Mock.of<Domain>({ domain: 'foo', status: 'validating' }),
-    Mock.of<Domain>({ domain: 'boo', status: 'validating' }),
+    Mock.of<Domain>({ domain: 'Boo', status: 'validating' }),
   ];
   const domains = [...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' })];
 
@@ -58,7 +58,7 @@ describe('domainsListReducer', () => {
     });
 
     it('filters domains on FILTER_DOMAINS', () => {
-      expect(reducer(Mock.of<DomainsList>({ domains }), action(FILTER_DOMAINS, { searchTerm: 'oo' }))).toEqual(
+      expect(reducer(Mock.of<DomainsList>({ domains }), action(FILTER_DOMAINS, { searchTerm: 'oO' }))).toEqual(
         { domains, filteredDomains },
       );
     });

@@ -1,37 +1,40 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { QrCodeFormat } from '../../../../src/utils/helpers/qrCodes';
 import { QrFormatDropdown } from '../../../../src/short-urls/helpers/qr-codes/QrFormatDropdown';
+import { renderWithEvents } from '../../../__helpers__/setUpTest';
 
 describe('<QrFormatDropdown />', () => {
   const initialFormat: QrCodeFormat = 'svg';
   const setFormat = jest.fn();
-  let wrapper: ShallowWrapper;
+  const setUp = () => renderWithEvents(<QrFormatDropdown format={initialFormat} setFormat={setFormat} />);
 
-  beforeEach(() => {
-    wrapper = shallow(<QrFormatDropdown format={initialFormat} setFormat={setFormat} />);
-  });
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
-  it('renders initial state', () => {
-    const items = wrapper.find(DropdownItem);
+  it('renders initial state', async () => {
+    const { user } = setUp();
+    const btn = screen.getByRole('button');
 
-    expect(wrapper.prop('text')).toEqual('Format (svg)');
-    expect(items.at(0).prop('active')).toEqual(false);
-    expect(items.at(1).prop('active')).toEqual(true);
+    expect(btn).toHaveTextContent('Format (svg');
+    await user.click(btn);
+    const items = screen.getAllByRole('menuitem');
+
+    expect(items[0]).not.toHaveClass('active');
+    expect(items[1]).toHaveClass('active');
   });
 
-  it('invokes callback when items are clicked', () => {
-    const items = wrapper.find(DropdownItem);
+  it('invokes callback when items are clicked', async () => {
+    const { user } = setUp();
+    const clickItem = async (name: string) => {
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getByRole('menuitem', { name }));
+    };
 
     expect(setFormat).not.toHaveBeenCalled();
 
-    items.at(0).simulate('click');
+    await clickItem('PNG');
     expect(setFormat).toHaveBeenCalledWith('png');
 
-    items.at(1).simulate('click');
+    await clickItem('SVG');
     expect(setFormat).toHaveBeenCalledWith('svg');
   });
 });

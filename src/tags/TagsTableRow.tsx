@@ -4,11 +4,11 @@ import { DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as deleteIcon, faPencilAlt as editIcon } from '@fortawesome/free-solid-svg-icons';
 import { getServerId, SelectedServer } from '../servers/data';
-import ColorGenerator from '../utils/services/ColorGenerator';
+import { ColorGenerator } from '../utils/services/ColorGenerator';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
 import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
-import TagBullet from './helpers/TagBullet';
+import { TagBullet } from './helpers/TagBullet';
 import { NormalizedTag, TagModalProps } from './data';
 
 export interface TagsTableRowProps {

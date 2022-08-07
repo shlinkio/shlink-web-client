@@ -2,7 +2,7 @@ import { Button, Card } from 'reactstrap';
 import { FC, PropsWithChildren, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import ShortUrlVisitsCount from '../short-urls/helpers/ShortUrlVisitsCount';
+import { ShortUrlVisitsCount } from '../short-urls/helpers/ShortUrlVisitsCount';
 import { ShortUrl } from '../short-urls/data';
 import { Visit } from './types';
 
@@ -13,7 +13,7 @@ type VisitsHeaderProps = PropsWithChildren<{
   shortUrl?: ShortUrl;
 }>;
 
-const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, children, title }) => (
+export const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, children, title }) => (
   <header>
     <Card body>
       <h2 className="d-flex justify-content-between align-items-center mb-0">
@@ -36,5 +36,3 @@ const VisitsHeader: FC<VisitsHeaderProps> = ({ visits, goBack, shortUrl, childre
     </Card>
   </header>
 );
-
-export default VisitsHeader;

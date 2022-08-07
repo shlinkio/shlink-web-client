@@ -9,7 +9,7 @@ describe('<SimplePaginator />', () => {
 
   it.each([-3, -2, 0, 1])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {
     const { container } = setUp(pagesCount);
-    expect(container.firstChild).toEqual(null);
+    expect(container.firstChild).toBeNull();
   });
 
   describe('ELLIPSIS are rendered where expected', () => {

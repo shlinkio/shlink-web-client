@@ -1,22 +1,16 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Settings, UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
-import ToggleSwitch from '../../src/utils/ToggleSwitch';
 import { Theme } from '../../src/utils/theme';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {
-  let wrapper: ShallowWrapper;
   const setUiSettings = jest.fn();
-  const createWrapper = (ui?: UiSettings) => {
-    wrapper = shallow(<UserInterfaceSettings settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />);
+  const setUp = (ui?: UiSettings) => renderWithEvents(
+    <UserInterfaceSettings settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />,
+  );
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
   it.each([
@@ -24,32 +18,32 @@ describe('<UserInterfaceSettings />', () => {
     [{ theme: 'light' as Theme }, false],
     [undefined, false],
   ])('toggles switch if theme is dark', (ui, expectedChecked) => {
-    const wrapper = createWrapper(ui);
-    const toggle = wrapper.find(ToggleSwitch);
+    setUp(ui);
 
-    expect(toggle.prop('checked')).toEqual(expectedChecked);
+    if (expectedChecked) {
+      expect(screen.getByLabelText('Use dark theme.')).toBeChecked();
+    } else {
+      expect(screen.getByLabelText('Use dark theme.')).not.toBeChecked();
+    }
   });
 
   it.each([
-    [{ theme: 'dark' as Theme }, faMoon],
-    [{ theme: 'light' as Theme }, faSun],
-    [undefined, faSun],
-  ])('shows different icons based on theme', (ui, expectedIcon) => {
-    const wrapper = createWrapper(ui);
-    const icon = wrapper.find(FontAwesomeIcon);
-
-    expect(icon.prop('icon')).toEqual(expectedIcon);
+    [{ theme: 'dark' as Theme }],
+    [{ theme: 'light' as Theme }],
+    [undefined],
+  ])('shows different icons based on theme', (ui) => {
+    setUp(ui);
+    expect(screen.getByRole('img', { hidden: true })).toMatchSnapshot();
   });
 
   it.each([
-    [true, 'dark'],
-    [false, 'light'],
-  ])('invokes setUiSettings when theme toggle value changes', (checked, theme) => {
-    const wrapper = createWrapper();
-    const toggle = wrapper.find(ToggleSwitch);
+    ['light' as Theme, 'dark' as Theme],
+    ['dark' as Theme, 'light' as Theme],
+  ])('invokes setUiSettings when theme toggle value changes', async (initialTheme, expectedTheme) => {
+    const { user } = setUp({ theme: initialTheme });
 
     expect(setUiSettings).not.toHaveBeenCalled();
-    toggle.simulate('change', checked);
-    expect(setUiSettings).toHaveBeenCalledWith({ theme });
+    await user.click(screen.getByLabelText('Use dark theme.'));
+    expect(setUiSettings).toHaveBeenCalledWith({ theme: expectedTheme });
   });
 });

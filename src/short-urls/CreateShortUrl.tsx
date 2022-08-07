@@ -33,7 +33,10 @@ const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => (
   forwardQuery: settings?.forwardQuery ?? true,
 });
 
-const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResult: FC<CreateShortUrlResultProps>) => ({
+export const CreateShortUrl = (
+  ShortUrlForm: FC<ShortUrlFormProps>,
+  CreateShortUrlResult: FC<CreateShortUrlResultProps>,
+) => ({
   createShortUrl,
   shortUrlCreationResult,
   resetCreateShortUrl,
@@ -52,7 +55,6 @@ const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResul
         mode={basicMode ? 'create-basic' : 'create'}
         onSave={async (data: ShortUrlData) => {
           resetCreateShortUrl();
-
           return createShortUrl(data);
         }}
       />
@@ -64,5 +66,3 @@ const CreateShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>, CreateShortUrlResul
     </>
   );
 };
-
-export default CreateShortUrl;

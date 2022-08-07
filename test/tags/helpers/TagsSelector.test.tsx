@@ -1,77 +1,81 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import createTagsSelector from '../../../src/tags/helpers/TagsSelector';
-import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { TagsSelector as createTagsSelector } from '../../../src/tags/helpers/TagsSelector';
 import { TagsList } from '../../../src/tags/reducers/tagsList';
 import { Settings } from '../../../src/settings/reducers/settings';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
+import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<TagsSelector />', () => {
   const onChange = jest.fn();
-  const TagsSelector = createTagsSelector(Mock.all<ColorGenerator>());
+  const TagsSelector = createTagsSelector(colorGeneratorMock);
   const tags = ['foo', 'bar'];
   const tagsList = Mock.of<TagsList>({ tags: [...tags, 'baz'] });
-  let wrapper: ShallowWrapper;
+  const setUp = () => renderWithEvents(
+    <TagsSelector
+      selectedTags={tags}
+      tagsList={tagsList}
+      settings={Mock.all<Settings>()}
+      listTags={jest.fn()}
+      onChange={onChange}
+    />,
+  );
 
-  beforeEach(jest.clearAllMocks);
-  beforeEach(() => {
-    wrapper = shallow(
-      <TagsSelector
-        selectedTags={tags}
-        tagsList={tagsList}
-        settings={Mock.all<Settings>()}
-        listTags={jest.fn()}
-        onChange={onChange}
-      />,
-    );
-  });
+  afterEach(jest.clearAllMocks);
 
-  afterEach(() => wrapper?.unmount());
-
-  it('has expected props', () => {
-    expect(wrapper.prop('placeholderText')).toEqual('Add tags to the URL');
-    expect(wrapper.prop('allowNew')).toEqual(true);
-    expect(wrapper.prop('addOnBlur')).toEqual(true);
-    expect(wrapper.prop('minQueryLength')).toEqual(1);
+  it('has an input for tags', () => {
+    setUp();
+    expect(screen.getByPlaceholderText('Add tags to the URL')).toBeInTheDocument();
   });
 
   it('contains expected tags', () => {
-    expect(wrapper.prop('tags')).toEqual([
-      {
-        id: 'foo',
-        name: 'foo',
-      },
-      {
-        id: 'bar',
-        name: 'bar',
-      },
-    ]);
+    setUp();
+
+    expect(screen.getByText('foo')).toBeInTheDocument();
+    expect(screen.getByText('bar')).toBeInTheDocument();
   });
 
-  it('contains expected suggestions', () => {
-    expect(wrapper.prop('suggestions')).toEqual([
-      {
-        id: 'baz',
-        name: 'baz',
-      },
-    ]);
+  it('contains expected suggestions', async () => {
+    const { container, user } = setUp();
+
+    expect(container.querySelector('.react-tags__suggestions')).not.toBeInTheDocument();
+    expect(screen.queryByText('baz')).not.toBeInTheDocument();
+
+    await user.type(screen.getByPlaceholderText('Add tags to the URL'), 'ba');
+
+    expect(container.querySelector('.react-tags__suggestions')).toBeInTheDocument();
+    expect(screen.getByText('baz')).toBeInTheDocument();
   });
 
   it.each([
     ['The-New-Tag', [...tags, 'the-new-tag']],
-    ['comma,separated,tags', [...tags, 'comma', 'separated', 'tags']],
     ['foo', tags],
-  ])('invokes onChange when new tags are added', (newTag, expectedTags) => {
-    wrapper.simulate('addition', { name: newTag });
+  ])('invokes onChange when new tags are added', async (newTag, expectedTags) => {
+    const { user } = setUp();
 
+    expect(onChange).not.toHaveBeenCalled();
+    await user.type(screen.getByPlaceholderText('Add tags to the URL'), newTag);
+    await user.type(screen.getByPlaceholderText('Add tags to the URL'), '{Enter}');
     expect(onChange).toHaveBeenCalledWith(expectedTags);
   });
 
-  it.each([
-    [0, 'bar'],
-    [1, 'foo'],
-  ])('invokes onChange when tags are deleted', (index, expected) => {
-    wrapper.simulate('delete', index);
+  it('splits tags when several comma-separated ones are pasted', async () => {
+    const { user } = setUp();
 
+    expect(onChange).not.toHaveBeenCalled();
+    await user.click(screen.getByPlaceholderText('Add tags to the URL'));
+    await user.paste('comma,separated,tags');
+    await user.type(screen.getByPlaceholderText('Add tags to the URL'), '{Enter}');
+    expect(onChange).toHaveBeenCalledWith([...tags, 'comma', 'separated', 'tags']);
+  });
+
+  it.each([
+    ['foo', 'bar'],
+    ['bar', 'foo'],
+  ])('invokes onChange when tags are deleted', async (removedLabel, expected) => {
+    const { user } = setUp();
+
+    await user.click(screen.getByLabelText(`Remove ${removedLabel}`));
     expect(onChange).toHaveBeenCalledWith([expected]);
   });
 });

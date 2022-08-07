@@ -1,15 +1,11 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Link } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import ShortUrlDetailLink, { LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
+import { MemoryRouter } from 'react-router-dom';
+import { ShortUrlDetailLink, LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
 import { NotFoundServer, ReachableServer } from '../../../src/servers/data';
 import { ShortUrl } from '../../../src/short-urls/data';
 
 describe('<ShortUrlDetailLink />', () => {
-  let wrapper: ShallowWrapper;
-
-  afterEach(() => wrapper?.unmount());
-
   it.each([
     [undefined, undefined],
     [null, null],
@@ -19,15 +15,14 @@ describe('<ShortUrlDetailLink />', () => {
     [null, Mock.all<ShortUrl>()],
     [undefined, Mock.all<ShortUrl>()],
   ])('only renders a plain span when either server or short URL are not set', (selectedServer, shortUrl) => {
-    wrapper = shallow(
+    render(
       <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
         Something
       </ShortUrlDetailLink>,
     );
-    const link = wrapper.find(Link);
 
-    expect(link).toHaveLength(0);
-    expect(wrapper.html()).toEqual('<span>Something</span>');
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+    expect(screen.getByText('Something')).toBeInTheDocument();
   });
 
   it.each([
@@ -56,15 +51,13 @@ describe('<ShortUrlDetailLink />', () => {
       '/server/3/short-code/def456/edit?domain=example.com',
     ],
   ])('renders link with expected query when', (selectedServer, shortUrl, suffix, expectedLink) => {
-    wrapper = shallow(
-      <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix={suffix}>
-        Something
-      </ShortUrlDetailLink>,
+    render(
+      <MemoryRouter>
+        <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix={suffix}>
+          Something
+        </ShortUrlDetailLink>
+      </MemoryRouter>,
     );
-    const link = wrapper.find(Link);
-    const to = link.prop('to');
-
-    expect(link).toHaveLength(1);
-    expect(to).toEqual(expectedLink);
+    expect(screen.getByRole('link')).toHaveProperty('href', expect.stringContaining(expectedLink));
   });
 });

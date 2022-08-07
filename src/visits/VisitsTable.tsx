@@ -45,7 +45,7 @@ const calculateVisits = (allVisits: NormalizedVisit[], searchTerm: string | unde
   return { visitsGroups, total };
 };
 
-const VisitsTable = ({
+export const VisitsTable = ({
   visits,
   selectedVisits = [],
   setSelectedVisits,
@@ -222,5 +222,3 @@ const VisitsTable = ({
     </div>
   );
 };
-
-export default VisitsTable;

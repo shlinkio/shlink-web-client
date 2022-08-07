@@ -1,5 +1,4 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
@@ -10,6 +9,7 @@ import { DomainVisits } from '../../src/visits/reducers/domainVisits';
 import { Settings } from '../../src/settings/reducers/settings';
 import { SelectedServer } from '../../src/servers/data';
 import { Visit } from '../../src/visits/types';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -22,21 +22,18 @@ describe('<DomainVisits />', () => {
   const cancelGetDomainVisits = jest.fn();
   const domainVisits = Mock.of<DomainVisits>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const DomainVisits = createDomainVisits(Mock.of<ReportExporter>({ exportVisits }));
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <DomainVisits
-          {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
-          getDomainVisits={getDomainVisits}
-          cancelGetDomainVisits={cancelGetDomainVisits}
-          domainVisits={domainVisits}
-          settings={Mock.all<Settings>()}
-          selectedServer={Mock.all<SelectedServer>()}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
+      <DomainVisits
+        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        getDomainVisits={getDomainVisits}
+        cancelGetDomainVisits={cancelGetDomainVisits}
+        domainVisits={domainVisits}
+        settings={Mock.all<Settings>()}
+        selectedServer={Mock.all<SelectedServer>()}
+      />
+    </MemoryRouter>,
+  );
 
   it('wraps visits stats and header', () => {
     setUp();

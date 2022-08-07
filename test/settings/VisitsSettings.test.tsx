@@ -1,41 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Settings } from '../../src/settings/reducers/settings';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
-import { SimpleCard } from '../../src/utils/SimpleCard';
-import { DateIntervalSelector } from '../../src/utils/dates/DateIntervalSelector';
-import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsSettings />', () => {
-  let wrapper: ShallowWrapper;
   const setVisitsSettings = jest.fn();
-  const createWrapper = (settings: Partial<Settings> = {}) => {
-    wrapper = shallow(<VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />);
-
-    return wrapper;
-  };
+  const setUp = (settings: Partial<Settings> = {}) => renderWithEvents(
+    <VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders expected components', () => {
-    const wrapper = createWrapper();
+    setUp();
 
-    expect(wrapper.find(SimpleCard).prop('title')).toEqual('Visits');
-    expect(wrapper.find(LabeledFormGroup).prop('label')).toEqual('Default interval to load on visits sections:');
-    expect(wrapper.find(DateIntervalSelector)).toHaveLength(1);
+    expect(screen.getByRole('heading')).toHaveTextContent('Visits');
+    expect(screen.getByText('Default interval to load on visits sections:')).toBeInTheDocument();
   });
 
   it.each([
-    [Mock.all<Settings>(), 'last30Days'],
-    [Mock.of<Settings>({ visits: {} }), 'last30Days'],
+    [Mock.all<Settings>(), 'Last 30 days'],
+    [Mock.of<Settings>({ visits: {} }), 'Last 30 days'],
     [
       Mock.of<Settings>({
         visits: {
           defaultInterval: 'last7Days',
         },
       }),
-      'last7Days',
+      'Last 7 days',
     ],
     [
       Mock.of<Settings>({
@@ -43,21 +36,23 @@ describe('<VisitsSettings />', () => {
           defaultInterval: 'today',
         },
       }),
-      'today',
+      'Today',
     ],
   ])('sets expected interval as active', (settings, expectedInterval) => {
-    const wrapper = createWrapper(settings);
-
-    expect(wrapper.find(DateIntervalSelector).prop('active')).toEqual(expectedInterval);
+    setUp(settings);
+    expect(screen.getByRole('button')).toHaveTextContent(expectedInterval);
   });
 
-  it('invokes setVisitsSettings when interval changes', () => {
-    const wrapper = createWrapper();
-    const selector = wrapper.find(DateIntervalSelector);
+  it('invokes setVisitsSettings when interval changes', async () => {
+    const { user } = setUp();
+    const selectOption = async (name: string) => {
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getByRole('menuitem', { name }));
+    };
 
-    selector.simulate('change', 'last7Days');
-    selector.simulate('change', 'last180Days');
-    selector.simulate('change', 'yesterday');
+    await selectOption('Last 7 days');
+    await selectOption('Last 180 days');
+    await selectOption('Yesterday');
 
     expect(setVisitsSettings).toHaveBeenCalledTimes(3);
     expect(setVisitsSettings).toHaveBeenNthCalledWith(1, { defaultInterval: 'last7Days' });

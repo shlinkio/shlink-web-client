@@ -8,11 +8,12 @@ import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
-import ShortUrlVisitsHeader from './ShortUrlVisitsHeader';
-import VisitsStats from './VisitsStats';
+import { ShortUrlVisitsHeader } from './ShortUrlVisitsHeader';
+import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
+import { urlDecodeShortCode } from '../short-urls/helpers';
 
 export interface ShortUrlVisitsProps extends CommonVisitsProps {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
@@ -22,7 +23,7 @@ export interface ShortUrlVisitsProps extends CommonVisitsProps {
   cancelGetShortUrlVisits: () => void;
 }
 
-const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
+export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub(({
   shortUrlVisits,
   shortUrlDetail,
   getShortUrlVisits,
@@ -36,14 +37,14 @@ const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub((
   const goBack = useGoBack();
   const { domain } = parseQuery<{ domain?: string }>(search);
   const loadVisits = (params: VisitsParams, doIntervalFallback?: boolean) =>
-    getShortUrlVisits(shortCode, { ...toApiParams(params), domain }, doIntervalFallback);
+    getShortUrlVisits(urlDecodeShortCode(shortCode), { ...toApiParams(params), domain }, doIntervalFallback);
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(
     `short-url_${shortUrlDetail.shortUrl?.shortUrl.replace(/https?:\/\//g, '')}_visits.csv`,
     visits,
   );
 
   useEffect(() => {
-    getShortUrlDetail(shortCode, domain);
+    getShortUrlDetail(urlDecodeShortCode(shortCode), domain);
   }, []);
 
   return (
@@ -59,6 +60,4 @@ const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercureHub((
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>
   );
-}, (_, params) => [Topics.shortUrlVisits(params.shortCode)]);
-
-export default ShortUrlVisits;
+}, (_, params) => (params.shortCode ? [Topics.shortUrlVisits(urlDecodeShortCode(params.shortCode))] : []));

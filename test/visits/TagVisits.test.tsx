@@ -1,47 +1,56 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
+import { formatISO } from 'date-fns';
+import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import createTagVisits, { TagVisitsProps } from '../../src/visits/TagVisits';
-import TagVisitsHeader from '../../src/visits/TagVisitsHeader';
-import ColorGenerator from '../../src/utils/services/ColorGenerator';
+import { TagVisits as createTagVisits, TagVisitsProps } from '../../src/visits/TagVisits';
+import { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
-import VisitsStats from '../../src/visits/VisitsStats';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
+import { Visit } from '../../src/visits/types';
+import { Settings } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useLocation: jest.fn().mockReturnValue({}),
   useParams: jest.fn().mockReturnValue({ tag: 'foo' }),
 }));
 
 describe('<TagVisits />', () => {
-  let wrapper: ShallowWrapper;
   const getTagVisitsMock = jest.fn();
-
-  beforeEach(() => {
-    const TagVisits = createTagVisits(Mock.all<ColorGenerator>(), Mock.all<ReportExporter>());
-
-    wrapper = shallow(
+  const exportVisits = jest.fn();
+  const tagVisits = Mock.of<TagVisitsStats>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
+  const TagVisits = createTagVisits(
+    Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),
+    Mock.of<ReportExporter>({ exportVisits }),
+  );
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
       <TagVisits
         {...Mock.all<TagVisitsProps>()}
         {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getTagVisits={getTagVisitsMock}
-        tagVisits={Mock.of<TagVisitsStats>({ loading: true, visits: [] })}
+        tagVisits={tagVisits}
+        settings={Mock.all<Settings>()}
         cancelGetTagVisits={() => {}}
-      />,
-    ).dive(); // Dive is needed as this component is wrapped in a HOC
+      />
+    </MemoryRouter>,
+  );
+
+  it('wraps visits stats and header', () => {
+    setUp();
+    expect(screen.getAllByRole('heading')[0]).toHaveTextContent('Visits for');
+    expect(getTagVisitsMock).toHaveBeenCalled();
   });
 
-  afterEach(() => wrapper.unmount());
-  afterEach(jest.resetAllMocks);
+  it('exports visits when clicking the button', async () => {
+    const { user } = setUp();
+    const btn = screen.getByRole('button', { name: 'Export (1)' });
 
-  it('renders visit stats and visits header', () => {
-    const visitStats = wrapper.find(VisitsStats);
-    const visitHeader = wrapper.find(TagVisitsHeader);
+    expect(exportVisits).not.toHaveBeenCalled();
+    expect(btn).toBeInTheDocument();
 
-    expect(visitStats).toHaveLength(1);
-    expect(visitStats.prop('isOrphanVisits')).not.toBeDefined();
-    expect(visitHeader).toHaveLength(1);
+    await user.click(btn);
+    expect(exportVisits).toHaveBeenCalledWith('tag_foo_visits.csv', expect.anything());
   });
 });

@@ -1,26 +1,23 @@
-import { render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
 import { Domain } from '../../../src/domains/data';
 import { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import { SemVer } from '../../../src/utils/helpers/version';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainDropdown />', () => {
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
-  const setUp = (domain?: Domain, selectedServer?: SelectedServer) => ({
-    user: userEvent.setup(),
-    ...render(
-      <MemoryRouter>
-        <DomainDropdown
-          domain={domain ?? Mock.all<Domain>()}
-          selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
-          editDomainRedirects={editDomainRedirects}
-        />
-      </MemoryRouter>,
-    ),
-  });
+  const setUp = (domain?: Domain, selectedServer?: SelectedServer) => renderWithEvents(
+    <MemoryRouter>
+      <DomainDropdown
+        domain={domain ?? Mock.all<Domain>()}
+        selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+        editDomainRedirects={editDomainRedirects}
+      />
+    </MemoryRouter>,
+  );
 
   afterEach(jest.clearAllMocks);
 

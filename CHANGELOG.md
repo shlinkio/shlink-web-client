@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [3.7.1] - 2022-05-25
+## [3.7.2] - 2022-08-07
 ### Added
-* *Nothing*
+* [#671](https://github.com/shlinkio/shlink-web-client/issues/671) Added proper color-scheme in root element based on selected theme.
 
 ### Changed
-* [#648](https://github.com/shlinkio/shlink-web-client/pull/648) Migrated some scripts to ESM and updated to chalk 5.
+* [#688](https://github.com/shlinkio/shlink-web-client/issues/688) Finalized migration from enzyme to react-testing-library.
 
 ### Deprecated
 * *Nothing*
@@ -18,30 +18,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* [#653](https://github.com/shlinkio/shlink-web-client/pull/653) Fixed rendering values greater than 1000 in charts, when the browser has certain locales configured.
+* [#695](https://github.com/shlinkio/shlink-web-client/issues/695) Fixed some warnings in tests.
+* [#693](https://github.com/shlinkio/shlink-web-client/issues/693) Fixed tags, servers and domains search to make it case-insensitive.
+* [#694](https://github.com/shlinkio/shlink-web-client/issues/694) Fixed editing and loading visits on short URLs with multi-segment slugs.
 
 
-## [3.7.0] - 2022-05-14
+## [3.7.1] - 2022-05-25
 ### Added
-* [#622](https://github.com/shlinkio/shlink-web-client/pull/622) Added support to load domain visits when consuming Shlink 3.1.0 or newer.
-* [#582](https://github.com/shlinkio/shlink-web-client/pull/582) Improved filtering short URLs by tag.
-
-  Now, a new full tags selector component is available, which allows selecting any of the existing tags and also composes a toggle to filter by "any" tag or "all" tags.
+* *Nothing*
 
 ### Changed
-* [#616](https://github.com/shlinkio/shlink-web-client/pull/616) Updated to React 18.
-* [#595](https://github.com/shlinkio/shlink-web-client/pull/595) Updated to react-chartjs-2 v4.1.0.
-* [#594](https://github.com/shlinkio/shlink-web-client/pull/594) Updated to a new coding standard.
-* [#627](https://github.com/shlinkio/shlink-web-client/pull/627) Updated to Jest 28.
-* [#603](https://github.com/shlinkio/shlink-web-client/pull/603) Migrated to new and maintained dependencies to parse CSV<->JSON.
-* [#610](https://github.com/shlinkio/shlink-web-client/pull/610) Migrated to a maintained coding style for CSS.
-* [#619](https://github.com/shlinkio/shlink-web-client/pull/619) Introduced react testing library, to progressively replace enzyme.
+* [#648](https://github.com/shlinkio/shlink-web-client/issues/648) Migrated some scripts to ESM and updated to chalk 5.
 
 ### Deprecated
 * *Nothing*
 
 ### Removed
-* [#623](https://github.com/shlinkio/shlink-web-client/pull/623) Dropped support for Shlink older than 2.6.0.
+* *Nothing*
+
+### Fixed
+* [#653](https://github.com/shlinkio/shlink-web-client/issues/653) Fixed rendering values greater than 1000 in charts, when the browser has certain locales configured.
+
+
+## [3.7.0] - 2022-05-14
+### Added
+* [#622](https://github.com/shlinkio/shlink-web-client/issues/622) Added support to load domain visits when consuming Shlink 3.1.0 or newer.
+* [#582](https://github.com/shlinkio/shlink-web-client/issues/582) Improved filtering short URLs by tag.
+
+  Now, a new full tags selector component is available, which allows selecting any of the existing tags and also composes a toggle to filter by "any" tag or "all" tags.
+
+### Changed
+* [#616](https://github.com/shlinkio/shlink-web-client/issues/616) Updated to React 18.
+* [#595](https://github.com/shlinkio/shlink-web-client/issues/595) Updated to react-chartjs-2 v4.1.0.
+* [#594](https://github.com/shlinkio/shlink-web-client/issues/594) Updated to a new coding standard.
+* [#627](https://github.com/shlinkio/shlink-web-client/issues/627) Updated to Jest 28.
+* [#603](https://github.com/shlinkio/shlink-web-client/issues/603) Migrated to new and maintained dependencies to parse CSV<->JSON.
+* [#610](https://github.com/shlinkio/shlink-web-client/issues/610) Migrated to a maintained coding style for CSS.
+* [#619](https://github.com/shlinkio/shlink-web-client/issues/619) Introduced react testing library, to progressively replace enzyme.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* [#623](https://github.com/shlinkio/shlink-web-client/issues/623) Dropped support for Shlink older than 2.6.0.
 
 ### Fixed
 * *Nothing*
@@ -49,19 +68,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [3.6.0] - 2022-03-17
 ### Added
-* [#558](https://github.com/shlinkio/shlink-web-client/pull/558) Added dark text for tags where the generated background is too light, improving its legibility.
-* [#570](https://github.com/shlinkio/shlink-web-client/pull/570) Added new section to load non-orphan visits all together when consuming Shlink 3.0.0.
-* [#556](https://github.com/shlinkio/shlink-web-client/pull/556) Added support to filter short URLs list by "all" tags when consuming Shlink 3.0.0.
-* [#549](https://github.com/shlinkio/shlink-web-client/pull/549) Allowed to export the list of short URLs as CSV.
+* [#558](https://github.com/shlinkio/shlink-web-client/issues/558) Added dark text for tags where the generated background is too light, improving its legibility.
+* [#570](https://github.com/shlinkio/shlink-web-client/issues/570) Added new section to load non-orphan visits all together when consuming Shlink 3.0.0.
+* [#556](https://github.com/shlinkio/shlink-web-client/issues/556) Added support to filter short URLs list by "all" tags when consuming Shlink 3.0.0.
+* [#549](https://github.com/shlinkio/shlink-web-client/issues/549) Allowed to export the list of short URLs as CSV.
 
 ### Changed
-* [#543](https://github.com/shlinkio/shlink-web-client/pull/543) Redesigned settings section.
-* [#567](https://github.com/shlinkio/shlink-web-client/pull/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
-* [#448](https://github.com/shlinkio/shlink-web-client/pull/448) Updated to bootstrap v5.
-* [#524](https://github.com/shlinkio/shlink-web-client/pull/524) Updated to react-router v6.
-* [#576](https://github.com/shlinkio/shlink-web-client/pull/576) Updated to fontawesome v6.
-* [#579](https://github.com/shlinkio/shlink-web-client/pull/579) Replaced react-color with react-colorful.
-* [#564](https://github.com/shlinkio/shlink-web-client/pull/564) Updated most of the dependencies.
+* [#543](https://github.com/shlinkio/shlink-web-client/issues/543) Redesigned settings section.
+* [#567](https://github.com/shlinkio/shlink-web-client/issues/567) Improved Shlink 3.0.0 compatibility by checking the `INVALID_SHORT_URL_DELETION` error code when deleting short URLs.
+* [#448](https://github.com/shlinkio/shlink-web-client/issues/448) Updated to bootstrap v5.
+* [#524](https://github.com/shlinkio/shlink-web-client/issues/524) Updated to react-router v6.
+* [#576](https://github.com/shlinkio/shlink-web-client/issues/576) Updated to fontawesome v6.
+* [#579](https://github.com/shlinkio/shlink-web-client/issues/579) Replaced react-color with react-colorful.
+* [#564](https://github.com/shlinkio/shlink-web-client/issues/564) Updated most of the dependencies.
 
 ### Deprecated
 * *Nothing*
@@ -70,7 +89,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* [#589](https://github.com/shlinkio/shlink-web-client/pull/589) Fixed alignment of shlink versions footer, by basing the logic on the presence of the sidebar instead of selected server.
+* [#589](https://github.com/shlinkio/shlink-web-client/issues/589) Fixed alignment of shlink versions footer, by basing the logic on the presence of the sidebar instead of selected server.
 
 
 ## [3.5.1] - 2022-01-08
@@ -94,27 +113,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [3.5.0] - 2022-01-01
 ### Added
-* [#407](https://github.com/shlinkio/shlink-web-client/pull/407) Improved how visits (short URLs, tags and orphan) are loaded, to avoid ending up in a page with "There are no visits matching current filter".
+* [#407](https://github.com/shlinkio/shlink-web-client/issues/407) Improved how visits (short URLs, tags and orphan) are loaded, to avoid ending up in a page with "There are no visits matching current filter".
 
     Now, the app will try to load visits for the configured default interval, and in parallel, it will load the latest visit.
 
     If the resulting list for that interval is empty, it will try to infer the closest interval with visits, based on the latest visit's date, and reload visits for that interval.
 
-* [#547](https://github.com/shlinkio/shlink-web-client/pull/547) Improved domains page, to tell which of the domains are not properly configured.
+* [#547](https://github.com/shlinkio/shlink-web-client/issues/547) Improved domains page, to tell which of the domains are not properly configured.
 
     Now, when this section is loaded, it tries to call the `GET /rest/health` endpoint for each one of the domains, and displays a warning icon on each one that failed.
 
     The warning includes a link to the documentation, explaining what are the steps to get it fixed.
 
-* [#506](https://github.com/shlinkio/shlink-web-client/pull/506) Improved how servers are handled, displaying a warning when creating or importing servers that already exist.
-* [#535](https://github.com/shlinkio/shlink-web-client/pull/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
-* [#531](https://github.com/shlinkio/shlink-web-client/pull/531) Added custom slug field to the basic creation form in the Overview page.
-* [#537](https://github.com/shlinkio/shlink-web-client/pull/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
-* [#542](https://github.com/shlinkio/shlink-web-client/pull/542) Added ordering for short URLs to the query, so that it is consistent with the rest of the filtering params.
+* [#506](https://github.com/shlinkio/shlink-web-client/issues/506) Improved how servers are handled, displaying a warning when creating or importing servers that already exist.
+* [#535](https://github.com/shlinkio/shlink-web-client/issues/535) Allowed editing default domain redirects when consuming Shlink 2.10 or newer.
+* [#531](https://github.com/shlinkio/shlink-web-client/issues/531) Added custom slug field to the basic creation form in the Overview page.
+* [#537](https://github.com/shlinkio/shlink-web-client/issues/537) Allowed to customize the ordering for every list in the app that supports it, being currently tags and short URLs.
+* [#542](https://github.com/shlinkio/shlink-web-client/issues/542) Added ordering for short URLs to the query, so that it is consistent with the rest of the filtering params.
 
 ### Changed
-* [#534](https://github.com/shlinkio/shlink-web-client/pull/534) Updated axios.
-* [#538](https://github.com/shlinkio/shlink-web-client/pull/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
+* [#534](https://github.com/shlinkio/shlink-web-client/issues/534) Updated axios.
+* [#538](https://github.com/shlinkio/shlink-web-client/issues/538) Switched to the `<field>-<dir>` notation in `orderBy` param for short URLs list, in preparation for Shlink v3.0.0
 
 ### Deprecated
 * *Nothing*

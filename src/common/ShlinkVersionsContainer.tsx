@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { SelectedServer } from '../servers/data';
-import ShlinkVersions from './ShlinkVersions';
+import { ShlinkVersions } from './ShlinkVersions';
 import { Sidebar } from './reducers/sidebar';
 import './ShlinkVersionsContainer.scss';
 
@@ -9,7 +9,7 @@ export interface ShlinkVersionsContainerProps {
   sidebar: Sidebar;
 }
 
-const ShlinkVersionsContainer = ({ selectedServer, sidebar }: ShlinkVersionsContainerProps) => {
+export const ShlinkVersionsContainer = ({ selectedServer, sidebar }: ShlinkVersionsContainerProps) => {
   const classes = classNames('text-center', {
     'shlink-versions-container--with-sidebar': sidebar.sidebarPresent,
   });
@@ -20,5 +20,3 @@ const ShlinkVersionsContainer = ({ selectedServer, sidebar }: ShlinkVersionsCont
     </div>
   );
 };
-
-export default ShlinkVersionsContainer;

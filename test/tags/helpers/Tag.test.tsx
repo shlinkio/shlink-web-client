@@ -1,9 +1,23 @@
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { shallow, ShallowWrapper } from 'enzyme';
 import { ReactNode } from 'react';
-import ColorGenerator from '../../../src/utils/services/ColorGenerator';
+import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
-import Tag from '../../../src/tags/helpers/Tag';
+import { Tag } from '../../../src/tags/helpers/Tag';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
+
+const hexToRgb = (hex: string) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) {
+    throw new Error((`Could not convert color ${hex} to RGB`));
+  }
+
+  return {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16),
+  };
+};
 
 describe('<Tag />', () => {
   const onClick = jest.fn();
@@ -11,19 +25,13 @@ describe('<Tag />', () => {
   const isColorLightForKey = jest.fn(() => false);
   const getColorForKey = jest.fn(() => MAIN_COLOR);
   const colorGenerator = Mock.of<ColorGenerator>({ getColorForKey, isColorLightForKey });
-  let wrapper: ShallowWrapper;
-  const createWrapper = (text: string, clearable?: boolean, children?: ReactNode) => {
-    wrapper = shallow(
-      <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
-        {children}
-      </Tag>,
-    );
-
-    return wrapper;
-  };
+  const setUp = (text: string, clearable?: boolean, children?: ReactNode) => renderWithEvents(
+    <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
+      {children}
+    </Tag>,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it.each([
     [true],
@@ -31,9 +39,13 @@ describe('<Tag />', () => {
   ])('includes an extra class when the color is light', (isLight) => {
     isColorLightForKey.mockReturnValue(isLight);
 
-    const wrapper = createWrapper('foo');
+    const { container } = setUp('foo');
 
-    expect((wrapper.prop('className') as string).includes('tag--light-bg')).toEqual(isLight);
+    if (isLight) {
+      expect(container.firstChild).toHaveClass('tag--light-bg');
+    } else {
+      expect(container.firstChild).not.toHaveClass('tag--light-bg');
+    }
   });
 
   it.each([
@@ -45,21 +57,25 @@ describe('<Tag />', () => {
   ])('includes generated color as backgroundColor', (generatedColor) => {
     getColorForKey.mockReturnValue(generatedColor);
 
-    const wrapper = createWrapper('foo');
+    const { container } = setUp('foo');
+    const { r, g, b } = hexToRgb(generatedColor);
 
-    expect((wrapper.prop('style') as any).backgroundColor).toEqual(generatedColor);
+    expect(container.firstChild).toHaveAttribute(
+      'style',
+      expect.stringContaining(`background-color: rgb(${r}, ${g}, ${b})`),
+    );
   });
 
-  it('invokes expected callbacks when appropriate events are triggered', () => {
-    const wrapper = createWrapper('foo', true);
+  it('invokes expected callbacks when appropriate events are triggered', async () => {
+    const { container, user } = setUp('foo', true);
 
-    expect(onClick).not.toBeCalled();
-    expect(onClose).not.toBeCalled();
+    expect(onClick).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
 
-    wrapper.simulate('click');
+    container.firstElementChild && await user.click(container.firstElementChild);
     expect(onClick).toHaveBeenCalledTimes(1);
 
-    wrapper.find('.tag__close-selected-tag').simulate('click');
+    await user.click(screen.getByLabelText(/^Remove/));
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 
@@ -68,18 +84,17 @@ describe('<Tag />', () => {
     [false, 0, 'pointer'],
     [undefined, 0, 'pointer'],
   ])('includes a close component when the tag is clearable', (clearable, expectedCloseBtnAmount, expectedCursor) => {
-    const wrapper = createWrapper('foo', clearable);
+    const { container } = setUp('foo', clearable);
 
-    expect(wrapper.find('.tag__close-selected-tag')).toHaveLength(expectedCloseBtnAmount);
-    expect((wrapper.prop('style') as any).cursor).toEqual(expectedCursor);
+    expect(screen.queryAllByLabelText(/^Remove/)).toHaveLength(expectedCloseBtnAmount);
+    expect(container.firstChild).toHaveAttribute('style', expect.stringContaining(`cursor: ${expectedCursor}`));
   });
 
   it.each([
     [undefined, 'foo'],
     ['bar', 'bar'],
   ])('falls back to text as children when no children are provided', (children, expectedChildren) => {
-    const wrapper = createWrapper('foo', false, children);
-
-    expect(wrapper.html()).toContain(`>${expectedChildren}</span>`);
+    const { container } = setUp('foo', false, children);
+    expect(container.firstChild).toHaveTextContent(expectedChildren);
   });
 });

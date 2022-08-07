@@ -1,15 +1,14 @@
-import { useRef, RefObject, ChangeEvent, MutableRefObject, useState, useEffect, FC, PropsWithChildren } from 'react';
+import { useRef, ChangeEvent, useState, useEffect, FC, PropsWithChildren } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { complement, pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '../../utils/helpers/hooks';
+import { mutableRefToElementRef } from '../../utils/helpers/components';
 import { ServersImporter } from '../services/ServersImporter';
 import { ServerData, ServersMap } from '../data';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
 import './ImportServersBtn.scss';
-
-type Ref<T> = RefObject<T> | MutableRefObject<T>;
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
@@ -21,23 +20,21 @@ export type ImportServersBtnProps = PropsWithChildren<{
 interface ImportServersBtnConnectProps extends ImportServersBtnProps {
   createServers: (servers: ServerData[]) => void;
   servers: ServersMap;
-  fileRef: Ref<HTMLInputElement>;
 }
 
 const serversFiltering = (servers: ServerData[]) =>
   ({ url, apiKey }: ServerData) => servers.some((server) => server.url === url && server.apiKey === apiKey);
 
-const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
+export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
   createServers,
   servers,
-  fileRef,
   children,
   onImport = () => {},
   onImportError = () => {},
   tooltipPlacement = 'bottom',
   className = '',
 }) => {
-  const ref = fileRef ?? useRef<HTMLInputElement>();
+  const ref = useRef<HTMLInputElement>();
   const [serversToCreate, setServersToCreate] = useState<ServerData[] | undefined>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
@@ -78,7 +75,13 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
         You can create servers by importing a CSV file with columns <b>name</b>, <b>apiKey</b> and <b>url</b>.
       </UncontrolledTooltip>
 
-      <input type="file" accept="text/csv" className="import-servers-btn__csv-select" ref={ref} onChange={onFile} />
+      <input
+        type="file"
+        accept="text/csv"
+        className="import-servers-btn__csv-select"
+        ref={mutableRefToElementRef(ref)}
+        onChange={onFile}
+      />
 
       <DuplicatedServersModal
         isOpen={isModalOpen}
@@ -89,5 +92,3 @@ const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<Import
     </>
   );
 };
-
-export default ImportServersBtn;

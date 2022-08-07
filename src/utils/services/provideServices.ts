@@ -1,7 +1,7 @@
 import Bottle from 'bottlejs';
-import { useStateFlagTimeout } from '../helpers/hooks';
-import LocalStorage from './LocalStorage';
-import ColorGenerator from './ColorGenerator';
+import { useTimeoutToggle } from '../helpers/hooks';
+import { LocalStorage } from './LocalStorage';
+import { ColorGenerator } from './ColorGenerator';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
 
 const provideServices = (bottle: Bottle) => {
@@ -14,7 +14,7 @@ const provideServices = (bottle: Bottle) => {
 
   bottle.constant('setTimeout', global.setTimeout);
   bottle.constant('clearTimeout', global.clearTimeout);
-  bottle.serviceFactory('useStateFlagTimeout', useStateFlagTimeout, 'setTimeout', 'clearTimeout');
+  bottle.serviceFactory('useTimeoutToggle', useTimeoutToggle, 'setTimeout', 'clearTimeout');
 };
 
 export default provideServices;

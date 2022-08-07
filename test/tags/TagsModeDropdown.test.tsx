@@ -1,42 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars as listIcon, faThLarge as cardsIcon } from '@fortawesome/free-solid-svg-icons';
+import { screen } from '@testing-library/react';
 import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
-import { DropdownBtn } from '../../src/utils/DropdownBtn';
+import { TagsMode } from '../../src/settings/reducers/settings';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsModeDropdown />', () => {
   const onChange = jest.fn();
-  let wrapper: ShallowWrapper;
-
-  beforeEach(() => {
-    wrapper = shallow(<TagsModeDropdown mode="list" onChange={onChange} />);
-  });
+  const setUp = (mode: TagsMode) => renderWithEvents(<TagsModeDropdown mode={mode} onChange={onChange} />);
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('renders expected items', () => {
-    const btn = wrapper.find(DropdownBtn);
-    const items = wrapper.find(DropdownItem);
-    const icons = wrapper.find(FontAwesomeIcon);
-
-    expect(btn).toHaveLength(1);
-    expect(btn.prop('text')).toEqual('Display mode: list');
-    expect(items).toHaveLength(2);
-    expect(icons).toHaveLength(2);
-    expect(icons.first().prop('icon')).toEqual(cardsIcon);
-    expect(icons.last().prop('icon')).toEqual(listIcon);
+  it.each([
+    ['cards' as TagsMode],
+    ['list' as TagsMode],
+  ])('renders expected initial value', (mode) => {
+    setUp(mode);
+    expect(screen.getByRole('button')).toHaveTextContent(`Display mode: ${mode}`);
   });
 
-  it('changes active element on click', () => {
-    const items = wrapper.find(DropdownItem);
+  it('changes active element on click', async () => {
+    const { user } = setUp('list');
+    const clickItem = async (index: 0 | 1) => {
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getAllByRole('menuitem')[index]);
+    };
 
     expect(onChange).not.toHaveBeenCalled();
-    items.first().simulate('click');
+    await clickItem(0);
     expect(onChange).toHaveBeenCalledWith('cards');
 
-    items.last().simulate('click');
+    await clickItem(1);
     expect(onChange).toHaveBeenCalledWith('list');
   });
 });

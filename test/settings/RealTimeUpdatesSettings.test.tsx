@@ -1,64 +1,51 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Input } from 'reactstrap';
-import { FormText } from '../../src/utils/forms/FormText';
 import {
   RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
   Settings,
 } from '../../src/settings/reducers/settings';
-import RealTimeUpdatesSettings from '../../src/settings/RealTimeUpdatesSettings';
-import ToggleSwitch from '../../src/utils/ToggleSwitch';
-import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
+import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {
   const toggleRealTimeUpdates = jest.fn();
   const setRealTimeUpdatesInterval = jest.fn();
-  let wrapper: ShallowWrapper;
-  const createWrapper = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => {
-    const settings = Mock.of<Settings>({ realTimeUpdates });
-
-    wrapper = shallow(
-      <RealTimeUpdatesSettings
-        settings={settings}
-        toggleRealTimeUpdates={toggleRealTimeUpdates}
-        setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
-      />,
-    );
-
-    return wrapper;
-  };
+  const setUp = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => renderWithEvents(
+    <RealTimeUpdatesSettings
+      settings={Mock.of<Settings>({ realTimeUpdates })}
+      toggleRealTimeUpdates={toggleRealTimeUpdates}
+      setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
+    />,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders enabled real time updates as expected', () => {
-    const wrapper = createWrapper({ enabled: true });
-    const toggle = wrapper.find(ToggleSwitch);
-    const label = wrapper.find(LabeledFormGroup);
-    const input = wrapper.find(Input);
-    const formText = wrapper.find(FormText);
+    setUp({ enabled: true });
 
-    expect(toggle.prop('checked')).toEqual(true);
-    expect(toggle.html()).toContain('processed');
-    expect(toggle.html()).not.toContain('ignored');
-    expect(label.prop('labelClassName')).not.toContain('text-muted');
-    expect(input.prop('disabled')).toEqual(false);
-    expect(formText).toHaveLength(2);
+    expect(screen.getByLabelText(/^Enable or disable real-time updates./)).toBeChecked();
+    expect(screen.getByText(/^Real-time updates are currently being/)).toHaveTextContent('processed');
+    expect(screen.getByText(/^Real-time updates are currently being/)).not.toHaveTextContent('ignored');
+    expect(screen.getByText('Real-time updates frequency (in minutes):')).not.toHaveAttribute(
+      'class',
+      expect.stringContaining('text-muted'),
+    );
+    expect(screen.getByLabelText('Real-time updates frequency (in minutes):')).not.toHaveAttribute('disabled');
+    expect(screen.getByText('Updates will be reflected in the UI as soon as they happen.')).toBeInTheDocument();
   });
 
   it('renders disabled real time updates as expected', () => {
-    const wrapper = createWrapper({ enabled: false });
-    const toggle = wrapper.find(ToggleSwitch);
-    const label = wrapper.find(LabeledFormGroup);
-    const input = wrapper.find(Input);
-    const formText = wrapper.find(FormText);
+    setUp({ enabled: false });
 
-    expect(toggle.prop('checked')).toEqual(false);
-    expect(toggle.html()).not.toContain('processed');
-    expect(toggle.html()).toContain('ignored');
-    expect(label.prop('labelClassName')).toContain('text-muted');
-    expect(input.prop('disabled')).toEqual(true);
-    expect(formText).toHaveLength(1);
+    expect(screen.getByLabelText(/^Enable or disable real-time updates./)).not.toBeChecked();
+    expect(screen.getByText(/^Real-time updates are currently being/)).not.toHaveTextContent('processed');
+    expect(screen.getByText(/^Real-time updates are currently being/)).toHaveTextContent('ignored');
+    expect(screen.getByText('Real-time updates frequency (in minutes):')).toHaveAttribute(
+      'class',
+      expect.stringContaining('text-muted'),
+    );
+    expect(screen.getByLabelText('Real-time updates frequency (in minutes):')).toHaveAttribute('disabled');
+    expect(screen.queryByText('Updates will be reflected in the UI as soon as they happen.')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -67,43 +54,35 @@ describe('<RealTimeUpdatesSettings />', () => {
     [10, 'minutes'],
     [100, 'minutes'],
   ])('shows expected children when interval is greater than 0', (interval, minutesWord) => {
-    const wrapper = createWrapper({ enabled: true, interval });
-    const span = wrapper.find('span');
-    const input = wrapper.find(Input);
+    setUp({ enabled: true, interval });
 
-    expect(span).toHaveLength(1);
-    expect(span.html()).toEqual(
-      `<span>Updates will be reflected in the UI every <b>${interval}</b> ${minutesWord}.</span>`,
+    expect(screen.getByText(/^Updates will be reflected in the UI every/)).toHaveTextContent(
+      `${interval} ${minutesWord}`,
     );
-    expect(input.prop('value')).toEqual(`${interval}`);
+    expect(screen.getByLabelText('Real-time updates frequency (in minutes):')).toHaveValue(interval);
+    expect(screen.queryByText('Updates will be reflected in the UI as soon as they happen.')).not.toBeInTheDocument();
   });
 
   it.each([[undefined], [0]])('shows expected children when interval is 0 or undefined', (interval) => {
-    const wrapper = createWrapper({ enabled: true, interval });
-    const span = wrapper.find('span');
-    const formText = wrapper.find(FormText).at(1);
-    const input = wrapper.find(Input);
+    setUp({ enabled: true, interval });
 
-    expect(span).toHaveLength(0);
-    expect(formText.html()).toContain('Updates will be reflected in the UI as soon as they happen.');
-    expect(input.prop('value')).toEqual('');
+    expect(screen.queryByText(/^Updates will be reflected in the UI every/)).not.toBeInTheDocument();
+    expect(screen.getByText('Updates will be reflected in the UI as soon as they happen.')).toBeInTheDocument();
   });
 
-  it('updates real time updates on input change', () => {
-    const wrapper = createWrapper();
-    const input = wrapper.find(Input);
+  it('updates real time updates when typing on input', async () => {
+    const { user } = setUp({ enabled: true });
 
     expect(setRealTimeUpdatesInterval).not.toHaveBeenCalled();
-    input.simulate('change', { target: { value: '10' } });
-    expect(setRealTimeUpdatesInterval).toHaveBeenCalledWith(10);
+    await user.type(screen.getByLabelText('Real-time updates frequency (in minutes):'), '5');
+    expect(setRealTimeUpdatesInterval).toHaveBeenCalledWith(5);
   });
 
-  it('toggles real time updates on switch change', () => {
-    const wrapper = createWrapper();
-    const toggle = wrapper.find(ToggleSwitch);
+  it('toggles real time updates on switch change', async () => {
+    const { user } = setUp({ enabled: true });
 
     expect(toggleRealTimeUpdates).not.toHaveBeenCalled();
-    toggle.simulate('change');
+    await user.click(screen.getByText(/^Enable or disable real-time updates./));
     expect(toggleRealTimeUpdates).toHaveBeenCalled();
   });
 });

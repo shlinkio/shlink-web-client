@@ -19,7 +19,7 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   </ListGroupItem>
 );
 
-const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, embedded = false }) => (
+export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, embedded = false }) => (
   <>
     {children && <h5 className="mb-md-3">{children}</h5>}
     {servers.length > 0 && (
@@ -31,5 +31,3 @@ const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, embedd
     )}
   </>
 );
-
-export default ServersListGroup;

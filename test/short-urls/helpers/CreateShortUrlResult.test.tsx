@@ -1,56 +1,40 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { Tooltip } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import createCreateShortUrlResult from '../../../src/short-urls/helpers/CreateShortUrlResult';
+import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import { ShortUrl } from '../../../src/short-urls/data';
-import { StateFlagTimeout } from '../../../src/utils/helpers/hooks';
-import { Result } from '../../../src/utils/Result';
+import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<CreateShortUrlResult />', () => {
-  let wrapper: ShallowWrapper;
   const copyToClipboard = jest.fn();
-  const useStateFlagTimeout = jest.fn(() => [false, copyToClipboard]) as StateFlagTimeout;
-  const CreateShortUrlResult = createCreateShortUrlResult(useStateFlagTimeout);
-  const createWrapper = (result: ShortUrl | null = null, error = false) => {
-    wrapper = shallow(
-      <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,
-    );
-
-    return wrapper;
-  };
+  const useTimeoutToggle = jest.fn(() => [false, copyToClipboard]) as TimeoutToggle;
+  const CreateShortUrlResult = createResult(useTimeoutToggle);
+  const setUp = (result: ShortUrl | null = null, error = false) => renderWithEvents(
+    <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders an error when error is true', () => {
-    const wrapper = createWrapper(Mock.all<ShortUrl>(), true);
-    const errorCard = wrapper.find(Result).filterWhere((result) => result.prop('type') === 'error');
-
-    expect(errorCard).toHaveLength(1);
-    expect(errorCard.html()).toContain('An error occurred while creating the URL :(');
+    setUp(Mock.all<ShortUrl>(), true);
+    expect(screen.getByText('An error occurred while creating the URL :(')).toBeInTheDocument();
   });
 
   it('renders nothing when no result is provided', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.html()).toBeNull();
+    const { container } = setUp();
+    expect(container.firstChild).toBeNull();
   });
 
   it('renders a result message when result is provided', () => {
-    const wrapper = createWrapper(Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }));
-
-    expect(wrapper.html()).toContain('<b>Great!</b> The short URL is <b>https://doma.in/abc123</b>');
-    expect(wrapper.find(CopyToClipboard)).toHaveLength(1);
-    expect(wrapper.find(Tooltip)).toHaveLength(1);
+    setUp(Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }));
+    expect(screen.getByText(/The short URL is/)).toHaveTextContent('Great! The short URL is https://doma.in/abc123');
   });
 
-  it('Invokes tooltip timeout when copy to clipboard button is clicked', () => {
-    const wrapper = createWrapper(Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }));
-    const copyBtn = wrapper.find(CopyToClipboard);
+  it('Invokes tooltip timeout when copy to clipboard button is clicked', async () => {
+    const { user } = setUp(Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }));
 
     expect(copyToClipboard).not.toHaveBeenCalled();
-    copyBtn.simulate('copy');
+    await user.click(screen.getByRole('button'));
     expect(copyToClipboard).toHaveBeenCalledTimes(1);
   });
 });

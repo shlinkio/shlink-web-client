@@ -6,12 +6,12 @@ import { parseQuery, stringifyQuery } from './query';
 
 const DEFAULT_DELAY = 2000;
 
-export type StateFlagTimeout = (initialValue?: boolean, delay?: number) => [ boolean, () => void ];
+export type TimeoutToggle = (initialValue?: boolean, delay?: number) => [boolean, () => void];
 
-export const useStateFlagTimeout = (
+export const useTimeoutToggle = (
   setTimeout: (callback: Function, timeout: number) => number,
   clearTimeout: (timer: number) => void,
-): StateFlagTimeout => (initialValue = false, delay = DEFAULT_DELAY) => {
+): TimeoutToggle => (initialValue = false, delay = DEFAULT_DELAY) => {
   const [flag, setFlag] = useState<boolean>(initialValue);
   const timeout = useRef<number | undefined>(undefined);
   const callback = () => {
@@ -31,7 +31,6 @@ type ToggleResult = [ boolean, () => void, () => void, () => void ];
 
 export const useToggle = (initialValue = false): ToggleResult => {
   const [flag, setFlag] = useState<boolean>(initialValue);
-
   return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
 };
 
@@ -80,7 +79,6 @@ export const useEffectExceptFirstTime = (callback: EffectCallback, deps: Depende
 
 export const useGoBack = () => {
   const navigate = useNavigate();
-
   return () => navigate(-1);
 };
 

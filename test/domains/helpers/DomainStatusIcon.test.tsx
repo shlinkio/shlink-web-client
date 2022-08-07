@@ -1,15 +1,14 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainStatusIcon />', () => {
   const matchMedia = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: false }));
-  const setUp = (status: DomainStatus) => ({
-    user: userEvent.setup(),
-    ...render(<DomainStatusIcon status={status} matchMedia={matchMedia} />),
-  });
+  const setUp = (status: DomainStatus) => renderWithEvents(
+    <DomainStatusIcon status={status} matchMedia={matchMedia} />,
+  );
 
   beforeEach(jest.clearAllMocks);
 

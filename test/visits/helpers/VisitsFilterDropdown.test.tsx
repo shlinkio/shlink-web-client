@@ -1,89 +1,77 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { OrphanVisitType, VisitsFilter } from '../../../src/visits/types';
 import { VisitsFilterDropdown } from '../../../src/visits/helpers/VisitsFilterDropdown';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsFilterDropdown />', () => {
-  let wrapper: ShallowWrapper;
   const onChange = jest.fn();
-  const createWrapper = (selected: VisitsFilter = {}, isOrphanVisits = true) => {
-    wrapper = shallow(
-      <VisitsFilterDropdown
-        isOrphanVisits={isOrphanVisits}
-        botsSupported
-        selected={selected}
-        onChange={onChange}
-      />,
-    );
-
-    return wrapper;
-  };
+  const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true, botsSupported = true) => renderWithEvents(
+    <VisitsFilterDropdown
+      isOrphanVisits={isOrphanVisits}
+      botsSupported={botsSupported}
+      selected={selected}
+      onChange={onChange}
+    />,
+  );
 
   beforeEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('has expected text', () => {
-    const wrapper = createWrapper();
-
-    expect(wrapper.prop('text')).toEqual('Filters');
+    setUp();
+    expect(screen.getByRole('button', { name: 'Filters' })).toBeInTheDocument();
   });
 
   it.each([
-    [false, 4, 1],
-    [true, 9, 2],
-  ])('renders expected amount of items', (isOrphanVisits, expectedItemsAmount, expectedHeadersAmount) => {
-    const wrapper = createWrapper({}, isOrphanVisits);
-    const items = wrapper.find(DropdownItem);
-    const headers = items.filterWhere((item) => !!item.prop('header'));
+    [false, 1, 1],
+    [true, 4, 2],
+  ])('renders expected amount of items', async (isOrphanVisits, expectedItemsAmount, expectedHeadersAmount) => {
+    const { user } = setUp({}, isOrphanVisits);
 
-    expect(items).toHaveLength(expectedItemsAmount);
-    expect(headers).toHaveLength(expectedHeadersAmount);
+    await user.click(screen.getByRole('button', { name: 'Filters' }));
+
+    expect(screen.getAllByRole('menuitem')).toHaveLength(expectedItemsAmount);
+    expect(screen.getAllByRole('heading')).toHaveLength(expectedHeadersAmount);
   });
 
   it.each([
-    ['base_url' as OrphanVisitType, 4, 1],
-    ['invalid_short_url' as OrphanVisitType, 5, 1],
-    ['regular_404' as OrphanVisitType, 6, 1],
+    ['base_url' as OrphanVisitType, 1, 1],
+    ['invalid_short_url' as OrphanVisitType, 2, 1],
+    ['regular_404' as OrphanVisitType, 3, 1],
     [undefined, -1, 0],
-  ])('sets expected item as active', (orphanVisitsType, expectedSelectedIndex, expectedActiveItems) => {
-    const wrapper = createWrapper({ orphanVisitsType });
-    const items = wrapper.find(DropdownItem);
-    const activeItem = items.filterWhere((item) => !!item.prop('active'));
+  ])('sets expected item as active', async (orphanVisitsType, expectedSelectedIndex, expectedActiveItems) => {
+    const { user } = setUp({ orphanVisitsType });
+
+    await user.click(screen.getByRole('button', { name: 'Filters' }));
+
+    const items = screen.getAllByRole('menuitem');
+    const activeItem = items.filter((item) => item.classList.contains('active'));
 
     expect.assertions(expectedActiveItems + 1);
     expect(activeItem).toHaveLength(expectedActiveItems);
     items.forEach((item, index) => {
-      if (item.prop('active')) {
+      if (item.classList.contains('active')) {
         expect(index).toEqual(expectedSelectedIndex);
       }
     });
   });
 
   it.each([
-    [1, { excludeBots: true }],
-    [4, { orphanVisitsType: 'base_url' }],
-    [5, { orphanVisitsType: 'invalid_short_url' }],
-    [6, { orphanVisitsType: 'regular_404' }],
-    [8, {}],
-  ])('invokes onChange with proper selection when an item is clicked', (index, expectedSelection) => {
-    const wrapper = createWrapper();
-    const itemToClick = wrapper.find(DropdownItem).at(index);
+    [0, { excludeBots: true }, {}],
+    [1, { orphanVisitsType: 'base_url' }, {}],
+    [2, { orphanVisitsType: 'invalid_short_url' }, {}],
+    [3, { orphanVisitsType: 'regular_404' }, {}],
+    [4, {}, { excludeBots: true }],
+  ])('invokes onChange with proper selection when an item is clicked', async (index, expectedSelection, selected) => {
+    const { user } = setUp(selected);
 
-    itemToClick.simulate('click');
-
+    expect(onChange).not.toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: 'Filters' }));
+    await user.click(screen.getAllByRole('menuitem')[index]);
     expect(onChange).toHaveBeenCalledWith(expectedSelection);
   });
 
   it('does not render the component when neither orphan visits or bots filtering will be displayed', () => {
-    const wrapper = shallow(
-      <VisitsFilterDropdown
-        isOrphanVisits={false}
-        botsSupported={false}
-        selected={{}}
-        onChange={onChange}
-      />,
-    );
-
-    expect(wrapper.text()).toEqual('');
+    const { container } = setUp({}, false, false);
+    expect(container.firstChild).toBeNull();
   });
 });

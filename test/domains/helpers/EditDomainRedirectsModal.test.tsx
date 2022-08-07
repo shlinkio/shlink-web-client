@@ -1,8 +1,8 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkDomain } from '../../../src/api/types';
 import { EditDomainRedirectsModal } from '../../../src/domains/helpers/EditDomainRedirectsModal';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditDomainRedirectsModal />', () => {
   const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
@@ -13,12 +13,9 @@ describe('<EditDomainRedirectsModal />', () => {
       baseUrlRedirect: 'baz',
     },
   });
-  const setUp = () => ({
-    user: userEvent.setup(),
-    ...render(
-      <EditDomainRedirectsModal domain={domain} isOpen toggle={toggle} editDomainRedirects={editDomainRedirects} />,
-    ),
-  });
+  const setUp = () => renderWithEvents(
+    <EditDomainRedirectsModal domain={domain} isOpen toggle={toggle} editDomainRedirects={editDomainRedirects} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

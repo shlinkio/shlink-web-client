@@ -1,20 +1,19 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { ExternalLink } from 'react-external-link';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import ShortUrlVisitsHeader from '../../src/visits/ShortUrlVisitsHeader';
+import { formatDistance, parseISO } from 'date-fns';
+import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
 import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
-import { Time } from '../../src/utils/Time';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisitsHeader />', () => {
-  let wrapper: ShallowWrapper;
-  const dateCreated = '2018-01-01T10:00:00+01:00';
+  const dateCreated = '2018-01-01T10:00:00+00:00';
   const longUrl = 'https://foo.bar/bar/foo';
   const shortUrlVisits = Mock.of<ShortUrlVisits>({
     visits: [{}, {}, {}],
   });
   const goBack = jest.fn();
-  const createWrapper = (title?: string | null) => {
+  const setUp = (title?: string | null) => {
     const shortUrlDetail = Mock.of<ShortUrlDetail>({
       shortUrl: {
         shortUrl: 'https://doma.in/abc123',
@@ -24,32 +23,29 @@ describe('<ShortUrlVisitsHeader />', () => {
       },
       loading: false,
     });
-
-    wrapper = shallow(
+    return renderWithEvents(
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />,
     );
-
-    return wrapper;
   };
 
-  beforeEach(() => createWrapper());
-  afterEach(() => wrapper.unmount());
+  it('shows when the URL was created', async () => {
+    const { user } = setUp();
+    const dateElement = screen.getByText(`${formatDistance(new Date(), parseISO(dateCreated))} ago`);
 
-  it('shows when the URL was created', () => {
-    const time = wrapper.find(Time).first();
-
-    expect(time.prop('date')).toEqual(dateCreated);
+    expect(dateElement).toBeInTheDocument();
+    expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+    await user.hover(dateElement);
+    await waitFor(() => expect(screen.getByRole('tooltip')).toHaveTextContent('2018-01-01 10:00'));
   });
 
   it.each([
-    [null, longUrl],
-    [undefined, longUrl],
-    ['My cool title', 'My cool title'],
+    [null, `Long URL: ${longUrl}`],
+    [undefined, `Long URL: ${longUrl}`],
+    ['My cool title', 'Title: My cool title'],
   ])('shows the long URL and title', (title, expectedContent) => {
-    const wrapper = createWrapper(title);
-    const longUrlLink = wrapper.find(ExternalLink).last();
+    const { container } = setUp(title);
 
-    expect(longUrlLink.prop('href')).toEqual(longUrl);
-    expect(longUrlLink.prop('children')).toEqual(expectedContent);
+    expect(container.querySelector('.long-url-container')).toHaveTextContent(expectedContent);
+    expect(screen.getByRole('link', { name: title ?? longUrl })).toHaveAttribute('href', longUrl);
   });
 });

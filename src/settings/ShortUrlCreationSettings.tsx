@@ -1,7 +1,7 @@
 import { FC, ReactNode } from 'react';
 import { DropdownItem, FormGroup } from 'reactstrap';
 import { SimpleCard } from '../utils/SimpleCard';
-import ToggleSwitch from '../utils/ToggleSwitch';
+import { ToggleSwitch } from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';

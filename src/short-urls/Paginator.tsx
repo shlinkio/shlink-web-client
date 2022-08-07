@@ -15,7 +15,7 @@ interface PaginatorProps {
   currentQueryString?: string;
 }
 
-const Paginator = ({ paginator, serverId, currentQueryString = '' }: PaginatorProps) => {
+export const Paginator = ({ paginator, serverId, currentQueryString = '' }: PaginatorProps) => {
   const { currentPage = 0, pagesCount = 0 } = paginator ?? {};
   const urlForPage = (pageNumber: NumberOrEllipsis) =>
     `/server/${serverId}/list-short-urls/${pageNumber}${currentQueryString}`;
@@ -49,5 +49,3 @@ const Paginator = ({ paginator, serverId, currentQueryString = '' }: PaginatorPr
     </Pagination>
   );
 };
-
-export default Paginator;

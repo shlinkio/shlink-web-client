@@ -1,29 +1,48 @@
-import { shallow } from 'enzyme';
-import { Route } from 'react-router-dom';
-import createSettings from '../../src/settings/Settings';
-import { NoMenuLayout } from '../../src/common/NoMenuLayout';
-import { NavPillItem } from '../../src/utils/NavPills';
+import { render, screen } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Settings as createSettings } from '../../src/settings/Settings';
 
 describe('<Settings />', () => {
-  const Component = () => null;
-  const Settings = createSettings(Component, Component, Component, Component, Component, Component);
+  const Settings = createSettings(
+    () => <span>RealTimeUpdates</span>,
+    () => <span>ShortUrlCreation</span>,
+    () => <span>ShortUrlsList</span>,
+    () => <span>UserInterface</span>,
+    () => <span>Visits</span>,
+    () => <span>Tags</span>,
+  );
+  const setUp = (activeRoute = '/') => {
+    const history = createMemoryHistory();
+    history.push(activeRoute);
+    return render(<Router location={history.location} navigator={history}><Settings /></Router>);
+  };
 
-  it('renders a no-menu layout with the expected settings sections', () => {
-    const wrapper = shallow(<Settings />);
-    const layout = wrapper.find(NoMenuLayout);
-    const sections = wrapper.find(Route);
+  it.each([
+    ['/general', {
+      visibleComps: ['UserInterface', 'RealTimeUpdates'],
+      hiddenComps: ['ShortUrlCreation', 'ShortUrlsList', 'Tags', 'Visits'],
+    }],
+    ['/short-urls', {
+      visibleComps: ['ShortUrlCreation', 'ShortUrlsList'],
+      hiddenComps: ['UserInterface', 'RealTimeUpdates', 'Tags', 'Visits'],
+    }],
+    ['/other-items', {
+      visibleComps: ['Tags', 'Visits'],
+      hiddenComps: ['UserInterface', 'RealTimeUpdates', 'ShortUrlCreation', 'ShortUrlsList'],
+    }],
+  ])('renders expected sections based on route', (activeRoute, { visibleComps, hiddenComps }) => {
+    setUp(activeRoute);
 
-    expect(layout).toHaveLength(1);
-    expect(sections).toHaveLength(4);
+    visibleComps.forEach((comp) => expect(screen.getByText(comp)).toBeInTheDocument());
+    hiddenComps.forEach((comp) => expect(screen.queryByText(comp)).not.toBeInTheDocument());
   });
 
   it('renders expected menu', () => {
-    const wrapper = shallow(<Settings />);
-    const items = wrapper.find(NavPillItem);
+    setUp();
 
-    expect(items).toHaveLength(3);
-    expect(items.first().prop('to')).toEqual('general');
-    expect(items.at(1).prop('to')).toEqual('short-urls');
-    expect(items.last().prop('to')).toEqual('other-items');
+    expect(screen.getByRole('link', { name: 'General' })).toHaveAttribute('href', '/general');
+    expect(screen.getByRole('link', { name: 'Short URLs' })).toHaveAttribute('href', '/short-urls');
+    expect(screen.getByRole('link', { name: 'Other items' })).toHaveAttribute('href', '/other-items');
   });
 });

@@ -1,5 +1,5 @@
 import { values } from 'ramda';
-import LocalStorage from '../../utils/services/LocalStorage';
+import { LocalStorage } from '../../utils/services/LocalStorage';
 import { ServersMap, serverWithIdToServerData } from '../data';
 import { saveCsv } from '../../utils/helpers/files';
 import { JsonToCsv } from '../../utils/helpers/csvjson';

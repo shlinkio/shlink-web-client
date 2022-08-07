@@ -1,9 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
@@ -18,10 +18,9 @@ describe('<EditServer />', () => {
     apiKey: 'the_api_key',
   });
   const EditServer = editServerConstruct(ServerError);
-  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => ({
-    user: userEvent.setup(),
-    ...render(<EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />),
-  });
+  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => renderWithEvents(
+    <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />,
+  );
 
   beforeEach(() => {
     (useNavigate as any).mockReturnValue(navigate);

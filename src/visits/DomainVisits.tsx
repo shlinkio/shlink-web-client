@@ -8,8 +8,8 @@ import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { toApiParams } from './types/helpers';
 import { NormalizedVisit } from './types';
-import VisitsStats from './VisitsStats';
-import VisitsHeader from './VisitsHeader';
+import { VisitsStats } from './VisitsStats';
+import { VisitsHeader } from './VisitsHeader';
 
 export interface DomainVisitsProps extends CommonVisitsProps {
   getDomainVisits: (domain: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;

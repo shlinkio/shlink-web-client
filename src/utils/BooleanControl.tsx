@@ -14,7 +14,7 @@ interface BooleanControlWithTypeProps extends BooleanControlProps {
   type: 'switch' | 'checkbox';
 }
 
-const BooleanControl: FC<BooleanControlWithTypeProps> = (
+export const BooleanControl: FC<BooleanControlWithTypeProps> = (
   { checked = false, onChange = identity, className, children, type, inline = false },
 ) => {
   const id = useDomId();
@@ -32,5 +32,3 @@ const BooleanControl: FC<BooleanControlWithTypeProps> = (
     </span>
   );
 };
-
-export default BooleanControl;

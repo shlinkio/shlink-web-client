@@ -1,47 +1,50 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { screen } from '@testing-library/react';
 import { QrErrorCorrection } from '../../../../src/utils/helpers/qrCodes';
 import { QrErrorCorrectionDropdown } from '../../../../src/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
+import { renderWithEvents } from '../../../__helpers__/setUpTest';
 
 describe('<QrErrorCorrectionDropdown />', () => {
   const initialErrorCorrection: QrErrorCorrection = 'Q';
   const setErrorCorrection = jest.fn();
-  let wrapper: ShallowWrapper;
+  const setUp = () => renderWithEvents(
+    <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
+  );
 
-  beforeEach(() => {
-    wrapper = shallow(
-      <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
-    );
-  });
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
-  it('renders initial state', () => {
-    const items = wrapper.find(DropdownItem);
+  it('renders initial state', async () => {
+    const { user } = setUp();
+    const btn = screen.getByRole('button');
 
-    expect(wrapper.prop('text')).toEqual('Error correction (Q)');
-    expect(items.at(0).prop('active')).toEqual(false);
-    expect(items.at(1).prop('active')).toEqual(false);
-    expect(items.at(2).prop('active')).toEqual(true);
-    expect(items.at(3).prop('active')).toEqual(false);
+    expect(btn).toHaveTextContent('Error correction (Q)');
+    await user.click(btn);
+    const items = screen.getAllByRole('menuitem');
+
+    expect(items[0]).not.toHaveClass('active');
+    expect(items[1]).not.toHaveClass('active');
+    expect(items[2]).toHaveClass('active');
+    expect(items[3]).not.toHaveClass('active');
   });
 
-  it('invokes callback when items are clicked', () => {
-    const items = wrapper.find(DropdownItem);
+  it('invokes callback when items are clicked', async () => {
+    const { user } = setUp();
+    const clickItem = async (name: RegExp) => {
+      await user.click(screen.getByRole('button'));
+      await user.click(screen.getByRole('menuitem', { name }));
+    };
 
     expect(setErrorCorrection).not.toHaveBeenCalled();
 
-    items.at(0).simulate('click');
+    await clickItem(/ow/);
     expect(setErrorCorrection).toHaveBeenCalledWith('L');
 
-    items.at(1).simulate('click');
+    await clickItem(/edium/);
     expect(setErrorCorrection).toHaveBeenCalledWith('M');
 
-    items.at(2).simulate('click');
+    await clickItem(/uartile/);
     expect(setErrorCorrection).toHaveBeenCalledWith('Q');
 
-    items.at(3).simulate('click');
+    await clickItem(/igh/);
     expect(setErrorCorrection).toHaveBeenCalledWith('H');
   });
 });

@@ -1,16 +1,13 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { DropdownItem } from 'reactstrap';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
-import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
-import DateRangeRow from '../../../src/utils/dates/DateRangeRow';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeSelector />', () => {
-  let wrapper: ShallowWrapper;
   const onDatesChange = jest.fn();
-  const createWrapper = (props: Partial<DateRangeSelectorProps> = {}) => {
-    wrapper = shallow(
+  const setUp = async (props: Partial<DateRangeSelectorProps> = {}) => {
+    const result = renderWithEvents(
       <DateRangeSelector
         {...Mock.of<DateRangeSelectorProps>(props)}
         defaultText="Default text"
@@ -18,22 +15,21 @@ describe('<DateRangeSelector />', () => {
       />,
     );
 
-    return wrapper;
+    await result.user.click(screen.getByRole('button'));
+    await waitFor(() => screen.getByRole('menu'));
+
+    return result;
   };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('renders proper amount of items', () => {
-    const wrapper = createWrapper();
-    const items = wrapper.find(DropdownItem);
-    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
+  it('renders proper amount of items', async () => {
+    const { container } = await setUp();
 
-    expect(items).toHaveLength(3);
-    expect(dateIntervalItems).toHaveLength(1);
-    expect(items.filter('[divider]')).toHaveLength(1);
-    expect(items.filter('[header]')).toHaveLength(1);
-    expect(items.filter('[text]')).toHaveLength(1);
+    expect(screen.getAllByRole('menuitem')).toHaveLength(8);
+    expect(screen.getByRole('heading')).toHaveTextContent('Custom:');
+    expect(container.querySelector('.dropdown-divider')).toBeInTheDocument();
+    expect(container.querySelector('.dropdown-item-text')).toBeInTheDocument();
   });
 
   it.each([
@@ -47,30 +43,27 @@ describe('<DateRangeSelector />', () => {
     ['last180Days' as DateInterval, 1],
     ['last365Days' as DateInterval, 1],
     [{ startDate: new Date() }, 0],
-  ])('sets proper element as active based on provided date range', (initialDateRange, expectedActiveIntervalItems) => {
-    const wrapper = createWrapper({ initialDateRange });
-    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems).filterWhere(
-      (item) => item.prop('active') !== undefined,
-    );
-
-    expect(dateIntervalItems).toHaveLength(expectedActiveIntervalItems);
+  ])('sets proper element as active based on provided date range', async (initialDateRange, expectedActiveItems) => {
+    const { container } = await setUp({ initialDateRange });
+    expect(container.querySelectorAll('.active')).toHaveLength(expectedActiveItems);
   });
 
-  it('triggers onDatesChange callback when selecting an element', () => {
-    const wrapper = createWrapper();
-    const dates = wrapper.find(DateRangeRow);
-    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
+  it('triggers onDatesChange callback when selecting an element', async () => {
+    const { user } = await setUp();
 
-    dates.simulate('startDateChange', null);
-    dates.simulate('endDateChange', null);
-    dateIntervalItems.simulate('change');
+    await user.click(screen.getByPlaceholderText('Since...'));
+    await user.click(screen.getAllByRole('option')[0]);
+
+    await user.click(screen.getByPlaceholderText('Until...'));
+    await user.click(screen.getAllByRole('option')[0]);
+
+    await user.click(screen.getAllByRole('menuitem')[0]);
+
     expect(onDatesChange).toHaveBeenCalledTimes(3);
   });
 
-  it('propagates default text to DateIntervalDropdownItems', () => {
-    const wrapper = createWrapper();
-    const dateIntervalItems = wrapper.find(DateIntervalDropdownItems);
-
-    expect(dateIntervalItems.prop('allText')).toEqual('Default text');
+  it('propagates default text to DateIntervalDropdownItems', async () => {
+    await setUp();
+    expect(screen.getAllByText('Default text')).toHaveLength(2);
   });
 });

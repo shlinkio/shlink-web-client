@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { MainHeader as createMainHeader } from '../../src/common/MainHeader';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<MainHeader />', () => {
   const MainHeader = createMainHeader(() => <>ServersDropdown</>);
@@ -10,14 +10,11 @@ describe('<MainHeader />', () => {
     const history = createMemoryHistory();
     history.push(pathname);
 
-    const user = userEvent.setup();
-    const renderResult = render(
+    return renderWithEvents(
       <Router location={history.location} navigator={history}>
         <MainHeader />
       </Router>,
     );
-
-    return { user, ...renderResult };
   };
 
   it('renders ServersDropdown', () => {

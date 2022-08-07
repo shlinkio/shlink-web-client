@@ -1,66 +1,58 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { UncontrolledTooltip } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { ManageServersRow as createManageServersRow } from '../../src/servers/ManageServersRow';
 import { ServerWithId } from '../../src/servers/data';
 
 describe('<ManageServersRow />', () => {
-  const ManageServersRowDropdown = () => null;
-  const ManageServersRow = createManageServersRow(ManageServersRowDropdown);
+  const ManageServersRow = createManageServersRow(() => <span>ManageServersRowDropdown</span>);
   const server: ServerWithId = {
     name: 'My server',
     url: 'https://example.com',
     apiKey: '123',
     id: 'abc',
   };
-  let wrapper: ShallowWrapper;
-  const createWrapper = (hasAutoConnect = false, autoConnect = false) => {
-    wrapper = shallow(<ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (hasAutoConnect = false, autoConnect = false) => render(
+    <MemoryRouter>
+      <table>
+        <tbody>
+          <ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />
+        </tbody>
+      </table>
+    </MemoryRouter>,
+  );
 
   it.each([
     [true, 4],
     [false, 3],
   ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
-    const wrapper = createWrapper(hasAutoConnect);
-    const td = wrapper.find('td');
-    const th = wrapper.find('th');
+    setUp(hasAutoConnect);
+
+    const td = screen.getAllByRole('cell');
+    const th = screen.getAllByRole('columnheader');
 
     expect(td.length + th.length).toEqual(expectedCols);
   });
 
   it('renders a dropdown', () => {
-    const wrapper = createWrapper();
-    const dropdown = wrapper.find(ManageServersRowDropdown);
-
-    expect(dropdown).toHaveLength(1);
-    expect(dropdown.prop('server')).toEqual(expect.objectContaining(server));
+    setUp();
+    expect(screen.getByText('ManageServersRowDropdown')).toBeInTheDocument();
   });
 
   it.each([
-    [true, 1],
-    [false, 0],
-  ])('renders auto-connect icon only if server is autoConnect', (autoConnect, expectedIcons) => {
-    const wrapper = createWrapper(true, autoConnect);
-    const icon = wrapper.find(FontAwesomeIcon);
-    const iconTooltip = wrapper.find(UncontrolledTooltip);
-
-    expect(icon).toHaveLength(expectedIcons);
-    expect(iconTooltip).toHaveLength(expectedIcons);
+    [true],
+    [false],
+  ])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
+    const { container } = setUp(true, autoConnect);
+    expect(container).toMatchSnapshot();
   });
 
   it('renders server props where appropriate', () => {
-    const wrapper = createWrapper();
-    const link = wrapper.find(Link);
-    const td = wrapper.find('td').first();
+    setUp();
 
-    expect(link.prop('to')).toEqual(`/server/${server.id}`);
-    expect(link.prop('children')).toEqual(server.name);
-    expect(td.prop('children')).toEqual(server.url);
+    const link = screen.getByRole('link');
+
+    expect(link).toHaveAttribute('href', `/server/${server.id}`);
+    expect(link).toHaveTextContent(server.name);
+    expect(screen.getByText(server.url)).toBeInTheDocument();
   });
 });

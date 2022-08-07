@@ -29,7 +29,7 @@ const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShor
   return { ...rest, orderBy: orderToString(orderBy) };
 };
 
-export default class ShlinkApiClient {
+export class ShlinkApiClient {
   public constructor(
     private readonly axios: AxiosInstance,
     private readonly baseUrl: string,

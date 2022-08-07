@@ -1,8 +1,8 @@
 import Bottle from 'bottlejs';
-import MapModal from '../helpers/MapModal';
+import { MapModal } from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
-import ShortUrlVisits from '../ShortUrlVisits';
-import TagVisits from '../TagVisits';
+import { ShortUrlVisits } from '../ShortUrlVisits';
+import { TagVisits } from '../TagVisits';
 import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';

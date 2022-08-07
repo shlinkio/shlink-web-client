@@ -1,28 +1,17 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { PropsWithChildren } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card } from 'reactstrap';
-import Message, { MessageProps } from '../../src/utils/Message';
+import { Message, MessageProps } from '../../src/utils/Message';
 
 describe('<Message />', () => {
-  let wrapper: ShallowWrapper;
-  const createWrapper = (props: PropsWithChildren<MessageProps> = {}) => {
-    wrapper = shallow(<Message {...props} />);
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
+  const setUp = (props: PropsWithChildren<MessageProps> = {}) => render(<Message {...props} />);
 
   it.each([
-    [true, 1, 0],
-    [false, 0, 1],
-    [undefined, 0, 1],
-  ])('renders expected classes based on width', (fullWidth, expectedFull, expectedNonFull) => {
-    const wrapper = createWrapper({ fullWidth });
-
-    expect(wrapper.find('.col-md-12')).toHaveLength(expectedFull);
-    expect(wrapper.find('.col-md-10')).toHaveLength(expectedNonFull);
+    [true, 'col-md-12'],
+    [false, 'col-md-10 offset-md-1'],
+    [undefined, 'col-md-10 offset-md-1'],
+  ])('renders expected classes based on width', (fullWidth, expectedClass) => {
+    const { container } = setUp({ fullWidth });
+    expect(container.firstChild?.firstChild).toHaveClass(expectedClass);
   });
 
   it.each([
@@ -31,15 +20,14 @@ describe('<Message />', () => {
     [true, undefined],
     [false, undefined],
   ])('renders expected content', (loading, children) => {
-    const wrapper = createWrapper({ loading, children });
+    setUp({ loading, children });
 
-    expect(wrapper.find(FontAwesomeIcon)).toHaveLength(loading ? 1 : 0);
+    expect(screen.queryAllByRole('img', { hidden: true })).toHaveLength(loading ? 1 : 0);
 
     if (loading) {
-      expect(wrapper.find('span').text()).toContain(children || 'Loading...');
+      expect(screen.getByText(children || 'Loading...')).toHaveClass('ms-2');
     } else {
-      expect(wrapper.find('span')).toHaveLength(0);
-      expect(wrapper.find('h3').text()).toContain(children || '');
+      expect(screen.getByRole('heading')).toHaveTextContent(children || '');
     }
   });
 
@@ -48,17 +36,14 @@ describe('<Message />', () => {
     ['default', '', 'text-muted'],
     [undefined, '', 'text-muted'],
   ])('renders proper classes based on message type', (type, expectedCardClass, expectedH3Class) => {
-    const wrapper = createWrapper({ type: type as 'default' | 'error' | undefined });
-    const card = wrapper.find(Card);
-    const h3 = wrapper.find('h3');
+    const { container } = setUp({ type: type as 'default' | 'error' | undefined });
 
-    expect(card.prop('className')).toEqual(expectedCardClass);
-    expect(h3.prop('className')).toEqual(`text-center mb-0 ${expectedH3Class}`);
+    expect(container.querySelector('.card-body')).toHaveAttribute('class', expect.stringContaining(expectedCardClass));
+    expect(screen.getByRole('heading')).toHaveClass(`text-center mb-0 ${expectedH3Class}`);
   });
 
   it.each([{ className: 'foo' }, { className: 'bar' }, {}])('renders provided classes', ({ className }) => {
-    const wrapper = createWrapper({ className });
-
-    expect(wrapper.prop('className')).toEqual(`g-0${className ? ` ${className}` : ''}`);
+    const { container } = setUp({ className });
+    expect(container.firstChild).toHaveClass(`g-0${className ? ` ${className}` : ''}`);
   });
 });

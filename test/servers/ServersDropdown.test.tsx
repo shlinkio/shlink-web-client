@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { values } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { ServersMap, ServerWithId } from '../../src/servers/data';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {
   const fallbackServers: ServersMap = {
@@ -12,10 +12,9 @@ describe('<ServersDropdown />', () => {
     '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2b' }),
     '3c': Mock.of<ServerWithId>({ name: 'baz', id: '3c' }),
   };
-  const setUp = (servers: ServersMap = fallbackServers) => ({
-    user: userEvent.setup(),
-    ...render(<MemoryRouter><ServersDropdown servers={servers} selectedServer={null} /></MemoryRouter>),
-  });
+  const setUp = (servers: ServersMap = fallbackServers) => renderWithEvents(
+    <MemoryRouter><ServersDropdown servers={servers} selectedServer={null} /></MemoryRouter>,
+  );
 
   it('contains the list of servers and the "mange servers" button', async () => {
     const { user } = setUp();

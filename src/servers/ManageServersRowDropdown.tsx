@@ -39,7 +39,7 @@ export const ManageServersRowDropdown = (
       <DropdownItem tag={Link} to={`${serverUrl}/edit`}>
         <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
       </DropdownItem>
-      <DropdownItem onClick={() => setAutoConnect(server, !server.autoConnect)}>
+      <DropdownItem onClick={() => setAutoConnect(server, !isAutoConnect)}>
         <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
       </DropdownItem>
       <DropdownItem divider />

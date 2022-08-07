@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
 import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 const ComponentWithError = () => {
   throw new Error('Error!!');
@@ -36,8 +36,7 @@ describe('<ErrorHandler />', () => {
   });
 
   it('reloads page on button click', async () => {
-    const user = userEvent.setup();
-    render(<ErrorHandler children={<ComponentWithError />} />);
+    const { user } = renderWithEvents(<ErrorHandler children={<ComponentWithError />} />);
 
     expect(reload).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button'));

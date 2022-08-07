@@ -1,45 +1,34 @@
-import { shallow, ShallowWrapper } from 'enzyme';
-import { ExternalLink } from 'react-external-link';
-import { Button, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
+import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import createQrCodeModal from '../../../src/short-urls/helpers/QrCodeModal';
+import { QrCodeModal as createQrCodeModal } from '../../../src/short-urls/helpers/QrCodeModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ReachableServer } from '../../../src/servers/data';
-import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { SemVer } from '../../../src/utils/helpers/version';
 import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
-import { QrFormatDropdown } from '../../../src/short-urls/helpers/qr-codes/QrFormatDropdown';
-import { QrErrorCorrectionDropdown } from '../../../src/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<QrCodeModal />', () => {
-  let wrapper: ShallowWrapper;
   const saveImage = jest.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }));
   const shortUrl = 'https://doma.in/abc123';
-  const createWrapper = (version: SemVer = '2.6.0') => {
-    const selectedServer = Mock.of<ReachableServer>({ version });
+  const setUp = (version: SemVer = '2.6.0') => renderWithEvents(
+    <QrCodeModal
+      isOpen
+      shortUrl={Mock.of<ShortUrl>({ shortUrl })}
+      selectedServer={Mock.of<ReachableServer>({ version })}
+      toggle={() => {}}
+    />,
+  );
 
-    wrapper = shallow(
-      <QrCodeModal
-        shortUrl={Mock.of<ShortUrl>({ shortUrl })}
-        isOpen
-        toggle={() => {}}
-        selectedServer={selectedServer}
-      />,
-    );
-
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
   it('shows an external link to the URL in the header', () => {
-    const wrapper = createWrapper();
-    const externalLink = wrapper.find(ModalHeader).find(ExternalLink);
+    setUp();
+    const externalLink = screen.getByRole('heading').querySelector('a');
 
-    expect(externalLink).toHaveLength(1);
-    expect(externalLink.prop('href')).toEqual(shortUrl);
+    expect(externalLink).toBeInTheDocument();
+    expect(externalLink).toHaveAttribute('href', shortUrl);
+    expect(externalLink).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
   it.each([
@@ -47,22 +36,16 @@ describe('<QrCodeModal />', () => {
     ['2.6.0' as SemVer, 0, '/qr-code?size=300&format=png'],
     ['2.6.0' as SemVer, 10, '/qr-code?size=300&format=png&margin=10'],
     ['2.8.0' as SemVer, 0, '/qr-code?size=300&format=png&errorCorrection=L'],
-  ])('displays an image with the QR code of the URL', (version, margin, expectedUrl) => {
-    const wrapper = createWrapper(version);
-    const formControls = wrapper.find('.form-control-range');
+  ])('displays an image with the QR code of the URL', async (version, margin, expectedUrl) => {
+    const { container } = setUp(version);
+    const marginControl = container.parentNode?.querySelectorAll('.form-control-range').item(1);
 
-    if (formControls.length > 1) {
-      formControls.at(1).simulate('change', { target: { value: `${margin}` } });
+    if (marginControl) {
+      fireEvent.change(marginControl, { target: { value: `${margin}` } });
     }
 
-    const modalBody = wrapper.find(ModalBody);
-    const img = modalBody.find('img');
-    const linkInBody = modalBody.find(ExternalLink);
-    const copyToClipboard = modalBody.find(CopyToClipboardIcon);
-
-    expect(img.prop('src')).toEqual(`${shortUrl}${expectedUrl}`);
-    expect(linkInBody.prop('href')).toEqual(`${shortUrl}${expectedUrl}`);
-    expect(copyToClipboard.prop('text')).toEqual(`${shortUrl}${expectedUrl}`);
+    expect(screen.getByRole('img')).toHaveAttribute('src', `${shortUrl}${expectedUrl}`);
+    expect(screen.getByText(`${shortUrl}${expectedUrl}`)).toHaveAttribute('href', `${shortUrl}${expectedUrl}`);
   });
 
   it.each([
@@ -73,37 +56,36 @@ describe('<QrCodeModal />', () => {
     [200, 50, undefined],
     [720, 100, 'xl'],
   ])('renders expected size', (size, margin, modalSize) => {
-    const wrapper = createWrapper();
-    const formControls = wrapper.find('.form-control-range');
-    const sizeInput = formControls.at(0);
-    const marginInput = formControls.at(1);
+    const { container } = setUp();
+    const formControls = container.parentNode?.querySelectorAll('.form-control-range');
+    const sizeInput = formControls?.[0];
+    const marginInput = formControls?.[1];
 
-    sizeInput.simulate('change', { target: { value: `${size}` } });
-    marginInput.simulate('change', { target: { value: `${margin}` } });
+    sizeInput && fireEvent.change(sizeInput, { target: { value: `${size}` } });
+    marginInput && fireEvent.change(marginInput, { target: { value: `${margin}` } });
 
-    expect(wrapper.find('label').at(0).text()).toEqual(`Size: ${size}px`);
-    expect(wrapper.find('label').at(1).text()).toEqual(`Margin: ${margin}px`);
-    expect(wrapper.find(Modal).prop('size')).toEqual(modalSize);
+    expect(screen.getByText(`Size: ${size}px`)).toBeInTheDocument();
+    expect(screen.getByText(`Margin: ${margin}px`)).toBeInTheDocument();
+    modalSize && expect(screen.getByRole('document')).toHaveClass(`modal-${modalSize}`);
   });
 
   it.each([
     ['2.6.0' as SemVer, 1, 'col-md-4'],
     ['2.8.0' as SemVer, 2, 'col-md-6'],
   ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
-    const wrapper = createWrapper(version);
-    const dropdownsLength = wrapper.find(QrFormatDropdown).length + wrapper.find(QrErrorCorrectionDropdown).length;
-    const firstCol = wrapper.find(Row).find(FormGroup).first();
+    const { container } = setUp(version);
+    const dropdowns = screen.getAllByRole('button');
+    const firstCol = container.parentNode?.querySelectorAll('.d-grid').item(0);
 
-    expect(dropdownsLength).toEqual(expectedAmountOfDropdowns);
-    expect(firstCol.prop('className')).toEqual(`d-grid ${expectedRangeClass}`);
+    expect(dropdowns).toHaveLength(expectedAmountOfDropdowns + 1); // Add one because of the close button
+    expect(firstCol).toHaveClass(expectedRangeClass);
   });
 
-  it('saves the QR code image when clicking the Download button', () => {
-    const wrapper = createWrapper('2.9.0');
-    const downloadBtn = wrapper.find(Button);
+  it('saves the QR code image when clicking the Download button', async () => {
+    const { user } = setUp('2.9.0');
 
     expect(saveImage).not.toHaveBeenCalled();
-    downloadBtn.simulate('click');
+    await user.click(screen.getByRole('button', { name: /^Download/ }));
     expect(saveImage).toHaveBeenCalledTimes(1);
   });
 });

@@ -7,7 +7,7 @@ import reducer, {
   tagDeleted,
   deleteTag,
 } from '../../../src/tags/reducers/tagDelete';
-import ShlinkApiClient from '../../../src/api/services/ShlinkApiClient';
+import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('tagDeleteReducer', () => {

@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import Message from '../utils/Message';
+import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';

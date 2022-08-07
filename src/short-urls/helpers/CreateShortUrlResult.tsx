@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
 import { ShortUrlCreation } from '../reducers/shortUrlCreation';
-import { StateFlagTimeout } from '../../utils/helpers/hooks';
+import { TimeoutToggle } from '../../utils/helpers/hooks';
 import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
@@ -16,10 +16,10 @@ export interface CreateShortUrlResultProps extends ShortUrlCreation {
   canBeClosed?: boolean;
 }
 
-const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
+export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
   { error, errorData, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
-  const [showCopyTooltip, setShowCopyTooltip] = useStateFlagTimeout();
+  const [showCopyTooltip, setShowCopyTooltip] = useTimeoutToggle();
 
   useEffect(() => {
     resetCreateShortUrl();
@@ -43,7 +43,7 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
   return (
     <Result type="success" className="mt-3">
       {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-end pointer" onClick={resetCreateShortUrl} />}
-      <b>Great!</b> The short URL is <b>{shortUrl}</b>
+      <span><b>Great!</b> The short URL is <b>{shortUrl}</b></span>
 
       <CopyToClipboard text={shortUrl} onCopy={setShowCopyTooltip}>
         <button
@@ -61,5 +61,3 @@ const CreateShortUrlResult = (useStateFlagTimeout: StateFlagTimeout) => (
     </Result>
   );
 };
-
-export default CreateShortUrlResult;

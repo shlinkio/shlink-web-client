@@ -1,46 +1,47 @@
-import { shallow } from 'enzyme';
+import { screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
+import { formatISO } from 'date-fns';
 import { OrphanVisits as createOrphanVisits } from '../../src/visits/OrphanVisits';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { VisitsInfo } from '../../src/visits/types';
-import VisitsStats from '../../src/visits/VisitsStats';
+import { Visit, VisitsInfo } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
-import VisitsHeader from '../../src/visits/VisitsHeader';
-
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useParams: jest.fn().mockReturnValue({}),
-}));
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrphanVisits />', () => {
-  it('wraps visits stats and header', () => {
-    const getOrphanVisits = jest.fn();
-    const cancelGetOrphanVisits = jest.fn();
-    const orphanVisits = Mock.all<VisitsInfo>();
-    const OrphanVisits = createOrphanVisits(Mock.all<ReportExporter>());
-
-    const wrapper = shallow(
+  const getOrphanVisits = jest.fn();
+  const exportVisits = jest.fn();
+  const orphanVisits = Mock.of<VisitsInfo>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
+  const OrphanVisits = createOrphanVisits(Mock.of<ReportExporter>({ exportVisits }));
+  const setUp = () => renderWithEvents(
+    <MemoryRouter>
       <OrphanVisits
         {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getOrphanVisits={getOrphanVisits}
         orphanVisits={orphanVisits}
-        cancelGetOrphanVisits={cancelGetOrphanVisits}
+        cancelGetOrphanVisits={jest.fn()}
         settings={Mock.all<Settings>()}
         selectedServer={Mock.all<SelectedServer>()}
-      />,
-    ).dive();
-    const stats = wrapper.find(VisitsStats);
-    const header = wrapper.find(VisitsHeader);
+      />
+    </MemoryRouter>,
+  );
 
-    expect(stats).toHaveLength(1);
-    expect(header).toHaveLength(1);
-    expect(stats.prop('cancelGetVisits')).toEqual(cancelGetOrphanVisits);
-    expect(stats.prop('visitsInfo')).toEqual(orphanVisits);
-    expect(stats.prop('isOrphanVisits')).toEqual(true);
-    expect(header.prop('visits')).toEqual(orphanVisits.visits);
-    expect(header.prop('goBack')).toEqual(expect.any(Function));
+  it('wraps visits stats and header', () => {
+    setUp();
+    expect(screen.getByRole('heading', { name: 'Orphan visits' })).toBeInTheDocument();
+    expect(getOrphanVisits).toHaveBeenCalled();
+  });
+
+  it('exports visits when clicking the button', async () => {
+    const { user } = setUp();
+    const btn = screen.getByRole('button', { name: 'Export (1)' });
+
+    expect(exportVisits).not.toHaveBeenCalled();
+    expect(btn).toBeInTheDocument();
+
+    await user.click(btn);
+    expect(exportVisits).toHaveBeenCalledWith('orphan_visits.csv', expect.anything());
   });
 });

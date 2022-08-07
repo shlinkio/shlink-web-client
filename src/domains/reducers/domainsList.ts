@@ -65,7 +65,7 @@ export default buildReducer<DomainsList, DomainsCombinedAction>({
     ({ ...initialState, domains, filteredDomains: domains, defaultRedirects }),
   [FILTER_DOMAINS]: (state, { searchTerm }) => ({
     ...state,
-    filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(searchTerm)),
+    filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(searchTerm.toLowerCase())),
   }),
   [EDIT_DOMAIN_REDIRECTS]: (state, { domain, redirects }) => ({
     ...state,

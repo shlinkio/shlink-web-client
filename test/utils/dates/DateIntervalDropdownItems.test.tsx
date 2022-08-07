@@ -1,41 +1,57 @@
-import { DropdownItem } from 'reactstrap';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen, waitFor } from '@testing-library/react';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
-import { DATE_INTERVALS } from '../../../src/utils/dates/types';
+import { DATE_INTERVALS, DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
+import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalDropdownItems />', () => {
-  let wrapper: ShallowWrapper;
   const onChange = jest.fn();
+  const setUp = async () => {
+    const { user, ...renderResult } = renderWithEvents(
+      <DropdownBtn text="text">
+        <DateIntervalDropdownItems allText="All" active="last180Days" onChange={onChange} />
+      </DropdownBtn>,
+    );
 
-  beforeEach(() => {
-    wrapper = shallow(<DateIntervalDropdownItems allText="All" active="last180Days" onChange={onChange} />);
-  });
+    await user.click(screen.getByRole('button'));
+    await waitFor(() => expect(screen.getByRole('menu')).toBeInTheDocument());
+
+    return { user, ...renderResult };
+  };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('renders expected amount of items', () => {
-    const items = wrapper.find(DropdownItem);
-    const dividerItems = items.findWhere((item) => !!item.prop('divider'));
+  it('renders expected amount of items', async () => {
+    await setUp();
 
-    expect(items).toHaveLength(DATE_INTERVALS.length + 2);
-    expect(dividerItems).toHaveLength(1);
+    expect(screen.getAllByRole('menuitem')).toHaveLength(DATE_INTERVALS.length + 1);
+    expect(screen.getByRole('menuitem', { name: 'Last 180 days' })).toHaveClass('active');
   });
 
-  it('sets expected item as active', () => {
-    const items = wrapper.find(DropdownItem).findWhere((item) => item.prop('active') !== undefined);
-    const EXPECTED_ACTIVE_INDEX = 6;
+  it('sets expected item as active', async () => {
+    await setUp();
+    const EXPECTED_ACTIVE_INDEX = 5;
 
-    expect.assertions(DATE_INTERVALS.length + 1);
-    items.forEach((item, index) => expect(item.prop('active')).toEqual(index === EXPECTED_ACTIVE_INDEX));
+    DATE_INTERVALS.forEach((interval, index) => {
+      const item = screen.getByRole('menuitem', { name: rangeOrIntervalToString(interval) });
+
+      if (index === EXPECTED_ACTIVE_INDEX) {
+        expect(item).toHaveClass('active');
+      } else {
+        expect(item).not.toHaveClass('active');
+      }
+    });
   });
 
-  it('triggers onChange callback when selecting an element', () => {
-    const items = wrapper.find(DropdownItem);
+  it.each([
+    [3, 'last7Days' as DateInterval],
+    [7, 'last365Days' as DateInterval],
+    [2, 'yesterday' as DateInterval],
+  ])('triggers onChange callback when selecting an element', async (index, expectedInterval) => {
+    const { user } = await setUp();
 
-    items.at(4).simulate('click');
-    items.at(6).simulate('click');
-    items.at(3).simulate('click');
-    expect(onChange).toHaveBeenCalledTimes(3);
+    await user.click(screen.getAllByRole('menuitem')[index]);
+
+    expect(onChange).toHaveBeenCalledWith(expectedInterval);
   });
 });

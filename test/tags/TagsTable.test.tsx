@@ -1,24 +1,21 @@
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { shallow, ShallowWrapper } from 'enzyme';
 import { useLocation } from 'react-router-dom';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { SelectedServer } from '../../src/servers/data';
 import { rangeOf } from '../../src/utils/utils';
-import { SimplePaginator } from '../../src/common/SimplePaginator';
 import { NormalizedTag } from '../../src/tags/data';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useLocation: jest.fn() }));
 
 describe('<TagsTable />', () => {
-  const TagsTableRow = () => null;
   const orderByColumn = jest.fn();
-  const TagsTable = createTagsTable(TagsTableRow);
+  const TagsTable = createTagsTable(({ tag }) => <tr><td>TagsTableRow [{tag.tag}]</td></tr>);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
-  let wrapper: ShallowWrapper;
-  const createWrapper = (sortedTags: string[] = [], search = '') => {
+  const setUp = (sortedTags: string[] = [], search = '') => {
     (useLocation as any).mockReturnValue({ search });
-
-    wrapper = shallow(
+    return renderWithEvents(
       <TagsTable
         sortedTags={sortedTags.map((tag) => Mock.of<NormalizedTag>({ tag }))}
         selectedServer={Mock.all<SelectedServer>()}
@@ -26,20 +23,15 @@ describe('<TagsTable />', () => {
         orderByColumn={() => orderByColumn}
       />,
     );
-
-    return wrapper;
   };
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
   it('renders empty result if there are no tags', () => {
-    const wrapper = createWrapper();
-    const regularRows = wrapper.find('tbody').find('tr');
-    const tagRows = wrapper.find(TagsTableRow);
+    setUp();
 
-    expect(regularRows).toHaveLength(1);
-    expect(tagRows).toHaveLength(0);
+    expect(screen.queryByText(/^TagsTableRow/)).not.toBeInTheDocument();
+    expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 
   it.each([
@@ -50,10 +42,10 @@ describe('<TagsTable />', () => {
     [tags(30), 20],
     [tags(100), 20],
   ])('renders as many rows as there are in current page', (filteredTags, expectedRows) => {
-    const wrapper = createWrapper(filteredTags);
-    const tagRows = wrapper.find(TagsTableRow);
+    setUp(filteredTags);
 
-    expect(tagRows).toHaveLength(expectedRows);
+    expect(screen.getAllByText(/^TagsTableRow/)).toHaveLength(expectedRows);
+    expect(screen.queryByText('No results found')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -64,10 +56,8 @@ describe('<TagsTable />', () => {
     [tags(30), 1],
     [tags(100), 1],
   ])('renders paginator if there are more than one page', (filteredTags, expectedPaginators) => {
-    const wrapper = createWrapper(filteredTags);
-    const paginator = wrapper.find(SimplePaginator);
-
-    expect(paginator).toHaveLength(expectedPaginators);
+    const { container } = setUp(filteredTags);
+    expect(container.querySelectorAll('.sticky-card-paginator')).toHaveLength(expectedPaginators);
   });
 
   it.each([
@@ -78,30 +68,30 @@ describe('<TagsTable />', () => {
     [5, 7, 80],
     [6, 0, 0],
   ])('renders page from query if present', (page, expectedRows, offset) => {
-    const wrapper = createWrapper(tags(87), `page=${page}`);
-    const tagRows = wrapper.find(TagsTableRow);
+    setUp(tags(87), `page=${page}`);
+
+    const tagRows = screen.queryAllByText(/^TagsTableRow/);
 
     expect(tagRows).toHaveLength(expectedRows);
-    tagRows.forEach((row, index) => {
-      expect(row.prop('tag')).toEqual(expect.objectContaining({ tag: `tag_${index + offset + 1}` }));
-    });
+    tagRows.forEach((row, index) => expect(row).toHaveTextContent(`[tag_${index + offset + 1}]`));
   });
 
-  it('allows changing current page in paginator', () => {
-    const wrapper = createWrapper(tags(100));
+  it('allows changing current page in paginator', async () => {
+    const { user, container } = setUp(tags(100));
 
-    expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(1);
-    (wrapper.find(SimplePaginator).prop('setCurrentPage') as Function)(5);
-    expect(wrapper.find(SimplePaginator).prop('currentPage')).toEqual(5);
+    expect(container.querySelector('.active')).toHaveTextContent('1');
+    await user.click(screen.getByText('5'));
+    expect(container.querySelector('.active')).toHaveTextContent('5');
   });
 
-  it('orders tags when column is clicked', () => {
-    const wrapper = createWrapper(tags(100));
+  it('orders tags when column is clicked', async () => {
+    const { user } = setUp(tags(100));
+    const headers = screen.getAllByRole('columnheader');
 
     expect(orderByColumn).not.toHaveBeenCalled();
-    wrapper.find('thead').find('th').first().simulate('click');
-    wrapper.find('thead').find('th').at(2).simulate('click');
-    wrapper.find('thead').find('th').at(1).simulate('click');
+    await user.click(headers[0]);
+    await user.click(headers[2]);
+    await user.click(headers[1]);
     expect(orderByColumn).toHaveBeenCalledTimes(3);
   });
 });

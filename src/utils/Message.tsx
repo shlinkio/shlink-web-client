@@ -30,7 +30,9 @@ export type MessageProps = PropsWithChildren<{
   type?: MessageType;
 }>;
 
-const Message: FC<MessageProps> = ({ className, children, loading = false, type = 'default', fullWidth = false }) => {
+export const Message: FC<MessageProps> = (
+  { className, children, loading = false, type = 'default', fullWidth = false },
+) => {
   const classes = classNames({
     'col-md-12': fullWidth,
     'col-md-10 offset-md-1': !fullWidth,
@@ -50,5 +52,3 @@ const Message: FC<MessageProps> = ({ className, children, loading = false, type 
     </Row>
   );
 };
-
-export default Message;

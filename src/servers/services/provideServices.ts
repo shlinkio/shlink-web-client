@@ -1,10 +1,10 @@
 import Bottle from 'bottlejs';
-import CreateServer from '../CreateServer';
+import { CreateServer } from '../CreateServer';
 import { ServersDropdown } from '../ServersDropdown';
-import DeleteServerModal from '../DeleteServerModal';
-import DeleteServerButton from '../DeleteServerButton';
+import { DeleteServerModal } from '../DeleteServerModal';
+import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
-import ImportServersBtn from '../helpers/ImportServersBtn';
+import { ImportServersBtn } from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
 import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
@@ -25,7 +25,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ManageServers,
     'ServersExporter',
     'ImportServersBtn',
-    'useStateFlagTimeout',
+    'useTimeoutToggle',
     'ManageServersRow',
   );
   bottle.decorator('ManageServers', withoutSelectedServer);
@@ -36,7 +36,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
   bottle.decorator('ManageServersRowDropdown', connect(null, ['setAutoConnect']));
 
-  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useStateFlagTimeout');
+  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useTimeoutToggle');
   bottle.decorator('CreateServer', withoutSelectedServer);
   bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
 

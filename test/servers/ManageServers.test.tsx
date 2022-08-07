@@ -1,93 +1,102 @@
 import { Mock } from 'ts-mockery';
-import { shallow, ShallowWrapper } from 'enzyme';
-import { Button } from 'reactstrap';
+import { screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import ServersExporter from '../../src/servers/services/ServersExporter';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
 import { ServersMap, ServerWithId } from '../../src/servers/data';
-import { SearchField } from '../../src/utils/SearchField';
-import { Result } from '../../src/utils/Result';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {
   const exportServers = jest.fn();
   const serversExporter = Mock.of<ServersExporter>({ exportServers });
-  const ImportServersBtn = () => null;
-  const ManageServersRow = () => null;
-  const useStateFlagTimeout = jest.fn().mockReturnValue([false, jest.fn()]);
-  const ManageServers = createManageServers(serversExporter, ImportServersBtn, useStateFlagTimeout, ManageServersRow);
-  let wrapper: ShallowWrapper;
+  const useTimeoutToggle = jest.fn().mockReturnValue([false, jest.fn()]);
+  const ManageServers = createManageServers(
+    serversExporter,
+    () => <span>ImportServersBtn</span>,
+    useTimeoutToggle,
+    ({ hasAutoConnect }) => <tr><td>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</td></tr>,
+  );
   const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
   );
-  const createWrapper = (servers: ServersMap = {}) => {
-    wrapper = shallow(<ManageServers servers={servers} />);
-
-    return wrapper;
-  };
+  const setUp = (servers: ServersMap = {}) => renderWithEvents(
+    <MemoryRouter><ManageServers servers={servers} /></MemoryRouter>,
+  );
 
   afterEach(jest.clearAllMocks);
-  afterEach(() => wrapper?.unmount());
 
-  it('shows search field which allows searching servers, affecting te amount of rendered rows', () => {
-    const wrapper = createWrapper({
+  it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
+    const { user } = setUp({
       foo: createServerMock('foo'),
       bar: createServerMock('bar'),
       baz: createServerMock('baz'),
     });
-    const searchField = wrapper.find(SearchField);
+    const search = async (searchTerm: string) => {
+      await user.clear(screen.getByPlaceholderText('Search...'));
+      await user.type(screen.getByPlaceholderText('Search...'), searchTerm);
+    };
 
-    expect(wrapper.find(ManageServersRow)).toHaveLength(3);
-    expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
+    expect(screen.getAllByText(/^ManageServersRow/)).toHaveLength(3);
+    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
 
-    searchField.simulate('change', 'foo');
-    expect(wrapper.find(ManageServersRow)).toHaveLength(1);
-    expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
+    await search('foo');
+    await waitFor(() => expect(screen.getAllByText(/^ManageServersRow/)).toHaveLength(1));
+    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
 
-    searchField.simulate('change', 'ba');
-    expect(wrapper.find(ManageServersRow)).toHaveLength(2);
-    expect(wrapper.find('tbody').find('tr')).toHaveLength(0);
+    await search('Ba');
+    await waitFor(() => expect(screen.getAllByText(/^ManageServersRow/)).toHaveLength(2));
+    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
 
-    searchField.simulate('change', 'invalid');
-    expect(wrapper.find(ManageServersRow)).toHaveLength(0);
-    expect(wrapper.find('tbody').find('tr')).toHaveLength(1);
+    await search('invalid');
+    await waitFor(() => expect(screen.queryByText(/^ManageServersRow/)).not.toBeInTheDocument());
+    expect(screen.getByText('No servers found.')).toBeInTheDocument();
   });
 
   it.each([
     [createServerMock('foo'), 3],
     [createServerMock('foo', true), 4],
   ])('shows different amount of columns if there are at least one auto-connect server', (server, expectedCols) => {
-    const wrapper = createWrapper({ server });
-    const row = wrapper.find(ManageServersRow);
+    setUp({ server });
 
-    expect(wrapper.find('th')).toHaveLength(expectedCols);
-    expect(row.prop('hasAutoConnect')).toEqual(server.autoConnect);
+    expect(screen.getAllByRole('columnheader')).toHaveLength(expectedCols);
+    if (server.autoConnect) {
+      expect(screen.getByText(/\[YES\]/)).toBeInTheDocument();
+      expect(screen.queryByText(/\[NO\]/)).not.toBeInTheDocument();
+    } else {
+      expect(screen.queryByText(/\[YES\]/)).not.toBeInTheDocument();
+      expect(screen.getByText(/\[NO\]/)).toBeInTheDocument();
+    }
   });
 
   it.each([
-    [{}, 1],
-    [{ foo: createServerMock('foo') }, 2],
+    [{}, 0],
+    [{ foo: createServerMock('foo') }, 1],
   ])('shows export button if the list of servers is not empty', (servers, expectedButtons) => {
-    const wrapper = createWrapper(servers);
-    const exportBtn = wrapper.find(Button);
-
-    expect(exportBtn).toHaveLength(expectedButtons);
+    setUp(servers);
+    expect(screen.queryAllByRole('button', { name: 'Export servers' })).toHaveLength(expectedButtons);
   });
 
-  it('allows exporting servers when clicking on button', () => {
-    const wrapper = createWrapper({ foo: createServerMock('foo') });
-    const exportBtn = wrapper.find(Button).first();
+  it('allows exporting servers when clicking on button', async () => {
+    const { user } = setUp({ foo: createServerMock('foo') });
 
     expect(exportServers).not.toHaveBeenCalled();
-    exportBtn.simulate('click');
+    await user.click(screen.getByRole('button', { name: 'Export servers' }));
     expect(exportServers).toHaveBeenCalled();
   });
 
-  it('shows an error message if an error occurs while importing servers', () => {
-    useStateFlagTimeout.mockReturnValue([true, jest.fn()]);
+  it.each([[true], [false]])('shows an error message if an error occurs while importing servers', (hasError) => {
+    useTimeoutToggle.mockReturnValue([hasError, jest.fn()]);
 
-    const wrapper = createWrapper({ foo: createServerMock('foo') });
-    const result = wrapper.find(Result);
+    setUp({ foo: createServerMock('foo') });
 
-    expect(result).toHaveLength(1);
-    expect(result.prop('type')).toEqual('error');
+    if (hasError) {
+      expect(
+        screen.getByText('The servers could not be imported. Make sure the format is correct.'),
+      ).toBeInTheDocument();
+    } else {
+      expect(
+        screen.queryByText('The servers could not be imported. Make sure the format is correct.'),
+      ).not.toBeInTheDocument();
+    }
   });
 });

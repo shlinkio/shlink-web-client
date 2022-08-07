@@ -1,9 +1,9 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import { DomainsList } from '../../src/domains/reducers/domainsList';
 import { ShlinkDomain } from '../../src/api/types';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DomainSelector />', () => {
   const domainsList = Mock.of<DomainsList>({
@@ -13,10 +13,9 @@ describe('<DomainSelector />', () => {
       Mock.of<ShlinkDomain>({ domain: 'bar.com' }),
     ],
   });
-  const setUp = (value = '') => ({
-    user: userEvent.setup(),
-    ...render(<DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />),
-  });
+  const setUp = (value = '') => renderWithEvents(
+    <DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />,
+  );
 
   afterEach(jest.clearAllMocks);
 

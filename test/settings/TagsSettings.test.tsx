@@ -1,30 +1,25 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Settings, TagsMode, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
-import { TagsModeDropdown } from '../../src/tags/TagsModeDropdown';
 import { TagsSettings } from '../../src/settings/TagsSettings';
-import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
 import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
-import { LabeledFormGroup } from '../../src/utils/forms/LabeledFormGroup';
-import { FormText } from '../../src/utils/forms/FormText';
+import { capitalize } from '../../src/utils/utils';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsSettings />', () => {
-  let wrapper: ShallowWrapper;
   const setTagsSettings = jest.fn();
-  const createWrapper = (tags?: TagsSettingsOptions) => {
-    wrapper = shallow(<TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />);
+  const setUp = (tags?: TagsSettingsOptions) => renderWithEvents(
+    <TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />,
+  );
 
-    return wrapper;
-  };
-
-  afterEach(() => wrapper?.unmount());
   afterEach(jest.clearAllMocks);
 
   it('renders expected amount of groups', () => {
-    const wrapper = createWrapper();
-    const groups = wrapper.find(LabeledFormGroup);
+    setUp();
 
-    expect(groups).toHaveLength(2);
+    expect(screen.getByText('Default display mode when managing tags:')).toBeInTheDocument();
+    expect(screen.getByText('Default ordering for tags list:')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Order by...' })).toBeInTheDocument();
   });
 
   it.each([
@@ -33,50 +28,45 @@ describe('<TagsSettings />', () => {
     [{ defaultMode: 'cards' as TagsMode }, 'cards'],
     [{ defaultMode: 'list' as TagsMode }, 'list'],
   ])('shows expected tags displaying mode', (tags, expectedMode) => {
-    const wrapper = createWrapper(tags);
-    const dropdown = wrapper.find(TagsModeDropdown);
-    const formText = wrapper.find(FormText);
+    const { container } = setUp(tags);
 
-    expect(dropdown.prop('mode')).toEqual(expectedMode);
-    expect(formText.html()).toContain(`Tags will be displayed as <b>${expectedMode}</b>.`);
+    expect(screen.getByRole('button', { name: capitalize(expectedMode) })).toBeInTheDocument();
+    expect(container.querySelector('.form-text')).toHaveTextContent(`Tags will be displayed as ${expectedMode}.`);
   });
 
   it.each([
     ['cards' as TagsMode],
     ['list' as TagsMode],
-  ])('invokes setTagsSettings when tags mode changes', (defaultMode) => {
-    const wrapper = createWrapper();
-    const dropdown = wrapper.find(TagsModeDropdown);
+  ])('invokes setTagsSettings when tags mode changes', async (defaultMode) => {
+    const { user } = setUp();
 
     expect(setTagsSettings).not.toHaveBeenCalled();
-    dropdown.simulate('change', defaultMode);
+    await user.click(screen.getByText('List'));
+    await user.click(screen.getByRole('menuitem', { name: capitalize(defaultMode) }));
     expect(setTagsSettings).toHaveBeenCalledWith({ defaultMode });
   });
 
   it.each([
-    [undefined, {}],
-    [{}, {}],
-    [{ defaultOrdering: {} }, {}],
-    [{ defaultOrdering: { field: 'tag', dir: 'DESC' } as TagsOrder }, { field: 'tag', dir: 'DESC' }],
-    [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as TagsOrder }, { field: 'visits', dir: 'ASC' }],
+    [undefined, 'Order by...'],
+    [{}, 'Order by...'],
+    [{ defaultOrdering: {} }, 'Order by...'],
+    [{ defaultOrdering: { field: 'tag', dir: 'DESC' } as TagsOrder }, 'Order by: Tag - DESC'],
+    [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as TagsOrder }, 'Order by: Visits - ASC'],
   ])('shows expected ordering', (tags, expectedOrder) => {
-    const wrapper = createWrapper(tags);
-    const dropdown = wrapper.find(OrderingDropdown);
-
-    expect(dropdown.prop('order')).toEqual(expectedOrder);
+    setUp(tags);
+    expect(screen.getByRole('button', { name: expectedOrder })).toBeInTheDocument();
   });
 
   it.each([
-    [undefined, undefined],
-    ['tag', 'ASC'],
-    ['visits', undefined],
-    ['shortUrls', 'DESC'],
-  ])('invokes setTagsSettings when ordering changes', (field, dir) => {
-    const wrapper = createWrapper();
-    const dropdown = wrapper.find(OrderingDropdown);
+    ['Tag', 'tag', 'ASC'],
+    ['Visits', 'visits', 'ASC'],
+    ['Short URLs', 'shortUrls', 'ASC'],
+  ])('invokes setTagsSettings when ordering changes', async (name, field, dir) => {
+    const { user } = setUp();
 
     expect(setTagsSettings).not.toHaveBeenCalled();
-    dropdown.simulate('change', field, dir);
+    await user.click(screen.getByText('Order by...'));
+    await user.click(screen.getByRole('menuitem', { name }));
     expect(setTagsSettings).toHaveBeenCalledWith({ defaultOrdering: { field, dir } });
   });
 });

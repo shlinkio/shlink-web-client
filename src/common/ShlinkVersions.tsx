@@ -17,7 +17,7 @@ const VersionLink = ({ project, version }: { project: 'shlink' | 'shlink-web-cli
   </ExternalLink>
 );
 
-const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIENT_VERSION }: ShlinkVersionsProps) => {
+export const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIENT_VERSION }: ShlinkVersionsProps) => {
   const normalizedClientVersion = normalizeVersion(clientVersion);
 
   return (
@@ -29,5 +29,3 @@ const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIENT_VERS
     </small>
   );
 };
-
-export default ShlinkVersions;
