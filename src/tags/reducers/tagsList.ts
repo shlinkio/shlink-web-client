@@ -96,7 +96,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
   }),
   [FILTER_TAGS]: (state, { searchTerm }) => ({
     ...state,
-    filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm)),
+    filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
   [CREATE_VISITS]: (state, { createdVisits }) => ({
     ...state,
