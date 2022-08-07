@@ -43,7 +43,7 @@ describe('<ManageServers />', () => {
     await waitFor(() => expect(screen.getAllByText(/^ManageServersRow/)).toHaveLength(1));
     expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
 
-    await search('ba');
+    await search('Ba');
     await waitFor(() => expect(screen.getAllByText(/^ManageServersRow/)).toHaveLength(2));
     expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
 

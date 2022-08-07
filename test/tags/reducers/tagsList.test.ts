@@ -67,9 +67,9 @@ describe('tagsListReducer', () => {
     });
 
     it('filters original list of tags by provided search term on FILTER_TAGS', () => {
-      const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
-      const searchTerm = 'fo';
-      const filteredTags = ['foo', 'foo2', 'fo'];
+      const tags = ['foo', 'bar', 'baz', 'Foo2', 'fo'];
+      const searchTerm = 'Fo';
+      const filteredTags = ['foo', 'Foo2', 'fo'];
 
       expect(reducer(state({ tags }), { type: FILTER_TAGS, searchTerm } as any)).toEqual({
         tags,

@@ -28,7 +28,7 @@ export const ManageServers = (
   const allServers = Object.values(servers);
   const [serversList, setServersList] = useState(allServers);
   const filterServers = (searchTerm: string) => setServersList(
-    allServers.filter(({ name, url }) => `${name} ${url}`.match(searchTerm)),
+    allServers.filter(({ name, url }) => `${name} ${url}`.toLowerCase().match(searchTerm.toLowerCase())),
   );
   const hasAutoConnect = serversList.some(({ autoConnect }) => !!autoConnect);
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
