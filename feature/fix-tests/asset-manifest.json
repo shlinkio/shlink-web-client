@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/fix-tests/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/feature/fix-tests/static/js/main.9ce64863.js",
+    "index.html": "/shlink-web-client/feature/fix-tests/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/feature/fix-tests/static/css/main.604c7914.css.map",
+    "main.9ce64863.js.map": "/shlink-web-client/feature/fix-tests/static/js/main.9ce64863.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.9ce64863.js"
+  ]
+}
