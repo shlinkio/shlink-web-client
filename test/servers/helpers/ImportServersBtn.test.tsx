@@ -59,6 +59,7 @@ describe('<ImportServersBtn />', () => {
 
     input && fireEvent.change(input, { target: { files: [''] } });
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(createServersMock).toHaveBeenCalledTimes(1));
   });
 
   it.each([
