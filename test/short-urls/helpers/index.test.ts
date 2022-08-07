@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { ShortUrl } from '../../../src/short-urls/data';
-import { shortUrlDataFromShortUrl } from '../../../src/short-urls/helpers';
+import { shortUrlDataFromShortUrl, urlDecodeShortCode, urlEncodeShortCode } from '../../../src/short-urls/helpers';
 
 describe('helpers', () => {
   describe('shortUrlDataFromShortUrl', () => {
@@ -23,6 +23,26 @@ describe('helpers', () => {
       ],
     ])('returns expected data', (shortUrl, settings, expectedInitialState) => {
       expect(shortUrlDataFromShortUrl(shortUrl, settings)).toEqual(expectedInitialState);
+    });
+  });
+
+  describe('urlEncodeShortCode', () => {
+    it.each([
+      ['foo', 'foo'],
+      ['foo/bar', 'foo__bar'],
+      ['foo/bar/baz', 'foo__bar__baz'],
+    ])('parses shortCode as expected', (shortCode, result) => {
+      expect(urlEncodeShortCode(shortCode)).toEqual(result);
+    });
+  });
+
+  describe('urlDecodeShortCode', () => {
+    it.each([
+      ['foo', 'foo'],
+      ['foo__bar', 'foo/bar'],
+      ['foo__bar__baz', 'foo/bar/baz'],
+    ])('parses shortCode as expected', (shortCode, result) => {
+      expect(urlDecodeShortCode(shortCode)).toEqual(result);
     });
   });
 });

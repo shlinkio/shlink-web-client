@@ -16,7 +16,7 @@ import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import { EditShortUrlData } from './data';
 import { ShortUrlEdition } from './reducers/shortUrlEdition';
-import { shortUrlDataFromShortUrl } from './helpers';
+import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
 
 interface EditShortUrlConnectProps {
   settings: Settings;
@@ -48,7 +48,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const [savingSucceeded,, isSuccessful, isNotSuccessful] = useToggle();
 
   useEffect(() => {
-    params.shortCode && getShortUrlDetail(params.shortCode, domain);
+    params.shortCode && getShortUrlDetail(urlDecodeShortCode(params.shortCode), domain);
   }, []);
 
   if (loading) {

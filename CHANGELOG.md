@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.7.2] - 2022-08-07
 ### Added
 * [#671](https://github.com/shlinkio/shlink-web-client/issues/671) Added proper color-scheme in root element based on selected theme.
 
@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Fixed
 * [#695](https://github.com/shlinkio/shlink-web-client/issues/695) Fixed some warnings in tests.
 * [#693](https://github.com/shlinkio/shlink-web-client/issues/693) Fixed tags, servers and domains search to make it case-insensitive.
+* [#694](https://github.com/shlinkio/shlink-web-client/issues/694) Fixed editing and loading visits on short URLs with multi-segment slugs.
 
 
 ## [3.7.1] - 2022-05-25
