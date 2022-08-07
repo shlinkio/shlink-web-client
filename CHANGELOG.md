@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#695](https://github.com/shlinkio/shlink-web-client/pull/695) Fixed some warnings in tests.
 
 
 ## [3.7.1] - 2022-05-25

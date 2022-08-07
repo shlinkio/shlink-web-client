@@ -16,10 +16,11 @@
     "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build && node scripts/replace-version.mjs",
     "build:dist": "npm run build && node scripts/create-dist-file.mjs",
     "build:serve": "serve -p 5000 ./build",
-    "test": "jest --env=jsdom --colors --verbose",
+    "test": "jest --env=jsdom --colors",
     "test:coverage": "npm run test -- --coverage --coverageReporters=text --coverageReporters=text-summary",
     "test:ci": "npm run test:coverage -- --coverageReporters=clover --ci",
     "test:pretty": "npm run test:coverage -- --coverageReporters=html",
+    "test:verbose": "npm run test -- --verbose",
     "mutate": "./node_modules/.bin/stryker run --concurrency 4 --ignoreStatic"
   },
   "dependencies": {

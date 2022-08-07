@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateInterval } from '../../../src/utils/dates/types';
@@ -16,6 +16,7 @@ describe('<DateRangeSelector />', () => {
     );
 
     await result.user.click(screen.getByRole('button'));
+    await waitFor(() => screen.getByRole('menu'));
 
     return result;
   };

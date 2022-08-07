@@ -14,7 +14,7 @@ describe('<ManageServers />', () => {
     serversExporter,
     () => <span>ImportServersBtn</span>,
     useTimeoutToggle,
-    ({ hasAutoConnect }) => <span>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</span>,
+    ({ hasAutoConnect }) => <tr><td>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</td></tr>,
   );
   const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
