@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/ghcr-support/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/feature/ghcr-support/static/js/main.14d92e05.js",
+    "index.html": "/shlink-web-client/feature/ghcr-support/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/feature/ghcr-support/static/css/main.604c7914.css.map",
+    "main.14d92e05.js.map": "/shlink-web-client/feature/ghcr-support/static/js/main.14d92e05.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.14d92e05.js"
+  ]
+}
