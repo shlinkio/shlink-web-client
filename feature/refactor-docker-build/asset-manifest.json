@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/refactor-docker-build/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/feature/refactor-docker-build/static/js/main.bb7a1fc9.js",
+    "index.html": "/shlink-web-client/feature/refactor-docker-build/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/feature/refactor-docker-build/static/css/main.604c7914.css.map",
+    "main.bb7a1fc9.js.map": "/shlink-web-client/feature/refactor-docker-build/static/js/main.bb7a1fc9.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.bb7a1fc9.js"
+  ]
+}
