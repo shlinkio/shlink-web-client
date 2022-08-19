@@ -12,4 +12,5 @@ jobs:
     uses: shlinkio/github-actions/.github/workflows/docker-build-and-publish.yml@main
     secrets: inherit
     with:
-      build-and-publish-script: bash ./scripts/docker/build
+      image-name: shlinkio/shlink-web-client
+      version-arg-name: VERSION
