@@ -53,6 +53,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
     domain,
     query,
     loading: false,
+    loadingLarge: false,
     error: false,
   }),
   [GET_SHORT_URL_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
