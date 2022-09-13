@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.7.3] - 2022-09-13
+### Added
+* [#703](https://github.com/shlinkio/shlink-web-client/issues/703) Added support to publish docker image in GHCR.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#709](https://github.com/shlinkio/shlink-web-client/issues/709) Fixed visits not being displayed after a large loading has finished.
+
+
 ## [3.7.2] - 2022-08-07
 ### Added
 * [#671](https://github.com/shlinkio/shlink-web-client/issues/671) Added proper color-scheme in root element based on selected theme.
