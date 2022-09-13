@@ -50,7 +50,7 @@ export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
   [GET_DOMAIN_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_DOMAIN_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [GET_DOMAIN_VISITS]: (state, { visits, domain, query }) => (
-    { ...state, visits, domain, query, loading: false, error: false }
+    { ...state, visits, domain, query, loading: false, loadingLarge: false, error: false }
   ),
   [GET_DOMAIN_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_DOMAIN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),

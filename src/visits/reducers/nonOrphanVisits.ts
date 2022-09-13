@@ -45,7 +45,9 @@ const initialState: VisitsInfo = {
 export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
   [GET_NON_ORPHAN_VISITS_START]: () => ({ ...initialState, loading: true }),
   [GET_NON_ORPHAN_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_NON_ORPHAN_VISITS]: (state, { visits, query }) => ({ ...state, visits, query, loading: false, error: false }),
+  [GET_NON_ORPHAN_VISITS]: (state, { visits, query }) => (
+    { ...state, visits, query, loading: false, loadingLarge: false, error: false }
+  ),
   [GET_NON_ORPHAN_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
   [GET_NON_ORPHAN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
