@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/fix-loading-large/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/feature/fix-loading-large/static/js/main.65f60412.js",
+    "index.html": "/shlink-web-client/feature/fix-loading-large/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/feature/fix-loading-large/static/css/main.604c7914.css.map",
+    "main.65f60412.js.map": "/shlink-web-client/feature/fix-loading-large/static/js/main.65f60412.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.65f60412.js"
+  ]
+}
