@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
@@ -52,7 +52,6 @@ describe('<ExportShortUrlsBtn />', () => {
     const { user } = setUp(amount, Mock.of<ReachableServer>({ id: '123' }));
 
     await user.click(screen.getByRole('button'));
-    await waitForElementToBeRemoved(() => screen.getByText('Exporting...'));
 
     expect(listShortUrls).toHaveBeenCalledTimes(expectedPageLoads);
     expect(exportShortUrls).toHaveBeenCalled();
