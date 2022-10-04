@@ -1,14 +1,13 @@
 {
-  "main.css": "/shlink-web-client/feature/update-deps/static/css/main.be551309.chunk.css",
-  "main.js": "/shlink-web-client/feature/update-deps/static/js/main.b264726a.chunk.js",
-  "main.js.map": "/shlink-web-client/feature/update-deps/static/js/main.b264726a.chunk.js.map",
-  "runtime~main.js": "/shlink-web-client/feature/update-deps/static/js/runtime~main.0e67114b.js",
-  "runtime~main.js.map": "/shlink-web-client/feature/update-deps/static/js/runtime~main.0e67114b.js.map",
-  "static/css/2.04c5acbe.chunk.css": "/shlink-web-client/feature/update-deps/static/css/2.04c5acbe.chunk.css",
-  "static/js/2.b49eadfa.chunk.js": "/shlink-web-client/feature/update-deps/static/js/2.b49eadfa.chunk.js",
-  "static/js/2.b49eadfa.chunk.js.map": "/shlink-web-client/feature/update-deps/static/js/2.b49eadfa.chunk.js.map",
-  "index.html": "/shlink-web-client/feature/update-deps/index.html",
-  "static/css/2.04c5acbe.chunk.css.map": "/shlink-web-client/feature/update-deps/static/css/2.04c5acbe.chunk.css.map",
-  "static/css/main.be551309.chunk.css.map": "/shlink-web-client/feature/update-deps/static/css/main.be551309.chunk.css.map",
-  "static/js/2.b49eadfa.chunk.js.LICENSE.txt": "/shlink-web-client/feature/update-deps/static/js/2.b49eadfa.chunk.js.LICENSE.txt"
+  "files": {
+    "main.css": "/shlink-web-client/feature/update-deps/static/css/main.604c7914.css",
+    "main.js": "/shlink-web-client/feature/update-deps/static/js/main.46e17564.js",
+    "index.html": "/shlink-web-client/feature/update-deps/index.html",
+    "main.604c7914.css.map": "/shlink-web-client/feature/update-deps/static/css/main.604c7914.css.map",
+    "main.46e17564.js.map": "/shlink-web-client/feature/update-deps/static/js/main.46e17564.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.604c7914.css",
+    "static/js/main.46e17564.js"
+  ]
 }
