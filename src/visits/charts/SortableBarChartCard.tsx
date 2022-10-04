@@ -37,7 +37,7 @@ export const SortableBarChartCard: FC<SortableBarChartCardProps> = ({
   const getSortedPairsForStats = (statsToSort: Stats, sorting: Record<string, string>) => {
     const pairs = toPairs(statsToSort);
     const sortedPairs = !order.field ? pairs : sortBy(
-      pipe<StatsRow, string | number, string | number>(
+      pipe<StatsRow[], string | number, string | number>(
         order.field === Object.keys(sorting)[0] ? pickKeyFromPair : pickValueFromPair,
         toLowerIfString,
       ),
