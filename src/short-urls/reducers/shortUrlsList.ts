@@ -9,6 +9,7 @@ import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/ty
 import { DeleteShortUrlAction, SHORT_URL_DELETED } from './shortUrlDeletion';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from './shortUrlCreation';
 import { SHORT_URL_EDITED, ShortUrlEditedAction } from './shortUrlEdition';
+import { ShortUrl } from '../data';
 
 export const LIST_SHORT_URLS_START = 'shlink/shortUrlsList/LIST_SHORT_URLS_START';
 export const LIST_SHORT_URLS_ERROR = 'shlink/shortUrlsList/LIST_SHORT_URLS_ERROR';
@@ -46,7 +47,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [SHORT_URL_DELETED]: pipe(
     (state: ShortUrlsList, { shortCode, domain }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
-      reject((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
+      reject<ShortUrl, ShortUrl[]>((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
       state,
     )),
     (state) => (!state.shortUrls ? state : assocPath(
