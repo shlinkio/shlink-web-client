@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup';
+import { UserEvent } from '@testing-library/user-event/setup/setup';
 import { formatISO } from 'date-fns';
 import { Mock } from 'ts-mockery';
 import { ShortUrlForm as createShortUrlForm, Mode } from '../../src/short-urls/ShortUrlForm';
