@@ -18,7 +18,6 @@ import {
   ShlinkShortUrlsListParams,
   ShlinkShortUrlsListNormalizedParams,
 } from '../types';
-import { stringifyQuery } from '../../utils/helpers/query';
 import { orderToString } from '../../utils/helpers/ordering';
 
 const buildShlinkBaseUrl = (url: string) => (url ? `${url}/rest/v2` : '');
@@ -123,6 +122,6 @@ export class ShlinkApiClient {
       headers: { 'X-Api-Key': this.apiKey },
       params: rejectNilProps(query),
       data: body,
-      paramsSerializer: stringifyQuery,
+      paramsSerializer: { indexes: false },
     });
 }
