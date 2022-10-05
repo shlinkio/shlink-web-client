@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<LineChartCard /> renders chart with expected data 1`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -11,7 +11,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -21,11 +21,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -35,11 +35,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -49,11 +49,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -63,11 +63,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "1",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -77,11 +77,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -95,9 +95,9 @@ Array [
 `;
 
 exports[`<LineChartCard /> renders chart with expected data 2`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -105,7 +105,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -115,11 +115,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -129,11 +129,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -143,11 +143,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -157,11 +157,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "1",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -171,11 +171,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -189,9 +189,9 @@ Array [
 `;
 
 exports[`<LineChartCard /> renders chart with expected data 3`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -199,7 +199,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -209,11 +209,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -223,11 +223,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -237,11 +237,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -251,11 +251,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "1",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -265,11 +265,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -279,11 +279,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -293,11 +293,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "2016-04",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -307,11 +307,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -325,9 +325,9 @@ Array [
 `;
 
 exports[`<LineChartCard /> renders chart with expected data 4`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -335,7 +335,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -345,11 +345,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -359,11 +359,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -373,11 +373,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -387,11 +387,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "1",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -401,11 +401,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -415,11 +415,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -429,11 +429,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "2016-04",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -443,11 +443,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,

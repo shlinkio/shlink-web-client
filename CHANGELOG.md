@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [3.7.3] - 2022-09-13
 ### Added
 * [#703](https://github.com/shlinkio/shlink-web-client/issues/703) Added support to publish docker image in GHCR.
