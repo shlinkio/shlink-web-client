@@ -18,7 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#590](https://github.com/shlinkio/shlink-web-client/issues/590) Fixed position of the datepicker triangle.
 
 
 ## [3.7.3] - 2022-09-13

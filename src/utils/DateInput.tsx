@@ -17,6 +17,12 @@ export const DateInput = (props: DateInputProps) => {
     <div className="date-input-container">
       <DatePicker
         {...props}
+        popperModifiers={[
+          {
+            name: 'arrow',
+            options: { padding: 24 }, // This prevents the arrow to be placed on the very edge, which looks ugly
+          },
+        ]}
         dateFormat="yyyy-MM-dd"
         className={classNames('date-input-container__input form-control', className)}
         // @ts-expect-error The DatePicker type definition is wrong. It has a ref prop
