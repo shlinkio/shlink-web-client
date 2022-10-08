@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/fix-datepicker-triangle/static/css/main.a914a405.css",
+    "main.js": "/shlink-web-client/feature/fix-datepicker-triangle/static/js/main.63dcd57a.js",
+    "index.html": "/shlink-web-client/feature/fix-datepicker-triangle/index.html",
+    "main.a914a405.css.map": "/shlink-web-client/feature/fix-datepicker-triangle/static/css/main.a914a405.css.map",
+    "main.63dcd57a.js.map": "/shlink-web-client/feature/fix-datepicker-triangle/static/js/main.63dcd57a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a914a405.css",
+    "static/js/main.63dcd57a.js"
+  ]
+}
