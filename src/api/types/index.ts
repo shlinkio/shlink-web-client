@@ -120,3 +120,8 @@ export interface InvalidShortUrlDeletion extends ProblemDetailsError {
   type: 'INVALID_SHORTCODE_DELETION' | 'INVALID_SHORT_URL_DELETION';
   threshold: number;
 }
+
+export interface RegularNotFound extends ProblemDetailsError {
+  type: 'NOT_FOUND';
+  status: 404;
+}

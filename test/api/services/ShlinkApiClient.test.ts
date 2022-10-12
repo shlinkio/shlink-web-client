@@ -1,4 +1,4 @@
-import { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Mock } from 'ts-mockery';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
@@ -87,7 +87,7 @@ describe('ShlinkApiClient', () => {
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/short-urls/abc123/visits',
+        url: expect.stringContaining('/short-urls/abc123/visits'),
         method: 'GET',
       }));
     });
@@ -109,7 +109,7 @@ describe('ShlinkApiClient', () => {
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/tags/foo/visits',
+        url: expect.stringContaining('/tags/foo/visits'),
         method: 'GET',
       }));
     });
@@ -131,7 +131,7 @@ describe('ShlinkApiClient', () => {
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/domains/foo.com/visits',
+        url: expect.stringContaining('/domains/foo.com/visits'),
         method: 'GET',
       }));
     });
@@ -149,7 +149,7 @@ describe('ShlinkApiClient', () => {
 
       expect(expectedShortUrl).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: `/short-urls/${shortCode}`,
+        url: expect.stringContaining(`/short-urls/${shortCode}`),
         method: 'GET',
         params: domain ? { domain } : {},
       }));
@@ -170,7 +170,7 @@ describe('ShlinkApiClient', () => {
 
       expect(expectedResp).toEqual(result);
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: `/short-urls/${shortCode}`,
+        url: expect.stringContaining(`/short-urls/${shortCode}`),
         method: 'PATCH',
         params: domain ? { domain } : {},
       }));
@@ -190,7 +190,10 @@ describe('ShlinkApiClient', () => {
       const result = await listTags();
 
       expect({ tags: expectedTags }).toEqual(result);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ url: '/tags', method: 'GET' }));
+      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
+        url: expect.stringContaining('/tags'),
+        method: 'GET',
+      }));
     });
   });
 
@@ -203,7 +206,7 @@ describe('ShlinkApiClient', () => {
       await deleteTags(tags);
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/tags',
+        url: expect.stringContaining('/tags'),
         method: 'DELETE',
         params: { tags },
       }));
@@ -220,7 +223,7 @@ describe('ShlinkApiClient', () => {
       await editTag(oldName, newName);
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: '/tags',
+        url: expect.stringContaining('/tags'),
         method: 'PUT',
         data: { oldName, newName },
       }));
@@ -235,7 +238,7 @@ describe('ShlinkApiClient', () => {
       await deleteShortUrl(shortCode, domain);
 
       expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: `/short-urls/${shortCode}`,
+        url: expect.stringContaining(`/short-urls/${shortCode}`),
         method: 'DELETE',
         params: domain ? { domain } : {},
       }));
@@ -340,6 +343,27 @@ describe('ShlinkApiClient', () => {
 
       expect(axiosSpy).toHaveBeenCalled();
       expect(result).toEqual(resp);
+    });
+
+    it('retries request if API version is not supported', async () => {
+      const axiosSpy = jest.fn()
+        .mockImplementationOnce(() => Promise.reject(Mock.of<AxiosError>({
+          response: {
+            data: { type: 'NOT_FOUND', status: 404 },
+          },
+        })))
+        .mockImplementation(createAxios({})) as unknown as AxiosInstance;
+      const { editDomainRedirects } = new ShlinkApiClient(axiosSpy, '', '');
+
+      await editDomainRedirects({ domain: 'foo' });
+
+      expect(axiosSpy).toHaveBeenCalledTimes(2);
+      expect(axiosSpy).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        url: expect.stringContaining('/v3/'),
+      }));
+      expect(axiosSpy).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        url: expect.stringContaining('/v2/'),
+      }));
     });
   });
 });
