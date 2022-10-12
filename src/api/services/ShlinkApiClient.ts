@@ -17,10 +17,10 @@ import {
   ShlinkDomainRedirects,
   ShlinkShortUrlsListParams,
   ShlinkShortUrlsListNormalizedParams,
-  ProblemDetailsError,
 } from '../types';
 import { orderToString } from '../../utils/helpers/ordering';
-import { isRegularNotFound } from '../utils';
+import { isRegularNotFound, parseApiError } from '../utils';
+import { ProblemDetailsError } from '../types/errors';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
@@ -129,7 +129,7 @@ export class ShlinkApiClient {
       data: body,
       paramsSerializer: { indexes: false },
     }).catch((e: AxiosError<ProblemDetailsError>) => {
-      if (!isRegularNotFound(e.response?.data)) {
+      if (!isRegularNotFound(parseApiError(e))) {
         throw e;
       }
 

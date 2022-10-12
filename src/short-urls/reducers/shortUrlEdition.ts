@@ -4,9 +4,9 @@ import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
 import { EditShortUrlData, ShortUrl } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const EDIT_SHORT_URL_START = 'shlink/shortUrlEdition/EDIT_SHORT_URL_START';
 export const EDIT_SHORT_URL_ERROR = 'shlink/shortUrlEdition/EDIT_SHORT_URL_ERROR';

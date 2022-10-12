@@ -3,8 +3,8 @@ import { Mock } from 'ts-mockery';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ProblemDetailsError } from '../../../src/api/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
+import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('<DeleteShortUrlModal />', () => {
   const shortUrl = Mock.of<ShortUrl>({

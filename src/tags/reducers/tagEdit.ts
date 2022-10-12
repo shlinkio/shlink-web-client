@@ -4,9 +4,9 @@ import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
 export const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
