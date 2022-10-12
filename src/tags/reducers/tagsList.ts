@@ -2,7 +2,7 @@ import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
-import { ProblemDetailsError, ShlinkTags } from '../../api/types';
+import { ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { CreateVisit, Stats } from '../../visits/types';
@@ -12,6 +12,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
 import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
 export const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';

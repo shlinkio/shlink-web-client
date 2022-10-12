@@ -1,5 +1,5 @@
 import { isEmpty, isNil, reject } from 'ramda';
-import { AxiosInstance, AxiosResponse, Method } from 'axios';
+import { AxiosError, AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrl, ShortUrlData } from '../../short-urls/data';
 import { OptionalString } from '../../utils/utils';
 import {
@@ -19,8 +19,10 @@ import {
   ShlinkShortUrlsListNormalizedParams,
 } from '../types';
 import { orderToString } from '../../utils/helpers/ordering';
+import { isRegularNotFound, parseApiError } from '../utils';
+import { ProblemDetailsError } from '../types/errors';
 
-const buildShlinkBaseUrl = (url: string) => (url ? `${url}/rest/v2` : '');
+const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
 const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
   const { orderBy = {}, ...rest } = params;
@@ -29,11 +31,14 @@ const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShor
 };
 
 export class ShlinkApiClient {
+  private apiVersion: 2 | 3;
+
   public constructor(
     private readonly axios: AxiosInstance,
     private readonly baseUrl: string,
     private readonly apiKey: string,
   ) {
+    this.apiVersion = 3;
   }
 
   public readonly listShortUrls = async (params: ShlinkShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
@@ -118,10 +123,19 @@ export class ShlinkApiClient {
   private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> =>
     this.axios({
       method,
-      url: `${buildShlinkBaseUrl(this.baseUrl)}${url}`,
+      url: `${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}`,
       headers: { 'X-Api-Key': this.apiKey },
       params: rejectNilProps(query),
       data: body,
       paramsSerializer: { indexes: false },
+    }).catch((e: AxiosError<ProblemDetailsError>) => {
+      if (!isRegularNotFound(parseApiError(e))) {
+        throw e;
+      }
+
+      // If we capture a not found error, let's assume this Shlink version does not support API v3, so we decrease to
+      // v2 and retry
+      this.apiVersion = 2;
+      return this.performRequest(url, method, query, body);
     });
 }

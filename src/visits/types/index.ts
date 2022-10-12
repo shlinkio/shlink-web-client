@@ -1,7 +1,8 @@
 import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
-import { ProblemDetailsError, ShlinkVisitsParams } from '../../api/types';
+import { ShlinkVisitsParams } from '../../api/types';
 import { DateInterval, DateRange } from '../../utils/dates/types';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export interface VisitsInfo {
   visits: Visit[];

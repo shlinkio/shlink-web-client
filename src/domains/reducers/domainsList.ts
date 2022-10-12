@@ -1,5 +1,5 @@
 import { Action, Dispatch } from 'redux';
-import { ProblemDetailsError, ShlinkDomainRedirects } from '../../api/types';
+import { ShlinkDomainRedirects } from '../../api/types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -9,6 +9,7 @@ import { Domain, DomainStatus } from '../data';
 import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import { EDIT_DOMAIN_REDIRECTS, EditDomainRedirectsAction } from './domainRedirects';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const LIST_DOMAINS_START = 'shlink/domainsList/LIST_DOMAINS_START';
 export const LIST_DOMAINS_ERROR = 'shlink/domainsList/LIST_DOMAINS_ERROR';

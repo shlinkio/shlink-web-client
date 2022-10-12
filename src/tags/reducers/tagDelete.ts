@@ -2,9 +2,9 @@ import { Action, Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
 export const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';

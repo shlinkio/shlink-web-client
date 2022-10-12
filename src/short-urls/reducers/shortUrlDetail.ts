@@ -5,9 +5,9 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { OptionalString } from '../../utils/utils';
 import { GetState } from '../../container/types';
 import { shortUrlMatches } from '../helpers';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const GET_SHORT_URL_DETAIL_START = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_START';
 export const GET_SHORT_URL_DETAIL_ERROR = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL_ERROR';

@@ -3,8 +3,8 @@ import { Mock } from 'ts-mockery';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ProblemDetailsError } from '../../../src/api/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
+import { ErrorTypeV2, ErrorTypeV3, InvalidShortUrlDeletion, ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('<DeleteShortUrlModal />', () => {
   const shortUrl = Mock.of<ShortUrl>({
@@ -33,7 +33,17 @@ describe('<DeleteShortUrlModal />', () => {
       shortCode: 'abc123',
       errorData: Mock.of<ProblemDetailsError>({ type: 'OTHER_ERROR' }),
     });
-    expect(screen.getByText('Something went wrong while deleting the URL :(')).toBeInTheDocument();
+    expect(screen.getByText('Something went wrong while deleting the URL :(').parentElement).not.toHaveClass(
+      'bg-warning',
+    );
+  });
+
+  it.each([
+    [Mock.of<InvalidShortUrlDeletion>({ type: ErrorTypeV3.INVALID_SHORT_URL_DELETION })],
+    [Mock.of<InvalidShortUrlDeletion>({ type: ErrorTypeV2.INVALID_SHORT_URL_DELETION })],
+  ])('shows specific error when threshold error occurs', (errorData) => {
+    setUp({ loading: false, error: true, shortCode: 'abc123', errorData });
+    expect(screen.getByText('Something went wrong while deleting the URL :(').parentElement).toHaveClass('bg-warning');
   });
 
   it('disables submit button when loading', () => {

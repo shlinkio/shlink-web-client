@@ -3,9 +3,9 @@ import { GetState } from '../../container/types';
 import { ShortUrl, ShortUrlData } from '../data';
 import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
 export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
 export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
