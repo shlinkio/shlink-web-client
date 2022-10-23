@@ -1,6 +1,10 @@
 import { format, formatISO, isBefore, isEqual, isWithinInterval, parse, parseISO as stdParseISO } from 'date-fns';
 import { OptionalString } from '../utils';
 
+export const STANDARD_DATE_FORMAT = 'yyyy-MM-dd';
+
+export const STANDARD_DATE_AND_TIME_FORMAT = 'yyyy-MM-dd HH:mm';
+
 export type DateOrString = Date | string;
 
 type NullableDate = DateOrString | null;
@@ -15,7 +19,10 @@ const formatDateFromFormat = (date?: NullableDate, theFormat?: string): Optional
   return theFormat ? format(date, theFormat) : formatISO(date);
 };
 
-export const formatDate = (theFormat = 'yyyy-MM-dd') => (date?: NullableDate) => formatDateFromFormat(date, theFormat);
+export const formatDate = (theFormat = STANDARD_DATE_FORMAT) => (date?: NullableDate) => formatDateFromFormat(
+  date,
+  theFormat,
+);
 
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
 
