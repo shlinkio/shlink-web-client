@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/limit-time/static/css/main.d7ebb480.css",
+    "main.js": "/shlink-web-client/feature/limit-time/static/js/main.b322ea48.js",
+    "index.html": "/shlink-web-client/feature/limit-time/index.html",
+    "main.d7ebb480.css.map": "/shlink-web-client/feature/limit-time/static/css/main.d7ebb480.css.map",
+    "main.b322ea48.js.map": "/shlink-web-client/feature/limit-time/static/js/main.b322ea48.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d7ebb480.css",
+    "static/js/main.b322ea48.js"
+  ]
+}
