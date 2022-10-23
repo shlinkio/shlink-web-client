@@ -4,12 +4,13 @@ import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
+import { STANDARD_DATE_FORMAT } from '../helpers/date';
 import './DateInput.scss';
 
 export type DateInputProps = ReactDatePickerProps;
 
 export const DateInput = (props: DateInputProps) => {
-  const { className, isClearable, selected } = props;
+  const { className, isClearable, selected, dateFormat } = props;
   const showCalendarIcon = !isClearable || isNil(selected);
   const ref = useRef<{ input: HTMLInputElement }>();
 
@@ -23,7 +24,7 @@ export const DateInput = (props: DateInputProps) => {
             options: { padding: 24 }, // This prevents the arrow to be placed on the very edge, which looks ugly
           },
         ]}
-        dateFormat="yyyy-MM-dd"
+        dateFormat={dateFormat ?? STANDARD_DATE_FORMAT}
         className={classNames('date-input-container__input form-control', className)}
         // @ts-expect-error The DatePicker type definition is wrong. It has a ref prop
         ref={ref}

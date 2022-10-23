@@ -1,5 +1,5 @@
 import { parseISO, format as formatDate, getUnixTime, formatDistance } from 'date-fns';
-import { isDateObject } from './helpers/date';
+import { isDateObject, STANDARD_DATE_AND_TIME_FORMAT } from '../helpers/date';
 
 export interface TimeProps {
   date: Date | string;
@@ -7,7 +7,7 @@ export interface TimeProps {
   relative?: boolean;
 }
 
-export const Time = ({ date, format = 'yyyy-MM-dd HH:mm', relative = false }: TimeProps) => {
+export const Time = ({ date, format = STANDARD_DATE_AND_TIME_FORMAT, relative = false }: TimeProps) => {
   const dateObject = isDateObject(date) ? date : parseISO(date);
 
   return (
