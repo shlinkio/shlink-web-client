@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#708](https://github.com/shlinkio/shlink-web-client/issues/708) Added support for API v3.
+* [#717](https://github.com/shlinkio/shlink-web-client/issues/717) Allowed to select time in 10 minute intervals whe configuring "enabled since" and "enabled until" on short URLs.
 
 ### Changed
 * [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.
