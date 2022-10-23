@@ -94,7 +94,20 @@
 }
 
 .react-datepicker__time-list.react-datepicker__time-list {
+  /* Forefox scrollbar */
+  scrollbar-color: rgba(0, 0, 0, 0.5) var(--secondary-color);
+  scrollbar-width: thin;
 
+  /* Chrome webkit scrollbar */
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--secondary-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0.5rem;
+  }
 }
 
 .react-datepicker-popper.react-datepicker-popper {
