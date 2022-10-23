@@ -4,7 +4,7 @@ import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
-import { STANDARD_DATE_FORMAT } from './helpers/date';
+import { STANDARD_DATE_FORMAT } from '../helpers/date';
 import './DateInput.scss';
 
 export type DateInputProps = ReactDatePickerProps;

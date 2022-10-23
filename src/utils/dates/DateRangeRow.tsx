@@ -1,5 +1,5 @@
 import { endOfDay } from 'date-fns';
-import { DateInput } from '../DateInput';
+import { DateInput } from './DateInput';
 import { DateRange } from './types';
 
 interface DateRangeRowProps extends DateRange {

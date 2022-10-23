@@ -7,7 +7,7 @@ import { Tag } from '../../tags/helpers/Tag';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { ShortUrl } from '../data';
-import { Time } from '../../utils/Time';
+import { Time } from '../../utils/dates/Time';
 import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';

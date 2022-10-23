@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { parseISO } from 'date-fns';
-import { DateInput, DateInputProps } from '../../src/utils/DateInput';
-import { renderWithEvents } from '../__helpers__/setUpTest';
+import { DateInput, DateInputProps } from '../../../src/utils/dates/DateInput';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateInput />', () => {
   const setUp = (props: Partial<DateInputProps> = {}) => renderWithEvents(
