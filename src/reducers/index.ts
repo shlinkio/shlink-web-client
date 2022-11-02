@@ -1,3 +1,4 @@
+import Bottle from 'bottlejs';
 import { combineReducers } from 'redux';
 import serversReducer from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
@@ -16,13 +17,12 @@ import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
 import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
-import domainsListReducer from '../domains/reducers/domainsList';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import appUpdatesReducer from '../app/reducers/appUpdates';
 import sidebarReducer from '../common/reducers/sidebar';
 import { ShlinkState } from '../container/types';
 
-export default combineReducers<ShlinkState>({
+export default (container: Bottle.IContainer) => combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: selectedServerReducer,
   shortUrlsList: shortUrlsListReducer,
@@ -40,7 +40,7 @@ export default combineReducers<ShlinkState>({
   tagEdit: tagEditReducer,
   mercureInfo: mercureInfoReducer,
   settings: settingsReducer,
-  domainsList: domainsListReducer,
+  domainsList: container.domainsListReducer,
   visitsOverview: visitsOverviewReducer,
   appUpdated: appUpdatesReducer,
   sidebar: sidebarReducer,

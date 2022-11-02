@@ -1,6 +1,7 @@
+import { prop } from 'ramda';
 import Bottle from 'bottlejs';
 import { ConnectDecorator } from '../../container/types';
-import { checkDomainHealth, filterDomains, listDomains } from '../reducers/domainsList';
+import { domainsReducerCreator } from '../reducers/domainsList';
 import { DomainSelector } from '../DomainSelector';
 import { ManageDomains } from '../ManageDomains';
 import { editDomainRedirects } from '../reducers/domainRedirects';
@@ -16,11 +17,15 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ['listDomains', 'filterDomains', 'editDomainRedirects', 'checkDomainHealth'],
   ));
 
+  // Reducer
+  bottle.serviceFactory('domainsReducerCreator', domainsReducerCreator, 'buildShlinkApiClient');
+  bottle.serviceFactory('domainsListReducer', prop('reducer'), 'domainsReducerCreator'); // TODO Improve type checks on the prop that gets picked here
+
   // Actions
-  bottle.serviceFactory('listDomains', listDomains, 'buildShlinkApiClient');
-  bottle.serviceFactory('filterDomains', () => filterDomains);
+  bottle.serviceFactory('listDomains', prop('listDomains'), 'domainsReducerCreator'); // TODO Improve type checks on the prop that gets picked here
+  bottle.serviceFactory('filterDomains', prop('filterDomains'), 'domainsReducerCreator'); // TODO Improve type checks on the prop that gets picked here
   bottle.serviceFactory('editDomainRedirects', editDomainRedirects, 'buildShlinkApiClient');
-  bottle.serviceFactory('checkDomainHealth', checkDomainHealth, 'buildShlinkApiClient');
+  bottle.serviceFactory('checkDomainHealth', prop('checkDomainHealth'), 'domainsReducerCreator'); // TODO Improve type checks on the prop that gets picked here
 };
 
 export default provideServices;
