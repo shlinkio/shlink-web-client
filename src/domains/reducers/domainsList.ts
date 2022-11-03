@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
-import { Dispatch } from 'redux';
 import { AxiosError } from 'axios';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { GetState, ShlinkState } from '../../container/types';
-import { ApiErrorAction } from '../../api/types/actions';
+import { ShlinkState } from '../../container/types';
 import { Domain, DomainStatus } from '../data';
 import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
@@ -12,10 +10,7 @@ import { EDIT_DOMAIN_REDIRECTS, EditDomainRedirectsAction } from './domainRedire
 import { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
 
-export const LIST_DOMAINS_START = 'shlink/domainsList/LIST_DOMAINS_START';
-export const LIST_DOMAINS_ERROR = 'shlink/domainsList/LIST_DOMAINS_ERROR';
 export const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
-export const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
 export const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
 
 export interface DomainsList {
@@ -60,66 +55,6 @@ export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomain
 
 export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
-
-export const listDomains = (buildShlinkApiClient: ShlinkApiClientBuilder) => () => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  dispatch({ type: LIST_DOMAINS_START });
-  const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
-
-  try {
-    const payload = await shlinkListDomains().then(({ data, defaultRedirects }) => ({
-      domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
-      defaultRedirects,
-    }));
-
-    dispatch<ListDomainsAction>({ type: LIST_DOMAINS, payload });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: LIST_DOMAINS_ERROR, errorData: parseApiError(e) });
-  }
-};
-
-export const filterDomains = (searchTerm: string): FilterDomainsAction => ({
-  type: FILTER_DOMAINS,
-  payload: searchTerm,
-});
-
-export const checkDomainHealth = (buildShlinkApiClient: ShlinkApiClientBuilder) => (domain: string) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  const { selectedServer } = getState();
-
-  if (!hasServerData(selectedServer)) {
-    dispatch<ValidateDomainAction>({
-      type: VALIDATE_DOMAIN,
-      payload: { domain, status: 'invalid' },
-    });
-
-    return;
-  }
-
-  try {
-    const { url, ...rest } = selectedServer;
-    const { health } = buildShlinkApiClient({
-      ...rest,
-      url: replaceAuthorityFromUri(url, domain),
-    });
-
-    const { status } = await health();
-
-    dispatch<ValidateDomainAction>({
-      type: VALIDATE_DOMAIN,
-      payload: { domain, status: status === 'pass' ? 'valid' : 'invalid' },
-    });
-  } catch (e) {
-    dispatch<ValidateDomainAction>({
-      type: VALIDATE_DOMAIN,
-      payload: { domain, status: 'invalid' },
-    });
-  }
-};
 
 export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
