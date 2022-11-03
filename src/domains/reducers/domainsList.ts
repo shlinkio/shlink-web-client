@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, createAsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
-import { AxiosError } from 'axios';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkState } from '../../container/types';
@@ -27,16 +26,19 @@ interface ListDomains {
   defaultRedirects?: ShlinkDomainRedirects;
 }
 
-type ListDomainsAction = PayloadAction<ListDomains>;
-
-type FilterDomainsAction = PayloadAction<string>;
-
 interface ValidateDomain {
   domain: string;
   status: DomainStatus;
 }
 
+type ListDomainsAction = PayloadAction<ListDomains>;
+type FilterDomainsAction = PayloadAction<string>;
 type ValidateDomainAction = PayloadAction<ValidateDomain>;
+
+export type DomainsCombinedAction = ListDomainsAction
+& FilterDomainsAction
+& EditDomainRedirectsAction
+& ValidateDomainAction;
 
 const initialState: DomainsList = {
   domains: [],
@@ -45,11 +47,6 @@ const initialState: DomainsList = {
   error: false,
 };
 
-export type DomainsCombinedAction = ListDomainsAction
-& FilterDomainsAction
-& EditDomainRedirectsAction
-& ValidateDomainAction;
-
 export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, redirects });
 
@@ -57,7 +54,6 @@ export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
 
 export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const listDomains = createAsyncThunk<ListDomains, void, { state: ShlinkState }>(
     LIST_DOMAINS,
     async (_, { getState }) => {
@@ -71,7 +67,6 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
     },
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const checkDomainHealth = createAsyncThunk<ValidateDomain, string, { state: ShlinkState }>(
     VALIDATE_DOMAIN,
     async (domain: string, { getState }) => {
@@ -101,35 +96,31 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
     name: 'domainsList',
     initialState,
     reducers: {
-      filterDomains: (state, { payload }) => {
-        // eslint-disable-next-line no-param-reassign
-        state.filteredDomains = state.domains.filter(
-          ({ domain }) => domain.toLowerCase().match(payload.toLowerCase()),
-        );
-      },
+      filterDomains: (state, { payload }) => ({
+        ...state,
+        filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
+      }),
     },
     extraReducers: (builder) => {
       builder.addCase(listDomains.pending, () => ({ ...initialState, loading: true }));
       builder.addCase(listDomains.rejected, (_, { error }) => (
-        { ...initialState, error: true, errorData: parseApiError(error as AxiosError<ProblemDetailsError>) } // TODO Fix this casting
+        { ...initialState, error: true, errorData: parseApiError(error) }
       ));
       builder.addCase(listDomains.fulfilled, (_, { payload }) => (
         { ...initialState, ...payload, filteredDomains: payload.domains }
       ));
 
-      builder.addCase(checkDomainHealth.fulfilled, (state, { payload }) => {
-        // eslint-disable-next-line no-param-reassign
-        state.domains = state.domains.map(replaceStatusOnDomain(payload.domain, payload.status));
-        // eslint-disable-next-line no-param-reassign
-        state.filteredDomains = state.filteredDomains.map(replaceStatusOnDomain(payload.domain, payload.status));
-      });
+      builder.addCase(checkDomainHealth.fulfilled, ({ domains, filteredDomains, ...rest }, { payload }) => ({
+        ...rest,
+        domains: domains.map(replaceStatusOnDomain(payload.domain, payload.status)),
+        filteredDomains: filteredDomains.map(replaceStatusOnDomain(payload.domain, payload.status)),
+      }));
 
-      builder.addCase(EDIT_DOMAIN_REDIRECTS, (state, { domain, redirects }: any) => { // TODO Fix this "any"
-        // eslint-disable-next-line no-param-reassign
-        state.domains = state.domains.map(replaceRedirectsOnDomain(domain, redirects));
-        // eslint-disable-next-line no-param-reassign
-        state.filteredDomains = state.filteredDomains.map(replaceRedirectsOnDomain(domain, redirects));
-      });
+      builder.addCase(EDIT_DOMAIN_REDIRECTS, (state, { domain, redirects }: any) => ({ // TODO Fix this "any"
+        ...state,
+        domains: state.domains.map(replaceRedirectsOnDomain(domain, redirects)),
+        filteredDomains: state.filteredDomains.map(replaceRedirectsOnDomain(domain, redirects)),
+      }));
     },
   });
 
