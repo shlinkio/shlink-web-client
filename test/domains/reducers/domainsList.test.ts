@@ -52,13 +52,13 @@ describe('domainsListReducer', () => {
     });
 
     it('returns domains on LIST_DOMAINS', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS, { domains }))).toEqual(
+      expect(reducer(undefined, action(LIST_DOMAINS, { payload: { domains } } as any))).toEqual(
         { domains, filteredDomains: domains, loading: false, error: false },
       );
     });
 
     it('filters domains on FILTER_DOMAINS', () => {
-      expect(reducer(Mock.of<DomainsList>({ domains }), action(FILTER_DOMAINS, { searchTerm: 'oO' }))).toEqual(
+      expect(reducer(Mock.of<DomainsList>({ domains }), action(FILTER_DOMAINS, { payload: 'oO' as any }))).toEqual(
         { domains, filteredDomains },
       );
     });
@@ -90,7 +90,7 @@ describe('domainsListReducer', () => {
     ])('replaces status on proper domain on VALIDATE_DOMAIN', (domain) => {
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
-        action(VALIDATE_DOMAIN, { domain, status: 'valid' }),
+        action(VALIDATE_DOMAIN, { payload: { domain, status: 'valid' } } as any),
       )).toEqual({
         domains: domains.map(replaceStatusOnDomain(domain, 'valid')),
         filteredDomains: filteredDomains.map(replaceStatusOnDomain(domain, 'valid')),
@@ -117,7 +117,10 @@ describe('domainsListReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_DOMAINS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_DOMAINS, domains, defaultRedirects: undefined });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: LIST_DOMAINS,
+        payload: { domains },
+      });
       expect(listDomains).toHaveBeenCalledTimes(1);
     });
   });
@@ -128,7 +131,7 @@ describe('domainsListReducer', () => {
       ['bar'],
       ['something'],
     ])('creates action as expected', (searchTerm) => {
-      expect(filterDomainsAction(searchTerm)).toEqual({ type: FILTER_DOMAINS, searchTerm });
+      expect(filterDomainsAction(searchTerm)).toEqual({ type: FILTER_DOMAINS, payload: searchTerm });
     });
   });
 
@@ -145,7 +148,10 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledWith({ type: VALIDATE_DOMAIN, domain, status: 'invalid' });
+      expect(dispatch).toHaveBeenCalledWith({
+        type: VALIDATE_DOMAIN,
+        payload: { domain, status: 'invalid' },
+      });
     });
 
     it('dispatches invalid status when health endpoint returns an error', async () => {
@@ -162,7 +168,10 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledWith({ type: VALIDATE_DOMAIN, domain, status: 'invalid' });
+      expect(dispatch).toHaveBeenCalledWith({
+        type: VALIDATE_DOMAIN,
+        payload: { domain, status: 'invalid' },
+      });
     });
 
     it.each([
@@ -185,7 +194,10 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledWith({ type: VALIDATE_DOMAIN, domain, status: expectedStatus });
+      expect(dispatch).toHaveBeenCalledWith({
+        type: VALIDATE_DOMAIN,
+        payload: { domain, status: expectedStatus },
+      });
     });
   });
 });

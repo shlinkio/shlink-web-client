@@ -28,17 +28,21 @@ export interface DomainsList {
   errorData?: ProblemDetailsError;
 }
 
-type ListDomainsAction = PayloadAction<{
+interface ListDomains {
   domains: Domain[];
   defaultRedirects?: ShlinkDomainRedirects;
-}>;
+}
+
+type ListDomainsAction = PayloadAction<ListDomains>;
 
 type FilterDomainsAction = PayloadAction<string>;
 
-type ValidateDomain = PayloadAction<{
+interface ValidateDomain {
   domain: string;
   status: DomainStatus;
-}>;
+}
+
+type ValidateDomainAction = PayloadAction<ValidateDomain>;
 
 const initialState: DomainsList = {
   domains: [],
@@ -51,7 +55,7 @@ export type DomainsCombinedAction = ListDomainsAction
 & ApiErrorAction
 & FilterDomainsAction
 & EditDomainRedirectsAction
-& ValidateDomain;
+& ValidateDomainAction;
 
 export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, redirects });
@@ -62,7 +66,7 @@ export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
 const oldReducer = buildReducer<DomainsList, DomainsCombinedAction>({
   [LIST_DOMAINS_START]: () => ({ ...initialState, loading: true }),
   [LIST_DOMAINS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [LIST_DOMAINS]: (_, { payload }) => ({ ...initialState, searchTerm: payload, filteredDomains: payload.domains }),
+  [LIST_DOMAINS]: (_, { payload }) => ({ ...initialState, domains: payload.domains, filteredDomains: payload.domains }),
   [FILTER_DOMAINS]: (state, { payload }) => ({
     ...state,
     filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
@@ -112,7 +116,7 @@ export const checkDomainHealth = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   const { selectedServer } = getState();
 
   if (!hasServerData(selectedServer)) {
-    dispatch<ValidateDomain>({
+    dispatch<ValidateDomainAction>({
       type: VALIDATE_DOMAIN,
       payload: { domain, status: 'invalid' },
     });
@@ -129,12 +133,12 @@ export const checkDomainHealth = (buildShlinkApiClient: ShlinkApiClientBuilder) 
 
     const { status } = await health();
 
-    dispatch<ValidateDomain>({
+    dispatch<ValidateDomainAction>({
       type: VALIDATE_DOMAIN,
       payload: { domain, status: status === 'pass' ? 'valid' : 'invalid' },
     });
   } catch (e) {
-    dispatch<ValidateDomain>({
+    dispatch<ValidateDomainAction>({
       type: VALIDATE_DOMAIN,
       payload: { domain, status: 'invalid' },
     });
@@ -143,10 +147,7 @@ export const checkDomainHealth = (buildShlinkApiClient: ShlinkApiClientBuilder) 
 
 export const domainsReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const listDomains = createAsyncThunk<{
-    domains: Domain[];
-    defaultRedirects?: ShlinkDomainRedirects;
-  }, void, { state: ShlinkState }>(
+  const listDomains = createAsyncThunk<ListDomains, void, { state: ShlinkState }>(
     LIST_DOMAINS,
     async (_, { getState }) => {
       const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
@@ -160,7 +161,7 @@ export const domainsReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuild
   );
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const checkDomainHealth = createAsyncThunk<{ domain: string; status: DomainStatus }, string, { state: ShlinkState }>(
+  const checkDomainHealth = createAsyncThunk<ValidateDomain, string, { state: ShlinkState }>(
     VALIDATE_DOMAIN,
     async (domain: string, { getState }) => {
       const { selectedServer } = getState();
