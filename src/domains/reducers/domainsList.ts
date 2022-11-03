@@ -11,7 +11,6 @@ import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import { EDIT_DOMAIN_REDIRECTS, EditDomainRedirectsAction } from './domainRedirects';
 import { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
-import { buildReducer } from '../../utils/helpers/redux';
 
 export const LIST_DOMAINS_START = 'shlink/domainsList/LIST_DOMAINS_START';
 export const LIST_DOMAINS_ERROR = 'shlink/domainsList/LIST_DOMAINS_ERROR';
@@ -52,7 +51,6 @@ const initialState: DomainsList = {
 };
 
 export type DomainsCombinedAction = ListDomainsAction
-& ApiErrorAction
 & FilterDomainsAction
 & EditDomainRedirectsAction
 & ValidateDomainAction;
@@ -62,28 +60,6 @@ export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomain
 
 export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
-
-const oldReducer = buildReducer<DomainsList, DomainsCombinedAction>({
-  [LIST_DOMAINS_START]: () => ({ ...initialState, loading: true }),
-  [LIST_DOMAINS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [LIST_DOMAINS]: (_, { payload }) => ({ ...initialState, domains: payload.domains, filteredDomains: payload.domains }),
-  [FILTER_DOMAINS]: (state, { payload }) => ({
-    ...state,
-    filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
-  }),
-  [EDIT_DOMAIN_REDIRECTS]: (state, { domain, redirects }) => ({
-    ...state,
-    domains: state.domains.map(replaceRedirectsOnDomain(domain, redirects)),
-    filteredDomains: state.filteredDomains.map(replaceRedirectsOnDomain(domain, redirects)),
-  }),
-  [VALIDATE_DOMAIN]: (state, { payload }) => ({
-    ...state,
-    domains: state.domains.map(replaceStatusOnDomain(payload.domain, payload.status)),
-    filteredDomains: state.filteredDomains.map(replaceStatusOnDomain(payload.domain, payload.status)),
-  }),
-}, initialState);
-
-export default oldReducer;
 
 export const listDomains = (buildShlinkApiClient: ShlinkApiClientBuilder) => () => async (
   dispatch: Dispatch,
@@ -145,7 +121,7 @@ export const checkDomainHealth = (buildShlinkApiClient: ShlinkApiClientBuilder) 
   }
 };
 
-export const domainsReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const listDomains = createAsyncThunk<ListDomains, void, { state: ShlinkState }>(
     LIST_DOMAINS,

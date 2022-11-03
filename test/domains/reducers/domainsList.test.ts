@@ -1,5 +1,6 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
+import { AxiosError } from 'axios';
+import {
   LIST_DOMAINS,
   LIST_DOMAINS_ERROR,
   LIST_DOMAINS_START,
@@ -10,8 +11,9 @@ import reducer, {
   listDomains as listDomainsAction,
   filterDomains as filterDomainsAction,
   replaceRedirectsOnDomain,
-  checkDomainHealth,
+  checkDomainHealth as validateDomain,
   replaceStatusOnDomain,
+  domainsListReducerCreator,
 } from '../../../src/domains/reducers/domainsList';
 import { EDIT_DOMAIN_REDIRECTS } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
@@ -19,6 +21,7 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { Domain } from '../../../src/domains/data';
 import { ShlinkState } from '../../../src/container/types';
 import { SelectedServer, ServerData } from '../../../src/servers/data';
+import { parseApiError } from '../../../src/api/utils';
 
 describe('domainsListReducer', () => {
   const dispatch = jest.fn();
@@ -31,6 +34,15 @@ describe('domainsListReducer', () => {
     Mock.of<Domain>({ domain: 'Boo', status: 'validating' }),
   ];
   const domains = [...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' })];
+  const error = Mock.of<AxiosError>({
+    response: {
+      data: { type: 'NOT_FOUND', status: 404 },
+    },
+  });
+  // @ts-expect-error gfreg
+  const { reducer, listDomains: listDomainsThunk, filterDomains, checkDomainHealth } = domainsListReducerCreator(
+    buildShlinkApiClient,
+  );
 
   beforeEach(jest.clearAllMocks);
 
@@ -40,27 +52,27 @@ describe('domainsListReducer', () => {
     );
 
     it('returns loading on LIST_DOMAINS_START', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS_START))).toEqual(
+      expect(reducer(undefined, action(listDomainsThunk.pending.toString()))).toEqual(
         { domains: [], filteredDomains: [], loading: true, error: false },
       );
     });
 
     it('returns error on LIST_DOMAINS_ERROR', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS_ERROR))).toEqual(
-        { domains: [], filteredDomains: [], loading: false, error: true },
+      expect(reducer(undefined, action(listDomainsThunk.rejected.toString(), { error } as any))).toEqual(
+        { domains: [], filteredDomains: [], loading: false, error: true, errorData: parseApiError(error as any) },
       );
     });
 
     it('returns domains on LIST_DOMAINS', () => {
-      expect(reducer(undefined, action(LIST_DOMAINS, { payload: { domains } } as any))).toEqual(
-        { domains, filteredDomains: domains, loading: false, error: false },
-      );
+      expect(
+        reducer(undefined, action(listDomainsThunk.fulfilled.toString(), { payload: { domains } } as any)),
+      ).toEqual({ domains, filteredDomains: domains, loading: false, error: false });
     });
 
     it('filters domains on FILTER_DOMAINS', () => {
-      expect(reducer(Mock.of<DomainsList>({ domains }), action(FILTER_DOMAINS, { payload: 'oO' as any }))).toEqual(
-        { domains, filteredDomains },
-      );
+      expect(
+        reducer(Mock.of<DomainsList>({ domains }), action(filterDomains.toString(), { payload: 'oO' as any })),
+      ).toEqual({ domains, filteredDomains });
     });
 
     it.each([
@@ -90,7 +102,7 @@ describe('domainsListReducer', () => {
     ])('replaces status on proper domain on VALIDATE_DOMAIN', (domain) => {
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
-        action(VALIDATE_DOMAIN, { payload: { domain, status: 'valid' } } as any),
+        action(checkDomainHealth.fulfilled.toString(), { payload: { domain, status: 'valid' } } as any),
       )).toEqual({
         domains: domains.map(replaceStatusOnDomain(domain, 'valid')),
         filteredDomains: filteredDomains.map(replaceStatusOnDomain(domain, 'valid')),
@@ -143,7 +155,7 @@ describe('domainsListReducer', () => {
         selectedServer: Mock.all<SelectedServer>(),
       }));
 
-      await checkDomainHealth(buildShlinkApiClient)(domain)(dispatch, getState);
+      await validateDomain(buildShlinkApiClient)(domain)(dispatch, getState);
 
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).not.toHaveBeenCalled();
@@ -163,7 +175,7 @@ describe('domainsListReducer', () => {
       }));
       health.mockRejectedValue({});
 
-      await checkDomainHealth(buildShlinkApiClient)(domain)(dispatch, getState);
+      await validateDomain(buildShlinkApiClient)(domain)(dispatch, getState);
 
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
@@ -189,7 +201,7 @@ describe('domainsListReducer', () => {
       }));
       health.mockResolvedValue({ status: healthStatus });
 
-      await checkDomainHealth(buildShlinkApiClient)(domain)(dispatch, getState);
+      await validateDomain(buildShlinkApiClient)(domain)(dispatch, getState);
 
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
