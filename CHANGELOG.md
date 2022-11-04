@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.
+* [#620](https://github.com/shlinkio/shlink-web-client/issues/620) Migrated domains-related reducers to redux toolkit as a POC.
 
 ### Deprecated
 * *Nothing*
