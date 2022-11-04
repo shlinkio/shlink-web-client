@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/shlink-web-client/feature/redux-toolkit-poc/static/css/main.d7ebb480.css",
-    "main.js": "/shlink-web-client/feature/redux-toolkit-poc/static/js/main.41e6a1b6.js",
+    "main.js": "/shlink-web-client/feature/redux-toolkit-poc/static/js/main.572e493f.js",
     "index.html": "/shlink-web-client/feature/redux-toolkit-poc/index.html",
     "main.d7ebb480.css.map": "/shlink-web-client/feature/redux-toolkit-poc/static/css/main.d7ebb480.css.map",
-    "main.41e6a1b6.js.map": "/shlink-web-client/feature/redux-toolkit-poc/static/js/main.41e6a1b6.js.map"
+    "main.572e493f.js.map": "/shlink-web-client/feature/redux-toolkit-poc/static/js/main.572e493f.js.map"
   },
   "entrypoints": [
     "static/css/main.d7ebb480.css",
-    "static/js/main.41e6a1b6.js"
+    "static/js/main.572e493f.js"
   ]
 }
