@@ -1,6 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { prop } from 'ramda';
-import { hasServerData, SelectedServer, ServerWithId } from '../../servers/data';
+import { hasServerData, ServerWithId } from '../../servers/data';
 import { GetState } from '../../container/types';
 import { ShlinkApiClient } from './ShlinkApiClient';
 
@@ -8,22 +7,19 @@ const apiClients: Record<string, ShlinkApiClient> = {};
 
 const isGetState = (getStateOrSelectedServer: GetState | ServerWithId): getStateOrSelectedServer is GetState =>
   typeof getStateOrSelectedServer === 'function';
-const getSelectedServerFromState = (getState: GetState): SelectedServer => prop('selectedServer', getState());
-
-export type ShlinkApiClientBuilder = (getStateOrSelectedServer: GetState | ServerWithId) => ShlinkApiClient;
-
-export const buildShlinkApiClient = (axios: AxiosInstance): ShlinkApiClientBuilder => (
-  getStateOrSelectedServer: GetState | ServerWithId,
-) => {
-  const server = isGetState(getStateOrSelectedServer)
-    ? getSelectedServerFromState(getStateOrSelectedServer)
-    : getStateOrSelectedServer;
-
-  if (!hasServerData(server)) {
+const getSelectedServerFromState = (getState: GetState): ServerWithId => {
+  const { selectedServer } = getState();
+  if (!hasServerData(selectedServer)) {
     throw new Error('There\'s no selected server or it is not found');
   }
 
-  const { url, apiKey } = server;
+  return selectedServer;
+};
+
+export const buildShlinkApiClient = (axios: AxiosInstance) => (getStateOrSelectedServer: GetState | ServerWithId) => {
+  const { url, apiKey } = isGetState(getStateOrSelectedServer)
+    ? getSelectedServerFromState(getStateOrSelectedServer)
+    : getStateOrSelectedServer;
   const clientKey = `${url}_${apiKey}`;
 
   if (!apiClients[clientKey]) {
@@ -32,3 +28,5 @@ export const buildShlinkApiClient = (axios: AxiosInstance): ShlinkApiClientBuild
 
   return apiClients[clientKey];
 };
+
+export type ShlinkApiClientBuilder = ReturnType<typeof buildShlinkApiClient>;
