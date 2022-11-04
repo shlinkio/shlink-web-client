@@ -18,7 +18,7 @@ import tagEditReducer from '../tags/reducers/tagEdit';
 import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
-import appUpdatesReducer from '../app/reducers/appUpdates';
+import { appUpdatesReducer } from '../app/reducers/appUpdates';
 import sidebarReducer from '../common/reducers/sidebar';
 import { ShlinkState } from '../container/types';
 

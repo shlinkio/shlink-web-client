@@ -1,30 +1,25 @@
-import reducer, {
-  APP_UPDATE_AVAILABLE,
-  RESET_APP_UPDATE,
-  appUpdateAvailable,
-  resetAppUpdate,
-} from '../../../src/app/reducers/appUpdates';
+import { appUpdatesReducer, appUpdateAvailable, resetAppUpdate } from '../../../src/app/reducers/appUpdates';
 
 describe('appUpdatesReducer', () => {
   describe('reducer', () => {
     it('returns true on APP_UPDATE_AVAILABLE', () => {
-      expect(reducer(undefined, { type: APP_UPDATE_AVAILABLE })).toEqual(true);
+      expect(appUpdatesReducer(undefined, { type: appUpdateAvailable.toString() })).toEqual(true);
     });
 
     it('returns false on RESET_APP_UPDATE', () => {
-      expect(reducer(undefined, { type: RESET_APP_UPDATE })).toEqual(false);
+      expect(appUpdatesReducer(undefined, { type: resetAppUpdate.toString() })).toEqual(false);
     });
   });
 
   describe('appUpdateAvailable', () => {
     it('creates expected action', () => {
-      expect(appUpdateAvailable()).toEqual({ type: APP_UPDATE_AVAILABLE });
+      expect(appUpdateAvailable()).toEqual({ type: appUpdateAvailable.toString() });
     });
   });
 
   describe('resetAppUpdate', () => {
     it('creates expected action', () => {
-      expect(resetAppUpdate()).toEqual({ type: RESET_APP_UPDATE });
+      expect(resetAppUpdate()).toEqual({ type: resetAppUpdate.toString() });
     });
   });
 });
