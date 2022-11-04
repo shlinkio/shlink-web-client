@@ -1,7 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { AxiosError } from 'axios';
 import {
-  DomainsCombinedAction,
   DomainsList,
   replaceRedirectsOnDomain,
   replaceStatusOnDomain,
@@ -31,7 +30,6 @@ describe('domainsListReducer', () => {
       data: { type: 'NOT_FOUND', status: 404 },
     },
   });
-  // @ts-expect-error filterDomains is actually part of the result
   const { reducer, listDomains: listDomainsAction, checkDomainHealth, filterDomains } = domainsListReducerCreator(
     buildShlinkApiClient,
   );
@@ -39,31 +37,27 @@ describe('domainsListReducer', () => {
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const action = (type: string, args: Partial<DomainsCombinedAction> = {}) => Mock.of<DomainsCombinedAction>(
-      { type, ...args },
-    );
-
     it('returns loading on LIST_DOMAINS_START', () => {
-      expect(reducer(undefined, action(listDomainsAction.pending.toString()))).toEqual(
+      expect(reducer(undefined, { type: listDomainsAction.pending.toString() })).toEqual(
         { domains: [], filteredDomains: [], loading: true, error: false },
       );
     });
 
     it('returns error on LIST_DOMAINS_ERROR', () => {
-      expect(reducer(undefined, action(listDomainsAction.rejected.toString(), { error } as any))).toEqual(
-        { domains: [], filteredDomains: [], loading: false, error: true, errorData: parseApiError(error as any) },
+      expect(reducer(undefined, { type: listDomainsAction.rejected.toString(), error })).toEqual(
+        { domains: [], filteredDomains: [], loading: false, error: true, errorData: parseApiError(error) },
       );
     });
 
     it('returns domains on LIST_DOMAINS', () => {
       expect(
-        reducer(undefined, action(listDomainsAction.fulfilled.toString(), { payload: { domains } } as any)),
+        reducer(undefined, { type: listDomainsAction.fulfilled.toString(), payload: { domains } }),
       ).toEqual({ domains, filteredDomains: domains, loading: false, error: false });
     });
 
     it('filters domains on FILTER_DOMAINS', () => {
       expect(
-        reducer(Mock.of<DomainsList>({ domains }), action(filterDomains.toString(), { payload: 'oO' as any })),
+        reducer(Mock.of<DomainsList>({ domains }), { type: filterDomains.toString(), payload: 'oO' }),
       ).toEqual({ domains, filteredDomains });
     });
 
@@ -80,7 +74,7 @@ describe('domainsListReducer', () => {
 
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
-        action(EDIT_DOMAIN_REDIRECTS, { domain, redirects }),
+        { type: EDIT_DOMAIN_REDIRECTS, domain, redirects },
       )).toEqual({
         domains: domains.map(replaceRedirectsOnDomain(domain, redirects)),
         filteredDomains: filteredDomains.map(replaceRedirectsOnDomain(domain, redirects)),
@@ -94,7 +88,10 @@ describe('domainsListReducer', () => {
     ])('replaces status on proper domain on VALIDATE_DOMAIN', (domain) => {
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
-        action(checkDomainHealth.fulfilled.toString(), { payload: { domain, status: 'valid' } } as any),
+        {
+          type: checkDomainHealth.fulfilled.toString(),
+          payload: { domain, status: 'valid' },
+        },
       )).toEqual({
         domains: domains.map(replaceStatusOnDomain(domain, 'valid')),
         filteredDomains: filteredDomains.map(replaceStatusOnDomain(domain, 'valid')),

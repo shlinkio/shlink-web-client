@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction, createAsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction, SliceCaseReducers } from '@reduxjs/toolkit';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkState } from '../../container/types';
 import { Domain, DomainStatus } from '../data';
 import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
-import { EDIT_DOMAIN_REDIRECTS, EditDomainRedirectsAction } from './domainRedirects';
+import { EDIT_DOMAIN_REDIRECTS } from './domainRedirects';
 import { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
 
 export const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
+export const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
 export const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
 
 export interface DomainsList {
@@ -30,15 +31,6 @@ interface ValidateDomain {
   domain: string;
   status: DomainStatus;
 }
-
-type ListDomainsAction = PayloadAction<ListDomains>;
-type FilterDomainsAction = PayloadAction<string>;
-type ValidateDomainAction = PayloadAction<ValidateDomain>;
-
-export type DomainsCombinedAction = ListDomainsAction
-& FilterDomainsAction
-& EditDomainRedirectsAction
-& ValidateDomainAction;
 
 const initialState: DomainsList = {
   domains: [],
@@ -92,15 +84,12 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
     },
   );
 
-  const { actions, reducer } = createSlice<DomainsList, SliceCaseReducers<DomainsList>>({
+  const filterDomains = createAction<string>(FILTER_DOMAINS);
+
+  const { reducer } = createSlice<DomainsList, SliceCaseReducers<DomainsList>>({
     name: 'domainsList',
     initialState,
-    reducers: {
-      filterDomains: (state, { payload }) => ({
-        ...state,
-        filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
-      }),
-    },
+    reducers: {},
     extraReducers: (builder) => {
       builder.addCase(listDomains.pending, () => ({ ...initialState, loading: true }));
       builder.addCase(listDomains.rejected, (_, { error }) => (
@@ -116,6 +105,11 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
         filteredDomains: filteredDomains.map(replaceStatusOnDomain(payload.domain, payload.status)),
       }));
 
+      builder.addCase(filterDomains, (state, { payload }) => ({
+        ...state,
+        filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
+      }));
+
       builder.addCase(EDIT_DOMAIN_REDIRECTS, (state, { domain, redirects }: any) => ({ // TODO Fix this "any"
         ...state,
         domains: state.domains.map(replaceRedirectsOnDomain(domain, redirects)),
@@ -128,6 +122,6 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
     reducer,
     listDomains,
     checkDomainHealth,
-    ...actions,
+    filterDomains,
   };
 };
