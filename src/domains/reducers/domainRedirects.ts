@@ -9,15 +9,17 @@ export const EDIT_DOMAIN_REDIRECTS_START = 'shlink/domainRedirects/EDIT_DOMAIN_R
 export const EDIT_DOMAIN_REDIRECTS_ERROR = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS_ERROR';
 export const EDIT_DOMAIN_REDIRECTS = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS';
 
-export interface EditDomainRedirectsAction extends Action<string> {
+export interface EditDomainRedirects {
   domain: string;
   redirects: ShlinkDomainRedirects;
 }
 
-export const editDomainRedirects = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  domain: string,
-  domainRedirects: Partial<ShlinkDomainRedirects>,
-) => async (dispatch: Dispatch, getState: GetState) => {
+export interface EditDomainRedirectsAction extends Action<string>, EditDomainRedirects {}
+
+export const editDomainRedirects = (buildShlinkApiClient: ShlinkApiClientBuilder) => ({
+  domain,
+  redirects: domainRedirects,
+}: EditDomainRedirects) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_DOMAIN_REDIRECTS_START });
   const { editDomainRedirects: shlinkEditDomainRedirects } = buildShlinkApiClient(getState);
 

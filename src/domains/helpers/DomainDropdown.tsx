@@ -7,14 +7,14 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
 import { EditDomainRedirectsModal } from './EditDomainRedirectsModal';
 import { Domain } from '../data';
-import { ShlinkDomainRedirects } from '../../api/types';
+import { EditDomainRedirects } from '../reducers/domainRedirects';
 import { supportsDefaultDomainRedirectsEdition, supportsDomainVisits } from '../../utils/helpers/features';
 import { getServerId, SelectedServer } from '../../servers/data';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 
 interface DomainDropdownProps {
   domain: Domain;
-  editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
   selectedServer: SelectedServer;
 }
 

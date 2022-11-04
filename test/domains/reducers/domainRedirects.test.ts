@@ -3,7 +3,7 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import {
   EDIT_DOMAIN_REDIRECTS,
   EDIT_DOMAIN_REDIRECTS_ERROR,
-  EDIT_DOMAIN_REDIRECTS_START,
+  EDIT_DOMAIN_REDIRECTS_START, EditDomainRedirects,
   editDomainRedirects as editDomainRedirectsAction,
 } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
@@ -22,7 +22,10 @@ describe('domainRedirectsReducer', () => {
     it('dispatches error when loading domains fails', async () => {
       editDomainRedirects.mockRejectedValue(new Error('error'));
 
-      await editDomainRedirectsAction(buildShlinkApiClient)(domain, {})(dispatch, getState);
+      await editDomainRedirectsAction(buildShlinkApiClient)(Mock.of<EditDomainRedirects>({ domain }))(
+        dispatch,
+        getState,
+      );
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_DOMAIN_REDIRECTS_START });
@@ -33,7 +36,10 @@ describe('domainRedirectsReducer', () => {
     it('dispatches domain and redirects once loaded', async () => {
       editDomainRedirects.mockResolvedValue(redirects);
 
-      await editDomainRedirectsAction(buildShlinkApiClient)(domain, {})(dispatch, getState);
+      await editDomainRedirectsAction(buildShlinkApiClient)(Mock.of<EditDomainRedirects>({ domain }))(
+        dispatch,
+        getState,
+      );
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_DOMAIN_REDIRECTS_START });
