@@ -4,7 +4,7 @@ import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { SimpleCard } from '../utils/SimpleCard';
 import { SearchField } from '../utils/SearchField';
-import { ShlinkDomainRedirects } from '../api/types';
+import { EditDomainRedirects } from './reducers/domainRedirects';
 import { SelectedServer } from '../servers/data';
 import { DomainsList } from './reducers/domainsList';
 import { DomainRow } from './DomainRow';
@@ -12,7 +12,7 @@ import { DomainRow } from './DomainRow';
 interface ManageDomainsProps {
   listDomains: Function;
   filterDomains: (searchTerm: string) => void;
-  editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
   checkDomainHealth: (domain: string) => void;
   domainsList: DomainsList;
   selectedServer: SelectedServer;

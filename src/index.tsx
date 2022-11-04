@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import pack from '../package.json';
 import { container } from './container';
-import { store } from './container/store';
+import { setUpStore } from './container/store';
 import { fixLeafletIcons } from './utils/helpers/leaflet';
 import { register as registerServiceWorker } from './serviceWorkerRegistration';
 import 'chart.js/auto'; // TODO Import specific ones to reduce bundle size https://react-chartjs-2.js.org/docs/migration-to-v4/#tree-shaking
@@ -14,6 +14,7 @@ import './index.scss';
 // This overwrites icons used for leaflet maps, fixing some issues caused by webpack while processing the CSS
 fixLeafletIcons();
 
+const store = setUpStore(container);
 const { App, ScrollToTop, ErrorHandler, appUpdateAvailable } = container;
 
 createRoot(document.getElementById('root')!).render( // eslint-disable-line @typescript-eslint/no-non-null-assertion

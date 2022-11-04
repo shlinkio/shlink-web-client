@@ -8,11 +8,12 @@ import { SelectedServer } from '../servers/data';
 import { Domain } from './data';
 import { DomainStatusIcon } from './helpers/DomainStatusIcon';
 import { DomainDropdown } from './helpers/DomainDropdown';
+import { EditDomainRedirects } from './reducers/domainRedirects';
 
 interface DomainRowProps {
   domain: Domain;
   defaultRedirects?: ShlinkDomainRedirects;
-  editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
   checkDomainHealth: (domain: string) => void;
   selectedServer: SelectedServer;
 }

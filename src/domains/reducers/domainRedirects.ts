@@ -1,31 +1,23 @@
-import { Action, Dispatch } from 'redux';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkDomainRedirects } from '../../api/types';
-import { GetState } from '../../container/types';
-import { ApiErrorAction } from '../../api/types/actions';
-import { parseApiError } from '../../api/utils';
+import { ShlinkState } from '../../container/types';
 
-export const EDIT_DOMAIN_REDIRECTS_START = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS_START';
-export const EDIT_DOMAIN_REDIRECTS_ERROR = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS_ERROR';
-export const EDIT_DOMAIN_REDIRECTS = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS';
+const EDIT_DOMAIN_REDIRECTS = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS';
 
-export interface EditDomainRedirectsAction extends Action<string> {
+export interface EditDomainRedirects {
   domain: string;
   redirects: ShlinkDomainRedirects;
 }
 
-export const editDomainRedirects = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  domain: string,
-  domainRedirects: Partial<ShlinkDomainRedirects>,
-) => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch({ type: EDIT_DOMAIN_REDIRECTS_START });
-  const { editDomainRedirects: shlinkEditDomainRedirects } = buildShlinkApiClient(getState);
-
-  try {
+export const editDomainRedirects = (
+  buildShlinkApiClient: ShlinkApiClientBuilder,
+) => createAsyncThunk<EditDomainRedirects, EditDomainRedirects, { state: ShlinkState }>(
+  EDIT_DOMAIN_REDIRECTS,
+  async ({ domain, redirects: domainRedirects }, { getState }) => {
+    const { editDomainRedirects: shlinkEditDomainRedirects } = buildShlinkApiClient(getState);
     const redirects = await shlinkEditDomainRedirects({ domain, ...domainRedirects });
 
-    dispatch<EditDomainRedirectsAction>({ type: EDIT_DOMAIN_REDIRECTS, domain, redirects });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: EDIT_DOMAIN_REDIRECTS_ERROR, errorData: parseApiError(e) });
-  }
-};
+    return { domain, redirects };
+  },
+);
