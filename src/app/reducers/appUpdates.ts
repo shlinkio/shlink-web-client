@@ -1,16 +1,14 @@
-import { Action } from 'redux';
-import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { createSlice } from '@reduxjs/toolkit';
 
-export const APP_UPDATE_AVAILABLE = 'shlink/appUpdates/APP_UPDATE_AVAILABLE';
-export const RESET_APP_UPDATE = 'shlink/appUpdates/RESET_APP_UPDATE';
+const { actions, reducer } = createSlice({
+  name: 'appUpdatesReducer',
+  initialState: false,
+  reducers: {
+    appUpdateAvailable: () => true,
+    resetAppUpdate: () => false,
+  },
+});
 
-const initialState = false;
+export const { appUpdateAvailable, resetAppUpdate } = actions;
 
-export default buildReducer<boolean, Action<string>>({
-  [APP_UPDATE_AVAILABLE]: () => true,
-  [RESET_APP_UPDATE]: () => false,
-}, initialState);
-
-export const appUpdateAvailable = buildActionCreator(APP_UPDATE_AVAILABLE);
-
-export const resetAppUpdate = buildActionCreator(RESET_APP_UPDATE);
+export const appUpdatesReducer = reducer;

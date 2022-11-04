@@ -1,12 +1,5 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  GET_MERCURE_INFO_START,
-  GET_MERCURE_INFO_ERROR,
-  GET_MERCURE_INFO,
-  loadMercureInfo,
-  GetMercureInfoAction,
-} from '../../../src/mercure/reducers/mercureInfo';
-import { ShlinkMercureInfo } from '../../../src/api/types';
+import { mercureInfoReducerCreator } from '../../../src/mercure/reducers/mercureInfo';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { GetState } from '../../../src/container/types';
 
@@ -15,39 +8,35 @@ describe('mercureInfoReducer', () => {
     mercureHubUrl: 'http://example.com/.well-known/mercure',
     token: 'abc.123.def',
   };
+  const getMercureInfo = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ mercureInfo: getMercureInfo });
+  const { loadMercureInfo, reducer } = mercureInfoReducerCreator(buildShlinkApiClient);
+
+  beforeEach(jest.resetAllMocks);
 
   describe('reducer', () => {
-    const action = (type: string, args: Partial<ShlinkMercureInfo> = {}) => Mock.of<GetMercureInfoAction>(
-      { type, ...args },
-    );
-
     it('returns loading on GET_MERCURE_INFO_START', () => {
-      expect(reducer(undefined, action(GET_MERCURE_INFO_START))).toEqual({
+      expect(reducer(undefined, { type: loadMercureInfo.pending.toString() })).toEqual({
         loading: true,
         error: false,
       });
     });
 
     it('returns error on GET_MERCURE_INFO_ERROR', () => {
-      expect(reducer(undefined, action(GET_MERCURE_INFO_ERROR))).toEqual({
+      expect(reducer(undefined, { type: loadMercureInfo.rejected.toString() })).toEqual({
         loading: false,
         error: true,
       });
     });
 
     it('returns mercure info on GET_MERCURE_INFO', () => {
-      expect(reducer(undefined, { type: GET_MERCURE_INFO, ...mercureInfo })).toEqual(expect.objectContaining({
-        ...mercureInfo,
-        loading: false,
-        error: false,
-      }));
+      expect(reducer(undefined, { type: loadMercureInfo.fulfilled.toString(), payload: mercureInfo })).toEqual(
+        expect.objectContaining({ ...mercureInfo, loading: false, error: false }),
+      );
     });
   });
 
   describe('loadMercureInfo', () => {
-    const createApiClientMock = (result: Promise<ShlinkMercureInfo>) => Mock.of<ShlinkApiClient>({
-      mercureInfo: jest.fn().mockReturnValue(result),
-    });
     const dispatch = jest.fn();
     const createGetStateMock = (enabled: boolean): GetState => jest.fn().mockReturnValue({
       settings: {
@@ -55,43 +44,55 @@ describe('mercureInfoReducer', () => {
       },
     });
 
-    afterEach(jest.resetAllMocks);
-
     it('dispatches error when real time updates are disabled', async () => {
-      const apiClientMock = createApiClientMock(Promise.resolve(mercureInfo));
+      getMercureInfo.mockResolvedValue(mercureInfo);
       const getState = createGetStateMock(false);
 
-      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
+      await loadMercureInfo()(dispatch, getState, {});
 
-      expect(apiClientMock.mercureInfo).not.toHaveBeenCalled();
+      expect(getMercureInfo).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: loadMercureInfo.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: loadMercureInfo.rejected.toString(),
+      }));
     });
 
     it('calls API on success', async () => {
-      const apiClientMock = createApiClientMock(Promise.resolve(mercureInfo));
+      getMercureInfo.mockResolvedValue(mercureInfo);
       const getState = createGetStateMock(true);
 
-      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
+      await loadMercureInfo()(dispatch, getState, {});
 
-      expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
+      expect(getMercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO, ...mercureInfo });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: loadMercureInfo.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: loadMercureInfo.fulfilled.toString(),
+        payload: mercureInfo,
+      }));
     });
 
     it('throws error on failure', async () => {
       const error = 'Error';
-      const apiClientMock = createApiClientMock(Promise.reject(error));
       const getState = createGetStateMock(true);
 
-      await loadMercureInfo(() => apiClientMock)()(dispatch, getState);
+      getMercureInfo.mockRejectedValue(error);
 
-      expect(apiClientMock.mercureInfo).toHaveBeenCalledTimes(1);
+      await loadMercureInfo()(dispatch, getState, {});
+
+      expect(getMercureInfo).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: GET_MERCURE_INFO_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: GET_MERCURE_INFO_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: loadMercureInfo.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: loadMercureInfo.rejected.toString(),
+      }));
     });
   });
 });

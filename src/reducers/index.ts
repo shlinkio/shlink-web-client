@@ -15,11 +15,10 @@ import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
-import mercureInfoReducer from '../mercure/reducers/mercureInfo';
 import settingsReducer from '../settings/reducers/settings';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
-import appUpdatesReducer from '../app/reducers/appUpdates';
-import sidebarReducer from '../common/reducers/sidebar';
+import { appUpdatesReducer } from '../app/reducers/appUpdates';
+import { sidebarReducer } from '../common/reducers/sidebar';
 import { ShlinkState } from '../container/types';
 
 export default (container: IContainer) => combineReducers<ShlinkState>({
@@ -38,7 +37,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   tagsList: tagsListReducer,
   tagDelete: tagDeleteReducer,
   tagEdit: tagEditReducer,
-  mercureInfo: mercureInfoReducer,
+  mercureInfo: container.mercureInfoReducer,
   settings: settingsReducer,
   domainsList: container.domainsListReducer,
   visitsOverview: visitsOverviewReducer,
