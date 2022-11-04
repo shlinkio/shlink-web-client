@@ -6,7 +6,7 @@ import {
   replaceStatusOnDomain,
   domainsListReducerCreator,
 } from '../../../src/domains/reducers/domainsList';
-import { EDIT_DOMAIN_REDIRECTS } from '../../../src/domains/reducers/domainRedirects';
+import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { Domain } from '../../../src/domains/data';
@@ -30,8 +30,10 @@ describe('domainsListReducer', () => {
       data: { type: 'NOT_FOUND', status: 404 },
     },
   });
+  const editDomainRedirectsThunk = editDomainRedirects(buildShlinkApiClient);
   const { reducer, listDomains: listDomainsAction, checkDomainHealth, filterDomains } = domainsListReducerCreator(
     buildShlinkApiClient,
+    editDomainRedirectsThunk,
   );
 
   beforeEach(jest.clearAllMocks);
@@ -72,12 +74,12 @@ describe('domainsListReducer', () => {
         invalidShortUrlRedirect: null,
       };
 
-      expect(reducer(
-        Mock.of<DomainsList>({ domains, filteredDomains }),
-        { type: EDIT_DOMAIN_REDIRECTS, domain, redirects },
-      )).toEqual({
-        domains: domains.map(replaceRedirectsOnDomain(domain, redirects)),
-        filteredDomains: filteredDomains.map(replaceRedirectsOnDomain(domain, redirects)),
+      expect(reducer(Mock.of<DomainsList>({ domains, filteredDomains }), {
+        type: editDomainRedirectsThunk.fulfilled.toString(),
+        payload: { domain, redirects },
+      })).toEqual({
+        domains: domains.map(replaceRedirectsOnDomain({ domain, redirects })),
+        filteredDomains: filteredDomains.map(replaceRedirectsOnDomain({ domain, redirects })),
       });
     });
 

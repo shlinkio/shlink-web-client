@@ -18,14 +18,19 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   // Reducer
-  bottle.serviceFactory('domainsListReducerCreator', domainsListReducerCreator, 'buildShlinkApiClient');
-  bottle.serviceFactory('domainsListReducer', prop('reducer'), 'domainsListReducerCreator'); // TODO Improve type checks on the prop that gets picked here
+  bottle.serviceFactory(
+    'domainsListReducerCreator',
+    domainsListReducerCreator,
+    'buildShlinkApiClient',
+    'editDomainRedirects',
+  );
+  bottle.serviceFactory('domainsListReducer', prop('reducer'), 'domainsListReducerCreator');
 
   // Actions
-  bottle.serviceFactory('listDomains', prop('listDomains'), 'domainsListReducerCreator'); // TODO Improve type checks on the prop that gets picked here
-  bottle.serviceFactory('filterDomains', prop('filterDomains'), 'domainsListReducerCreator'); // TODO Improve type checks on the prop that gets picked here
+  bottle.serviceFactory('listDomains', prop('listDomains'), 'domainsListReducerCreator');
+  bottle.serviceFactory('filterDomains', prop('filterDomains'), 'domainsListReducerCreator');
   bottle.serviceFactory('editDomainRedirects', editDomainRedirects, 'buildShlinkApiClient');
-  bottle.serviceFactory('checkDomainHealth', prop('checkDomainHealth'), 'domainsListReducerCreator'); // TODO Improve type checks on the prop that gets picked here
+  bottle.serviceFactory('checkDomainHealth', prop('checkDomainHealth'), 'domainsListReducerCreator');
 };
 
 export default provideServices;

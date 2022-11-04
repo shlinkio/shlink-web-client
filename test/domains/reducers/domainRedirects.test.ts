@@ -1,11 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import {
-  EDIT_DOMAIN_REDIRECTS,
-  EDIT_DOMAIN_REDIRECTS_ERROR,
-  EDIT_DOMAIN_REDIRECTS_START, EditDomainRedirects,
-  editDomainRedirects as editDomainRedirectsAction,
-} from '../../../src/domains/reducers/domainRedirects';
+import { EditDomainRedirects, editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import { ShlinkDomainRedirects } from '../../../src/api/types';
 
 describe('domainRedirectsReducer', () => {
@@ -16,35 +11,33 @@ describe('domainRedirectsReducer', () => {
     const redirects = Mock.all<ShlinkDomainRedirects>();
     const dispatch = jest.fn();
     const getState = jest.fn();
-    const editDomainRedirects = jest.fn();
-    const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ editDomainRedirects });
+    const editDomainRedirectsCall = jest.fn();
+    const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ editDomainRedirects: editDomainRedirectsCall });
+    const editDomainRedirectsAction = editDomainRedirects(buildShlinkApiClient);
 
     it('dispatches error when loading domains fails', async () => {
-      editDomainRedirects.mockRejectedValue(new Error('error'));
+      editDomainRedirectsCall.mockRejectedValue(new Error('error'));
 
-      await editDomainRedirectsAction(buildShlinkApiClient)(Mock.of<EditDomainRedirects>({ domain }))(
-        dispatch,
-        getState,
-      );
+      await editDomainRedirectsAction(Mock.of<EditDomainRedirects>({ domain }))(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_DOMAIN_REDIRECTS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_DOMAIN_REDIRECTS_ERROR });
-      expect(editDomainRedirects).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
+        type: editDomainRedirectsAction.rejected.toString(),
+      }));
+      expect(editDomainRedirectsCall).toHaveBeenCalledTimes(1);
     });
 
     it('dispatches domain and redirects once loaded', async () => {
-      editDomainRedirects.mockResolvedValue(redirects);
+      editDomainRedirectsCall.mockResolvedValue(redirects);
 
-      await editDomainRedirectsAction(buildShlinkApiClient)(Mock.of<EditDomainRedirects>({ domain }))(
-        dispatch,
-        getState,
-      );
+      await editDomainRedirectsAction(Mock.of<EditDomainRedirects>({ domain }))(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_DOMAIN_REDIRECTS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_DOMAIN_REDIRECTS, domain, redirects });
-      expect(editDomainRedirects).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
+        type: editDomainRedirectsAction.fulfilled.toString(),
+        payload: { domain, redirects },
+      }));
+      expect(editDomainRedirectsCall).toHaveBeenCalledTimes(1);
     });
   });
 });

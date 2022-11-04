@@ -1,17 +1,17 @@
-import { createSlice, createAsyncThunk, createAction, SliceCaseReducers } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createAction, SliceCaseReducers, AsyncThunk } from '@reduxjs/toolkit';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkState } from '../../container/types';
 import { Domain, DomainStatus } from '../data';
 import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
-import { EDIT_DOMAIN_REDIRECTS } from './domainRedirects';
 import { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
+import { EditDomainRedirects } from './domainRedirects';
 
-export const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
-export const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
-export const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
+const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
+const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
+const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
 
 export interface DomainsList {
   domains: Domain[];
@@ -39,13 +39,16 @@ const initialState: DomainsList = {
   error: false,
 };
 
-export const replaceRedirectsOnDomain = (domain: string, redirects: ShlinkDomainRedirects) =>
+export const replaceRedirectsOnDomain = ({ domain, redirects }: EditDomainRedirects) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, redirects });
 
 export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
 
-export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+export const domainsListReducerCreator = (
+  buildShlinkApiClient: ShlinkApiClientBuilder,
+  editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
+) => {
   const listDomains = createAsyncThunk<ListDomains, void, { state: ShlinkState }>(
     LIST_DOMAINS,
     async (_, { getState }) => {
@@ -110,10 +113,10 @@ export const domainsListReducerCreator = (buildShlinkApiClient: ShlinkApiClientB
         filteredDomains: state.domains.filter(({ domain }) => domain.toLowerCase().match(payload.toLowerCase())),
       }));
 
-      builder.addCase(EDIT_DOMAIN_REDIRECTS, (state, { domain, redirects }: any) => ({ // TODO Fix this "any"
+      builder.addCase(editDomainRedirects.fulfilled, (state, { payload }) => ({
         ...state,
-        domains: state.domains.map(replaceRedirectsOnDomain(domain, redirects)),
-        filteredDomains: state.filteredDomains.map(replaceRedirectsOnDomain(domain, redirects)),
+        domains: state.domains.map(replaceRedirectsOnDomain(payload)),
+        filteredDomains: state.filteredDomains.map(replaceRedirectsOnDomain(payload)),
       }));
     },
   });
