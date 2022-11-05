@@ -63,7 +63,7 @@ describe('selectedServerReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(3);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: RESET_SELECTED_SERVER });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, payload: expectedSelectedServer });
       expect(loadMercureInfo).toHaveBeenCalledTimes(1);
     });
 
@@ -87,7 +87,7 @@ describe('selectedServerReducer', () => {
       await selectServer(buildApiClient, loadMercureInfo)(id)(dispatch, getState);
 
       expect(apiClientMock.health).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, payload: expectedSelectedServer });
       expect(loadMercureInfo).not.toHaveBeenCalled();
     });
 
@@ -100,7 +100,7 @@ describe('selectedServerReducer', () => {
 
       expect(getState).toHaveBeenCalled();
       expect(apiClientMock.health).not.toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, selectedServer: expectedSelectedServer });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SELECT_SERVER, payload: expectedSelectedServer });
       expect(loadMercureInfo).not.toHaveBeenCalled();
     });
   });

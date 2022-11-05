@@ -49,7 +49,7 @@ export const domainsListReducerCreator = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
   editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
 ) => {
-  const listDomains = createAsyncThunk(LIST_DOMAINS, async (_, { getState }): Promise<ListDomains> => {
+  const listDomains = createAsyncThunk(LIST_DOMAINS, async (_: void, { getState }): Promise<ListDomains> => {
     const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
     const { data, defaultRedirects } = await shlinkListDomains();
 

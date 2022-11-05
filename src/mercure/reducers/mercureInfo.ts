@@ -17,7 +17,7 @@ const initialState: MercureInfo = {
 };
 
 export const mercureInfoReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const loadMercureInfo = createAsyncThunk(GET_MERCURE_INFO, async (_, { getState }): Promise<ShlinkMercureInfo> => {
+  const loadMercureInfo = createAsyncThunk(GET_MERCURE_INFO, (_: void, { getState }): Promise<ShlinkMercureInfo> => {
     const { settings } = getState();
     if (!settings.realTimeUpdates.enabled) {
       throw new Error('Real time updates not enabled');
