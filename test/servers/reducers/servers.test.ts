@@ -1,7 +1,6 @@
 import { dissoc, values } from 'ramda';
 import { Mock } from 'ts-mockery';
 import reducer, {
-  createServer,
   deleteServer,
   createServers,
   editServer,
@@ -104,15 +103,6 @@ describe('serversReducer', () => {
   });
 
   describe('action creators', () => {
-    describe('createServer', () => {
-      it('returns expected action', () => {
-        const serverToCreate = Mock.of<RegularServer>({ id: 'abc123' });
-        const result = createServer(serverToCreate);
-
-        expect(result).toEqual(expect.objectContaining({ type: CREATE_SERVERS }));
-      });
-    });
-
     describe('editServer', () => {
       it('returns expected action', () => {
         const serverData = { name: 'edited' };

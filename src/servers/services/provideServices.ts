@@ -6,7 +6,7 @@ import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import { ImportServersBtn } from '../helpers/ImportServersBtn';
 import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
+import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
@@ -38,7 +38,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useTimeoutToggle');
   bottle.decorator('CreateServer', withoutSelectedServer);
-  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
+  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServers', 'resetSelectedServer']));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
   bottle.decorator('EditServer', connect(['selectedServer'], ['editServer', 'selectServer', 'resetSelectedServer']));
@@ -70,7 +70,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');
-  bottle.serviceFactory('createServer', () => createServer);
   bottle.serviceFactory('createServers', () => createServers);
   bottle.serviceFactory('deleteServer', () => deleteServer);
   bottle.serviceFactory('editServer', () => editServer);

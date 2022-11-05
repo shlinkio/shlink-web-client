@@ -66,8 +66,6 @@ export const createServers = pipe(
   (newServers: ServersMap) => ({ type: CREATE_SERVERS, payload: newServers }),
 );
 
-export const createServer = (server: ServerWithId) => createServers([server]);
-
 export const editServer = (serverId: string, serverData: Partial<ServerData>) => ({
   type: EDIT_SERVER,
   payload: { serverId, serverData },
