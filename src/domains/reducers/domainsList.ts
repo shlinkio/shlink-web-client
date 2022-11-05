@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, createAction, SliceCaseReducers, AsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAction, SliceCaseReducers, AsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkDomainRedirects } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ShlinkState } from '../../container/types';
 import { Domain, DomainStatus } from '../data';
 import { hasServerData } from '../../servers/data';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
@@ -49,22 +49,19 @@ export const domainsListReducerCreator = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
   editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
 ) => {
-  const listDomains = createAsyncThunk<ListDomains, void, { state: ShlinkState }>(
-    LIST_DOMAINS,
-    async (_, { getState }) => {
-      const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
-      const { data, defaultRedirects } = await shlinkListDomains();
+  const listDomains = createAsyncThunk(LIST_DOMAINS, async (_, { getState }): Promise<ListDomains> => {
+    const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
+    const { data, defaultRedirects } = await shlinkListDomains();
 
-      return {
-        domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
-        defaultRedirects,
-      };
-    },
-  );
+    return {
+      domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
+      defaultRedirects,
+    };
+  });
 
-  const checkDomainHealth = createAsyncThunk<ValidateDomain, string, { state: ShlinkState }>(
+  const checkDomainHealth = createAsyncThunk(
     VALIDATE_DOMAIN,
-    async (domain: string, { getState }) => {
+    async (domain: string, { getState }): Promise<ValidateDomain> => {
       const { selectedServer } = getState();
 
       if (!hasServerData(selectedServer)) {
