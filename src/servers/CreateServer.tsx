@@ -13,7 +13,7 @@ import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 const SHOW_IMPORT_MSG_TIME = 4000;
 
 interface CreateServerProps {
-  createServer: (server: ServerWithId) => void;
+  createServers: (servers: ServerWithId[]) => void;
   servers: ServersMap;
 }
 
@@ -27,7 +27,7 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
 );
 
 export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTimeoutToggle: TimeoutToggle) => (
-  { servers, createServer }: CreateServerProps,
+  { servers, createServers }: CreateServerProps,
 ) => {
   const navigate = useNavigate();
   const goBack = useGoBack();
@@ -43,7 +43,7 @@ export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTim
 
     const id = uuid();
 
-    createServer({ ...serverData, id });
+    createServers([{ ...serverData, id }]);
     navigate(`/server/${id}`);
   };
 

@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
 import { AxiosInstance } from 'axios';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
-import { CREATE_SERVERS } from '../../../src/servers/reducers/servers';
+import { createServers } from '../../../src/servers/reducers/servers';
 
 describe('remoteServersReducer', () => {
   afterEach(jest.clearAllMocks);
@@ -87,7 +87,7 @@ describe('remoteServersReducer', () => {
 
       await fetchServers(axios)()(dispatch);
 
-      expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, newServers: expectedNewServers });
+      expect(dispatch).toHaveBeenCalledWith({ type: createServers.toString(), payload: expectedNewServers });
       expect(get).toHaveBeenCalledTimes(1);
     });
   });
