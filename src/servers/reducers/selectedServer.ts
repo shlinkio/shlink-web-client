@@ -1,3 +1,4 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { identity, memoizeWith, pipe } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
@@ -14,9 +15,7 @@ export const MIN_FALLBACK_VERSION = '1.0.0';
 export const MAX_FALLBACK_VERSION = '999.999.999';
 export const LATEST_VERSION_CONSTRAINT = 'latest';
 
-export interface SelectServerAction extends Action<string> {
-  selectedServer: SelectedServer;
-}
+export type SelectServerAction = PayloadAction<SelectedServer>;
 
 const versionToSemVer = pipe(
   (version: string) => (version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version),
@@ -35,7 +34,7 @@ const initialState: SelectedServer = null;
 
 export default buildReducer<SelectedServer, SelectServerAction>({
   [RESET_SELECTED_SERVER]: () => initialState,
-  [SELECT_SERVER]: (_, { selectedServer }) => selectedServer,
+  [SELECT_SERVER]: (_, { payload }) => payload,
 }, initialState);
 
 export const resetSelectedServer = buildActionCreator(RESET_SELECTED_SERVER);
@@ -57,7 +56,7 @@ export const selectServer = (
   if (!selectedServer) {
     dispatch<SelectServerAction>({
       type: SELECT_SERVER,
-      selectedServer: { serverNotFound: true },
+      payload: { serverNotFound: true },
     });
 
     return;
@@ -69,7 +68,7 @@ export const selectServer = (
 
     dispatch<SelectServerAction>({
       type: SELECT_SERVER,
-      selectedServer: {
+      payload: {
         ...selectedServer,
         version,
         printableVersion,
@@ -79,7 +78,7 @@ export const selectServer = (
   } catch (e) {
     dispatch<SelectServerAction>({
       type: SELECT_SERVER,
-      selectedServer: { ...selectedServer, serverNotReachable: true },
+      payload: { ...selectedServer, serverNotReachable: true },
     });
   }
 };
