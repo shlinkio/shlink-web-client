@@ -87,7 +87,7 @@ describe('remoteServersReducer', () => {
 
       await fetchServers(axios)()(dispatch);
 
-      expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, newServers: expectedNewServers });
+      expect(dispatch).toHaveBeenCalledWith({ type: CREATE_SERVERS, payload: expectedNewServers });
       expect(get).toHaveBeenCalledTimes(1);
     });
   });

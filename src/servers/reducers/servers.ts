@@ -1,6 +1,6 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { assoc, dissoc, fromPairs, map, pipe, reduce, toPairs } from 'ramda';
 import { v4 as uuid } from 'uuid';
-import { Action } from 'redux';
 import { ServerData, ServersMap, ServerWithId } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 
@@ -9,18 +9,16 @@ export const DELETE_SERVER = 'shlink/servers/DELETE_SERVER';
 export const CREATE_SERVERS = 'shlink/servers/CREATE_SERVERS';
 export const SET_AUTO_CONNECT = 'shlink/servers/SET_AUTO_CONNECT';
 
-export interface CreateServersAction extends Action<string> {
-  newServers: ServersMap;
-}
+export type CreateServersAction = PayloadAction<ServersMap>;
 
-interface DeleteServerAction extends Action<string> {
+type DeleteServerAction = PayloadAction<{
   serverId: string;
-}
+}>;
 
-interface SetAutoConnectAction extends Action<string> {
+type SetAutoConnectAction = PayloadAction<{
   serverId: string;
   autoConnect: boolean;
-}
+}>;
 
 const initialState: ServersMap = {};
 
@@ -33,12 +31,16 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
 };
 
 export default buildReducer<ServersMap, CreateServersAction & DeleteServerAction & SetAutoConnectAction>({
-  [CREATE_SERVERS]: (state, { newServers }) => ({ ...state, ...newServers }),
-  [DELETE_SERVER]: (state, { serverId }) => dissoc(serverId, state),
-  [EDIT_SERVER]: (state, { serverId, serverData }: any) => (
-    !state[serverId] ? state : assoc(serverId, { ...state[serverId], ...serverData }, state)
-  ),
-  [SET_AUTO_CONNECT]: (state, { serverId, autoConnect }) => {
+  [CREATE_SERVERS]: (state, { payload: newServers }) => ({ ...state, ...newServers }),
+  [DELETE_SERVER]: (state, { payload }) => dissoc(payload.serverId, state),
+  [EDIT_SERVER]: (state, { payload }: any) => {
+    const { serverId, serverData } = payload;
+    return (
+      !state[serverId] ? state : assoc(serverId, { ...state[serverId], ...serverData }, state)
+    );
+  },
+  [SET_AUTO_CONNECT]: (state, { payload }) => {
+    const { serverId, autoConnect } = payload;
     if (!state[serverId]) {
       return state;
     }
@@ -61,21 +63,22 @@ const serversListToMap = reduce<ServerWithId, ServersMap>((acc, server) => assoc
 export const createServers = pipe(
   map(serverWithId),
   serversListToMap,
-  (newServers: ServersMap) => ({ type: CREATE_SERVERS, newServers }),
+  (newServers: ServersMap) => ({ type: CREATE_SERVERS, payload: newServers }),
 );
 
 export const createServer = (server: ServerWithId) => createServers([server]);
 
 export const editServer = (serverId: string, serverData: Partial<ServerData>) => ({
   type: EDIT_SERVER,
-  serverId,
-  serverData,
+  payload: { serverId, serverData },
 });
 
-export const deleteServer = ({ id }: ServerWithId): DeleteServerAction => ({ type: DELETE_SERVER, serverId: id });
+export const deleteServer = ({ id }: ServerWithId): DeleteServerAction => ({
+  type: DELETE_SERVER,
+  payload: { serverId: id },
+});
 
 export const setAutoConnect = ({ id }: ServerWithId, autoConnect: boolean): SetAutoConnectAction => ({
   type: SET_AUTO_CONNECT,
-  serverId: id,
-  autoConnect,
+  payload: { serverId: id, autoConnect },
 });
