@@ -99,9 +99,9 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
-  [CREATE_VISITS]: (state, { createdVisits }) => ({
+  [CREATE_VISITS]: (state, { payload }) => ({
     ...state,
-    stats: increaseVisitsForTags(calculateVisitsPerTag(createdVisits), state.stats),
+    stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
   }),
   [CREATE_SHORT_URL]: ({ tags: stateTags, ...rest }, { result }) => ({
     ...rest,

@@ -56,10 +56,10 @@ export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
   [GET_DOMAIN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_DOMAIN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { createdVisits }) => {
+  [CREATE_VISITS]: (state, { payload }) => {
     const { domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
-    const newVisits = createdVisits
+    const newVisits = payload.createdVisits
       .filter(({ shortUrl, visit }) =>
         shortUrl && domainMatches(shortUrl, domain) && isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);

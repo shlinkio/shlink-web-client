@@ -105,10 +105,10 @@ describe('orphanVisitsReducer', () => {
       const prevState = buildState({ ...state, visits: visitsMocks });
       const visit = Mock.of<Visit>({ date: formatIsoDate(now) ?? undefined });
 
-      const { visits } = reducer(
-        prevState,
-        { type: CREATE_VISITS, createdVisits: [{ visit }, { visit }] } as any,
-      );
+      const { visits } = reducer(prevState, {
+        type: CREATE_VISITS,
+        payload: { createdVisits: [{ visit }, { visit }] },
+      } as any);
 
       expect(visits).toHaveLength(expectedVisits);
     });

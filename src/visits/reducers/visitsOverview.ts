@@ -30,8 +30,8 @@ export default buildReducer<VisitsOverview, GetVisitsOverviewAction & CreateVisi
   [GET_OVERVIEW_START]: () => ({ ...initialState, loading: true }),
   [GET_OVERVIEW_ERROR]: () => ({ ...initialState, error: true }),
   [GET_OVERVIEW]: (_, { visitsCount, orphanVisitsCount }) => ({ ...initialState, visitsCount, orphanVisitsCount }),
-  [CREATE_VISITS]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { createdVisits }) => {
-    const { regularVisits, orphanVisits } = groupNewVisitsByType(createdVisits);
+  [CREATE_VISITS]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { payload }) => {
+    const { regularVisits, orphanVisits } = groupNewVisitsByType(payload.createdVisits);
 
     return {
       ...rest,

@@ -85,7 +85,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_VISITS, createdVisits } as any)).toEqual({
+      expect(reducer(state, { type: CREATE_VISITS, payload: { createdVisits } } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },

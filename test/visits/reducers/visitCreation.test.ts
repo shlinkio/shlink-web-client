@@ -9,9 +9,10 @@ describe('visitCreationReducer', () => {
     const visit = Mock.all<Visit>();
 
     it('just returns the action with proper type', () => {
-      expect(createNewVisits([{ shortUrl, visit }])).toEqual(
-        { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit }] },
-      );
+      expect(createNewVisits([{ shortUrl, visit }])).toEqual({
+        type: CREATE_VISITS,
+        payload: { createdVisits: [{ shortUrl, visit }] },
+      });
     });
   });
 });
