@@ -12,7 +12,7 @@ describe('shortUrlDeletionReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on DELETE_SHORT_URL_START', () =>
-      expect(reducer(undefined, { type: deleteShortUrl.pending.toString() } as any)).toEqual({
+      expect(reducer(undefined, { type: deleteShortUrl.pending.toString() })).toEqual({
         shortCode: '',
         loading: true,
         error: false,
@@ -20,7 +20,7 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns default on RESET_DELETE_SHORT_URL', () =>
-      expect(reducer(undefined, { type: resetDeleteShortUrl.toString() } as any)).toEqual({
+      expect(reducer(undefined, { type: resetDeleteShortUrl.toString() })).toEqual({
         shortCode: '',
         loading: false,
         error: false,
@@ -31,7 +31,7 @@ describe('shortUrlDeletionReducer', () => {
       expect(reducer(undefined, {
         type: deleteShortUrl.fulfilled.toString(),
         payload: { shortCode: 'foo' },
-      } as any)).toEqual({
+      })).toEqual({
         shortCode: 'foo',
         loading: false,
         error: false,
@@ -42,7 +42,7 @@ describe('shortUrlDeletionReducer', () => {
       const errorData = Mock.of<ProblemDetailsError>({ type: 'bar' });
       const error = { response: { data: errorData } };
 
-      expect(reducer(undefined, { type: deleteShortUrl.rejected.toString(), error } as any)).toEqual({
+      expect(reducer(undefined, { type: deleteShortUrl.rejected.toString(), error })).toEqual({
         shortCode: '',
         loading: false,
         error: true,
