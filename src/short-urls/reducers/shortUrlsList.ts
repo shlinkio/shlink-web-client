@@ -44,10 +44,12 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true }),
   [LIST_SHORT_URLS]: (_, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
+  // [`${SHORT_URL_DELETED}/fulfilled`]: pipe( // TODO Do not hardcode action type here
   [SHORT_URL_DELETED]: pipe(
-    (state: ShortUrlsList, { shortCode, domain }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
+    (state: ShortUrlsList, { payload }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
-      reject<ShortUrl, ShortUrl[]>((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
+      reject<ShortUrl, ShortUrl[]>((shortUrl) =>
+        shortUrlMatches(shortUrl, payload.shortCode, payload.domain), state.shortUrls.data),
       state,
     )),
     (state) => (!state.shortUrls ? state : assocPath(
@@ -89,6 +91,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state,
     )),
   ),
+  // TODO Do not hardcode action type here
   [`${SHORT_URL_EDITED}/fulfilled`]: (state, { payload: editedShortUrl }) => (!state.shortUrls ? state : assocPath(
     ['shortUrls', 'data'],
     state.shortUrls.data.map((shortUrl) => {

@@ -27,7 +27,10 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns shortCode on SHORT_URL_DELETED', () =>
-      expect(reducer(undefined, { type: SHORT_URL_DELETED, shortCode: 'foo' } as any)).toEqual({
+      expect(reducer(undefined, {
+        type: SHORT_URL_DELETED,
+        payload: { shortCode: 'foo' },
+      } as any)).toEqual({
         shortCode: 'foo',
         loading: false,
         error: false,
@@ -67,11 +70,14 @@ describe('shortUrlDeletionReducer', () => {
       });
       const shortCode = 'abc123';
 
-      await deleteShortUrl(() => apiClientMock)(shortCode, domain)(dispatch, getState);
+      await deleteShortUrl(() => apiClientMock)({ shortCode, domain })(dispatch, getState);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode, domain });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: SHORT_URL_DELETED,
+        payload: { shortCode, domain },
+      });
 
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
       expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, domain);
@@ -86,7 +92,7 @@ describe('shortUrlDeletionReducer', () => {
       const shortCode = 'abc123';
 
       try {
-        await deleteShortUrl(() => apiClientMock)(shortCode)(dispatch, getState);
+        await deleteShortUrl(() => apiClientMock)({ shortCode })(dispatch, getState);
       } catch (e) {
         expect(e).toEqual(error);
       }

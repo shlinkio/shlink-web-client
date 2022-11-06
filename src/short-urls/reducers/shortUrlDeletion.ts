@@ -1,4 +1,5 @@
-import { Action, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'redux';
 import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -18,10 +19,12 @@ export interface ShortUrlDeletion {
   errorData?: ProblemDetailsError;
 }
 
-export interface DeleteShortUrlAction extends Action<string> {
+export interface DeleteShortUrl {
   shortCode: string;
   domain?: string | null;
 }
+
+export type DeleteShortUrlAction = PayloadAction<DeleteShortUrl>;
 
 const initialState: ShortUrlDeletion = {
   shortCode: '',
@@ -32,20 +35,24 @@ const initialState: ShortUrlDeletion = {
 export default buildReducer<ShortUrlDeletion, DeleteShortUrlAction & ApiErrorAction>({
   [DELETE_SHORT_URL_START]: (state) => ({ ...state, loading: true, error: false }),
   [DELETE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, errorData, loading: false, error: true }),
-  [SHORT_URL_DELETED]: (state, { shortCode }) => ({ ...state, shortCode, loading: false, error: false }),
+  [SHORT_URL_DELETED]: (state, { payload }) => (
+    { ...state, shortCode: payload.shortCode, loading: false, error: false }
+  ),
   [RESET_DELETE_SHORT_URL]: () => initialState,
 }, initialState);
 
 export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  shortCode: string,
-  domain?: string | null,
+  { shortCode, domain }: DeleteShortUrl,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: DELETE_SHORT_URL_START });
   const { deleteShortUrl: shlinkDeleteShortUrl } = buildShlinkApiClient(getState);
 
   try {
     await shlinkDeleteShortUrl(shortCode, domain);
-    dispatch<DeleteShortUrlAction>({ type: SHORT_URL_DELETED, shortCode, domain });
+    dispatch<DeleteShortUrlAction>({
+      type: SHORT_URL_DELETED,
+      payload: { shortCode, domain },
+    });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: DELETE_SHORT_URL_ERROR, errorData: parseApiError(e) });
 

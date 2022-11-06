@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { identity, pipe } from 'ramda';
-import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
+import { DeleteShortUrl, ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
-import { handleEventPreventingDefault, OptionalString } from '../../utils/utils';
+import { handleEventPreventingDefault } from '../../utils/utils';
 import { Result } from '../../utils/Result';
 import { isInvalidDeletionError } from '../../api/utils';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;
-  deleteShortUrl: (shortCode: string, domain: OptionalString) => Promise<void>;
+  deleteShortUrl: (shortUrl: DeleteShortUrl) => Promise<void>;
   resetDeleteShortUrl: () => void;
 }
 
@@ -21,12 +21,12 @@ export const DeleteShortUrlModal = (
 
   useEffect(() => resetDeleteShortUrl, []);
 
-  const { error, errorData } = shortUrlDeletion;
+  const { loading, error, errorData } = shortUrlDeletion;
   const close = pipe(resetDeleteShortUrl, toggle);
   const handleDeleteUrl = handleEventPreventingDefault(() => {
     const { shortCode, domain } = shortUrl;
 
-    deleteShortUrl(shortCode, domain)
+    deleteShortUrl({ shortCode, domain })
       .then(toggle)
       .catch(identity);
   });
@@ -61,9 +61,9 @@ export const DeleteShortUrlModal = (
           <button
             type="submit"
             className="btn btn-danger"
-            disabled={inputValue !== shortUrl.shortCode || shortUrlDeletion.loading}
+            disabled={inputValue !== shortUrl.shortCode || loading}
           >
-            {shortUrlDeletion.loading ? 'Deleting...' : 'Delete'}
+            {loading ? 'Deleting...' : 'Delete'}
           </button>
         </ModalFooter>
       </form>
