@@ -6,7 +6,7 @@ import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { SelectedServer } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
-import { OptionalString } from '../utils/utils';
+import { ShortUrlIdentifier } from './data';
 import { parseQuery } from '../utils/helpers/query';
 import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
@@ -22,7 +22,7 @@ interface EditShortUrlConnectProps {
   selectedServer: SelectedServer;
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
-  getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
+  getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
   editShortUrl: (editShortUrl: EditShortUrlInfo) => void;
 }
 
@@ -46,7 +46,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   );
 
   useEffect(() => {
-    params.shortCode && getShortUrlDetail(urlDecodeShortCode(params.shortCode), domain);
+    params.shortCode && getShortUrlDetail({ shortCode: urlDecodeShortCode(params.shortCode), domain });
   }, []);
 
   if (loading) {

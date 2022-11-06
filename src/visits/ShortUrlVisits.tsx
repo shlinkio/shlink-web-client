@@ -14,11 +14,12 @@ import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { urlDecodeShortCode } from '../short-urls/helpers';
+import { ShortUrlIdentifier } from '../short-urls/data';
 
 export interface ShortUrlVisitsProps extends CommonVisitsProps {
   getShortUrlVisits: (shortCode: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
   shortUrlVisits: ShortUrlVisitsState;
-  getShortUrlDetail: Function;
+  getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
   shortUrlDetail: ShortUrlDetail;
   cancelGetShortUrlVisits: () => void;
 }
@@ -44,7 +45,7 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
   );
 
   useEffect(() => {
-    getShortUrlDetail(urlDecodeShortCode(shortCode), domain);
+    getShortUrlDetail({ shortCode: urlDecodeShortCode(shortCode), domain });
   }, []);
 
   return (

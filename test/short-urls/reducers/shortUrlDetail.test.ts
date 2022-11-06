@@ -53,7 +53,7 @@ describe('shortUrlDetailReducer', () => {
     it('dispatches start and error when promise is rejected', async () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
-      await getShortUrlDetail(() => ShlinkApiClient)('abc123', '')(dispatchMock, buildGetState());
+      await getShortUrlDetail(() => ShlinkApiClient)({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState());
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_DETAIL_START });
@@ -80,7 +80,7 @@ describe('shortUrlDetailReducer', () => {
       const resolvedShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
       const ShlinkApiClient = buildApiClientMock(Promise.resolve(resolvedShortUrl));
 
-      await getShortUrlDetail(() => ShlinkApiClient)('abc123', '')(dispatchMock, buildGetState(shortUrlsList));
+      await getShortUrlDetail(() => ShlinkApiClient)({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState(shortUrlsList));
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_DETAIL_START });
@@ -92,7 +92,7 @@ describe('shortUrlDetailReducer', () => {
       const foundShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
       const ShlinkApiClient = buildApiClientMock(Promise.resolve(Mock.all<ShortUrl>()));
 
-      await getShortUrlDetail(() => ShlinkApiClient)(foundShortUrl.shortCode, foundShortUrl.domain)(
+      await getShortUrlDetail(() => ShlinkApiClient)(foundShortUrl)(
         dispatchMock,
         buildGetState(Mock.of<ShortUrlsList>({
           shortUrls: {
