@@ -34,7 +34,7 @@ describe('shortUrlDetailReducer', () => {
 
     it('return short URL on GET_SHORT_URL_DETAIL', () => {
       const actionShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
-      const state = reducer({ loading: true, error: false }, { type: GET_SHORT_URL_DETAIL, shortUrl: actionShortUrl });
+      const state = reducer({ loading: true, error: false }, { type: GET_SHORT_URL_DETAIL, payload: actionShortUrl });
       const { loading, error, shortUrl } = state;
 
       expect(loading).toEqual(false);
@@ -84,7 +84,7 @@ describe('shortUrlDetailReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_DETAIL_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_DETAIL, shortUrl: resolvedShortUrl });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_DETAIL, payload: resolvedShortUrl });
       expect(ShlinkApiClient.getShortUrl).toHaveBeenCalledTimes(1);
     });
 
@@ -103,7 +103,7 @@ describe('shortUrlDetailReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_DETAIL_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_DETAIL, shortUrl: foundShortUrl });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_DETAIL, payload: foundShortUrl });
       expect(ShlinkApiClient.getShortUrl).not.toHaveBeenCalled();
     });
   });

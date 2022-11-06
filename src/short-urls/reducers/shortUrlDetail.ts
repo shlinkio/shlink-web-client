@@ -1,4 +1,5 @@
-import { Action, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'redux';
 import { ShortUrl } from '../data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -20,9 +21,7 @@ export interface ShortUrlDetail {
   errorData?: ProblemDetailsError;
 }
 
-export interface ShortUrlDetailAction extends Action<string> {
-  shortUrl: ShortUrl;
-}
+export type ShortUrlDetailAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlDetail = {
   loading: false,
@@ -32,7 +31,7 @@ const initialState: ShortUrlDetail = {
 export default buildReducer<ShortUrlDetail, ShortUrlDetailAction & ApiErrorAction>({
   [GET_SHORT_URL_DETAIL_START]: () => ({ loading: true, error: false }),
   [GET_SHORT_URL_DETAIL_ERROR]: (_, { errorData }) => ({ loading: false, error: true, errorData }),
-  [GET_SHORT_URL_DETAIL]: (_, { shortUrl }) => ({ shortUrl, ...initialState }),
+  [GET_SHORT_URL_DETAIL]: (_, { payload: shortUrl }) => ({ shortUrl, ...initialState }),
 }, initialState);
 
 export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
@@ -43,11 +42,11 @@ export const getShortUrlDetail = (buildShlinkApiClient: ShlinkApiClientBuilder) 
 
   try {
     const { shortUrlsList } = getState();
-    const shortUrl = shortUrlsList?.shortUrls?.data.find(
+    const payload = shortUrlsList?.shortUrls?.data.find(
       (url) => shortUrlMatches(url, shortCode, domain),
     ) ?? await buildShlinkApiClient(getState).getShortUrl(shortCode, domain);
 
-    dispatch<ShortUrlDetailAction>({ shortUrl, type: GET_SHORT_URL_DETAIL });
+    dispatch<ShortUrlDetailAction>({ payload, type: GET_SHORT_URL_DETAIL });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: GET_SHORT_URL_DETAIL_ERROR, errorData: parseApiError(e) });
   }
