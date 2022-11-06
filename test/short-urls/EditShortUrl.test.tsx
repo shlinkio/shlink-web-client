@@ -46,9 +46,16 @@ describe('<EditShortUrl />', () => {
   });
 
   it('shows error when saving data has failed', () => {
-    setUp({}, { error: true });
+    setUp({}, { error: true, saved: true });
 
     expect(screen.getByText('An error occurred while updating short URL :(')).toBeInTheDocument();
+    expect(screen.getByText('ShortUrlForm')).toBeInTheDocument();
+  });
+
+  it('shows message when saving data succeeds', () => {
+    setUp({}, { error: false, saved: true });
+
+    expect(screen.getByText('Short URL properly edited.')).toBeInTheDocument();
     expect(screen.getByText('ShortUrlForm')).toBeInTheDocument();
   });
 });

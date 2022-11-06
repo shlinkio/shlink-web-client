@@ -126,10 +126,10 @@ describe('shortUrlVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(
-        prevState,
-        { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] } as any,
-      );
+      const { visits } = reducer(prevState, {
+        type: CREATE_VISITS,
+        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
+      } as any);
 
       expect(visits).toHaveLength(expectedVisits);
     });

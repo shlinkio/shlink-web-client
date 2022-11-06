@@ -52,10 +52,10 @@ export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
   [GET_NON_ORPHAN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { createdVisits }) => {
+  [CREATE_VISITS]: (state, { payload }) => {
     const { visits, query = {} } = state;
     const { startDate, endDate } = query;
-    const newVisits = createdVisits
+    const newVisits = payload.createdVisits
       .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
       .map(({ visit }) => visit);
 

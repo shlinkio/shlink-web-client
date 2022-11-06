@@ -12,7 +12,7 @@ describe('<DeleteShortUrlModal />', () => {
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
   });
-  const deleteShortUrl = jest.fn(async () => Promise.resolve());
+  const deleteShortUrl = jest.fn();
   const setUp = (shortUrlDeletion: Partial<ShortUrlDeletion>) => renderWithEvents(
     <DeleteShortUrlModal
       isOpen

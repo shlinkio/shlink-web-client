@@ -60,10 +60,10 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   [GET_SHORT_URL_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_SHORT_URL_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { createdVisits }) => {
+  [CREATE_VISITS]: (state, { payload }) => {
     const { shortCode, domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
-    const newVisits = createdVisits
+    const newVisits = payload.createdVisits
       .filter(
         ({ shortUrl, visit }) =>
           shortUrl && shortUrlMatches(shortUrl, shortCode, domain) && isBetween(visit.date, startDate, endDate),

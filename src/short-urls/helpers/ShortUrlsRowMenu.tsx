@@ -24,8 +24,8 @@ export const ShortUrlsRowMenu = (
   QrCodeModal: ShortUrlModal,
 ) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
   const [isOpen, toggle] = useToggle();
-  const [isQrModalOpen, toggleQrCode] = useToggle();
-  const [isDeleteModalOpen, toggleDelete] = useToggle();
+  const [isQrModalOpen,, openQrCodeModal, closeQrCodeModal] = useToggle();
+  const [isDeleteModalOpen,, openDeleteModal, closeDeleteModal] = useToggle();
 
   return (
     <DropdownBtnMenu toggle={toggle} isOpen={isOpen}>
@@ -37,17 +37,17 @@ export const ShortUrlsRowMenu = (
         <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit short URL
       </DropdownItem>
 
-      <DropdownItem onClick={toggleQrCode}>
+      <DropdownItem onClick={openQrCodeModal}>
         <FontAwesomeIcon icon={qrIcon} fixedWidth /> QR code
       </DropdownItem>
-      <QrCodeModal shortUrl={shortUrl} isOpen={isQrModalOpen} toggle={toggleQrCode} />
+      <QrCodeModal shortUrl={shortUrl} isOpen={isQrModalOpen} toggle={closeQrCodeModal} />
 
       <DropdownItem divider />
 
-      <DropdownItem className="dropdown-item--danger" onClick={toggleDelete}>
+      <DropdownItem className="dropdown-item--danger" onClick={openDeleteModal}>
         <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Delete short URL
       </DropdownItem>
-      <DeleteShortUrlModal shortUrl={shortUrl} isOpen={isDeleteModalOpen} toggle={toggleDelete} />
+      <DeleteShortUrlModal shortUrl={shortUrl} isOpen={isDeleteModalOpen} toggle={closeDeleteModal} />
     </DropdownBtnMenu>
   );
 };

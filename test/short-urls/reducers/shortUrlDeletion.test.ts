@@ -1,45 +1,52 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  DELETE_SHORT_URL_ERROR,
-  DELETE_SHORT_URL_START,
-  RESET_DELETE_SHORT_URL,
-  SHORT_URL_DELETED,
-  resetDeleteShortUrl,
-  deleteShortUrl,
-} from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { shortUrlDeletionReducerCreator } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
+  const deleteShortUrlCall = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteShortUrl: deleteShortUrlCall });
+  const { reducer, resetDeleteShortUrl, deleteShortUrl } = shortUrlDeletionReducerCreator(buildShlinkApiClient);
+
+  beforeEach(jest.clearAllMocks);
+
   describe('reducer', () => {
     it('returns loading on DELETE_SHORT_URL_START', () =>
-      expect(reducer(undefined, { type: DELETE_SHORT_URL_START } as any)).toEqual({
+      expect(reducer(undefined, { type: deleteShortUrl.pending.toString() })).toEqual({
         shortCode: '',
         loading: true,
         error: false,
+        deleted: false,
       }));
 
     it('returns default on RESET_DELETE_SHORT_URL', () =>
-      expect(reducer(undefined, { type: RESET_DELETE_SHORT_URL } as any)).toEqual({
+      expect(reducer(undefined, { type: resetDeleteShortUrl.toString() })).toEqual({
         shortCode: '',
         loading: false,
         error: false,
+        deleted: false,
       }));
 
     it('returns shortCode on SHORT_URL_DELETED', () =>
-      expect(reducer(undefined, { type: SHORT_URL_DELETED, shortCode: 'foo' } as any)).toEqual({
+      expect(reducer(undefined, {
+        type: deleteShortUrl.fulfilled.toString(),
+        payload: { shortCode: 'foo' },
+      })).toEqual({
         shortCode: 'foo',
         loading: false,
         error: false,
+        deleted: true,
       }));
 
     it('returns errorData on DELETE_SHORT_URL_ERROR', () => {
       const errorData = Mock.of<ProblemDetailsError>({ type: 'bar' });
+      const error = { response: { data: errorData } };
 
-      expect(reducer(undefined, { type: DELETE_SHORT_URL_ERROR, errorData } as any)).toEqual({
+      expect(reducer(undefined, { type: deleteShortUrl.rejected.toString(), error })).toEqual({
         shortCode: '',
         loading: false,
         error: true,
+        deleted: false,
         errorData,
       });
     });
@@ -47,56 +54,47 @@ describe('shortUrlDeletionReducer', () => {
 
   describe('resetDeleteShortUrl', () => {
     it('returns expected action', () =>
-      expect(resetDeleteShortUrl()).toEqual({ type: RESET_DELETE_SHORT_URL }));
+      expect(resetDeleteShortUrl()).toEqual({ type: resetDeleteShortUrl.toString() }));
   });
 
   describe('deleteShortUrl', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValue({ selectedServer: {} });
 
-    afterEach(() => {
-      dispatch.mockReset();
-      getState.mockClear();
-    });
-
     it.each(
       [[undefined], [null], ['example.com']],
     )('dispatches proper actions if API client request succeeds', async (domain) => {
-      const apiClientMock = Mock.of<ShlinkApiClient>({
-        deleteShortUrl: jest.fn(() => ''),
-      });
       const shortCode = 'abc123';
 
-      await deleteShortUrl(() => apiClientMock)(shortCode, domain)(dispatch, getState);
+      await deleteShortUrl({ shortCode, domain })(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_DELETED, shortCode, domain });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteShortUrl.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: deleteShortUrl.fulfilled.toString(),
+        payload: { shortCode, domain },
+      }));
 
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, domain);
+      expect(deleteShortUrlCall).toHaveBeenCalledTimes(1);
+      expect(deleteShortUrlCall).toHaveBeenCalledWith(shortCode, domain);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
       const data = { foo: 'bar' };
-      const error = { response: { data } };
-      const apiClientMock = Mock.of<ShlinkApiClient>({
-        deleteShortUrl: jest.fn(async () => Promise.reject(error)),
-      });
       const shortCode = 'abc123';
 
-      try {
-        await deleteShortUrl(() => apiClientMock)(shortCode)(dispatch, getState);
-      } catch (e) {
-        expect(e).toEqual(error);
-      }
+      deleteShortUrlCall.mockRejectedValue({ response: { data } });
+
+      await deleteShortUrl({ shortCode })(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_SHORT_URL_ERROR, errorData: data });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteShortUrl.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: deleteShortUrl.rejected.toString(),
+      }));
 
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteShortUrl).toHaveBeenCalledWith(shortCode, undefined);
+      expect(deleteShortUrlCall).toHaveBeenCalledTimes(1);
+      expect(deleteShortUrlCall).toHaveBeenCalledWith(shortCode, undefined);
     });
   });
 });

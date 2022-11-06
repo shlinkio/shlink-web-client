@@ -135,7 +135,7 @@ describe('domainVisitsReducer', () => {
 
       const { visits } = reducer(prevState, {
         type: CREATE_VISITS,
-        createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }],
+        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
       } as any);
 
       expect(visits).toHaveLength(expectedVisits);

@@ -44,10 +44,11 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true }),
   [LIST_SHORT_URLS]: (_, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
-  [SHORT_URL_DELETED]: pipe(
-    (state: ShortUrlsList, { shortCode, domain }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
+  [`${SHORT_URL_DELETED}/fulfilled`]: pipe( // TODO Do not hardcode action type here
+    (state: ShortUrlsList, { payload }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
-      reject<ShortUrl, ShortUrl[]>((shortUrl) => shortUrlMatches(shortUrl, shortCode, domain), state.shortUrls.data),
+      reject<ShortUrl, ShortUrl[]>((shortUrl) =>
+        shortUrlMatches(shortUrl, payload.shortCode, payload.domain), state.shortUrls.data),
       state,
     )),
     (state) => (!state.shortUrls ? state : assocPath(
@@ -56,13 +57,13 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state,
     )),
   ),
-  [CREATE_VISITS]: (state, { createdVisits }) => assocPath(
+  [CREATE_VISITS]: (state, { payload }) => assocPath(
     ['shortUrls', 'data'],
     state.shortUrls?.data?.map(
       (currentShortUrl) => {
         // Find the last of the new visit for this short URL, and pick the amount of visits from it
         const lastVisit = last(
-          createdVisits.filter(
+          payload.createdVisits.filter(
             ({ shortUrl }) => shortUrl && shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain),
           ),
         );
@@ -74,13 +75,13 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
     ),
     state,
   ),
-  [CREATE_SHORT_URL]: pipe(
+  [`${CREATE_SHORT_URL}/fulfilled`]: pipe( // TODO Do not hardcode action type here
     // The only place where the list and the creation form coexist is the overview page.
     // There we can assume we are displaying page 1, and therefore, we can safely prepend the new short URL.
     // We can also remove the items above the amount that is displayed there.
-    (state: ShortUrlsList, { result }: CreateShortUrlAction) => (!state.shortUrls ? state : assocPath(
+    (state: ShortUrlsList, { payload }: CreateShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
-      [result, ...state.shortUrls.data.slice(0, ITEMS_IN_OVERVIEW_PAGE - 1)],
+      [payload, ...state.shortUrls.data.slice(0, ITEMS_IN_OVERVIEW_PAGE - 1)],
       state,
     )),
     (state: ShortUrlsList) => (!state.shortUrls ? state : assocPath(
@@ -89,7 +90,8 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state,
     )),
   ),
-  [SHORT_URL_EDITED]: (state, { shortUrl: editedShortUrl }) => (!state.shortUrls ? state : assocPath(
+  // TODO Do not hardcode action type here
+  [`${SHORT_URL_EDITED}/fulfilled`]: (state, { payload: editedShortUrl }) => (!state.shortUrls ? state : assocPath(
     ['shortUrls', 'data'],
     state.shortUrls.data.map((shortUrl) => {
       const { shortCode, domain } = editedShortUrl;

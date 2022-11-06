@@ -52,7 +52,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: SHORT_URL_DELETED, shortCode } as any)).toEqual({
+      expect(reducer(state, { type: `${SHORT_URL_DELETED}/fulfilled`, payload: { shortCode } } as any)).toEqual({
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
           pagination: { totalItems: 9 },
@@ -85,7 +85,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_VISITS, createdVisits } as any)).toEqual({
+      expect(reducer(state, { type: CREATE_VISITS, payload: { createdVisits } } as any)).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },
@@ -142,7 +142,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_SHORT_URL, result: newShortUrl } as any)).toEqual({
+      expect(reducer(state, { type: `${CREATE_SHORT_URL}/fulfilled`, payload: newShortUrl } as any)).toEqual({
         shortUrls: {
           data: expectedData,
           pagination: { totalItems: 16 },
@@ -181,7 +181,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      const result = reducer(state, { type: SHORT_URL_EDITED, shortUrl: editedShortUrl } as any);
+      const result = reducer(state, { type: `${SHORT_URL_EDITED}/fulfilled`, payload: editedShortUrl } as any);
 
       expect(result.shortUrls?.data).toEqual(expectedList);
     });

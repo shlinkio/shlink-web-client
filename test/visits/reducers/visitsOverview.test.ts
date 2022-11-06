@@ -52,19 +52,21 @@ describe('visitsOverviewReducer', () => {
         state({ visitsCount: 100, orphanVisitsCount: providedOrphanVisitsCount }),
         {
           type: CREATE_VISITS,
-          createdVisits: [
-            Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-            Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-            Mock.of<CreateVisit>({
-              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-            }),
-            Mock.of<CreateVisit>({
-              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-            }),
-            Mock.of<CreateVisit>({
-              visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-            }),
-          ],
+          payload: {
+            createdVisits: [
+              Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+              Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+              Mock.of<CreateVisit>({
+                visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+              }),
+              Mock.of<CreateVisit>({
+                visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+              }),
+              Mock.of<CreateVisit>({
+                visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
+              }),
+            ],
+          },
         } as unknown as GetVisitsOverviewAction & CreateVisitsAction,
       );
 

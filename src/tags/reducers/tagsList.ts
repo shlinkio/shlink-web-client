@@ -99,13 +99,13 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
-  [CREATE_VISITS]: (state, { createdVisits }) => ({
+  [CREATE_VISITS]: (state, { payload }) => ({
     ...state,
-    stats: increaseVisitsForTags(calculateVisitsPerTag(createdVisits), state.stats),
+    stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
   }),
-  [CREATE_SHORT_URL]: ({ tags: stateTags, ...rest }, { result }) => ({
+  [`${CREATE_SHORT_URL}/fulfilled`]: ({ tags: stateTags, ...rest }, { payload }) => ({ // TODO Do not hardcode action type here
     ...rest,
-    tags: stateTags.concat(result.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
+    tags: stateTags.concat(payload.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
   }),
 }, initialState);
 
