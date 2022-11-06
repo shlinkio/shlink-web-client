@@ -15,7 +15,7 @@ import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
-import settingsReducer from '../settings/reducers/settings';
+import { settingsReducer } from '../settings/reducers/settings';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
 import { sidebarReducer } from '../common/reducers/sidebar';

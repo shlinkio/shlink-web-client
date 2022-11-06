@@ -1,13 +1,9 @@
-import { Action } from 'redux';
-import { dissoc, mergeDeepRight } from 'ramda';
-import { buildReducer } from '../../utils/helpers/redux';
-import { RecursivePartial } from '../../utils/utils';
+import { createSlice, PayloadAction, PrepareAction } from '@reduxjs/toolkit';
+import { mergeDeepRight } from 'ramda';
 import { Theme } from '../../utils/theme';
 import { DateInterval } from '../../utils/dates/types';
 import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
 import { ShortUrlsOrder } from '../../short-urls/data';
-
-export const SET_SETTINGS = 'shlink/realTimeUpdates/SET_SETTINGS';
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',
@@ -78,45 +74,37 @@ const initialState: Settings = {
   },
 };
 
-type SettingsAction = Action & Settings;
+type SettingsAction = PayloadAction<Settings>;
+type SettingsPrepareAction = PrepareAction<Settings>;
 
-type PartialSettingsAction = Action & RecursivePartial<Settings>;
+const commonReducer = (state: Settings, { payload }: SettingsAction) => mergeDeepRight(state, payload);
+const toReducer = (prepare: SettingsPrepareAction) => ({ reducer: commonReducer, prepare });
+const toPreparedAction: SettingsPrepareAction = (payload: Settings) => ({ payload });
 
-export default buildReducer<Settings, SettingsAction>({
-  [SET_SETTINGS]: (state, action) => mergeDeepRight(state, dissoc('type', action)),
-}, initialState);
-
-export const toggleRealTimeUpdates = (enabled: boolean): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  realTimeUpdates: { enabled },
+const { reducer, actions } = createSlice({
+  name: 'settingsReducer',
+  initialState,
+  reducers: {
+    toggleRealTimeUpdates: toReducer((enabled: boolean) => toPreparedAction({ realTimeUpdates: { enabled } })),
+    setRealTimeUpdatesInterval: toReducer((interval: number) => toPreparedAction({ realTimeUpdates: { interval } })),
+    setShortUrlCreationSettings: toReducer(
+      (shortUrlCreation: ShortUrlCreationSettings) => toPreparedAction({ shortUrlCreation }),
+    ),
+    setShortUrlsListSettings: toReducer((shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList })),
+    setUiSettings: toReducer((ui: UiSettings) => toPreparedAction({ ui })),
+    setVisitsSettings: toReducer((visits: VisitsSettings) => toPreparedAction({ visits })),
+    setTagsSettings: toReducer((tags: TagsSettings) => toPreparedAction({ tags })),
+  },
 });
 
-export const setRealTimeUpdatesInterval = (interval: number): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  realTimeUpdates: { interval },
-});
+export const {
+  toggleRealTimeUpdates,
+  setRealTimeUpdatesInterval,
+  setShortUrlCreationSettings,
+  setShortUrlsListSettings,
+  setUiSettings,
+  setVisitsSettings,
+  setTagsSettings,
+} = actions;
 
-export const setShortUrlCreationSettings = (settings: ShortUrlCreationSettings): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  shortUrlCreation: settings,
-});
-
-export const setShortUrlsListSettings = (settings: ShortUrlsListSettings): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  shortUrlsList: settings,
-});
-
-export const setUiSettings = (settings: UiSettings): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  ui: settings,
-});
-
-export const setVisitsSettings = (settings: VisitsSettings): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  visits: settings,
-});
-
-export const setTagsSettings = (settings: TagsSettings): PartialSettingsAction => ({
-  type: SET_SETTINGS,
-  tags: settings,
-});
+export const settingsReducer = reducer;
