@@ -11,7 +11,7 @@ import { parseQuery } from '../utils/helpers/query';
 import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
-import { useGoBack, useToggle } from '../utils/helpers/hooks';
+import { useGoBack } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
 import { EditShortUrl as EditShortUrlInfo, ShortUrlEdition } from './reducers/shortUrlEdition';
@@ -23,7 +23,7 @@ interface EditShortUrlConnectProps {
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
   getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
-  editShortUrl: (editShortUrl: EditShortUrlInfo) => Promise<void>;
+  editShortUrl: (editShortUrl: EditShortUrlInfo) => void;
 }
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
@@ -38,13 +38,12 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const params = useParams<{ shortCode: string }>();
   const goBack = useGoBack();
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
-  const { saving, error: savingError, errorData: savingErrorData } = shortUrlEdition;
+  const { saving, saved, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
   const initialState = useMemo(
     () => shortUrlDataFromShortUrl(shortUrl, shortUrlCreationSettings),
     [shortUrl, shortUrlCreationSettings],
   );
-  const [savingSucceeded,, isSuccessful, isNotSuccessful] = useToggle();
 
   useEffect(() => {
     params.shortCode && getShortUrlDetail(urlDecodeShortCode(params.shortCode), domain);
@@ -87,18 +86,15 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
             return;
           }
 
-          isNotSuccessful();
-          editShortUrl({ ...shortUrl, data: shortUrlData })
-            .then(isSuccessful)
-            .catch(isNotSuccessful);
+          editShortUrl({ ...shortUrl, data: shortUrlData });
         }}
       />
-      {savingError && (
+      {saved && savingError && (
         <Result type="error" className="mt-3">
           <ShlinkApiError errorData={savingErrorData} fallbackMessage="An error occurred while updating short URL :(" />
         </Result>
       )}
-      {savingSucceeded && <Result type="success" className="mt-3">Short URL properly edited.</Result>}
+      {saved && !savingError && <Result type="success" className="mt-3">Short URL properly edited.</Result>}
     </>
   );
 };
