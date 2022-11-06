@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { OptionalString } from '../../utils/utils';
-import { EditShortUrlData, ShortUrl } from '../data';
+import { EditShortUrlData, ShortUrl, ShortUrlIdentifier } from '../data';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
@@ -16,9 +15,7 @@ export interface ShortUrlEdition {
   errorData?: ProblemDetailsError;
 }
 
-export interface EditShortUrl {
-  shortCode: string;
-  domain?: OptionalString;
+export interface EditShortUrl extends ShortUrlIdentifier {
   data: EditShortUrlData;
 }
 
