@@ -11,12 +11,12 @@ import { listShortUrls } from '../reducers/shortUrlsList';
 import { shortUrlCreationReducerCreator } from '../reducers/shortUrlCreation';
 import { shortUrlDeletionReducerCreator } from '../reducers/shortUrlDeletion';
 import { shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
+import { shortUrlDetailReducerCreator } from '../reducers/shortUrlDetail';
 import { ConnectDecorator } from '../../container/types';
 import { ShortUrlsTable } from '../ShortUrlsTable';
-import { QrCodeModal } from '../helpers/QrCodeModal';
 import { ShortUrlForm } from '../ShortUrlForm';
 import { EditShortUrl } from '../EditShortUrl';
-import { getShortUrlDetail } from '../reducers/shortUrlDetail';
+import { QrCodeModal } from '../helpers/QrCodeModal';
 import { ExportShortUrlsBtn } from '../helpers/ExportShortUrlsBtn';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
@@ -66,6 +66,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('shortUrlDeletionReducerCreator', shortUrlDeletionReducerCreator, 'buildShlinkApiClient');
   bottle.serviceFactory('shortUrlDeletionReducer', prop('reducer'), 'shortUrlDeletionReducerCreator');
 
+  bottle.serviceFactory('shortUrlDetailReducerCreator', shortUrlDetailReducerCreator, 'buildShlinkApiClient');
+  bottle.serviceFactory('shortUrlDetailReducer', prop('reducer'), 'shortUrlDetailReducerCreator');
+
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');
 
@@ -75,7 +78,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('deleteShortUrl', prop('deleteShortUrl'), 'shortUrlDeletionReducerCreator');
   bottle.serviceFactory('resetDeleteShortUrl', prop('resetDeleteShortUrl'), 'shortUrlDeletionReducerCreator');
 
-  bottle.serviceFactory('getShortUrlDetail', getShortUrlDetail, 'buildShlinkApiClient');
+  bottle.serviceFactory('getShortUrlDetail', prop('getShortUrlDetail'), 'shortUrlDetailReducerCreator');
 
   bottle.serviceFactory('editShortUrl', prop('editShortUrl'), 'shortUrlEditionReducerCreator');
 };

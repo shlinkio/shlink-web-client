@@ -8,7 +8,6 @@ import tagVisitsReducer from '../visits/reducers/tagVisits';
 import domainVisitsReducer from '../visits/reducers/domainVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
 import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
-import shortUrlDetailReducer from '../short-urls/reducers/shortUrlDetail';
 import tagsListReducer from '../tags/reducers/tagsList';
 import tagDeleteReducer from '../tags/reducers/tagDelete';
 import tagEditReducer from '../tags/reducers/tagEdit';
@@ -25,12 +24,12 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   shortUrlCreationResult: container.shortUrlCreationReducer,
   shortUrlDeletion: container.shortUrlDeletionReducer,
   shortUrlEdition: container.shortUrlEditionReducer,
+  shortUrlDetail: container.shortUrlDetailReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
   domainVisits: domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
   nonOrphanVisits: nonOrphanVisitsReducer,
-  shortUrlDetail: shortUrlDetailReducer,
   tagsList: tagsListReducer,
   tagDelete: tagDeleteReducer,
   tagEdit: tagEditReducer,
