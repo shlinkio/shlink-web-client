@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { identity, pipe } from 'ramda';
+import { pipe } from 'ramda';
 import { DeleteShortUrl, ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 import { ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault } from '../../utils/utils';
@@ -10,7 +10,7 @@ import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;
-  deleteShortUrl: (shortUrl: DeleteShortUrl) => Promise<void>;
+  deleteShortUrl: (shortUrl: DeleteShortUrl) => void;
   resetDeleteShortUrl: () => void;
 }
 
@@ -23,13 +23,7 @@ export const DeleteShortUrlModal = (
 
   const { loading, error, errorData } = shortUrlDeletion;
   const close = pipe(resetDeleteShortUrl, toggle);
-  const handleDeleteUrl = handleEventPreventingDefault(() => {
-    const { shortCode, domain } = shortUrl;
-
-    deleteShortUrl({ shortCode, domain })
-      .then(toggle)
-      .catch(identity);
-  });
+  const handleDeleteUrl = handleEventPreventingDefault(() => deleteShortUrl(shortUrl));
 
   return (
     <Modal isOpen={isOpen} toggle={close} centered>
