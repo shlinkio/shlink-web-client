@@ -1,4 +1,5 @@
-import { Action, Dispatch } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { OptionalString } from '../../utils/utils';
@@ -19,9 +20,7 @@ export interface ShortUrlEdition {
   errorData?: ProblemDetailsError;
 }
 
-export interface ShortUrlEditedAction extends Action<string> {
-  shortUrl: ShortUrl;
-}
+export type ShortUrlEditedAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlEdition = {
   saving: false,
@@ -31,7 +30,7 @@ const initialState: ShortUrlEdition = {
 export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ApiErrorAction>({
   [EDIT_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
   [EDIT_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
-  [SHORT_URL_EDITED]: (_, { shortUrl }) => ({ shortUrl, saving: false, error: false }),
+  [SHORT_URL_EDITED]: (_, { payload: shortUrl }) => ({ shortUrl, saving: false, error: false }),
 }, initialState);
 
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
@@ -44,9 +43,9 @@ export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   const { updateShortUrl } = buildShlinkApiClient(getState);
 
   try {
-    const shortUrl = await updateShortUrl(shortCode, domain, data as any); // FIXME parse dates;
+    const payload = await updateShortUrl(shortCode, domain, data as any); // FIXME parse dates;
 
-    dispatch<ShortUrlEditedAction>({ shortUrl, type: SHORT_URL_EDITED });
+    dispatch<ShortUrlEditedAction>({ payload, type: SHORT_URL_EDITED });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: EDIT_SHORT_URL_ERROR, errorData: parseApiError(e) });
 

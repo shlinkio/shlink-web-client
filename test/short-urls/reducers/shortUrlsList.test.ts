@@ -181,7 +181,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      const result = reducer(state, { type: SHORT_URL_EDITED, shortUrl: editedShortUrl } as any);
+      const result = reducer(state, { type: SHORT_URL_EDITED, payload: editedShortUrl } as any);
 
       expect(result.shortUrls?.data).toEqual(expectedList);
     });

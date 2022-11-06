@@ -31,7 +31,7 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it('returns provided tags and shortCode on SHORT_URL_EDITED', () => {
-      expect(reducer(undefined, { type: SHORT_URL_EDITED, shortUrl })).toEqual({
+      expect(reducer(undefined, { type: SHORT_URL_EDITED, payload: shortUrl })).toEqual({
         shortUrl,
         saving: false,
         error: false,
@@ -55,7 +55,7 @@ describe('shortUrlEditionReducer', () => {
       expect(updateShortUrl).toHaveBeenCalledWith(shortCode, domain, { longUrl });
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_EDITED, shortUrl });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: SHORT_URL_EDITED, payload: shortUrl });
     });
 
     it('dispatches error on failure', async () => {

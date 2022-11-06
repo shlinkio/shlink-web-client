@@ -89,7 +89,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state,
     )),
   ),
-  [SHORT_URL_EDITED]: (state, { shortUrl: editedShortUrl }) => (!state.shortUrls ? state : assocPath(
+  [SHORT_URL_EDITED]: (state, { payload: editedShortUrl }) => (!state.shortUrls ? state : assocPath(
     ['shortUrls', 'data'],
     state.shortUrls.data.map((shortUrl) => {
       const { shortCode, domain } = editedShortUrl;
