@@ -44,8 +44,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true }),
   [LIST_SHORT_URLS]: (_, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
-  // [`${SHORT_URL_DELETED}/fulfilled`]: pipe( // TODO Do not hardcode action type here
-  [SHORT_URL_DELETED]: pipe(
+  [`${SHORT_URL_DELETED}/fulfilled`]: pipe( // TODO Do not hardcode action type here
     (state: ShortUrlsList, { payload }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
       reject<ShortUrl, ShortUrl[]>((shortUrl) =>

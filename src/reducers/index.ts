@@ -3,7 +3,6 @@ import { combineReducers } from 'redux';
 import { serversReducer } from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
 import shortUrlsListReducer from '../short-urls/reducers/shortUrlsList';
-import shortUrlDeletionReducer from '../short-urls/reducers/shortUrlDeletion';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import domainVisitsReducer from '../visits/reducers/domainVisits';
@@ -24,7 +23,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   selectedServer: selectedServerReducer,
   shortUrlsList: shortUrlsListReducer,
   shortUrlCreationResult: container.shortUrlCreationReducer,
-  shortUrlDeletion: shortUrlDeletionReducer,
+  shortUrlDeletion: container.shortUrlDeletionReducer,
   shortUrlEdition: container.shortUrlEditionReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
