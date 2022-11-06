@@ -83,9 +83,9 @@ describe('tagsListReducer', () => {
       [['new', 'tag'], ['foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag']],
     ])('appends new short URL\'s tags to the list of tags on CREATE_SHORT_URL', (shortUrlTags, expectedTags) => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
-      const result = Mock.of<ShortUrl>({ tags: shortUrlTags });
+      const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), { type: CREATE_SHORT_URL, result } as any)).toEqual({
+      expect(reducer(state({ tags }), { type: `${CREATE_SHORT_URL}/fulfilled`, payload } as any)).toEqual({
         tags: expectedTags,
       });
     });

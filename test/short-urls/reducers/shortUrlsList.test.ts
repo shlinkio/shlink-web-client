@@ -142,7 +142,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: CREATE_SHORT_URL, result: newShortUrl } as any)).toEqual({
+      expect(reducer(state, { type: `${CREATE_SHORT_URL}/fulfilled`, payload: newShortUrl } as any)).toEqual({
         shortUrls: {
           data: expectedData,
           pagination: { totalItems: 16 },

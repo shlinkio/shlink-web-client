@@ -103,9 +103,9 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     ...state,
     stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
   }),
-  [CREATE_SHORT_URL]: ({ tags: stateTags, ...rest }, { result }) => ({
+  [`${CREATE_SHORT_URL}/fulfilled`]: ({ tags: stateTags, ...rest }, { payload }) => ({ // TODO Do not hardcode action type here
     ...rest,
-    tags: stateTags.concat(result.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
+    tags: stateTags.concat(payload.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
   }),
 }, initialState);
 

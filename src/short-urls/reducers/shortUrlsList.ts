@@ -74,13 +74,13 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
     ),
     state,
   ),
-  [CREATE_SHORT_URL]: pipe(
+  [`${CREATE_SHORT_URL}/fulfilled`]: pipe( // TODO Do not hardcode action type here
     // The only place where the list and the creation form coexist is the overview page.
     // There we can assume we are displaying page 1, and therefore, we can safely prepend the new short URL.
     // We can also remove the items above the amount that is displayed there.
-    (state: ShortUrlsList, { result }: CreateShortUrlAction) => (!state.shortUrls ? state : assocPath(
+    (state: ShortUrlsList, { payload }: CreateShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
-      [result, ...state.shortUrls.data.slice(0, ITEMS_IN_OVERVIEW_PAGE - 1)],
+      [payload, ...state.shortUrls.data.slice(0, ITEMS_IN_OVERVIEW_PAGE - 1)],
       state,
     )),
     (state: ShortUrlsList) => (!state.shortUrls ? state : assocPath(

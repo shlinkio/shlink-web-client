@@ -1,16 +1,11 @@
-import { Action, Dispatch } from 'redux';
-import { GetState } from '../../container/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ShortUrl, ShortUrlData } from '../data';
-import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
-import { ApiErrorAction } from '../../api/types/actions';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
-export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
-export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
 
 export interface ShortUrlCreation {
   result: ShortUrl | null;
@@ -19,9 +14,7 @@ export interface ShortUrlCreation {
   errorData?: ProblemDetailsError;
 }
 
-export interface CreateShortUrlAction extends Action<string> {
-  result: ShortUrl;
-}
+export type CreateShortUrlAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlCreation = {
   result: null,
@@ -29,29 +22,33 @@ const initialState: ShortUrlCreation = {
   error: false,
 };
 
-export default buildReducer<ShortUrlCreation, CreateShortUrlAction & ApiErrorAction>({
-  [CREATE_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
-  [CREATE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
-  [CREATE_SHORT_URL]: (_, { result }) => ({ result, saving: false, error: false }),
-  [RESET_CREATE_SHORT_URL]: () => initialState,
-}, initialState);
+export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+  const createShortUrl = createAsyncThunk(CREATE_SHORT_URL, (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
+    const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
+    return shlinkCreateShortUrl(data);
+  });
 
-export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (data: ShortUrlData) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  dispatch({ type: CREATE_SHORT_URL_START });
-  const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
+  const { reducer, actions } = createSlice({
+    name: 'shortUrlCreationReducer',
+    initialState,
+    reducers: {
+      resetCreateShortUrl: () => initialState,
+    },
+    extraReducers: (builder) => {
+      builder.addCase(createShortUrl.pending, (state) => ({ ...state, saving: true, error: false }));
+      builder.addCase(
+        createShortUrl.rejected,
+        (state, { error }) => ({ ...state, saving: false, error: true, errorData: parseApiError(error) }),
+      );
+      builder.addCase(createShortUrl.fulfilled, (_, { payload: result }) => ({ result, saving: false, error: false }));
+    },
+  });
 
-  try {
-    const result = await shlinkCreateShortUrl(data);
+  const { resetCreateShortUrl } = actions;
 
-    dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: CREATE_SHORT_URL_ERROR, errorData: parseApiError(e) });
-
-    throw e;
-  }
+  return {
+    reducer,
+    createShortUrl,
+    resetCreateShortUrl,
+  };
 };
-
-export const resetCreateShortUrl = buildActionCreator(RESET_CREATE_SHORT_URL);
