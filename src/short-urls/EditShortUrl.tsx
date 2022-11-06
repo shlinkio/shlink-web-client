@@ -14,8 +14,7 @@ import { ShlinkApiError } from '../api/ShlinkApiError';
 import { useGoBack, useToggle } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
-import { EditShortUrlData } from './data';
-import { ShortUrlEdition } from './reducers/shortUrlEdition';
+import { EditShortUrl as EditShortUrlInfo, ShortUrlEdition } from './reducers/shortUrlEdition';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
 
 interface EditShortUrlConnectProps {
@@ -24,7 +23,7 @@ interface EditShortUrlConnectProps {
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
   getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
-  editShortUrl: (shortUrl: string, domain: OptionalString, data: EditShortUrlData) => Promise<void>;
+  editShortUrl: (editShortUrl: EditShortUrlInfo) => Promise<void>;
 }
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
@@ -89,7 +88,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
           }
 
           isNotSuccessful();
-          editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)
+          editShortUrl({ ...shortUrl, data: shortUrlData })
             .then(isSuccessful)
             .catch(isNotSuccessful);
         }}

@@ -48,7 +48,7 @@ describe('shortUrlEditionReducer', () => {
     afterEach(jest.clearAllMocks);
 
     it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
-      await editShortUrl(buildShlinkApiClient)(shortCode, domain, { longUrl })(dispatch, createGetState());
+      await editShortUrl(buildShlinkApiClient)({ shortCode, domain, data: { longUrl } })(dispatch, createGetState());
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrl).toHaveBeenCalledTimes(1);
@@ -64,7 +64,7 @@ describe('shortUrlEditionReducer', () => {
       updateShortUrl.mockRejectedValue(error);
 
       try {
-        await editShortUrl(buildShlinkApiClient)(shortCode, undefined, { longUrl })(dispatch, createGetState());
+        await editShortUrl(buildShlinkApiClient)({ shortCode, data: { longUrl } })(dispatch, createGetState());
       } catch (e) {
         expect(e).toBe(error);
       }

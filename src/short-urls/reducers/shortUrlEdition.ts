@@ -20,6 +20,12 @@ export interface ShortUrlEdition {
   errorData?: ProblemDetailsError;
 }
 
+export interface EditShortUrl {
+  shortCode: string;
+  domain?: OptionalString;
+  data: EditShortUrlData;
+}
+
 export type ShortUrlEditedAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlEdition = {
@@ -34,9 +40,7 @@ export default buildReducer<ShortUrlEdition, ShortUrlEditedAction & ApiErrorActi
 }, initialState);
 
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  shortCode: string,
-  domain: OptionalString,
-  data: EditShortUrlData,
+  { shortCode, domain, data }: EditShortUrl,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_SHORT_URL_START });
 
