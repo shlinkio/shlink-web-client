@@ -9,10 +9,10 @@ import reducer, {
   TagsList,
 } from '../../../src/tags/reducers/tagsList';
 import { TAG_DELETED } from '../../../src/tags/reducers/tagDelete';
-import { TAG_EDITED } from '../../../src/tags/reducers/tagEdit';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { tagEdited } from '../../../src/tags/reducers/tagEdit';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
@@ -63,7 +63,7 @@ describe('tagsListReducer', () => {
       expect(reducer(
         state({ tags, filteredTags: tags }),
         {
-          type: TAG_EDITED,
+          type: tagEdited.toString(),
           payload: { oldName, newName },
         } as any,
       )).toEqual({

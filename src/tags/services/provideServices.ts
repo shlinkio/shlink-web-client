@@ -1,3 +1,4 @@
+import { prop } from 'ramda';
 import Bottle, { IContainer } from 'bottlejs';
 import { TagsSelector } from '../helpers/TagsSelector';
 import { TagCard } from '../TagCard';
@@ -6,7 +7,7 @@ import { EditTagModal } from '../helpers/EditTagModal';
 import { TagsList } from '../TagsList';
 import { filterTags, listTags } from '../reducers/tagsList';
 import { deleteTag, tagDeleted } from '../reducers/tagDelete';
-import { editTag, tagEdited } from '../reducers/tagEdit';
+import { tagEdited, tagEditReducerCreator } from '../reducers/tagEdit';
 import { ConnectDecorator } from '../../container/types';
 import { TagsCards } from '../TagsCards';
 import { TagsTable } from '../TagsTable';
@@ -36,6 +37,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     ['forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo'],
   ));
 
+  // Reducers
+  bottle.serviceFactory('tagEditReducerCreator', tagEditReducerCreator, 'buildShlinkApiClient', 'ColorGenerator');
+  bottle.serviceFactory('tagEditReducer', prop('reducer'), 'tagEditReducerCreator');
+
   // Actions
   const listTagsActionFactory = (force: boolean) =>
     ({ buildShlinkApiClient }: IContainer) => listTags(buildShlinkApiClient, force);
@@ -43,11 +48,12 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.factory('listTags', listTagsActionFactory(false));
   bottle.factory('forceListTags', listTagsActionFactory(true));
   bottle.serviceFactory('filterTags', () => filterTags);
-  bottle.serviceFactory('tagDeleted', () => tagDeleted);
-  bottle.serviceFactory('tagEdited', () => tagEdited);
 
   bottle.serviceFactory('deleteTag', deleteTag, 'buildShlinkApiClient');
-  bottle.serviceFactory('editTag', editTag, 'buildShlinkApiClient', 'ColorGenerator');
+  bottle.serviceFactory('tagDeleted', () => tagDeleted);
+
+  bottle.serviceFactory('editTag', prop('editTag'), 'tagEditReducerCreator');
+  bottle.serviceFactory('tagEdited', () => tagEdited);
 };
 
 export default provideServices;

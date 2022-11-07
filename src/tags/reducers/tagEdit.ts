@@ -1,18 +1,13 @@
 import { pick } from 'ramda';
-import { createAction, PayloadAction } from '@reduxjs/toolkit';
-import { Dispatch } from 'redux';
-import { buildReducer } from '../../utils/helpers/redux';
-import { GetState } from '../../container/types';
+import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
-import { ApiErrorAction } from '../../api/types/actions';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
-export const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
-export const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
-export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
+const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
+const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
 
 export interface TagEdition {
   oldName?: string;
@@ -37,35 +32,37 @@ const initialState: TagEdition = {
   error: false,
 };
 
-export default buildReducer<TagEdition, EditTagAction & ApiErrorAction>({
-  [EDIT_TAG_START]: () => ({ editing: true, edited: false, error: false }),
-  [EDIT_TAG_ERROR]: (_, { errorData }) => ({ editing: false, edited: false, error: true, errorData }),
-  [EDIT_TAG]: (_, { payload }) => ({
-    ...pick(['oldName', 'newName'], payload),
-    editing: false,
-    edited: true,
-    error: false,
-  }),
-}, initialState);
-
-export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGenerator: ColorGenerator) => (
-  { oldName, newName, color }: EditTag,
-) => async (dispatch: Dispatch, getState: GetState) => {
-  dispatch({ type: EDIT_TAG_START });
-  const { editTag: shlinkEditTag } = buildShlinkApiClient(getState);
-
-  try {
-    await shlinkEditTag(oldName, newName);
-    colorGenerator.setColorForKey(newName, color);
-    dispatch<EditTagAction>({
-      type: EDIT_TAG,
-      payload: { oldName, newName, color },
-    });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: EDIT_TAG_ERROR, errorData: parseApiError(e) });
-
-    throw e;
-  }
-};
-
 export const tagEdited = createAction<EditTag>(TAG_EDITED);
+
+export const tagEditReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGenerator: ColorGenerator) => {
+  const editTag = createAsyncThunk(
+    EDIT_TAG,
+    async ({ oldName, newName, color }: EditTag, { getState }): Promise<EditTag> => {
+      await buildShlinkApiClient(getState).editTag(oldName, newName);
+      colorGenerator.setColorForKey(newName, color);
+
+      return { oldName, newName, color };
+    },
+  );
+
+  const { reducer } = createSlice({
+    name: 'tagEditReducer',
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+      builder.addCase(editTag.pending, () => ({ editing: true, edited: false, error: false }));
+      builder.addCase(
+        editTag.rejected,
+        (_, { error }) => ({ editing: false, edited: false, error: true, errorData: parseApiError(error) }),
+      );
+      builder.addCase(editTag.fulfilled, (_, { payload }) => ({
+        ...pick(['oldName', 'newName'], payload),
+        editing: false,
+        edited: true,
+        error: false,
+      }));
+    },
+  });
+
+  return { reducer, editTag };
+};
