@@ -35,7 +35,10 @@ describe('tagEditReducer', () => {
     });
 
     it('returns tag names on EDIT_TAG', () => {
-      expect(reducer(undefined, { type: EDIT_TAG, oldName, newName, color })).toEqual({
+      expect(reducer(undefined, {
+        type: EDIT_TAG,
+        payload: { oldName, newName, color },
+      })).toEqual({
         editing: false,
         edited: true,
         error: false,
@@ -49,9 +52,11 @@ describe('tagEditReducer', () => {
     it('returns action based on provided params', () =>
       expect(tagEdited('foo', 'bar', '#ff0000')).toEqual({
         type: TAG_EDITED,
-        oldName: 'foo',
-        newName: 'bar',
-        color: '#ff0000',
+        payload: {
+          oldName: 'foo',
+          newName: 'bar',
+          color: '#ff0000',
+        },
       }));
   });
 
@@ -81,7 +86,10 @@ describe('tagEditReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_TAG_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG, oldName, newName, color });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: EDIT_TAG,
+        payload: { oldName, newName, color },
+      });
     });
 
     it('throws on error', async () => {

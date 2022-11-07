@@ -90,10 +90,10 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     tags: rejectTag(state.tags, tag),
     filteredTags: rejectTag(state.filteredTags, tag),
   }),
-  [TAG_EDITED]: (state, { oldName, newName }) => ({
+  [TAG_EDITED]: (state, { payload }) => ({
     ...state,
-    tags: state.tags.map(renameTag(oldName, newName)).sort(),
-    filteredTags: state.filteredTags.map(renameTag(oldName, newName)).sort(),
+    tags: state.tags.map(renameTag(payload.oldName, payload.newName)).sort(),
+    filteredTags: state.filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
   }),
   [FILTER_TAGS]: (state, { searchTerm }) => ({
     ...state,

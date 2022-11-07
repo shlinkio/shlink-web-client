@@ -60,7 +60,13 @@ describe('tagsListReducer', () => {
       const newName = 'renamed';
       const expectedTags = ['foo', 'renamed', 'baz'].sort();
 
-      expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_EDITED, oldName, newName } as any)).toEqual({
+      expect(reducer(
+        state({ tags, filteredTags: tags }),
+        {
+          type: TAG_EDITED,
+          payload: { oldName, newName },
+        } as any,
+      )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
       });
