@@ -21,7 +21,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: selectedServerReducer,
   shortUrlsList: shortUrlsListReducer,
-  shortUrlCreationResult: container.shortUrlCreationReducer,
+  shortUrlCreation: container.shortUrlCreationReducer,
   shortUrlDeletion: container.shortUrlDeletionReducer,
   shortUrlEdition: container.shortUrlEditionReducer,
   shortUrlDetail: container.shortUrlDetailReducer,

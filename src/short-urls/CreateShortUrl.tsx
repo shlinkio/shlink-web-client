@@ -12,7 +12,7 @@ export interface CreateShortUrlProps {
 
 interface CreateShortUrlConnectProps extends CreateShortUrlProps {
   settings: Settings;
-  shortUrlCreationResult: ShortUrlCreation;
+  shortUrlCreation: ShortUrlCreation;
   selectedServer: SelectedServer;
   createShortUrl: (data: ShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
@@ -38,7 +38,7 @@ export const CreateShortUrl = (
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
 ) => ({
   createShortUrl,
-  shortUrlCreationResult,
+  shortUrlCreation,
   resetCreateShortUrl,
   selectedServer,
   basicMode = false,
@@ -50,7 +50,7 @@ export const CreateShortUrl = (
     <>
       <ShortUrlForm
         initialState={initialState}
-        saving={shortUrlCreationResult.saving}
+        saving={shortUrlCreation.saving}
         selectedServer={selectedServer}
         mode={basicMode ? 'create-basic' : 'create'}
         onSave={async (data: ShortUrlData) => {
@@ -59,7 +59,7 @@ export const CreateShortUrl = (
         }}
       />
       <CreateShortUrlResult
-        {...shortUrlCreationResult}
+        creation={shortUrlCreation}
         resetCreateShortUrl={resetCreateShortUrl}
         canBeClosed={basicMode}
       />

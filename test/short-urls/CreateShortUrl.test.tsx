@@ -13,7 +13,7 @@ describe('<CreateShortUrl />', () => {
   const CreateShortUrl = createShortUrlsCreator(ShortUrlForm, CreateShortUrlResult);
   const setUp = () => render(
     <CreateShortUrl
-      shortUrlCreationResult={shortUrlCreationResult}
+      shortUrlCreation={shortUrlCreationResult}
       createShortUrl={createShortUrl}
       selectedServer={null}
       resetCreateShortUrl={() => {}}
