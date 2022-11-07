@@ -20,7 +20,7 @@ export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
   { creation, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
   const [showCopyTooltip, setShowCopyTooltip] = useTimeoutToggle();
-  const { error, errorData, result } = creation;
+  const { error, saved } = creation;
 
   useEffect(() => {
     resetCreateShortUrl();
@@ -30,16 +30,16 @@ export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
     return (
       <Result type="error" className="mt-3">
         {canBeClosed && <FontAwesomeIcon icon={closeIcon} className="float-end pointer" onClick={resetCreateShortUrl} />}
-        <ShlinkApiError errorData={errorData} fallbackMessage="An error occurred while creating the URL :(" />
+        <ShlinkApiError errorData={creation.errorData} fallbackMessage="An error occurred while creating the URL :(" />
       </Result>
     );
   }
 
-  if (!result) {
+  if (!saved) {
     return null;
   }
 
-  const { shortUrl } = result;
+  const { shortUrl } = creation.result;
 
   return (
     <Result type="success" className="mt-3">
