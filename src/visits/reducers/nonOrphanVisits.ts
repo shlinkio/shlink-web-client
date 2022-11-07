@@ -12,7 +12,7 @@ import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
-import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
+import { createNewVisits, CreateVisitsAction } from './visitCreation';
 
 export const GET_NON_ORPHAN_VISITS_START = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_START';
 export const GET_NON_ORPHAN_VISITS_ERROR = 'shlink/orphanVisits/GET_NON_ORPHAN_VISITS_ERROR';
@@ -52,7 +52,7 @@ export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
   [GET_NON_ORPHAN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }) => {
     const { visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

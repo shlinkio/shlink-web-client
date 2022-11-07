@@ -1,7 +1,7 @@
 import { createAction, PayloadAction } from '@reduxjs/toolkit';
 import { CreateVisit } from '../types';
 
-export const CREATE_VISITS = 'shlink/visitCreation/CREATE_VISITS';
+const CREATE_VISITS = 'shlink/visitCreation/CREATE_VISITS';
 
 export type CreateVisitsAction = PayloadAction<{
   createdVisits: CreateVisit[];

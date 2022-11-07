@@ -1,6 +1,6 @@
 import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
+import { createNewVisits, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
@@ -99,7 +99,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
-  [CREATE_VISITS]: (state, { payload }) => ({
+  [createNewVisits.toString()]: (state, { payload }) => ({
     ...state,
     stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
   }),

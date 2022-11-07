@@ -11,7 +11,6 @@ import reducer, {
   GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED,
   GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL,
 } from '../../../src/visits/reducers/nonOrphanVisits';
-import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit, VisitsInfo } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
@@ -19,6 +18,7 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import { DateInterval } from '../../../src/utils/dates/types';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('nonOrphanVisitsReducer', () => {
   const now = new Date();
@@ -106,7 +106,7 @@ describe('nonOrphanVisitsReducer', () => {
       const visit = Mock.of<Visit>({ date: formatIsoDate(now) ?? undefined });
 
       const { visits } = reducer(prevState, {
-        type: CREATE_VISITS,
+        type: createNewVisits.toString(),
         payload: { createdVisits: [{ visit }, { visit }] },
       } as any);
 
