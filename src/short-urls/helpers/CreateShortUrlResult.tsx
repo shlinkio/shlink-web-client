@@ -10,15 +10,17 @@ import { Result } from '../../utils/Result';
 import './CreateShortUrlResult.scss';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 
-export interface CreateShortUrlResultProps extends ShortUrlCreation {
+export interface CreateShortUrlResultProps {
+  creation: ShortUrlCreation;
   resetCreateShortUrl: () => void;
   canBeClosed?: boolean;
 }
 
 export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
-  { error, errorData, result, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
+  { creation, resetCreateShortUrl, canBeClosed = false }: CreateShortUrlResultProps,
 ) => {
   const [showCopyTooltip, setShowCopyTooltip] = useTimeoutToggle();
+  const { error, errorData, result } = creation;
 
   useEffect(() => {
     resetCreateShortUrl();

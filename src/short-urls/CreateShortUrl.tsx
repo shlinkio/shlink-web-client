@@ -59,7 +59,7 @@ export const CreateShortUrl = (
         }}
       />
       <CreateShortUrlResult
-        {...shortUrlCreation}
+        creation={shortUrlCreation}
         resetCreateShortUrl={resetCreateShortUrl}
         canBeClosed={basicMode}
       />

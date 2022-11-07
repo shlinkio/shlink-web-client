@@ -9,8 +9,8 @@ describe('<CreateShortUrlResult />', () => {
   const copyToClipboard = jest.fn();
   const useTimeoutToggle = jest.fn(() => [false, copyToClipboard]) as TimeoutToggle;
   const CreateShortUrlResult = createResult(useTimeoutToggle);
-  const setUp = (result: ShortUrl | null = null, error = false) => renderWithEvents(
-    <CreateShortUrlResult resetCreateShortUrl={() => {}} result={result} error={error} saving={false} />,
+  const setUp = (result?: ShortUrl, error = false) => renderWithEvents(
+    <CreateShortUrlResult resetCreateShortUrl={() => {}} creation={{ result, saving: false, error, saved: false }} />,
   );
 
   afterEach(jest.clearAllMocks);
