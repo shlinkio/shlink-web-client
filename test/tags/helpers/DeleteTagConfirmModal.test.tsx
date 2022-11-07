@@ -6,14 +6,14 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 describe('<DeleteTagConfirmModal />', () => {
   const tag = 'nodejs';
   const deleteTag = jest.fn();
-  const tagDeleted = jest.fn();
+  const toggle = jest.fn();
   const setUp = (tagDelete: TagDeletion) => renderWithEvents(
     <DeleteTagConfirmModal
       tag={tag}
-      toggle={() => ''}
+      toggle={toggle}
       isOpen
       deleteTag={deleteTag}
-      tagDeleted={tagDeleted}
+      tagDeleted={jest.fn()}
       tagDelete={tagDelete}
     />,
   );
@@ -21,7 +21,7 @@ describe('<DeleteTagConfirmModal />', () => {
   afterEach(jest.resetAllMocks);
 
   it('asks confirmation for provided tag to be deleted', () => {
-    setUp({ error: false, deleting: false });
+    setUp({ error: false, deleted: false, deleting: false });
 
     const delBtn = screen.getByRole('button', { name: 'Delete tag' });
 
@@ -33,12 +33,12 @@ describe('<DeleteTagConfirmModal />', () => {
   });
 
   it('shows error message when deletion failed', () => {
-    setUp({ error: true, deleting: false });
+    setUp({ error: true, deleted: false, deleting: false });
     expect(screen.getByText('Something went wrong while deleting the tag :(')).toBeInTheDocument();
   });
 
   it('shows loading status while deleting', () => {
-    setUp({ error: false, deleting: true });
+    setUp({ error: false, deleted: false, deleting: true });
 
     const delBtn = screen.getByRole('button', { name: 'Deleting tag...' });
 
@@ -48,22 +48,21 @@ describe('<DeleteTagConfirmModal />', () => {
   });
 
   it('hides tag modal when btn is clicked', async () => {
-    const { user } = setUp({ error: false, deleting: false });
+    const { user } = setUp({ error: false, deleted: true, deleting: false });
 
     await user.click(screen.getByRole('button', { name: 'Delete tag' }));
 
     expect(deleteTag).toHaveBeenCalledTimes(1);
     expect(deleteTag).toHaveBeenCalledWith(tag);
-    expect(tagDeleted).toHaveBeenCalledTimes(1);
-    expect(tagDeleted).toHaveBeenCalledWith(tag);
+    expect(toggle).toHaveBeenCalledTimes(1);
   });
 
   it('does no further actions when modal is closed without deleting tag', async () => {
-    const { user } = setUp({ error: false, deleting: false });
+    const { user } = setUp({ error: false, deleted: true, deleting: false });
 
     await user.click(screen.getByLabelText('Close'));
 
     expect(deleteTag).not.toHaveBeenCalled();
-    expect(tagDeleted).not.toHaveBeenCalled();
+    expect(toggle).toHaveBeenCalled();
   });
 });

@@ -13,6 +13,7 @@ export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
 
 export interface TagDeletion {
   deleting: boolean;
+  deleted: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
 }
@@ -23,13 +24,14 @@ export interface DeleteTagAction extends Action<string> {
 
 const initialState: TagDeletion = {
   deleting: false,
+  deleted: false,
   error: false,
 };
 
 export default buildReducer<TagDeletion, ApiErrorAction>({
-  [DELETE_TAG_START]: () => ({ deleting: true, error: false }),
-  [DELETE_TAG_ERROR]: (_, { errorData }) => ({ deleting: false, error: true, errorData }),
-  [DELETE_TAG]: () => ({ deleting: false, error: false }),
+  [DELETE_TAG_START]: () => ({ deleting: true, deleted: false, error: false }),
+  [DELETE_TAG_ERROR]: (_, { errorData }) => ({ deleting: false, deleted: false, error: true, errorData }),
+  [DELETE_TAG]: () => ({ deleting: false, deleted: true, error: false }),
 }, initialState);
 
 export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag: string) => async (

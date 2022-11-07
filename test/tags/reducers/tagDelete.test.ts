@@ -15,6 +15,7 @@ describe('tagDeleteReducer', () => {
     it('returns loading on DELETE_TAG_START', () => {
       expect(reducer(undefined, { type: DELETE_TAG_START })).toEqual({
         deleting: true,
+        deleted: false,
         error: false,
       });
     });
@@ -22,6 +23,7 @@ describe('tagDeleteReducer', () => {
     it('returns error on DELETE_TAG_ERROR', () => {
       expect(reducer(undefined, { type: DELETE_TAG_ERROR })).toEqual({
         deleting: false,
+        deleted: false,
         error: true,
       });
     });
@@ -29,6 +31,7 @@ describe('tagDeleteReducer', () => {
     it('returns tag names on DELETE_TAG', () => {
       expect(reducer(undefined, { type: DELETE_TAG })).toEqual({
         deleting: false,
+        deleted: true,
         error: false,
       });
     });
