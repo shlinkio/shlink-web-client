@@ -1,6 +1,6 @@
 import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
-import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
+import { createNewVisits, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkTags } from '../../api/types';
 import { GetState } from '../../container/types';
@@ -10,8 +10,8 @@ import { parseApiError } from '../../api/utils';
 import { TagStats } from '../data';
 import { ApiErrorAction } from '../../api/types/actions';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
-import { DeleteTagAction, TAG_DELETED } from './tagDelete';
-import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { DeleteTagAction, tagDeleted } from './tagDelete';
+import { EditTagAction, tagEdited } from './tagEdit';
 import { ProblemDetailsError } from '../../api/types/errors';
 
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -85,21 +85,21 @@ export default buildReducer<TagsList, TagsCombinedAction>({
   [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
   [LIST_TAGS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [LIST_TAGS]: (_, { tags, stats }) => ({ ...initialState, stats, tags, filteredTags: tags }),
-  [TAG_DELETED]: (state, { tag }) => ({
+  [tagDeleted.toString()]: (state, { payload: tag }) => ({
     ...state,
     tags: rejectTag(state.tags, tag),
     filteredTags: rejectTag(state.filteredTags, tag),
   }),
-  [TAG_EDITED]: (state, { oldName, newName }) => ({
+  [tagEdited.toString()]: (state, { payload }) => ({
     ...state,
-    tags: state.tags.map(renameTag(oldName, newName)).sort(),
-    filteredTags: state.filteredTags.map(renameTag(oldName, newName)).sort(),
+    tags: state.tags.map(renameTag(payload.oldName, payload.newName)).sort(),
+    filteredTags: state.filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
   }),
   [FILTER_TAGS]: (state, { searchTerm }) => ({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
-  [CREATE_VISITS]: (state, { payload }) => ({
+  [createNewVisits.toString()]: (state, { payload }) => ({
     ...state,
     stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
   }),

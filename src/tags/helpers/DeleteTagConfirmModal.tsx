@@ -13,15 +13,14 @@ interface DeleteTagConfirmModalProps extends TagModalProps {
 export const DeleteTagConfirmModal = (
   { tag, toggle, isOpen, deleteTag, tagDelete, tagDeleted }: DeleteTagConfirmModalProps,
 ) => {
-  const { deleting, error, errorData } = tagDelete;
+  const { deleting, error, deleted, errorData } = tagDelete;
   const doDelete = async () => {
     await deleteTag(tag);
-    tagDeleted(tag);
     toggle();
   };
 
   return (
-    <Modal toggle={toggle} isOpen={isOpen} centered>
+    <Modal toggle={toggle} isOpen={isOpen} centered onClosed={() => deleted && tagDeleted(tag)}>
       <ModalHeader toggle={toggle} className="text-danger">Delete tag</ModalHeader>
       <ModalBody>
         Are you sure you want to delete tag <b>{tag}</b>?

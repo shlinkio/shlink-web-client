@@ -1,3 +1,4 @@
+import { pipe } from 'ramda';
 import { useState } from 'react';
 import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover, InputGroup } from 'reactstrap';
 import { HexColorPicker } from 'react-colorful';
@@ -7,15 +8,15 @@ import { useToggle } from '../../utils/helpers/hooks';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { TagModalProps } from '../data';
-import { TagEdition } from '../reducers/tagEdit';
+import { EditTag, TagEdition } from '../reducers/tagEdit';
 import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 import './EditTagModal.scss';
 
 interface EditTagModalProps extends TagModalProps {
   tagEdit: TagEdition;
-  editTag: (oldName: string, newName: string, color: string) => Promise<void>;
-  tagEdited: (oldName: string, newName: string, color: string) => void;
+  editTag: (editTag: EditTag) => Promise<void>;
+  tagEdited: (tagEdited: EditTag) => void;
 }
 
 export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
@@ -24,16 +25,16 @@ export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   const [newTagName, setNewTagName] = useState(tag);
   const [color, setColor] = useState(getColorForKey(tag));
   const [showColorPicker, toggleColorPicker, , hideColorPicker] = useToggle();
-  const { editing, error, errorData } = tagEdit;
+  const { editing, error, edited, errorData } = tagEdit;
   const saveTag = handleEventPreventingDefault(
-    async () => editTag(tag, newTagName, color)
-      .then(() => tagEdited(tag, newTagName, color))
+    async () => editTag({ oldName: tag, newName: newTagName, color })
       .then(toggle)
       .catch(() => {}),
   );
+  const onClosed = pipe(hideColorPicker, () => edited && tagEdited({ oldName: tag, newName: newTagName, color }));
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
+    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={onClosed}>
       <form name="editTag" onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>

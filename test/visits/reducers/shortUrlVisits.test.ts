@@ -12,7 +12,6 @@ import reducer, {
   GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL,
   ShortUrlVisits,
 } from '../../../src/visits/reducers/shortUrlVisits';
-import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
@@ -20,6 +19,7 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import { DateInterval } from '../../../src/utils/dates/types';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
@@ -127,7 +127,7 @@ describe('shortUrlVisitsReducer', () => {
       });
 
       const { visits } = reducer(prevState, {
-        type: CREATE_VISITS,
+        type: createNewVisits.toString(),
         payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
       } as any);
 

@@ -4,7 +4,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { GetState } from '../../container/types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { groupNewVisitsByType } from '../types/helpers';
-import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
+import { createNewVisits, CreateVisitsAction } from './visitCreation';
 
 export const GET_OVERVIEW_START = 'shlink/visitsOverview/GET_OVERVIEW_START';
 export const GET_OVERVIEW_ERROR = 'shlink/visitsOverview/GET_OVERVIEW_ERROR';
@@ -30,7 +30,7 @@ export default buildReducer<VisitsOverview, GetVisitsOverviewAction & CreateVisi
   [GET_OVERVIEW_START]: () => ({ ...initialState, loading: true }),
   [GET_OVERVIEW_ERROR]: () => ({ ...initialState, error: true }),
   [GET_OVERVIEW]: (_, { visitsCount, orphanVisitsCount }) => ({ ...initialState, visitsCount, orphanVisitsCount }),
-  [CREATE_VISITS]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { payload }) => {
+  [createNewVisits.toString()]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { payload }) => {
     const { regularVisits, orphanVisits } = groupNewVisitsByType(payload.createdVisits);
 
     return {

@@ -7,7 +7,7 @@ import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
-import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
+import { createNewVisits, CreateVisitsAction } from './visitCreation';
 
 export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';
 export const GET_TAG_VISITS_ERROR = 'shlink/tagVisits/GET_TAG_VISITS_ERROR';
@@ -53,7 +53,7 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_TAG_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }) => {
     const { tag, visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

@@ -7,7 +7,7 @@ import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
-import { CREATE_VISITS, CreateVisitsAction } from './visitCreation';
+import { createNewVisits, CreateVisitsAction } from './visitCreation';
 import { domainMatches } from '../../short-urls/helpers';
 
 export const GET_DOMAIN_VISITS_START = 'shlink/domainVisits/GET_DOMAIN_VISITS_START';
@@ -56,7 +56,7 @@ export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
   [GET_DOMAIN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
   [GET_DOMAIN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
   [GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
-  [CREATE_VISITS]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }) => {
     const { domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

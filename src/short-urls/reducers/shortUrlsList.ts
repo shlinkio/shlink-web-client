@@ -1,7 +1,7 @@
 import { assoc, assocPath, last, pipe, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../helpers';
-import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
+import { createNewVisits, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -57,7 +57,7 @@ export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
       state,
     )),
   ),
-  [CREATE_VISITS]: (state, { payload }) => assocPath(
+  [createNewVisits.toString()]: (state, { payload }) => assocPath(
     ['shortUrls', 'data'],
     state.shortUrls?.data?.map(
       (currentShortUrl) => {

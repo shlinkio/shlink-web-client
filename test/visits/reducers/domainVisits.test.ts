@@ -13,7 +13,6 @@ import reducer, {
   DomainVisits,
   DEFAULT_DOMAIN,
 } from '../../../src/visits/reducers/domainVisits';
-import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
@@ -22,6 +21,7 @@ import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import { DateInterval } from '../../../src/utils/dates/types';
 import { ShortUrl } from '../../../src/short-urls/data';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('domainVisitsReducer', () => {
   const now = new Date();
@@ -134,7 +134,7 @@ describe('domainVisitsReducer', () => {
       });
 
       const { visits } = reducer(prevState, {
-        type: CREATE_VISITS,
+        type: createNewVisits.toString(),
         payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
       } as any);
 
