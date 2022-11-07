@@ -8,11 +8,11 @@ import reducer, {
   listTags,
   TagsList,
 } from '../../../src/tags/reducers/tagsList';
-import { TAG_DELETED } from '../../../src/tags/reducers/tagDelete';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';
+import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
@@ -48,7 +48,10 @@ describe('tagsListReducer', () => {
       const tag = 'foo';
       const expectedTags = ['bar', 'baz'];
 
-      expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_DELETED, payload: tag } as any)).toEqual({
+      expect(reducer(
+        state({ tags, filteredTags: tags }),
+        { type: tagDeleted.toString(), payload: tag } as any,
+      )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
       });

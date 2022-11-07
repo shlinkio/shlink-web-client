@@ -10,7 +10,7 @@ import { parseApiError } from '../../api/utils';
 import { TagStats } from '../data';
 import { ApiErrorAction } from '../../api/types/actions';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
-import { DeleteTagAction, TAG_DELETED } from './tagDelete';
+import { DeleteTagAction, tagDeleted } from './tagDelete';
 import { EditTagAction, tagEdited } from './tagEdit';
 import { ProblemDetailsError } from '../../api/types/errors';
 
@@ -85,7 +85,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
   [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
   [LIST_TAGS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [LIST_TAGS]: (_, { tags, stats }) => ({ ...initialState, stats, tags, filteredTags: tags }),
-  [TAG_DELETED]: (state, { payload: tag }) => ({
+  [tagDeleted.toString()]: (state, { payload: tag }) => ({
     ...state,
     tags: rejectTag(state.tags, tag),
     filteredTags: rejectTag(state.filteredTags, tag),
