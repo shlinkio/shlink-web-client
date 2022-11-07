@@ -41,7 +41,7 @@ describe('tagDeleteReducer', () => {
     it('returns action based on provided params', () =>
       expect(tagDeleted('foo')).toEqual({
         type: TAG_DELETED,
-        tag: 'foo',
+        payload: 'foo',
       }));
   });
 

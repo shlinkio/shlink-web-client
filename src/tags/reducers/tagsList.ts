@@ -85,7 +85,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
   [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
   [LIST_TAGS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
   [LIST_TAGS]: (_, { tags, stats }) => ({ ...initialState, stats, tags, filteredTags: tags }),
-  [TAG_DELETED]: (state, { tag }) => ({
+  [TAG_DELETED]: (state, { payload: tag }) => ({
     ...state,
     tags: rejectTag(state.tags, tag),
     filteredTags: rejectTag(state.filteredTags, tag),

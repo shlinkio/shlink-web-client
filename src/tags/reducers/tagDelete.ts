@@ -1,4 +1,5 @@
-import { Action, Dispatch } from 'redux';
+import { createAction, PayloadAction } from '@reduxjs/toolkit';
+import { Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -18,9 +19,7 @@ export interface TagDeletion {
   errorData?: ProblemDetailsError;
 }
 
-export interface DeleteTagAction extends Action<string> {
-  tag: string;
-}
+export type DeleteTagAction = PayloadAction<string>;
 
 const initialState: TagDeletion = {
   deleting: false,
@@ -51,4 +50,4 @@ export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag:
   }
 };
 
-export const tagDeleted = (tag: string): DeleteTagAction => ({ type: TAG_DELETED, tag });
+export const tagDeleted = createAction<string>(TAG_DELETED);

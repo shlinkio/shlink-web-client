@@ -48,7 +48,7 @@ describe('tagsListReducer', () => {
       const tag = 'foo';
       const expectedTags = ['bar', 'baz'];
 
-      expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_DELETED, tag } as any)).toEqual({
+      expect(reducer(state({ tags, filteredTags: tags }), { type: TAG_DELETED, payload: tag } as any)).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
       });
