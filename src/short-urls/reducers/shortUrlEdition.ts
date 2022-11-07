@@ -10,8 +10,8 @@ export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
 export interface ShortUrlEdition {
   shortUrl?: ShortUrl;
   saving: boolean;
-  error: boolean;
   saved: boolean;
+  error: boolean;
   errorData?: ProblemDetailsError;
 }
 

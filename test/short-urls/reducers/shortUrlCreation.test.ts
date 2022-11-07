@@ -22,16 +22,16 @@ describe('shortUrlCreationReducer', () => {
 
     it('returns loading on CREATE_SHORT_URL_START', () => {
       expect(reducer(undefined, action(createShortUrl.pending.toString()))).toEqual({
-        result: null,
         saving: true,
+        saved: false,
         error: false,
       });
     });
 
     it('returns error on CREATE_SHORT_URL_ERROR', () => {
       expect(reducer(undefined, action(createShortUrl.rejected.toString()))).toEqual({
-        result: null,
         saving: false,
+        saved: false,
         error: true,
       });
     });
@@ -40,14 +40,15 @@ describe('shortUrlCreationReducer', () => {
       expect(reducer(undefined, action(createShortUrl.fulfilled.toString(), { payload: shortUrl }))).toEqual({
         result: shortUrl,
         saving: false,
+        saved: true,
         error: false,
       });
     });
 
     it('returns default state on RESET_CREATE_SHORT_URL', () => {
       expect(reducer(undefined, action(resetCreateShortUrl.toString()))).toEqual({
-        result: null,
         saving: false,
+        saved: false,
         error: false,
       });
     });

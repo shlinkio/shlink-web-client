@@ -36,7 +36,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
-    connect(['shortUrlCreationResult', 'selectedServer', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
+    connect(['shortUrlCreation', 'selectedServer', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
   );
 
   bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');

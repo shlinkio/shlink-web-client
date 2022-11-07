@@ -8,8 +8,9 @@ import { ProblemDetailsError } from '../../api/types/errors';
 export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
 
 export interface ShortUrlCreation {
-  result: ShortUrl | null;
+  result?: ShortUrl;
   saving: boolean;
+  saved: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
 }
@@ -17,8 +18,8 @@ export interface ShortUrlCreation {
 export type CreateShortUrlAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlCreation = {
-  result: null,
   saving: false,
+  saved: false,
   error: false,
 };
 
@@ -35,12 +36,15 @@ export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiCl
       resetCreateShortUrl: () => initialState,
     },
     extraReducers: (builder) => {
-      builder.addCase(createShortUrl.pending, (state) => ({ ...state, saving: true, error: false }));
+      builder.addCase(createShortUrl.pending, (state) => ({ ...state, saving: true, saved: false, error: false }));
       builder.addCase(
         createShortUrl.rejected,
-        (state, { error }) => ({ ...state, saving: false, error: true, errorData: parseApiError(error) }),
+        (state, { error }) => ({ ...state, saving: false, saved: false, error: true, errorData: parseApiError(error) }),
       );
-      builder.addCase(createShortUrl.fulfilled, (_, { payload: result }) => ({ result, saving: false, error: false }));
+      builder.addCase(
+        createShortUrl.fulfilled,
+        (_, { payload: result }) => ({ result, saving: false, saved: true, error: false }),
+      );
     },
   });
 

@@ -1,7 +1,6 @@
 import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import { faTimes as closeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isNil } from 'ramda';
 import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
@@ -34,7 +33,7 @@ export const CreateShortUrlResult = (useTimeoutToggle: TimeoutToggle) => (
     );
   }
 
-  if (isNil(result)) {
+  if (!result) {
     return null;
   }
 

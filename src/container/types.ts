@@ -21,7 +21,7 @@ export interface ShlinkState {
   servers: ServersMap;
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsList;
-  shortUrlCreationResult: ShortUrlCreation;
+  shortUrlCreation: ShortUrlCreation;
   shortUrlDeletion: ShortUrlDeletion;
   shortUrlEdition: ShortUrlEdition;
   shortUrlVisits: ShortUrlVisits;
