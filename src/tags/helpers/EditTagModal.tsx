@@ -1,3 +1,4 @@
+import { pipe } from 'ramda';
 import { useState } from 'react';
 import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover, InputGroup } from 'reactstrap';
 import { HexColorPicker } from 'react-colorful';
@@ -24,16 +25,16 @@ export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   const [newTagName, setNewTagName] = useState(tag);
   const [color, setColor] = useState(getColorForKey(tag));
   const [showColorPicker, toggleColorPicker, , hideColorPicker] = useToggle();
-  const { editing, error, errorData } = tagEdit;
+  const { editing, error, edited, errorData } = tagEdit;
   const saveTag = handleEventPreventingDefault(
     async () => editTag(tag, newTagName, color)
-      .then(() => tagEdited(tag, newTagName, color))
       .then(toggle)
       .catch(() => {}),
   );
+  const onClosed = pipe(hideColorPicker, () => edited && tagEdited(tag, newTagName, color));
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={hideColorPicker}>
+    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={onClosed}>
       <form name="editTag" onSubmit={saveTag}>
         <ModalHeader toggle={toggle}>Edit tag</ModalHeader>
         <ModalBody>

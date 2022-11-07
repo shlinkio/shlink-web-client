@@ -21,24 +21,23 @@ describe('tagEditReducer', () => {
     it('returns loading on EDIT_TAG_START', () => {
       expect(reducer(undefined, Mock.of<EditTagAction>({ type: EDIT_TAG_START }))).toEqual({
         editing: true,
+        edited: false,
         error: false,
-        oldName: '',
-        newName: '',
       });
     });
 
     it('returns error on EDIT_TAG_ERROR', () => {
       expect(reducer(undefined, Mock.of<EditTagAction>({ type: EDIT_TAG_ERROR }))).toEqual({
         editing: false,
+        edited: false,
         error: true,
-        oldName: '',
-        newName: '',
       });
     });
 
     it('returns tag names on EDIT_TAG', () => {
       expect(reducer(undefined, { type: EDIT_TAG, oldName, newName, color })).toEqual({
         editing: false,
+        edited: true,
         error: false,
         oldName: 'foo',
         newName: 'bar',
@@ -82,7 +81,7 @@ describe('tagEditReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: EDIT_TAG_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG, oldName, newName });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: EDIT_TAG, oldName, newName, color });
     });
 
     it('throws on error', async () => {

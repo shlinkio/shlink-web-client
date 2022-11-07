@@ -11,13 +11,13 @@ import { ProblemDetailsError } from '../../api/types/errors';
 export const EDIT_TAG_START = 'shlink/editTag/EDIT_TAG_START';
 export const EDIT_TAG_ERROR = 'shlink/editTag/EDIT_TAG_ERROR';
 export const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
-
 export const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
 
 export interface TagEdition {
-  oldName: string;
-  newName: string;
+  oldName?: string;
+  newName?: string;
   editing: boolean;
+  edited: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
 }
@@ -29,18 +29,18 @@ export interface EditTagAction extends Action<string> {
 }
 
 const initialState: TagEdition = {
-  oldName: '',
-  newName: '',
   editing: false,
+  edited: false,
   error: false,
 };
 
 export default buildReducer<TagEdition, EditTagAction & ApiErrorAction>({
-  [EDIT_TAG_START]: (state) => ({ ...state, editing: true, error: false }),
-  [EDIT_TAG_ERROR]: (state, { errorData }) => ({ ...state, editing: false, error: true, errorData }),
+  [EDIT_TAG_START]: () => ({ editing: true, edited: false, error: false }),
+  [EDIT_TAG_ERROR]: (_, { errorData }) => ({ editing: false, edited: false, error: true, errorData }),
   [EDIT_TAG]: (_, action) => ({
     ...pick(['oldName', 'newName'], action),
     editing: false,
+    edited: true,
     error: false,
   }),
 }, initialState);
@@ -56,7 +56,7 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
   try {
     await shlinkEditTag(oldName, newName);
     colorGenerator.setColorForKey(newName, color);
-    dispatch({ type: EDIT_TAG, oldName, newName });
+    dispatch({ type: EDIT_TAG, oldName, newName, color });
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: EDIT_TAG_ERROR, errorData: parseApiError(e) });
 
