@@ -50,7 +50,7 @@ describe('tagEditReducer', () => {
 
   describe('tagEdited', () => {
     it('returns action based on provided params', () =>
-      expect(tagEdited('foo', 'bar', '#ff0000')).toEqual({
+      expect(tagEdited({ oldName: 'foo', newName: 'bar', color: '#ff0000' })).toEqual({
         type: TAG_EDITED,
         payload: {
           oldName: 'foo',
@@ -74,7 +74,7 @@ describe('tagEditReducer', () => {
 
     it('calls API on success', async () => {
       const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
+      const dispatchable = editTag(() => apiClientMock, colorGenerator)({ oldName, newName, color });
 
       await dispatchable(dispatch, getState);
 
@@ -95,7 +95,7 @@ describe('tagEditReducer', () => {
     it('throws on error', async () => {
       const error = 'Error';
       const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = editTag(() => apiClientMock, colorGenerator)(oldName, newName, color);
+      const dispatchable = editTag(() => apiClientMock, colorGenerator)({ oldName, newName, color });
 
       try {
         await dispatchable(dispatch, getState);

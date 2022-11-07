@@ -1,5 +1,5 @@
 import { pick } from 'ramda';
-import { PayloadAction } from '@reduxjs/toolkit';
+import { createAction, PayloadAction } from '@reduxjs/toolkit';
 import { Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { GetState } from '../../container/types';
@@ -23,7 +23,7 @@ export interface TagEdition {
   errorData?: ProblemDetailsError;
 }
 
-interface EditTag {
+export interface EditTag {
   oldName: string;
   newName: string;
   color: string;
@@ -49,9 +49,7 @@ export default buildReducer<TagEdition, EditTagAction & ApiErrorAction>({
 }, initialState);
 
 export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGenerator: ColorGenerator) => (
-  oldName: string,
-  newName: string,
-  color: string,
+  { oldName, newName, color }: EditTag,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   dispatch({ type: EDIT_TAG_START });
   const { editTag: shlinkEditTag } = buildShlinkApiClient(getState);
@@ -70,11 +68,4 @@ export const editTag = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGener
   }
 };
 
-export const tagEdited = (oldName: string, newName: string, color: string): EditTagAction => ({
-  type: TAG_EDITED,
-  payload: {
-    oldName,
-    newName,
-    color,
-  },
-});
+export const tagEdited = createAction<EditTag>(TAG_EDITED);

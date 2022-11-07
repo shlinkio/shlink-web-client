@@ -11,7 +11,7 @@ import { TagStats } from '../data';
 import { ApiErrorAction } from '../../api/types/actions';
 import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
 import { DeleteTagAction, TAG_DELETED } from './tagDelete';
-import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { EditTagAction, tagEdited } from './tagEdit';
 import { ProblemDetailsError } from '../../api/types/errors';
 
 export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
@@ -90,7 +90,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     tags: rejectTag(state.tags, tag),
     filteredTags: rejectTag(state.filteredTags, tag),
   }),
-  [TAG_EDITED]: (state, { payload }) => ({
+  [tagEdited.toString()]: (state, { payload }) => ({
     ...state,
     tags: state.tags.map(renameTag(payload.oldName, payload.newName)).sort(),
     filteredTags: state.filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
