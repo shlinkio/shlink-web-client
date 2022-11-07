@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/state-machine-poc/static/css/main.fc57d6c0.css",
+    "main.js": "/shlink-web-client/feature/state-machine-poc/static/js/main.8bff050b.js",
+    "index.html": "/shlink-web-client/feature/state-machine-poc/index.html",
+    "main.fc57d6c0.css.map": "/shlink-web-client/feature/state-machine-poc/static/css/main.fc57d6c0.css.map",
+    "main.8bff050b.js.map": "/shlink-web-client/feature/state-machine-poc/static/js/main.8bff050b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc57d6c0.css",
+    "static/js/main.8bff050b.js"
+  ]
+}
