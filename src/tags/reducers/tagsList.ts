@@ -7,7 +7,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { CreateVisit, Stats } from '../../visits/types';
 import { parseApiError } from '../../api/utils';
 import { TagStats } from '../data';
-import { CREATE_SHORT_URL } from '../../short-urls/reducers/shortUrlCreation';
+import { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from './tagDelete';
 import { tagEdited } from './tagEdit';
 import { ProblemDetailsError } from '../../api/types/errors';
@@ -88,7 +88,10 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
 
 export const filterTags = createAction<string>(FILTER_TAGS);
 
-export const reducer = (listTagsThunk: ReturnType<typeof listTags>) => createSlice({
+export const reducer = (
+  listTagsThunk: ReturnType<typeof listTags>,
+  createShortUrlThunk: ReturnType<typeof createShortUrl>,
+) => createSlice({
   name: 'shlink/tagsList',
   initialState,
   reducers: {},
@@ -121,8 +124,7 @@ export const reducer = (listTagsThunk: ReturnType<typeof listTags>) => createSli
       stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
     }));
 
-    // TODO Do not hardcode action type here. Inject async thunk instead
-    builder.addCase(`${CREATE_SHORT_URL}/fulfilled`, ({ tags: stateTags, ...rest }, { payload }: any) => ({
+    builder.addCase(createShortUrlThunk.fulfilled, ({ tags: stateTags, ...rest }, { payload }) => ({
       ...rest,
       tags: stateTags.concat(payload.tags.filter((tag: string) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
     }));

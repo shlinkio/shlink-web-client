@@ -35,12 +35,15 @@ const initialState: ShortUrlCreation = {
   error: false,
 };
 
-export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const createShortUrl = createAsyncThunk(CREATE_SHORT_URL, (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
+export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+  CREATE_SHORT_URL,
+  (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
     const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
     return shlinkCreateShortUrl(data);
-  });
+  },
+);
 
+export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {
   const { reducer, actions } = createSlice({
     name: 'shortUrlCreationReducer',
     initialState: initialState as ShortUrlCreation, // Without this casting it infers type ShortUrlCreationWaiting
@@ -48,13 +51,13 @@ export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiCl
       resetCreateShortUrl: () => initialState,
     },
     extraReducers: (builder) => {
-      builder.addCase(createShortUrl.pending, () => ({ saving: true, saved: false, error: false }));
+      builder.addCase(createShortUrlThunk.pending, () => ({ saving: true, saved: false, error: false }));
       builder.addCase(
-        createShortUrl.rejected,
+        createShortUrlThunk.rejected,
         (_, { error }) => ({ saving: false, saved: false, error: true, errorData: parseApiError(error) }),
       );
       builder.addCase(
-        createShortUrl.fulfilled,
+        createShortUrlThunk.fulfilled,
         (_, { payload: result }) => ({ result, saving: false, saved: true, error: false }),
       );
     },
@@ -64,7 +67,6 @@ export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiCl
 
   return {
     reducer,
-    createShortUrl,
     resetCreateShortUrl,
   };
 };

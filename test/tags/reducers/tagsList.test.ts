@@ -7,7 +7,7 @@ import {
 } from '../../../src/tags/reducers/tagsList';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
-import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 
@@ -15,7 +15,8 @@ describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
   const buildShlinkApiClient = jest.fn();
   const listTags = listTagsCreator(buildShlinkApiClient, true);
-  const reducer = reducerCreator(listTags);
+  const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
+  const reducer = reducerCreator(listTags, createShortUrl);
 
   afterEach(jest.clearAllMocks);
 
@@ -99,7 +100,7 @@ describe('tagsListReducer', () => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), { type: `${CREATE_SHORT_URL}/fulfilled`, payload })).toEqual({
+      expect(reducer(state({ tags }), { type: createShortUrl.fulfilled.toString(), payload })).toEqual({
         tags: expectedTags,
       });
     });

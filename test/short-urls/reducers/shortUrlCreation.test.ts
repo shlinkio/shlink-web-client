@@ -2,6 +2,7 @@ import { Mock } from 'ts-mockery';
 import {
   CreateShortUrlAction,
   shortUrlCreationReducerCreator,
+  createShortUrl as createShortUrlCreator,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
@@ -11,7 +12,8 @@ describe('shortUrlCreationReducer', () => {
   const shortUrl = Mock.of<ShortUrl>();
   const createShortUrlCall = jest.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
-  const { reducer, createShortUrl, resetCreateShortUrl } = shortUrlCreationReducerCreator(buildShlinkApiClient);
+  const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
+  const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
 
   afterEach(jest.resetAllMocks);
 

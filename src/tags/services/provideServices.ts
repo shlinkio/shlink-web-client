@@ -44,7 +44,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('tagDeleteReducerCreator', tagDeleteReducerCreator, 'buildShlinkApiClient');
   bottle.serviceFactory('tagDeleteReducer', prop('reducer'), 'tagDeleteReducerCreator');
 
-  bottle.serviceFactory('tagsListReducer', reducer, 'listTags');
+  bottle.serviceFactory('tagsListReducer', reducer, 'listTags', 'createShortUrl');
 
   // Actions
   const listTagsActionFactory = (force: boolean) =>

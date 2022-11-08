@@ -8,7 +8,7 @@ import { CreateShortUrl } from '../CreateShortUrl';
 import { DeleteShortUrlModal } from '../helpers/DeleteShortUrlModal';
 import { CreateShortUrlResult } from '../helpers/CreateShortUrlResult';
 import { listShortUrls } from '../reducers/shortUrlsList';
-import { shortUrlCreationReducerCreator } from '../reducers/shortUrlCreation';
+import { shortUrlCreationReducerCreator, createShortUrl } from '../reducers/shortUrlCreation';
 import { shortUrlDeletionReducerCreator } from '../reducers/shortUrlDeletion';
 import { shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
 import { shortUrlDetailReducerCreator } from '../reducers/shortUrlDetail';
@@ -57,7 +57,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('ExportShortUrlsBtn', connect(['selectedServer']));
 
   // Reducers
-  bottle.serviceFactory('shortUrlCreationReducerCreator', shortUrlCreationReducerCreator, 'buildShlinkApiClient');
+  bottle.serviceFactory('shortUrlCreationReducerCreator', shortUrlCreationReducerCreator, 'createShortUrl');
   bottle.serviceFactory('shortUrlCreationReducer', prop('reducer'), 'shortUrlCreationReducerCreator');
 
   bottle.serviceFactory('shortUrlEditionReducerCreator', shortUrlEditionReducerCreator, 'buildShlinkApiClient');
@@ -72,7 +72,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Actions
   bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');
 
-  bottle.serviceFactory('createShortUrl', prop('createShortUrl'), 'shortUrlCreationReducerCreator');
+  bottle.serviceFactory('createShortUrl', createShortUrl, 'buildShlinkApiClient');
   bottle.serviceFactory('resetCreateShortUrl', prop('resetCreateShortUrl'), 'shortUrlCreationReducerCreator');
 
   bottle.serviceFactory('deleteShortUrl', prop('deleteShortUrl'), 'shortUrlDeletionReducerCreator');
