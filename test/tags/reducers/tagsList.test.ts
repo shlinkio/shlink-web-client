@@ -77,10 +77,10 @@ describe('tagsListReducer', () => {
 
     it('filters original list of tags by provided search term on FILTER_TAGS', () => {
       const tags = ['foo', 'bar', 'baz', 'Foo2', 'fo'];
-      const searchTerm = 'Fo';
+      const payload = 'Fo';
       const filteredTags = ['foo', 'Foo2', 'fo'];
 
-      expect(reducer(state({ tags }), { type: FILTER_TAGS, searchTerm } as any)).toEqual({
+      expect(reducer(state({ tags }), { type: FILTER_TAGS, payload } as any)).toEqual({
         tags,
         filteredTags,
       });
@@ -101,7 +101,7 @@ describe('tagsListReducer', () => {
   });
 
   describe('filterTags', () => {
-    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: FILTER_TAGS, searchTerm: 'foo' }));
+    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: FILTER_TAGS, payload: 'foo' }));
   });
 
   describe('listTags', () => {

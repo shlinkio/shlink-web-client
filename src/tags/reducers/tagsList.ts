@@ -1,3 +1,4 @@
+import { createAction, PayloadAction } from '@reduxjs/toolkit';
 import { isEmpty, reject } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { createNewVisits, CreateVisitsAction } from '../../visits/reducers/visitCreation';
@@ -35,9 +36,7 @@ interface ListTagsAction extends Action<string> {
   stats: TagsStatsMap;
 }
 
-interface FilterTagsAction extends Action<string> {
-  searchTerm: string;
-}
+type FilterTagsAction = PayloadAction<string>;
 
 type TagsCombinedAction = ListTagsAction
 & DeleteTagAction
@@ -95,7 +94,7 @@ export default buildReducer<TagsList, TagsCombinedAction>({
     tags: state.tags.map(renameTag(payload.oldName, payload.newName)).sort(),
     filteredTags: state.filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
   }),
-  [FILTER_TAGS]: (state, { searchTerm }) => ({
+  [FILTER_TAGS]: (state, { payload: searchTerm }) => ({
     ...state,
     filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
   }),
@@ -136,4 +135,4 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
   }
 };
 
-export const filterTags = (searchTerm: string): FilterTagsAction => ({ type: FILTER_TAGS, searchTerm });
+export const filterTags = createAction<string>(FILTER_TAGS);
