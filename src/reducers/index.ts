@@ -8,7 +8,6 @@ import tagVisitsReducer from '../visits/reducers/tagVisits';
 import domainVisitsReducer from '../visits/reducers/domainVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
 import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
-import tagsListReducer from '../tags/reducers/tagsList';
 import { settingsReducer } from '../settings/reducers/settings';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
@@ -28,7 +27,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   domainVisits: domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
   nonOrphanVisits: nonOrphanVisitsReducer,
-  tagsList: tagsListReducer,
+  tagsList: container.tagsListReducer,
   tagDelete: container.tagDeleteReducer,
   tagEdit: container.tagEditReducer,
   mercureInfo: container.mercureInfoReducer,

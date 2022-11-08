@@ -1,12 +1,9 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  FILTER_TAGS,
-  filterTags,
-  LIST_TAGS,
-  LIST_TAGS_ERROR,
-  LIST_TAGS_START,
-  listTags,
+import {
   TagsList,
+  filterTags,
+  listTags as listTagsCreator,
+  reducer as reducerCreator,
 } from '../../../src/tags/reducers/tagsList';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
@@ -16,17 +13,22 @@ import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
+  const buildShlinkApiClient = jest.fn();
+  const listTags = listTagsCreator(buildShlinkApiClient, true);
+  const reducer = reducerCreator(listTags);
+
+  afterEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
-      expect(reducer(undefined, { type: LIST_TAGS_START } as any)).toEqual(expect.objectContaining({
+      expect(reducer(undefined, { type: listTags.pending.toString() })).toEqual(expect.objectContaining({
         loading: true,
         error: false,
       }));
     });
 
     it('returns error on LIST_TAGS_ERROR', () => {
-      expect(reducer(undefined, { type: LIST_TAGS_ERROR } as any)).toEqual(expect.objectContaining({
+      expect(reducer(undefined, { type: listTags.rejected.toString() })).toEqual(expect.objectContaining({
         loading: false,
         error: true,
       }));
@@ -35,7 +37,10 @@ describe('tagsListReducer', () => {
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
       const tags = ['foo', 'bar', 'baz'];
 
-      expect(reducer(undefined, { type: LIST_TAGS, tags } as any)).toEqual({
+      expect(reducer(undefined, {
+        type: listTags.fulfilled.toString(),
+        payload: { tags },
+      })).toEqual({
         tags,
         filteredTags: tags,
         loading: false,
@@ -50,7 +55,7 @@ describe('tagsListReducer', () => {
 
       expect(reducer(
         state({ tags, filteredTags: tags }),
-        { type: tagDeleted.toString(), payload: tag } as any,
+        { type: tagDeleted.toString(), payload: tag },
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -68,7 +73,7 @@ describe('tagsListReducer', () => {
         {
           type: tagEdited.toString(),
           payload: { oldName, newName },
-        } as any,
+        },
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -80,7 +85,7 @@ describe('tagsListReducer', () => {
       const payload = 'Fo';
       const filteredTags = ['foo', 'Foo2', 'fo'];
 
-      expect(reducer(state({ tags }), { type: FILTER_TAGS, payload } as any)).toEqual({
+      expect(reducer(state({ tags }), { type: filterTags.toString(), payload })).toEqual({
         tags,
         filteredTags,
       });
@@ -94,31 +99,28 @@ describe('tagsListReducer', () => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), { type: `${CREATE_SHORT_URL}/fulfilled`, payload } as any)).toEqual({
+      expect(reducer(state({ tags }), { type: `${CREATE_SHORT_URL}/fulfilled`, payload })).toEqual({
         tags: expectedTags,
       });
     });
   });
 
   describe('filterTags', () => {
-    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: FILTER_TAGS, payload: 'foo' }));
+    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: filterTags.toString(), payload: 'foo' }));
   });
 
   describe('listTags', () => {
     const dispatch = jest.fn();
     const getState = jest.fn(() => Mock.all<ShlinkState>());
-    const buildShlinkApiClient = jest.fn();
     const listTagsMock = jest.fn();
-
-    afterEach(jest.clearAllMocks);
 
     const assertNoAction = async (tagsList: TagsList) => {
       getState.mockReturnValue(Mock.of<ShlinkState>({ tagsList }));
 
-      await listTags(buildShlinkApiClient, false)()(dispatch, getState);
+      await listTagsCreator(buildShlinkApiClient, false)()(dispatch, getState, {});
 
       expect(buildShlinkApiClient).not.toHaveBeenCalled();
-      expect(dispatch).not.toHaveBeenCalled();
+      expect(dispatch).toHaveBeenCalledTimes(2);
       expect(getState).toHaveBeenCalledTimes(1);
     };
 
@@ -134,23 +136,26 @@ describe('tagsListReducer', () => {
       listTagsMock.mockResolvedValue({ tags, stats: [] });
       buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
 
-      await listTags(buildShlinkApiClient, true)()(dispatch, getState);
+      await listTags()(dispatch, getState, {});
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS, tags, stats: {} });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: listTags.fulfilled.toString(),
+        payload: { tags, stats: {} },
+      }));
     });
 
     const assertErrorResult = async () => {
-      await listTags(buildShlinkApiClient, true)()(dispatch, getState);
+      await listTags()(dispatch, getState, {});
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_TAGS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_TAGS_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: listTags.rejected.toString() }));
     };
 
     it('dispatches error when error occurs on list call', async () => {
@@ -168,7 +173,6 @@ describe('tagsListReducer', () => {
       });
 
       await assertErrorResult();
-
       expect(listTagsMock).not.toHaveBeenCalled();
     });
   });
