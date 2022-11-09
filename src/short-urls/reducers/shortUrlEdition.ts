@@ -5,7 +5,8 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
+const REDUCER_PREFIX = 'shlink/shortUrlEdition';
+export const SHORT_URL_EDITED = `${REDUCER_PREFIX}/editShortUrl`;
 
 export interface ShortUrlEdition {
   shortUrl?: ShortUrl;
@@ -37,7 +38,7 @@ export const shortUrlEditionReducerCreator = (buildShlinkApiClient: ShlinkApiCli
   );
 
   const { reducer } = createSlice({
-    name: 'shortUrlEditionReducer',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {

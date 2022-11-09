@@ -1,11 +1,10 @@
-import { createAction, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
-const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
+const REDUCER_PREFIX = 'shlink/tagDelete';
 
 export interface TagDeletion {
   deleting: boolean;
@@ -14,24 +13,22 @@ export interface TagDeletion {
   errorData?: ProblemDetailsError;
 }
 
-export type DeleteTagAction = PayloadAction<string>;
-
 const initialState: TagDeletion = {
   deleting: false,
   deleted: false,
   error: false,
 };
 
-export const tagDeleted = createAction<string>(TAG_DELETED);
+export const tagDeleted = createAction<string>(`${REDUCER_PREFIX}/tagDeleted`);
 
 export const tagDeleteReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const deleteTag = createAsyncThunk(DELETE_TAG, async (tag: string, { getState }): Promise<void> => {
+  const deleteTag = createAsyncThunk(`${REDUCER_PREFIX}/deleteTag`, async (tag: string, { getState }): Promise<void> => {
     const { deleteTags } = buildShlinkApiClient(getState);
     await deleteTags([tag]);
   });
 
   const { reducer } = createSlice({
-    name: 'tagDeleteReducer',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {

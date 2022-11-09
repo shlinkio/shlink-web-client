@@ -6,7 +6,7 @@ import { shortUrlMatches } from '../helpers';
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-const GET_SHORT_URL_DETAIL = 'shlink/shortUrlDetail/GET_SHORT_URL_DETAIL';
+const REDUCER_PREFIX = 'shlink/shortUrlDetail';
 
 export interface ShortUrlDetail {
   shortUrl?: ShortUrl;
@@ -24,7 +24,7 @@ const initialState: ShortUrlDetail = {
 
 export const shortUrlDetailReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
   const getShortUrlDetail = createAsyncThunk(
-    GET_SHORT_URL_DETAIL,
+    `${REDUCER_PREFIX}/getShortUrlDetail`,
     async ({ shortCode, domain }: ShortUrlIdentifier, { getState }): Promise<ShortUrl> => {
       const { shortUrlsList } = getState();
       const alreadyLoaded = shortUrlsList?.shortUrls?.data.find((url) => shortUrlMatches(url, shortCode, domain));
@@ -34,7 +34,7 @@ export const shortUrlDetailReducerCreator = (buildShlinkApiClient: ShlinkApiClie
   );
 
   const { reducer } = createSlice({
-    name: 'shortUrlDetailReducer',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {

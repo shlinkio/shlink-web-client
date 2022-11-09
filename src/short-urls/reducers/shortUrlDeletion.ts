@@ -5,7 +5,8 @@ import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 import { ShortUrlIdentifier } from '../data';
 
-export const SHORT_URL_DELETED = 'shlink/deleteShortUrl/SHORT_URL_DELETED';
+const REDUCER_PREFIX = 'shlink/shortUrlDeletion';
+export const SHORT_URL_DELETED = `${REDUCER_PREFIX}/deleteShortUrl`;
 
 export interface ShortUrlDeletion {
   shortCode: string;
@@ -35,7 +36,7 @@ export const shortUrlDeletionReducerCreator = (buildShlinkApiClient: ShlinkApiCl
   );
 
   const { actions, reducer } = createSlice({
-    name: 'shortUrlDeletion',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {
       resetDeleteShortUrl: () => initialState,

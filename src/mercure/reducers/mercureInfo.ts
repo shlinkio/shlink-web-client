@@ -3,7 +3,7 @@ import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkMercureInfo } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
-const GET_MERCURE_INFO = 'shlink/mercure/GET_MERCURE_INFO';
+const REDUCER_PREFIX = 'shlink/mercure';
 
 export interface MercureInfo extends Partial<ShlinkMercureInfo> {
   interval?: number;
@@ -17,17 +17,20 @@ const initialState: MercureInfo = {
 };
 
 export const mercureInfoReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const loadMercureInfo = createAsyncThunk(GET_MERCURE_INFO, (_: void, { getState }): Promise<ShlinkMercureInfo> => {
-    const { settings } = getState();
-    if (!settings.realTimeUpdates.enabled) {
-      throw new Error('Real time updates not enabled');
-    }
+  const loadMercureInfo = createAsyncThunk(
+    `${REDUCER_PREFIX}/loadMercureInfo`,
+    (_: void, { getState }): Promise<ShlinkMercureInfo> => {
+      const { settings } = getState();
+      if (!settings.realTimeUpdates.enabled) {
+        throw new Error('Real time updates not enabled');
+      }
 
-    return buildShlinkApiClient(getState).mercureInfo();
-  });
+      return buildShlinkApiClient(getState).mercureInfo();
+    },
+  );
 
   const { reducer } = createSlice({
-    name: 'mercureInfoReducer',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {

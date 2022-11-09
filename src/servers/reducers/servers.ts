@@ -26,7 +26,7 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
 const serversListToMap = reduce<ServerWithId, ServersMap>((acc, server) => assoc(server.id, server, acc), {});
 
 export const { actions, reducer } = createSlice({
-  name: 'serversReducer',
+  name: 'shlink/servers',
   initialState,
   reducers: {
     editServer: {

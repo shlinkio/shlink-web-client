@@ -6,8 +6,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-const EDIT_TAG = 'shlink/editTag/EDIT_TAG';
-const TAG_EDITED = 'shlink/editTag/TAG_EDITED';
+const REDUCER_PREFIX = 'shlink/tagEdit';
 
 export interface TagEdition {
   oldName?: string;
@@ -32,11 +31,11 @@ const initialState: TagEdition = {
   error: false,
 };
 
-export const tagEdited = createAction<EditTag>(TAG_EDITED);
+export const tagEdited = createAction<EditTag>(`${REDUCER_PREFIX}/tagEdited`);
 
 export const tagEditReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGenerator: ColorGenerator) => {
   const editTag = createAsyncThunk(
-    EDIT_TAG,
+    `${REDUCER_PREFIX}/editTag`,
     async ({ oldName, newName, color }: EditTag, { getState }): Promise<EditTag> => {
       await buildShlinkApiClient(getState).editTag(oldName, newName);
       colorGenerator.setColorForKey(newName, color);
@@ -46,7 +45,7 @@ export const tagEditReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuild
   );
 
   const { reducer } = createSlice({
-    name: 'tagEditReducer',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {

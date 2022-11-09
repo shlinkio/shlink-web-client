@@ -12,8 +12,7 @@ import { tagDeleted } from './tagDelete';
 import { tagEdited } from './tagEdit';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
-const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
+const REDUCER_PREFIX = 'shlink/tagsList';
 
 type TagsStatsMap = Record<string, TagStats>;
 
@@ -66,7 +65,7 @@ const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => O
 );
 
 export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = true) => createAsyncThunk(
-  LIST_TAGS,
+  `${REDUCER_PREFIX}/listTags`,
   async (_: void, { getState }): Promise<ListTags> => {
     const { tagsList } = getState();
 
@@ -86,13 +85,13 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
   },
 );
 
-export const filterTags = createAction<string>(FILTER_TAGS);
+export const filterTags = createAction<string>(`${REDUCER_PREFIX}/filterTags`);
 
 export const reducer = (
   listTagsThunk: ReturnType<typeof listTags>,
   createShortUrlThunk: ReturnType<typeof createShortUrl>,
 ) => createSlice({
-  name: 'shlink/tagsList',
+  name: REDUCER_PREFIX,
   initialState,
   reducers: {},
   extraReducers: (builder) => {

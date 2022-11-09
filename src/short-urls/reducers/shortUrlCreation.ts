@@ -5,7 +5,8 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
+const REDUCER_PREFIX = 'shlink/shortUrlCreation';
+export const CREATE_SHORT_URL = `${REDUCER_PREFIX}/createShortUrl`;
 
 export type ShortUrlCreation = {
   saving: false;
@@ -45,7 +46,7 @@ export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
 
 export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {
   const { reducer, actions } = createSlice({
-    name: 'shortUrlCreationReducer',
+    name: REDUCER_PREFIX,
     initialState: initialState as ShortUrlCreation, // Without this casting it infers type ShortUrlCreationWaiting
     reducers: {
       resetCreateShortUrl: () => initialState,
