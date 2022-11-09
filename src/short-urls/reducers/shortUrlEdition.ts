@@ -6,7 +6,6 @@ import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
 const REDUCER_PREFIX = 'shlink/shortUrlEdition';
-export const SHORT_URL_EDITED = `${REDUCER_PREFIX}/editShortUrl`;
 
 export interface ShortUrlEdition {
   shortUrl?: ShortUrl;
@@ -29,7 +28,7 @@ const initialState: ShortUrlEdition = {
 };
 
 export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
-  SHORT_URL_EDITED,
+  `${REDUCER_PREFIX}/editShortUrl`,
   ({ shortCode, domain, data }: EditShortUrl, { getState }): Promise<ShortUrl> => {
     const { updateShortUrl } = buildShlinkApiClient(getState);
     return updateShortUrl(shortCode, domain, data as any); // FIXME parse dates
@@ -51,4 +50,4 @@ export const shortUrlEditionReducerCreator = (editShortUrlThunk: ReturnType<type
       (_, { payload: shortUrl }) => ({ shortUrl, saving: false, error: false, saved: true }),
     );
   },
-}).reducer;
+});

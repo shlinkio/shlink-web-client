@@ -6,7 +6,6 @@ import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
 const REDUCER_PREFIX = 'shlink/shortUrlCreation';
-export const CREATE_SHORT_URL = `${REDUCER_PREFIX}/createShortUrl`;
 
 export type ShortUrlCreation = {
   saving: false;
@@ -37,7 +36,7 @@ const initialState: ShortUrlCreation = {
 };
 
 export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
-  CREATE_SHORT_URL,
+  `${REDUCER_PREFIX}/createShortUrl`,
   (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
     const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
     return shlinkCreateShortUrl(data);

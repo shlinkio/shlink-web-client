@@ -15,7 +15,7 @@ describe('shortUrlEditionReducer', () => {
   const updateShortUrl = jest.fn().mockResolvedValue(shortUrl);
   const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
-  const reducer = shortUrlEditionReducerCreator(editShortUrl);
+  const { reducer } = shortUrlEditionReducerCreator(editShortUrl);
 
   afterEach(jest.clearAllMocks);
 

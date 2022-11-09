@@ -3,7 +3,7 @@ import {
   TagsList,
   filterTags,
   listTags as listTagsCreator,
-  reducer as reducerCreator,
+  tagsListReducerCreator,
 } from '../../../src/tags/reducers/tagsList';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
@@ -16,7 +16,7 @@ describe('tagsListReducer', () => {
   const buildShlinkApiClient = jest.fn();
   const listTags = listTagsCreator(buildShlinkApiClient, true);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
-  const reducer = reducerCreator(listTags, createShortUrl);
+  const { reducer } = tagsListReducerCreator(listTags, createShortUrl);
 
   afterEach(jest.clearAllMocks);
 

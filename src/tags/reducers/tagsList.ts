@@ -87,7 +87,7 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
 
 export const filterTags = createAction<string>(`${REDUCER_PREFIX}/filterTags`);
 
-export const reducer = (
+export const tagsListReducerCreator = (
   listTagsThunk: ReturnType<typeof listTags>,
   createShortUrlThunk: ReturnType<typeof createShortUrl>,
 ) => createSlice({
@@ -128,4 +128,4 @@ export const reducer = (
       tags: stateTags.concat(payload.tags.filter((tag: string) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
     }));
   },
-}).reducer;
+});
