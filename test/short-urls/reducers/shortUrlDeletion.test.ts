@@ -1,12 +1,16 @@
 import { Mock } from 'ts-mockery';
-import { shortUrlDeletionReducerCreator } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import {
+  shortUrlDeletionReducerCreator,
+  deleteShortUrl as deleteShortUrlCretor,
+} from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = jest.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteShortUrl: deleteShortUrlCall });
-  const { reducer, resetDeleteShortUrl, deleteShortUrl } = shortUrlDeletionReducerCreator(buildShlinkApiClient);
+  const deleteShortUrl = deleteShortUrlCretor(buildShlinkApiClient);
+  const { reducer, resetDeleteShortUrl } = shortUrlDeletionReducerCreator(deleteShortUrl);
 
   beforeEach(jest.clearAllMocks);
 

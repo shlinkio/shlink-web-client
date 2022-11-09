@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const { actions, reducer } = createSlice({
-  name: 'appUpdatesReducer',
+  name: 'shlink/appUpdates',
   initialState: false,
   reducers: {
     appUpdateAvailable: () => true,

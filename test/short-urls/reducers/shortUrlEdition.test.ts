@@ -1,5 +1,9 @@
 import { Mock } from 'ts-mockery';
-import { ShortUrlEditedAction, shortUrlEditionReducerCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
+import {
+  ShortUrlEditedAction,
+  shortUrlEditionReducerCreator,
+  editShortUrl as editShortUrlCreator,
+} from '../../../src/short-urls/reducers/shortUrlEdition';
 import { ShlinkState } from '../../../src/container/types';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { SelectedServer } from '../../../src/servers/data';
@@ -10,7 +14,8 @@ describe('shortUrlEditionReducer', () => {
   const shortUrl = Mock.of<ShortUrl>({ longUrl, shortCode });
   const updateShortUrl = jest.fn().mockResolvedValue(shortUrl);
   const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
-  const { reducer, editShortUrl } = shortUrlEditionReducerCreator(buildShlinkApiClient);
+  const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
+  const { reducer } = shortUrlEditionReducerCreator(editShortUrl);
 
   afterEach(jest.clearAllMocks);
 

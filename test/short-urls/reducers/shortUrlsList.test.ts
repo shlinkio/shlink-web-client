@@ -1,37 +1,44 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  LIST_SHORT_URLS,
-  LIST_SHORT_URLS_ERROR,
-  LIST_SHORT_URLS_START,
-  listShortUrls,
+import {
+  listShortUrls as listShortUrlsCreator,
+  shortUrlsListReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlsList';
-import { SHORT_URL_DELETED } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { deleteShortUrl as deleteShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
+import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
-import { CREATE_SHORT_URL } from '../../../src/short-urls/reducers/shortUrlCreation';
-import { SHORT_URL_EDITED } from '../../../src/short-urls/reducers/shortUrlEdition';
-import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlsListReducer', () => {
   const shortCode = 'abc123';
+  const listShortUrlsMock = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
+  const listShortUrls = listShortUrlsCreator(buildShlinkApiClient);
+  const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
+  const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
+  const deleteShortUrl = deleteShortUrlCreator(buildShlinkApiClient);
+  const { reducer } = shortUrlsListReducerCreator(listShortUrls, editShortUrl, createShortUrl, deleteShortUrl);
+
+  afterEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_SHORT_URLS_START', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS_START } as any)).toEqual({
+      expect(reducer(undefined, { type: listShortUrls.pending.toString() })).toEqual({
         loading: true,
         error: false,
       }));
 
     it('returns short URLs on LIST_SHORT_URLS', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS, shortUrls: { data: [] } } as any)).toEqual({
+      expect(reducer(undefined, { type: listShortUrls.fulfilled.toString(), payload: { data: [] } })).toEqual({
         shortUrls: { data: [] },
         loading: false,
         error: false,
       }));
 
     it('returns error on LIST_SHORT_URLS_ERROR', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS_ERROR } as any)).toEqual({
+      expect(reducer(undefined, { type: listShortUrls.rejected.toString() })).toEqual({
         loading: false,
         error: true,
       }));
@@ -52,7 +59,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: `${SHORT_URL_DELETED}/fulfilled`, payload: { shortCode } } as any)).toEqual({
+      expect(reducer(state, { type: deleteShortUrl.fulfilled.toString(), payload: { shortCode } })).toEqual({
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
           pagination: { totalItems: 9 },
@@ -85,7 +92,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: createNewVisits.toString(), payload: { createdVisits } } as any)).toEqual({
+      expect(reducer(state, { type: createNewVisits.toString(), payload: { createdVisits } })).toEqual({
         shortUrls: {
           data: [
             { shortCode, domain: 'example.com', visitsCount: 5 },
@@ -142,7 +149,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: `${CREATE_SHORT_URL}/fulfilled`, payload: newShortUrl } as any)).toEqual({
+      expect(reducer(state, { type: createShortUrl.fulfilled.toString(), payload: newShortUrl })).toEqual({
         shortUrls: {
           data: expectedData,
           pagination: { totalItems: 16 },
@@ -181,7 +188,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      const result = reducer(state, { type: `${SHORT_URL_EDITED}/fulfilled`, payload: editedShortUrl } as any);
+      const result = reducer(state, { type: editShortUrl.fulfilled.toString(), payload: editedShortUrl });
 
       expect(result.shortUrls?.data).toEqual(expectedList);
     });
@@ -191,30 +198,29 @@ describe('shortUrlsListReducer', () => {
     const dispatch = jest.fn();
     const getState = jest.fn().mockReturnValue({ selectedServer: {} });
 
-    afterEach(jest.clearAllMocks);
-
     it('dispatches proper actions if API client request succeeds', async () => {
-      const listShortUrlsMock = jest.fn().mockResolvedValue([]);
-      const apiClientMock = Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
+      listShortUrlsMock.mockResolvedValue({});
 
-      await listShortUrls(() => apiClientMock)()(dispatch, getState);
+      await listShortUrls()(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [] });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listShortUrls.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: listShortUrls.fulfilled.toString(),
+        payload: {},
+      }));
 
       expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });
 
     it('dispatches proper actions if API client request fails', async () => {
-      const listShortUrlsMock = jest.fn().mockRejectedValue(undefined);
-      const apiClientMock = Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
+      listShortUrlsMock.mockRejectedValue(undefined);
 
-      await listShortUrls(() => apiClientMock)()(dispatch, getState);
+      await listShortUrls()(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listShortUrls.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: listShortUrls.rejected.toString() }));
 
       expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });

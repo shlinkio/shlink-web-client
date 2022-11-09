@@ -5,7 +5,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
+const REDUCER_PREFIX = 'shlink/shortUrlCreation';
 
 export type ShortUrlCreation = {
   saving: false;
@@ -35,26 +35,29 @@ const initialState: ShortUrlCreation = {
   error: false,
 };
 
-export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const createShortUrl = createAsyncThunk(CREATE_SHORT_URL, (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
+export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+  `${REDUCER_PREFIX}/createShortUrl`,
+  (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
     const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
     return shlinkCreateShortUrl(data);
-  });
+  },
+);
 
+export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {
   const { reducer, actions } = createSlice({
-    name: 'shortUrlCreationReducer',
+    name: REDUCER_PREFIX,
     initialState: initialState as ShortUrlCreation, // Without this casting it infers type ShortUrlCreationWaiting
     reducers: {
       resetCreateShortUrl: () => initialState,
     },
     extraReducers: (builder) => {
-      builder.addCase(createShortUrl.pending, () => ({ saving: true, saved: false, error: false }));
+      builder.addCase(createShortUrlThunk.pending, () => ({ saving: true, saved: false, error: false }));
       builder.addCase(
-        createShortUrl.rejected,
+        createShortUrlThunk.rejected,
         (_, { error }) => ({ saving: false, saved: false, error: true, errorData: parseApiError(error) }),
       );
       builder.addCase(
-        createShortUrl.fulfilled,
+        createShortUrlThunk.fulfilled,
         (_, { payload: result }) => ({ result, saving: false, saved: true, error: false }),
       );
     },
@@ -64,7 +67,6 @@ export const shortUrlCreationReducerCreator = (buildShlinkApiClient: ShlinkApiCl
 
   return {
     reducer,
-    createShortUrl,
     resetCreateShortUrl,
   };
 };

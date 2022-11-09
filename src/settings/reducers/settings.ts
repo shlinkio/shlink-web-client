@@ -82,7 +82,7 @@ const toReducer = (prepare: SettingsPrepareAction) => ({ reducer: commonReducer,
 const toPreparedAction: SettingsPrepareAction = (payload: Settings) => ({ payload });
 
 const { reducer, actions } = createSlice({
-  name: 'settingsReducer',
+  name: 'shlink/settings',
   initialState,
   reducers: {
     toggleRealTimeUpdates: toReducer((enabled: boolean) => toPreparedAction({ realTimeUpdates: { enabled } })),

@@ -9,7 +9,7 @@ const initialState: Sidebar = {
 };
 
 const { actions, reducer } = createSlice({
-  name: 'sidebarReducer',
+  name: 'shlink/sidebar',
   initialState,
   reducers: {
     sidebarPresent: () => ({ sidebarPresent: true }),

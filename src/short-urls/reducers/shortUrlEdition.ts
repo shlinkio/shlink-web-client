@@ -5,7 +5,7 @@ import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilde
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
 
-export const SHORT_URL_EDITED = 'shlink/shortUrlEdition/SHORT_URL_EDITED';
+const REDUCER_PREFIX = 'shlink/shortUrlEdition';
 
 export interface ShortUrlEdition {
   shortUrl?: ShortUrl;
@@ -27,31 +27,27 @@ const initialState: ShortUrlEdition = {
   error: false,
 };
 
-export const shortUrlEditionReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const editShortUrl = createAsyncThunk(
-    SHORT_URL_EDITED,
-    ({ shortCode, domain, data }: EditShortUrl, { getState }): Promise<ShortUrl> => {
-      const { updateShortUrl } = buildShlinkApiClient(getState);
-      return updateShortUrl(shortCode, domain, data as any); // FIXME parse dates
-    },
-  );
+export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+  `${REDUCER_PREFIX}/editShortUrl`,
+  ({ shortCode, domain, data }: EditShortUrl, { getState }): Promise<ShortUrl> => {
+    const { updateShortUrl } = buildShlinkApiClient(getState);
+    return updateShortUrl(shortCode, domain, data as any); // FIXME parse dates
+  },
+);
 
-  const { reducer } = createSlice({
-    name: 'shortUrlEditionReducer',
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-      builder.addCase(editShortUrl.pending, (state) => ({ ...state, saving: true, error: false, saved: false }));
-      builder.addCase(
-        editShortUrl.rejected,
-        (state, { error }) => ({ ...state, saving: false, error: true, saved: false, errorData: parseApiError(error) }),
-      );
-      builder.addCase(
-        editShortUrl.fulfilled,
-        (_, { payload: shortUrl }) => ({ shortUrl, saving: false, error: false, saved: true }),
-      );
-    },
-  });
-
-  return { reducer, editShortUrl };
-};
+export const shortUrlEditionReducerCreator = (editShortUrlThunk: ReturnType<typeof editShortUrl>) => createSlice({
+  name: REDUCER_PREFIX,
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(editShortUrlThunk.pending, (state) => ({ ...state, saving: true, error: false, saved: false }));
+    builder.addCase(
+      editShortUrlThunk.rejected,
+      (state, { error }) => ({ ...state, saving: false, error: true, saved: false, errorData: parseApiError(error) }),
+    );
+    builder.addCase(
+      editShortUrlThunk.fulfilled,
+      (_, { payload: shortUrl }) => ({ shortUrl, saving: false, error: false, saved: true }),
+    );
+  },
+});

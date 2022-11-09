@@ -2,13 +2,11 @@ import { IContainer } from 'bottlejs';
 import { combineReducers } from 'redux';
 import { serversReducer } from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
-import shortUrlsListReducer from '../short-urls/reducers/shortUrlsList';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import domainVisitsReducer from '../visits/reducers/domainVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
 import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
-import tagsListReducer from '../tags/reducers/tagsList';
 import { settingsReducer } from '../settings/reducers/settings';
 import visitsOverviewReducer from '../visits/reducers/visitsOverview';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
@@ -18,7 +16,7 @@ import { ShlinkState } from '../container/types';
 export default (container: IContainer) => combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: selectedServerReducer,
-  shortUrlsList: shortUrlsListReducer,
+  shortUrlsList: container.shortUrlsListReducer,
   shortUrlCreation: container.shortUrlCreationReducer,
   shortUrlDeletion: container.shortUrlDeletionReducer,
   shortUrlEdition: container.shortUrlEditionReducer,
@@ -28,7 +26,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   domainVisits: domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
   nonOrphanVisits: nonOrphanVisitsReducer,
-  tagsList: tagsListReducer,
+  tagsList: container.tagsListReducer,
   tagDelete: container.tagDeleteReducer,
   tagEdit: container.tagEditReducer,
   mercureInfo: container.mercureInfoReducer,

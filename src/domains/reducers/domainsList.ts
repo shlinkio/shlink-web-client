@@ -9,9 +9,7 @@ import { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
 import { EditDomainRedirects } from './domainRedirects';
 
-const LIST_DOMAINS = 'shlink/domainsList/LIST_DOMAINS';
-const FILTER_DOMAINS = 'shlink/domainsList/FILTER_DOMAINS';
-const VALIDATE_DOMAIN = 'shlink/domainsList/VALIDATE_DOMAIN';
+const REDUCER_PREFIX = 'shlink/domainsList';
 
 export interface DomainsList {
   domains: Domain[];
@@ -49,7 +47,7 @@ export const domainsListReducerCreator = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
   editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
 ) => {
-  const listDomains = createAsyncThunk(LIST_DOMAINS, async (_: void, { getState }): Promise<ListDomains> => {
+  const listDomains = createAsyncThunk(`${REDUCER_PREFIX}/listDomains`, async (_: void, { getState }): Promise<ListDomains> => {
     const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
     const { data, defaultRedirects } = await shlinkListDomains();
 
@@ -60,7 +58,7 @@ export const domainsListReducerCreator = (
   });
 
   const checkDomainHealth = createAsyncThunk(
-    VALIDATE_DOMAIN,
+    `${REDUCER_PREFIX}/checkDomainHealth`,
     async (domain: string, { getState }): Promise<ValidateDomain> => {
       const { selectedServer } = getState();
 
@@ -84,10 +82,10 @@ export const domainsListReducerCreator = (
     },
   );
 
-  const filterDomains = createAction<string>(FILTER_DOMAINS);
+  const filterDomains = createAction<string>(`${REDUCER_PREFIX}/filterDomains`);
 
   const { reducer } = createSlice<DomainsList, SliceCaseReducers<DomainsList>>({
-    name: 'domainsList',
+    name: REDUCER_PREFIX,
     initialState,
     reducers: {},
     extraReducers: (builder) => {
