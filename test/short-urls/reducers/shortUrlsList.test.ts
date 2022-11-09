@@ -24,7 +24,7 @@ describe('shortUrlsListReducer', () => {
       }));
 
     it('returns short URLs on LIST_SHORT_URLS', () =>
-      expect(reducer(undefined, { type: LIST_SHORT_URLS, shortUrls: { data: [] } } as any)).toEqual({
+      expect(reducer(undefined, { type: LIST_SHORT_URLS, payload: { data: [] } } as any)).toEqual({
         shortUrls: { data: [] },
         loading: false,
         error: false,
@@ -194,14 +194,14 @@ describe('shortUrlsListReducer', () => {
     afterEach(jest.clearAllMocks);
 
     it('dispatches proper actions if API client request succeeds', async () => {
-      const listShortUrlsMock = jest.fn().mockResolvedValue([]);
+      const listShortUrlsMock = jest.fn().mockResolvedValue({});
       const apiClientMock = Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
 
       await listShortUrls(() => apiClientMock)()(dispatch, getState);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, { type: LIST_SHORT_URLS_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, shortUrls: [] });
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: LIST_SHORT_URLS, payload: {} });
 
       expect(listShortUrlsMock).toHaveBeenCalledTimes(1);
     });

@@ -1,5 +1,6 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import { assoc, assocPath, last, pipe, reject } from 'ramda';
-import { Action, Dispatch } from 'redux';
+import { Dispatch } from 'redux';
 import { shortUrlMatches } from '../helpers';
 import { createNewVisits, CreateVisitsAction } from '../../visits/reducers/visitCreation';
 import { buildReducer } from '../../utils/helpers/redux';
@@ -23,9 +24,7 @@ export interface ShortUrlsList {
   error: boolean;
 }
 
-export interface ListShortUrlsAction extends Action<string> {
-  shortUrls: ShlinkShortUrlsResponse;
-}
+export type ListShortUrlsAction = PayloadAction<ShlinkShortUrlsResponse>;
 
 export type ListShortUrlsCombinedAction = (
   ListShortUrlsAction
@@ -43,7 +42,7 @@ const initialState: ShortUrlsList = {
 export default buildReducer<ShortUrlsList, ListShortUrlsCombinedAction>({
   [LIST_SHORT_URLS_START]: (state) => ({ ...state, loading: true, error: false }),
   [LIST_SHORT_URLS_ERROR]: () => ({ loading: false, error: true }),
-  [LIST_SHORT_URLS]: (_, { shortUrls }) => ({ loading: false, error: false, shortUrls }),
+  [LIST_SHORT_URLS]: (_, { payload: shortUrls }) => ({ loading: false, error: false, shortUrls }),
   [`${SHORT_URL_DELETED}/fulfilled`]: pipe( // TODO Do not hardcode action type here
     (state: ShortUrlsList, { payload }: DeleteShortUrlAction) => (!state.shortUrls ? state : assocPath(
       ['shortUrls', 'data'],
@@ -109,9 +108,9 @@ export const listShortUrls = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   const { listShortUrls: shlinkListShortUrls } = buildShlinkApiClient(getState);
 
   try {
-    const shortUrls = await shlinkListShortUrls(params);
+    const payload = await shlinkListShortUrls(params);
 
-    dispatch<ListShortUrlsAction>({ type: LIST_SHORT_URLS, shortUrls });
+    dispatch<ListShortUrlsAction>({ type: LIST_SHORT_URLS, payload });
   } catch (e) {
     dispatch({ type: LIST_SHORT_URLS_ERROR });
   }
