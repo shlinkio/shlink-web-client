@@ -7,9 +7,9 @@ describe('remoteServersReducer', () => {
   afterEach(jest.clearAllMocks);
 
   describe('fetchServers', () => {
+    const dispatch = jest.fn();
     const get = jest.fn();
     const axios = Mock.of<AxiosInstance>({ get });
-    const dispatch = jest.fn();
 
     it.each([
       [
@@ -84,10 +84,17 @@ describe('remoteServersReducer', () => {
       [{}, {}],
     ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
       get.mockResolvedValue(mockedValue);
+      const doFetchServers = fetchServers(axios);
 
-      await fetchServers(axios)()(dispatch);
+      await doFetchServers()(dispatch, jest.fn(), {});
 
-      expect(dispatch).toHaveBeenCalledWith({ type: createServers.toString(), payload: expectedNewServers });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: doFetchServers.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, { type: createServers.toString(), payload: expectedNewServers });
+      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
+        type: doFetchServers.fulfilled.toString(),
+      }));
       expect(get).toHaveBeenCalledTimes(1);
     });
   });
