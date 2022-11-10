@@ -1,5 +1,5 @@
 import { IContainer } from 'bottlejs';
-import { combineReducers } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import { serversReducer } from '../servers/reducers/servers';
 import selectedServerReducer from '../servers/reducers/selectedServer';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';

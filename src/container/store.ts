@@ -20,5 +20,5 @@ export const setUpStore = (container: IContainer) => configureStore({
   preloadedState,
   middleware: (defaultMiddlewaresIncludingReduxThunk) => defaultMiddlewaresIncludingReduxThunk(
     { immutableCheck: false, serializableCheck: false }, // State is too big for these
-  ).concat(save(localStorageConfig)),
+  ).prepend(container.selectServerListener.middleware).concat(save(localStorageConfig)),
 });

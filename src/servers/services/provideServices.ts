@@ -5,7 +5,7 @@ import { DeleteServerModal } from '../DeleteServerModal';
 import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import { ImportServersBtn } from '../helpers/ImportServersBtn';
-import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
+import { resetSelectedServer, selectServer, selectServerListener } from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import { ServerError } from '../helpers/ServerError';
@@ -77,6 +77,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('fetchServers', fetchServers, 'axios');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
+
+  // Reducers
+  bottle.serviceFactory('selectServerListener', selectServerListener, 'selectServer', 'loadMercureInfo');
 };
 
 export default provideServices;
