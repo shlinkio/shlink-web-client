@@ -4,14 +4,16 @@ import {
   selectServer as selectServerCreator,
   resetSelectedServer,
   selectedServerReducerCreator,
+  selectServerListener,
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
 import { ShlinkState } from '../../../src/container/types';
-import { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
+import { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 
 describe('selectedServerReducer', () => {
+  const dispatch = jest.fn();
   const health = jest.fn();
   const buildApiClient = jest.fn().mockReturnValue(Mock.of<ShlinkApiClient>({ health }));
   const selectServer = selectServerCreator(buildApiClient);
@@ -42,7 +44,6 @@ describe('selectedServerReducer', () => {
     };
     const version = '1.19.0';
     const createGetStateMock = (id: string) => jest.fn().mockReturnValue({ servers: { [id]: selectedServer } });
-    const dispatch = jest.fn();
 
     it.each([
       [version, version, `v${version}`],
@@ -109,6 +110,36 @@ describe('selectedServerReducer', () => {
         type: selectServer.fulfilled.toString(),
         payload: expectedSelectedServer,
       }));
+    });
+  });
+
+  describe('selectServerListener', () => {
+    const getState = jest.fn(() => ({}));
+    const loadMercureInfo = jest.fn();
+    const { middleware } = selectServerListener(selectServer, loadMercureInfo);
+
+    it.each([
+      [Mock.of<ReachableServer>({ version: '1.2.3' }), 1],
+      [Mock.of<NotFoundServer>({ serverNotFound: true }), 0],
+      [Mock.of<NonReachableServer>({ serverNotReachable: true }), 0],
+    ])('dispatches loadMercureInfo when provided server is reachable', (payload, expectedCalls) => {
+      middleware({ dispatch, getState })(jest.fn())({
+        payload,
+        type: selectServer.fulfilled.toString(),
+      });
+
+      expect(dispatch).toHaveBeenCalledTimes(expectedCalls);
+      expect(loadMercureInfo).toHaveBeenCalledTimes(expectedCalls);
+    });
+
+    it('does not dispatch loadMercureInfo when action is not of the proper type', () => {
+      middleware({ dispatch, getState })(jest.fn())({
+        payload: Mock.of<ReachableServer>({ version: '1.2.3' }),
+        type: 'something_else',
+      });
+
+      expect(dispatch).not.toHaveBeenCalled();
+      expect(loadMercureInfo).not.toHaveBeenCalled();
     });
   });
 });
