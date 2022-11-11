@@ -1,4 +1,5 @@
 import Bottle from 'bottlejs';
+import { prop } from 'ramda';
 import { MapModal } from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
 import { ShortUrlVisits } from '../ShortUrlVisits';
@@ -11,7 +12,7 @@ import { cancelGetDomainVisits, getDomainVisits } from '../reducers/domainVisits
 import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits';
 import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrphanVisits';
 import { ConnectDecorator } from '../../container/types';
-import { loadVisitsOverview } from '../reducers/visitsOverview';
+import { loadVisitsOverview, visitsOverviewReducerCreator } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
 import { DomainVisits } from '../DomainVisits';
 
@@ -70,6 +71,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
   bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'buildShlinkApiClient');
+
+  // Reducers
+  bottle.serviceFactory('visitsOverviewReducerCreator', visitsOverviewReducerCreator, 'loadVisitsOverview');
+  bottle.serviceFactory('visitsOverviewReducer', prop('reducer'), 'visitsOverviewReducerCreator');
 };
 
 export default provideServices;
