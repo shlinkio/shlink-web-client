@@ -49,10 +49,13 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
 
   const tagStats = theStats[tag];
 
-  tagStats.visitsCount += increase;
-  theStats[tag] = tagStats; // eslint-disable-line no-param-reassign
-
-  return theStats;
+  return {
+    ...theStats,
+    [tag]: {
+      ...tagStats,
+      visitsCount: tagStats.visitsCount + increase,
+    },
+  };
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
   createdVisits.reduce<Stats>((acc, { shortUrl }) => {
