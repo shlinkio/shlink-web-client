@@ -1,3 +1,4 @@
+import { prop } from 'ramda';
 import Bottle from 'bottlejs';
 import { CreateServer } from '../CreateServer';
 import { ServersDropdown } from '../ServersDropdown';
@@ -5,7 +6,12 @@ import { DeleteServerModal } from '../DeleteServerModal';
 import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import { ImportServersBtn } from '../helpers/ImportServersBtn';
-import { resetSelectedServer, selectServer, selectServerListener } from '../reducers/selectedServer';
+import {
+  resetSelectedServer,
+  selectedServerReducerCreator,
+  selectServer,
+  selectServerListener,
+} from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import { ServerError } from '../helpers/ServerError';
@@ -80,6 +86,8 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Reducers
   bottle.serviceFactory('selectServerListener', selectServerListener, 'selectServer', 'loadMercureInfo');
+  bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
+  bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };
 
 export default provideServices;

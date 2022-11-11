@@ -1,8 +1,9 @@
 import { v4 as uuid } from 'uuid';
 import { Mock } from 'ts-mockery';
-import reducer, {
+import {
   selectServer as selectServerCreator,
   resetSelectedServer,
+  selectedServerReducerCreator,
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
@@ -14,6 +15,7 @@ describe('selectedServerReducer', () => {
   const health = jest.fn();
   const buildApiClient = jest.fn().mockReturnValue(Mock.of<ShlinkApiClient>({ health }));
   const selectServer = selectServerCreator(buildApiClient);
+  const { reducer } = selectedServerReducerCreator(selectServer);
 
   afterEach(jest.clearAllMocks);
 
