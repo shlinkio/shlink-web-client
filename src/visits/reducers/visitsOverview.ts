@@ -1,14 +1,11 @@
-import { Action, Dispatch } from 'redux';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ShlinkVisitsOverview } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { GetState } from '../../container/types';
-import { buildReducer } from '../../utils/helpers/redux';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { groupNewVisitsByType } from '../types/helpers';
-import { createNewVisits, CreateVisitsAction } from './visitCreation';
+import { createNewVisits } from './visitCreation';
 
-export const GET_OVERVIEW_START = 'shlink/visitsOverview/GET_OVERVIEW_START';
-export const GET_OVERVIEW_ERROR = 'shlink/visitsOverview/GET_OVERVIEW_ERROR';
-export const GET_OVERVIEW = 'shlink/visitsOverview/GET_OVERVIEW';
+const REDUCER_PREFIX = 'shlink/visitsOverview';
 
 export interface VisitsOverview {
   visitsCount: number;
@@ -17,7 +14,7 @@ export interface VisitsOverview {
   error: boolean;
 }
 
-export type GetVisitsOverviewAction = ShlinkVisitsOverview & Action<string>;
+export type GetVisitsOverviewAction = PayloadAction<ShlinkVisitsOverview>;
 
 const initialState: VisitsOverview = {
   visitsCount: 0,
@@ -26,33 +23,30 @@ const initialState: VisitsOverview = {
   error: false,
 };
 
-export default buildReducer<VisitsOverview, GetVisitsOverviewAction & CreateVisitsAction>({
-  [GET_OVERVIEW_START]: () => ({ ...initialState, loading: true }),
-  [GET_OVERVIEW_ERROR]: () => ({ ...initialState, error: true }),
-  [GET_OVERVIEW]: (_, { visitsCount, orphanVisitsCount }) => ({ ...initialState, visitsCount, orphanVisitsCount }),
-  [createNewVisits.toString()]: ({ visitsCount, orphanVisitsCount = 0, ...rest }, { payload }) => {
-    const { regularVisits, orphanVisits } = groupNewVisitsByType(payload.createdVisits);
+export const loadVisitsOverview = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+  `${REDUCER_PREFIX}/loadVisitsOverview`,
+  (_: void, { getState }): Promise<ShlinkVisitsOverview> => buildShlinkApiClient(getState).getVisitsOverview(),
+);
 
-    return {
-      ...rest,
-      visitsCount: visitsCount + regularVisits.length,
-      orphanVisitsCount: orphanVisitsCount + orphanVisits.length,
-    };
+export const visitsOverviewReducerCreator = (
+  loadVisitsOverviewThunk: ReturnType<typeof loadVisitsOverview>,
+) => createSlice({
+  name: REDUCER_PREFIX,
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(loadVisitsOverviewThunk.pending, () => ({ ...initialState, loading: true }));
+    builder.addCase(loadVisitsOverviewThunk.rejected, () => ({ ...initialState, error: true }));
+    builder.addCase(loadVisitsOverviewThunk.fulfilled, (_, { payload }) => ({ ...initialState, ...payload }));
+
+    builder.addCase(createNewVisits, ({ visitsCount, orphanVisitsCount = 0, ...rest }, { payload }) => {
+      const { createdVisits } = payload;
+      const { regularVisits, orphanVisits } = groupNewVisitsByType(createdVisits);
+      return {
+        ...rest,
+        visitsCount: visitsCount + regularVisits.length,
+        orphanVisitsCount: orphanVisitsCount + orphanVisits.length,
+      };
+    });
   },
-}, initialState);
-
-export const loadVisitsOverview = (buildShlinkApiClient: ShlinkApiClientBuilder) => () => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  dispatch({ type: GET_OVERVIEW_START });
-
-  try {
-    const { getVisitsOverview } = buildShlinkApiClient(getState);
-    const result = await getVisitsOverview();
-
-    dispatch({ type: GET_OVERVIEW, ...result });
-  } catch (e) {
-    dispatch({ type: GET_OVERVIEW_ERROR });
-  }
-};
+});
