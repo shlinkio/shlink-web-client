@@ -9,7 +9,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/orphanVisits';
 export const GET_NON_ORPHAN_VISITS_START = `${REDUCER_PREFIX}/getNonOrphanVisits/pending`;
@@ -66,8 +66,7 @@ export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
 }, initialState);
 
 export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  query: ShlinkVisitsParams = {},
-  doIntervalFallback = false,
+  { query = {}, doIntervalFallback = false }: LoadVisits,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) =>
