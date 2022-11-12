@@ -147,7 +147,7 @@ describe('orphanVisitsReducer', () => {
     it('dispatches start and error when promise is rejected', async () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
-      await getOrphanVisits(() => ShlinkApiClient)()(dispatchMock, getState);
+      await getOrphanVisits(() => ShlinkApiClient)({})(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_ORPHAN_VISITS_START });
@@ -169,7 +169,7 @@ describe('orphanVisitsReducer', () => {
         },
       }));
 
-      await getOrphanVisits(() => ShlinkApiClient)(query)(dispatchMock, getState);
+      await getOrphanVisits(() => ShlinkApiClient)({ query })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_ORPHAN_VISITS_START });
@@ -201,7 +201,7 @@ describe('orphanVisitsReducer', () => {
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
       const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getOrphanVisits: getShlinkOrphanVisits });
 
-      await getOrphanVisits(() => ShlinkApiClient)({}, undefined, true)(dispatchMock, getState);
+      await getOrphanVisits(() => ShlinkApiClient)({ doIntervalFallback: true })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_ORPHAN_VISITS_START });

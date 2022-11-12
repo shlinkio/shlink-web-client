@@ -10,7 +10,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/orphanVisits';
 export const GET_ORPHAN_VISITS_START = `${REDUCER_PREFIX}/getOrphanVisits/pending`;
@@ -24,6 +24,10 @@ export const GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getOrph
 export interface OrphanVisitsAction extends Action<string> {
   visits: Visit[];
   query?: ShlinkVisitsParams;
+}
+
+export interface LoadOrphanVisits extends LoadVisits {
+  orphanVisitsType?: OrphanVisitType;
 }
 
 type OrphanVisitsCombinedAction = OrphanVisitsAction
@@ -68,9 +72,7 @@ const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
   !orphanVisitsType || orphanVisitsType === visit.type;
 
 export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  query: ShlinkVisitsParams = {},
-  orphanVisitsType?: OrphanVisitType,
-  doIntervalFallback = false,
+  { orphanVisitsType, query = {}, doIntervalFallback = false }: LoadOrphanVisits,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getOrphanVisits: getVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getVisits({ ...query, page, itemsPerPage })

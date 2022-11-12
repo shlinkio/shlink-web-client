@@ -1,21 +1,17 @@
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { VisitsStats } from './VisitsStats';
-import { NormalizedVisit, OrphanVisitType, VisitsParams } from './types';
+import { NormalizedVisit, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
 import { VisitsInfo } from './reducers/types';
+import { LoadOrphanVisits } from './reducers/orphanVisits';
 
 export interface OrphanVisitsProps extends CommonVisitsProps {
-  getOrphanVisits: (
-    params?: ShlinkVisitsParams,
-    orphanVisitsType?: OrphanVisitType,
-    doIntervalFallback?: boolean,
-  ) => void;
+  getOrphanVisits: (params: LoadOrphanVisits) => void;
   orphanVisits: VisitsInfo;
   cancelGetOrphanVisits: () => void;
 }
@@ -29,8 +25,9 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
 }: OrphanVisitsProps) => {
   const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
-  const loadVisits = (params: VisitsParams, doIntervalFallback?: boolean) =>
-    getOrphanVisits(toApiParams(params), params.filter?.orphanVisitsType, doIntervalFallback);
+  const loadVisits = (params: VisitsParams, doIntervalFallback?: boolean) => getOrphanVisits(
+    { query: toApiParams(params), orphanVisitsType: params.filter?.orphanVisitsType, doIntervalFallback },
+  );
 
   return (
     <VisitsStats
