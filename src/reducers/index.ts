@@ -3,7 +3,6 @@ import { combineReducers } from '@reduxjs/toolkit';
 import { serversReducer } from '../servers/reducers/servers';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
-import domainVisitsReducer from '../visits/reducers/domainVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
 import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
 import { settingsReducer } from '../settings/reducers/settings';
@@ -21,7 +20,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   shortUrlDetail: container.shortUrlDetailReducer,
   shortUrlVisits: shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
-  domainVisits: domainVisitsReducer,
+  domainVisits: container.domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
   nonOrphanVisits: nonOrphanVisitsReducer,
   tagsList: container.tagsListReducer,

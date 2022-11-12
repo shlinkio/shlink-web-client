@@ -8,7 +8,7 @@ import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
 import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
-import { cancelGetDomainVisits, getDomainVisits } from '../reducers/domainVisits';
+import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
 import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits';
 import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrphanVisits';
 import { ConnectDecorator } from '../../container/types';
@@ -60,8 +60,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
 
-  bottle.serviceFactory('getDomainVisits', getDomainVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('cancelGetDomainVisits', () => cancelGetDomainVisits);
+  bottle.serviceFactory('getDomainVisitsCreator', getDomainVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getDomainVisits', prop('asyncThunk'), 'getDomainVisitsCreator');
+  bottle.serviceFactory('cancelGetDomainVisits', prop('cancelGetDomainVisits'), 'domainVisitsReducerCreator');
 
   bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetOrphanVisits', () => cancelGetOrphanVisits);
@@ -75,6 +76,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Reducers
   bottle.serviceFactory('visitsOverviewReducerCreator', visitsOverviewReducerCreator, 'loadVisitsOverview');
   bottle.serviceFactory('visitsOverviewReducer', prop('reducer'), 'visitsOverviewReducerCreator');
+
+  bottle.serviceFactory('domainVisitsReducerCreator', domainVisitsReducerCreator, 'getDomainVisitsCreator');
+  bottle.serviceFactory('domainVisitsReducer', prop('reducer'), 'domainVisitsReducerCreator');
 };
 
 export default provideServices;
