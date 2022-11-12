@@ -11,7 +11,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/shortUrlVisits';
 export const GET_SHORT_URL_VISITS_START = `${REDUCER_PREFIX}/getShortUrlVisits/pending`;
@@ -27,6 +27,10 @@ export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
 interface ShortUrlVisitsAction extends Action<string>, ShortUrlIdentifier {
   visits: Visit[];
   query?: ShlinkVisitsParams;
+}
+
+export interface LoadShortUrlVisits extends LoadVisits {
+  shortCode: string;
 }
 
 type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
@@ -80,9 +84,7 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
 }, initialState);
 
 export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  shortCode: string,
-  query: ShlinkVisitsParams = {},
-  doIntervalFallback = false,
+  { shortCode, query = {}, doIntervalFallback = false }: LoadShortUrlVisits,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getShortUrlVisits: shlinkGetShortUrlVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => shlinkGetShortUrlVisits(

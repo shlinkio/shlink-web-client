@@ -167,7 +167,7 @@ describe('shortUrlVisitsReducer', () => {
     it('dispatches start and error when promise is rejected', async () => {
       const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+      await getShortUrlVisits(() => ShlinkApiClient)({ shortCode: 'abc123' })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
@@ -191,7 +191,7 @@ describe('shortUrlVisitsReducer', () => {
         },
       }));
 
-      await getShortUrlVisits(() => ShlinkApiClient)(shortCode, query)(dispatchMock, getState);
+      await getShortUrlVisits(() => ShlinkApiClient)({ shortCode, query })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
@@ -214,7 +214,7 @@ describe('shortUrlVisitsReducer', () => {
           },
         }));
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+      await getShortUrlVisits(() => ShlinkApiClient)({ shortCode: 'abc123' })(dispatchMock, getState);
 
       expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(expectedRequests);
       expect(dispatchMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
@@ -246,7 +246,10 @@ describe('shortUrlVisitsReducer', () => {
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
       const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShlinkShortUrlVisits });
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123', {}, true)(dispatchMock, getState);
+      await getShortUrlVisits(() => ShlinkApiClient)({ shortCode: 'abc123', doIntervalFallback: true })(
+        dispatchMock,
+        getState,
+      );
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
