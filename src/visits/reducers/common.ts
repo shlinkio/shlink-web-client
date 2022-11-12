@@ -1,11 +1,13 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
-import { createAction } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
-import { Visit } from '../types';
+import { CreateVisit, Visit } from '../types';
 import { DateInterval, dateToMatchingInterval } from '../../utils/dates/types';
-import { LoadVisits, VisitsLoaded } from './types';
+import { LoadVisits, VisitsInfo, VisitsLoaded } from './types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkState } from '../../container/types';
+import { parseApiError } from '../../api/utils';
+import { createNewVisits } from './visitCreation';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;
@@ -18,20 +20,20 @@ type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits
 type LastVisitLoader = () => Promise<Visit | undefined>;
 
 interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded> {
-  actionsPrefix: string;
+  name: string;
   createLoaders: (params: T, getState: () => ShlinkState) => [VisitsLoader, LastVisitLoader];
   getExtraFulfilledPayload: (params: T) => Partial<R>;
   shouldCancel: (getState: () => ShlinkState) => boolean;
 }
 
 export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded>(
-  { actionsPrefix, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
+  { name, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
 ) => {
-  const progressChangedAction = createAction<number>(`${actionsPrefix}/progressChanged`);
-  const largeAction = createAction<void>(`${actionsPrefix}/large`);
-  const fallbackToIntervalAction = createAction<DateInterval>(`${actionsPrefix}/fallbackToInterval`);
+  const progressChangedAction = createAction<number>(`${name}/progressChanged`);
+  const largeAction = createAction<void>(`${name}/large`);
+  const fallbackToIntervalAction = createAction<DateInterval>(`${name}/fallbackToInterval`);
 
-  const asyncThunk = createAsyncThunk(actionsPrefix, async (params: T, { getState, dispatch }): Promise<R> => {
+  const asyncThunk = createAsyncThunk(name, async (params: T, { getState, dispatch }): Promise<R> => {
     const [visitsLoader, lastVisitLoader] = createLoaders(params, getState);
 
     const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
@@ -93,4 +95,50 @@ export const lastVisitLoaderForLoader = (
   }
 
   return async () => loader({ page: 1, itemsPerPage: 1 }).then(({ data }) => data[0]);
+};
+
+export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>>(
+  name: string,
+  {
+    asyncThunk,
+    largeAction,
+    fallbackToIntervalAction,
+    progressChangedAction,
+  }: AT,
+  initialState: State,
+  filterCreatedVisits: (state: State, createdVisits: CreateVisit[]) => CreateVisit[],
+) => {
+  const { reducer, actions } = createSlice({
+    name,
+    initialState,
+    reducers: {
+      cancelGetVisits: (state) => ({ ...state, cancelLoad: true }),
+    },
+    extraReducers: (builder) => {
+      builder.addCase(asyncThunk.pending, () => ({ ...initialState, loading: true }));
+      builder.addCase(asyncThunk.rejected, (_, { error }) => (
+        { ...initialState, error: true, errorData: parseApiError(error) }
+      ));
+      builder.addCase(asyncThunk.fulfilled, (state, { payload }) => (
+        { ...state, ...payload, loading: false, loadingLarge: false, error: false }
+      ));
+
+      builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
+      builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
+      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+        { ...state, fallbackInterval }
+      ));
+
+      builder.addCase(createNewVisits, (state, { payload }) => {
+        const { visits } = state;
+        // @ts-expect-error TODO Fix the state inferred type
+        const newVisits = filterCreatedVisits(state, payload.createdVisits).map(({ visit }) => visit);
+
+        return { ...state, visits: [...newVisits, ...visits] };
+      });
+    },
+  });
+  const { cancelGetVisits } = actions;
+
+  return { reducer, cancelGetVisits };
 };

@@ -21,7 +21,7 @@ describe('tagVisitsReducer', () => {
   const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
   const creator = getTagVisitsCreator(buildShlinkApiClientMock);
   const { asyncThunk: getTagVisits, fallbackToIntervalAction, largeAction, progressChangedAction } = creator;
-  const { reducer, cancelGetTagVisits } = tagVisitsReducerCreator(creator);
+  const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(creator);
 
   beforeEach(jest.clearAllMocks);
 

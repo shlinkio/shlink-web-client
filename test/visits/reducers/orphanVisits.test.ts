@@ -21,7 +21,7 @@ describe('orphanVisitsReducer', () => {
   const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getOrphanVisits: getOrphanVisitsCall });
   const creator = getOrphanVisitsCreator(buildShlinkApiClientMock);
   const { asyncThunk: getOrphanVisits, largeAction, progressChangedAction, fallbackToIntervalAction } = creator;
-  const { reducer, cancelGetOrphanVisits } = orphanVisitsReducerCreator(creator);
+  const { reducer, cancelGetVisits: cancelGetOrphanVisits } = orphanVisitsReducerCreator(creator);
 
   beforeEach(jest.clearAllMocks);
 

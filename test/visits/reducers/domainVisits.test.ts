@@ -23,7 +23,7 @@ describe('domainVisitsReducer', () => {
   const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
   const creator = getDomainVisitsCreator(buildApiClientMock);
   const { asyncThunk: getDomainVisits, progressChangedAction, largeAction, fallbackToIntervalAction } = creator;
-  const { reducer, cancelGetDomainVisits } = domainVisitsReducerCreator(creator);
+  const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(creator);
 
   beforeEach(jest.clearAllMocks);
 
