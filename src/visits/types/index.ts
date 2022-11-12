@@ -1,4 +1,4 @@
-import { Action } from 'redux';
+import { PayloadAction } from '@reduxjs/toolkit';
 import { ShortUrl } from '../../short-urls/data';
 import { ShlinkVisitsParams } from '../../api/types';
 import { DateInterval, DateRange } from '../../utils/dates/types';
@@ -16,13 +16,9 @@ export interface VisitsInfo {
   fallbackInterval?: DateInterval;
 }
 
-export interface VisitsLoadProgressChangedAction extends Action<string> {
-  progress: number;
-}
+export type VisitsLoadProgressChangedAction = PayloadAction<number>;
 
-export interface VisitsFallbackIntervalAction extends Action<string> {
-  fallbackInterval: DateInterval;
-}
+export type VisitsFallbackIntervalAction = PayloadAction<DateInterval>;
 
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
 

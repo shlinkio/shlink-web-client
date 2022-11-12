@@ -53,11 +53,11 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   ),
   [`${REDUCER_PREFIX}/getTagVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getTagVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getTagVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getTagVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+  [`${REDUCER_PREFIX}/getTagVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getTagVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
     { ...state, fallbackInterval }
   ),
-  [createNewVisits.toString()]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
     const { tag, visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

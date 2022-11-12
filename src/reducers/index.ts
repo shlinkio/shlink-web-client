@@ -33,4 +33,4 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   visitsOverview: container.visitsOverviewReducer,
   appUpdated: appUpdatesReducer,
   sidebar: sidebarReducer,
-});
+} as any); // TODO Fix this

@@ -54,11 +54,11 @@ export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
   ),
   [`${REDUCER_PREFIX}/getNonOrphanVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getNonOrphanVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+  [`${REDUCER_PREFIX}/getNonOrphanVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getNonOrphanVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
     { ...state, fallbackInterval }
   ),
-  [createNewVisits.toString()]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
     const { visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

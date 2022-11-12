@@ -56,11 +56,11 @@ export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
   ),
   [`${REDUCER_PREFIX}/getDomainVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getDomainVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getDomainVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getDomainVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+  [`${REDUCER_PREFIX}/getDomainVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getDomainVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
     { ...state, fallbackInterval }
   ),
-  [createNewVisits.toString()]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
     const { domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

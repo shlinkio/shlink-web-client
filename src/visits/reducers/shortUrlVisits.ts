@@ -60,11 +60,11 @@ export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
   }),
   [`${REDUCER_PREFIX}/getShortUrlVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getShortUrlVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+  [`${REDUCER_PREFIX}/getShortUrlVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getShortUrlVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
     { ...state, fallbackInterval }
   ),
-  [createNewVisits.toString()]: (state, { payload }) => {
+  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
     const { shortCode, domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
     const newVisits = payload.createdVisits

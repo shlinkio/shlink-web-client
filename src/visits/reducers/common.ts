@@ -1,7 +1,7 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
-import { Visit } from '../types';
+import { Visit, VisitsLoadProgressChangedAction } from '../types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 import { dateToMatchingInterval } from '../../utils/dates/types';
@@ -36,9 +36,9 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 
     const data = await loadVisitsInParallel(pagesBlocks[index]);
 
-    dispatch({
+    dispatch<VisitsLoadProgressChangedAction>({
       type: `${actionsPrefix}/progressChanged`,
-      progress: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE),
+      payload: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE),
     });
 
     if (index < pagesBlocks.length - 1) {
@@ -72,7 +72,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 
     dispatch(
       !visits.length && lastVisit
-        ? { type: `${actionsPrefix}/fallbackToInterval`, fallbackInterval: dateToMatchingInterval(lastVisit.date) }
+        ? { type: `${actionsPrefix}/fallbackToInterval`, payload: dateToMatchingInterval(lastVisit.date) }
         : { ...extraFinishActionData, visits, type: `${actionsPrefix}/fulfilled` },
     );
   } catch (e: any) {

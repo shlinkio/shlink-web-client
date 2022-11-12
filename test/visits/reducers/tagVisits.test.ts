@@ -135,14 +135,14 @@ describe('tagVisitsReducer', () => {
     });
 
     it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: GET_TAG_VISITS_PROGRESS_CHANGED, progress: 85 } as any);
+      const state = reducer(undefined, { type: GET_TAG_VISITS_PROGRESS_CHANGED, payload: 85 } as any);
 
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
     it('returns fallbackInterval on GET_TAG_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(undefined, { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval } as any);
+      const state = reducer(undefined, { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, payload: fallbackInterval } as any);
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
@@ -198,11 +198,11 @@ describe('tagVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 20)) })],
-        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last30Days' },
+        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, payload: 'last30Days' },
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 100)) })],
-        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last180Days' },
+        { type: GET_TAG_VISITS_FALLBACK_TO_INTERVAL, payload: 'last180Days' },
       ],
       [[], expect.objectContaining({ type: GET_TAG_VISITS })],
     ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
