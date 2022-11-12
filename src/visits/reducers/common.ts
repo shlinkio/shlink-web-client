@@ -99,15 +99,11 @@ export const lastVisitLoaderForLoader = (
 
 export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>>(
   name: string,
-  {
-    asyncThunk,
-    largeAction,
-    fallbackToIntervalAction,
-    progressChangedAction,
-  }: AT,
+  asyncThunkCreator: AT,
   initialState: State,
   filterCreatedVisits: (state: State, createdVisits: CreateVisit[]) => CreateVisit[],
 ) => {
+  const { asyncThunk, largeAction, fallbackToIntervalAction, progressChangedAction } = asyncThunkCreator;
   const { reducer, actions } = createSlice({
     name,
     initialState,
