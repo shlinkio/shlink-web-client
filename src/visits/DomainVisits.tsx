@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { ShlinkVisitsParams } from '../api/types';
-import { DomainVisits as DomainVisitsState } from './reducers/domainVisits';
+import { DomainVisits as DomainVisitsState, LoadDomainVisits } from './reducers/domainVisits';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
@@ -12,7 +12,7 @@ import { VisitsStats } from './VisitsStats';
 import { VisitsHeader } from './VisitsHeader';
 
 export interface DomainVisitsProps extends CommonVisitsProps {
-  getDomainVisits: (domain: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
+  getDomainVisits: (params: LoadDomainVisits) => void;
   domainVisits: DomainVisitsState;
   cancelGetDomainVisits: () => void;
 }
@@ -28,7 +28,7 @@ export const DomainVisits = ({ exportVisits }: ReportExporter) => boundToMercure
   const { domain = '' } = useParams();
   const [authority, domainId = authority] = domain.split('_');
   const loadVisits = (params: ShlinkVisitsParams, doIntervalFallback?: boolean) =>
-    getDomainVisits(domainId, toApiParams(params), doIntervalFallback);
+    getDomainVisits({ domain: domainId, query: toApiParams(params), doIntervalFallback });
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(`domain_${authority}_visits.csv`, visits);
 
   return (

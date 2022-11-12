@@ -4,11 +4,12 @@ import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
 import { NonOrphanVisits as createNonOrphanVisits } from '../../src/visits/NonOrphanVisits';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { Visit, VisitsInfo } from '../../src/visits/types';
+import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
+import { VisitsInfo } from '../../src/visits/reducers/types';
 
 describe('<NonOrphanVisits />', () => {
   const exportVisits = jest.fn();

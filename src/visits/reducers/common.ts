@@ -1,10 +1,13 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
-import { Action, Dispatch } from 'redux';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
-import { Visit } from '../types';
+import { CreateVisit, Visit } from '../types';
+import { DateInterval, dateToMatchingInterval } from '../../utils/dates/types';
+import { LoadVisits, VisitsInfo, VisitsLoaded } from './types';
+import { createAsyncThunk } from '../../utils/helpers/redux';
+import { ShlinkState } from '../../container/types';
 import { parseApiError } from '../../api/utils';
-import { ApiErrorAction } from '../../api/types/actions';
-import { dateToMatchingInterval } from '../../utils/dates/types';
+import { createNewVisits } from './visitCreation';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;
@@ -15,74 +18,72 @@ const calcProgress = (total: number, current: number): number => (current * 100)
 
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
 type LastVisitLoader = () => Promise<Visit | undefined>;
-interface ActionMap {
-  start: string;
-  large: string;
-  finish: string;
-  error: string;
-  progress: string;
-  fallbackToInterval: string;
+
+interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded> {
+  name: string;
+  createLoaders: (params: T, getState: () => ShlinkState) => [VisitsLoader, LastVisitLoader];
+  getExtraFulfilledPayload: (params: T) => Partial<R>;
+  shouldCancel: (getState: () => ShlinkState) => boolean;
 }
 
-export const getVisitsWithLoader = async <T extends Action<string> & { visits: Visit[] }>(
-  visitsLoader: VisitsLoader,
-  lastVisitLoader: LastVisitLoader,
-  extraFinishActionData: Partial<T>,
-  actionMap: ActionMap,
-  dispatch: Dispatch,
-  shouldCancel: () => boolean,
+export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded>(
+  { name, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
 ) => {
-  dispatch({ type: actionMap.start });
+  const progressChangedAction = createAction<number>(`${name}/progressChanged`);
+  const largeAction = createAction<void>(`${name}/large`);
+  const fallbackToIntervalAction = createAction<DateInterval>(`${name}/fallbackToInterval`);
 
-  const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
-    Promise.all(pages.map(async (page) => visitsLoader(page, ITEMS_PER_PAGE).then(prop('data')))).then(flatten);
+  const asyncThunk = createAsyncThunk(name, async (params: T, { getState, dispatch }): Promise<R> => {
+    const [visitsLoader, lastVisitLoader] = createLoaders(params, getState);
 
-  const loadPagesBlocks = async (pagesBlocks: number[][], index = 0): Promise<Visit[]> => {
-    if (shouldCancel()) {
-      return [];
-    }
+    const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
+      Promise.all(pages.map(async (page) => visitsLoader(page, ITEMS_PER_PAGE).then(prop('data')))).then(flatten);
 
-    const data = await loadVisitsInParallel(pagesBlocks[index]);
+    const loadPagesBlocks = async (pagesBlocks: number[][], index = 0): Promise<Visit[]> => {
+      if (shouldCancel(getState)) {
+        return [];
+      }
 
-    dispatch({ type: actionMap.progress, progress: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE) });
+      const data = await loadVisitsInParallel(pagesBlocks[index]);
 
-    if (index < pagesBlocks.length - 1) {
-      return data.concat(await loadPagesBlocks(pagesBlocks, index + 1));
-    }
+      dispatch(progressChangedAction(calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE)));
 
-    return data;
-  };
+      if (index < pagesBlocks.length - 1) {
+        return data.concat(await loadPagesBlocks(pagesBlocks, index + 1));
+      }
 
-  const loadVisits = async (page = 1) => {
-    const { pagination, data } = await visitsLoader(page, ITEMS_PER_PAGE);
-
-    // If pagination was not returned, then this is an old shlink version. Just return data
-    if (!pagination || isLastPage(pagination)) {
       return data;
-    }
+    };
 
-    // If there are more pages, make requests in blocks of 4
-    const pagesRange = range(PARALLEL_STARTING_PAGE, pagination.pagesCount + 1);
-    const pagesBlocks = splitEvery(PARALLEL_REQUESTS_COUNT, pagesRange);
+    const loadVisits = async (page = 1) => {
+      const { pagination, data } = await visitsLoader(page, ITEMS_PER_PAGE);
 
-    if (pagination.pagesCount - 1 > PARALLEL_REQUESTS_COUNT) {
-      dispatch({ type: actionMap.large });
-    }
+      // If pagination was not returned, then this is an old shlink version. Just return data
+      if (!pagination || isLastPage(pagination)) {
+        return data;
+      }
 
-    return data.concat(await loadPagesBlocks(pagesBlocks));
-  };
+      // If there are more pages, make requests in blocks of 4
+      const pagesRange = range(PARALLEL_STARTING_PAGE, pagination.pagesCount + 1);
+      const pagesBlocks = splitEvery(PARALLEL_REQUESTS_COUNT, pagesRange);
 
-  try {
+      if (pagination.pagesCount - 1 > PARALLEL_REQUESTS_COUNT) {
+        dispatch(largeAction());
+      }
+
+      return data.concat(await loadPagesBlocks(pagesBlocks));
+    };
+
     const [visits, lastVisit] = await Promise.all([loadVisits(), lastVisitLoader()]);
 
-    dispatch(
-      !visits.length && lastVisit
-        ? { type: actionMap.fallbackToInterval, fallbackInterval: dateToMatchingInterval(lastVisit.date) }
-        : { ...extraFinishActionData, visits, type: actionMap.finish },
-    );
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: actionMap.error, errorData: parseApiError(e) });
-  }
+    if (!visits.length && lastVisit) {
+      dispatch(fallbackToIntervalAction(dateToMatchingInterval(lastVisit.date)));
+    }
+
+    return { ...getExtraFulfilledPayload(params), visits } as any; // TODO Get rid of this casting
+  });
+
+  return { asyncThunk, progressChangedAction, largeAction, fallbackToIntervalAction };
 };
 
 export const lastVisitLoaderForLoader = (
@@ -93,5 +94,47 @@ export const lastVisitLoaderForLoader = (
     return async () => Promise.resolve(undefined);
   }
 
-  return async () => loader({ page: 1, itemsPerPage: 1 }).then((result) => result.data[0]);
+  return async () => loader({ page: 1, itemsPerPage: 1 }).then(({ data }) => data[0]);
+};
+
+export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>>(
+  name: string,
+  asyncThunkCreator: AT,
+  initialState: State,
+  filterCreatedVisits: (state: State, createdVisits: CreateVisit[]) => CreateVisit[],
+) => {
+  const { asyncThunk, largeAction, fallbackToIntervalAction, progressChangedAction } = asyncThunkCreator;
+  const { reducer, actions } = createSlice({
+    name,
+    initialState,
+    reducers: {
+      cancelGetVisits: (state) => ({ ...state, cancelLoad: true }),
+    },
+    extraReducers: (builder) => {
+      builder.addCase(asyncThunk.pending, () => ({ ...initialState, loading: true }));
+      builder.addCase(asyncThunk.rejected, (_, { error }) => (
+        { ...initialState, error: true, errorData: parseApiError(error) }
+      ));
+      builder.addCase(asyncThunk.fulfilled, (state, { payload }) => (
+        { ...state, ...payload, loading: false, loadingLarge: false, error: false }
+      ));
+
+      builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
+      builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
+      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+        { ...state, fallbackInterval }
+      ));
+
+      builder.addCase(createNewVisits, (state, { payload }) => {
+        const { visits } = state;
+        // @ts-expect-error TODO Fix the state inferred type
+        const newVisits = filterCreatedVisits(state, payload.createdVisits).map(({ visit }) => visit);
+
+        return { ...state, visits: [...newVisits, ...visits] };
+      });
+    },
+  });
+  const { cancelGetVisits } = actions;
+
+  return { reducer, cancelGetVisits };
 };

@@ -19,13 +19,14 @@ import { NavPillItem, NavPills } from '../utils/NavPills';
 import { ExportBtn } from '../utils/ExportBtn';
 import { LineChartCard } from './charts/LineChartCard';
 import { VisitsTable } from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsParams } from './types';
 import { OpenMapModalBtn } from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
 import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
+import { VisitsInfo } from './reducers/types';
 
 export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
