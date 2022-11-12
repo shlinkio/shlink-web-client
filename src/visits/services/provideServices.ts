@@ -7,7 +7,7 @@ import { TagVisits } from '../TagVisits';
 import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
 import { getShortUrlVisits, shortUrlVisitsReducerCreator } from '../reducers/shortUrlVisits';
-import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
+import { getTagVisits, tagVisitsReducerCreator } from '../reducers/tagVisits';
 import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
 import { getOrphanVisits, orphanVisitsReducerCreator } from '../reducers/orphanVisits';
 import { getNonOrphanVisits, nonOrphanVisitsReducerCreator } from '../reducers/nonOrphanVisits';
@@ -58,8 +58,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('getShortUrlVisits', prop('asyncThunk'), 'getShortUrlVisitsCreator');
   bottle.serviceFactory('cancelGetShortUrlVisits', prop('cancelGetShortUrlVisits'), 'shortUrlVisitsReducerCreator');
 
-  bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
+  bottle.serviceFactory('getTagVisitsCreator', getTagVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getTagVisits', prop('asyncThunk'), 'getTagVisitsCreator');
+  bottle.serviceFactory('cancelGetTagVisits', prop('cancelGetTagVisits'), 'tagVisitsReducerCreator');
 
   bottle.serviceFactory('getDomainVisitsCreator', getDomainVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('getDomainVisits', prop('asyncThunk'), 'getDomainVisitsCreator');
@@ -91,6 +92,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('shortUrlVisitsReducerCreator', shortUrlVisitsReducerCreator, 'getShortUrlVisitsCreator');
   bottle.serviceFactory('shortUrlVisitsReducer', prop('reducer'), 'shortUrlVisitsReducerCreator');
+
+  bottle.serviceFactory('tagVisitsReducerCreator', tagVisitsReducerCreator, 'getTagVisitsCreator');
+  bottle.serviceFactory('tagVisitsReducer', prop('reducer'), 'tagVisitsReducerCreator');
 };
 
 export default provideServices;

@@ -1,4 +1,3 @@
-import { PayloadAction } from '@reduxjs/toolkit';
 import { ShlinkVisitsParams } from '../../../api/types';
 import { DateInterval } from '../../../utils/dates/types';
 import { ProblemDetailsError } from '../../../api/types/errors';
@@ -25,9 +24,3 @@ export type VisitsLoaded<T = {}> = T & {
   visits: Visit[];
   query?: ShlinkVisitsParams;
 };
-
-export type VisitsLoadedAction<T = {}> = PayloadAction<VisitsLoaded<T>>;
-
-export type VisitsLoadProgressChangedAction = PayloadAction<number>;
-
-export type VisitsFallbackIntervalAction = PayloadAction<DateInterval>;

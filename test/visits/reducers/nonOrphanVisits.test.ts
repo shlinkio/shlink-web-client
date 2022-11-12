@@ -55,11 +55,10 @@ describe('nonOrphanVisitsReducer', () => {
 
     it('return visits on GET_NON_ORPHAN_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer(buildState({ loading: true, error: false }), {
+      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
         type: getNonOrphanVisits.fulfilled.toString(),
         payload: { visits: actionVisits },
-      } as any);
-      const { loading, error, visits } = state;
+      });
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -105,13 +104,13 @@ describe('nonOrphanVisitsReducer', () => {
       const { visits } = reducer(prevState, {
         type: createNewVisits.toString(),
         payload: { createdVisits: [{ visit }, { visit }] },
-      } as any);
+      });
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 } as any);
+      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
@@ -119,7 +118,7 @@ describe('nonOrphanVisitsReducer', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval } as any,
+        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval },
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
