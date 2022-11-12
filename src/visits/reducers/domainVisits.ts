@@ -1,6 +1,7 @@
+import { createAction } from '@reduxjs/toolkit';
 import { Action, Dispatch } from 'redux';
 import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
-import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
@@ -10,13 +11,14 @@ import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
 import { domainMatches } from '../../short-urls/helpers';
 
-export const GET_DOMAIN_VISITS_START = 'shlink/domainVisits/GET_DOMAIN_VISITS_START';
-export const GET_DOMAIN_VISITS_ERROR = 'shlink/domainVisits/GET_DOMAIN_VISITS_ERROR';
-export const GET_DOMAIN_VISITS = 'shlink/domainVisits/GET_DOMAIN_VISITS';
-export const GET_DOMAIN_VISITS_LARGE = 'shlink/domainVisits/GET_DOMAIN_VISITS_LARGE';
-export const GET_DOMAIN_VISITS_CANCEL = 'shlink/domainVisits/GET_DOMAIN_VISITS_CANCEL';
-export const GET_DOMAIN_VISITS_PROGRESS_CHANGED = 'shlink/domainVisits/GET_DOMAIN_VISITS_PROGRESS_CHANGED';
-export const GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL = 'shlink/domainVisits/GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL';
+const REDUCER_PREFIX = 'shlink/domainVisits';
+export const GET_DOMAIN_VISITS_START = `${REDUCER_PREFIX}/getDomainVisits/pending`;
+export const GET_DOMAIN_VISITS_ERROR = `${REDUCER_PREFIX}/getDomainVisits/rejected`;
+export const GET_DOMAIN_VISITS = `${REDUCER_PREFIX}/getDomainVisits/fulfilled`;
+export const GET_DOMAIN_VISITS_LARGE = `${REDUCER_PREFIX}/getDomainVisits/large`;
+export const GET_DOMAIN_VISITS_CANCEL = `${REDUCER_PREFIX}/getDomainVisits/cancel`;
+export const GET_DOMAIN_VISITS_PROGRESS_CHANGED = `${REDUCER_PREFIX}/getDomainVisits/progressChanged`;
+export const GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getDomainVisits/fallbackToInterval`;
 
 export const DEFAULT_DOMAIN = 'DEFAULT';
 
@@ -47,15 +49,17 @@ const initialState: DomainVisits = {
 };
 
 export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
-  [GET_DOMAIN_VISITS_START]: () => ({ ...initialState, loading: true }),
-  [GET_DOMAIN_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_DOMAIN_VISITS]: (state, { visits, domain, query }) => (
+  [`${REDUCER_PREFIX}/getDomainVisits/pending`]: () => ({ ...initialState, loading: true }),
+  [`${REDUCER_PREFIX}/getDomainVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
+  [`${REDUCER_PREFIX}/getDomainVisits/fulfilled`]: (state, { visits, domain, query }) => (
     { ...state, visits, domain, query, loading: false, loadingLarge: false, error: false }
   ),
-  [GET_DOMAIN_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
-  [GET_DOMAIN_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
-  [GET_DOMAIN_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
+  [`${REDUCER_PREFIX}/getDomainVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
+  [`${REDUCER_PREFIX}/getDomainVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
+  [`${REDUCER_PREFIX}/getDomainVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getDomainVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+    { ...state, fallbackInterval }
+  ),
   [createNewVisits.toString()]: (state, { payload }) => {
     const { domain, visits, query = {} } = state;
     const { startDate, endDate } = query;
@@ -81,16 +85,9 @@ export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
   const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getVisits(domain, params));
   const shouldCancel = () => getState().domainVisits.cancelLoad;
   const extraFinishActionData: Partial<DomainVisitsAction> = { domain, query };
-  const actionMap = {
-    start: GET_DOMAIN_VISITS_START,
-    large: GET_DOMAIN_VISITS_LARGE,
-    finish: GET_DOMAIN_VISITS,
-    error: GET_DOMAIN_VISITS_ERROR,
-    progress: GET_DOMAIN_VISITS_PROGRESS_CHANGED,
-    fallbackToInterval: GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL,
-  };
+  const prefix = `${REDUCER_PREFIX}/getDomainVisits`;
 
-  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
+  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);
 };
 
-export const cancelGetDomainVisits = buildActionCreator(GET_DOMAIN_VISITS_CANCEL);
+export const cancelGetDomainVisits = createAction<void>(`${REDUCER_PREFIX}/getDomainVisits/cancel`);

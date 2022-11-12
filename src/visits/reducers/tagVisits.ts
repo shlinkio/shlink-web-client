@@ -1,6 +1,7 @@
+import { createAction } from '@reduxjs/toolkit';
 import { Action, Dispatch } from 'redux';
 import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
-import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
+import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
 import { ShlinkVisitsParams } from '../../api/types';
@@ -9,13 +10,14 @@ import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
 
-export const GET_TAG_VISITS_START = 'shlink/tagVisits/GET_TAG_VISITS_START';
-export const GET_TAG_VISITS_ERROR = 'shlink/tagVisits/GET_TAG_VISITS_ERROR';
-export const GET_TAG_VISITS = 'shlink/tagVisits/GET_TAG_VISITS';
-export const GET_TAG_VISITS_LARGE = 'shlink/tagVisits/GET_TAG_VISITS_LARGE';
-export const GET_TAG_VISITS_CANCEL = 'shlink/tagVisits/GET_TAG_VISITS_CANCEL';
-export const GET_TAG_VISITS_PROGRESS_CHANGED = 'shlink/tagVisits/GET_TAG_VISITS_PROGRESS_CHANGED';
-export const GET_TAG_VISITS_FALLBACK_TO_INTERVAL = 'shlink/tagVisits/GET_TAG_VISITS_FALLBACK_TO_INTERVAL';
+const REDUCER_PREFIX = 'shlink/tagVisits';
+export const GET_TAG_VISITS_START = `${REDUCER_PREFIX}/getTagVisits/pending`;
+export const GET_TAG_VISITS_ERROR = `${REDUCER_PREFIX}/getTagVisits/rejected`;
+export const GET_TAG_VISITS = `${REDUCER_PREFIX}/getTagVisits/fulfilled`;
+export const GET_TAG_VISITS_LARGE = `${REDUCER_PREFIX}/getTagVisits/large`;
+export const GET_TAG_VISITS_CANCEL = `${REDUCER_PREFIX}/getTagVisits/cancel`;
+export const GET_TAG_VISITS_PROGRESS_CHANGED = `${REDUCER_PREFIX}/getTagVisits/progressChanged`;
+export const GET_TAG_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getTagVisits/fallbackToInterval`;
 
 export interface TagVisits extends VisitsInfo {
   tag: string;
@@ -44,15 +46,17 @@ const initialState: TagVisits = {
 };
 
 export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
-  [GET_TAG_VISITS_START]: () => ({ ...initialState, loading: true }),
-  [GET_TAG_VISITS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [GET_TAG_VISITS]: (state, { visits, tag, query }) => (
+  [`${REDUCER_PREFIX}/getTagVisits/pending`]: () => ({ ...initialState, loading: true }),
+  [`${REDUCER_PREFIX}/getTagVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
+  [`${REDUCER_PREFIX}/getTagVisits/fulfilled`]: (state, { visits, tag, query }) => (
     { ...state, visits, tag, query, loading: false, loadingLarge: false, error: false }
   ),
-  [GET_TAG_VISITS_LARGE]: (state) => ({ ...state, loadingLarge: true }),
-  [GET_TAG_VISITS_CANCEL]: (state) => ({ ...state, cancelLoad: true }),
-  [GET_TAG_VISITS_PROGRESS_CHANGED]: (state, { progress }) => ({ ...state, progress }),
-  [GET_TAG_VISITS_FALLBACK_TO_INTERVAL]: (state, { fallbackInterval }) => ({ ...state, fallbackInterval }),
+  [`${REDUCER_PREFIX}/getTagVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
+  [`${REDUCER_PREFIX}/getTagVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
+  [`${REDUCER_PREFIX}/getTagVisits/progressChanged`]: (state, { progress }) => ({ ...state, progress }),
+  [`${REDUCER_PREFIX}/getTagVisits/fallbackToInterval`]: (state, { fallbackInterval }) => (
+    { ...state, fallbackInterval }
+  ),
   [createNewVisits.toString()]: (state, { payload }) => {
     const { tag, visits, query = {} } = state;
     const { startDate, endDate } = query;
@@ -77,16 +81,9 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getVisits(tag, params));
   const shouldCancel = () => getState().tagVisits.cancelLoad;
   const extraFinishActionData: Partial<TagVisitsAction> = { tag, query };
-  const actionMap = {
-    start: GET_TAG_VISITS_START,
-    large: GET_TAG_VISITS_LARGE,
-    finish: GET_TAG_VISITS,
-    error: GET_TAG_VISITS_ERROR,
-    progress: GET_TAG_VISITS_PROGRESS_CHANGED,
-    fallbackToInterval: GET_TAG_VISITS_FALLBACK_TO_INTERVAL,
-  };
+  const prefix = `${REDUCER_PREFIX}/getTagVisits`;
 
-  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, actionMap, dispatch, shouldCancel);
+  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);
 };
 
-export const cancelGetTagVisits = buildActionCreator(GET_TAG_VISITS_CANCEL);
+export const cancelGetTagVisits = createAction<void>(`${REDUCER_PREFIX}/getTagVisits/cancel`);

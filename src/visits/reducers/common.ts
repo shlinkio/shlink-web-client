@@ -15,24 +15,16 @@ const calcProgress = (total: number, current: number): number => (current * 100)
 
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
 type LastVisitLoader = () => Promise<Visit | undefined>;
-interface ActionMap {
-  start: string;
-  large: string;
-  finish: string;
-  error: string;
-  progress: string;
-  fallbackToInterval: string;
-}
 
 export const getVisitsWithLoader = async <T extends Action<string> & { visits: Visit[] }>(
   visitsLoader: VisitsLoader,
   lastVisitLoader: LastVisitLoader,
   extraFinishActionData: Partial<T>,
-  actionMap: ActionMap,
+  actionsPrefix: string,
   dispatch: Dispatch,
   shouldCancel: () => boolean,
 ) => {
-  dispatch({ type: actionMap.start });
+  dispatch({ type: `${actionsPrefix}/pending` });
 
   const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
     Promise.all(pages.map(async (page) => visitsLoader(page, ITEMS_PER_PAGE).then(prop('data')))).then(flatten);
@@ -44,7 +36,10 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 
     const data = await loadVisitsInParallel(pagesBlocks[index]);
 
-    dispatch({ type: actionMap.progress, progress: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE) });
+    dispatch({
+      type: `${actionsPrefix}/progressChanged`,
+      progress: calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE),
+    });
 
     if (index < pagesBlocks.length - 1) {
       return data.concat(await loadPagesBlocks(pagesBlocks, index + 1));
@@ -66,7 +61,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
     const pagesBlocks = splitEvery(PARALLEL_REQUESTS_COUNT, pagesRange);
 
     if (pagination.pagesCount - 1 > PARALLEL_REQUESTS_COUNT) {
-      dispatch({ type: actionMap.large });
+      dispatch({ type: `${actionsPrefix}/large` });
     }
 
     return data.concat(await loadPagesBlocks(pagesBlocks));
@@ -77,11 +72,11 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
 
     dispatch(
       !visits.length && lastVisit
-        ? { type: actionMap.fallbackToInterval, fallbackInterval: dateToMatchingInterval(lastVisit.date) }
-        : { ...extraFinishActionData, visits, type: actionMap.finish },
+        ? { type: `${actionsPrefix}/fallbackToInterval`, fallbackInterval: dateToMatchingInterval(lastVisit.date) }
+        : { ...extraFinishActionData, visits, type: `${actionsPrefix}/fulfilled` },
     );
   } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: actionMap.error, errorData: parseApiError(e) });
+    dispatch<ApiErrorAction>({ type: `${actionsPrefix}/rejected`, errorData: parseApiError(e) });
   }
 };
 
