@@ -1,35 +1,12 @@
-import { createAction } from '@reduxjs/toolkit';
-import { Dispatch } from 'redux';
-import { buildReducer } from '../../utils/helpers/redux';
+import { createSlice } from '@reduxjs/toolkit';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { GetState } from '../../container/types';
-import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
-import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
-import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import {
-  LoadVisits,
-  VisitsFallbackIntervalAction,
-  VisitsInfo,
-  VisitsLoaded,
-  VisitsLoadedAction,
-  VisitsLoadProgressChangedAction,
-} from './types';
+import { createVisitsAsyncThunk, lastVisitLoaderForLoader } from './common';
+import { createNewVisits } from './visitCreation';
+import { VisitsInfo } from './types';
+import { parseApiError } from '../../api/utils';
 
 const REDUCER_PREFIX = 'shlink/orphanVisits';
-export const GET_NON_ORPHAN_VISITS_START = `${REDUCER_PREFIX}/getNonOrphanVisits/pending`;
-export const GET_NON_ORPHAN_VISITS_ERROR = `${REDUCER_PREFIX}/getNonOrphanVisits/rejected`;
-export const GET_NON_ORPHAN_VISITS = `${REDUCER_PREFIX}/getNonOrphanVisits/fulfilled`;
-export const GET_NON_ORPHAN_VISITS_LARGE = `${REDUCER_PREFIX}/getNonOrphanVisits/large`;
-export const GET_NON_ORPHAN_VISITS_CANCEL = `${REDUCER_PREFIX}/getNonOrphanVisits/cancel`;
-export const GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED = `${REDUCER_PREFIX}/getNonOrphanVisits/progressChanged`;
-export const GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getNonOrphanVisits/fallbackToInterval`;
-
-type NonOrphanVisitsCombinedAction = VisitsLoadedAction
-& VisitsLoadProgressChangedAction
-& VisitsFallbackIntervalAction
-& CreateVisitsAction
-& ApiErrorAction;
 
 const initialState: VisitsInfo = {
   visits: [],
@@ -40,43 +17,56 @@ const initialState: VisitsInfo = {
   progress: 0,
 };
 
-export default buildReducer<VisitsInfo, NonOrphanVisitsCombinedAction>({
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/pending`]: () => ({ ...initialState, loading: true }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/rejected`]: (_, { errorData }) => (
-    { ...initialState, error: true, errorData }
-  ),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/fulfilled`]: (state, { payload }: VisitsLoadedAction) => (
-    { ...state, ...payload, loading: false, loadingLarge: false, error: false }
-  ),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getNonOrphanVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
-    { ...state, fallbackInterval }
-  ),
-  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
-    const { visits, query = {} } = state;
-    const { startDate, endDate } = query;
-    const newVisits = payload.createdVisits
-      .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
-      .map(({ visit }) => visit);
+export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+  actionsPrefix: `${REDUCER_PREFIX}/getNonOrphanVisits`,
+  createLoaders: ({ query = {}, doIntervalFallback = false }, getState) => {
+    const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
+    const visitsLoader = async (page: number, itemsPerPage: number) =>
+      shlinkGetNonOrphanVisits({ ...query, page, itemsPerPage });
+    const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, shlinkGetNonOrphanVisits);
 
-    return { ...state, visits: [...newVisits, ...visits] };
+    return [visitsLoader, lastVisitLoader];
   },
-}, initialState);
+  getExtraFulfilledPayload: ({ query = {} }) => ({ query }),
+  shouldCancel: (getState) => getState().orphanVisits.cancelLoad,
+});
 
-export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  { query = {}, doIntervalFallback = false }: LoadVisits,
-) => async (dispatch: Dispatch, getState: GetState) => {
-  const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = async (page: number, itemsPerPage: number) =>
-    shlinkGetNonOrphanVisits({ ...query, page, itemsPerPage });
-  const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, shlinkGetNonOrphanVisits);
-  const shouldCancel = () => getState().orphanVisits.cancelLoad;
-  const extraFinishActionData: Partial<VisitsLoaded> = { query };
-  const prefix = `${REDUCER_PREFIX}/getNonOrphanVisits`;
+export const nonOrphanVisitsReducerCreator = (
+  { asyncThunk, largeAction, progressChangedAction, fallbackToIntervalAction }: ReturnType<typeof getNonOrphanVisits>,
+) => {
+  const { reducer, actions } = createSlice({
+    name: REDUCER_PREFIX,
+    initialState,
+    reducers: {
+      cancelGetNonOrphanVisits: (state) => ({ ...state, cancelLoad: true }),
+    },
+    extraReducers: (builder) => {
+      builder.addCase(asyncThunk.pending, () => ({ ...initialState, loading: true }));
+      builder.addCase(asyncThunk.rejected, (_, { error }) => (
+        { ...initialState, error: true, errorData: parseApiError(error) }
+      ));
+      builder.addCase(asyncThunk.fulfilled, (state, { payload }) => (
+        { ...state, ...payload, loading: false, loadingLarge: false, error: false }
+      ));
 
-  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);
+      builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
+      builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
+      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+        { ...state, fallbackInterval }
+      ));
+
+      builder.addCase(createNewVisits, (state, { payload }) => {
+        const { visits, query = {} } = state;
+        const { startDate, endDate } = query;
+        const newVisits = payload.createdVisits
+          .filter(({ visit }) => isBetween(visit.date, startDate, endDate))
+          .map(({ visit }) => visit);
+
+        return { ...state, visits: [...newVisits, ...visits] };
+      });
+    },
+  });
+  const { cancelGetNonOrphanVisits } = actions;
+
+  return { reducer, cancelGetNonOrphanVisits };
 };
-
-export const cancelGetNonOrphanVisits = createAction<void>(`${REDUCER_PREFIX}/getNonOrphanVisits/cancel`);

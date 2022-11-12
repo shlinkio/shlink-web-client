@@ -65,10 +65,9 @@ export const domainVisitsReducerCreator = (
 
       builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
       builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
-      builder.addCase(
-        fallbackToIntervalAction,
-        (state, { payload: fallbackInterval }) => ({ ...state, fallbackInterval }),
-      );
+      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+        { ...state, fallbackInterval }
+      ));
 
       builder.addCase(createNewVisits, (state, { payload }) => {
         const { domain, visits, query = {} } = state;
@@ -82,7 +81,6 @@ export const domainVisitsReducerCreator = (
       });
     },
   });
-
   const { cancelGetDomainVisits } = actions;
 
   return { reducer, cancelGetDomainVisits };

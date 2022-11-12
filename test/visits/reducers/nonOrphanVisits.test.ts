@@ -1,15 +1,8 @@
 import { Mock } from 'ts-mockery';
 import { addDays, formatISO, subDays } from 'date-fns';
-import reducer, {
-  getNonOrphanVisits,
-  cancelGetNonOrphanVisits,
-  GET_NON_ORPHAN_VISITS_START,
-  GET_NON_ORPHAN_VISITS_ERROR,
-  GET_NON_ORPHAN_VISITS,
-  GET_NON_ORPHAN_VISITS_LARGE,
-  GET_NON_ORPHAN_VISITS_CANCEL,
-  GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED,
-  GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL,
+import {
+  getNonOrphanVisits as getNonOrphanVisitsCreator,
+  nonOrphanVisitsReducerCreator,
 } from '../../../src/visits/reducers/nonOrphanVisits';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
@@ -24,34 +17,37 @@ import { VisitsInfo } from '../../../src/visits/reducers/types';
 describe('nonOrphanVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const getNonOrphanVisitsCall = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ getNonOrphanVisits: getNonOrphanVisitsCall });
+  const creator = getNonOrphanVisitsCreator(buildShlinkApiClient);
+  const { asyncThunk: getNonOrphanVisits, progressChangedAction, largeAction, fallbackToIntervalAction } = creator;
+  const { reducer, cancelGetNonOrphanVisits } = nonOrphanVisitsReducerCreator(creator);
+
+  beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => Mock.of<VisitsInfo>(data);
 
     it('returns loading on GET_NON_ORPHAN_VISITS_START', () => {
-      const state = reducer(buildState({ loading: false }), { type: GET_NON_ORPHAN_VISITS_START } as any);
-      const { loading } = state;
-
+      const { loading } = reducer(buildState({ loading: false }), { type: getNonOrphanVisits.pending.toString() });
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_NON_ORPHAN_VISITS_LARGE', () => {
-      const state = reducer(buildState({ loadingLarge: false }), { type: GET_NON_ORPHAN_VISITS_LARGE } as any);
-      const { loadingLarge } = state;
-
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_NON_ORPHAN_VISITS_CANCEL', () => {
-      const state = reducer(buildState({ cancelLoad: false }), { type: GET_NON_ORPHAN_VISITS_CANCEL } as any);
-      const { cancelLoad } = state;
-
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetNonOrphanVisits.toString() });
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_NON_ORPHAN_VISITS_ERROR', () => {
-      const state = reducer(buildState({ loading: true, error: false }), { type: GET_NON_ORPHAN_VISITS_ERROR } as any);
-      const { loading, error } = state;
+      const { loading, error } = reducer(
+        buildState({ loading: true, error: false }),
+        { type: getNonOrphanVisits.rejected.toString() },
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(true);
@@ -60,7 +56,7 @@ describe('nonOrphanVisitsReducer', () => {
     it('return visits on GET_NON_ORPHAN_VISITS', () => {
       const actionVisits = [{}, {}];
       const state = reducer(buildState({ loading: true, error: false }), {
-        type: GET_NON_ORPHAN_VISITS,
+        type: getNonOrphanVisits.fulfilled.toString(),
         payload: { visits: actionVisits },
       } as any);
       const { loading, error, visits } = state;
@@ -115,8 +111,7 @@ describe('nonOrphanVisitsReducer', () => {
     });
 
     it('returns new progress on GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED, payload: 85 } as any);
-
+      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 } as any);
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
@@ -124,7 +119,7 @@ describe('nonOrphanVisitsReducer', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL, payload: fallbackInterval } as any,
+        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval } as any,
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
@@ -132,11 +127,6 @@ describe('nonOrphanVisitsReducer', () => {
   });
 
   describe('getNonOrphanVisits', () => {
-    type GetVisitsReturn = Promise<ShlinkVisits> | ((query: any) => Promise<ShlinkVisits>);
-
-    const buildApiClientMock = (returned: GetVisitsReturn) => Mock.of<ShlinkApiClient>({
-      getNonOrphanVisits: jest.fn(typeof returned === 'function' ? returned : async () => returned),
-    });
     const dispatchMock = jest.fn();
     const getState = () => Mock.of<ShlinkState>({
       orphanVisits: { cancelLoad: false },
@@ -145,14 +135,18 @@ describe('nonOrphanVisitsReducer', () => {
     beforeEach(jest.resetAllMocks);
 
     it('dispatches start and error when promise is rejected', async () => {
-      const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
+      getNonOrphanVisitsCall.mockRejectedValue({});
 
-      await getNonOrphanVisits(() => ShlinkApiClient)({})(dispatchMock, getState);
+      await getNonOrphanVisits({})(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_NON_ORPHAN_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_NON_ORPHAN_VISITS_ERROR });
-      expect(ShlinkApiClient.getNonOrphanVisits).toHaveBeenCalledTimes(1);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: getNonOrphanVisits.pending.toString(),
+      }));
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: getNonOrphanVisits.rejected.toString(),
+      }));
+      expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(1);
     });
 
     it.each([
@@ -160,37 +154,45 @@ describe('nonOrphanVisitsReducer', () => {
       [{}],
     ])('dispatches start and success when promise is resolved', async (query) => {
       const visits = visitsMocks.map((visit) => ({ ...visit, visitedUrl: '' }));
-      const ShlinkApiClient = buildApiClientMock(Promise.resolve({
+      getNonOrphanVisitsCall.mockResolvedValue({
         data: visits,
         pagination: {
           currentPage: 1,
           pagesCount: 1,
           totalItems: 1,
         },
-      }));
+      });
 
-      await getNonOrphanVisits(() => ShlinkApiClient)({ query })(dispatchMock, getState);
+      await getNonOrphanVisits({ query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_NON_ORPHAN_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, {
-        type: GET_NON_ORPHAN_VISITS,
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining(
+        { type: getNonOrphanVisits.pending.toString() },
+      ));
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: getNonOrphanVisits.fulfilled.toString(),
         payload: { visits, query: query ?? {} },
-      });
-      expect(ShlinkApiClient.getNonOrphanVisits).toHaveBeenCalledTimes(1);
+      }));
+      expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(1);
     });
 
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) })],
-        { type: GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL, payload: 'last7Days' },
+        { type: fallbackToIntervalAction.toString(), payload: 'last7Days' },
+        3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) })],
-        { type: GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL, payload: 'last365Days' },
+        { type: fallbackToIntervalAction.toString(), payload: 'last365Days' },
+        3,
       ],
-      [[], expect.objectContaining({ type: GET_NON_ORPHAN_VISITS })],
-    ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
+      [[], expect.objectContaining({ type: getNonOrphanVisits.fulfilled.toString() }), 2],
+    ])('dispatches fallback interval when the list of visits is empty', async (
+      lastVisits,
+      expectedSecondDispatch,
+      expectedAmountOfDispatches,
+    ) => {
       const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
         data,
         pagination: {
@@ -199,22 +201,23 @@ describe('nonOrphanVisitsReducer', () => {
           totalItems: 1,
         },
       });
-      const getShlinkOrphanVisits = jest.fn()
+      getNonOrphanVisitsCall
         .mockResolvedValueOnce(buildVisitsResult())
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
-      const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getNonOrphanVisits: getShlinkOrphanVisits });
 
-      await getNonOrphanVisits(() => ShlinkApiClient)({ doIntervalFallback: true })(dispatchMock, getState);
+      await getNonOrphanVisits({ doIntervalFallback: true })(dispatchMock, getState, {});
 
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_NON_ORPHAN_VISITS_START });
+      expect(dispatchMock).toHaveBeenCalledTimes(expectedAmountOfDispatches);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: getNonOrphanVisits.pending.toString(),
+      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
-      expect(getShlinkOrphanVisits).toHaveBeenCalledTimes(2);
+      expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('cancelGetNonOrphanVisits', () => {
     it('just returns the action with proper type', () =>
-      expect(cancelGetNonOrphanVisits()).toEqual({ type: GET_NON_ORPHAN_VISITS_CANCEL }));
+      expect(cancelGetNonOrphanVisits()).toEqual({ type: cancelGetNonOrphanVisits.toString() }));
   });
 });

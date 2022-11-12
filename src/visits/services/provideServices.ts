@@ -10,7 +10,7 @@ import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrl
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
 import { cancelGetOrphanVisits, getOrphanVisits } from '../reducers/orphanVisits';
-import { cancelGetNonOrphanVisits, getNonOrphanVisits } from '../reducers/nonOrphanVisits';
+import { getNonOrphanVisits, nonOrphanVisitsReducerCreator } from '../reducers/nonOrphanVisits';
 import { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview, visitsOverviewReducerCreator } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
@@ -67,8 +67,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetOrphanVisits', () => cancelGetOrphanVisits);
 
-  bottle.serviceFactory('getNonOrphanVisits', getNonOrphanVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('cancelGetNonOrphanVisits', () => cancelGetNonOrphanVisits);
+  bottle.serviceFactory('getNonOrphanVisitsCreator', getNonOrphanVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getNonOrphanVisits', prop('asyncThunk'), 'getNonOrphanVisitsCreator');
+  bottle.serviceFactory('cancelGetNonOrphanVisits', prop('cancelGetNonOrphanVisits'), 'nonOrphanVisitsReducerCreator');
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
   bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'buildShlinkApiClient');
@@ -79,6 +80,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('domainVisitsReducerCreator', domainVisitsReducerCreator, 'getDomainVisitsCreator');
   bottle.serviceFactory('domainVisitsReducer', prop('reducer'), 'domainVisitsReducerCreator');
+
+  bottle.serviceFactory('nonOrphanVisitsReducerCreator', nonOrphanVisitsReducerCreator, 'getNonOrphanVisitsCreator');
+  bottle.serviceFactory('nonOrphanVisitsReducer', prop('reducer'), 'nonOrphanVisitsReducerCreator');
 };
 
 export default provideServices;

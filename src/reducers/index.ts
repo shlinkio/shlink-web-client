@@ -4,7 +4,6 @@ import { serversReducer } from '../servers/reducers/servers';
 import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import orphanVisitsReducer from '../visits/reducers/orphanVisits';
-import nonOrphanVisitsReducer from '../visits/reducers/nonOrphanVisits';
 import { settingsReducer } from '../settings/reducers/settings';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
 import { sidebarReducer } from '../common/reducers/sidebar';
@@ -22,7 +21,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   tagVisits: tagVisitsReducer,
   domainVisits: container.domainVisitsReducer,
   orphanVisits: orphanVisitsReducer,
-  nonOrphanVisits: nonOrphanVisitsReducer,
+  nonOrphanVisits: container.nonOrphanVisitsReducer,
   tagsList: container.tagsListReducer,
   tagDelete: container.tagDeleteReducer,
   tagEdit: container.tagEditReducer,
