@@ -175,7 +175,7 @@ describe('domainVisitsReducer', () => {
     it('dispatches start and error when promise is rejected', async () => {
       const shlinkApiClient = buildApiClientMock(Promise.reject(new Error()));
 
-      await getDomainVisits(() => shlinkApiClient)('foo.com')(dispatchMock, getState);
+      await getDomainVisits(() => shlinkApiClient)({ domain })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_DOMAIN_VISITS_START });
@@ -197,7 +197,7 @@ describe('domainVisitsReducer', () => {
         },
       }));
 
-      await getDomainVisits(() => shlinkApiClient)(domain, query)(dispatchMock, getState);
+      await getDomainVisits(() => shlinkApiClient)({ domain, query })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_DOMAIN_VISITS_START });
@@ -229,7 +229,7 @@ describe('domainVisitsReducer', () => {
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
       const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getDomainVisits: getShlinkDomainVisits });
 
-      await getDomainVisits(() => ShlinkApiClient)(domain, {}, true)(dispatchMock, getState);
+      await getDomainVisits(() => ShlinkApiClient)({ domain, doIntervalFallback: true })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_DOMAIN_VISITS_START });

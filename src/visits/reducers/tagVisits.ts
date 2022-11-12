@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import { Visit } from '../types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -9,6 +9,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
+import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/tagVisits';
 export const GET_TAG_VISITS_START = `${REDUCER_PREFIX}/getTagVisits/pending`;

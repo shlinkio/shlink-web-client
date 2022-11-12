@@ -38,7 +38,7 @@ describe('<DomainVisits />', () => {
   it('wraps visits stats and header', () => {
     setUp();
     expect(screen.getByRole('heading', { name: '"foo.com" visits' })).toBeInTheDocument();
-    expect(getDomainVisits).toHaveBeenCalledWith('DEFAULT', expect.anything(), expect.anything());
+    expect(getDomainVisits).toHaveBeenCalledWith(expect.objectContaining({ domain: 'DEFAULT' }));
   });
 
   it('exports visits when clicking the button', async () => {

@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Action, Dispatch } from 'redux';
-import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import { Visit } from '../types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
@@ -10,6 +10,7 @@ import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
 import { domainMatches } from '../../short-urls/helpers';
+import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/domainVisits';
 export const GET_DOMAIN_VISITS_START = `${REDUCER_PREFIX}/getDomainVisits/pending`;
@@ -23,6 +24,10 @@ export const GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getDoma
 export const DEFAULT_DOMAIN = 'DEFAULT';
 
 export interface DomainVisits extends VisitsInfo {
+  domain: string;
+}
+
+export interface LoadDomainVisits extends LoadVisits {
   domain: string;
 }
 
@@ -73,9 +78,7 @@ export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
 }, initialState);
 
 export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  domain: string,
-  query: ShlinkVisitsParams = {},
-  doIntervalFallback = false,
+  { domain, query = {}, doIntervalFallback = false }: LoadDomainVisits,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getDomainVisits: getVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(

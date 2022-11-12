@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Action, Dispatch } from 'redux';
 import { shortUrlMatches } from '../../short-urls/helpers';
-import { Visit, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from '../types';
+import { Visit } from '../types';
 import { ShortUrlIdentifier } from '../../short-urls/data';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -11,6 +11,7 @@ import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
+import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
 
 const REDUCER_PREFIX = 'shlink/shortUrlVisits';
 export const GET_SHORT_URL_VISITS_START = `${REDUCER_PREFIX}/getShortUrlVisits/pending`;

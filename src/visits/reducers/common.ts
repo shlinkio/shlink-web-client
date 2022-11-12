@@ -1,10 +1,11 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
 import { Action, Dispatch } from 'redux';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
-import { Visit, VisitsLoadProgressChangedAction } from '../types';
+import { Visit } from '../types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 import { dateToMatchingInterval } from '../../utils/dates/types';
+import { VisitsLoadProgressChangedAction } from './types';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;

@@ -13,9 +13,9 @@ import { ShortUrlVisits } from '../visits/reducers/shortUrlVisits';
 import { TagVisits } from '../visits/reducers/tagVisits';
 import { DomainsList } from '../domains/reducers/domainsList';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
-import { VisitsInfo } from '../visits/types';
 import { Sidebar } from '../common/reducers/sidebar';
 import { DomainVisits } from '../visits/reducers/domainVisits';
+import { VisitsInfo } from '../visits/reducers/types';
 
 export interface ShlinkState {
   servers: ServersMap;

@@ -4,10 +4,11 @@ import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
 import { VisitsStats } from './VisitsStats';
-import { NormalizedVisit, OrphanVisitType, VisitsInfo, VisitsParams } from './types';
+import { NormalizedVisit, OrphanVisitType, VisitsParams } from './types';
 import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
+import { VisitsInfo } from './reducers/types';
 
 export interface OrphanVisitsProps extends CommonVisitsProps {
   getOrphanVisits: (
