@@ -1,7 +1,6 @@
 import { IContainer } from 'bottlejs';
 import { combineReducers } from '@reduxjs/toolkit';
 import { serversReducer } from '../servers/reducers/servers';
-import shortUrlVisitsReducer from '../visits/reducers/shortUrlVisits';
 import tagVisitsReducer from '../visits/reducers/tagVisits';
 import { settingsReducer } from '../settings/reducers/settings';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
@@ -16,7 +15,7 @@ export default (container: IContainer) => combineReducers<ShlinkState>({
   shortUrlDeletion: container.shortUrlDeletionReducer,
   shortUrlEdition: container.shortUrlEditionReducer,
   shortUrlDetail: container.shortUrlDetailReducer,
-  shortUrlVisits: shortUrlVisitsReducer,
+  shortUrlVisits: container.shortUrlVisitsReducer,
   tagVisits: tagVisitsReducer,
   domainVisits: container.domainVisitsReducer,
   orphanVisits: container.orphanVisitsReducer,

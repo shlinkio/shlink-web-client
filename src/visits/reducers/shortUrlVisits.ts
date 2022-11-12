@@ -1,45 +1,20 @@
-import { createAction } from '@reduxjs/toolkit';
-import { Dispatch } from 'redux';
+import { createSlice } from '@reduxjs/toolkit';
 import { shortUrlMatches } from '../../short-urls/helpers';
 import { ShortUrlIdentifier } from '../../short-urls/data';
-import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { GetState } from '../../container/types';
-import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
-import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
+import { createVisitsAsyncThunk, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import {
-  LoadVisits,
-  VisitsFallbackIntervalAction,
-  VisitsInfo,
-  VisitsLoaded,
-  VisitsLoadedAction,
-  VisitsLoadProgressChangedAction,
-} from './types';
+import { LoadVisits, VisitsInfo } from './types';
+import { parseApiError } from '../../api/utils';
 
 const REDUCER_PREFIX = 'shlink/shortUrlVisits';
-export const GET_SHORT_URL_VISITS_START = `${REDUCER_PREFIX}/getShortUrlVisits/pending`;
-export const GET_SHORT_URL_VISITS_ERROR = `${REDUCER_PREFIX}/getShortUrlVisits/rejected`;
-export const GET_SHORT_URL_VISITS = `${REDUCER_PREFIX}/getShortUrlVisits/fulfilled`;
-export const GET_SHORT_URL_VISITS_LARGE = `${REDUCER_PREFIX}/getShortUrlVisits/large`;
-export const GET_SHORT_URL_VISITS_CANCEL = `${REDUCER_PREFIX}/getShortUrlVisits/cancel`;
-export const GET_SHORT_URL_VISITS_PROGRESS_CHANGED = `${REDUCER_PREFIX}/getShortUrlVisits/progressChanged`;
-export const GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getShortUrlVisits/fallbackToInterval`;
 
 export interface ShortUrlVisits extends VisitsInfo, ShortUrlIdentifier {}
-
-type ShortUrlVisitsAction = VisitsLoadedAction<ShortUrlIdentifier>;
 
 export interface LoadShortUrlVisits extends LoadVisits {
   shortCode: string;
 }
-
-type ShortUrlVisitsCombinedAction = ShortUrlVisitsAction
-& VisitsLoadProgressChangedAction
-& VisitsFallbackIntervalAction
-& CreateVisitsAction
-& ApiErrorAction;
 
 const initialState: ShortUrlVisits = {
   visits: [],
@@ -52,53 +27,66 @@ const initialState: ShortUrlVisits = {
   progress: 0,
 };
 
-export default buildReducer<ShortUrlVisits, ShortUrlVisitsCombinedAction>({
-  [`${REDUCER_PREFIX}/getShortUrlVisits/pending`]: () => ({ ...initialState, loading: true }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/fulfilled`]: (state, { payload }: ShortUrlVisitsAction) => ({
-    ...state,
-    ...payload,
-    loading: false,
-    loadingLarge: false,
-    error: false,
-  }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/progressChanged`]: (state, { payload: progress }) => ({ ...state, progress }),
-  [`${REDUCER_PREFIX}/getShortUrlVisits/fallbackToInterval`]: (state, { payload: fallbackInterval }) => (
-    { ...state, fallbackInterval }
-  ),
-  [createNewVisits.toString()]: (state, { payload }: CreateVisitsAction) => {
-    const { shortCode, domain, visits, query = {} } = state;
-    const { startDate, endDate } = query;
-    const newVisits = payload.createdVisits
-      .filter(
-        ({ shortUrl, visit }) =>
-          shortUrl && shortUrlMatches(shortUrl, shortCode, domain) && isBetween(visit.date, startDate, endDate),
-      )
-      .map(({ visit }) => visit);
+export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+  actionsPrefix: `${REDUCER_PREFIX}/getShortUrlVisits`,
+  createLoaders: ({ shortCode, query = {}, doIntervalFallback = false }: LoadShortUrlVisits, getState) => {
+    const { getShortUrlVisits: shlinkGetShortUrlVisits } = buildShlinkApiClient(getState);
+    const visitsLoader = async (page: number, itemsPerPage: number) => shlinkGetShortUrlVisits(
+      shortCode,
+      { ...query, page, itemsPerPage },
+    );
+    const lastVisitLoader = lastVisitLoaderForLoader(
+      doIntervalFallback,
+      async (params) => shlinkGetShortUrlVisits(shortCode, { ...params, domain: query.domain }),
+    );
 
-    return newVisits.length === 0 ? state : { ...state, visits: [...newVisits, ...visits] };
+    return [visitsLoader, lastVisitLoader];
   },
-}, initialState);
+  getExtraFulfilledPayload: ({ shortCode, query = {} }: LoadShortUrlVisits) => (
+    { shortCode, query, domain: query.domain }
+  ),
+  shouldCancel: (getState) => getState().shortUrlVisits.cancelLoad,
+});
 
-export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  { shortCode, query = {}, doIntervalFallback = false }: LoadShortUrlVisits,
-) => async (dispatch: Dispatch, getState: GetState) => {
-  const { getShortUrlVisits: shlinkGetShortUrlVisits } = buildShlinkApiClient(getState);
-  const visitsLoader = async (page: number, itemsPerPage: number) => shlinkGetShortUrlVisits(
-    shortCode,
-    { ...query, page, itemsPerPage },
-  );
-  const lastVisitLoader = lastVisitLoaderForLoader(
-    doIntervalFallback,
-    async (params) => shlinkGetShortUrlVisits(shortCode, { ...params, domain: query.domain }),
-  );
-  const shouldCancel = () => getState().shortUrlVisits.cancelLoad;
-  const extraFinishActionData: Partial<VisitsLoaded<ShortUrlIdentifier>> = { shortCode, query, domain: query.domain };
-  const prefix = `${REDUCER_PREFIX}/getShortUrlVisits`;
+export const shortUrlVisitsReducerCreator = (
+  { asyncThunk, largeAction, progressChangedAction, fallbackToIntervalAction }: ReturnType<typeof getShortUrlVisits>,
+) => {
+  const { reducer, actions } = createSlice({
+    name: REDUCER_PREFIX,
+    initialState,
+    reducers: {
+      cancelGetShortUrlVisits: (state) => ({ ...state, cancelLoad: true }),
+    },
+    extraReducers: (builder) => {
+      builder.addCase(asyncThunk.pending, () => ({ ...initialState, loading: true }));
+      builder.addCase(asyncThunk.rejected, (_, { error }) => (
+        { ...initialState, error: true, errorData: parseApiError(error) }
+      ));
+      builder.addCase(asyncThunk.fulfilled, (state, { payload }) => (
+        { ...state, ...payload, loading: false, loadingLarge: false, error: false }
+      ));
 
-  return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);
+      builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
+      builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
+      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+        { ...state, fallbackInterval }
+      ));
+
+      builder.addCase(createNewVisits, (state, { payload }: CreateVisitsAction) => {
+        const { shortCode, domain, visits, query = {} } = state;
+        const { startDate, endDate } = query;
+        const newVisits = payload.createdVisits
+          .filter(
+            ({ shortUrl, visit }) =>
+              shortUrl && shortUrlMatches(shortUrl, shortCode, domain) && isBetween(visit.date, startDate, endDate),
+          )
+          .map(({ visit }) => visit);
+
+        return newVisits.length === 0 ? state : { ...state, visits: [...newVisits, ...visits] };
+      });
+    },
+  });
+  const { cancelGetShortUrlVisits } = actions;
+
+  return { reducer, cancelGetShortUrlVisits };
 };
-
-export const cancelGetShortUrlVisits = createAction<void>(`${REDUCER_PREFIX}/getShortUrlVisits/cancel`);

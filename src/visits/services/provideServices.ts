@@ -6,7 +6,7 @@ import { ShortUrlVisits } from '../ShortUrlVisits';
 import { TagVisits } from '../TagVisits';
 import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
-import { cancelGetShortUrlVisits, getShortUrlVisits } from '../reducers/shortUrlVisits';
+import { getShortUrlVisits, shortUrlVisitsReducerCreator } from '../reducers/shortUrlVisits';
 import { cancelGetTagVisits, getTagVisits } from '../reducers/tagVisits';
 import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
 import { getOrphanVisits, orphanVisitsReducerCreator } from '../reducers/orphanVisits';
@@ -54,8 +54,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('VisitsParser', () => visitsParser);
 
   // Actions
-  bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('cancelGetShortUrlVisits', () => cancelGetShortUrlVisits);
+  bottle.serviceFactory('getShortUrlVisitsCreator', getShortUrlVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getShortUrlVisits', prop('asyncThunk'), 'getShortUrlVisitsCreator');
+  bottle.serviceFactory('cancelGetShortUrlVisits', prop('cancelGetShortUrlVisits'), 'shortUrlVisitsReducerCreator');
 
   bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', () => cancelGetTagVisits);
@@ -87,6 +88,9 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('orphanVisitsReducerCreator', orphanVisitsReducerCreator, 'getOrphanVisitsCreator');
   bottle.serviceFactory('orphanVisitsReducer', prop('reducer'), 'orphanVisitsReducerCreator');
+
+  bottle.serviceFactory('shortUrlVisitsReducerCreator', shortUrlVisitsReducerCreator, 'getShortUrlVisitsCreator');
+  bottle.serviceFactory('shortUrlVisitsReducer', prop('reducer'), 'shortUrlVisitsReducerCreator');
 };
 
 export default provideServices;
