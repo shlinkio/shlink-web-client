@@ -21,6 +21,13 @@ export interface LoadVisits {
   doIntervalFallback?: boolean;
 }
 
+export type VisitsLoaded<T = {}> = T & {
+  visits: Visit[];
+  query?: ShlinkVisitsParams;
+};
+
+export type VisitsLoadedAction<T = {}> = PayloadAction<VisitsLoaded<T>>;
+
 export type VisitsLoadProgressChangedAction = PayloadAction<number>;
 
 export type VisitsFallbackIntervalAction = PayloadAction<DateInterval>;

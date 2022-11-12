@@ -5,7 +5,7 @@ import { ShlinkVisitsParams } from '../api/types';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
 import { ReportExporter } from '../common/services/ReportExporter';
-import { TagVisits as TagVisitsState } from './reducers/tagVisits';
+import { LoadTagVisits, TagVisits as TagVisitsState } from './reducers/tagVisits';
 import { TagVisitsHeader } from './TagVisitsHeader';
 import { VisitsStats } from './VisitsStats';
 import { NormalizedVisit } from './types';
@@ -13,7 +13,7 @@ import { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 
 export interface TagVisitsProps extends CommonVisitsProps {
-  getTagVisits: (tag: string, query?: ShlinkVisitsParams, doIntervalFallback?: boolean) => void;
+  getTagVisits: (params: LoadTagVisits) => void;
   tagVisits: TagVisitsState;
   cancelGetTagVisits: () => void;
 }
@@ -28,7 +28,7 @@ export const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: Repo
   const goBack = useGoBack();
   const { tag = '' } = useParams();
   const loadVisits = (params: ShlinkVisitsParams, doIntervalFallback?: boolean) =>
-    getTagVisits(tag, toApiParams(params), doIntervalFallback);
+    getTagVisits({ tag, query: toApiParams(params), doIntervalFallback });
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits(`tag_${tag}_visits.csv`, visits);
 
   return (

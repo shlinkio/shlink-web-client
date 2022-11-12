@@ -1,16 +1,21 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Action, Dispatch } from 'redux';
-import { Visit } from '../types';
+import { Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
-import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
 import { domainMatches } from '../../short-urls/helpers';
-import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import {
+  LoadVisits,
+  VisitsFallbackIntervalAction,
+  VisitsInfo,
+  VisitsLoaded,
+  VisitsLoadedAction,
+  VisitsLoadProgressChangedAction,
+} from './types';
 
 const REDUCER_PREFIX = 'shlink/domainVisits';
 export const GET_DOMAIN_VISITS_START = `${REDUCER_PREFIX}/getDomainVisits/pending`;
@@ -23,19 +28,15 @@ export const GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getDoma
 
 export const DEFAULT_DOMAIN = 'DEFAULT';
 
-export interface DomainVisits extends VisitsInfo {
+interface WithDomain {
   domain: string;
 }
 
-export interface LoadDomainVisits extends LoadVisits {
-  domain: string;
-}
+export interface DomainVisits extends VisitsInfo, WithDomain {}
 
-export interface DomainVisitsAction extends Action<string> {
-  visits: Visit[];
-  domain: string;
-  query?: ShlinkVisitsParams;
-}
+export interface LoadDomainVisits extends LoadVisits, WithDomain {}
+
+type DomainVisitsAction = VisitsLoadedAction<WithDomain>;
 
 type DomainVisitsCombinedAction = DomainVisitsAction
 & VisitsLoadProgressChangedAction
@@ -56,8 +57,8 @@ const initialState: DomainVisits = {
 export default buildReducer<DomainVisits, DomainVisitsCombinedAction>({
   [`${REDUCER_PREFIX}/getDomainVisits/pending`]: () => ({ ...initialState, loading: true }),
   [`${REDUCER_PREFIX}/getDomainVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [`${REDUCER_PREFIX}/getDomainVisits/fulfilled`]: (state, { visits, domain, query }) => (
-    { ...state, visits, domain, query, loading: false, loadingLarge: false, error: false }
+  [`${REDUCER_PREFIX}/getDomainVisits/fulfilled`]: (state, { payload }: DomainVisitsAction) => (
+    { ...state, ...payload, loading: false, loadingLarge: false, error: false }
   ),
   [`${REDUCER_PREFIX}/getDomainVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getDomainVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
@@ -87,7 +88,7 @@ export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
   );
   const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getVisits(domain, params));
   const shouldCancel = () => getState().domainVisits.cancelLoad;
-  const extraFinishActionData: Partial<DomainVisitsAction> = { domain, query };
+  const extraFinishActionData: Partial<VisitsLoaded<WithDomain>> = { domain, query };
   const prefix = `${REDUCER_PREFIX}/getDomainVisits`;
 
   return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);

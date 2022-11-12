@@ -1,11 +1,11 @@
 import { flatten, prop, range, splitEvery } from 'ramda';
-import { Action, Dispatch } from 'redux';
+import { Dispatch } from '@reduxjs/toolkit';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
 import { Visit } from '../types';
 import { parseApiError } from '../../api/utils';
 import { ApiErrorAction } from '../../api/types/actions';
 import { dateToMatchingInterval } from '../../utils/dates/types';
-import { VisitsLoadProgressChangedAction } from './types';
+import { VisitsLoaded, VisitsLoadProgressChangedAction } from './types';
 
 const ITEMS_PER_PAGE = 5000;
 const PARALLEL_REQUESTS_COUNT = 4;
@@ -17,10 +17,10 @@ const calcProgress = (total: number, current: number): number => (current * 100)
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
 type LastVisitLoader = () => Promise<Visit | undefined>;
 
-export const getVisitsWithLoader = async <T extends Action<string> & { visits: Visit[] }>(
+export const getVisitsWithLoader = async <T extends VisitsLoaded>(
   visitsLoader: VisitsLoader,
   lastVisitLoader: LastVisitLoader,
-  extraFinishActionData: Partial<T>,
+  extraFulfilledPayload: Partial<T>,
   actionsPrefix: string,
   dispatch: Dispatch,
   shouldCancel: () => boolean,
@@ -74,7 +74,7 @@ export const getVisitsWithLoader = async <T extends Action<string> & { visits: V
     dispatch(
       !visits.length && lastVisit
         ? { type: `${actionsPrefix}/fallbackToInterval`, payload: dateToMatchingInterval(lastVisit.date) }
-        : { ...extraFinishActionData, visits, type: `${actionsPrefix}/fulfilled` },
+        : { type: `${actionsPrefix}/fulfilled`, payload: { ...extraFulfilledPayload, visits } },
     );
   } catch (e: any) {
     dispatch<ApiErrorAction>({ type: `${actionsPrefix}/rejected`, errorData: parseApiError(e) });
@@ -89,5 +89,5 @@ export const lastVisitLoaderForLoader = (
     return async () => Promise.resolve(undefined);
   }
 
-  return async () => loader({ page: 1, itemsPerPage: 1 }).then((result) => result.data[0]);
+  return async () => loader({ page: 1, itemsPerPage: 1 }).then(({ data }) => data[0]);
 };

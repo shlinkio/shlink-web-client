@@ -59,10 +59,10 @@ describe('tagVisitsReducer', () => {
 
     it('return visits on GET_TAG_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer(
-        buildState({ loading: true, error: false }),
-        { type: GET_TAG_VISITS, visits: actionVisits } as any,
-      );
+      const state = reducer(buildState({ loading: true, error: false }), {
+        type: GET_TAG_VISITS,
+        payload: { visits: actionVisits },
+      } as any);
       const { loading, error, visits } = state;
 
       expect(loading).toEqual(false);
@@ -165,7 +165,7 @@ describe('tagVisitsReducer', () => {
     it('dispatches start and error when promise is rejected', async () => {
       const shlinkApiClient = buildApiClientMock(Promise.reject(new Error()));
 
-      await getTagVisits(() => shlinkApiClient)('foo')(dispatchMock, getState);
+      await getTagVisits(() => shlinkApiClient)({ tag })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });
@@ -187,11 +187,14 @@ describe('tagVisitsReducer', () => {
         },
       }));
 
-      await getTagVisits(() => shlinkApiClient)(tag, query)(dispatchMock, getState);
+      await getTagVisits(() => shlinkApiClient)({ tag, query })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_TAG_VISITS, visits, tag, query: query ?? {} });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+        type: GET_TAG_VISITS,
+        payload: { visits, tag, query: query ?? {} },
+      });
       expect(shlinkApiClient.getTagVisits).toHaveBeenCalledTimes(1);
     });
 
@@ -219,7 +222,7 @@ describe('tagVisitsReducer', () => {
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
       const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getTagVisits: getShlinkTagVisits });
 
-      await getTagVisits(() => ShlinkApiClient)(tag, {}, true)(dispatchMock, getState);
+      await getTagVisits(() => ShlinkApiClient)({ tag, doIntervalFallback: true })(dispatchMock, getState);
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_TAG_VISITS_START });

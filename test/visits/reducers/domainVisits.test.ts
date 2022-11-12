@@ -61,10 +61,10 @@ describe('domainVisitsReducer', () => {
 
     it('return visits on GET_DOMAIN_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer(
-        buildState({ loading: true, error: false }),
-        { type: GET_DOMAIN_VISITS, visits: actionVisits } as any,
-      );
+      const state = reducer(buildState({ loading: true, error: false }), {
+        type: GET_DOMAIN_VISITS,
+        payload: { visits: actionVisits },
+      } as any);
       const { loading, error, visits } = state;
 
       expect(loading).toEqual(false);
@@ -201,7 +201,10 @@ describe('domainVisitsReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_DOMAIN_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_DOMAIN_VISITS, visits, domain, query: query ?? {} });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+        type: GET_DOMAIN_VISITS,
+        payload: { visits, domain, query: query ?? {} },
+      });
       expect(shlinkApiClient.getDomainVisits).toHaveBeenCalledTimes(1);
     });
 

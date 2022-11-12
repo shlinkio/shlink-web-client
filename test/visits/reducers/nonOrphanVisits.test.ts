@@ -59,10 +59,10 @@ describe('nonOrphanVisitsReducer', () => {
 
     it('return visits on GET_NON_ORPHAN_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer(
-        buildState({ loading: true, error: false }),
-        { type: GET_NON_ORPHAN_VISITS, visits: actionVisits } as any,
-      );
+      const state = reducer(buildState({ loading: true, error: false }), {
+        type: GET_NON_ORPHAN_VISITS,
+        payload: { visits: actionVisits },
+      } as any);
       const { loading, error, visits } = state;
 
       expect(loading).toEqual(false);
@@ -173,7 +173,10 @@ describe('nonOrphanVisitsReducer', () => {
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_NON_ORPHAN_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_NON_ORPHAN_VISITS, visits, query: query ?? {} });
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, {
+        type: GET_NON_ORPHAN_VISITS,
+        payload: { visits, query: query ?? {} },
+      });
       expect(ShlinkApiClient.getNonOrphanVisits).toHaveBeenCalledTimes(1);
     });
 

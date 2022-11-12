@@ -1,16 +1,22 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Action, Dispatch } from 'redux';
-import { OrphanVisit, OrphanVisitType, Visit } from '../types';
+import { Dispatch } from 'redux';
+import { OrphanVisit, OrphanVisitType } from '../types';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
-import { ShlinkVisitsParams } from '../../api/types';
 import { isOrphanVisit } from '../types/helpers';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import { LoadVisits, VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import {
+  LoadVisits,
+  VisitsFallbackIntervalAction,
+  VisitsInfo,
+  VisitsLoaded,
+  VisitsLoadedAction,
+  VisitsLoadProgressChangedAction,
+} from './types';
 
 const REDUCER_PREFIX = 'shlink/orphanVisits';
 export const GET_ORPHAN_VISITS_START = `${REDUCER_PREFIX}/getOrphanVisits/pending`;
@@ -21,16 +27,11 @@ export const GET_ORPHAN_VISITS_CANCEL = `${REDUCER_PREFIX}/getOrphanVisits/cance
 export const GET_ORPHAN_VISITS_PROGRESS_CHANGED = `${REDUCER_PREFIX}/getOrphanVisits/progressChanged`;
 export const GET_ORPHAN_VISITS_FALLBACK_TO_INTERVAL = `${REDUCER_PREFIX}/getOrphanVisits/fallbackToInterval`;
 
-export interface OrphanVisitsAction extends Action<string> {
-  visits: Visit[];
-  query?: ShlinkVisitsParams;
-}
-
 export interface LoadOrphanVisits extends LoadVisits {
   orphanVisitsType?: OrphanVisitType;
 }
 
-type OrphanVisitsCombinedAction = OrphanVisitsAction
+type OrphanVisitsCombinedAction = VisitsLoadedAction
 & VisitsLoadProgressChangedAction
 & VisitsFallbackIntervalAction
 & CreateVisitsAction
@@ -48,8 +49,8 @@ const initialState: VisitsInfo = {
 export default buildReducer<VisitsInfo, OrphanVisitsCombinedAction>({
   [`${REDUCER_PREFIX}/getOrphanVisits/pending`]: () => ({ ...initialState, loading: true }),
   [`${REDUCER_PREFIX}/getOrphanVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [`${REDUCER_PREFIX}/getOrphanVisits/fulfilled`]: (state, { visits, query }) => (
-    { ...state, visits, query, loading: false, loadingLarge: false, error: false }
+  [`${REDUCER_PREFIX}/getOrphanVisits/fulfilled`]: (state, { payload }: VisitsLoadedAction) => (
+    { ...state, ...payload, loading: false, loadingLarge: false, error: false }
   ),
   [`${REDUCER_PREFIX}/getOrphanVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getOrphanVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
@@ -83,7 +84,7 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
     });
   const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, getVisits);
   const shouldCancel = () => getState().orphanVisits.cancelLoad;
-  const extraFinishActionData: Partial<OrphanVisitsAction> = { query };
+  const extraFinishActionData: Partial<VisitsLoaded> = { query };
   const prefix = `${REDUCER_PREFIX}/getOrphanVisits`;
 
   return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);

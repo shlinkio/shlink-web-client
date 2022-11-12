@@ -1,21 +1,8 @@
 import { Action } from 'redux';
-import { buildActionCreator, buildReducer } from '../../../src/utils/helpers/redux';
+import { buildReducer } from '../../../src/utils/helpers/redux';
 
 describe('redux', () => {
   beforeEach(jest.clearAllMocks);
-
-  describe('buildActionCreator', () => {
-    it.each([
-      ['foo', { type: 'foo' }],
-      ['bar', { type: 'bar' }],
-      ['something', { type: 'something' }],
-    ])('returns an action creator', (type, expected) => {
-      const actionCreator = buildActionCreator(type);
-
-      expect(actionCreator).toBeInstanceOf(Function);
-      expect(actionCreator()).toEqual(expected);
-    });
-  });
 
   describe('buildReducer', () => {
     const fooActionHandler = jest.fn(() => 'foo result');

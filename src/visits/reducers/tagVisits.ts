@@ -1,15 +1,20 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Action, Dispatch } from 'redux';
-import { Visit } from '../types';
+import { Dispatch } from 'redux';
 import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { GetState } from '../../container/types';
-import { ShlinkVisitsParams } from '../../api/types';
 import { ApiErrorAction } from '../../api/types/actions';
 import { isBetween } from '../../utils/helpers/date';
 import { getVisitsWithLoader, lastVisitLoaderForLoader } from './common';
 import { createNewVisits, CreateVisitsAction } from './visitCreation';
-import { VisitsFallbackIntervalAction, VisitsInfo, VisitsLoadProgressChangedAction } from './types';
+import {
+  LoadVisits,
+  VisitsFallbackIntervalAction,
+  VisitsInfo,
+  VisitsLoaded,
+  VisitsLoadedAction,
+  VisitsLoadProgressChangedAction,
+} from './types';
 
 const REDUCER_PREFIX = 'shlink/tagVisits';
 export const GET_TAG_VISITS_START = `${REDUCER_PREFIX}/getTagVisits/pending`;
@@ -24,11 +29,11 @@ export interface TagVisits extends VisitsInfo {
   tag: string;
 }
 
-export interface TagVisitsAction extends Action<string> {
-  visits: Visit[];
+export interface LoadTagVisits extends LoadVisits {
   tag: string;
-  query?: ShlinkVisitsParams;
 }
+
+export type TagVisitsAction = VisitsLoadedAction<{ tag: string }>;
 
 type TagsVisitsCombinedAction = TagVisitsAction
 & VisitsLoadProgressChangedAction
@@ -49,8 +54,8 @@ const initialState: TagVisits = {
 export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
   [`${REDUCER_PREFIX}/getTagVisits/pending`]: () => ({ ...initialState, loading: true }),
   [`${REDUCER_PREFIX}/getTagVisits/rejected`]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [`${REDUCER_PREFIX}/getTagVisits/fulfilled`]: (state, { visits, tag, query }) => (
-    { ...state, visits, tag, query, loading: false, loadingLarge: false, error: false }
+  [`${REDUCER_PREFIX}/getTagVisits/fulfilled`]: (state, { payload }: TagVisitsAction) => (
+    { ...state, ...payload, loading: false, loadingLarge: false, error: false }
   ),
   [`${REDUCER_PREFIX}/getTagVisits/large`]: (state) => ({ ...state, loadingLarge: true }),
   [`${REDUCER_PREFIX}/getTagVisits/cancel`]: (state) => ({ ...state, cancelLoad: true }),
@@ -70,9 +75,7 @@ export default buildReducer<TagVisits, TagsVisitsCombinedAction>({
 }, initialState);
 
 export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
-  tag: string,
-  query: ShlinkVisitsParams = {},
-  doIntervalFallback = false,
+  { tag, query = {}, doIntervalFallback = false }: LoadTagVisits,
 ) => async (dispatch: Dispatch, getState: GetState) => {
   const { getTagVisits: getVisits } = buildShlinkApiClient(getState);
   const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
@@ -81,7 +84,7 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => (
   );
   const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, async (params) => getVisits(tag, params));
   const shouldCancel = () => getState().tagVisits.cancelLoad;
-  const extraFinishActionData: Partial<TagVisitsAction> = { tag, query };
+  const extraFinishActionData: Partial<VisitsLoaded<{ tag: string }>> = { tag, query };
   const prefix = `${REDUCER_PREFIX}/getTagVisits`;
 
   return getVisitsWithLoader(visitsLoader, lastVisitLoader, extraFinishActionData, prefix, dispatch, shouldCancel);

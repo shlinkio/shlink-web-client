@@ -17,9 +17,6 @@ export const buildReducer = <State, AT extends Action>(map: ActionHandlerMap<Sta
   return actionHandler ? actionHandler(currentState, action) : currentState;
 };
 
-/** @deprecated */
-export const buildActionCreator = <T extends string>(type: T) => (): Action<T> => ({ type });
-
 export const createAsyncThunk = <Returned, ThunkArg>(
   typePrefix: string,
   payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, { state: ShlinkState }>,
