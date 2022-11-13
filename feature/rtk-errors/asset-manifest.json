@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/rtk-errors/static/css/main.fc57d6c0.css",
+    "main.js": "/shlink-web-client/feature/rtk-errors/static/js/main.a9fa8de7.js",
+    "index.html": "/shlink-web-client/feature/rtk-errors/index.html",
+    "main.fc57d6c0.css.map": "/shlink-web-client/feature/rtk-errors/static/css/main.fc57d6c0.css.map",
+    "main.a9fa8de7.js.map": "/shlink-web-client/feature/rtk-errors/static/js/main.a9fa8de7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc57d6c0.css",
+    "static/js/main.a9fa8de7.js"
+  ]
+}
