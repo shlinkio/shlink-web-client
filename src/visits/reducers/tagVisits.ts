@@ -24,7 +24,7 @@ const initialState: TagVisits = {
 };
 
 export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
-  name: `${REDUCER_PREFIX}/getTagVisits`,
+  typePrefix: `${REDUCER_PREFIX}/getTagVisits`,
   createLoaders: ({ tag, query = {}, doIntervalFallback = false }: LoadTagVisits, getState) => {
     const { getTagVisits: getVisits } = buildShlinkApiClient(getState);
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
@@ -39,15 +39,15 @@ export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
   shouldCancel: (getState) => getState().tagVisits.cancelLoad,
 });
 
-export const tagVisitsReducerCreator = (getTagVisitsCreator: ReturnType<typeof getTagVisits>) => createVisitsReducer(
-  REDUCER_PREFIX,
-  // @ts-expect-error TODO Fix type inference
-  getTagVisitsCreator,
+export const tagVisitsReducerCreator = (asyncThunkCreator: ReturnType<typeof getTagVisits>) => createVisitsReducer({
+  name: REDUCER_PREFIX,
   initialState,
-  ({ tag, query = {} }, createdVisits) => {
+  // @ts-expect-error TODO Fix type inference
+  asyncThunkCreator,
+  filterCreatedVisits: ({ tag, query = {} }: TagVisits, createdVisits) => {
     const { startDate, endDate } = query;
     return createdVisits.filter(
       ({ shortUrl, visit }) => shortUrl?.tags.includes(tag) && isBetween(visit.date, startDate, endDate),
     );
   },
-);
+});

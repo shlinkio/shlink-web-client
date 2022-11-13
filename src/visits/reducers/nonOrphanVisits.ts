@@ -15,7 +15,7 @@ const initialState: VisitsInfo = {
 };
 
 export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
-  name: `${REDUCER_PREFIX}/getNonOrphanVisits`,
+  typePrefix: `${REDUCER_PREFIX}/getNonOrphanVisits`,
   createLoaders: ({ query = {}, doIntervalFallback = false }, getState) => {
     const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
     const visitsLoader = async (page: number, itemsPerPage: number) =>
@@ -29,13 +29,13 @@ export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder)
 });
 
 export const nonOrphanVisitsReducerCreator = (
-  getVisitsCreator: ReturnType<typeof getNonOrphanVisits>,
-) => createVisitsReducer(
-  REDUCER_PREFIX,
-  getVisitsCreator,
+  asyncThunkCreator: ReturnType<typeof getNonOrphanVisits>,
+) => createVisitsReducer({
+  name: REDUCER_PREFIX,
   initialState,
-  ({ query = {} }, createdVisits) => {
+  asyncThunkCreator,
+  filterCreatedVisits: ({ query = {} }, createdVisits) => {
     const { startDate, endDate } = query;
     return createdVisits.filter(({ visit }) => isBetween(visit.date, startDate, endDate));
   },
-);
+});
