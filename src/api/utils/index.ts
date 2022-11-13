@@ -8,11 +8,18 @@ import {
   RegularNotFound,
 } from '../types/errors';
 
+const isProblemDetails = (e: unknown): e is ProblemDetailsError =>
+  !!e && typeof e === 'object' && Object.keys(e).every((key) => ['type', 'detail', 'title', 'status'].includes(key));
+
 const isAxiosError = (e: unknown): e is AxiosError<ProblemDetailsError> => !!e && typeof e === 'object' && 'response' in e;
 
-export const parseApiError = (e: unknown): ProblemDetailsError | undefined => (
-  isAxiosError(e) ? e.response?.data : undefined
-);
+export const parseApiError = (e: unknown): ProblemDetailsError | undefined => {
+  if (isProblemDetails(e)) {
+    return e;
+  }
+
+  return (isAxiosError(e) ? e.response?.data : undefined);
+};
 
 export const isInvalidArgumentError = (error?: ProblemDetailsError): error is InvalidArgumentError =>
   error?.type === ErrorTypeV2.INVALID_ARGUMENT || error?.type === ErrorTypeV3.INVALID_ARGUMENT;

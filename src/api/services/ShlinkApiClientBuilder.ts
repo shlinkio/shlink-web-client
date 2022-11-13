@@ -1,4 +1,3 @@
-import { AxiosInstance } from 'axios';
 import { hasServerData, ServerWithId } from '../../servers/data';
 import { GetState } from '../../container/types';
 import { ShlinkApiClient } from './ShlinkApiClient';
@@ -16,14 +15,14 @@ const getSelectedServerFromState = (getState: GetState): ServerWithId => {
   return selectedServer;
 };
 
-export const buildShlinkApiClient = (axios: AxiosInstance) => (getStateOrSelectedServer: GetState | ServerWithId) => {
+export const buildShlinkApiClient = (fetch: typeof window.fetch) => (getStateOrSelectedServer: GetState | ServerWithId) => {
   const { url, apiKey } = isGetState(getStateOrSelectedServer)
     ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;
   const clientKey = `${url}_${apiKey}`;
 
   if (!apiClients[clientKey]) {
-    apiClients[clientKey] = new ShlinkApiClient(axios, url, apiKey);
+    apiClients[clientKey] = new ShlinkApiClient(fetch, url, apiKey);
   }
 
   return apiClients[clientKey];
