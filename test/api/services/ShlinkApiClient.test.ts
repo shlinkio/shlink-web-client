@@ -1,16 +1,17 @@
-import { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { Mock } from 'ts-mockery';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
-import { ShlinkDomain, ShlinkVisitsOverview } from '../../../src/api/types';
+import { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
-import { Visit } from '../../../src/visits/types';
+import { Fetch } from '../../../src/utils/types';
 
 describe('ShlinkApiClient', () => {
-  const createAxios = (data: AxiosRequestConfig) => (async () => Promise.resolve(data)) as unknown as AxiosInstance;
-  const createAxiosMock = (data: AxiosRequestConfig = {}) => jest.fn(createAxios(data)) as unknown as AxiosInstance;
-  const createApiClient = (data: AxiosRequestConfig) => new ShlinkApiClient(createAxios(data), '', '');
-  const shortCodesWithDomainCombinations: [ string, OptionalString ][] = [
+  const buildFetch = (data: any) => jest.fn().mockResolvedValue({ json: () => Promise.resolve(data), ok: true });
+  const buildRejectedFetch = (error: any) => jest.fn().mockResolvedValueOnce(
+    { json: () => Promise.resolve(error), ok: false },
+  );
+  const buildApiClient = (fetch: Fetch) => new ShlinkApiClient(fetch, '', '');
+  const shortCodesWithDomainCombinations: [string, OptionalString][] = [
     ['abc123', null],
     ['abc123', undefined],
     ['abc123', 'example.com'],
@@ -20,11 +21,9 @@ describe('ShlinkApiClient', () => {
     const expectedList = ['foo', 'bar'];
 
     it('properly returns short URLs list', async () => {
-      const { listShortUrls } = createApiClient({
-        data: {
-          shortUrls: expectedList,
-        },
-      });
+      const { listShortUrls } = buildApiClient(buildFetch({
+        shortUrls: expectedList,
+      }));
 
       const actualList = await listShortUrls();
 
@@ -32,20 +31,16 @@ describe('ShlinkApiClient', () => {
     });
 
     it.each([
-      [{ field: 'visits', dir: 'DESC' } as ShortUrlsOrder, 'visits-DESC'],
-      [{ field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, 'longUrl-ASC'],
-      [{ field: 'longUrl', dir: undefined } as ShortUrlsOrder, undefined],
+      [{ field: 'visits', dir: 'DESC' } as ShortUrlsOrder, '?orderBy=visits-DESC'],
+      [{ field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, '?orderBy=longUrl-ASC'],
+      [{ field: 'longUrl', dir: undefined } as ShortUrlsOrder, ''],
     ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
-      const axiosSpy = createAxiosMock({
-        data: expectedList,
-      });
-      const { listShortUrls } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ data: expectedList });
+      const { listShortUrls } = buildApiClient(fetch);
 
       await listShortUrls({ orderBy });
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        params: { orderBy: expectedOrderBy },
-      }));
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining(`/short-urls${expectedOrderBy}`), expect.anything());
     });
   });
 
@@ -55,39 +50,38 @@ describe('ShlinkApiClient', () => {
     };
 
     it('returns create short URL', async () => {
-      const { createShortUrl } = createApiClient({ data: shortUrl });
+      const { createShortUrl } = buildApiClient(buildFetch(shortUrl));
       const result = await createShortUrl({ longUrl: '' });
 
       expect(result).toEqual(shortUrl);
     });
 
     it('removes all empty options', async () => {
-      const axiosSpy = createAxiosMock({ data: shortUrl });
-      const { createShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ data: shortUrl });
+      const { createShortUrl } = buildApiClient(fetch);
 
       await createShortUrl({ longUrl: 'bar', customSlug: undefined, maxVisits: null });
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({ data: { longUrl: 'bar' } }));
+      expect(fetch).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+        body: JSON.stringify({ longUrl: 'bar' }),
+      }));
     });
   });
 
   describe('getShortUrlVisits', () => {
     it('properly returns short URL visits', async () => {
       const expectedVisits = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock({
-        data: {
-          visits: {
-            data: expectedVisits,
-          },
+      const fetch = buildFetch({
+        visits: {
+          data: expectedVisits,
         },
       });
-      const { getShortUrlVisits } = new ShlinkApiClient(axiosSpy, '', '');
+      const { getShortUrlVisits } = buildApiClient(fetch);
 
       const actualVisits = await getShortUrlVisits('abc123', {});
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/short-urls/abc123/visits'),
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/short-urls/abc123/visits'), expect.objectContaining({
         method: 'GET',
       }));
     });
@@ -96,20 +90,17 @@ describe('ShlinkApiClient', () => {
   describe('getTagVisits', () => {
     it('properly returns tag visits', async () => {
       const expectedVisits = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock({
-        data: {
-          visits: {
-            data: expectedVisits,
-          },
+      const fetch = buildFetch({
+        visits: {
+          data: expectedVisits,
         },
       });
-      const { getTagVisits } = new ShlinkApiClient(axiosSpy, '', '');
+      const { getTagVisits } = buildApiClient(fetch);
 
       const actualVisits = await getTagVisits('foo', {});
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/tags/foo/visits'),
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/tags/foo/visits'), expect.objectContaining({
         method: 'GET',
       }));
     });
@@ -118,20 +109,17 @@ describe('ShlinkApiClient', () => {
   describe('getDomainVisits', () => {
     it('properly returns domain visits', async () => {
       const expectedVisits = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock({
-        data: {
-          visits: {
-            data: expectedVisits,
-          },
+      const fetch = buildFetch({
+        visits: {
+          data: expectedVisits,
         },
       });
-      const { getDomainVisits } = new ShlinkApiClient(axiosSpy, '', '');
+      const { getDomainVisits } = buildApiClient(fetch);
 
       const actualVisits = await getDomainVisits('foo.com', {});
 
       expect({ data: expectedVisits }).toEqual(actualVisits);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/domains/foo.com/visits'),
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/domains/foo.com/visits'), expect.objectContaining({
         method: 'GET',
       }));
     });
@@ -140,19 +128,17 @@ describe('ShlinkApiClient', () => {
   describe('getShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly returns short URL', async (shortCode, domain) => {
       const expectedShortUrl = { foo: 'bar' };
-      const axiosSpy = createAxiosMock({
-        data: expectedShortUrl,
-      });
-      const { getShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch(expectedShortUrl);
+      const { getShortUrl } = buildApiClient(fetch);
+      const expectedQuery = domain ? `?domain=${domain}` : '';
 
       const result = await getShortUrl(shortCode, domain);
 
       expect(expectedShortUrl).toEqual(result);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining(`/short-urls/${shortCode}`),
-        method: 'GET',
-        params: domain ? { domain } : {},
-      }));
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining(`/short-urls/${shortCode}${expectedQuery}`),
+        expect.objectContaining({ method: 'GET' }),
+      );
     });
   });
 
@@ -163,53 +149,49 @@ describe('ShlinkApiClient', () => {
         validSince: '2025-01-01T10:00:00+01:00',
       };
       const expectedResp = Mock.of<ShortUrl>();
-      const axiosSpy = createAxiosMock({ data: expectedResp });
-      const { updateShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch(expectedResp);
+      const { updateShortUrl } = buildApiClient(fetch);
+      const expectedQuery = domain ? `?domain=${domain}` : '';
 
       const result = await updateShortUrl(shortCode, domain, meta);
 
       expect(expectedResp).toEqual(result);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining(`/short-urls/${shortCode}`),
-        method: 'PATCH',
-        params: domain ? { domain } : {},
-      }));
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining(`/short-urls/${shortCode}${expectedQuery}`),
+        expect.objectContaining({ method: 'PATCH' }),
+      );
     });
   });
 
   describe('listTags', () => {
     it('properly returns list of tags', async () => {
       const expectedTags = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock({
-        data: {
-          tags: { data: expectedTags },
+      const fetch = buildFetch({
+        tags: {
+          data: expectedTags,
         },
       });
-      const { listTags } = new ShlinkApiClient(axiosSpy, '', '');
+      const { listTags } = buildApiClient(fetch);
 
       const result = await listTags();
 
       expect({ tags: expectedTags }).toEqual(result);
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/tags'),
-        method: 'GET',
-      }));
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/tags'), expect.objectContaining({ method: 'GET' }));
     });
   });
 
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
       const tags = ['foo', 'bar'];
-      const axiosSpy = createAxiosMock();
-      const { deleteTags } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({});
+      const { deleteTags } = buildApiClient(fetch);
 
       await deleteTags(tags);
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/tags'),
-        method: 'DELETE',
-        params: { tags },
-      }));
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining(`/tags?${tags.map((tag) => `tags%5B%5D=${tag}`).join('&')}`),
+        expect.objectContaining({ method: 'DELETE' }),
+      );
     });
   });
 
@@ -217,31 +199,30 @@ describe('ShlinkApiClient', () => {
     it('properly edits provided tag', async () => {
       const oldName = 'foo';
       const newName = 'bar';
-      const axiosSpy = createAxiosMock();
-      const { editTag } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({});
+      const { editTag } = buildApiClient(fetch);
 
       await editTag(oldName, newName);
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining('/tags'),
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('/tags'), expect.objectContaining({
         method: 'PUT',
-        data: { oldName, newName },
+        body: JSON.stringify({ oldName, newName }),
       }));
     });
   });
 
   describe('deleteShortUrl', () => {
     it.each(shortCodesWithDomainCombinations)('properly deletes provided short URL', async (shortCode, domain) => {
-      const axiosSpy = createAxiosMock({});
-      const { deleteShortUrl } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({});
+      const { deleteShortUrl } = buildApiClient(fetch);
+      const expectedQuery = domain ? `?domain=${domain}` : '';
 
       await deleteShortUrl(shortCode, domain);
 
-      expect(axiosSpy).toHaveBeenCalledWith(expect.objectContaining({
-        url: expect.stringContaining(`/short-urls/${shortCode}`),
-        method: 'DELETE',
-        params: domain ? { domain } : {},
-      }));
+      expect(fetch).toHaveBeenCalledWith(
+        expect.stringContaining(`/short-urls/${shortCode}${expectedQuery}`),
+        expect.objectContaining({ method: 'DELETE' }),
+      );
     });
   });
 
@@ -251,12 +232,12 @@ describe('ShlinkApiClient', () => {
         status: 'pass',
         version: '1.19.0',
       };
-      const axiosSpy = createAxiosMock({ data: expectedData });
-      const { health } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch(expectedData);
+      const { health } = buildApiClient(fetch);
 
       const result = await health();
 
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
       expect(result).toEqual(expectedData);
     });
   });
@@ -267,12 +248,12 @@ describe('ShlinkApiClient', () => {
         token: 'abc.123.def',
         mercureHubUrl: 'http://example.com/.well-known/mercure',
       };
-      const axiosSpy = createAxiosMock({ data: expectedData });
-      const { mercureInfo } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch(expectedData);
+      const { mercureInfo } = buildApiClient(fetch);
 
       const result = await mercureInfo();
 
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
       expect(result).toEqual(expectedData);
     });
   });
@@ -280,13 +261,12 @@ describe('ShlinkApiClient', () => {
   describe('listDomains', () => {
     it('returns domains', async () => {
       const expectedData = { data: [Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>()] };
-      const resp = { domains: expectedData };
-      const axiosSpy = createAxiosMock({ data: resp });
-      const { listDomains } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ domains: expectedData });
+      const { listDomains } = buildApiClient(fetch);
 
       const result = await listDomains();
 
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
       expect(result).toEqual(expectedData);
     });
   });
@@ -294,76 +274,61 @@ describe('ShlinkApiClient', () => {
   describe('getVisitsOverview', () => {
     it('returns visits overview', async () => {
       const expectedData = Mock.all<ShlinkVisitsOverview>();
-      const resp = { visits: expectedData };
-      const axiosSpy = createAxiosMock({ data: resp });
-      const { getVisitsOverview } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ visits: expectedData });
+      const { getVisitsOverview } = buildApiClient(fetch);
 
       const result = await getVisitsOverview();
 
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
       expect(result).toEqual(expectedData);
     });
   });
 
   describe('getOrphanVisits', () => {
     it('returns orphan visits', async () => {
-      const expectedData: Visit[] = [];
-      const resp = { visits: expectedData };
-      const axiosSpy = createAxiosMock({ data: resp });
-      const { getOrphanVisits } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ visits: Mock.of<ShlinkVisits>({ data: [] }) });
+      const { getOrphanVisits } = buildApiClient(fetch);
 
       const result = await getOrphanVisits();
 
-      expect(axiosSpy).toHaveBeenCalled();
-      expect(result).toEqual(expectedData);
+      expect(fetch).toHaveBeenCalled();
+      expect(result).toEqual({ data: [] });
     });
   });
 
   describe('getNonOrphanVisits', () => {
     it('returns non-orphan visits', async () => {
-      const expectedData: Visit[] = [];
-      const resp = { visits: expectedData };
-      const axiosSpy = createAxiosMock({ data: resp });
-      const { getNonOrphanVisits } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch({ visits: Mock.of<ShlinkVisits>({ data: [] }) });
+      const { getNonOrphanVisits } = buildApiClient(fetch);
 
       const result = await getNonOrphanVisits();
 
-      expect(axiosSpy).toHaveBeenCalled();
-      expect(result).toEqual(expectedData);
+      expect(fetch).toHaveBeenCalled();
+      expect(result).toEqual({ data: [] });
     });
   });
 
   describe('editDomainRedirects', () => {
     it('returns the redirects', async () => {
       const resp = { baseUrlRedirect: null, regular404Redirect: 'foo', invalidShortUrlRedirect: 'bar' };
-      const axiosSpy = createAxiosMock({ data: resp });
-      const { editDomainRedirects } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildFetch(resp);
+      const { editDomainRedirects } = buildApiClient(fetch);
 
       const result = await editDomainRedirects({ domain: 'foo' });
 
-      expect(axiosSpy).toHaveBeenCalled();
+      expect(fetch).toHaveBeenCalled();
       expect(result).toEqual(resp);
     });
 
     it('retries request if API version is not supported', async () => {
-      const axiosSpy = jest.fn()
-        .mockImplementationOnce(() => Promise.reject(Mock.of<AxiosError>({
-          response: {
-            data: { type: 'NOT_FOUND', status: 404 },
-          },
-        })))
-        .mockImplementation(createAxios({})) as unknown as AxiosInstance;
-      const { editDomainRedirects } = new ShlinkApiClient(axiosSpy, '', '');
+      const fetch = buildRejectedFetch({ type: 'NOT_FOUND', status: 404 }).mockImplementation(buildFetch({}));
+      const { editDomainRedirects } = buildApiClient(fetch);
 
       await editDomainRedirects({ domain: 'foo' });
 
-      expect(axiosSpy).toHaveBeenCalledTimes(2);
-      expect(axiosSpy).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        url: expect.stringContaining('/v3/'),
-      }));
-      expect(axiosSpy).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        url: expect.stringContaining('/v2/'),
-      }));
+      expect(fetch).toHaveBeenCalledTimes(2);
+      expect(fetch).toHaveBeenNthCalledWith(1, expect.stringContaining('/v3/'), expect.anything());
+      expect(fetch).toHaveBeenNthCalledWith(2, expect.stringContaining('/v2/'), expect.anything());
     });
   });
 });

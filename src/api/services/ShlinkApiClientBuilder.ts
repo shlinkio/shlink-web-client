@@ -1,6 +1,7 @@
 import { hasServerData, ServerWithId } from '../../servers/data';
 import { GetState } from '../../container/types';
 import { ShlinkApiClient } from './ShlinkApiClient';
+import { Fetch } from '../../utils/types';
 
 const apiClients: Record<string, ShlinkApiClient> = {};
 
@@ -15,7 +16,7 @@ const getSelectedServerFromState = (getState: GetState): ServerWithId => {
   return selectedServer;
 };
 
-export const buildShlinkApiClient = (fetch: typeof window.fetch) => (getStateOrSelectedServer: GetState | ServerWithId) => {
+export const buildShlinkApiClient = (fetch: Fetch) => (getStateOrSelectedServer: GetState | ServerWithId) => {
   const { url, apiKey } = isGetState(getStateOrSelectedServer)
     ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;
