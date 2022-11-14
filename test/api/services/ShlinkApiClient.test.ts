@@ -6,10 +6,8 @@ import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import { Fetch } from '../../../src/utils/types';
 
 describe('ShlinkApiClient', () => {
-  const buildFetch = (data: any) => jest.fn().mockResolvedValue({ json: () => Promise.resolve(data), ok: true });
-  const buildRejectedFetch = (error: any) => jest.fn().mockResolvedValueOnce(
-    { json: () => Promise.resolve(error), ok: false },
-  );
+  const buildFetch = (data: any) => jest.fn().mockResolvedValue(data);
+  const buildRejectedFetch = (error: any) => jest.fn().mockRejectedValueOnce(error);
   const buildApiClient = (fetch: Fetch) => new ShlinkApiClient(fetch, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
     ['abc123', null],

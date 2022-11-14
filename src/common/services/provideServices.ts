@@ -12,6 +12,7 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ImageDownloader } from './ImageDownloader';
 import { ReportExporter } from './ReportExporter';
+import { jsonFetch } from '../../utils/helpers/fetch';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
@@ -19,6 +20,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.constant('console', global.console);
   bottle.constant('axios', axios);
   bottle.constant('fetch', (global as any).fetch.bind((global as any)));
+  bottle.serviceFactory('jsonFetch', jsonFetch, 'fetch');
 
   bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');

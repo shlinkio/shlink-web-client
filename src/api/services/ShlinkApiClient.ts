@@ -119,29 +119,19 @@ export class ShlinkApiClient {
     const normalizedQuery = stringifyQuery(rejectNilProps(query));
     const stringifiedQuery = isEmpty(normalizedQuery) ? '' : `?${normalizedQuery}`;
 
-    return this.fetch(`${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`, {
+    return this.fetch<T>(`${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`, {
       method,
       body: body && JSON.stringify(body),
       headers: { 'X-Api-Key': this.apiKey },
-    })
-      .then(async (resp) => {
-        const parsed = await resp.json();
+    }).catch((e: unknown) => {
+      if (!isRegularNotFound(parseApiError(e))) {
+        throw e;
+      }
 
-        if (!resp.ok) {
-          throw parsed; // eslint-disable-line @typescript-eslint/no-throw-literal
-        }
-
-        return parsed as T; // TODO Improve type inference here without explicit casting
-      })
-      .catch((e: unknown) => {
-        if (!isRegularNotFound(parseApiError(e))) {
-          throw e;
-        }
-
-        // If we capture a not found error, let's assume this Shlink version does not support API v3, so we decrease to
-        // v2 and retry
-        this.apiVersion = 2;
-        return this.performRequest(url, method, query, body);
-      });
+      // If we capture a not found error, let's assume this Shlink version does not support API v3, so we decrease to
+      // v2 and retry
+      this.apiVersion = 2;
+      return this.performRequest(url, method, query, body);
+    });
   };
 }
