@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/dependabot/npm_and_yarn/minimatch-and-recursive-readdir-and-serve-3.1.2/static/css/main.fc57d6c0.css",
+    "main.js": "/shlink-web-client/dependabot/npm_and_yarn/minimatch-and-recursive-readdir-and-serve-3.1.2/static/js/main.082e730a.js",
+    "index.html": "/shlink-web-client/dependabot/npm_and_yarn/minimatch-and-recursive-readdir-and-serve-3.1.2/index.html",
+    "main.fc57d6c0.css.map": "/shlink-web-client/dependabot/npm_and_yarn/minimatch-and-recursive-readdir-and-serve-3.1.2/static/css/main.fc57d6c0.css.map",
+    "main.082e730a.js.map": "/shlink-web-client/dependabot/npm_and_yarn/minimatch-and-recursive-readdir-and-serve-3.1.2/static/js/main.082e730a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc57d6c0.css",
+    "static/js/main.082e730a.js"
+  ]
+}
