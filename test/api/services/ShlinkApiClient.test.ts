@@ -4,6 +4,7 @@ import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import { JsonFetch } from '../../../src/utils/types';
+import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
 
 describe('ShlinkApiClient', () => {
   const buildFetch = (data: any) => jest.fn().mockResolvedValue(data);
@@ -318,8 +319,14 @@ describe('ShlinkApiClient', () => {
       expect(result).toEqual(resp);
     });
 
-    it('retries request if API version is not supported', async () => {
-      const fetch = buildRejectedFetch({ type: 'NOT_FOUND', status: 404 }).mockImplementation(buildFetch({}));
+    it.each([
+      ['NOT_FOUND'],
+      [ErrorTypeV2.NOT_FOUND],
+      [ErrorTypeV3.NOT_FOUND],
+    ])('retries request if API version is not supported', async (type) => {
+      const fetch = buildRejectedFetch({ type, detail: 'detail', title: 'title', status: 404 }).mockImplementation(
+        buildFetch({}),
+      );
       const { editDomainRedirects } = buildApiClient(fetch);
 
       await editDomainRedirects({ domain: 'foo' });
