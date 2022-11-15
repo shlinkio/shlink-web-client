@@ -1,12 +1,15 @@
+import { Mock } from 'ts-mockery';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 import { createServers } from '../../../src/servers/reducers/servers';
+import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('remoteServersReducer', () => {
   afterEach(jest.clearAllMocks);
 
   describe('fetchServers', () => {
     const dispatch = jest.fn();
-    const fetch = jest.fn();
+    const fetchJson = jest.fn();
+    const httpClient = Mock.of<HttpClient>({ fetchJson });
 
     it.each([
       [
@@ -76,8 +79,8 @@ describe('remoteServersReducer', () => {
       ['<html></html>', {}],
       [{}, {}],
     ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
-      fetch.mockResolvedValue(mockedValue);
-      const doFetchServers = fetchServers(fetch);
+      fetchJson.mockResolvedValue(mockedValue);
+      const doFetchServers = fetchServers(httpClient);
 
       await doFetchServers()(dispatch, jest.fn(), {});
 
@@ -88,7 +91,7 @@ describe('remoteServersReducer', () => {
       expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
         type: doFetchServers.fulfilled.toString(),
       }));
-      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(fetchJson).toHaveBeenCalledTimes(1);
     });
   });
 });

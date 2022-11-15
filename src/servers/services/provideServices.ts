@@ -80,7 +80,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('deleteServer', () => deleteServer);
   bottle.serviceFactory('editServer', () => editServer);
   bottle.serviceFactory('setAutoConnect', () => setAutoConnect);
-  bottle.serviceFactory('fetchServers', fetchServers, 'jsonFetch');
+  bottle.serviceFactory('fetchServers', fetchServers, 'HttpClient');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
 
