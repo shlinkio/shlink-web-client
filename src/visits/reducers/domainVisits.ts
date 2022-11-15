@@ -27,7 +27,7 @@ const initialState: DomainVisits = {
 };
 
 export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
-  name: `${REDUCER_PREFIX}/getDomainVisits`,
+  typePrefix: `${REDUCER_PREFIX}/getDomainVisits`,
   createLoaders: ({ domain, query = {}, doIntervalFallback = false }: LoadDomainVisits, getState) => {
     const { getDomainVisits: getVisits } = buildShlinkApiClient(getState);
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
@@ -43,17 +43,17 @@ export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
 });
 
 export const domainVisitsReducerCreator = (
-  getVisitsCreator: ReturnType<typeof getDomainVisits>,
-) => createVisitsReducer(
-  REDUCER_PREFIX,
-  // @ts-expect-error TODO Fix type inference
-  getVisitsCreator,
+  asyncThunkCreator: ReturnType<typeof getDomainVisits>,
+) => createVisitsReducer({
+  name: REDUCER_PREFIX,
   initialState,
-  ({ domain, query = {} }, createdVisits) => {
+  // @ts-expect-error TODO Fix type inference
+  asyncThunkCreator,
+  filterCreatedVisits: ({ domain, query = {} }, createdVisits) => {
     const { startDate, endDate } = query;
     return createdVisits.filter(
       ({ shortUrl, visit }) =>
         shortUrl && domainMatches(shortUrl, domain) && isBetween(visit.date, startDate, endDate),
     );
   },
-);
+});

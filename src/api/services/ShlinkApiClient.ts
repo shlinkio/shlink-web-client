@@ -1,5 +1,4 @@
 import { isEmpty, isNil, reject } from 'ramda';
-import { AxiosError, AxiosInstance, AxiosResponse, Method } from 'axios';
 import { ShortUrl, ShortUrlData } from '../../short-urls/data';
 import { OptionalString } from '../../utils/utils';
 import {
@@ -20,7 +19,8 @@ import {
 } from '../types';
 import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
-import { ProblemDetailsError } from '../types/errors';
+import { stringifyQuery } from '../../utils/helpers/query';
+import { JsonFetch } from '../../utils/types';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
@@ -34,7 +34,7 @@ export class ShlinkApiClient {
   private apiVersion: 2 | 3;
 
   public constructor(
-    private readonly axios: AxiosInstance,
+    private readonly fetch: JsonFetch,
     private readonly baseUrl: string,
     private readonly apiKey: string,
   ) {
@@ -43,42 +43,40 @@ export class ShlinkApiClient {
 
   public readonly listShortUrls = async (params: ShlinkShortUrlsListParams = {}): Promise<ShlinkShortUrlsResponse> =>
     this.performRequest<{ shortUrls: ShlinkShortUrlsResponse }>('/short-urls', 'GET', normalizeOrderByInParams(params))
-      .then(({ data }) => data.shortUrls);
+      .then(({ shortUrls }) => shortUrls);
 
   public readonly createShortUrl = async (options: ShortUrlData): Promise<ShortUrl> => {
     const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options as any);
 
-    return this.performRequest<ShortUrl>('/short-urls', 'POST', {}, filteredOptions)
-      .then((resp) => resp.data);
+    return this.performRequest<ShortUrl>('/short-urls', 'POST', {}, filteredOptions);
   };
 
   public readonly getShortUrlVisits = async (shortCode: string, query?: ShlinkVisitsParams): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>(`/short-urls/${shortCode}/visits`, 'GET', query)
-      .then(({ data }) => data.visits);
+      .then(({ visits }) => visits);
 
   public readonly getTagVisits = async (tag: string, query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>(`/tags/${tag}/visits`, 'GET', query)
-      .then(({ data }) => data.visits);
+      .then(({ visits }) => visits);
 
   public readonly getDomainVisits = async (domain: string, query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>(`/domains/${domain}/visits`, 'GET', query)
-      .then(({ data }) => data.visits);
+      .then(({ visits }) => visits);
 
   public readonly getOrphanVisits = async (query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>('/visits/orphan', 'GET', query)
-      .then(({ data }) => data.visits);
+      .then(({ visits }) => visits);
 
   public readonly getNonOrphanVisits = async (query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
     this.performRequest<{ visits: ShlinkVisits }>('/visits/non-orphan', 'GET', query)
-      .then(({ data }) => data.visits);
+      .then(({ visits }) => visits);
 
   public readonly getVisitsOverview = async (): Promise<ShlinkVisitsOverview> =>
-    this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits', 'GET')
-      .then(({ data }) => data.visits);
+    this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits')
+      .then(({ visits }) => visits);
 
   public readonly getShortUrl = async (shortCode: string, domain?: OptionalString): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'GET', { domain })
-      .then(({ data }) => data);
+    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'GET', { domain });
 
   public readonly deleteShortUrl = async (shortCode: string, domain?: OptionalString): Promise<void> =>
     this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
@@ -89,11 +87,11 @@ export class ShlinkApiClient {
     domain: OptionalString,
     edit: ShlinkShortUrlData,
   ): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, edit).then(({ data }) => data);
+    this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, edit);
 
   public readonly listTags = async (): Promise<ShlinkTags> =>
     this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })
-      .then((resp) => resp.data.tags)
+      .then(({ tags }) => tags)
       .then(({ data, stats }) => ({ tags: data, stats }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
@@ -104,31 +102,28 @@ export class ShlinkApiClient {
     this.performRequest('/tags', 'PUT', {}, { oldName, newName })
       .then(() => ({ oldName, newName }));
 
-  public readonly health = async (): Promise<ShlinkHealth> =>
-    this.performRequest<ShlinkHealth>('/health', 'GET')
-      .then((resp) => resp.data);
+  public readonly health = async (): Promise<ShlinkHealth> => this.performRequest<ShlinkHealth>('/health', 'GET');
 
   public readonly mercureInfo = async (): Promise<ShlinkMercureInfo> =>
-    this.performRequest<ShlinkMercureInfo>('/mercure-info', 'GET')
-      .then((resp) => resp.data);
+    this.performRequest<ShlinkMercureInfo>('/mercure-info', 'GET');
 
   public readonly listDomains = async (): Promise<ShlinkDomainsResponse> =>
-    this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains', 'GET').then(({ data }) => data.domains);
+    this.performRequest<{ domains: ShlinkDomainsResponse }>('/domains').then(({ domains }) => domains);
 
   public readonly editDomainRedirects = async (
     domainRedirects: ShlinkEditDomainRedirects,
   ): Promise<ShlinkDomainRedirects> =>
-    this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects).then(({ data }) => data);
+    this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects);
 
-  private readonly performRequest = async <T>(url: string, method: Method = 'GET', query = {}, body = {}): Promise<AxiosResponse<T>> =>
-    this.axios({
+  private readonly performRequest = async <T>(url: string, method = 'GET', query = {}, body?: object): Promise<T> => {
+    const normalizedQuery = stringifyQuery(rejectNilProps(query));
+    const stringifiedQuery = isEmpty(normalizedQuery) ? '' : `?${normalizedQuery}`;
+
+    return this.fetch<T>(`${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`, {
       method,
-      url: `${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}`,
+      body: body && JSON.stringify(body),
       headers: { 'X-Api-Key': this.apiKey },
-      params: rejectNilProps(query),
-      data: body,
-      paramsSerializer: { indexes: false },
-    }).catch((e: AxiosError<ProblemDetailsError>) => {
+    }).catch((e: unknown) => {
       if (!isRegularNotFound(parseApiError(e))) {
         throw e;
       }
@@ -138,4 +133,5 @@ export class ShlinkApiClient {
       this.apiVersion = 2;
       return this.performRequest(url, method, query, body);
     });
+  };
 }

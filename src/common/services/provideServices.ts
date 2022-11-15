@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Bottle from 'bottlejs';
 import { ScrollToTop } from '../ScrollToTop';
 import { MainHeader } from '../MainHeader';
@@ -12,14 +11,16 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ImageDownloader } from './ImageDownloader';
 import { ReportExporter } from './ReportExporter';
+import { jsonFetch } from '../../utils/helpers/fetch';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
-  bottle.constant('axios', axios);
+  bottle.constant('fetch', (global as any).fetch.bind(global));
+  bottle.serviceFactory('jsonFetch', jsonFetch, 'fetch');
 
-  bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
+  bottle.service('ImageDownloader', ImageDownloader, 'fetch', 'window');
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components

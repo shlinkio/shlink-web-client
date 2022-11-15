@@ -24,13 +24,12 @@ const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
   !orphanVisitsType || orphanVisitsType === visit.type;
 
 export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
-  name: `${REDUCER_PREFIX}/getOrphanVisits`,
+  typePrefix: `${REDUCER_PREFIX}/getOrphanVisits`,
   createLoaders: ({ orphanVisitsType, query = {}, doIntervalFallback = false }: LoadOrphanVisits, getState) => {
     const { getOrphanVisits: getVisits } = buildShlinkApiClient(getState);
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits({ ...query, page, itemsPerPage })
       .then((result) => {
         const visits = result.data.filter((visit) => isOrphanVisit(visit) && matchesType(visit, orphanVisitsType));
-
         return { ...result, data: visits };
       });
     const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, getVisits);
@@ -42,13 +41,13 @@ export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
 });
 
 export const orphanVisitsReducerCreator = (
-  getVisitsCreator: ReturnType<typeof getOrphanVisits>,
-) => createVisitsReducer(
-  REDUCER_PREFIX,
-  getVisitsCreator,
+  asyncThunkCreator: ReturnType<typeof getOrphanVisits>,
+) => createVisitsReducer({
+  name: REDUCER_PREFIX,
   initialState,
-  ({ query = {} }, createdVisits) => {
+  asyncThunkCreator,
+  filterCreatedVisits: ({ query = {} }, createdVisits) => {
     const { startDate, endDate } = query;
     return createdVisits.filter(({ visit, shortUrl }) => !shortUrl && isBetween(visit.date, startDate, endDate));
   },
-);
+});

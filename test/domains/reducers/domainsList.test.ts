@@ -1,5 +1,4 @@
 import { Mock } from 'ts-mockery';
-import { AxiosError } from 'axios';
 import {
   DomainsList,
   replaceRedirectsOnDomain,
@@ -25,11 +24,7 @@ describe('domainsListReducer', () => {
     Mock.of<Domain>({ domain: 'Boo', status: 'validating' }),
   ];
   const domains = [...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' })];
-  const error = Mock.of<AxiosError>({
-    response: {
-      data: { type: 'NOT_FOUND', status: 404 },
-    },
-  });
+  const error = { type: 'NOT_FOUND', status: 404 };
   const editDomainRedirectsThunk = editDomainRedirects(buildShlinkApiClient);
   const { reducer, listDomains: listDomainsAction, checkDomainHealth, filterDomains } = domainsListReducerCreator(
     buildShlinkApiClient,

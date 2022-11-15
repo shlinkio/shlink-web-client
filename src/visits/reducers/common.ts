@@ -20,20 +20,20 @@ type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits
 type LastVisitLoader = () => Promise<Visit | undefined>;
 
 interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded> {
-  name: string;
+  typePrefix: string;
   createLoaders: (params: T, getState: () => ShlinkState) => [VisitsLoader, LastVisitLoader];
   getExtraFulfilledPayload: (params: T) => Partial<R>;
   shouldCancel: (getState: () => ShlinkState) => boolean;
 }
 
 export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded>(
-  { name, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
+  { typePrefix, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
 ) => {
-  const progressChangedAction = createAction<number>(`${name}/progressChanged`);
-  const largeAction = createAction<void>(`${name}/large`);
-  const fallbackToIntervalAction = createAction<DateInterval>(`${name}/fallbackToInterval`);
+  const progressChangedAction = createAction<number>(`${typePrefix}/progressChanged`);
+  const largeAction = createAction<void>(`${typePrefix}/large`);
+  const fallbackToIntervalAction = createAction<DateInterval>(`${typePrefix}/fallbackToInterval`);
 
-  const asyncThunk = createAsyncThunk(name, async (params: T, { getState, dispatch }): Promise<R> => {
+  const asyncThunk = createAsyncThunk(typePrefix, async (params: T, { getState, dispatch }): Promise<R> => {
     const [visitsLoader, lastVisitLoader] = createLoaders(params, getState);
 
     const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
@@ -97,11 +97,15 @@ export const lastVisitLoaderForLoader = (
   return async () => loader({ page: 1, itemsPerPage: 1 }).then(({ data }) => data[0]);
 };
 
+interface VisitsReducerOptions<State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>> {
+  name: string;
+  asyncThunkCreator: AT;
+  initialState: State;
+  filterCreatedVisits: (state: State, createdVisits: CreateVisit[]) => CreateVisit[];
+}
+
 export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>>(
-  name: string,
-  asyncThunkCreator: AT,
-  initialState: State,
-  filterCreatedVisits: (state: State, createdVisits: CreateVisit[]) => CreateVisit[],
+  { name, asyncThunkCreator, initialState, filterCreatedVisits }: VisitsReducerOptions<State, AT>,
 ) => {
   const { asyncThunk, largeAction, fallbackToIntervalAction, progressChangedAction } = asyncThunkCreator;
   const { reducer, actions } = createSlice({
@@ -127,10 +131,10 @@ export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnT
 
       builder.addCase(createNewVisits, (state, { payload }) => {
         const { visits } = state;
-        // @ts-expect-error TODO Fix the state inferred type
+        // @ts-expect-error TODO Fix type inference
         const newVisits = filterCreatedVisits(state, payload.createdVisits).map(({ visit }) => visit);
 
-        return { ...state, visits: [...newVisits, ...visits] };
+        return !newVisits.length ? state : { ...state, visits: [...newVisits, ...visits] };
       });
     },
   });
