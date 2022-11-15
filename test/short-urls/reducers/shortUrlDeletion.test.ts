@@ -43,8 +43,8 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns errorData on DELETE_SHORT_URL_ERROR', () => {
-      const errorData = Mock.of<ProblemDetailsError>({ type: 'bar' });
-      const error = { response: { data: errorData } };
+      const errorData = Mock.of<ProblemDetailsError>({ type: 'bar', detail: 'detail', title: 'title', status: 400 });
+      const error = errorData;
 
       expect(reducer(undefined, { type: deleteShortUrl.rejected.toString(), error })).toEqual({
         shortCode: '',
