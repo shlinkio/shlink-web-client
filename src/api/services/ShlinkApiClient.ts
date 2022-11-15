@@ -20,7 +20,7 @@ import {
 import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
 import { stringifyQuery } from '../../utils/helpers/query';
-import { Fetch } from '../../utils/types';
+import { JsonFetch } from '../../utils/types';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
@@ -34,7 +34,7 @@ export class ShlinkApiClient {
   private apiVersion: 2 | 3;
 
   public constructor(
-    private readonly fetch: Fetch,
+    private readonly fetch: JsonFetch,
     private readonly baseUrl: string,
     private readonly apiKey: string,
   ) {

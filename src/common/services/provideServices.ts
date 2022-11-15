@@ -19,10 +19,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
   bottle.constant('axios', axios);
-  bottle.constant('fetch', (global as any).fetch.bind((global as any)));
+  bottle.constant('fetch', (global as any).fetch.bind(global));
   bottle.serviceFactory('jsonFetch', jsonFetch, 'fetch');
 
-  bottle.service('ImageDownloader', ImageDownloader, 'axios', 'window');
+  bottle.service('ImageDownloader', ImageDownloader, 'fetch', 'window');
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components

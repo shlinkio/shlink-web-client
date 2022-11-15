@@ -3,12 +3,12 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { OptionalString } from '../../../src/utils/utils';
 import { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
-import { Fetch } from '../../../src/utils/types';
+import { JsonFetch } from '../../../src/utils/types';
 
 describe('ShlinkApiClient', () => {
   const buildFetch = (data: any) => jest.fn().mockResolvedValue(data);
   const buildRejectedFetch = (error: any) => jest.fn().mockRejectedValueOnce(error);
-  const buildApiClient = (fetch: Fetch) => new ShlinkApiClient(fetch, '', '');
+  const buildApiClient = (fetch: JsonFetch) => new ShlinkApiClient(fetch, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
     ['abc123', null],
     ['abc123', undefined],
