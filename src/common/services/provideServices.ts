@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Bottle from 'bottlejs';
 import { ScrollToTop } from '../ScrollToTop';
 import { MainHeader } from '../MainHeader';
@@ -18,7 +17,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
-  bottle.constant('axios', axios);
   bottle.constant('fetch', (global as any).fetch.bind(global));
   bottle.serviceFactory('jsonFetch', jsonFetch, 'fetch');
 
