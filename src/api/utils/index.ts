@@ -8,7 +8,7 @@ import {
 } from '../types/errors';
 
 const isProblemDetails = (e: unknown): e is ProblemDetailsError =>
-  !!e && typeof e === 'object' && Object.keys(e).every((key) => ['type', 'detail', 'title', 'status'].includes(key));
+  !!e && typeof e === 'object' && ['type', 'detail', 'title', 'status'].every((prop) => prop in e);
 
 export const parseApiError = (e: unknown): ProblemDetailsError | undefined => (isProblemDetails(e) ? e : undefined);
 
