@@ -2,13 +2,13 @@ import { Mock } from 'ts-mockery';
 import { buildShlinkApiClient } from '../../../src/api/services/ShlinkApiClientBuilder';
 import { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import { ShlinkState } from '../../../src/container/types';
+import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('ShlinkApiClientBuilder', () => {
-  const fetch = jest.fn();
   const server = (data: Partial<ReachableServer>) => Mock.of<ReachableServer>(data);
 
   const createBuilder = () => {
-    const builder = buildShlinkApiClient(fetch);
+    const builder = buildShlinkApiClient(Mock.of<HttpClient>());
     return (selectedServer: SelectedServer) => builder(() => Mock.of<ShlinkState>({ selectedServer }));
   };
 
@@ -42,7 +42,7 @@ describe('ShlinkApiClientBuilder', () => {
   it('does not fetch from state when provided param is already selected server', () => {
     const url = 'url';
     const apiKey = 'apiKey';
-    const apiClient = buildShlinkApiClient(fetch)(server({ url, apiKey }));
+    const apiClient = buildShlinkApiClient(Mock.of<HttpClient>())(server({ url, apiKey }));
 
     expect(apiClient['baseUrl']).toEqual(url); // eslint-disable-line @typescript-eslint/dot-notation
     expect(apiClient['apiKey']).toEqual(apiKey); // eslint-disable-line @typescript-eslint/dot-notation

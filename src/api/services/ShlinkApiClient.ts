@@ -20,7 +20,7 @@ import {
 import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
 import { stringifyQuery } from '../../utils/helpers/query';
-import { JsonFetch } from '../../utils/types';
+import { HttpClient } from '../../common/services/HttpClient';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
@@ -34,7 +34,7 @@ export class ShlinkApiClient {
   private apiVersion: 2 | 3;
 
   public constructor(
-    private readonly fetch: JsonFetch,
+    private readonly httpClient: HttpClient,
     private readonly baseUrl: string,
     private readonly apiKey: string,
   ) {
@@ -119,11 +119,14 @@ export class ShlinkApiClient {
     const normalizedQuery = stringifyQuery(rejectNilProps(query));
     const stringifiedQuery = isEmpty(normalizedQuery) ? '' : `?${normalizedQuery}`;
 
-    return this.fetch<T>(`${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`, {
-      method,
-      body: body && JSON.stringify(body),
-      headers: { 'X-Api-Key': this.apiKey },
-    }).catch((e: unknown) => {
+    return this.httpClient.fetchJson<T>(
+      `${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`,
+      {
+        method,
+        body: body && JSON.stringify(body),
+        headers: { 'X-Api-Key': this.apiKey },
+      },
+    ).catch((e: unknown) => {
       if (!isRegularNotFound(parseApiError(e))) {
         throw e;
       }

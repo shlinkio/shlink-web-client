@@ -2,14 +2,14 @@ import pack from '../../../package.json';
 import { hasServerData, ServerData } from '../data';
 import { createServers } from './servers';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { JsonFetch } from '../../utils/types';
+import { HttpClient } from '../../common/services/HttpClient';
 
 const responseToServersList = (data: any): ServerData[] => (Array.isArray(data) ? data.filter(hasServerData) : []);
 
-export const fetchServers = (fetch: JsonFetch) => createAsyncThunk(
+export const fetchServers = (httpClient: HttpClient) => createAsyncThunk(
   'shlink/remoteServers/fetchServers',
   async (_: void, { dispatch }): Promise<void> => {
-    const resp = await fetch<any>(`${pack.homepage}/servers.json`);
+    const resp = await httpClient.fetchJson<any>(`${pack.homepage}/servers.json`);
     const result = responseToServersList(resp);
 
     dispatch(createServers(result));

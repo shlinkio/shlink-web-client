@@ -11,16 +11,16 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ImageDownloader } from './ImageDownloader';
 import { ReportExporter } from './ReportExporter';
-import { jsonFetch } from '../../utils/helpers/fetch';
+import { HttpClient } from './HttpClient';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', (global as any).window);
   bottle.constant('console', global.console);
   bottle.constant('fetch', (global as any).fetch.bind(global));
-  bottle.serviceFactory('jsonFetch', jsonFetch, 'fetch');
 
-  bottle.service('ImageDownloader', ImageDownloader, 'fetch', 'window');
+  bottle.service('HttpClient', HttpClient, 'fetch');
+  bottle.service('ImageDownloader', ImageDownloader, 'HttpClient', 'window');
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components
