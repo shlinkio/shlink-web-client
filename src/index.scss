@@ -39,6 +39,10 @@ a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.bt
   background-color: $mainColor !important;
 }
 
+.bg-warning {
+  color: $lightTextColor;
+}
+
 .card-body,
 .card-header,
 .list-group-item {
