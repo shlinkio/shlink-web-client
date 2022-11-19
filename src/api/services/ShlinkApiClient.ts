@@ -79,7 +79,7 @@ export class ShlinkApiClient {
     this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'GET', { domain });
 
   public readonly deleteShortUrl = async (shortCode: string, domain?: OptionalString): Promise<void> =>
-    this.performRequest(`/short-urls/${shortCode}`, 'DELETE', { domain })
+    this.performRequest<void>(`/short-urls/${shortCode}`, 'DELETE', { domain })
       .then(() => {});
 
   public readonly updateShortUrl = async (
@@ -95,11 +95,11 @@ export class ShlinkApiClient {
       .then(({ data, stats }) => ({ tags: data, stats }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
-    this.performRequest('/tags', 'DELETE', { tags })
+    this.performRequest<void>('/tags', 'DELETE', { tags })
       .then(() => ({ tags }));
 
   public readonly editTag = async (oldName: string, newName: string): Promise<{ oldName: string; newName: string }> =>
-    this.performRequest('/tags', 'PUT', {}, { oldName, newName })
+    this.performRequest<void>('/tags', 'PUT', {}, { oldName, newName })
       .then(() => ({ oldName, newName }));
 
   public readonly health = async (): Promise<ShlinkHealth> => this.performRequest<ShlinkHealth>('/health', 'GET');

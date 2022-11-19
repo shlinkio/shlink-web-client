@@ -7,7 +7,7 @@ import { EditTagModal } from '../helpers/EditTagModal';
 import { TagsList } from '../TagsList';
 import { filterTags, listTags, tagsListReducerCreator } from '../reducers/tagsList';
 import { tagDeleted, tagDeleteReducerCreator } from '../reducers/tagDelete';
-import { tagEdited, tagEditReducerCreator } from '../reducers/tagEdit';
+import { editTag, tagEdited, tagEditReducerCreator } from '../reducers/tagEdit';
 import { ConnectDecorator } from '../../container/types';
 import { TagsCards } from '../TagsCards';
 import { TagsTable } from '../TagsTable';
@@ -38,7 +38,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   // Reducers
-  bottle.serviceFactory('tagEditReducerCreator', tagEditReducerCreator, 'buildShlinkApiClient', 'ColorGenerator');
+  bottle.serviceFactory('tagEditReducerCreator', tagEditReducerCreator, 'editTag');
   bottle.serviceFactory('tagEditReducer', prop('reducer'), 'tagEditReducerCreator');
 
   bottle.serviceFactory('tagDeleteReducerCreator', tagDeleteReducerCreator, 'buildShlinkApiClient');
@@ -58,7 +58,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('deleteTag', prop('deleteTag'), 'tagDeleteReducerCreator');
   bottle.serviceFactory('tagDeleted', () => tagDeleted);
 
-  bottle.serviceFactory('editTag', prop('editTag'), 'tagEditReducerCreator');
+  bottle.serviceFactory('editTag', editTag, 'buildShlinkApiClient', 'ColorGenerator');
   bottle.serviceFactory('tagEdited', () => tagEdited);
 };
 

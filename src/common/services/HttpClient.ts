@@ -5,13 +5,15 @@ export class HttpClient {
 
   public fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
     return this.fetch(url, options).then(async (resp) => {
-      const parsed = await resp.json();
-
       if (!resp.ok) {
-        throw parsed;
+        throw await resp.json();
       }
 
-      return parsed as T;
+      try {
+        return (await resp.json()) as T;
+      } catch (e) {
+        return undefined as T;
+      }
     });
   }
 

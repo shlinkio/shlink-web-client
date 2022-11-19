@@ -33,35 +33,34 @@ const initialState: TagEdition = {
 
 export const tagEdited = createAction<EditTag>(`${REDUCER_PREFIX}/tagEdited`);
 
-export const tagEditReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder, colorGenerator: ColorGenerator) => {
-  const editTag = createAsyncThunk(
-    `${REDUCER_PREFIX}/editTag`,
-    async ({ oldName, newName, color }: EditTag, { getState }): Promise<EditTag> => {
-      await buildShlinkApiClient(getState).editTag(oldName, newName);
-      colorGenerator.setColorForKey(newName, color);
+export const editTag = (
+  buildShlinkApiClient: ShlinkApiClientBuilder,
+  colorGenerator: ColorGenerator,
+) => createAsyncThunk(
+  `${REDUCER_PREFIX}/editTag`,
+  async ({ oldName, newName, color }: EditTag, { getState }): Promise<EditTag> => {
+    await buildShlinkApiClient(getState).editTag(oldName, newName);
+    colorGenerator.setColorForKey(newName, color);
 
-      return { oldName, newName, color };
-    },
-  );
+    return { oldName, newName, color };
+  },
+);
 
-  const { reducer } = createSlice({
-    name: REDUCER_PREFIX,
-    initialState,
-    reducers: {},
-    extraReducers: (builder) => {
-      builder.addCase(editTag.pending, () => ({ editing: true, edited: false, error: false }));
-      builder.addCase(
-        editTag.rejected,
-        (_, { error }) => ({ editing: false, edited: false, error: true, errorData: parseApiError(error) }),
-      );
-      builder.addCase(editTag.fulfilled, (_, { payload }) => ({
-        ...pick(['oldName', 'newName'], payload),
-        editing: false,
-        edited: true,
-        error: false,
-      }));
-    },
-  });
-
-  return { reducer, editTag };
-};
+export const tagEditReducerCreator = (editTagThunk: ReturnType<typeof editTag>) => createSlice({
+  name: REDUCER_PREFIX,
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(editTagThunk.pending, () => ({ editing: true, edited: false, error: false }));
+    builder.addCase(
+      editTagThunk.rejected,
+      (_, { error }) => ({ editing: false, edited: false, error: true, errorData: parseApiError(error) }),
+    );
+    builder.addCase(editTagThunk.fulfilled, (_, { payload }) => ({
+      ...pick(['oldName', 'newName'], payload),
+      editing: false,
+      edited: true,
+      error: false,
+    }));
+  },
+});
