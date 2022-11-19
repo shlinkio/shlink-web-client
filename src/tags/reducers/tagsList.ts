@@ -116,8 +116,12 @@ export const tagsListReducerCreator = (
       tags: rejectTag(tags, tag),
       filteredTags: rejectTag(filteredTags, tag),
     }));
-    builder.addCase(tagEdited, ({ tags, filteredTags, ...rest }, { payload }) => ({
+    builder.addCase(tagEdited, ({ tags, filteredTags, stats, ...rest }, { payload }) => ({
       ...rest,
+      stats: {
+        ...stats,
+        [payload.newName]: stats[payload.oldName],
+      },
       tags: tags.map(renameTag(payload.oldName, payload.newName)).sort(),
       filteredTags: filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
     }));
