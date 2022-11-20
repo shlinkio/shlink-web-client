@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/shlink-web-client/feature/rename-tag-fix/static/css/main.58705429.css",
-    "main.js": "/shlink-web-client/feature/rename-tag-fix/static/js/main.c351d9eb.js",
+    "main.js": "/shlink-web-client/feature/rename-tag-fix/static/js/main.1d583927.js",
     "index.html": "/shlink-web-client/feature/rename-tag-fix/index.html",
     "main.58705429.css.map": "/shlink-web-client/feature/rename-tag-fix/static/css/main.58705429.css.map",
-    "main.c351d9eb.js.map": "/shlink-web-client/feature/rename-tag-fix/static/js/main.c351d9eb.js.map"
+    "main.1d583927.js.map": "/shlink-web-client/feature/rename-tag-fix/static/js/main.1d583927.js.map"
   },
   "entrypoints": [
     "static/css/main.58705429.css",
-    "static/js/main.c351d9eb.js"
+    "static/js/main.1d583927.js"
   ]
 }
