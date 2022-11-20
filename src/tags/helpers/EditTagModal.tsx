@@ -27,9 +27,10 @@ export const EditTagModal = ({ getColorForKey }: ColorGenerator) => (
   const [showColorPicker, toggleColorPicker, , hideColorPicker] = useToggle();
   const { editing, error, edited, errorData } = tagEdit;
   const saveTag = handleEventPreventingDefault(
-    async () => editTag({ oldName: tag, newName: newTagName, color })
-      .then(toggle)
-      .catch(() => {}),
+    async () => {
+      await editTag({ oldName: tag, newName: newTagName, color });
+      toggle();
+    },
   );
   const onClosed = pipe(hideColorPicker, () => edited && tagEdited({ oldName: tag, newName: newTagName, color }));
 

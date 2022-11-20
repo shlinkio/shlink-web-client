@@ -111,15 +111,19 @@ export const tagsListReducerCreator = (
       { ...initialState, stats: payload.stats, tags: payload.tags, filteredTags: payload.tags }
     ));
 
-    builder.addCase(tagDeleted, (state, { payload: tag }) => ({
-      ...state,
-      tags: rejectTag(state.tags, tag),
-      filteredTags: rejectTag(state.filteredTags, tag),
+    builder.addCase(tagDeleted, ({ tags, filteredTags, ...rest }, { payload: tag }) => ({
+      ...rest,
+      tags: rejectTag(tags, tag),
+      filteredTags: rejectTag(filteredTags, tag),
     }));
-    builder.addCase(tagEdited, (state, { payload }) => ({
-      ...state,
-      tags: state.tags.map(renameTag(payload.oldName, payload.newName)).sort(),
-      filteredTags: state.filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
+    builder.addCase(tagEdited, ({ tags, filteredTags, stats, ...rest }, { payload }) => ({
+      ...rest,
+      stats: {
+        ...stats,
+        [payload.newName]: stats[payload.oldName],
+      },
+      tags: tags.map(renameTag(payload.oldName, payload.newName)).sort(),
+      filteredTags: filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
     }));
     builder.addCase(createNewVisits, (state, { payload }) => ({
       ...state,

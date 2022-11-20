@@ -8,7 +8,8 @@ import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('ShlinkApiClient', () => {
   const fetchJson = jest.fn().mockResolvedValue({});
-  const httpClient = Mock.of<HttpClient>({ fetchJson });
+  const fetchEmpty = jest.fn().mockResolvedValue(undefined);
+  const httpClient = Mock.of<HttpClient>({ fetchJson, fetchEmpty });
   const buildApiClient = () => new ShlinkApiClient(httpClient, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
     ['abc123', null],
@@ -196,7 +197,7 @@ describe('ShlinkApiClient', () => {
 
       await deleteTags(tags);
 
-      expect(fetchJson).toHaveBeenCalledWith(
+      expect(fetchEmpty).toHaveBeenCalledWith(
         expect.stringContaining(`/tags?${tags.map((tag) => `tags%5B%5D=${tag}`).join('&')}`),
         expect.objectContaining({ method: 'DELETE' }),
       );
@@ -211,7 +212,7 @@ describe('ShlinkApiClient', () => {
 
       await editTag(oldName, newName);
 
-      expect(fetchJson).toHaveBeenCalledWith(expect.stringContaining('/tags'), expect.objectContaining({
+      expect(fetchEmpty).toHaveBeenCalledWith(expect.stringContaining('/tags'), expect.objectContaining({
         method: 'PUT',
         body: JSON.stringify({ oldName, newName }),
       }));
@@ -225,7 +226,7 @@ describe('ShlinkApiClient', () => {
 
       await deleteShortUrl(shortCode, domain);
 
-      expect(fetchJson).toHaveBeenCalledWith(
+      expect(fetchEmpty).toHaveBeenCalledWith(
         expect.stringContaining(`/short-urls/${shortCode}${expectedQuery}`),
         expect.objectContaining({ method: 'DELETE' }),
       );

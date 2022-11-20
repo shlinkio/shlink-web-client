@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { tagEdited, EditTagAction, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
+import { tagEdited, editTag as editTagCreator, EditTagAction, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { ShlinkState } from '../../../src/container/types';
@@ -11,7 +11,8 @@ describe('tagEditReducer', () => {
   const editTagCall = jest.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ editTag: editTagCall });
   const colorGenerator = Mock.of<ColorGenerator>({ setColorForKey: jest.fn() });
-  const { reducer, editTag } = tagEditReducerCreator(buildShlinkApiClient, colorGenerator);
+  const editTag = editTagCreator(buildShlinkApiClient, colorGenerator);
+  const { reducer } = tagEditReducerCreator(editTag);
 
   describe('reducer', () => {
     it('returns loading on EDIT_TAG_START', () => {

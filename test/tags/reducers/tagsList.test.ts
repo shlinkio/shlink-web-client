@@ -70,14 +70,30 @@ describe('tagsListReducer', () => {
       const expectedTags = ['foo', 'renamed', 'baz'].sort();
 
       expect(reducer(
-        state({ tags, filteredTags: tags }),
-        {
-          type: tagEdited.toString(),
-          payload: { oldName, newName },
-        },
+        state({
+          tags,
+          filteredTags: tags,
+          stats: {
+            [oldName]: {
+              shortUrlsCount: 35,
+              visitsCount: 35,
+            },
+          },
+        }),
+        { type: tagEdited.toString(), payload: { oldName, newName } },
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
+        stats: {
+          [oldName]: {
+            shortUrlsCount: 35,
+            visitsCount: 35,
+          },
+          [newName]: {
+            shortUrlsCount: 35,
+            visitsCount: 35,
+          },
+        },
       });
     });
 

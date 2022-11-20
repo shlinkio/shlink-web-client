@@ -3,19 +3,23 @@ import { Fetch } from '../../utils/types';
 export class HttpClient {
   constructor(private readonly fetch: Fetch) {}
 
-  public fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
-    return this.fetch(url, options).then(async (resp) => {
-      const parsed = await resp.json();
+  public readonly fetchJson = <T>(url: string, options?: RequestInit): Promise<T> =>
+    this.fetch(url, options).then(async (resp) => {
+      const json = await resp.json();
 
       if (!resp.ok) {
-        throw parsed;
+        throw json;
       }
 
-      return parsed as T;
+      return json as T;
     });
-  }
 
-  public fetchBlob(url: string): Promise<Blob> {
-    return this.fetch(url).then((resp) => resp.blob());
-  }
+  public readonly fetchEmpty = (url: string, options?: RequestInit): Promise<void> =>
+    this.fetch(url, options).then(async (resp) => {
+      if (!resp.ok) {
+        throw await resp.json();
+      }
+    });
+
+  public readonly fetchBlob = (url: string): Promise<Blob> => this.fetch(url).then((resp) => resp.blob());
 }
