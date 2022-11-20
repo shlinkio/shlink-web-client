@@ -24,11 +24,9 @@ import { HttpClient } from '../../common/services/HttpClient';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
-const normalizeOrderByInParams = (params: ShlinkShortUrlsListParams): ShlinkShortUrlsListNormalizedParams => {
-  const { orderBy = {}, ...rest } = params;
-
-  return { ...rest, orderBy: orderToString(orderBy) };
-};
+const normalizeOrderByInParams = (
+  { orderBy = {}, ...rest }: ShlinkShortUrlsListParams,
+): ShlinkShortUrlsListNormalizedParams => ({ ...rest, orderBy: orderToString(orderBy) });
 
 export class ShlinkApiClient {
   private apiVersion: 2 | 3;
@@ -47,7 +45,6 @@ export class ShlinkApiClient {
 
   public readonly createShortUrl = async (options: ShortUrlData): Promise<ShortUrl> => {
     const filteredOptions = reject((value) => isEmpty(value) || isNil(value), options as any);
-
     return this.performRequest<ShortUrl>('/short-urls', 'POST', {}, filteredOptions);
   };
 
@@ -56,31 +53,25 @@ export class ShlinkApiClient {
       .then(({ visits }) => visits);
 
   public readonly getTagVisits = async (tag: string, query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
-    this.performRequest<{ visits: ShlinkVisits }>(`/tags/${tag}/visits`, 'GET', query)
-      .then(({ visits }) => visits);
+    this.performRequest<{ visits: ShlinkVisits }>(`/tags/${tag}/visits`, 'GET', query).then(({ visits }) => visits);
 
   public readonly getDomainVisits = async (domain: string, query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
-    this.performRequest<{ visits: ShlinkVisits }>(`/domains/${domain}/visits`, 'GET', query)
-      .then(({ visits }) => visits);
+    this.performRequest<{ visits: ShlinkVisits }>(`/domains/${domain}/visits`, 'GET', query).then(({ visits }) => visits);
 
   public readonly getOrphanVisits = async (query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
-    this.performRequest<{ visits: ShlinkVisits }>('/visits/orphan', 'GET', query)
-      .then(({ visits }) => visits);
+    this.performRequest<{ visits: ShlinkVisits }>('/visits/orphan', 'GET', query).then(({ visits }) => visits);
 
   public readonly getNonOrphanVisits = async (query?: Omit<ShlinkVisitsParams, 'domain'>): Promise<ShlinkVisits> =>
-    this.performRequest<{ visits: ShlinkVisits }>('/visits/non-orphan', 'GET', query)
-      .then(({ visits }) => visits);
+    this.performRequest<{ visits: ShlinkVisits }>('/visits/non-orphan', 'GET', query).then(({ visits }) => visits);
 
   public readonly getVisitsOverview = async (): Promise<ShlinkVisitsOverview> =>
-    this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits')
-      .then(({ visits }) => visits);
+    this.performRequest<{ visits: ShlinkVisitsOverview }>('/visits').then(({ visits }) => visits);
 
   public readonly getShortUrl = async (shortCode: string, domain?: OptionalString): Promise<ShortUrl> =>
     this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'GET', { domain });
 
   public readonly deleteShortUrl = async (shortCode: string, domain?: OptionalString): Promise<void> =>
-    this.performRequest<void>(`/short-urls/${shortCode}`, 'DELETE', { domain })
-      .then(() => {});
+    this.performEmptyRequest(`/short-urls/${shortCode}`, 'DELETE', { domain });
 
   public readonly updateShortUrl = async (
     shortCode: string,
@@ -95,12 +86,10 @@ export class ShlinkApiClient {
       .then(({ data, stats }) => ({ tags: data, stats }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
-    this.performRequest<void>('/tags', 'DELETE', { tags })
-      .then(() => ({ tags }));
+    this.performEmptyRequest('/tags', 'DELETE', { tags }).then(() => ({ tags }));
 
   public readonly editTag = async (oldName: string, newName: string): Promise<{ oldName: string; newName: string }> =>
-    this.performRequest<void>('/tags', 'PUT', {}, { oldName, newName })
-      .then(() => ({ oldName, newName }));
+    this.performEmptyRequest('/tags', 'PUT', {}, { oldName, newName }).then(() => ({ oldName, newName }));
 
   public readonly health = async (): Promise<ShlinkHealth> => this.performRequest<ShlinkHealth>('/health', 'GET');
 
@@ -115,26 +104,35 @@ export class ShlinkApiClient {
   ): Promise<ShlinkDomainRedirects> =>
     this.performRequest<ShlinkDomainRedirects>('/domains/redirects', 'PATCH', {}, domainRedirects);
 
-  private readonly performRequest = async <T>(url: string, method = 'GET', query = {}, body?: object): Promise<T> => {
+  private readonly performRequest = async <T>(url: string, method = 'GET', query = {}, body?: object): Promise<T> =>
+    this.httpClient.fetchJson<T>(...this.toFetchParams(url, method, query, body)).catch(
+      this.handleFetchError(() => this.httpClient.fetchJson<T>(...this.toFetchParams(url, method, query, body))),
+    );
+
+  private readonly performEmptyRequest = async (url: string, method = 'GET', query = {}, body?: object): Promise<void> =>
+    this.httpClient.fetchEmpty(...this.toFetchParams(url, method, query, body)).catch(
+      this.handleFetchError(() => this.httpClient.fetchEmpty(...this.toFetchParams(url, method, query, body))),
+    );
+
+  private readonly toFetchParams = (url: string, method: string, query = {}, body?: object): [string, RequestInit] => {
     const normalizedQuery = stringifyQuery(rejectNilProps(query));
     const stringifiedQuery = isEmpty(normalizedQuery) ? '' : `?${normalizedQuery}`;
 
-    return this.httpClient.fetchJson<T>(
-      `${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`,
-      {
-        method,
-        body: body && JSON.stringify(body),
-        headers: { 'X-Api-Key': this.apiKey },
-      },
-    ).catch((e: unknown) => {
-      if (!isRegularNotFound(parseApiError(e))) {
-        throw e;
-      }
+    return [`${buildShlinkBaseUrl(this.baseUrl, this.apiVersion)}${url}${stringifiedQuery}`, {
+      method,
+      body: body && JSON.stringify(body),
+      headers: { 'X-Api-Key': this.apiKey },
+    }];
+  };
 
-      // If we capture a not found error, let's assume this Shlink version does not support API v3, so we decrease to
-      // v2 and retry
-      this.apiVersion = 2;
-      return this.performRequest(url, method, query, body);
-    });
+  private readonly handleFetchError = (retryFetch: Function) => (e: unknown) => {
+    if (!isRegularNotFound(parseApiError(e))) {
+      throw e;
+    }
+
+    // If we capture a not found error, let's assume this Shlink version does not support API v3, so we decrease to
+    // v2 and retry
+    this.apiVersion = 2;
+    return retryFetch();
   };
 }
