@@ -22,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [#590](https://github.com/shlinkio/shlink-web-client/issues/590) Fixed position of the datepicker triangle.
+* [#729](https://github.com/shlinkio/shlink-web-client/issues/729) Fixed wrong stats displayed in tags after renaming.
+* [#737](https://github.com/shlinkio/shlink-web-client/issues/737) Fixed incorrect contrast in warning messages when using dark theme.
 
 
 ## [3.7.3] - 2022-09-13
