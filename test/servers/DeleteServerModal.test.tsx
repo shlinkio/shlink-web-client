@@ -1,26 +1,12 @@
-import { FC } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
-import { useToggle } from '../../src/utils/helpers/hooks';
+import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
-
-const DeleteServerModalWrapper: FC<{ name: string; deleteServer: () => void }> = ({ name, deleteServer }) => {
-  const [isOpen, toggle] = useToggle(true);
-
-  return (
-    <DeleteServerModal
-      server={Mock.of<ServerWithId>({ name })}
-      toggle={toggle}
-      isOpen={isOpen}
-      deleteServer={deleteServer}
-    />
-  );
-};
 
 describe('<DeleteServerModal />', () => {
   const deleteServerMock = jest.fn();
@@ -30,9 +16,14 @@ describe('<DeleteServerModal />', () => {
     (useNavigate as any).mockReturnValue(navigate);
 
     return renderWithEvents(
-      <DeleteServerModalWrapper
-        name={serverName}
-        deleteServer={deleteServerMock}
+      <TestModalWrapper
+        renderModal={(args) => (
+          <DeleteServerModal
+            {...args}
+            server={Mock.of<ServerWithId>({ name: serverName })}
+            deleteServer={deleteServerMock}
+          />
+        )}
       />,
     );
   };
