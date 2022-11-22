@@ -7,11 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#708](https://github.com/shlinkio/shlink-web-client/issues/708) Added support for API v3.
-* [#717](https://github.com/shlinkio/shlink-web-client/issues/717) Allowed to select time in 10 minute intervals whe configuring "enabled since" and "enabled until" on short URLs.
+* [#717](https://github.com/shlinkio/shlink-web-client/issues/717) Allowed to select time in 10 minute intervals when configuring "enabled since" and "enabled until" on short URLs.
 
 ### Changed
 * [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.
-* [#620](https://github.com/shlinkio/shlink-web-client/issues/620) Migrated domains-related reducers to redux toolkit as a POC.
+* [#620](https://github.com/shlinkio/shlink-web-client/issues/620) Migrated all reducers to redux toolkit.
 * [#721](https://github.com/shlinkio/shlink-web-client/issues/721) Migrated from axios to fetch.
 
 ### Deprecated
