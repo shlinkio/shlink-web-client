@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
 import { ServerWithId } from './data';
@@ -18,14 +18,22 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
   { server, toggle, isOpen, deleteServer, redirectHome = true },
 ) => {
   const navigate = useNavigate();
-  const closeModal = () => {
-    deleteServer(server);
+  const doDelete = useRef<boolean>(false);
+  const toggleAndDelete = () => {
+    doDelete.current = true;
     toggle();
+  };
+  const onClosed = () => {
+    if (!doDelete.current) {
+      return;
+    }
+
+    deleteServer(server);
     redirectHome && navigate('/');
   };
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered>
+    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={onClosed}>
       <ModalHeader toggle={toggle} className="text-danger">Remove server</ModalHeader>
       <ModalBody>
         <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
@@ -38,7 +46,7 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
       </ModalBody>
       <ModalFooter>
         <Button color="link" onClick={toggle}>Cancel</Button>
-        <Button color="danger" onClick={() => closeModal()}>Delete</Button>
+        <Button color="danger" onClick={toggleAndDelete}>Delete</Button>
       </ModalFooter>
     </Modal>
   );
