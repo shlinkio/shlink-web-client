@@ -3,7 +3,7 @@ import {
   listShortUrls as listShortUrlsCreator,
   shortUrlsListReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlsList';
-import { deleteShortUrl as deleteShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
@@ -18,8 +18,7 @@ describe('shortUrlsListReducer', () => {
   const listShortUrls = listShortUrlsCreator(buildShlinkApiClient);
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
-  const deleteShortUrl = deleteShortUrlCreator(buildShlinkApiClient);
-  const { reducer } = shortUrlsListReducerCreator(listShortUrls, editShortUrl, createShortUrl, deleteShortUrl);
+  const { reducer } = shortUrlsListReducerCreator(listShortUrls, editShortUrl, createShortUrl);
 
   afterEach(jest.clearAllMocks);
 
@@ -59,7 +58,7 @@ describe('shortUrlsListReducer', () => {
         error: false,
       };
 
-      expect(reducer(state, { type: deleteShortUrl.fulfilled.toString(), payload: { shortCode } })).toEqual({
+      expect(reducer(state, { type: shortUrlDeleted.toString(), payload: { shortCode } })).toEqual({
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
           pagination: { totalItems: 9 },

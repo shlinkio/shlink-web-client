@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
@@ -12,15 +12,17 @@ describe('<DeleteShortUrlModal />', () => {
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
   });
-  const deleteShortUrl = jest.fn();
+  const deleteShortUrl = jest.fn().mockResolvedValue(undefined);
+  const toggle = jest.fn();
   const setUp = (shortUrlDeletion: Partial<ShortUrlDeletion>) => renderWithEvents(
     <DeleteShortUrlModal
       isOpen
       shortUrl={shortUrl}
       shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
       deleteShortUrl={deleteShortUrl}
-      toggle={() => {}}
-      resetDeleteShortUrl={() => {}}
+      shortUrlDeleted={jest.fn()}
+      toggle={toggle}
+      resetDeleteShortUrl={jest.fn()}
     />,
   );
 
@@ -81,5 +83,6 @@ describe('<DeleteShortUrlModal />', () => {
     await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
     await user.click(screen.getByRole('button', { name: 'Delete' }));
     expect(deleteShortUrl).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(toggle).toHaveBeenCalledTimes(1));
   });
 });

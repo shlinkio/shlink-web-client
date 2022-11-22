@@ -9,7 +9,7 @@ import { DeleteShortUrlModal } from '../helpers/DeleteShortUrlModal';
 import { CreateShortUrlResult } from '../helpers/CreateShortUrlResult';
 import { listShortUrls, shortUrlsListReducerCreator } from '../reducers/shortUrlsList';
 import { shortUrlCreationReducerCreator, createShortUrl } from '../reducers/shortUrlCreation';
-import { shortUrlDeletionReducerCreator, deleteShortUrl } from '../reducers/shortUrlDeletion';
+import { shortUrlDeletionReducerCreator, deleteShortUrl, shortUrlDeleted } from '../reducers/shortUrlDeletion';
 import { editShortUrl, shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
 import { shortUrlDetailReducerCreator } from '../reducers/shortUrlDetail';
 import { ConnectDecorator } from '../../container/types';
@@ -46,7 +46,10 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   bottle.serviceFactory('DeleteShortUrlModal', () => DeleteShortUrlModal);
-  bottle.decorator('DeleteShortUrlModal', connect(['shortUrlDeletion'], ['deleteShortUrl', 'resetDeleteShortUrl']));
+  bottle.decorator('DeleteShortUrlModal', connect(
+    ['shortUrlDeletion'],
+    ['deleteShortUrl', 'shortUrlDeleted', 'resetDeleteShortUrl'],
+  ));
 
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
   bottle.decorator('QrCodeModal', connect(['selectedServer']));
@@ -63,7 +66,6 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'listShortUrls',
     'editShortUrl',
     'createShortUrl',
-    'deleteShortUrl',
   );
   bottle.serviceFactory('shortUrlsListReducer', prop('reducer'), 'shortUrlsListReducerCreator');
 
@@ -87,6 +89,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('deleteShortUrl', deleteShortUrl, 'buildShlinkApiClient');
   bottle.serviceFactory('resetDeleteShortUrl', prop('resetDeleteShortUrl'), 'shortUrlDeletionReducerCreator');
+  bottle.serviceFactory('shortUrlDeleted', () => shortUrlDeleted);
 
   bottle.serviceFactory('getShortUrlDetail', prop('getShortUrlDetail'), 'shortUrlDetailReducerCreator');
 
