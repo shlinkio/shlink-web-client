@@ -5,7 +5,7 @@ import { createNewVisits } from '../../visits/reducers/visitCreation';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
-import { deleteShortUrl } from './shortUrlDeletion';
+import { shortUrlDeleted } from './shortUrlDeletion';
 import { createShortUrl } from './shortUrlCreation';
 import { editShortUrl } from './shortUrlEdition';
 import { ShortUrl } from '../data';
@@ -36,7 +36,6 @@ export const shortUrlsListReducerCreator = (
   listShortUrlsThunk: ReturnType<typeof listShortUrls>,
   editShortUrlThunk: ReturnType<typeof editShortUrl>,
   createShortUrlThunk: ReturnType<typeof createShortUrl>,
-  deleteShortUrlThunk: ReturnType<typeof deleteShortUrl>,
 ) => createSlice({
   name: REDUCER_PREFIX,
   initialState,
@@ -81,7 +80,7 @@ export const shortUrlsListReducerCreator = (
     );
 
     builder.addCase(
-      deleteShortUrlThunk.fulfilled,
+      shortUrlDeleted,
       pipe(
         (state, { payload }) => (!state.shortUrls ? state : assocPath(
           ['shortUrls', 'data'],

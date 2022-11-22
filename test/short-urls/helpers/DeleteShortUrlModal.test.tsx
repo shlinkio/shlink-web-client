@@ -1,10 +1,11 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { ErrorTypeV2, ErrorTypeV3, InvalidShortUrlDeletion, ProblemDetailsError } from '../../../src/api/types/errors';
+import { TestModalWrapper } from '../../__helpers__/TestModalWrapper';
 
 describe('<DeleteShortUrlModal />', () => {
   const shortUrl = Mock.of<ShortUrl>({
@@ -12,15 +13,20 @@ describe('<DeleteShortUrlModal />', () => {
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
   });
-  const deleteShortUrl = jest.fn();
+  const deleteShortUrl = jest.fn().mockResolvedValue(undefined);
+  const shortUrlDeleted = jest.fn();
   const setUp = (shortUrlDeletion: Partial<ShortUrlDeletion>) => renderWithEvents(
-    <DeleteShortUrlModal
-      isOpen
-      shortUrl={shortUrl}
-      shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
-      deleteShortUrl={deleteShortUrl}
-      toggle={() => {}}
-      resetDeleteShortUrl={() => {}}
+    <TestModalWrapper
+      renderModal={(args) => (
+        <DeleteShortUrlModal
+          {...args}
+          shortUrl={shortUrl}
+          shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
+          deleteShortUrl={deleteShortUrl}
+          shortUrlDeleted={shortUrlDeleted}
+          resetDeleteShortUrl={jest.fn()}
+        />
+      )}
     />,
   );
 
@@ -74,6 +80,7 @@ describe('<DeleteShortUrlModal />', () => {
     const { user } = setUp({
       loading: false,
       error: false,
+      deleted: true,
       shortCode,
     });
 
@@ -81,5 +88,6 @@ describe('<DeleteShortUrlModal />', () => {
     await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
     await user.click(screen.getByRole('button', { name: 'Delete' }));
     expect(deleteShortUrl).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(shortUrlDeleted).toHaveBeenCalledTimes(1));
   });
 });

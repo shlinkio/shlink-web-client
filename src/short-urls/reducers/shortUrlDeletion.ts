@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
 import { ProblemDetailsError } from '../../api/types/errors';
-import { ShortUrlIdentifier } from '../data';
+import { ShortUrl, ShortUrlIdentifier } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlDeletion';
 
@@ -30,6 +30,8 @@ export const deleteShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => 
     return { shortCode, domain };
   },
 );
+
+export const shortUrlDeleted = createAction<ShortUrl>(`${REDUCER_PREFIX}/shortUrlDeleted`);
 
 export const shortUrlDeletionReducerCreator = (deleteShortUrlThunk: ReturnType<typeof deleteShortUrl>) => {
   const { actions, reducer } = createSlice({

@@ -10,23 +10,30 @@ import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;
-  deleteShortUrl: (shortUrl: ShortUrlIdentifier) => void;
+  deleteShortUrl: (shortUrl: ShortUrlIdentifier) => Promise<void>;
+  shortUrlDeleted: (shortUrl: ShortUrlIdentifier) => void;
   resetDeleteShortUrl: () => void;
 }
 
-export const DeleteShortUrlModal = (
-  { shortUrl, toggle, isOpen, shortUrlDeletion, resetDeleteShortUrl, deleteShortUrl }: DeleteShortUrlModalConnectProps,
-) => {
+export const DeleteShortUrlModal = ({
+  shortUrl,
+  toggle,
+  isOpen,
+  shortUrlDeletion,
+  resetDeleteShortUrl,
+  deleteShortUrl,
+  shortUrlDeleted,
+}: DeleteShortUrlModalConnectProps) => {
   const [inputValue, setInputValue] = useState('');
 
   useEffect(() => resetDeleteShortUrl, []);
 
-  const { loading, error, errorData } = shortUrlDeletion;
+  const { loading, error, deleted, errorData } = shortUrlDeletion;
   const close = pipe(resetDeleteShortUrl, toggle);
-  const handleDeleteUrl = handleEventPreventingDefault(() => deleteShortUrl(shortUrl));
+  const handleDeleteUrl = handleEventPreventingDefault(() => deleteShortUrl(shortUrl).then(toggle));
 
   return (
-    <Modal isOpen={isOpen} toggle={close} centered>
+    <Modal isOpen={isOpen} toggle={close} centered onClosed={() => deleted && shortUrlDeleted(shortUrl)}>
       <form onSubmit={handleDeleteUrl}>
         <ModalHeader toggle={close}>
           <span className="text-danger">Delete short URL</span>
