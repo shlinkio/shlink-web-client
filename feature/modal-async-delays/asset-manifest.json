@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/modal-async-delays/static/css/main.58705429.css",
+    "main.js": "/shlink-web-client/feature/modal-async-delays/static/js/main.830d6741.js",
+    "index.html": "/shlink-web-client/feature/modal-async-delays/index.html",
+    "main.58705429.css.map": "/shlink-web-client/feature/modal-async-delays/static/css/main.58705429.css.map",
+    "main.830d6741.js.map": "/shlink-web-client/feature/modal-async-delays/static/js/main.830d6741.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.58705429.css",
+    "static/js/main.830d6741.js"
+  ]
+}
