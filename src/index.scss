@@ -3,7 +3,8 @@
 @import './utils/base';
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
 @import './common/react-tag-autocomplete.scss';
-@import 'utils/theme/theme';
+@import './utils/theme/theme';
+@import './utils/mixins/text-ellipsis';
 @import './utils/table/ResponsiveTable';
 @import './utils/StickyCardPaginator';
 
@@ -222,9 +223,7 @@ hr {
 }
 
 .text-ellipsis {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
+  @include text-ellipsis();
 }
 
 .progress-bar {
