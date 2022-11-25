@@ -27,7 +27,7 @@ export const useTimeoutToggle = (
   return [flag, callback];
 };
 
-type ToggleResult = [ boolean, () => void, () => void, () => void ];
+type ToggleResult = [boolean, () => void, () => void, () => void];
 
 export const useToggle = (initialValue = false): ToggleResult => {
   const [flag, setFlag] = useState<boolean>(initialValue);

@@ -1,4 +1,5 @@
 @import '../../utils/base';
+@import '../../utils/mixins/text-ellipsis';
 @import '../../utils/mixins/vertical-align';
 
 .short-urls-row__cell.short-urls-row__cell {
@@ -11,6 +12,26 @@
 
 .short-urls-row__cell--relative {
   position: relative;
+}
+
+.short-urls-row__cell--indivisible {
+  @media (min-width: $lgMin) {
+    white-space: nowrap;
+  }
+}
+
+.short-urls-row__short-url-wrapper {
+  @media (max-width: $mdMax) {
+    word-break: break-all;
+  }
+
+  @media (min-width: $lgMin) {
+    @include text-ellipsis();
+
+    vertical-align: bottom;
+    display: inline-block;
+    max-width: 18rem;
+  }
 }
 
 .short-urls-row__copy-hint {

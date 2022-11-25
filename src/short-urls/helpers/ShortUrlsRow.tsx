@@ -43,11 +43,8 @@ export const ShortUrlsRow = (
   };
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-    } else {
-      setActive();
-    }
+    !isFirstRun.current && setActive();
+    isFirstRun.current = false;
   }, [shortUrl.visitsCount]);
 
   return (
@@ -56,15 +53,20 @@ export const ShortUrlsRow = (
         <Time date={shortUrl.dateCreated} />
       </td>
       <td className="responsive-table__cell short-urls-row__cell" data-th="Short URL">
-        <span className="indivisible short-urls-row__cell--relative">
-          <ExternalLink href={shortUrl.shortUrl} />
+        <span className="short-urls-row__cell--relative short-urls-row__cell--indivisible">
+          <span className="short-urls-row__short-url-wrapper">
+            <ExternalLink href={shortUrl.shortUrl} />
+          </span>
           <CopyToClipboardIcon text={shortUrl.shortUrl} onCopy={setCopiedToClipboard} />
           <span className="badge bg-warning text-black short-urls-row__copy-hint" hidden={!copiedToClipboard}>
             Copied short URL!
           </span>
         </span>
       </td>
-      <td className="responsive-table__cell short-urls-row__cell short-urls-row__cell--break" data-th={`${shortUrl.title ? 'Title' : 'Long URL'}`}>
+      <td
+        className="responsive-table__cell short-urls-row__cell short-urls-row__cell--break"
+        data-th={`${shortUrl.title ? 'Title' : 'Long URL'}`}
+      >
         <ExternalLink href={shortUrl.longUrl}>{shortUrl.title ?? shortUrl.longUrl}</ExternalLink>
       </td>
       {shortUrl.title && (
