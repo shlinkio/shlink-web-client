@@ -15,6 +15,8 @@ interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   resetDeleteShortUrl: () => void;
 }
 
+const DELETION_PATTERN = 'delete';
+
 export const DeleteShortUrlModal = ({
   shortUrl,
   toggle,
@@ -41,12 +43,12 @@ export const DeleteShortUrlModal = ({
         <ModalBody>
           <p><b className="text-danger">Caution!</b> You are about to delete a short URL.</p>
           <p>This action cannot be undone. Once you have deleted it, all the visits stats will be lost.</p>
-          <p>Write <b>{shortUrl.shortCode}</b> to confirm deletion.</p>
+          <p>Write <b>{DELETION_PATTERN}</b> to confirm deletion.</p>
 
           <input
             type="text"
             className="form-control"
-            placeholder={`Insert the short code (${shortUrl.shortCode})`}
+            placeholder={`Insert ${DELETION_PATTERN}`}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
@@ -62,7 +64,7 @@ export const DeleteShortUrlModal = ({
           <button
             type="submit"
             className="btn btn-danger"
-            disabled={inputValue !== shortUrl.shortCode || loading}
+            disabled={inputValue !== DELETION_PATTERN || loading}
           >
             {loading ? 'Deleting...' : 'Delete'}
           </button>

@@ -62,30 +62,28 @@ describe('<DeleteShortUrlModal />', () => {
   });
 
   it('enables submit button when proper short code is provided', async () => {
-    const shortCode = 'abc123';
     const { user } = setUp({
       loading: false,
       error: false,
-      shortCode,
+      shortCode: 'abc123',
     });
     const getDeleteBtn = () => screen.getByRole('button', { name: 'Delete' });
 
     expect(getDeleteBtn()).toHaveAttribute('disabled');
-    await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
+    await user.type(screen.getByPlaceholderText('Insert delete'), 'delete');
     expect(getDeleteBtn()).not.toHaveAttribute('disabled');
   });
 
   it('tries to delete short URL when form is submit', async () => {
-    const shortCode = 'abc123';
     const { user } = setUp({
       loading: false,
       error: false,
       deleted: true,
-      shortCode,
+      shortCode: 'abc123',
     });
 
     expect(deleteShortUrl).not.toHaveBeenCalled();
-    await user.type(screen.getByPlaceholderText(/^Insert the short code/), shortCode);
+    await user.type(screen.getByPlaceholderText('Insert delete'), 'delete');
     await user.click(screen.getByRole('button', { name: 'Delete' }));
     expect(deleteShortUrl).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(shortUrlDeleted).toHaveBeenCalledTimes(1));
