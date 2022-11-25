@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/fix-max-length/static/css/main.09af7d82.css",
+    "main.js": "/shlink-web-client/feature/fix-max-length/static/js/main.4be1d83d.js",
+    "index.html": "/shlink-web-client/feature/fix-max-length/index.html",
+    "main.09af7d82.css.map": "/shlink-web-client/feature/fix-max-length/static/css/main.09af7d82.css.map",
+    "main.4be1d83d.js.map": "/shlink-web-client/feature/fix-max-length/static/js/main.4be1d83d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.09af7d82.css",
+    "static/js/main.4be1d83d.js"
+  ]
+}
