@@ -6,8 +6,6 @@ import { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 import { orderToString, stringToOrder } from '../../utils/helpers/ordering';
 import { TagsFilteringMode } from '../../api/types';
 
-type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
-
 interface ShortUrlsQueryCommon {
   search?: string;
   startDate?: string;
@@ -25,14 +23,16 @@ interface ShortUrlsFiltering extends ShortUrlsQueryCommon {
   tags: string[];
 }
 
+type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
+
 export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = useParams<{ serverId: string }>();
+  const { search } = useLocation();
+  const { serverId = '' } = useParams<{ serverId: string }>();
 
-  const query = useMemo(
+  const filtering = useMemo(
     pipe(
-      () => parseQuery<ShortUrlsQuery>(location.search),
+      () => parseQuery<ShortUrlsQuery>(search),
       ({ orderBy, tags, ...rest }: ShortUrlsQuery): ShortUrlsFiltering => {
         const parsedOrderBy = orderBy ? stringToOrder<ShortUrlsOrderableFields>(orderBy) : undefined;
         const parsedTags = tags?.split(',') ?? [];
@@ -40,20 +40,20 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
         return { ...rest, orderBy: parsedOrderBy, tags: parsedTags };
       },
     ),
-    [location.search],
+    [search],
   );
   const toFirstPageWithExtra = (extra: Partial<ShortUrlsFiltering>) => {
-    const { orderBy, tags, ...mergedQuery } = { ...query, ...extra };
-    const normalizedQuery: ShortUrlsQuery = {
-      ...mergedQuery,
+    const { orderBy, tags, ...mergedFiltering } = { ...filtering, ...extra };
+    const query: ShortUrlsQuery = {
+      ...mergedFiltering,
       orderBy: orderBy && orderToString(orderBy),
       tags: tags.length > 0 ? tags.join(',') : undefined,
     };
-    const evolvedQuery = stringifyQuery(normalizedQuery);
-    const queryString = isEmpty(evolvedQuery) ? '' : `?${evolvedQuery}`;
+    const stringifiedQuery = stringifyQuery(query);
+    const queryString = isEmpty(stringifiedQuery) ? '' : `?${stringifiedQuery}`;
 
-    navigate(`/server/${params.serverId ?? ''}/list-short-urls/1${queryString}`);
+    navigate(`/server/${serverId}/list-short-urls/1${queryString}`);
   };
 
-  return [query, toFirstPageWithExtra];
+  return [filtering, toFirstPageWithExtra];
 };

@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { isEmpty, pipe } from 'ramda';
-import { parseISO } from 'date-fns';
 import { Button, InputGroup, Row, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTag, faTags } from '@fortawesome/free-solid-svg-icons';
@@ -8,7 +7,7 @@ import classNames from 'classnames';
 import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
-import { DateRange } from '../utils/dates/types';
+import { DateRange, datesToDateRange } from '../utils/dates/types';
 import { supportsAllTagsFiltering } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { OrderDir } from '../utils/helpers/ordering';
@@ -26,8 +25,6 @@ export interface ShortUrlsFilteringProps {
   className?: string;
   shortUrlsAmount?: number;
 }
-
-const dateOrNull = (date?: string) => (date ? parseISO(date) : null);
 
 export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
@@ -74,10 +71,7 @@ export const ShortUrlsFilteringBar = (
         <div className="col-lg-8 col-xl-6 mt-3">
           <DateRangeSelector
             defaultText="All short URLs"
-            initialDateRange={{
-              startDate: dateOrNull(startDate),
-              endDate: dateOrNull(endDate),
-            }}
+            initialDateRange={datesToDateRange(startDate, endDate)}
             onDatesChange={setDates}
           />
         </div>

@@ -72,9 +72,9 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
   );
   const [dateRange, setDateRange] = useState<DateRange>(intervalToDateRange(initialInterval));
+  const [visitsFilter, setVisitsFilter] = useState<VisitsFilter>({});
   const [highlightedVisits, setHighlightedVisits] = useState<NormalizedVisit[]>([]);
   const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
-  const [visitsFilter, setVisitsFilter] = useState<VisitsFilter>({});
   const botsSupported = supportsBotVisits(selectedServer);
   const isFirstLoad = useRef(true);
 

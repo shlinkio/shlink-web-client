@@ -1,6 +1,6 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
-import { DateOrString, formatInternational, isBeforeOrEqual, parseISO } from '../../helpers/date';
+import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, parseISO } from '../../helpers/date';
 
 export interface DateRange {
   startDate?: Date | null;
@@ -27,6 +27,11 @@ const INTERVAL_TO_STRING_MAP: Record<DateInterval, string | undefined> = {
 };
 
 export const DATE_INTERVALS = Object.keys(INTERVAL_TO_STRING_MAP).filter((value) => value !== 'all') as DateInterval[];
+
+export const datesToDateRange = (startDate?: string, endDate?: string): DateRange => ({
+  startDate: dateOrNull(startDate),
+  endDate: dateOrNull(endDate),
+});
 
 const dateRangeToString = (range?: DateRange): string | undefined => {
   if (!range || dateRangeIsEmpty(range)) {
