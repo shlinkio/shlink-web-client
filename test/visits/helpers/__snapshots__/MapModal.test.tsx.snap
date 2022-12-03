@@ -167,7 +167,7 @@ exports[`<MapModal /> renders expected map 1`] = `
                 </span>
                  © 
                 <a
-                  href="http://osm.org/copyright"
+                  href="https://osm.org/copyright"
                 >
                   OpenStreetMap
                 </a>

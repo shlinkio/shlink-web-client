@@ -32,6 +32,8 @@ export const parseDate = (date: string, theFormat: string) => parse(date, theFor
 
 export const parseISO = (date: DateOrString): Date => (isDateObject(date) ? date : stdParseISO(date));
 
+export const dateOrNull = (date?: string): Date | null => (date ? parseISO(date) : null);
+
 export const isBetween = (date: DateOrString, start?: DateOrString, end?: DateOrString): boolean => {
   try {
     return isWithinInterval(parseISO(date), { start: parseISO(start ?? date), end: parseISO(end ?? date) });

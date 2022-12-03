@@ -36,6 +36,6 @@ export const orderToString = <T>(order: Order<T>): string | undefined => (
 );
 
 export const stringToOrder = <T>(order: string): Order<T> => {
-  const [field, dir] = order.split('-') as [ T | undefined, OrderDir | undefined ];
+  const [field, dir] = order.split('-') as [T | undefined, OrderDir | undefined];
   return { field, dir };
 };

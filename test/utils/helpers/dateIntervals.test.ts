@@ -6,8 +6,9 @@ import {
   intervalToDateRange,
   rangeIsInterval,
   rangeOrIntervalToString,
-} from '../../../../src/utils/dates/types';
-import { parseDate } from '../../../../src/utils/helpers/date';
+  toDateRange,
+} from '../../../src/utils/helpers/dateIntervals';
+import { parseDate } from '../../../src/utils/helpers/date';
 
 describe('date-types', () => {
   const now = () => new Date();
@@ -114,6 +115,25 @@ describe('date-types', () => {
       [formatISO(daysBack(500)), 'all'],
     ])('returns the first interval which contains provided date', (date, expectedInterval) => {
       expect(dateToMatchingInterval(date)).toEqual(expectedInterval);
+    });
+  });
+
+  describe('toDateRange', () => {
+    it.each([
+      ['today' as DateInterval, intervalToDateRange('today')],
+      ['yesterday' as DateInterval, intervalToDateRange('yesterday')],
+      ['last7Days' as DateInterval, intervalToDateRange('last7Days')],
+      ['last30Days' as DateInterval, intervalToDateRange('last30Days')],
+      ['last90Days' as DateInterval, intervalToDateRange('last90Days')],
+      ['last180Days' as DateInterval, intervalToDateRange('last180Days')],
+      ['last365Days' as DateInterval, intervalToDateRange('last365Days')],
+      ['all' as DateInterval, intervalToDateRange('all')],
+      [{}, {}],
+      [{ startDate: now() }, { startDate: now() }],
+      [{ endDate: now() }, { endDate: now() }],
+      [{ startDate: daysBack(10), endDate: now() }, { startDate: daysBack(10), endDate: now() }],
+    ])('returns properly parsed interval or range', (rangeOrInterval, expectedResult) => {
+      expect(toDateRange(rangeOrInterval)).toEqual(expectedResult);
     });
   });
 });

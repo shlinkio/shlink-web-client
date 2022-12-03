@@ -4,10 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [3.8.0] - 2022-12-03
 ### Added
 * [#708](https://github.com/shlinkio/shlink-web-client/issues/708) Added support for API v3.
 * [#717](https://github.com/shlinkio/shlink-web-client/issues/717) Allowed to select time in 10 minute intervals when configuring "enabled since" and "enabled until" on short URLs.
+* [#748](https://github.com/shlinkio/shlink-web-client/issues/748) Improved visits section to add filters to the query string, allowing to navigate to a specific state or bookmarking filters.
 
 ### Changed
 * [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.

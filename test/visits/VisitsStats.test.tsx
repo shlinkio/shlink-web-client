@@ -1,11 +1,11 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { VisitsStats } from '../../src/visits/VisitsStats';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
-import { SelectedServer } from '../../src/servers/data';
+import { ReachableServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { rangeOf } from '../../src/utils/utils';
 import { VisitsInfo } from '../../src/visits/reducers/types';
@@ -18,18 +18,21 @@ describe('<VisitsStats />', () => {
     const history = createMemoryHistory();
     history.push(activeRoute);
 
-    return renderWithEvents(
-      <Router location={history.location} navigator={history}>
-        <VisitsStats
-          getVisits={getVisitsMock}
-          visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
-          cancelGetVisits={() => {}}
-          settings={Mock.all<Settings>()}
-          exportCsv={exportCsv}
-          selectedServer={Mock.all<SelectedServer>()}
-        />
-      </Router>,
-    );
+    return {
+      history,
+      ...renderWithEvents(
+        <Router location={history.location} navigator={history}>
+          <VisitsStats
+            getVisits={getVisitsMock}
+            visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
+            cancelGetVisits={() => {}}
+            settings={Mock.all<Settings>()}
+            exportCsv={exportCsv}
+            selectedServer={Mock.of<ReachableServer>({ version: '3.0.0' })}
+          />
+        </Router>,
+      ),
+    };
   };
 
   it('renders a preloader when visits are loading', () => {
@@ -80,5 +83,25 @@ describe('<VisitsStats />', () => {
     expect(exportCsv).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: /Export/ }));
     expect(exportCsv).toHaveBeenCalled();
+  });
+
+  it('sets filters in query string', async () => {
+    const { history, user } = setUp({ visits });
+    const expectSearchContains = (contains: string[]) => {
+      expect(contains).not.toHaveLength(0);
+      contains.forEach((entry) => expect(history.location.search).toContain(entry));
+    };
+
+    expect(history.location.search).toEqual('');
+
+    await user.click(screen.getByRole('button', { name: /Filters/ }));
+    await waitFor(() => screen.getByRole('menu'));
+    await user.click(screen.getByRole('menuitem', { name: 'Exclude potential bots' }));
+    expectSearchContains(['excludeBots=true']);
+
+    await user.click(screen.getByRole('button', { name: /Last 30 days/ }));
+    await waitFor(() => screen.getByRole('menu'));
+    await user.click(screen.getByRole('menuitem', { name: /Last 180 days/ }));
+    expectSearchContains(['startDate', 'endDate']);
   });
 });

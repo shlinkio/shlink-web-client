@@ -60,7 +60,7 @@ describe('<VisitsFilterDropdown />', () => {
     [1, { orphanVisitsType: 'base_url' }, {}],
     [2, { orphanVisitsType: 'invalid_short_url' }, {}],
     [3, { orphanVisitsType: 'regular_404' }, {}],
-    [4, {}, { excludeBots: true }],
+    [4, { orphanVisitsType: undefined, excludeBots: false }, { excludeBots: true }],
   ])('invokes onChange with proper selection when an item is clicked', async (index, expectedSelection, selected) => {
     const { user } = setUp(selected);
 

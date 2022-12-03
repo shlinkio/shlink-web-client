@@ -167,7 +167,7 @@ exports[`<OpenMapModalBtn /> filters out non-active cities from list of location
                 </span>
                  © 
                 <a
-                  href="http://osm.org/copyright"
+                  href="https://osm.org/copyright"
                 >
                   OpenStreetMap
                 </a>
@@ -335,7 +335,7 @@ exports[`<OpenMapModalBtn /> filters out non-active cities from list of location
                 </span>
                  © 
                 <a
-                  href="http://osm.org/copyright"
+                  href="https://osm.org/copyright"
                 >
                   OpenStreetMap
                 </a>
