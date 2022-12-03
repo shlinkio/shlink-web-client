@@ -36,7 +36,6 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
       ({ orderBy, tags, ...rest }: ShortUrlsQuery): ShortUrlsFiltering => {
         const parsedOrderBy = orderBy ? stringToOrder<ShortUrlsOrderableFields>(orderBy) : undefined;
         const parsedTags = tags?.split(',') ?? [];
-
         return { ...rest, orderBy: parsedOrderBy, tags: parsedTags };
       },
     ),

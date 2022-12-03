@@ -2,6 +2,8 @@ import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
 import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, parseISO } from '../../helpers/date';
 
+// TODO Rename this to src/utils/helpers/dateIntervals.ts
+
 export interface DateRange {
   startDate?: Date | null;
   endDate?: Date | null;
@@ -12,8 +14,7 @@ export type DateInterval = 'all' | 'today' | 'yesterday' | 'last7Days' | 'last30
 export const dateRangeIsEmpty = (dateRange?: DateRange): boolean => dateRange === undefined
   || isEmpty(filter(Boolean, dateRange as any));
 
-export const rangeIsInterval = (range?: DateRange | DateInterval): range is DateInterval =>
-  typeof range === 'string';
+export const rangeIsInterval = (range?: DateRange | DateInterval): range is DateInterval => typeof range === 'string';
 
 const INTERVAL_TO_STRING_MAP: Record<DateInterval, string | undefined> = {
   today: 'Today',
@@ -102,4 +103,12 @@ export const dateToMatchingInterval = (date: DateOrString): DateInterval => {
     [() => isBeforeOrEqual(startOfDaysAgo(365), theDate), () => 'last365Days'],
     [T, () => 'all'],
   ])();
+};
+
+export const toDateRange = (rangeOrInterval: DateRange | DateInterval): DateRange => {
+  if (rangeIsInterval(rangeOrInterval)) {
+    return intervalToDateRange(rangeOrInterval);
+  }
+
+  return rangeOrInterval;
 };

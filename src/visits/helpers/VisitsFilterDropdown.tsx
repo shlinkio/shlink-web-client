@@ -46,7 +46,12 @@ export const VisitsFilterDropdown = (
       )}
 
       <DropdownItem divider />
-      <DropdownItem disabled={!hasValue(selected)} onClick={() => onChange({})}><i>Clear filters</i></DropdownItem>
+      <DropdownItem
+        disabled={!hasValue(selected)}
+        onClick={() => onChange({ excludeBots: false, orphanVisitsType: undefined })}
+      >
+        <i>Clear filters</i>
+      </DropdownItem>
     </DropdownBtn>
   );
 };
