@@ -12,11 +12,17 @@ interface VisitsQuery {
   endDate?: string;
   orphanVisitsType?: OrphanVisitType;
   excludeBots?: 'true';
+  domain?: string;
 }
 
 interface VisitsFiltering {
   dateRange?: DateRange;
   visitsFilter: VisitsFilter;
+}
+
+interface VisitsFilteringAndDomain {
+  filtering: VisitsFiltering;
+  domain?: string;
 }
 
 type UpdateFiltering = (extra: DeepPartial<VisitsFiltering>) => void;
@@ -25,12 +31,15 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
   const navigate = useNavigate();
   const { search } = useLocation();
 
-  const filtering = useMemo(
+  const { filtering, domain: theDomain } = useMemo(
     pipe(
       () => parseQuery<VisitsQuery>(search),
-      ({ startDate, endDate, orphanVisitsType, excludeBots }: VisitsQuery): VisitsFiltering => ({
-        dateRange: startDate || endDate ? datesToDateRange(startDate, endDate) : undefined,
-        visitsFilter: { orphanVisitsType, excludeBots: excludeBots === 'true' },
+      ({ startDate, endDate, orphanVisitsType, excludeBots, domain }: VisitsQuery): VisitsFilteringAndDomain => ({
+        domain,
+        filtering: {
+          dateRange: startDate || endDate ? datesToDateRange(startDate, endDate) : undefined,
+          visitsFilter: { orphanVisitsType, excludeBots: excludeBots === 'true' },
+        },
       }),
     ),
     [search],
@@ -42,6 +51,7 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
       endDate: (dateRange?.endDate && formatIsoDate(dateRange.endDate)) || undefined,
       excludeBots: visitsFilter.excludeBots ? 'true' : undefined,
       orphanVisitsType: visitsFilter.orphanVisitsType,
+      domain: theDomain,
     };
     const stringifiedQuery = stringifyQuery(query);
     const queryString = isEmpty(stringifiedQuery) ? '' : `?${stringifiedQuery}`;
