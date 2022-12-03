@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
-import { DateRange, datesToDateRange } from '../utils/dates/types';
+import { DateRange, datesToDateRange } from '../utils/helpers/dateIntervals';
 import { supportsAllTagsFiltering } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { OrderDir } from '../utils/helpers/ordering';

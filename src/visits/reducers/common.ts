@@ -2,7 +2,7 @@ import { flatten, prop, range, splitEvery } from 'ramda';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api/types';
 import { CreateVisit, Visit } from '../types';
-import { DateInterval, dateToMatchingInterval } from '../../utils/dates/types';
+import { DateInterval, dateToMatchingInterval } from '../../utils/helpers/dateIntervals';
 import { LoadVisits, VisitsInfo, VisitsLoaded } from './types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkState } from '../../container/types';

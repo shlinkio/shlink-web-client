@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { DropdownBtn } from '../DropdownBtn';
-import { rangeOrIntervalToString } from './types';
+import { rangeOrIntervalToString } from '../helpers/dateIntervals';
 import { DateIntervalDropdownItems, DateIntervalDropdownProps } from './DateIntervalDropdownItems';
 
 export const DateIntervalSelector: FC<DateIntervalDropdownProps> = ({ onChange, active, allText }) => (

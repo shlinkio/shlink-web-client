@@ -2,7 +2,7 @@ import { DeepPartial } from '@reduxjs/toolkit';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { isEmpty, mergeDeepRight, pipe } from 'ramda';
-import { DateRange, datesToDateRange } from '../../utils/dates/types';
+import { DateRange, datesToDateRange } from '../../utils/helpers/dateIntervals';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { formatIsoDate } from '../../utils/helpers/date';

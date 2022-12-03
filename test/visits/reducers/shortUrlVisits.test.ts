@@ -11,7 +11,7 @@ import { ShlinkVisits } from '../../../src/api/types';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
-import { DateInterval } from '../../../src/utils/dates/types';
+import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlVisitsReducer', () => {

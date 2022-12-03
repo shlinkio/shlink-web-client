@@ -1,8 +1,6 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
-import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, parseISO } from '../../helpers/date';
-
-// TODO Rename this to src/utils/helpers/dateIntervals.ts
+import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, parseISO } from './date';
 
 export interface DateRange {
   startDate?: Date | null;

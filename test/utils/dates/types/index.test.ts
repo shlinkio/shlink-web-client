@@ -6,7 +6,7 @@ import {
   intervalToDateRange,
   rangeIsInterval,
   rangeOrIntervalToString,
-} from '../../../../src/utils/dates/types';
+} from '../../../../src/utils/helpers/dateIntervals';
 import { parseDate } from '../../../../src/utils/helpers/date';
 
 describe('date-types', () => {

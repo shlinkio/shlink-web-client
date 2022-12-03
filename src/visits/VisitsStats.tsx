@@ -27,7 +27,7 @@ import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
 import { VisitsInfo } from './reducers/types';
 import { useVisitsQuery } from './helpers/hooks';
-import { DateInterval, DateRange, toDateRange } from '../utils/dates/types';
+import { DateInterval, DateRange, toDateRange } from '../utils/helpers/dateIntervals';
 
 export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;

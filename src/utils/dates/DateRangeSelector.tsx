@@ -9,7 +9,7 @@ import {
   intervalToDateRange,
   rangeIsInterval,
   dateRangeIsEmpty,
-} from './types';
+} from '../helpers/dateIntervals';
 import { DateRangeRow } from './DateRangeRow';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
 
