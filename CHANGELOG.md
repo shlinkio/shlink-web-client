@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.8.0] - 2022-12-03
+### Added
+* [#708](https://github.com/shlinkio/shlink-web-client/issues/708) Added support for API v3.
+* [#717](https://github.com/shlinkio/shlink-web-client/issues/717) Allowed to select time in 10 minute intervals when configuring "enabled since" and "enabled until" on short URLs.
+* [#748](https://github.com/shlinkio/shlink-web-client/issues/748) Improved visits section to add filters to the query string, allowing to navigate to a specific state or bookmarking filters.
+
+### Changed
+* [#713](https://github.com/shlinkio/shlink-web-client/issues/713) Updated dependencies.
+* [#620](https://github.com/shlinkio/shlink-web-client/issues/620) Migrated all reducers to redux toolkit.
+* [#721](https://github.com/shlinkio/shlink-web-client/issues/721) Migrated from axios to fetch.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#590](https://github.com/shlinkio/shlink-web-client/issues/590) Fixed position of the datepicker triangle.
+* [#729](https://github.com/shlinkio/shlink-web-client/issues/729) Fixed wrong stats displayed in tags after renaming.
+* [#737](https://github.com/shlinkio/shlink-web-client/issues/737) Fixed incorrect contrast in warning messages when using dark theme.
+* [#726](https://github.com/shlinkio/shlink-web-client/issues/726) Fixed delete server and delete short URL modals getting removed from the DOM before finishing close transition.
+* [#749](https://github.com/shlinkio/shlink-web-client/issues/749) Fixed broken short URLs table when some short URL has a too long custom slug.
+
+
 ## [3.7.3] - 2022-09-13
 ### Added
 * [#703](https://github.com/shlinkio/shlink-web-client/issues/703) Added support to publish docker image in GHCR.

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkApiError, ShlinkApiErrorProps } from '../../src/api/ShlinkApiError';
-import { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types';
+import { ErrorTypeV2, ErrorTypeV3, InvalidArgumentError, ProblemDetailsError } from '../../src/api/types/errors';
 
 describe('<ShlinkApiError />', () => {
   const setUp = (props: ShlinkApiErrorProps) => render(<ShlinkApiError {...props} />);
@@ -20,7 +20,8 @@ describe('<ShlinkApiError />', () => {
   it.each([
     [undefined, 0],
     [Mock.all<ProblemDetailsError>(), 0],
-    [Mock.of<InvalidArgumentError>({ type: 'INVALID_ARGUMENT', invalidElements: [] }), 1],
+    [Mock.of<InvalidArgumentError>({ type: ErrorTypeV2.INVALID_ARGUMENT, invalidElements: [] }), 1],
+    [Mock.of<InvalidArgumentError>({ type: ErrorTypeV3.INVALID_ARGUMENT, invalidElements: [] }), 1],
   ])('renders list of invalid elements when provided error is an InvalidError', (errorData, expectedElementsCount) => {
     setUp({ errorData });
     expect(screen.queryAllByText(/^Invalid elements/)).toHaveLength(expectedElementsCount);

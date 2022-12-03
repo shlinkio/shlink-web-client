@@ -1,27 +1,5 @@
-import { Action } from 'redux';
 import { ShortUrl } from '../../short-urls/data';
-import { ProblemDetailsError, ShlinkVisitsParams } from '../../api/types';
-import { DateInterval, DateRange } from '../../utils/dates/types';
-
-export interface VisitsInfo {
-  visits: Visit[];
-  loading: boolean;
-  loadingLarge: boolean;
-  error: boolean;
-  errorData?: ProblemDetailsError;
-  progress: number;
-  cancelLoad: boolean;
-  query?: ShlinkVisitsParams;
-  fallbackInterval?: DateInterval;
-}
-
-export interface VisitsLoadProgressChangedAction extends Action<string> {
-  progress: number;
-}
-
-export interface VisitsFallbackIntervalAction extends Action<string> {
-  fallbackInterval: DateInterval;
-}
+import { DateRange } from '../../utils/helpers/dateIntervals';
 
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
 

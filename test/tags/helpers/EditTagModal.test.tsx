@@ -3,18 +3,17 @@ import { Mock } from 'ts-mockery';
 import { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import { EditTagModal as createEditTagModal } from '../../../src/tags/helpers/EditTagModal';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
-import { ProblemDetailsError } from '../../../src/api/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
+import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('<EditTagModal />', () => {
   const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'green') }));
   const editTag = jest.fn().mockReturnValue(Promise.resolve());
-  const tagEdited = jest.fn().mockReturnValue(Promise.resolve());
   const toggle = jest.fn();
   const setUp = (tagEdit: Partial<TagEdition> = {}) => {
     const edition = Mock.of<TagEdition>(tagEdit);
     return renderWithEvents(
-      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={tagEdited} toggle={toggle} />,
+      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={jest.fn()} toggle={toggle} />,
     );
   };
 
@@ -30,7 +29,6 @@ describe('<EditTagModal />', () => {
 
     expect(toggle).toHaveBeenCalledTimes(2);
     expect(editTag).not.toHaveBeenCalled();
-    expect(tagEdited).not.toHaveBeenCalled();
   });
 
   it.each([
@@ -63,12 +61,12 @@ describe('<EditTagModal />', () => {
     const { user } = setUp();
 
     expect(editTag).not.toHaveBeenCalled();
-    expect(tagEdited).not.toHaveBeenCalled();
+    expect(toggle).not.toHaveBeenCalled();
 
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(editTag).toHaveBeenCalled();
-    expect(tagEdited).toHaveBeenCalled();
+    expect(toggle).toHaveBeenCalled();
   });
 
   it('changes color when changing on color picker', async () => {

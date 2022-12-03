@@ -1,31 +1,24 @@
-import { Mock } from 'ts-mockery';
-import reducer, {
-  Sidebar,
-  SIDEBAR_NOT_PRESENT,
-  SIDEBAR_PRESENT,
-  sidebarNotPresent,
-  sidebarPresent,
-} from '../../../src/common/reducers/sidebar';
+import { sidebarReducer, sidebarNotPresent, sidebarPresent } from '../../../src/common/reducers/sidebar';
 
 describe('sidebarReducer', () => {
   describe('reducer', () => {
     it.each([
-      [SIDEBAR_PRESENT, { sidebarPresent: true }],
-      [SIDEBAR_NOT_PRESENT, { sidebarPresent: false }],
+      [sidebarPresent.toString(), { sidebarPresent: true }],
+      [sidebarNotPresent.toString(), { sidebarPresent: false }],
     ])('returns expected on %s', (type, expected) => {
-      expect(reducer(Mock.all<Sidebar>(), { type })).toEqual(expected);
+      expect(sidebarReducer(undefined, { type })).toEqual(expected);
     });
   });
 
   describe('sidebarPresent', () => {
     it('returns expected action', () => {
-      expect(sidebarPresent()).toEqual({ type: SIDEBAR_PRESENT });
+      expect(sidebarPresent()).toEqual({ type: sidebarPresent.toString() });
     });
   });
 
   describe('sidebarNotPresent', () => {
     it('returns expected action', () => {
-      expect(sidebarNotPresent()).toEqual({ type: SIDEBAR_NOT_PRESENT });
+      expect(sidebarNotPresent()).toEqual({ type: sidebarNotPresent.toString() });
     });
   });
 });

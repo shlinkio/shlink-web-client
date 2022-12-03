@@ -40,37 +40,49 @@ describe('<EditDomainRedirectsModal />', () => {
 
     expect(editDomainRedirects).not.toHaveBeenCalled();
     submitForm();
-    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
-      baseUrlRedirect: 'baz',
-      regular404Redirect: null,
-      invalidShortUrlRedirect: null,
+    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith({
+      domain: 'foo.com',
+      redirects: {
+        baseUrlRedirect: 'baz',
+        regular404Redirect: null,
+        invalidShortUrlRedirect: null,
+      },
     }));
 
     await user.clear(screen.getByDisplayValue('baz'));
     await user.type(screen.getAllByPlaceholderText('No redirect')[0], 'new_base_url');
     await user.type(screen.getAllByPlaceholderText('No redirect')[2], 'new_invalid_short_url');
     submitForm();
-    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
-      baseUrlRedirect: 'new_base_url',
-      regular404Redirect: null,
-      invalidShortUrlRedirect: 'new_invalid_short_url',
+    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith({
+      domain: 'foo.com',
+      redirects: {
+        baseUrlRedirect: 'new_base_url',
+        regular404Redirect: null,
+        invalidShortUrlRedirect: 'new_invalid_short_url',
+      },
     }));
 
     await user.type(screen.getAllByPlaceholderText('No redirect')[1], 'new_regular_404');
     await user.clear(screen.getByDisplayValue('new_invalid_short_url'));
     submitForm();
-    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
-      baseUrlRedirect: 'new_base_url',
-      regular404Redirect: 'new_regular_404',
-      invalidShortUrlRedirect: null,
+    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith({
+      domain: 'foo.com',
+      redirects: {
+        baseUrlRedirect: 'new_base_url',
+        regular404Redirect: 'new_regular_404',
+        invalidShortUrlRedirect: null,
+      },
     }));
 
     await Promise.all(screen.getAllByPlaceholderText('No redirect').map((element) => user.clear(element)));
     submitForm();
-    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith('foo.com', {
-      baseUrlRedirect: null,
-      regular404Redirect: null,
-      invalidShortUrlRedirect: null,
+    await waitFor(() => expect(editDomainRedirects).toHaveBeenCalledWith({
+      domain: 'foo.com',
+      redirects: {
+        baseUrlRedirect: null,
+        regular404Redirect: null,
+        invalidShortUrlRedirect: null,
+      },
     }));
   });
 });

@@ -40,7 +40,7 @@ describe('<DropdownBtn />', () => {
     await user.click(screen.getByRole('button'));
     expect(screen.getByRole('menu')).toHaveAttribute(
       'style',
-      `${expectedStyle}position: absolute; left: 0px; top: 0px;`,
+      `${expectedStyle}position: absolute; left: 0px; top: 0px; transform: translate(0px, 0px);`,
     );
   });
 });

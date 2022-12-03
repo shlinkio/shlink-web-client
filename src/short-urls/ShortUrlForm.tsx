@@ -3,7 +3,7 @@ import { InputType } from 'reactstrap/types/lib/Input';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import { parseISO } from 'date-fns';
-import { DateInput, DateInputProps } from '../utils/DateInput';
+import { DateTimeInput, DateTimeInputProps } from '../utils/dates/DateTimeInput';
 import { supportsCrawlableVisits, supportsForwardQuery } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
@@ -83,8 +83,8 @@ export const ShortUrlForm = (
       />
     </FormGroup>
   );
-  const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateInputProps> = {}) => (
-    <DateInput
+  const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateTimeInputProps> = {}) => (
+    <DateTimeInput
       selected={shortUrlData[id] ? toDate(shortUrlData[id] as string | Date) : null}
       placeholderText={placeholder}
       isClearable

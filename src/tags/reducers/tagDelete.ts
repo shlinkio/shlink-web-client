@@ -1,52 +1,45 @@
-import { Action, Dispatch } from 'redux';
-import { buildReducer } from '../../utils/helpers/redux';
-import { GetState } from '../../container/types';
+import { createAction, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
-import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
-export const DELETE_TAG_START = 'shlink/deleteTag/DELETE_TAG_START';
-export const DELETE_TAG_ERROR = 'shlink/deleteTag/DELETE_TAG_ERROR';
-export const DELETE_TAG = 'shlink/deleteTag/DELETE_TAG';
-export const TAG_DELETED = 'shlink/deleteTag/TAG_DELETED';
+const REDUCER_PREFIX = 'shlink/tagDelete';
 
 export interface TagDeletion {
   deleting: boolean;
+  deleted: boolean;
   error: boolean;
   errorData?: ProblemDetailsError;
 }
 
-export interface DeleteTagAction extends Action<string> {
-  tag: string;
-}
-
 const initialState: TagDeletion = {
   deleting: false,
+  deleted: false,
   error: false,
 };
 
-export default buildReducer<TagDeletion, ApiErrorAction>({
-  [DELETE_TAG_START]: () => ({ deleting: true, error: false }),
-  [DELETE_TAG_ERROR]: (_, { errorData }) => ({ deleting: false, error: true, errorData }),
-  [DELETE_TAG]: () => ({ deleting: false, error: false }),
-}, initialState);
+export const tagDeleted = createAction<string>(`${REDUCER_PREFIX}/tagDeleted`);
 
-export const deleteTag = (buildShlinkApiClient: ShlinkApiClientBuilder) => (tag: string) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  dispatch({ type: DELETE_TAG_START });
-  const { deleteTags } = buildShlinkApiClient(getState);
-
-  try {
+export const tagDeleteReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+  const deleteTag = createAsyncThunk(`${REDUCER_PREFIX}/deleteTag`, async (tag: string, { getState }): Promise<void> => {
+    const { deleteTags } = buildShlinkApiClient(getState);
     await deleteTags([tag]);
-    dispatch({ type: DELETE_TAG });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: DELETE_TAG_ERROR, errorData: parseApiError(e) });
+  });
 
-    throw e;
-  }
+  const { reducer } = createSlice({
+    name: REDUCER_PREFIX,
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+      builder.addCase(deleteTag.pending, () => ({ deleting: true, deleted: false, error: false }));
+      builder.addCase(
+        deleteTag.rejected,
+        (_, { error }) => ({ deleting: false, deleted: false, error: true, errorData: parseApiError(error) }),
+      );
+      builder.addCase(deleteTag.fulfilled, () => ({ deleting: false, deleted: true, error: false }));
+    },
+  });
+
+  return { reducer, deleteTag };
 };
-
-export const tagDeleted = (tag: string): DeleteTagAction => ({ type: TAG_DELETED, tag });

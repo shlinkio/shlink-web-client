@@ -21,6 +21,11 @@ export interface ShortUrlData extends EditShortUrlData {
   findIfExists?: boolean;
 }
 
+export interface ShortUrlIdentifier {
+  shortCode: string;
+  domain?: OptionalString;
+}
+
 export interface ShortUrl {
   shortCode: string;
   shortUrl: string;
@@ -45,11 +50,6 @@ export interface ShortUrlModalProps {
   shortUrl: ShortUrl;
   isOpen: boolean;
   toggle: () => void;
-}
-
-export interface ShortUrlIdentifier {
-  shortCode: string;
-  domain: OptionalString;
 }
 
 export const SHORT_URLS_ORDERABLE_FIELDS = {

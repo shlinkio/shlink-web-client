@@ -1,19 +1,21 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  CREATE_SHORT_URL_START,
-  CREATE_SHORT_URL_ERROR,
-  CREATE_SHORT_URL,
-  RESET_CREATE_SHORT_URL,
-  createShortUrl,
-  resetCreateShortUrl,
+import {
   CreateShortUrlAction,
+  shortUrlCreationReducerCreator,
+  createShortUrl as createShortUrlCreator,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { ShortUrl } from '../../../src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlCreationReducer', () => {
-  const shortUrl = Mock.all<ShortUrl>();
+  const shortUrl = Mock.of<ShortUrl>();
+  const createShortUrlCall = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
+  const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
+  const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
+
+  afterEach(jest.resetAllMocks);
 
   describe('reducer', () => {
     const action = (type: string, args: Partial<CreateShortUrlAction> = {}) => Mock.of<CreateShortUrlAction>(
@@ -21,80 +23,77 @@ describe('shortUrlCreationReducer', () => {
     );
 
     it('returns loading on CREATE_SHORT_URL_START', () => {
-      expect(reducer(undefined, action(CREATE_SHORT_URL_START))).toEqual({
-        result: null,
+      expect(reducer(undefined, action(createShortUrl.pending.toString()))).toEqual({
         saving: true,
+        saved: false,
         error: false,
       });
     });
 
     it('returns error on CREATE_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, action(CREATE_SHORT_URL_ERROR))).toEqual({
-        result: null,
+      expect(reducer(undefined, action(createShortUrl.rejected.toString()))).toEqual({
         saving: false,
+        saved: false,
         error: true,
       });
     });
 
     it('returns result on CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, action(CREATE_SHORT_URL, { result: shortUrl }))).toEqual({
+      expect(reducer(undefined, action(createShortUrl.fulfilled.toString(), { payload: shortUrl }))).toEqual({
         result: shortUrl,
         saving: false,
+        saved: true,
         error: false,
       });
     });
 
     it('returns default state on RESET_CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, action(RESET_CREATE_SHORT_URL))).toEqual({
-        result: null,
+      expect(reducer(undefined, action(resetCreateShortUrl.toString()))).toEqual({
         saving: false,
+        saved: false,
         error: false,
       });
     });
   });
 
   describe('resetCreateShortUrl', () => {
-    it('returns proper action', () => expect(resetCreateShortUrl()).toEqual({ type: RESET_CREATE_SHORT_URL }));
+    it('returns proper action', () => expect(resetCreateShortUrl()).toEqual({ type: resetCreateShortUrl.toString() }));
   });
 
   describe('createShortUrl', () => {
-    const createApiClientMock = (result: Promise<ShortUrl>) => Mock.of<ShlinkApiClient>({
-      createShortUrl: jest.fn().mockReturnValue(result),
-    });
     const dispatch = jest.fn();
     const getState = () => Mock.all<ShlinkState>();
 
-    afterEach(jest.resetAllMocks);
-
     it('calls API on success', async () => {
-      const apiClientMock = createApiClientMock(Promise.resolve(shortUrl));
-      const dispatchable = createShortUrl(() => apiClientMock)({ longUrl: 'foo' });
+      createShortUrlCall.mockResolvedValue(shortUrl);
+      await createShortUrl({ longUrl: 'foo' })(dispatch, getState, {});
 
-      await dispatchable(dispatch, getState);
-
-      expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
+      expect(createShortUrlCall).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL, result: shortUrl });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: createShortUrl.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: createShortUrl.fulfilled.toString(),
+        payload: shortUrl,
+      }));
     });
 
     it('throws on error', async () => {
-      const error = 'Error';
-      const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = createShortUrl(() => apiClientMock)({ longUrl: 'foo' });
+      const error = new Error('Error message');
+      createShortUrlCall.mockRejectedValue(error);
 
-      expect.assertions(5);
+      await createShortUrl({ longUrl: 'foo' })(dispatch, getState, {});
 
-      try {
-        await dispatchable(dispatch, getState);
-      } catch (e) {
-        expect(e).toEqual(error);
-      }
-
-      expect(apiClientMock.createShortUrl).toHaveBeenCalledTimes(1);
+      expect(createShortUrlCall).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: CREATE_SHORT_URL_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: CREATE_SHORT_URL_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: createShortUrl.pending.toString(),
+      }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: createShortUrl.rejected.toString(),
+        error: expect.objectContaining({ message: 'Error message' }),
+      }));
     });
   });
 });

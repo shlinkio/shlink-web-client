@@ -1,22 +1,18 @@
+import { createAction, createSlice } from '@reduxjs/toolkit';
 import { isEmpty, reject } from 'ramda';
-import { Action, Dispatch } from 'redux';
-import { CREATE_VISITS, CreateVisitsAction } from '../../visits/reducers/visitCreation';
-import { buildReducer } from '../../utils/helpers/redux';
-import { ProblemDetailsError, ShlinkTags } from '../../api/types';
-import { GetState } from '../../container/types';
+import { createNewVisits } from '../../visits/reducers/visitCreation';
+import { createAsyncThunk } from '../../utils/helpers/redux';
+import { ShlinkTags } from '../../api/types';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { CreateVisit, Stats } from '../../visits/types';
 import { parseApiError } from '../../api/utils';
 import { TagStats } from '../data';
-import { ApiErrorAction } from '../../api/types/actions';
-import { CREATE_SHORT_URL, CreateShortUrlAction } from '../../short-urls/reducers/shortUrlCreation';
-import { DeleteTagAction, TAG_DELETED } from './tagDelete';
-import { EditTagAction, TAG_EDITED } from './tagEdit';
+import { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import { tagDeleted } from './tagDelete';
+import { tagEdited } from './tagEdit';
+import { ProblemDetailsError } from '../../api/types/errors';
 
-export const LIST_TAGS_START = 'shlink/tagsList/LIST_TAGS_START';
-export const LIST_TAGS_ERROR = 'shlink/tagsList/LIST_TAGS_ERROR';
-export const LIST_TAGS = 'shlink/tagsList/LIST_TAGS';
-export const FILTER_TAGS = 'shlink/tagsList/FILTER_TAGS';
+const REDUCER_PREFIX = 'shlink/tagsList';
 
 type TagsStatsMap = Record<string, TagStats>;
 
@@ -29,24 +25,12 @@ export interface TagsList {
   errorData?: ProblemDetailsError;
 }
 
-interface ListTagsAction extends Action<string> {
+interface ListTags {
   tags: string[];
   stats: TagsStatsMap;
 }
 
-interface FilterTagsAction extends Action<string> {
-  searchTerm: string;
-}
-
-type TagsCombinedAction = ListTagsAction
-& DeleteTagAction
-& CreateVisitsAction
-& CreateShortUrlAction
-& EditTagAction
-& FilterTagsAction
-& ApiErrorAction;
-
-const initialState = {
+const initialState: TagsList = {
   tags: [],
   filteredTags: [],
   stats: {},
@@ -65,10 +49,13 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
 
   const tagStats = theStats[tag];
 
-  tagStats.visitsCount += increase;
-  theStats[tag] = tagStats; // eslint-disable-line no-param-reassign
-
-  return theStats;
+  return {
+    ...theStats,
+    [tag]: {
+      ...tagStats,
+      visitsCount: tagStats.visitsCount + increase,
+    },
+  };
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
   createdVisits.reduce<Stats>((acc, { shortUrl }) => {
@@ -80,47 +67,15 @@ const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => O
   }, {}),
 );
 
-export default buildReducer<TagsList, TagsCombinedAction>({
-  [LIST_TAGS_START]: () => ({ ...initialState, loading: true }),
-  [LIST_TAGS_ERROR]: (_, { errorData }) => ({ ...initialState, error: true, errorData }),
-  [LIST_TAGS]: (_, { tags, stats }) => ({ ...initialState, stats, tags, filteredTags: tags }),
-  [TAG_DELETED]: (state, { tag }) => ({
-    ...state,
-    tags: rejectTag(state.tags, tag),
-    filteredTags: rejectTag(state.filteredTags, tag),
-  }),
-  [TAG_EDITED]: (state, { oldName, newName }) => ({
-    ...state,
-    tags: state.tags.map(renameTag(oldName, newName)).sort(),
-    filteredTags: state.filteredTags.map(renameTag(oldName, newName)).sort(),
-  }),
-  [FILTER_TAGS]: (state, { searchTerm }) => ({
-    ...state,
-    filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
-  }),
-  [CREATE_VISITS]: (state, { createdVisits }) => ({
-    ...state,
-    stats: increaseVisitsForTags(calculateVisitsPerTag(createdVisits), state.stats),
-  }),
-  [CREATE_SHORT_URL]: ({ tags: stateTags, ...rest }, { result }) => ({
-    ...rest,
-    tags: stateTags.concat(result.tags.filter((tag) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
-  }),
-}, initialState);
+export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = true) => createAsyncThunk(
+  `${REDUCER_PREFIX}/listTags`,
+  async (_: void, { getState }): Promise<ListTags> => {
+    const { tagsList } = getState();
 
-export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = true) => () => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  const { tagsList } = getState();
+    if (!force && !isEmpty(tagsList.tags)) {
+      return tagsList;
+    }
 
-  if (!force && (tagsList.loading || !isEmpty(tagsList.tags))) {
-    return;
-  }
-
-  dispatch({ type: LIST_TAGS_START });
-
-  try {
     const { listTags: shlinkListTags } = buildShlinkApiClient(getState);
     const { tags, stats = [] }: ShlinkTags = await shlinkListTags();
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
@@ -129,10 +84,55 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
       return acc;
     }, {});
 
-    dispatch<ListTagsAction>({ tags, stats: processedStats, type: LIST_TAGS });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: LIST_TAGS_ERROR, errorData: parseApiError(e) });
-  }
-};
+    return { tags, stats: processedStats };
+  },
+);
 
-export const filterTags = (searchTerm: string): FilterTagsAction => ({ type: FILTER_TAGS, searchTerm });
+export const filterTags = createAction<string>(`${REDUCER_PREFIX}/filterTags`);
+
+export const tagsListReducerCreator = (
+  listTagsThunk: ReturnType<typeof listTags>,
+  createShortUrlThunk: ReturnType<typeof createShortUrl>,
+) => createSlice({
+  name: REDUCER_PREFIX,
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(filterTags, (state, { payload: searchTerm }) => ({
+      ...state,
+      filteredTags: state.tags.filter((tag) => tag.toLowerCase().match(searchTerm.toLowerCase())),
+    }));
+
+    builder.addCase(listTagsThunk.pending, (state) => ({ ...state, loading: true, error: false }));
+    builder.addCase(listTagsThunk.rejected, (_, { error }) => (
+      { ...initialState, error: true, errorData: parseApiError(error) }
+    ));
+    builder.addCase(listTagsThunk.fulfilled, (_, { payload }) => (
+      { ...initialState, stats: payload.stats, tags: payload.tags, filteredTags: payload.tags }
+    ));
+
+    builder.addCase(tagDeleted, ({ tags, filteredTags, ...rest }, { payload: tag }) => ({
+      ...rest,
+      tags: rejectTag(tags, tag),
+      filteredTags: rejectTag(filteredTags, tag),
+    }));
+    builder.addCase(tagEdited, ({ tags, filteredTags, stats, ...rest }, { payload }) => ({
+      ...rest,
+      stats: {
+        ...stats,
+        [payload.newName]: stats[payload.oldName],
+      },
+      tags: tags.map(renameTag(payload.oldName, payload.newName)).sort(),
+      filteredTags: filteredTags.map(renameTag(payload.oldName, payload.newName)).sort(),
+    }));
+    builder.addCase(createNewVisits, (state, { payload }) => ({
+      ...state,
+      stats: increaseVisitsForTags(calculateVisitsPerTag(payload.createdVisits), state.stats),
+    }));
+
+    builder.addCase(createShortUrlThunk.fulfilled, ({ tags: stateTags, ...rest }, { payload }) => ({
+      ...rest,
+      tags: stateTags.concat(payload.tags.filter((tag: string) => !stateTags.includes(tag))), // More performant than [ ...new Set(...) ]
+    }));
+  },
+});

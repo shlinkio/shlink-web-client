@@ -10,7 +10,7 @@ import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
 import { prettify } from '../utils/helpers/numbers';
 import { supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
-import { Time } from '../utils/Time';
+import { Time } from '../utils/dates/Time';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { MediaMatcher } from '../utils/types';
 import { NormalizedOrphanVisit, NormalizedVisit } from './types';

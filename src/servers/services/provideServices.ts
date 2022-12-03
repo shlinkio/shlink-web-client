@@ -1,3 +1,4 @@
+import { prop } from 'ramda';
 import Bottle from 'bottlejs';
 import { CreateServer } from '../CreateServer';
 import { ServersDropdown } from '../ServersDropdown';
@@ -5,8 +6,13 @@ import { DeleteServerModal } from '../DeleteServerModal';
 import { DeleteServerButton } from '../DeleteServerButton';
 import { EditServer } from '../EditServer';
 import { ImportServersBtn } from '../helpers/ImportServersBtn';
-import { resetSelectedServer, selectServer } from '../reducers/selectedServer';
-import { createServer, createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
+import {
+  resetSelectedServer,
+  selectedServerReducerCreator,
+  selectServer,
+  selectServerListener,
+} from '../reducers/selectedServer';
+import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import { ServerError } from '../helpers/ServerError';
 import { ConnectDecorator } from '../../container/types';
@@ -38,7 +44,7 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useTimeoutToggle');
   bottle.decorator('CreateServer', withoutSelectedServer);
-  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServer', 'resetSelectedServer']));
+  bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServers', 'resetSelectedServer']));
 
   bottle.serviceFactory('EditServer', EditServer, 'ServerError');
   bottle.decorator('EditServer', connect(['selectedServer'], ['editServer', 'selectServer', 'resetSelectedServer']));
@@ -70,14 +76,18 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Actions
   bottle.serviceFactory('selectServer', selectServer, 'buildShlinkApiClient', 'loadMercureInfo');
-  bottle.serviceFactory('createServer', () => createServer);
   bottle.serviceFactory('createServers', () => createServers);
   bottle.serviceFactory('deleteServer', () => deleteServer);
   bottle.serviceFactory('editServer', () => editServer);
   bottle.serviceFactory('setAutoConnect', () => setAutoConnect);
-  bottle.serviceFactory('fetchServers', fetchServers, 'axios');
+  bottle.serviceFactory('fetchServers', fetchServers, 'HttpClient');
 
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
+
+  // Reducers
+  bottle.serviceFactory('selectServerListener', selectServerListener, 'selectServer', 'loadMercureInfo');
+  bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
+  bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };
 
 export default provideServices;

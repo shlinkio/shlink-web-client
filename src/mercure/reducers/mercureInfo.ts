@@ -1,52 +1,44 @@
-import { Action, Dispatch } from 'redux';
+import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkMercureInfo } from '../../api/types';
-import { GetState } from '../../container/types';
-import { buildReducer } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
-export const GET_MERCURE_INFO_START = 'shlink/mercure/GET_MERCURE_INFO_START';
-export const GET_MERCURE_INFO_ERROR = 'shlink/mercure/GET_MERCURE_INFO_ERROR';
-export const GET_MERCURE_INFO = 'shlink/mercure/GET_MERCURE_INFO';
+const REDUCER_PREFIX = 'shlink/mercure';
 
-export interface MercureInfo {
-  token?: string;
-  mercureHubUrl?: string;
+export interface MercureInfo extends Partial<ShlinkMercureInfo> {
   interval?: number;
   loading: boolean;
   error: boolean;
 }
-
-export type GetMercureInfoAction = Action<string> & ShlinkMercureInfo & { interval?: number };
 
 const initialState: MercureInfo = {
   loading: true,
   error: false,
 };
 
-export default buildReducer<MercureInfo, GetMercureInfoAction>({
-  [GET_MERCURE_INFO_START]: (state) => ({ ...state, loading: true, error: false }),
-  [GET_MERCURE_INFO_ERROR]: (state) => ({ ...state, loading: false, error: true }),
-  [GET_MERCURE_INFO]: (_, action) => ({ ...action, loading: false, error: false }),
-}, initialState);
+export const mercureInfoReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+  const loadMercureInfo = createAsyncThunk(
+    `${REDUCER_PREFIX}/loadMercureInfo`,
+    (_: void, { getState }): Promise<ShlinkMercureInfo> => {
+      const { settings } = getState();
+      if (!settings.realTimeUpdates.enabled) {
+        throw new Error('Real time updates not enabled');
+      }
 
-export const loadMercureInfo = (buildShlinkApiClient: ShlinkApiClientBuilder) =>
-  () => async (dispatch: Dispatch, getState: GetState) => {
-    dispatch({ type: GET_MERCURE_INFO_START });
+      return buildShlinkApiClient(getState).mercureInfo();
+    },
+  );
 
-    const { settings } = getState();
-    const { mercureInfo } = buildShlinkApiClient(getState);
+  const { reducer } = createSlice({
+    name: REDUCER_PREFIX,
+    initialState,
+    reducers: {},
+    extraReducers: (builder) => {
+      builder.addCase(loadMercureInfo.pending, (state) => ({ ...state, loading: true, error: false }));
+      builder.addCase(loadMercureInfo.rejected, (state) => ({ ...state, loading: false, error: true }));
+      builder.addCase(loadMercureInfo.fulfilled, (_, { payload }) => ({ ...payload, loading: false, error: false }));
+    },
+  });
 
-    if (!settings.realTimeUpdates.enabled) {
-      dispatch({ type: GET_MERCURE_INFO_ERROR });
-
-      return;
-    }
-
-    try {
-      const info = await mercureInfo();
-
-      dispatch<GetMercureInfoAction>({ type: GET_MERCURE_INFO, interval: settings.realTimeUpdates.interval, ...info });
-    } catch (e) {
-      dispatch({ type: GET_MERCURE_INFO_ERROR });
-    }
-  };
+  return { loadMercureInfo, reducer };
+};

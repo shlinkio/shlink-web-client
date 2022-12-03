@@ -1,25 +1,22 @@
-import { Action } from 'redux';
-import { buildActionCreator, buildReducer } from '../../utils/helpers/redux';
-
-export const SIDEBAR_PRESENT = 'shlink/common/SIDEBAR_PRESENT';
-export const SIDEBAR_NOT_PRESENT = 'shlink/common/SIDEBAR_NOT_PRESENT';
+import { createSlice } from '@reduxjs/toolkit';
 
 export interface Sidebar {
   sidebarPresent: boolean;
 }
 
-type SidebarRenderedAction = Action<string>;
-type SidebarNotRenderedAction = Action<string>;
-
 const initialState: Sidebar = {
   sidebarPresent: false,
 };
 
-export default buildReducer<Sidebar, SidebarRenderedAction & SidebarNotRenderedAction>({
-  [SIDEBAR_PRESENT]: () => ({ sidebarPresent: true }),
-  [SIDEBAR_NOT_PRESENT]: () => ({ sidebarPresent: false }),
-}, initialState);
+const { actions, reducer } = createSlice({
+  name: 'shlink/sidebar',
+  initialState,
+  reducers: {
+    sidebarPresent: () => ({ sidebarPresent: true }),
+    sidebarNotPresent: () => ({ sidebarPresent: false }),
+  },
+});
 
-export const sidebarPresent = buildActionCreator(SIDEBAR_PRESENT);
+export const { sidebarPresent, sidebarNotPresent } = actions;
 
-export const sidebarNotPresent = buildActionCreator(SIDEBAR_NOT_PRESENT);
+export const sidebarReducer = reducer;

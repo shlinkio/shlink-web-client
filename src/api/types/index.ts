@@ -102,21 +102,3 @@ export interface ShlinkShortUrlsListParams {
 export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {
   orderBy?: string;
 }
-
-export interface ProblemDetailsError {
-  type: string;
-  detail: string;
-  title: string;
-  status: number;
-  [extraProps: string]: any;
-}
-
-export interface InvalidArgumentError extends ProblemDetailsError {
-  type: 'INVALID_ARGUMENT';
-  invalidElements: string[];
-}
-
-export interface InvalidShortUrlDeletion extends ProblemDetailsError {
-  type: 'INVALID_SHORTCODE_DELETION' | 'INVALID_SHORT_URL_DELETION';
-  threshold: number;
-}

@@ -1,57 +1,53 @@
 import { Mock } from 'ts-mockery';
 import { addDays, formatISO, subDays } from 'date-fns';
-import reducer, {
-  getShortUrlVisits,
-  cancelGetShortUrlVisits,
-  GET_SHORT_URL_VISITS_START,
-  GET_SHORT_URL_VISITS_ERROR,
-  GET_SHORT_URL_VISITS,
-  GET_SHORT_URL_VISITS_LARGE,
-  GET_SHORT_URL_VISITS_CANCEL,
-  GET_SHORT_URL_VISITS_PROGRESS_CHANGED,
-  GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL,
+import {
+  getShortUrlVisits as getShortUrlVisitsCreator,
+  shortUrlVisitsReducerCreator,
   ShortUrlVisits,
 } from '../../../src/visits/reducers/shortUrlVisits';
-import { CREATE_VISITS } from '../../../src/visits/reducers/visitCreation';
 import { rangeOf } from '../../../src/utils/utils';
 import { Visit } from '../../../src/visits/types';
 import { ShlinkVisits } from '../../../src/api/types';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
-import { DateInterval } from '../../../src/utils/dates/types';
+import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const getShortUrlVisitsCall = jest.fn();
+  const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShortUrlVisitsCall });
+  const creator = getShortUrlVisitsCreator(buildApiClientMock);
+  const { asyncThunk: getShortUrlVisits, largeAction, progressChangedAction, fallbackToIntervalAction } = creator;
+  const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(creator);
+
+  beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<ShortUrlVisits>) => Mock.of<ShortUrlVisits>(data);
 
     it('returns loading on GET_SHORT_URL_VISITS_START', () => {
-      const state = reducer(buildState({ loading: false }), { type: GET_SHORT_URL_VISITS_START } as any);
-      const { loading } = state;
-
+      const { loading } = reducer(buildState({ loading: false }), { type: getShortUrlVisits.pending.toString() });
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_SHORT_URL_VISITS_LARGE', () => {
-      const state = reducer(buildState({ loadingLarge: false }), { type: GET_SHORT_URL_VISITS_LARGE } as any);
-      const { loadingLarge } = state;
-
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_SHORT_URL_VISITS_CANCEL', () => {
-      const state = reducer(buildState({ cancelLoad: false }), { type: GET_SHORT_URL_VISITS_CANCEL } as any);
-      const { cancelLoad } = state;
-
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetShortUrlVisits.toString() });
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_SHORT_URL_VISITS_ERROR', () => {
-      const state = reducer(buildState({ loading: true, error: false }), { type: GET_SHORT_URL_VISITS_ERROR } as any);
-      const { loading, error } = state;
+      const { loading, error } = reducer(
+        buildState({ loading: true, error: false }),
+        { type: getShortUrlVisits.rejected.toString() },
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(true);
@@ -59,11 +55,10 @@ describe('shortUrlVisitsReducer', () => {
 
     it('return visits on GET_SHORT_URL_VISITS', () => {
       const actionVisits = [{}, {}];
-      const state = reducer(
-        buildState({ loading: true, error: false }),
-        { type: GET_SHORT_URL_VISITS, visits: actionVisits } as any,
-      );
-      const { loading, error, visits } = state;
+      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
+        type: getShortUrlVisits.fulfilled.toString(),
+        payload: { visits: actionVisits },
+      });
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -126,50 +121,49 @@ describe('shortUrlVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(
-        prevState,
-        { type: CREATE_VISITS, createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] } as any,
-      );
+      const { visits } = reducer(prevState, {
+        type: createNewVisits.toString(),
+        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
+      });
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_SHORT_URL_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: GET_SHORT_URL_VISITS_PROGRESS_CHANGED, progress: 85 } as any);
-
+      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
     it('returns fallbackInterval on GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(undefined, { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval } as any);
+      const state = reducer(
+        undefined,
+        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval },
+      );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
   });
 
   describe('getShortUrlVisits', () => {
-    type GetVisitsReturn = Promise<ShlinkVisits> | ((shortCode: string, query: any) => Promise<ShlinkVisits>);
-
-    const buildApiClientMock = (returned: GetVisitsReturn) => Mock.of<ShlinkApiClient>({
-      getShortUrlVisits: jest.fn(typeof returned === 'function' ? returned : async () => returned),
-    });
     const dispatchMock = jest.fn();
     const getState = () => Mock.of<ShlinkState>({
       shortUrlVisits: Mock.of<ShortUrlVisits>({ cancelLoad: false }),
     });
 
-    beforeEach(() => dispatchMock.mockReset());
-
     it('dispatches start and error when promise is rejected', async () => {
-      const ShlinkApiClient = buildApiClientMock(Promise.reject({}));
+      getShortUrlVisitsCall.mockRejectedValue({});
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+      await getShortUrlVisits({ shortCode: 'abc123' })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, { type: GET_SHORT_URL_VISITS_ERROR });
-      expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: getShortUrlVisits.pending.toString(),
+      }));
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: getShortUrlVisits.rejected.toString(),
+      }));
+      expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(1);
     });
 
     it.each([
@@ -179,29 +173,31 @@ describe('shortUrlVisitsReducer', () => {
     ])('dispatches start and success when promise is resolved', async (query, domain) => {
       const visits = visitsMocks;
       const shortCode = 'abc123';
-      const ShlinkApiClient = buildApiClientMock(Promise.resolve({
+      getShortUrlVisitsCall.mockResolvedValue({
         data: visitsMocks,
         pagination: {
           currentPage: 1,
           pagesCount: 1,
           totalItems: 1,
         },
-      }));
+      });
 
-      await getShortUrlVisits(() => ShlinkApiClient)(shortCode, query)(dispatchMock, getState);
+      await getShortUrlVisits({ shortCode, query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
-      expect(dispatchMock).toHaveBeenNthCalledWith(
-        2,
-        { type: GET_SHORT_URL_VISITS, visits, shortCode, domain, query: query ?? {} },
-      );
-      expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(1);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: getShortUrlVisits.pending.toString(),
+      }));
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
+        type: getShortUrlVisits.fulfilled.toString(),
+        payload: { visits, shortCode, domain, query: query ?? {} },
+      }));
+      expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(1);
     });
 
     it('performs multiple API requests when response contains more pages', async () => {
       const expectedRequests = 3;
-      const ShlinkApiClient = buildApiClientMock(async (_, { page }) =>
+      getShortUrlVisitsCall.mockImplementation(async (_, { page }) =>
         Promise.resolve({
           data: visitsMocks,
           pagination: {
@@ -211,25 +207,33 @@ describe('shortUrlVisitsReducer', () => {
           },
         }));
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123')(dispatchMock, getState);
+      await getShortUrlVisits({ shortCode: 'abc123' })(dispatchMock, getState, {});
 
-      expect(ShlinkApiClient.getShortUrlVisits).toHaveBeenCalledTimes(expectedRequests);
+      expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(expectedRequests);
       expect(dispatchMock).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        visits: [...visitsMocks, ...visitsMocks, ...visitsMocks],
+        payload: expect.objectContaining({
+          visits: [...visitsMocks, ...visitsMocks, ...visitsMocks],
+        }),
       }));
     });
 
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) })],
-        { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last7Days' },
+        { type: fallbackToIntervalAction.toString(), payload: 'last7Days' },
+        3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) })],
-        { type: GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL, fallbackInterval: 'last365Days' },
+        { type: fallbackToIntervalAction.toString(), payload: 'last365Days' },
+        3,
       ],
-      [[], expect.objectContaining({ type: GET_SHORT_URL_VISITS })],
-    ])('dispatches fallback interval when the list of visits is empty', async (lastVisits, expectedSecondDispatch) => {
+      [[], expect.objectContaining({ type: getShortUrlVisits.fulfilled.toString() }), 2],
+    ])('dispatches fallback interval when the list of visits is empty', async (
+      lastVisits,
+      expectedSecondDispatch,
+      expectedDispatchCalls,
+    ) => {
       const buildVisitsResult = (data: Visit[] = []): ShlinkVisits => ({
         data,
         pagination: {
@@ -238,22 +242,23 @@ describe('shortUrlVisitsReducer', () => {
           totalItems: 1,
         },
       });
-      const getShlinkShortUrlVisits = jest.fn()
+      getShortUrlVisitsCall
         .mockResolvedValueOnce(buildVisitsResult())
         .mockResolvedValueOnce(buildVisitsResult(lastVisits));
-      const ShlinkApiClient = Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShlinkShortUrlVisits });
 
-      await getShortUrlVisits(() => ShlinkApiClient)('abc123', {}, true)(dispatchMock, getState);
+      await getShortUrlVisits({ shortCode: 'abc123', doIntervalFallback: true })(dispatchMock, getState, {});
 
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, { type: GET_SHORT_URL_VISITS_START });
+      expect(dispatchMock).toHaveBeenCalledTimes(expectedDispatchCalls);
+      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
+        type: getShortUrlVisits.pending.toString(),
+      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
-      expect(getShlinkShortUrlVisits).toHaveBeenCalledTimes(2);
+      expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(2);
     });
   });
 
   describe('cancelGetShortUrlVisits', () => {
     it('just returns the action with proper type', () =>
-      expect(cancelGetShortUrlVisits()).toEqual({ type: GET_SHORT_URL_VISITS_CANCEL }));
+      expect(cancelGetShortUrlVisits()).toEqual({ type: cancelGetShortUrlVisits.toString() }));
   });
 });

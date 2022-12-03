@@ -8,7 +8,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
 
 describe('<CreateServer />', () => {
-  const createServerMock = jest.fn();
+  const createServersMock = jest.fn();
   const navigate = jest.fn();
   const servers = { foo: Mock.of<ServerWithId>({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }) };
   const setUp = (serversImported = false, importFailed = false) => {
@@ -22,7 +22,7 @@ describe('<CreateServer />', () => {
     });
     const CreateServer = createCreateServer(() => <>ImportServersBtn</>, useTimeoutToggle);
 
-    return renderWithEvents(<CreateServer createServer={createServerMock} servers={servers} />);
+    return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
   };
 
   beforeEach(jest.clearAllMocks);
@@ -48,18 +48,18 @@ describe('<CreateServer />', () => {
   it('creates server data when form is submitted', async () => {
     const { user } = setUp();
 
-    expect(createServerMock).not.toHaveBeenCalled();
+    expect(createServersMock).not.toHaveBeenCalled();
 
     await user.type(screen.getByLabelText(/^Name/), 'the_name');
     await user.type(screen.getByLabelText(/^URL/), 'https://the_url.com');
     await user.type(screen.getByLabelText(/^API key/), 'the_api_key');
     fireEvent.submit(screen.getByRole('form'));
 
-    expect(createServerMock).toHaveBeenCalledWith(expect.objectContaining({
+    expect(createServersMock).toHaveBeenCalledWith([expect.objectContaining({
       name: 'the_name',
       url: 'https://the_url.com',
       apiKey: 'the_api_key',
-    }));
+    })]);
     expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/server\//));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
@@ -75,7 +75,7 @@ describe('<CreateServer />', () => {
     await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
     await user.click(screen.getByRole('button', { name: 'Discard' }));
 
-    expect(createServerMock).not.toHaveBeenCalled();
+    expect(createServersMock).not.toHaveBeenCalled();
     expect(navigate).toHaveBeenCalledWith(-1);
   });
 });

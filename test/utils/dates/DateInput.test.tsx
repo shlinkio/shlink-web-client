@@ -1,7 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { DateInput, DateInputProps } from '../../src/utils/DateInput';
-import { renderWithEvents } from '../__helpers__/setUpTest';
+import { parseISO } from 'date-fns';
+import { DateInput, DateInputProps } from '../../../src/utils/dates/DateInput';
+import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateInput />', () => {
   const setUp = (props: Partial<DateInputProps> = {}) => renderWithEvents(
@@ -29,5 +30,15 @@ describe('<DateInput />', () => {
     expect(container.querySelector('.react-datepicker')).not.toBeInTheDocument();
     await user.click(screen.getByPlaceholderText('foo'));
     await waitFor(() => expect(container.querySelector('.react-datepicker')).toBeInTheDocument());
+  });
+
+  it.each([
+    [undefined, '2022-01-01'],
+    ['yyyy-MM-dd', '2022-01-01'],
+    ['yyyy-MM-dd HH:mm', '2022-01-01 15:18'],
+    ['HH:mm:ss', '15:18:36'],
+  ])('shows date in expected format', (dateFormat, expectedValue) => {
+    setUp({ placeholderText: 'foo', selected: parseISO('2022-01-01T15:18:36'), dateFormat });
+    expect(screen.getByPlaceholderText('foo')).toHaveValue(expectedValue);
   });
 });

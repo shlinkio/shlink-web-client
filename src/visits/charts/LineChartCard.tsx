@@ -31,6 +31,7 @@ import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
 import './LineChartCard.scss';
+import { STANDARD_DATE_FORMAT } from '../../utils/helpers/date';
 
 interface LineChartCardProps {
   title: string;
@@ -65,10 +66,10 @@ const STEP_TO_DIFF_FUNC_MAP: Record<Step, (dateLeft: Date, dateRight: Date) => n
 
 const STEP_TO_DATE_FORMAT: Record<Step, (date: Date) => string> = {
   hourly: (date) => format(date, 'yyyy-MM-dd HH:00'),
-  daily: (date) => format(date, 'yyyy-MM-dd'),
+  daily: (date) => format(date, STANDARD_DATE_FORMAT),
   weekly(date) {
-    const firstWeekDay = format(startOfISOWeek(date), 'yyyy-MM-dd');
-    const lastWeekDay = format(endOfISOWeek(date), 'yyyy-MM-dd');
+    const firstWeekDay = format(startOfISOWeek(date), STANDARD_DATE_FORMAT);
+    const lastWeekDay = format(endOfISOWeek(date), STANDARD_DATE_FORMAT);
 
     return `${firstWeekDay} - ${lastWeekDay}`;
   },

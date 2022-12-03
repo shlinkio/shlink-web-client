@@ -1,6 +1,6 @@
-import reducer, {
-  SET_SETTINGS,
+import {
   DEFAULT_SHORT_URLS_ORDERING,
+  settingsReducer,
   toggleRealTimeUpdates,
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
@@ -20,7 +20,9 @@ describe('settingsReducer', () => {
 
   describe('reducer', () => {
     it('returns realTimeUpdates when action is SET_SETTINGS', () => {
-      expect(reducer(undefined, { type: SET_SETTINGS, realTimeUpdates })).toEqual(settings);
+      expect(
+        settingsReducer(undefined, { type: toggleRealTimeUpdates.toString(), payload: { realTimeUpdates } }),
+      ).toEqual(settings);
     });
   });
 
@@ -28,7 +30,10 @@ describe('settingsReducer', () => {
     it.each([[true], [false]])('updates settings with provided value and then loads updates again', (enabled) => {
       const result = toggleRealTimeUpdates(enabled);
 
-      expect(result).toEqual({ type: SET_SETTINGS, realTimeUpdates: { enabled } });
+      expect(result).toEqual({
+        type: toggleRealTimeUpdates.toString(),
+        payload: { realTimeUpdates: { enabled } },
+      });
     });
   });
 
@@ -36,7 +41,10 @@ describe('settingsReducer', () => {
     it.each([[0], [1], [2], [10]])('updates settings with provided value and then loads updates again', (interval) => {
       const result = setRealTimeUpdatesInterval(interval);
 
-      expect(result).toEqual({ type: SET_SETTINGS, realTimeUpdates: { interval } });
+      expect(result).toEqual({
+        type: setRealTimeUpdatesInterval.toString(),
+        payload: { realTimeUpdates: { interval } },
+      });
     });
   });
 
@@ -44,7 +52,10 @@ describe('settingsReducer', () => {
     it('creates action to set shortUrlCreation settings', () => {
       const result = setShortUrlCreationSettings({ validateUrls: true });
 
-      expect(result).toEqual({ type: SET_SETTINGS, shortUrlCreation: { validateUrls: true } });
+      expect(result).toEqual({
+        type: setShortUrlCreationSettings.toString(),
+        payload: { shortUrlCreation: { validateUrls: true } },
+      });
     });
   });
 
@@ -52,7 +63,10 @@ describe('settingsReducer', () => {
     it('creates action to set ui settings', () => {
       const result = setUiSettings({ theme: 'dark' });
 
-      expect(result).toEqual({ type: SET_SETTINGS, ui: { theme: 'dark' } });
+      expect(result).toEqual({
+        type: setUiSettings.toString(),
+        payload: { ui: { theme: 'dark' } },
+      });
     });
   });
 
@@ -60,7 +74,10 @@ describe('settingsReducer', () => {
     it('creates action to set visits settings', () => {
       const result = setVisitsSettings({ defaultInterval: 'last180Days' });
 
-      expect(result).toEqual({ type: SET_SETTINGS, visits: { defaultInterval: 'last180Days' } });
+      expect(result).toEqual({
+        type: setVisitsSettings.toString(),
+        payload: { visits: { defaultInterval: 'last180Days' } },
+      });
     });
   });
 
@@ -68,7 +85,10 @@ describe('settingsReducer', () => {
     it('creates action to set tags settings', () => {
       const result = setTagsSettings({ defaultMode: 'list' });
 
-      expect(result).toEqual({ type: SET_SETTINGS, tags: { defaultMode: 'list' } });
+      expect(result).toEqual({
+        type: setTagsSettings.toString(),
+        payload: { tags: { defaultMode: 'list' } },
+      });
     });
   });
 
@@ -76,7 +96,10 @@ describe('settingsReducer', () => {
     it('creates action to set short URLs list settings', () => {
       const result = setShortUrlsListSettings({ defaultOrdering: DEFAULT_SHORT_URLS_ORDERING });
 
-      expect(result).toEqual({ type: SET_SETTINGS, shortUrlsList: { defaultOrdering: DEFAULT_SHORT_URLS_ORDERING } });
+      expect(result).toEqual({
+        type: setShortUrlsListSettings.toString(),
+        payload: { shortUrlsList: { defaultOrdering: DEFAULT_SHORT_URLS_ORDERING } },
+      });
     });
   });
 });

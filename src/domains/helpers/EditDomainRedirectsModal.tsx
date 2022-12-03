@@ -1,15 +1,16 @@
 import { FC, useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { ShlinkDomain, ShlinkDomainRedirects } from '../../api/types';
+import { ShlinkDomain } from '../../api/types';
 import { InputFormGroup, InputFormGroupProps } from '../../utils/forms/InputFormGroup';
 import { handleEventPreventingDefault, nonEmptyValueOrNull } from '../../utils/utils';
 import { InfoTooltip } from '../../utils/InfoTooltip';
+import { EditDomainRedirects } from '../reducers/domainRedirects';
 
 interface EditDomainRedirectsModalProps {
   domain: ShlinkDomain;
   isOpen: boolean;
   toggle: () => void;
-  editDomainRedirects: (domain: string, redirects: Partial<ShlinkDomainRedirects>) => Promise<void>;
+  editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
 }
 
 const FormGroup: FC<InputFormGroupProps & { isLast?: boolean }> = ({ isLast, ...rest }) => (
@@ -30,10 +31,13 @@ export const EditDomainRedirectsModal: FC<EditDomainRedirectsModalProps> = (
   const [invalidShortUrlRedirect, setInvalidShortUrlRedirect] = useState(
     domain.redirects?.invalidShortUrlRedirect ?? '',
   );
-  const handleSubmit = handleEventPreventingDefault(async () => editDomainRedirects(domain.domain, {
-    baseUrlRedirect: nonEmptyValueOrNull(baseUrlRedirect),
-    regular404Redirect: nonEmptyValueOrNull(regular404Redirect),
-    invalidShortUrlRedirect: nonEmptyValueOrNull(invalidShortUrlRedirect),
+  const handleSubmit = handleEventPreventingDefault(async () => editDomainRedirects({
+    domain: domain.domain,
+    redirects: {
+      baseUrlRedirect: nonEmptyValueOrNull(baseUrlRedirect),
+      regular404Redirect: nonEmptyValueOrNull(regular404Redirect),
+      invalidShortUrlRedirect: nonEmptyValueOrNull(invalidShortUrlRedirect),
+    },
   }).then(toggle));
 
   return (

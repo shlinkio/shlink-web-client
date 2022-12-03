@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import { DateInterval, rangeOrIntervalToString } from '../../../src/utils/dates/types';
+import { DateInterval, rangeOrIntervalToString } from '../../../src/utils/helpers/dateIntervals';
 import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

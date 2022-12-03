@@ -1,34 +1,36 @@
 import { Mock } from 'ts-mockery';
-import reducer, {
-  DELETE_TAG_START,
-  DELETE_TAG_ERROR,
-  DELETE_TAG,
-  TAG_DELETED,
-  tagDeleted,
-  deleteTag,
-} from '../../../src/tags/reducers/tagDelete';
+import { tagDeleted, tagDeleteReducerCreator } from '../../../src/tags/reducers/tagDelete';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ShlinkState } from '../../../src/container/types';
 
 describe('tagDeleteReducer', () => {
+  const deleteTagsCall = jest.fn();
+  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteTags: deleteTagsCall });
+  const { reducer, deleteTag } = tagDeleteReducerCreator(buildShlinkApiClient);
+
+  beforeEach(jest.clearAllMocks);
+
   describe('reducer', () => {
     it('returns loading on DELETE_TAG_START', () => {
-      expect(reducer(undefined, { type: DELETE_TAG_START })).toEqual({
+      expect(reducer(undefined, { type: deleteTag.pending.toString() })).toEqual({
         deleting: true,
+        deleted: false,
         error: false,
       });
     });
 
     it('returns error on DELETE_TAG_ERROR', () => {
-      expect(reducer(undefined, { type: DELETE_TAG_ERROR })).toEqual({
+      expect(reducer(undefined, { type: deleteTag.rejected.toString() })).toEqual({
         deleting: false,
+        deleted: false,
         error: true,
       });
     });
 
     it('returns tag names on DELETE_TAG', () => {
-      expect(reducer(undefined, { type: DELETE_TAG })).toEqual({
+      expect(reducer(undefined, { type: deleteTag.fulfilled.toString() })).toEqual({
         deleting: false,
+        deleted: true,
         error: false,
       });
     });
@@ -37,53 +39,46 @@ describe('tagDeleteReducer', () => {
   describe('tagDeleted', () => {
     it('returns action based on provided params', () =>
       expect(tagDeleted('foo')).toEqual({
-        type: TAG_DELETED,
-        tag: 'foo',
+        type: tagDeleted.toString(),
+        payload: 'foo',
       }));
   });
 
   describe('deleteTag', () => {
-    const createApiClientMock = (result: Promise<any>) => Mock.of<ShlinkApiClient>({
-      deleteTags: jest.fn(async () => result),
-    });
     const dispatch = jest.fn();
     const getState = () => Mock.all<ShlinkState>();
 
-    afterEach(() => dispatch.mockReset());
-
     it('calls API on success', async () => {
       const tag = 'foo';
-      const apiClientMock = createApiClientMock(Promise.resolve());
-      const dispatchable = deleteTag(() => apiClientMock)(tag);
+      deleteTagsCall.mockResolvedValue(undefined);
 
-      await dispatchable(dispatch, getState);
+      await deleteTag(tag)(dispatch, getState, {});
 
-      expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [tag]);
+      expect(deleteTagsCall).toHaveBeenCalledTimes(1);
+      expect(deleteTagsCall).toHaveBeenNthCalledWith(1, [tag]);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteTag.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: deleteTag.fulfilled.toString() }));
     });
 
     it('throws on error', async () => {
       const error = 'Error';
       const tag = 'foo';
-      const apiClientMock = createApiClientMock(Promise.reject(error));
-      const dispatchable = deleteTag(() => apiClientMock)(tag);
+      deleteTagsCall.mockRejectedValue(error);
 
       try {
-        await dispatchable(dispatch, getState);
+        await deleteTag(tag)(dispatch, getState, {});
       } catch (e) {
         expect(e).toEqual(error);
       }
 
-      expect(apiClientMock.deleteTags).toHaveBeenCalledTimes(1);
-      expect(apiClientMock.deleteTags).toHaveBeenNthCalledWith(1, [tag]);
+      expect(deleteTagsCall).toHaveBeenCalledTimes(1);
+      expect(deleteTagsCall).toHaveBeenNthCalledWith(1, [tag]);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, { type: DELETE_TAG_START });
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: DELETE_TAG_ERROR });
+      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteTag.pending.toString() }));
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: deleteTag.rejected.toString() }));
     });
   });
 });

@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -11,7 +11,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -21,11 +21,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -35,11 +35,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "foo",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -49,11 +49,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -63,11 +63,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "bar",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -77,11 +77,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -91,11 +91,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -105,11 +105,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -119,11 +119,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -133,11 +133,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "500",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -147,11 +147,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -165,9 +165,9 @@ Array [
 `;
 
 exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -175,7 +175,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -185,11 +185,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -199,11 +199,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "one",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -213,11 +213,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -227,11 +227,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "two",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -241,11 +241,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -255,11 +255,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -269,11 +269,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -283,11 +283,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -297,11 +297,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "200,000",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -311,11 +311,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -329,9 +329,9 @@ Array [
 `;
 
 exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
-Array [
-  Object {
-    "props": Object {
+[
+  {
+    "props": {
       "a": 1,
       "b": 0,
       "c": 0,
@@ -339,7 +339,7 @@ Array [
       "e": 0,
       "f": 0,
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -349,11 +349,11 @@ Array [
     ],
     "type": "setTransform",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -363,11 +363,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "one",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -377,11 +377,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -391,11 +391,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "two",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -405,11 +405,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -419,11 +419,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "max",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -433,11 +433,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -447,11 +447,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -461,11 +461,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "0",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -475,11 +475,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -489,11 +489,11 @@ Array [
     ],
     "type": "font",
   },
-  Object {
-    "props": Object {
+  {
+    "props": {
       "text": "200,000",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,
@@ -503,11 +503,11 @@ Array [
     ],
     "type": "measureText",
   },
-  Object {
-    "props": Object {
-      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
+  {
+    "props": {
+      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
     },
-    "transform": Array [
+    "transform": [
       1,
       0,
       0,

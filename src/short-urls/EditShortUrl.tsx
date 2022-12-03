@@ -6,16 +6,15 @@ import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { SelectedServer } from '../servers/data';
 import { Settings } from '../settings/reducers/settings';
-import { OptionalString } from '../utils/utils';
+import { ShortUrlIdentifier } from './data';
 import { parseQuery } from '../utils/helpers/query';
 import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
-import { useGoBack, useToggle } from '../utils/helpers/hooks';
+import { useGoBack } from '../utils/helpers/hooks';
 import { ShortUrlFormProps } from './ShortUrlForm';
 import { ShortUrlDetail } from './reducers/shortUrlDetail';
-import { EditShortUrlData } from './data';
-import { ShortUrlEdition } from './reducers/shortUrlEdition';
+import { EditShortUrl as EditShortUrlInfo, ShortUrlEdition } from './reducers/shortUrlEdition';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
 
 interface EditShortUrlConnectProps {
@@ -23,8 +22,8 @@ interface EditShortUrlConnectProps {
   selectedServer: SelectedServer;
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
-  getShortUrlDetail: (shortCode: string, domain: OptionalString) => void;
-  editShortUrl: (shortUrl: string, domain: OptionalString, data: EditShortUrlData) => Promise<void>;
+  getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
+  editShortUrl: (editShortUrl: EditShortUrlInfo) => void;
 }
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
@@ -39,16 +38,15 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const params = useParams<{ shortCode: string }>();
   const goBack = useGoBack();
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
-  const { saving, error: savingError, errorData: savingErrorData } = shortUrlEdition;
+  const { saving, saved, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
   const initialState = useMemo(
     () => shortUrlDataFromShortUrl(shortUrl, shortUrlCreationSettings),
     [shortUrl, shortUrlCreationSettings],
   );
-  const [savingSucceeded,, isSuccessful, isNotSuccessful] = useToggle();
 
   useEffect(() => {
-    params.shortCode && getShortUrlDetail(urlDecodeShortCode(params.shortCode), domain);
+    params.shortCode && getShortUrlDetail({ shortCode: urlDecodeShortCode(params.shortCode), domain });
   }, []);
 
   if (loading) {
@@ -88,18 +86,15 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
             return;
           }
 
-          isNotSuccessful();
-          editShortUrl(shortUrl.shortCode, shortUrl.domain, shortUrlData)
-            .then(isSuccessful)
-            .catch(isNotSuccessful);
+          editShortUrl({ ...shortUrl, data: shortUrlData });
         }}
       />
-      {savingError && (
+      {saved && savingError && (
         <Result type="error" className="mt-3">
           <ShlinkApiError errorData={savingErrorData} fallbackMessage="An error occurred while updating short URL :(" />
         </Result>
       )}
-      {savingSucceeded && <Result type="success" className="mt-3">Short URL properly edited.</Result>}
+      {saved && !savingError && <Result type="success" className="mt-3">Short URL properly edited.</Result>}
     </>
   );
 };

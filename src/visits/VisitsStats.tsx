@@ -1,4 +1,4 @@
-import { isEmpty, propEq, values } from 'ramda';
+import { isEmpty, pipe, propEq, values } from 'ramda';
 import { useState, useEffect, useMemo, FC, useRef, PropsWithChildren } from 'react';
 import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,6 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { Message } from '../utils/Message';
-import { DateInterval, DateRange, intervalToDateRange } from '../utils/dates/types';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
@@ -19,13 +18,16 @@ import { NavPillItem, NavPills } from '../utils/NavPills';
 import { ExportBtn } from '../utils/ExportBtn';
 import { LineChartCard } from './charts/LineChartCard';
 import { VisitsTable } from './VisitsTable';
-import { NormalizedOrphanVisit, NormalizedVisit, VisitsFilter, VisitsInfo, VisitsParams } from './types';
+import { NormalizedOrphanVisit, NormalizedVisit, VisitsParams } from './types';
 import { OpenMapModalBtn } from './helpers/OpenMapModalBtn';
 import { normalizeVisits, processStatsFromVisits } from './services/VisitsParser';
 import { VisitsFilterDropdown } from './helpers/VisitsFilterDropdown';
 import { HighlightableProps, highlightedVisitsToStats } from './types/helpers';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
+import { VisitsInfo } from './reducers/types';
+import { useVisitsQuery } from './helpers/hooks';
+import { DateInterval, DateRange, toDateRange } from '../utils/helpers/dateIntervals';
 
 export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
@@ -67,19 +69,26 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   isOrphanVisits = false,
 }) => {
   const { visits, loading, loadingLarge, error, errorData, progress, fallbackInterval } = visitsInfo;
-  const [initialInterval, setInitialInterval] = useState<DateInterval>(
-    fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
+  const [{ dateRange, visitsFilter }, updateFiltering] = useVisitsQuery();
+  const setDates = pipe(
+    ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
+      dateRange: {
+        startDate: theStartDate ?? undefined,
+        endDate: theEndDate ?? undefined,
+      },
+    }),
+    updateFiltering,
   );
-  const [dateRange, setDateRange] = useState<DateRange>(intervalToDateRange(initialInterval));
+  const initialInterval = useRef<DateRange | DateInterval>(
+    dateRange ?? fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
+  );
   const [highlightedVisits, setHighlightedVisits] = useState<NormalizedVisit[]>([]);
   const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
-  const [visitsFilter, setVisitsFilter] = useState<VisitsFilter>({});
   const botsSupported = supportsBotVisits(selectedServer);
   const isFirstLoad = useRef(true);
 
   const buildSectionUrl = (subPath?: string) => {
     const query = domain ? `?domain=${domain}` : '';
-
     return !subPath ? `${query}` : `${subPath}${query}`;
   };
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [visits]);
@@ -109,12 +118,10 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
 
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
-    getVisits({ dateRange, filter: visitsFilter }, isFirstLoad.current);
+    const resolvedDateRange = !isFirstLoad.current ? dateRange : (dateRange ?? toDateRange(initialInterval.current));
+    getVisits({ dateRange: resolvedDateRange, filter: visitsFilter }, isFirstLoad.current);
     isFirstLoad.current = false;
   }, [dateRange, visitsFilter]);
-  useEffect(() => {
-    fallbackInterval && setInitialInterval(fallbackInterval);
-  }, [fallbackInterval]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
@@ -283,9 +290,9 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
                 <DateRangeSelector
                   updatable
                   disabled={loading}
-                  initialDateRange={initialInterval}
+                  initialDateRange={initialInterval.current}
                   defaultText="All visits"
-                  onDatesChange={setDateRange}
+                  onDatesChange={setDates}
                 />
               </div>
               <VisitsFilterDropdown
@@ -293,7 +300,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
                 isOrphanVisits={isOrphanVisits}
                 botsSupported={botsSupported}
                 selected={visitsFilter}
-                onChange={setVisitsFilter}
+                onChange={(newVisitsFilter) => updateFiltering({ visitsFilter: newVisitsFilter })}
               />
             </div>
           </div>

@@ -1,57 +1,72 @@
-import { Action, Dispatch } from 'redux';
-import { GetState } from '../../container/types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ShortUrl, ShortUrlData } from '../data';
-import { buildReducer, buildActionCreator } from '../../utils/helpers/redux';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ProblemDetailsError } from '../../api/types';
 import { parseApiError } from '../../api/utils';
-import { ApiErrorAction } from '../../api/types/actions';
+import { ProblemDetailsError } from '../../api/types/errors';
 
-export const CREATE_SHORT_URL_START = 'shlink/createShortUrl/CREATE_SHORT_URL_START';
-export const CREATE_SHORT_URL_ERROR = 'shlink/createShortUrl/CREATE_SHORT_URL_ERROR';
-export const CREATE_SHORT_URL = 'shlink/createShortUrl/CREATE_SHORT_URL';
-export const RESET_CREATE_SHORT_URL = 'shlink/createShortUrl/RESET_CREATE_SHORT_URL';
+const REDUCER_PREFIX = 'shlink/shortUrlCreation';
 
-export interface ShortUrlCreation {
-  result: ShortUrl | null;
-  saving: boolean;
-  error: boolean;
+export type ShortUrlCreation = {
+  saving: false;
+  saved: false;
+  error: false;
+} | {
+  saving: true;
+  saved: false;
+  error: false;
+} | {
+  saving: false;
+  saved: false;
+  error: true;
   errorData?: ProblemDetailsError;
-}
-
-export interface CreateShortUrlAction extends Action<string> {
+} | {
   result: ShortUrl;
-}
+  saving: false;
+  saved: true;
+  error: false;
+};
+
+export type CreateShortUrlAction = PayloadAction<ShortUrl>;
 
 const initialState: ShortUrlCreation = {
-  result: null,
   saving: false,
+  saved: false,
   error: false,
 };
 
-export default buildReducer<ShortUrlCreation, CreateShortUrlAction & ApiErrorAction>({
-  [CREATE_SHORT_URL_START]: (state) => ({ ...state, saving: true, error: false }),
-  [CREATE_SHORT_URL_ERROR]: (state, { errorData }) => ({ ...state, saving: false, error: true, errorData }),
-  [CREATE_SHORT_URL]: (_, { result }) => ({ result, saving: false, error: false }),
-  [RESET_CREATE_SHORT_URL]: () => initialState,
-}, initialState);
+export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+  `${REDUCER_PREFIX}/createShortUrl`,
+  (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
+    const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
+    return shlinkCreateShortUrl(data);
+  },
+);
 
-export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => (data: ShortUrlData) => async (
-  dispatch: Dispatch,
-  getState: GetState,
-) => {
-  dispatch({ type: CREATE_SHORT_URL_START });
-  const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
+export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {
+  const { reducer, actions } = createSlice({
+    name: REDUCER_PREFIX,
+    initialState: initialState as ShortUrlCreation, // Without this casting it infers type ShortUrlCreationWaiting
+    reducers: {
+      resetCreateShortUrl: () => initialState,
+    },
+    extraReducers: (builder) => {
+      builder.addCase(createShortUrlThunk.pending, () => ({ saving: true, saved: false, error: false }));
+      builder.addCase(
+        createShortUrlThunk.rejected,
+        (_, { error }) => ({ saving: false, saved: false, error: true, errorData: parseApiError(error) }),
+      );
+      builder.addCase(
+        createShortUrlThunk.fulfilled,
+        (_, { payload: result }) => ({ result, saving: false, saved: true, error: false }),
+      );
+    },
+  });
 
-  try {
-    const result = await shlinkCreateShortUrl(data);
+  const { resetCreateShortUrl } = actions;
 
-    dispatch<CreateShortUrlAction>({ type: CREATE_SHORT_URL, result });
-  } catch (e: any) {
-    dispatch<ApiErrorAction>({ type: CREATE_SHORT_URL_ERROR, errorData: parseApiError(e) });
-
-    throw e;
-  }
+  return {
+    reducer,
+    resetCreateShortUrl,
+  };
 };
-
-export const resetCreateShortUrl = buildActionCreator(RESET_CREATE_SHORT_URL);

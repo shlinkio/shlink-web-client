@@ -71,7 +71,7 @@ describe('<DomainDropdown />', () => {
 
     expect(editDomainRedirects).not.toHaveBeenCalled();
     await user.click(screen.getByText('Save'));
-    expect(editDomainRedirects).toHaveBeenCalledWith(domain, expect.anything());
+    expect(editDomainRedirects).toHaveBeenCalledWith(expect.objectContaining({ domain }));
 
     await waitForElementToBeRemoved(() => screen.queryByRole('dialog'));
   });
