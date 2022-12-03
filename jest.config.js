@@ -17,6 +17,7 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.ts'],
   testMatch: ['<rootDir>/test/**/*.test.{ts,tsx}'],
+  modulePathIgnorePatterns: ['<rootDir>/.stryker-tmp'],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     url: 'http://localhost',
