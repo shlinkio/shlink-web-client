@@ -175,12 +175,12 @@ describe('orphanVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 5)) })],
+        [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
         { type: fallbackToIntervalAction.toString(), payload: 'last7Days' },
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 200)) })],
+        [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
         { type: fallbackToIntervalAction.toString(), payload: 'last365Days' },
         3,
       ],

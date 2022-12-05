@@ -8,11 +8,10 @@ import {
   rangeOrIntervalToString,
   toDateRange,
 } from '../../../src/utils/helpers/dateIntervals';
-import { parseDate } from '../../../src/utils/helpers/date';
+import { parseDate, now } from '../../../src/utils/helpers/date';
 
 describe('date-types', () => {
-  const now = () => new Date();
-  const daysBack = (days: number) => subDays(new Date(), days);
+  const daysBack = (days: number) => subDays(now(), days);
 
   describe('dateRangeIsEmpty', () => {
     it.each([
@@ -26,9 +25,9 @@ describe('date-types', () => {
       [{ startDate: undefined, endDate: undefined }, true],
       [{ startDate: undefined, endDate: null }, true],
       [{ startDate: null, endDate: undefined }, true],
-      [{ startDate: new Date() }, false],
-      [{ endDate: new Date() }, false],
-      [{ startDate: new Date(), endDate: new Date() }, false],
+      [{ startDate: now() }, false],
+      [{ endDate: now() }, false],
+      [{ startDate: now(), endDate: now() }, false],
     ])('returns proper result', (dateRange, expectedResult) => {
       expect(dateRangeIsEmpty(dateRange)).toEqual(expectedResult);
     });

@@ -193,12 +193,12 @@ describe('tagVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 20)) })],
+        [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
         { type: fallbackToIntervalAction.toString(), payload: 'last30Days' },
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(new Date(), 100)) })],
+        [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
         { type: fallbackToIntervalAction.toString(), payload: 'last180Days' },
         3,
       ],
