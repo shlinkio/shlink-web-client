@@ -1,6 +1,7 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
 import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
+import { equals } from '../utils';
 
 export interface DateRange {
   startDate?: Date | null;
@@ -68,13 +69,13 @@ const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(now(), daysAgo));
 const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(now()) });
 
 export const intervalToDateRange = cond<[DateInterval | undefined], DateRange>([
-  [(dateInterval) => dateInterval === 'today', () => endingToday(startOfDay(now()))],
-  [(dateInterval) => dateInterval === 'yesterday', () => ({ startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(now(), 1)) })],
-  [(dateInterval) => dateInterval === 'last7Days', () => endingToday(startOfDaysAgo(7))],
-  [(dateInterval) => dateInterval === 'last30Days', () => endingToday(startOfDaysAgo(30))],
-  [(dateInterval) => dateInterval === 'last90Days', () => endingToday(startOfDaysAgo(90))],
-  [(dateInterval) => dateInterval === 'last180Days', () => endingToday(startOfDaysAgo(180))],
-  [(dateInterval) => dateInterval === 'last365Days', () => endingToday(startOfDaysAgo(365))],
+  [equals('today'), () => endingToday(startOfDay(now()))],
+  [equals('yesterday'), () => ({ startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(now(), 1)) })],
+  [equals('last7Days'), () => endingToday(startOfDaysAgo(7))],
+  [equals('last30Days'), () => endingToday(startOfDaysAgo(30))],
+  [equals('last90Days'), () => endingToday(startOfDaysAgo(90))],
+  [equals('last180Days'), () => endingToday(startOfDaysAgo(180))],
+  [equals('last365Days'), () => endingToday(startOfDaysAgo(365))],
   [T, () => ({})],
 ]);
 
