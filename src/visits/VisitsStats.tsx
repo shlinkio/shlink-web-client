@@ -122,6 +122,12 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     getVisits({ dateRange: resolvedDateRange, filter: visitsFilter }, isFirstLoad.current);
     isFirstLoad.current = false;
   }, [dateRange, visitsFilter]);
+  useEffect(() => {
+    // As soon as the fallback is loaded, if the initial interval used the settings one, we do fall back
+    if (fallbackInterval && initialInterval.current === (settings.visits?.defaultInterval ?? 'last30Days')) {
+      initialInterval.current = fallbackInterval;
+    }
+  }, [fallbackInterval]);
 
   const renderVisitsContent = () => {
     if (loadingLarge) {
