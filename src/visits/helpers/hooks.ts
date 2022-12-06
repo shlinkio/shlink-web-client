@@ -37,7 +37,7 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
       ({ startDate, endDate, orphanVisitsType, excludeBots, domain }: VisitsQuery): VisitsFilteringAndDomain => ({
         domain,
         filtering: {
-          dateRange: startDate || endDate ? datesToDateRange(startDate, endDate) : undefined,
+          dateRange: startDate != null || endDate != null ? datesToDateRange(startDate, endDate) : undefined,
           visitsFilter: { orphanVisitsType, excludeBots: excludeBots === 'true' },
         },
       }),
@@ -47,8 +47,8 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
   const updateFiltering = (extra: DeepPartial<VisitsFiltering>) => {
     const { dateRange, visitsFilter } = mergeDeepRight(filtering, extra);
     const query: VisitsQuery = {
-      startDate: (dateRange?.startDate && formatIsoDate(dateRange.startDate)) || undefined,
-      endDate: (dateRange?.endDate && formatIsoDate(dateRange.endDate)) || undefined,
+      startDate: (dateRange?.startDate && formatIsoDate(dateRange.startDate)) || '',
+      endDate: (dateRange?.endDate && formatIsoDate(dateRange.endDate)) || '',
       excludeBots: visitsFilter.excludeBots ? 'true' : undefined,
       orphanVisitsType: visitsFilter.orphanVisitsType,
       domain: theDomain,

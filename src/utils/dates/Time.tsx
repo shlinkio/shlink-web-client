@@ -1,5 +1,5 @@
 import { parseISO, format as formatDate, getUnixTime, formatDistance } from 'date-fns';
-import { isDateObject, STANDARD_DATE_AND_TIME_FORMAT } from '../helpers/date';
+import { isDateObject, now, STANDARD_DATE_AND_TIME_FORMAT } from '../helpers/date';
 
 export interface TimeProps {
   date: Date | string;
@@ -12,7 +12,7 @@ export const Time = ({ date, format = STANDARD_DATE_AND_TIME_FORMAT, relative = 
 
   return (
     <time dateTime={`${getUnixTime(dateObject)}000`}>
-      {relative ? `${formatDistance(new Date(), dateObject)} ago` : formatDate(dateObject, format)}
+      {relative ? `${formatDistance(now(), dateObject)} ago` : formatDate(dateObject, format)}
     </time>
   );
 };

@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.8.1] - 2022-12-06
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#756](https://github.com/shlinkio/shlink-web-client/issues/756) Fixed all visits interval not working unless switching to a different interval first.
+* [#757](https://github.com/shlinkio/shlink-web-client/issues/757) Fixed visits fallback interval not working until the visits view has been loaded at least twice.
+
+
 ## [3.8.0] - 2022-12-03
 ### Added
 * [#708](https://github.com/shlinkio/shlink-web-client/issues/708) Added support for API v3.
