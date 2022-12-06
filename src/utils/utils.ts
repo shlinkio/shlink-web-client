@@ -24,3 +24,5 @@ export type OptionalString = Optional<string>;
 export const nonEmptyValueOrNull = <T>(value: T): T | null => (isEmpty(value) ? null : value);
 
 export const capitalize = <T extends string>(value: T): string => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+
+export const equals = (value: any) => (otherValue: any) => value === otherValue;

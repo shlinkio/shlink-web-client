@@ -9,6 +9,8 @@ export type DateOrString = Date | string;
 
 type NullableDate = DateOrString | null;
 
+export const now = () => new Date();
+
 export const isDateObject = (date: DateOrString): date is Date => typeof date !== 'string';
 
 const formatDateFromFormat = (date?: NullableDate, theFormat?: string): OptionalString => {
@@ -28,7 +30,7 @@ export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date,
 
 export const formatInternational = formatDate();
 
-export const parseDate = (date: string, theFormat: string) => parse(date, theFormat, new Date());
+export const parseDate = (date: string, theFormat: string) => parse(date, theFormat, now());
 
 export const parseISO = (date: DateOrString): Date => (isDateObject(date) ? date : stdParseISO(date));
 

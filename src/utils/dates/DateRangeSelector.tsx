@@ -9,6 +9,7 @@ import {
   intervalToDateRange,
   rangeIsInterval,
   dateRangeIsEmpty,
+  ALL,
 } from '../helpers/dateIntervals';
 import { DateRangeRow } from './DateRangeRow';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
@@ -31,7 +32,7 @@ export const DateRangeSelector = (
   const [activeDateRange, setActiveDateRange] = useState(initialIntervalIsRange ? undefined : initialDateRange);
 
   const updateDateRange = (dateRange: DateRange) => {
-    setActiveInterval(dateRangeIsEmpty(dateRange) ? 'all' : undefined);
+    setActiveInterval(dateRangeIsEmpty(dateRange) ? ALL : undefined);
     setActiveDateRange(dateRange);
     onDatesChange(dateRange);
   };

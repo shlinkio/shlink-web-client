@@ -1,13 +1,14 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
-import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, parseISO } from './date';
+import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
+import { equals } from '../utils';
 
 export interface DateRange {
   startDate?: Date | null;
   endDate?: Date | null;
 }
 
-const ALL = 'all';
+export const ALL = 'all';
 const INTERVAL_TO_STRING_MAP = {
   today: 'Today',
   yesterday: 'Yesterday',
@@ -64,39 +65,25 @@ export const rangeOrIntervalToString = (range?: DateRange | DateInterval): strin
   return INTERVAL_TO_STRING_MAP[range];
 };
 
-const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(new Date(), daysAgo));
-const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(new Date()) });
+const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(now(), daysAgo));
+const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(now()) });
 
-export const intervalToDateRange = (dateInterval?: DateInterval): DateRange => {
-  if (!dateInterval || dateInterval === ALL) {
-    return {};
-  }
-
-  switch (dateInterval) {
-    case 'today':
-      return endingToday(startOfDay(new Date()));
-    case 'yesterday':
-      return { startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(new Date(), 1)) };
-    case 'last7Days':
-      return endingToday(startOfDaysAgo(7));
-    case 'last30Days':
-      return endingToday(startOfDaysAgo(30));
-    case 'last90Days':
-      return endingToday(startOfDaysAgo(90));
-    case 'last180Days':
-      return endingToday(startOfDaysAgo(180));
-    case 'last365Days':
-      return endingToday(startOfDaysAgo(365));
-  }
-
-  return {};
-};
+export const intervalToDateRange = cond<[DateInterval | undefined], DateRange>([
+  [equals('today'), () => endingToday(startOfDay(now()))],
+  [equals('yesterday'), () => ({ startDate: startOfDaysAgo(1), endDate: endOfDay(subDays(now(), 1)) })],
+  [equals('last7Days'), () => endingToday(startOfDaysAgo(7))],
+  [equals('last30Days'), () => endingToday(startOfDaysAgo(30))],
+  [equals('last90Days'), () => endingToday(startOfDaysAgo(90))],
+  [equals('last180Days'), () => endingToday(startOfDaysAgo(180))],
+  [equals('last365Days'), () => endingToday(startOfDaysAgo(365))],
+  [T, () => ({})],
+]);
 
 export const dateToMatchingInterval = (date: DateOrString): DateInterval => {
-  const theDate: Date = parseISO(date);
+  const theDate = parseISO(date);
 
   return cond<never, DateInterval>([
-    [() => isBeforeOrEqual(startOfDay(new Date()), theDate), () => 'today'],
+    [() => isBeforeOrEqual(startOfDay(now()), theDate), () => 'today'],
     [() => isBeforeOrEqual(startOfDaysAgo(1), theDate), () => 'yesterday'],
     [() => isBeforeOrEqual(startOfDaysAgo(7), theDate), () => 'last7Days'],
     [() => isBeforeOrEqual(startOfDaysAgo(30), theDate), () => 'last30Days'],
