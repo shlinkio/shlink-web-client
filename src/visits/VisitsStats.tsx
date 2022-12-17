@@ -4,7 +4,7 @@ import { Button, Progress, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkedAlt, faList, faChartPie } from '@fortawesome/free-solid-svg-icons';
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { Message } from '../utils/Message';
@@ -35,7 +35,6 @@ export type VisitsStatsProps = PropsWithChildren<{
   settings: Settings;
   selectedServer: SelectedServer;
   cancelGetVisits: () => void;
-  domain?: string;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
 }>;
@@ -62,7 +61,6 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   visitsInfo,
   getVisits,
   cancelGetVisits,
-  domain,
   settings,
   exportCsv,
   selectedServer,
@@ -86,11 +84,9 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
   const botsSupported = supportsBotVisits(selectedServer);
   const isFirstLoad = useRef(true);
+  const { search } = useLocation();
 
-  const buildSectionUrl = (subPath?: string) => {
-    const query = domain ? `?domain=${domain}` : '';
-    return !subPath ? `${query}` : `${subPath}${query}`;
-  };
+  const buildSectionUrl = (subPath?: string) => (!subPath ? search : `${subPath}${search}`);
   const normalizedVisits = useMemo(() => normalizeVisits(visits), [visits]);
   const { os, browsers, referrers, countries, cities, citiesForMap, visitedUrls } = useMemo(
     () => processStatsFromVisits(normalizedVisits),
