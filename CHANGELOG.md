@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* [#736](https://github.com/shlinkio/shlink-web-client/issues/736) Removed support for cards mode in tags. Only tags table is supported now.
+
+### Fixed
+* *Nothing*
+
+
 ## [3.8.2] - 2022-12-17
 ### Added
 * *Nothing*
