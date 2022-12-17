@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [#766](https://github.com/shlinkio/shlink-web-client/issues/766) Fixed visits query being lost when switching between sub-sections.
+* [#765](https://github.com/shlinkio/shlink-web-client/issues/765) Added missing `"Content-Type": "application/json"` to requests with payload, making older Shlink versions fail.
 
 
 ## [3.8.1] - 2022-12-06
