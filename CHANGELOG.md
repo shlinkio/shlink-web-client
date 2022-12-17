@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.8.2] - 2022-12-17
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#766](https://github.com/shlinkio/shlink-web-client/issues/766) Fixed visits query being lost when switching between sub-sections.
+* [#765](https://github.com/shlinkio/shlink-web-client/issues/765) Added missing `"Content-Type": "application/json"` to requests with payload, making older Shlink versions fail.
+
+
 ## [3.8.1] - 2022-12-06
 ### Added
 * *Nothing*
