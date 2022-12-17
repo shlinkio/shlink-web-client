@@ -14,9 +14,6 @@ describe('settings-helpers', () => {
           visits: {
             defaultInterval: 'last180days' as any,
           },
-          ui: {
-            tagsMode: 'list',
-          } as any,
         },
       });
 
@@ -24,9 +21,6 @@ describe('settings-helpers', () => {
         settings: expect.objectContaining({
           visits: {
             defaultInterval: 'last180Days',
-          },
-          tags: {
-            defaultMode: 'list',
           },
         }),
       }));
