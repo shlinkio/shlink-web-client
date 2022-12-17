@@ -55,7 +55,6 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
       getVisits={loadVisits}
       cancelGetVisits={cancelGetShortUrlVisits}
       visitsInfo={shortUrlVisits}
-      domain={domain}
       settings={settings}
       exportCsv={exportCsv}
       selectedServer={selectedServer}
