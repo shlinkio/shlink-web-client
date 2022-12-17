@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/shlink-web-client/feature/drop-tags-cards/static/css/main.b7091994.css",
+    "main.js": "/shlink-web-client/feature/drop-tags-cards/static/js/main.2a3d0848.js",
+    "index.html": "/shlink-web-client/feature/drop-tags-cards/index.html",
+    "main.b7091994.css.map": "/shlink-web-client/feature/drop-tags-cards/static/css/main.b7091994.css.map",
+    "main.2a3d0848.js.map": "/shlink-web-client/feature/drop-tags-cards/static/js/main.2a3d0848.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b7091994.css",
+    "static/js/main.2a3d0848.js"
+  ]
+}
