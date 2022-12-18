@@ -21,7 +21,7 @@ export const Paginator = ({ paginator, serverId, currentQueryString = '' }: Pagi
     `/server/${serverId}/list-short-urls/${pageNumber}${currentQueryString}`;
 
   if (pagesCount <= 1) {
-    return null;
+    return <div className="pb-3" />; // Return some space
   }
 
   const renderPages = () =>
@@ -38,7 +38,7 @@ export const Paginator = ({ paginator, serverId, currentQueryString = '' }: Pagi
     ));
 
   return (
-    <Pagination className="sticky-card-paginator" listClassName="flex-wrap justify-content-center mb-0">
+    <Pagination className="sticky-card-paginator py-3" listClassName="flex-wrap justify-content-center mb-0">
       <PaginationItem disabled={currentPage === 1}>
         <PaginationLink previous tag={Link} to={urlForPage(currentPage - 1)} />
       </PaginationItem>

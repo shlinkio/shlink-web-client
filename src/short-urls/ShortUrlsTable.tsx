@@ -1,13 +1,13 @@
-import { FC, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { isEmpty } from 'ramda';
 import classNames from 'classnames';
 import { SelectedServer } from '../servers/data';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { ShortUrlsRowProps } from './helpers/ShortUrlsRow';
+import { ShortUrlsRowType } from './helpers/ShortUrlsRow';
 import { ShortUrlsOrderableFields } from './data';
 import './ShortUrlsTable.scss';
 
-export interface ShortUrlsTableProps {
+interface ShortUrlsTableProps {
   orderByColumn?: (column: ShortUrlsOrderableFields) => () => void;
   renderOrderIcon?: (column: ShortUrlsOrderableFields) => ReactNode;
   shortUrlsList: ShortUrlsListState;
@@ -16,7 +16,7 @@ export interface ShortUrlsTableProps {
   className?: string;
 }
 
-export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
+export const ShortUrlsTable = (ShortUrlsRow: ShortUrlsRowType) => ({
   orderByColumn,
   renderOrderIcon,
   shortUrlsList,
@@ -27,7 +27,7 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
   const { error, loading, shortUrls } = shortUrlsList;
   const actionableFieldClasses = classNames({ 'short-urls-table__header-cell--with-action': !!orderByColumn });
   const orderableColumnsClasses = classNames('short-urls-table__header-cell', actionableFieldClasses);
-  const tableClasses = classNames('table table-hover responsive-table', className);
+  const tableClasses = classNames('table table-hover responsive-table short-urls-table', className);
 
   const renderShortUrls = () => {
     if (error) {
@@ -90,3 +90,5 @@ export const ShortUrlsTable = (ShortUrlsRow: FC<ShortUrlsRowProps>) => ({
     </table>
   );
 };
+
+export type ShortUrlsTableType = ReturnType<typeof ShortUrlsTable>;

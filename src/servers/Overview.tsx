@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ITEMS_IN_OVERVIEW_PAGE, ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { prettify } from '../utils/helpers/numbers';
 import { TagsList } from '../tags/reducers/tagsList';
-import { ShortUrlsTableProps } from '../short-urls/ShortUrlsTable';
+import { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import { VisitsOverview } from '../visits/reducers/visitsOverview';
@@ -25,7 +25,7 @@ interface OverviewConnectProps {
 }
 
 export const Overview = (
-  ShortUrlsTable: FC<ShortUrlsTableProps>,
+  ShortUrlsTable: ShortUrlsTableType,
   CreateShortUrl: FC<CreateShortUrlProps>,
 ) => boundToMercureHub(({
   shortUrlsList,

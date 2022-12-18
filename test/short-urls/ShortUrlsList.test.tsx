@@ -1,5 +1,4 @@
 import { screen } from '@testing-library/react';
-import { FC } from 'react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
@@ -8,7 +7,7 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import { ReachableServer } from '../../src/servers/data';
 import { Settings } from '../../src/settings/reducers/settings';
-import { ShortUrlsTableProps } from '../../src/short-urls/ShortUrlsTable';
+import { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
@@ -18,7 +17,7 @@ jest.mock('react-router-dom', () => ({
 }));
 
 describe('<ShortUrlsList />', () => {
-  const ShortUrlsTable: FC<ShortUrlsTableProps> = ({ onTagClick }) => <span onClick={() => onTagClick?.('foo')}>ShortUrlsTable</span>;
+  const ShortUrlsTable: ShortUrlsTableType = ({ onTagClick }) => <span onClick={() => onTagClick?.('foo')}>ShortUrlsTable</span>;
   const ShortUrlsFilteringBar = () => <span>ShortUrlsFilteringBar</span>;
   const listShortUrlsMock = jest.fn();
   const navigate = jest.fn();

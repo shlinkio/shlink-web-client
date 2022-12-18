@@ -12,7 +12,7 @@ import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuProps } from './ShortUrlsRowMenu';
 import './ShortUrlsRow.scss';
 
-export interface ShortUrlsRowProps {
+interface ShortUrlsRowProps {
   onTagClick?: (tag: string) => void;
   selectedServer: SelectedServer;
   shortUrl: ShortUrl;
@@ -89,3 +89,5 @@ export const ShortUrlsRow = (
     </tr>
   );
 };
+
+export type ShortUrlsRowType = ReturnType<typeof ShortUrlsRow>;
