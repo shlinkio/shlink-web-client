@@ -9,8 +9,7 @@ import { Time } from '../../utils/dates/Time';
 import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
 import { Tags } from './Tags';
-import { shortUrlIsDisabled } from './index';
-import { DisabledLabel } from './DisabledLabel';
+import { ShortUrlStatus } from './ShortUrlStatus';
 import './ShortUrlsRow.scss';
 
 interface ShortUrlsRowProps {
@@ -27,7 +26,6 @@ export const ShortUrlsRow = (
   const [copiedToClipboard, setCopiedToClipboard] = useTimeoutToggle();
   const [active, setActive] = useTimeoutToggle(false, 500);
   const isFirstRun = useRef(true);
-  const isDisabled = shortUrlIsDisabled(shortUrl);
 
   useEffect(() => {
     !isFirstRun.current && setActive();
@@ -38,6 +36,9 @@ export const ShortUrlsRow = (
     <tr className="responsive-table__row">
       <td className="indivisible short-urls-row__cell responsive-table__cell" data-th="Created at">
         <Time date={shortUrl.dateCreated} />
+      </td>
+      <td className="responsive-table__cell short-urls-row__cell" data-th="Status">
+        <ShortUrlStatus shortUrl={shortUrl} />
       </td>
       <td className="responsive-table__cell short-urls-row__cell" data-th="Short URL">
         <span className="position-relative short-urls-row__cell--indivisible">
@@ -54,11 +55,6 @@ export const ShortUrlsRow = (
         className="responsive-table__cell short-urls-row__cell short-urls-row__cell--break"
         data-th={`${shortUrl.title ? 'Title' : 'Long URL'}`}
       >
-        {isDisabled && (
-          <div className="float-end ms-2">
-            <DisabledLabel />
-          </div>
-        )}
         <ExternalLink href={shortUrl.longUrl}>{shortUrl.title ?? shortUrl.longUrl}</ExternalLink>
       </td>
       {shortUrl.title && (

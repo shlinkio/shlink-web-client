@@ -65,6 +65,7 @@ export const ShortUrlsTable = (ShortUrlsRow: ShortUrlsRowType) => ({
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('dateCreated')}>
             Created at {renderOrderIcon?.('dateCreated')}
           </th>
+          <th className="short-urls-table__header-cell" />
           <th className={orderableColumnsClasses} onClick={orderByColumn?.('shortCode')}>
             Short URL {renderOrderIcon?.('shortCode')}
           </th>
