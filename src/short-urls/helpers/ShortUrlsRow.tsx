@@ -67,7 +67,7 @@ export const ShortUrlsRow = (
         </td>
       )}
       <td className="responsive-table__cell short-urls-row__cell" data-th="Tags">
-        <Tags tags={shortUrl.tags} colorGenerator={colorGenerator} onTagClick={onTagClick} disabled={isDisabled} />
+        <Tags tags={shortUrl.tags} colorGenerator={colorGenerator} onTagClick={onTagClick} />
       </td>
       <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount

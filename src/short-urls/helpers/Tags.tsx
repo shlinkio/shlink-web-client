@@ -7,12 +7,11 @@ interface TagsProps {
   tags: string[];
   onTagClick?: (tag: string) => void;
   colorGenerator: ColorGenerator;
-  disabled?: boolean;
 }
 
-export const Tags: FC<TagsProps> = ({ tags, onTagClick, colorGenerator, disabled = false }) => {
+export const Tags: FC<TagsProps> = ({ tags, onTagClick, colorGenerator }) => {
   if (isEmpty(tags)) {
-    return disabled ? null : <i className="indivisible"><small>No tags</small></i>;
+    return <i className="indivisible"><small>No tags</small></i>;
   }
 
   return (
