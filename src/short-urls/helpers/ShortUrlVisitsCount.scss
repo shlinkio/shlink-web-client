@@ -10,3 +10,7 @@
 .short-url-visits-count__amount--big {
   transform: scale(1.5);
 }
+
+.short-url-visits-count__tooltip-list-item:not(:last-child) {
+  margin-bottom: .5rem;
+}
