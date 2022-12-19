@@ -18,7 +18,7 @@ import { ExportShortUrlsBtnProps } from './helpers/ExportShortUrlsBtn';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import './ShortUrlsFilteringBar.scss';
 
-export interface ShortUrlsFilteringProps {
+interface ShortUrlsFilteringProps {
   selectedServer: SelectedServer;
   order: ShortUrlsOrder;
   handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
@@ -90,3 +90,5 @@ export const ShortUrlsFilteringBar = (
     </div>
   );
 };
+
+export type ShortUrlsFilteringBarType = ReturnType<typeof ShortUrlsFilteringBar>;

@@ -1,5 +1,5 @@
 import { pipe } from 'ramda';
-import { FC, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
 import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
@@ -10,11 +10,11 @@ import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { ShlinkShortUrlsListParams } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { ShortUrlsTableProps } from './ShortUrlsTable';
+import { ShortUrlsTableType } from './ShortUrlsTable';
 import { Paginator } from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { ShortUrlsOrderableFields } from './data';
-import { ShortUrlsFilteringProps } from './ShortUrlsFilteringBar';
+import { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;
@@ -24,8 +24,8 @@ interface ShortUrlsListProps {
 }
 
 export const ShortUrlsList = (
-  ShortUrlsTable: FC<ShortUrlsTableProps>,
-  ShortUrlsFilteringBar: FC<ShortUrlsFilteringProps>,
+  ShortUrlsTable: ShortUrlsTableType,
+  ShortUrlsFilteringBar: ShortUrlsFilteringBarType,
 ) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer, settings }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
@@ -70,7 +70,7 @@ export const ShortUrlsList = (
         handleOrderBy={handleOrderBy}
         className="mb-3"
       />
-      <Card body className="pb-1">
+      <Card body className="pb-0">
         <ShortUrlsTable
           selectedServer={selectedServer}
           shortUrlsList={shortUrlsList}

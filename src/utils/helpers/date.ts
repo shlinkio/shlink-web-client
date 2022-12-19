@@ -30,6 +30,8 @@ export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date,
 
 export const formatInternational = formatDate();
 
+export const formatHumanFriendly = formatDate(STANDARD_DATE_AND_TIME_FORMAT);
+
 export const parseDate = (date: string, theFormat: string) => parse(date, theFormat, now());
 
 export const parseISO = (date: DateOrString): Date => (isDateObject(date) ? date : stdParseISO(date));

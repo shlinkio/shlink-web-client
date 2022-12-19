@@ -15,10 +15,13 @@
 .responsive-table__row {
   @media (max-width: $responsiveTableBreakpoint) {
     display: block;
-    margin-bottom: 10px;
     border-bottom: 1px solid var(--border-color);
     border-top: 2px solid var(--border-color);
     position: relative;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 }
 
