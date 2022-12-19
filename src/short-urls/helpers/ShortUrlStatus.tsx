@@ -75,12 +75,8 @@ export const ShortUrlStatus: FC<ShortUrlStatusProps> = ({ shortUrl }) => {
 
   return (
     <>
-      <span
-        style={{ cursor: !description ? undefined : 'help' }}
-        ref={mutableRefToElementRef(tooltipRef)}
-        className={className}
-      >
-        <FontAwesomeIcon icon={icon} />
+      <span style={{ cursor: !description ? undefined : 'help' }} ref={mutableRefToElementRef(tooltipRef)}>
+        <FontAwesomeIcon icon={icon} className={className} />
       </span>
       <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
         {description}
