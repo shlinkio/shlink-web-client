@@ -15,7 +15,7 @@ interface ShortUrlStatusProps {
 interface StatusResult {
   icon: IconDefinition;
   className: string;
-  description?: ReactNode;
+  description: ReactNode;
 }
 
 const resolveShortUrlStatus = (shortUrl: ShortUrl): StatusResult => {
@@ -65,6 +65,7 @@ const resolveShortUrlStatus = (shortUrl: ShortUrl): StatusResult => {
   return {
     icon: faCheck,
     className: 'text-primary',
+    description: 'This short URL can be visited normally.',
   };
 };
 
@@ -81,11 +82,9 @@ export const ShortUrlStatus: FC<ShortUrlStatusProps> = ({ shortUrl }) => {
       >
         <FontAwesomeIcon icon={icon} />
       </span>
-      {description && (
-        <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="right">
-          {description}
-        </UncontrolledTooltip>
-      )}
+      <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
+        {description}
+      </UncontrolledTooltip>
     </>
   );
 };

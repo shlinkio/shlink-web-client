@@ -37,9 +37,6 @@ export const ShortUrlsRow = (
       <td className="indivisible short-urls-row__cell responsive-table__cell" data-th="Created at">
         <Time date={shortUrl.dateCreated} />
       </td>
-      <td className="responsive-table__cell short-urls-row__cell" data-th="Status">
-        <ShortUrlStatus shortUrl={shortUrl} />
-      </td>
       <td className="responsive-table__cell short-urls-row__cell" data-th="Short URL">
         <span className="position-relative short-urls-row__cell--indivisible">
           <span className="short-urls-row__short-url-wrapper">
@@ -72,6 +69,9 @@ export const ShortUrlsRow = (
           selectedServer={selectedServer}
           active={active}
         />
+      </td>
+      <td className="responsive-table__cell short-urls-row__cell" data-th="Status">
+        <ShortUrlStatus shortUrl={shortUrl} />
       </td>
       <td className="responsive-table__cell short-urls-row__cell">
         <ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />
