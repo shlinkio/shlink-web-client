@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [#750](https://github.com/shlinkio/shlink-web-client/issues/750) Added new icon indicators telling if a short URL can be normally visited, it received the max amount of visits, is still not enabled, etc.
 
 ### Changed
 * *Nothing*
