@@ -64,7 +64,7 @@ export const ShortUrlsRow = (
       </td>
       <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount
-          visitsCount={shortUrl.visitsCount}
+          visitsCount={shortUrl.visitsSummary?.total ?? shortUrl.visitsCount}
           shortUrl={shortUrl}
           selectedServer={selectedServer}
           active={active}
