@@ -9,6 +9,7 @@ import { ReachableServer } from '../../src/servers/data';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
+import { SemVer } from '../../src/utils/helpers/version';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -35,14 +36,14 @@ describe('<ShortUrlsList />', () => {
     },
   });
   const ShortUrlsList = createShortUrlsList(ShortUrlsTable, ShortUrlsFilteringBar);
-  const setUp = (defaultOrdering: ShortUrlsOrder = {}) => renderWithEvents(
+  const setUp = (settings: Partial<Settings> = {}, version: SemVer = '3.0.0') => renderWithEvents(
     <MemoryRouter>
       <ShortUrlsList
         {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
         listShortUrls={listShortUrlsMock}
         shortUrlsList={shortUrlsList}
-        selectedServer={Mock.of<ReachableServer>({ id: '1' })}
-        settings={Mock.of<Settings>({ shortUrlsList: { defaultOrdering } })}
+        selectedServer={Mock.of<ReachableServer>({ id: '1', version })}
+        settings={Mock.of<Settings>(settings)}
       />
     </MemoryRouter>,
   );
@@ -82,11 +83,39 @@ describe('<ShortUrlsList />', () => {
   it.each([
     [Mock.of<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC'],
     [Mock.of<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC'],
-    [Mock.of<ShortUrlsOrder>(), undefined, undefined],
-  ])('has expected initial ordering based on settings', (initialOrderBy, field, dir) => {
-    setUp(initialOrderBy);
+    [Mock.all<ShortUrlsOrder>(), undefined, undefined],
+  ])('has expected initial ordering based on settings', (defaultOrdering, field, dir) => {
+    setUp({ shortUrlsList: { defaultOrdering } });
     expect(listShortUrlsMock).toHaveBeenCalledWith(expect.objectContaining({
       orderBy: { field, dir },
     }));
+  });
+
+  it.each([
+    [Mock.of<Settings>({
+      shortUrlsList: {
+        defaultOrdering: { field: 'visits', dir: 'ASC' },
+      },
+    }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    [Mock.of<Settings>({
+      shortUrlsList: {
+        defaultOrdering: { field: 'visits', dir: 'ASC' },
+      },
+      visits: { excludeBots: true },
+    }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    [Mock.of<Settings>({
+      shortUrlsList: {
+        defaultOrdering: { field: 'visits', dir: 'ASC' },
+      },
+    }), '3.4.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    [Mock.of<Settings>({
+      shortUrlsList: {
+        defaultOrdering: { field: 'visits', dir: 'ASC' },
+      },
+      visits: { excludeBots: true },
+    }), '3.4.0' as SemVer, { field: 'nonBotVisits', dir: 'ASC' }],
+  ])('parses order by based on server version and config', (settings, serverVersion, expectedOrderBy) => {
+    setUp(settings, serverVersion);
+    expect(listShortUrlsMock).toHaveBeenCalledWith(expect.objectContaining({ orderBy: expectedOrderBy }));
   });
 });

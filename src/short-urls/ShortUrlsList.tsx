@@ -7,14 +7,15 @@ import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { ShlinkShortUrlsListParams } from '../api/types';
+import { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableType } from './ShortUrlsTable';
 import { Paginator } from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
-import { ShortUrlsOrderableFields } from './data';
+import { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
+import { supportsExcludeBotsOnShortUrls } from '../utils/helpers/features';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;
@@ -48,6 +49,13 @@ export const ShortUrlsList = (
     (newTag: string) => [...new Set([...tags, newTag])],
     (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
+  const parseOrderByForShlink = ({ field, dir }: ShortUrlsOrder): ShlinkShortUrlsOrder => {
+    if (supportsExcludeBotsOnShortUrls(selectedServer) && settings.visits?.excludeBots && field === 'visits') {
+      return { field: 'nonBotVisits', dir };
+    }
+
+    return { field, dir };
+  };
 
   useEffect(() => {
     listShortUrls({
@@ -56,10 +64,10 @@ export const ShortUrlsList = (
       tags,
       startDate,
       endDate,
-      orderBy: actualOrderBy,
+      orderBy: parseOrderByForShlink(actualOrderBy),
       tagsMode,
     });
-  }, [page, search, tags, startDate, endDate, actualOrderBy, tagsMode]);
+  }, [page, search, tags, startDate, endDate, actualOrderBy.field, actualOrderBy.dir, tagsMode]);
 
   return (
     <>
