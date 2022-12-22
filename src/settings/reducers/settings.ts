@@ -34,6 +34,7 @@ export interface UiSettings {
 
 export interface VisitsSettings {
   defaultInterval: DateInterval;
+  excludeBots?: boolean;
 }
 
 export interface TagsSettings {
