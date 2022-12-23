@@ -7,7 +7,6 @@ import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { ReportExporter } from '../../src/common/services/ReportExporter';
-import { SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { VisitsInfo } from '../../src/visits/reducers/types';
 
@@ -24,7 +23,6 @@ describe('<OrphanVisits />', () => {
         orphanVisits={orphanVisits}
         cancelGetOrphanVisits={jest.fn()}
         settings={Mock.all<Settings>()}
-        selectedServer={Mock.all<SelectedServer>()}
       />
     </MemoryRouter>,
   );

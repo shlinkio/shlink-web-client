@@ -6,41 +6,30 @@ describe('qrCodes', () => {
       [
         'bar.io',
         { size: 870, format: 'svg' as QrCodeFormat, margin: 0, errorCorrection: 'L' as QrErrorCorrection },
-        { errorCorrectionIsSupported: false },
-        'bar.io/qr-code?size=870&format=svg',
-      ],
-      [
-        'bar.io',
-        { size: 200, format: 'png' as QrCodeFormat, margin: 0, errorCorrection: 'L' as QrErrorCorrection },
-        { errorCorrectionIsSupported: false },
-        'bar.io/qr-code?size=200&format=png',
+        'bar.io/qr-code?size=870&format=svg&errorCorrection=L',
       ],
       [
         'bar.io',
         { size: 200, format: 'svg' as QrCodeFormat, margin: 0, errorCorrection: 'L' as QrErrorCorrection },
-        { errorCorrectionIsSupported: false },
-        'bar.io/qr-code?size=200&format=svg',
+        'bar.io/qr-code?size=200&format=svg&errorCorrection=L',
       ],
       [
         'shlink.io',
         { size: 456, format: 'png' as QrCodeFormat, margin: 10, errorCorrection: 'L' as QrErrorCorrection },
-        { errorCorrectionIsSupported: false },
-        'shlink.io/qr-code?size=456&format=png&margin=10',
+        'shlink.io/qr-code?size=456&format=png&errorCorrection=L&margin=10',
       ],
       [
         'shlink.io',
         { size: 456, format: 'png' as QrCodeFormat, margin: 0, errorCorrection: 'H' as QrErrorCorrection },
-        { errorCorrectionIsSupported: true },
         'shlink.io/qr-code?size=456&format=png&errorCorrection=H',
       ],
       [
         'shlink.io',
         { size: 999, format: 'png' as QrCodeFormat, margin: 20, errorCorrection: 'Q' as QrErrorCorrection },
-        { errorCorrectionIsSupported: true },
-        'shlink.io/qr-code?size=999&format=png&margin=20&errorCorrection=Q',
+        'shlink.io/qr-code?size=999&format=png&errorCorrection=Q&margin=20',
       ],
-    ])('builds expected URL based in params', (shortUrl, options, capabilities, expectedUrl) => {
-      expect(buildQrCodeUrl(shortUrl, options, capabilities)).toEqual(expectedUrl);
+    ])('builds expected URL based in params', (shortUrl, options, expectedUrl) => {
+      expect(buildQrCodeUrl(shortUrl, options)).toEqual(expectedUrl);
     });
   });
 });

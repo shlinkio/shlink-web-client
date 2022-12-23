@@ -30,7 +30,6 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
   getShortUrlDetail,
   cancelGetShortUrlVisits,
   settings,
-  selectedServer,
 }: ShortUrlVisitsProps) => {
   const { shortCode = '' } = useParams<{ shortCode: string }>();
   const { search } = useLocation();
@@ -57,7 +56,6 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
       visitsInfo={shortUrlVisits}
       settings={settings}
       exportCsv={exportCsv}
-      selectedServer={selectedServer}
     >
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />
     </VisitsStats>

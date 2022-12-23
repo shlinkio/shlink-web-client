@@ -7,7 +7,6 @@ import { ReportExporter } from '../../src/common/services/ReportExporter';
 import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import { DomainVisits } from '../../src/visits/reducers/domainVisits';
 import { Settings } from '../../src/settings/reducers/settings';
-import { SelectedServer } from '../../src/servers/data';
 import { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -30,7 +29,6 @@ describe('<DomainVisits />', () => {
         cancelGetDomainVisits={cancelGetDomainVisits}
         domainVisits={domainVisits}
         settings={Mock.all<Settings>()}
-        selectedServer={Mock.all<SelectedServer>()}
       />
     </MemoryRouter>,
   );

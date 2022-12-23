@@ -3,8 +3,6 @@ import { Mock } from 'ts-mockery';
 import { VisitsTable, VisitsTableProps } from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
 import { NormalizedVisit } from '../../src/visits/types';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { SemVer } from '../../src/utils/helpers/version';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsTable />', () => {
@@ -13,7 +11,6 @@ describe('<VisitsTable />', () => {
   const setUpFactory = (props: Partial<VisitsTableProps> = {}) => renderWithEvents(
     <VisitsTable
       visits={[]}
-      selectedServer={Mock.all<SelectedServer>()}
       {...props}
       matchMedia={matchMedia}
       setSelectedVisits={setSelectedVisits}
@@ -22,15 +19,8 @@ describe('<VisitsTable />', () => {
   const setUp = (visits: NormalizedVisit[], selectedVisits: NormalizedVisit[] = []) => setUpFactory(
     { visits, selectedVisits },
   );
-  const setUpForOrphanVisits = (isOrphanVisits: boolean, version: SemVer) => setUpFactory({
-    isOrphanVisits,
-    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
-  });
-  const setUpForServerVersion = (version: SemVer) => setUpFactory({
-    selectedServer: Mock.of<ReachableServer>({ printableVersion: version, version }),
-  });
+  const setUpForOrphanVisits = (isOrphanVisits: boolean) => setUpFactory({ isOrphanVisits });
   const setUpWithBots = () => setUpFactory({
-    selectedServer: Mock.of<ReachableServer>({ printableVersion: '2.7.0', version: '2.7.0' }),
     visits: [
       Mock.of<NormalizedVisit>({ potentialBot: false, date: '2022-05-05' }),
       Mock.of<NormalizedVisit>({ potentialBot: true, date: '2022-05-05' }),
@@ -39,12 +29,9 @@ describe('<VisitsTable />', () => {
 
   afterEach(jest.resetAllMocks);
 
-  it.each([
-    ['2.6.0' as SemVer, 6],
-    ['2.7.0' as SemVer, 7],
-  ])('renders expected amount of columns', (version, expectedColumns) => {
-    setUpForServerVersion(version);
-    expect(screen.getAllByRole('columnheader')).toHaveLength(expectedColumns + 1);
+  it('renders expected amount of columns', () => {
+    setUp([], []);
+    expect(screen.getAllByRole('columnheader')).toHaveLength(8);
   });
 
   it('shows warning when no visits are found', () => {
@@ -104,17 +91,17 @@ describe('<VisitsTable />', () => {
       referer: `${index}`,
       country: `Country_${index}`,
     })));
-    const getFirstColumnValue = () => screen.getAllByRole('row')[2]?.querySelectorAll('td')[2]?.textContent;
+    const getFirstColumnValue = () => screen.getAllByRole('row')[2]?.querySelectorAll('td')[3]?.textContent;
     const clickColumn = async (index: number) => user.click(screen.getAllByRole('columnheader')[index]);
 
     expect(getFirstColumnValue()).toContain('Country_1');
-    await clickColumn(1); // Date column ASC
+    await clickColumn(2); // Date column ASC
     expect(getFirstColumnValue()).toContain('Country_9');
-    await clickColumn(6); // Referer column - ASC
+    await clickColumn(7); // Referer column - ASC
     expect(getFirstColumnValue()).toContain('Country_1');
-    await clickColumn(6); // Referer column - DESC
+    await clickColumn(7); // Referer column - DESC
     expect(getFirstColumnValue()).toContain('Country_9');
-    await clickColumn(6); // Referer column - reset
+    await clickColumn(7); // Referer column - reset
     expect(getFirstColumnValue()).toContain('Country_1');
   });
 
@@ -139,12 +126,10 @@ describe('<VisitsTable />', () => {
   });
 
   it.each([
-    [true, '2.6.0' as SemVer, 8],
-    [false, '2.6.0' as SemVer, 7],
-    [true, '2.7.0' as SemVer, 9],
-    [false, '2.7.0' as SemVer, 8],
-  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, version, expectedCols) => {
-    setUpForOrphanVisits(isOrphanVisits, version);
+    [true, 9],
+    [false, 8],
+  ])('displays proper amount of columns for orphan and non-orphan visits', (isOrphanVisits, expectedCols) => {
+    setUpForOrphanVisits(isOrphanVisits);
     expect(screen.getAllByRole('columnheader')).toHaveLength(expectedCols);
   });
 

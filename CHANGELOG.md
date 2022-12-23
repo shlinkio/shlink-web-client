@@ -18,7 +18,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Removed
-* [#736](https://github.com/shlinkio/shlink-web-client/issues/736) Removed support for cards mode in tags. Only tags table is supported now.
+* [#736](https://github.com/shlinkio/shlink-web-client/issues/736) Removed cards mode in tags. Only table mode is supported now.
+* [#774](https://github.com/shlinkio/shlink-web-client/issues/774) Dropped support for Shlink older than 2.8.0.
 
 ### Fixed
 * *Nothing*

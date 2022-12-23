@@ -8,8 +8,6 @@ import { SimplePaginator } from '../common/SimplePaginator';
 import { SearchField } from '../utils/SearchField';
 import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
 import { prettify } from '../utils/helpers/numbers';
-import { supportsBotVisits } from '../utils/helpers/features';
-import { SelectedServer } from '../servers/data';
 import { Time } from '../utils/dates/Time';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
 import { MediaMatcher } from '../utils/types';
@@ -22,7 +20,6 @@ export interface VisitsTableProps {
   setSelectedVisits: (visits: NormalizedVisit[]) => void;
   matchMedia?: MediaMatcher;
   isOrphanVisits?: boolean;
-  selectedServer: SelectedServer;
 }
 
 type OrderableFields = 'date' | 'country' | 'city' | 'browser' | 'os' | 'referer' | 'visitedUrl' | 'potentialBot';
@@ -49,7 +46,6 @@ export const VisitsTable = ({
   visits,
   selectedVisits = [],
   setSelectedVisits,
-  selectedServer,
   matchMedia = window.matchMedia,
   isOrphanVisits = false,
 }: VisitsTableProps) => {
@@ -64,8 +60,7 @@ export const VisitsTable = ({
   const [page, setPage] = useState(1);
   const end = page * PAGE_SIZE;
   const start = end - PAGE_SIZE;
-  const supportsBots = supportsBotVisits(selectedServer);
-  const fullSizeColSpan = 7 + Number(supportsBots) + Number(isOrphanVisits);
+  const fullSizeColSpan = 8 + Number(isOrphanVisits);
 
   const orderByColumn = (field: OrderableFields) =>
     () => setOrder({ field, dir: determineOrderDir(field, order.field, order.dir) });
@@ -99,12 +94,10 @@ export const VisitsTable = ({
             >
               <FontAwesomeIcon icon={checkIcon} className={classNames({ 'text-primary': selectedVisits.length > 0 })} />
             </th>
-            {supportsBots && (
-              <th className={`${headerCellsClass} text-center`} onClick={orderByColumn('potentialBot')}>
-                <FontAwesomeIcon icon={botIcon} />
-                {renderOrderIcon('potentialBot')}
-              </th>
-            )}
+            <th className={`${headerCellsClass} text-center`} onClick={orderByColumn('potentialBot')}>
+              <FontAwesomeIcon icon={botIcon} />
+              {renderOrderIcon('potentialBot')}
+            </th>
             <th className={headerCellsClass} onClick={orderByColumn('date')}>
               Date
               {renderOrderIcon('date')}
@@ -165,18 +158,16 @@ export const VisitsTable = ({
                 <td className="text-center">
                   {isSelected && <FontAwesomeIcon icon={checkIcon} className="text-primary" />}
                 </td>
-                {supportsBots && (
-                  <td className="text-center">
-                    {visit.potentialBot && (
-                      <>
-                        <FontAwesomeIcon icon={botIcon} id={`botIcon${index}`} />
-                        <UncontrolledTooltip placement="right" target={`botIcon${index}`}>
-                          Potentially a visit from a bot or crawler
-                        </UncontrolledTooltip>
-                      </>
-                    )}
-                  </td>
-                )}
+                <td className="text-center">
+                  {visit.potentialBot && (
+                    <>
+                      <FontAwesomeIcon icon={botIcon} id={`botIcon${index}`} />
+                      <UncontrolledTooltip placement="right" target={`botIcon${index}`}>
+                        Potentially a visit from a bot or crawler
+                      </UncontrolledTooltip>
+                    </>
+                  )}
+                </td>
                 <td><Time date={visit.date} /></td>
                 <td>{visit.country}</td>
                 <td>{visit.city}</td>
