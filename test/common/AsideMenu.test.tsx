@@ -3,26 +3,22 @@ import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { AsideMenu as createAsideMenu } from '../../src/common/AsideMenu';
 import { ReachableServer } from '../../src/servers/data';
-import { SemVer } from '../../src/utils/helpers/version';
 
 describe('<AsideMenu />', () => {
   const AsideMenu = createAsideMenu(() => <>DeleteServerButton</>);
-  const setUp = (version: SemVer, id: string | false = 'abc123') => render(
+  const setUp = (id: string | false = 'abc123') => render(
     <MemoryRouter>
-      <AsideMenu selectedServer={Mock.of<ReachableServer>({ id: id || undefined, version })} />
+      <AsideMenu selectedServer={Mock.of<ReachableServer>({ id: id || undefined, version: '2.8.0' })} />
     </MemoryRouter>,
   );
 
-  it.each([
-    ['2.7.0' as SemVer, 5],
-    ['2.8.0' as SemVer, 6],
-  ])('contains links to different sections', (version, expectedAmountOfLinks) => {
-    setUp(version);
+  it('contains links to different sections', () => {
+    setUp();
 
     const links = screen.getAllByRole('link');
 
     expect.assertions(links.length + 1);
-    expect(links).toHaveLength(expectedAmountOfLinks);
+    expect(links).toHaveLength(6);
     links.forEach((link) => expect(link.getAttribute('href')).toContain('abc123'));
   });
 
@@ -30,7 +26,7 @@ describe('<AsideMenu />', () => {
     ['abc', true],
     [false, false],
   ])('contains a button to delete server if appropriate', (id, shouldHaveBtn) => {
-    setUp('2.8.0', id as string | false);
+    setUp(id as string | false);
 
     if (shouldHaveBtn) {
       expect(screen.getByText('DeleteServerButton')).toBeInTheDocument();

@@ -11,7 +11,7 @@ describe('<QrCodeModal />', () => {
   const saveImage = jest.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }));
   const shortUrl = 'https://doma.in/abc123';
-  const setUp = (version: SemVer = '2.6.0') => renderWithEvents(
+  const setUp = (version: SemVer = '2.8.0') => renderWithEvents(
     <QrCodeModal
       isOpen
       shortUrl={Mock.of<ShortUrl>({ shortUrl })}
@@ -32,12 +32,10 @@ describe('<QrCodeModal />', () => {
   });
 
   it.each([
-    ['2.5.0' as SemVer, 0, '/qr-code?size=300&format=png'],
-    ['2.6.0' as SemVer, 0, '/qr-code?size=300&format=png'],
-    ['2.6.0' as SemVer, 10, '/qr-code?size=300&format=png&margin=10'],
-    ['2.8.0' as SemVer, 0, '/qr-code?size=300&format=png&errorCorrection=L'],
-  ])('displays an image with the QR code of the URL', async (version, margin, expectedUrl) => {
-    const { container } = setUp(version);
+    [10, '/qr-code?size=300&format=png&errorCorrection=L&margin=10'],
+    [0, '/qr-code?size=300&format=png&errorCorrection=L'],
+  ])('displays an image with the QR code of the URL', async (margin, expectedUrl) => {
+    const { container } = setUp();
     const marginControl = container.parentNode?.querySelectorAll('.form-control-range').item(1);
 
     if (marginControl) {
@@ -69,16 +67,13 @@ describe('<QrCodeModal />', () => {
     modalSize && expect(screen.getByRole('document')).toHaveClass(`modal-${modalSize}`);
   });
 
-  it.each([
-    ['2.6.0' as SemVer, 1, 'col-md-4'],
-    ['2.8.0' as SemVer, 2, 'col-md-6'],
-  ])('shows expected components based on server version', (version, expectedAmountOfDropdowns, expectedRangeClass) => {
-    const { container } = setUp(version);
+  it('shows expected components based on server version', () => {
+    const { container } = setUp();
     const dropdowns = screen.getAllByRole('button');
     const firstCol = container.parentNode?.querySelectorAll('.d-grid').item(0);
 
-    expect(dropdowns).toHaveLength(expectedAmountOfDropdowns + 1); // Add one because of the close button
-    expect(firstCol).toHaveClass(expectedRangeClass);
+    expect(dropdowns).toHaveLength(2 + 1); // Add one because of the close button
+    expect(firstCol).toHaveClass('col-md-4');
   });
 
   it('saves the QR code image when clicking the Download button', async () => {
