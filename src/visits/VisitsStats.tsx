@@ -93,6 +93,12 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     [normalizedVisits],
   );
   const mapLocations = values(citiesForMap);
+  const resolvedFilter = useMemo(() => (
+    !isFirstLoad.current ? visitsFilter : {
+      ...visitsFilter,
+      excludeBots: visitsFilter.excludeBots ?? settings.visits?.excludeBots,
+    }
+  ), [visitsFilter]);
 
   const setSelectedVisits = (selectedVisits: NormalizedVisit[]) => {
     selectedBar = undefined;
@@ -115,7 +121,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
     const resolvedDateRange = !isFirstLoad.current ? dateRange : (dateRange ?? toDateRange(initialInterval.current));
-    getVisits({ dateRange: resolvedDateRange, filter: visitsFilter }, isFirstLoad.current);
+    getVisits({ dateRange: resolvedDateRange, filter: resolvedFilter }, isFirstLoad.current);
     isFirstLoad.current = false;
   }, [dateRange, visitsFilter]);
   useEffect(() => {
@@ -301,7 +307,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
                 className="ms-0 ms-md-2 mt-3 mt-md-0"
                 isOrphanVisits={isOrphanVisits}
                 botsSupported={botsSupported}
-                selected={visitsFilter}
+                selected={resolvedFilter}
                 onChange={(newVisitsFilter) => updateFiltering({ visitsFilter: newVisitsFilter })}
               />
             </div>
