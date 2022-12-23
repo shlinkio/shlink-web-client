@@ -1,17 +1,18 @@
 import { DeepPartial } from '@reduxjs/toolkit';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import { isEmpty, mergeDeepRight, pipe } from 'ramda';
+import { isEmpty, isNil, mergeDeepRight, pipe } from 'ramda';
 import { DateRange, datesToDateRange } from '../../utils/helpers/dateIntervals';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { formatIsoDate } from '../../utils/helpers/date';
+import { BooleanString } from '../../utils/utils';
 
 interface VisitsQuery {
   startDate?: string;
   endDate?: string;
   orphanVisitsType?: OrphanVisitType;
-  excludeBots?: 'true';
+  excludeBots?: BooleanString;
   domain?: string;
 }
 
@@ -38,7 +39,7 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
         domain,
         filtering: {
           dateRange: startDate != null || endDate != null ? datesToDateRange(startDate, endDate) : undefined,
-          visitsFilter: { orphanVisitsType, excludeBots: excludeBots === 'true' },
+          visitsFilter: { orphanVisitsType, excludeBots: !isNil(excludeBots) ? excludeBots === 'true' : undefined },
         },
       }),
     ),
@@ -49,7 +50,7 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
     const query: VisitsQuery = {
       startDate: (dateRange?.startDate && formatIsoDate(dateRange.startDate)) || '',
       endDate: (dateRange?.endDate && formatIsoDate(dateRange.endDate)) || '',
-      excludeBots: visitsFilter.excludeBots ? 'true' : undefined,
+      excludeBots: visitsFilter.excludeBots ? 'true' : 'false',
       orphanVisitsType: visitsFilter.orphanVisitsType,
       domain: theDomain,
     };

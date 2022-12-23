@@ -1,6 +1,7 @@
 import { Visit } from '../../visits/types';
 import { OptionalString } from '../../utils/utils';
-import { ShortUrl, ShortUrlMeta, ShortUrlsOrder } from '../../short-urls/data';
+import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import { Order } from '../../utils/helpers/ordering';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -88,6 +89,10 @@ export interface ShlinkDomainsResponse {
 
 export type TagsFilteringMode = 'all' | 'any';
 
+type ShlinkShortUrlsOrderableFields = 'dateCreated' | 'shortCode' | 'longUrl' | 'title' | 'visits' | 'nonBotVisits';
+
+export type ShlinkShortUrlsOrder = Order<ShlinkShortUrlsOrderableFields>;
+
 export interface ShlinkShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
@@ -95,7 +100,7 @@ export interface ShlinkShortUrlsListParams {
   searchTerm?: string;
   startDate?: string;
   endDate?: string;
-  orderBy?: ShortUrlsOrder;
+  orderBy?: ShlinkShortUrlsOrder;
   tagsMode?: TagsFilteringMode;
 }
 

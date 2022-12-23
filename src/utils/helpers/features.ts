@@ -14,3 +14,4 @@ export const supportsDefaultDomainRedirectsEdition = serverMatchesMinVersion('2.
 export const supportsNonOrphanVisits = serverMatchesMinVersion('3.0.0');
 export const supportsAllTagsFiltering = supportsNonOrphanVisits;
 export const supportsDomainVisits = serverMatchesMinVersion('3.1.0');
+export const supportsExcludeBotsOnShortUrls = serverMatchesMinVersion('3.4.0');

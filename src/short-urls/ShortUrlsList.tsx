@@ -7,14 +7,15 @@ import { getServerId, SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { ShlinkShortUrlsListParams } from '../api/types';
+import { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api/types';
 import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
 import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import { ShortUrlsTableType } from './ShortUrlsTable';
 import { Paginator } from './Paginator';
 import { useShortUrlsQuery } from './helpers/hooks';
-import { ShortUrlsOrderableFields } from './data';
+import { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
+import { supportsExcludeBotsOnShortUrls } from '../utils/helpers/features';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;
@@ -30,12 +31,13 @@ export const ShortUrlsList = (
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
-  const [{ tags, search, startDate, endDate, orderBy, tagsMode }, toFirstPage] = useShortUrlsQuery();
+  const [{ tags, search, startDate, endDate, orderBy, tagsMode, excludeBots }, toFirstPage] = useShortUrlsQuery();
   const [actualOrderBy, setActualOrderBy] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
   );
   const { pagination } = shortUrlsList?.shortUrls ?? {};
+  const doExcludeBots = excludeBots ?? settings.visits?.excludeBots;
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
     setActualOrderBy({ field, dir });
@@ -48,6 +50,13 @@ export const ShortUrlsList = (
     (newTag: string) => [...new Set([...tags, newTag])],
     (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
+  const parseOrderByForShlink = ({ field, dir }: ShortUrlsOrder): ShlinkShortUrlsOrder => {
+    if (supportsExcludeBotsOnShortUrls(selectedServer) && doExcludeBots && field === 'visits') {
+      return { field: 'nonBotVisits', dir };
+    }
+
+    return { field, dir };
+  };
 
   useEffect(() => {
     listShortUrls({
@@ -56,10 +65,10 @@ export const ShortUrlsList = (
       tags,
       startDate,
       endDate,
-      orderBy: actualOrderBy,
+      orderBy: parseOrderByForShlink(actualOrderBy),
       tagsMode,
     });
-  }, [page, search, tags, startDate, endDate, actualOrderBy, tagsMode]);
+  }, [page, search, tags, startDate, endDate, actualOrderBy.field, actualOrderBy.dir, tagsMode]);
 
   return (
     <>
@@ -68,6 +77,7 @@ export const ShortUrlsList = (
         shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
         order={actualOrderBy}
         handleOrderBy={handleOrderBy}
+        settings={settings}
         className="mb-3"
       />
       <Card body className="pb-0">

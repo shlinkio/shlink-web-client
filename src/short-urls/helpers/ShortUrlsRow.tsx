@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { TimeoutToggle } from '../../utils/helpers/hooks';
@@ -6,10 +6,12 @@ import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
 import { ShortUrl } from '../data';
 import { Time } from '../../utils/dates/Time';
+import { Settings } from '../../settings/reducers/settings';
 import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
 import { Tags } from './Tags';
 import { ShortUrlStatus } from './ShortUrlStatus';
+import { useShortUrlsQuery } from './hooks';
 import './ShortUrlsRow.scss';
 
 interface ShortUrlsRowProps {
@@ -18,19 +20,28 @@ interface ShortUrlsRowProps {
   shortUrl: ShortUrl;
 }
 
+interface ShortUrlsRowConnectProps extends ShortUrlsRowProps {
+  settings: Settings;
+}
+
+export type ShortUrlsRowType = FC<ShortUrlsRowProps>;
+
 export const ShortUrlsRow = (
   ShortUrlsRowMenu: ShortUrlsRowMenuType,
   colorGenerator: ColorGenerator,
   useTimeoutToggle: TimeoutToggle,
-) => ({ shortUrl, selectedServer, onTagClick }: ShortUrlsRowProps) => {
+) => ({ shortUrl, selectedServer, onTagClick, settings }: ShortUrlsRowConnectProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useTimeoutToggle();
   const [active, setActive] = useTimeoutToggle(false, 500);
   const isFirstRun = useRef(true);
+  const [{ excludeBots }] = useShortUrlsQuery();
+  const { visits } = settings;
+  const doExcludeBots = excludeBots ?? visits?.excludeBots;
 
   useEffect(() => {
     !isFirstRun.current && setActive();
     isFirstRun.current = false;
-  }, [shortUrl.visitsCount]);
+  }, [shortUrl.visitsSummary?.total, shortUrl.visitsSummary?.nonBots, shortUrl.visitsCount]);
 
   return (
     <tr className="responsive-table__row">
@@ -64,7 +75,9 @@ export const ShortUrlsRow = (
       </td>
       <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount
-          visitsCount={shortUrl.visitsSummary?.total ?? shortUrl.visitsCount}
+          visitsCount={(
+            doExcludeBots ? shortUrl.visitsSummary?.nonBots : shortUrl.visitsSummary?.total
+          ) ?? shortUrl.visitsCount}
           shortUrl={shortUrl}
           selectedServer={selectedServer}
           active={active}
@@ -79,5 +92,3 @@ export const ShortUrlsRow = (
     </tr>
   );
 };
-
-export type ShortUrlsRowType = ReturnType<typeof ShortUrlsRow>;

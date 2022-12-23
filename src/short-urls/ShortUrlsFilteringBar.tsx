@@ -8,7 +8,7 @@ import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import { DateRange, datesToDateRange } from '../utils/helpers/dateIntervals';
-import { supportsAllTagsFiltering } from '../utils/helpers/features';
+import { supportsAllTagsFiltering, supportsBotVisits } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { OrderDir } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
@@ -16,11 +16,14 @@ import { useShortUrlsQuery } from './helpers/hooks';
 import { SHORT_URLS_ORDERABLE_FIELDS, ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { ExportShortUrlsBtnProps } from './helpers/ExportShortUrlsBtn';
 import { TagsSelectorProps } from '../tags/helpers/TagsSelector';
+import { ShortUrlsFilterDropdown } from './helpers/ShortUrlsFilterDropdown';
+import { Settings } from '../settings/reducers/settings';
 import './ShortUrlsFilteringBar.scss';
 
 interface ShortUrlsFilteringProps {
   selectedServer: SelectedServer;
   order: ShortUrlsOrder;
+  settings: Settings;
   handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
   className?: string;
   shortUrlsAmount?: number;
@@ -29,8 +32,8 @@ interface ShortUrlsFilteringProps {
 export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
   TagsSelector: FC<TagsSelectorProps>,
-): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy }) => {
-  const [{ search, tags, startDate, endDate, tagsMode = 'any' }, toFirstPage] = useShortUrlsQuery();
+): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy, settings }) => {
+  const [{ search, tags, startDate, endDate, excludeBots, tagsMode = 'any' }, toFirstPage] = useShortUrlsQuery();
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
       startDate: formatIsoDate(theStartDate) ?? undefined,
@@ -44,6 +47,7 @@ export const ShortUrlsFilteringBar = (
   );
   const changeTagSelection = (selectedTags: string[]) => toFirstPage({ tags: selectedTags });
   const canChangeTagsMode = supportsAllTagsFiltering(selectedServer);
+  const botsSupported = supportsBotVisits(selectedServer);
   const toggleTagsMode = pipe(
     () => (tagsMode === 'any' ? 'all' : 'any'),
     (mode) => toFirstPage({ tagsMode: mode }),
@@ -69,11 +73,21 @@ export const ShortUrlsFilteringBar = (
 
       <Row className="flex-lg-row-reverse">
         <div className="col-lg-8 col-xl-6 mt-3">
-          <DateRangeSelector
-            defaultText="All short URLs"
-            initialDateRange={datesToDateRange(startDate, endDate)}
-            onDatesChange={setDates}
-          />
+          <div className="d-md-flex">
+            <div className="flex-fill">
+              <DateRangeSelector
+                defaultText="All short URLs"
+                initialDateRange={datesToDateRange(startDate, endDate)}
+                onDatesChange={setDates}
+              />
+            </div>
+            <ShortUrlsFilterDropdown
+              className="ms-0 ms-md-2 mt-3 mt-md-0"
+              botsSupported={botsSupported}
+              selected={{ excludeBots: excludeBots ?? settings.visits?.excludeBots }}
+              onChange={toFirstPage}
+            />
+          </div>
         </div>
         <div className="col-6 col-lg-4 col-xl-6 mt-3">
           <ExportShortUrlsBtn amount={shortUrlsAmount} />
