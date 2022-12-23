@@ -31,12 +31,13 @@ export const ShortUrlsList = (
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
-  const [{ tags, search, startDate, endDate, orderBy, tagsMode }, toFirstPage] = useShortUrlsQuery();
+  const [{ tags, search, startDate, endDate, orderBy, tagsMode, excludeBots }, toFirstPage] = useShortUrlsQuery();
   const [actualOrderBy, setActualOrderBy] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
   );
   const { pagination } = shortUrlsList?.shortUrls ?? {};
+  const doExcludeBots = excludeBots ?? settings.visits?.excludeBots;
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
     setActualOrderBy({ field, dir });
@@ -50,7 +51,7 @@ export const ShortUrlsList = (
     (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
   const parseOrderByForShlink = ({ field, dir }: ShortUrlsOrder): ShlinkShortUrlsOrder => {
-    if (supportsExcludeBotsOnShortUrls(selectedServer) && settings.visits?.excludeBots && field === 'visits') {
+    if (supportsExcludeBotsOnShortUrls(selectedServer) && doExcludeBots && field === 'visits') {
       return { field: 'nonBotVisits', dir };
     }
 
@@ -76,6 +77,7 @@ export const ShortUrlsList = (
         shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
         order={actualOrderBy}
         handleOrderBy={handleOrderBy}
+        settings={settings}
         className="mb-3"
       />
       <Card body className="pb-0">
