@@ -82,7 +82,7 @@ export const processStatsFromVisits = (visits: NormalizedVisit[]) => visits.redu
 );
 
 export const normalizeVisits = map((visit: Visit): NormalizedVisit => {
-  const { userAgent, date, referer, visitLocation, potentialBot = false } = visit;
+  const { userAgent, date, referer, visitLocation, potentialBot } = visit;
   const common = {
     date,
     potentialBot,

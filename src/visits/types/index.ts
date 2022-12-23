@@ -19,7 +19,7 @@ export interface RegularVisit {
   date: string;
   userAgent: string;
   visitLocation: VisitLocation | null;
-  potentialBot?: boolean; // Optional only when using Shlink older than v2.7
+  potentialBot: boolean;
 }
 
 export interface OrphanVisit extends RegularVisit {
