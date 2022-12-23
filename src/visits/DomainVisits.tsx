@@ -22,7 +22,6 @@ export const DomainVisits = ({ exportVisits }: ReportExporter) => boundToMercure
   domainVisits,
   cancelGetDomainVisits,
   settings,
-  selectedServer,
 }: DomainVisitsProps) => {
   const goBack = useGoBack();
   const { domain = '' } = useParams();
@@ -38,7 +37,6 @@ export const DomainVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       visitsInfo={domainVisits}
       settings={settings}
       exportCsv={exportCsv}
-      selectedServer={selectedServer}
     >
       <VisitsHeader goBack={goBack} visits={domainVisits.visits} title={`"${authority}" visits`} />
     </VisitsStats>

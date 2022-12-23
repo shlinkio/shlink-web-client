@@ -20,7 +20,6 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
   nonOrphanVisits,
   cancelGetNonOrphanVisits,
   settings,
-  selectedServer,
 }: NonOrphanVisitsProps) => {
   const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('non_orphan_visits.csv', visits);
@@ -34,7 +33,6 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
       visitsInfo={nonOrphanVisits}
       settings={settings}
       exportCsv={exportCsv}
-      selectedServer={selectedServer}
     >
       <VisitsHeader title="Non-orphan visits" goBack={goBack} visits={nonOrphanVisits.visits} />
     </VisitsStats>

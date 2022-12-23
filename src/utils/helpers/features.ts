@@ -4,8 +4,6 @@ import { SemVerPattern, versionMatch } from './version';
 const serverMatchesMinVersion = (minVersion: SemVerPattern) => (selectedServer: SelectedServer): boolean =>
   isReachableServer(selectedServer) && versionMatch(selectedServer.version, { minVersion });
 
-export const supportsBotVisits = serverMatchesMinVersion('2.7.0');
-export const supportsCrawlableVisits = supportsBotVisits;
 export const supportsForwardQuery = serverMatchesMinVersion('2.9.0');
 export const supportsNonRestCors = supportsForwardQuery;
 export const supportsDefaultDomainRedirectsEdition = serverMatchesMinVersion('2.10.0');

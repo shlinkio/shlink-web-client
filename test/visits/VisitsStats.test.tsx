@@ -5,7 +5,6 @@ import { createMemoryHistory } from 'history';
 import { VisitsStats } from '../../src/visits/VisitsStats';
 import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
-import { ReachableServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { rangeOf } from '../../src/utils/utils';
 import { VisitsInfo } from '../../src/visits/reducers/types';
@@ -28,7 +27,6 @@ describe('<VisitsStats />', () => {
             cancelGetVisits={() => {}}
             settings={Mock.all<Settings>()}
             exportCsv={exportCsv}
-            selectedServer={Mock.of<ReachableServer>({ version: '3.0.0' })}
           />
         </Router>,
       ),

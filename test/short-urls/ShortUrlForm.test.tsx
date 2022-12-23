@@ -64,7 +64,7 @@ describe('<ShortUrlForm />', () => {
   });
 
   it.each([
-    ['create' as Mode, 4],
+    ['create' as Mode, 5],
     ['create-basic' as Mode, 0],
   ])(
     'renders expected amount of cards based on server capabilities and mode',

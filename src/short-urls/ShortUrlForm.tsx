@@ -4,7 +4,7 @@ import { Button, FormGroup, Input, Row } from 'reactstrap';
 import { cond, isEmpty, pipe, replace, trim, T } from 'ramda';
 import { parseISO } from 'date-fns';
 import { DateTimeInput, DateTimeInputProps } from '../utils/dates/DateTimeInput';
-import { supportsCrawlableVisits, supportsForwardQuery } from '../utils/helpers/features';
+import { supportsForwardQuery } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue, OptionalString } from '../utils/utils';
 import { Checkbox } from '../utils/Checkbox';
@@ -113,16 +113,14 @@ export const ShortUrlForm = (
     </>
   );
 
-  const showCrawlableControl = supportsCrawlableVisits(selectedServer);
   const showForwardQueryControl = supportsForwardQuery(selectedServer);
-  const showBehaviorCard = showCrawlableControl || showForwardQueryControl;
 
   return (
     <form name="shortUrlForm" className="short-url-form" onSubmit={submit}>
       {isBasicMode && basicComponents}
       {!isBasicMode && (
         <>
-          <SimpleCard title="Basic options" className="mb-3">
+          <SimpleCard title="Main options" className="mb-3">
             {basicComponents}
           </SimpleCard>
 
@@ -190,30 +188,26 @@ export const ShortUrlForm = (
                 )}
               </SimpleCard>
             </div>
-            {showBehaviorCard && (
-              <div className="col-sm-6 mb-3">
-                <SimpleCard title="Configure behavior">
-                  {showCrawlableControl && (
-                    <ShortUrlFormCheckboxGroup
-                      infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
-                      checked={shortUrlData.crawlable}
-                      onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
-                    >
-                      Make it crawlable
-                    </ShortUrlFormCheckboxGroup>
-                  )}
-                  {showForwardQueryControl && (
-                    <ShortUrlFormCheckboxGroup
-                      infoTooltip="When this short URL is visited, any query params appended to it will be forwarded to the long URL."
-                      checked={shortUrlData.forwardQuery}
-                      onChange={(forwardQuery) => setShortUrlData({ ...shortUrlData, forwardQuery })}
-                    >
-                      Forward query params on redirect
-                    </ShortUrlFormCheckboxGroup>
-                  )}
-                </SimpleCard>
-              </div>
-            )}
+            <div className="col-sm-6 mb-3">
+              <SimpleCard title="Configure behavior">
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="This short URL will be included in the robots.txt for your Shlink instance, allowing web crawlers (like Google) to index it."
+                  checked={shortUrlData.crawlable}
+                  onChange={(crawlable) => setShortUrlData({ ...shortUrlData, crawlable })}
+                >
+                  Make it crawlable
+                </ShortUrlFormCheckboxGroup>
+                {showForwardQueryControl && (
+                  <ShortUrlFormCheckboxGroup
+                    infoTooltip="When this short URL is visited, any query params appended to it will be forwarded to the long URL."
+                    checked={shortUrlData.forwardQuery}
+                    onChange={(forwardQuery) => setShortUrlData({ ...shortUrlData, forwardQuery })}
+                  >
+                    Forward query params on redirect
+                  </ShortUrlFormCheckboxGroup>
+                )}
+              </SimpleCard>
+            </div>
           </Row>
         </>
       )}

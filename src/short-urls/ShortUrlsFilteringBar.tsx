@@ -8,7 +8,7 @@ import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import { DateRange, datesToDateRange } from '../utils/helpers/dateIntervals';
-import { supportsAllTagsFiltering, supportsBotVisits } from '../utils/helpers/features';
+import { supportsAllTagsFiltering } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { OrderDir } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
@@ -47,7 +47,6 @@ export const ShortUrlsFilteringBar = (
   );
   const changeTagSelection = (selectedTags: string[]) => toFirstPage({ tags: selectedTags });
   const canChangeTagsMode = supportsAllTagsFiltering(selectedServer);
-  const botsSupported = supportsBotVisits(selectedServer);
   const toggleTagsMode = pipe(
     () => (tagsMode === 'any' ? 'all' : 'any'),
     (mode) => toFirstPage({ tagsMode: mode }),
@@ -83,7 +82,6 @@ export const ShortUrlsFilteringBar = (
             </div>
             <ShortUrlsFilterDropdown
               className="ms-0 ms-md-2 mt-3 mt-md-0"
-              botsSupported={botsSupported}
               selected={{ excludeBots: excludeBots ?? settings.visits?.excludeBots }}
               onChange={toFirstPage}
             />

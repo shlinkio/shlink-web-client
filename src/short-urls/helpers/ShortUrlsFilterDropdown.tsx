@@ -7,27 +7,18 @@ interface ShortUrlsFilterDropdownProps {
   onChange: (filters: ShortUrlsFilter) => void;
   selected?: ShortUrlsFilter;
   className?: string;
-  botsSupported: boolean;
 }
 
 export const ShortUrlsFilterDropdown = (
-  { onChange, selected = {}, className, botsSupported }: ShortUrlsFilterDropdownProps,
+  { onChange, selected = {}, className }: ShortUrlsFilterDropdownProps,
 ) => {
-  if (!botsSupported) {
-    return null;
-  }
-
   const { excludeBots = false } = selected;
   const onBotsClick = () => onChange({ ...selected, excludeBots: !selected?.excludeBots });
 
   return (
     <DropdownBtn text="Filters" dropdownClassName={className} className="me-3" right minWidth={250}>
-      {botsSupported && (
-        <>
-          <DropdownItem header>Bots:</DropdownItem>
-          <DropdownItem active={excludeBots} onClick={onBotsClick}>Exclude bots visits</DropdownItem>
-        </>
-      )}
+      <DropdownItem header>Bots:</DropdownItem>
+      <DropdownItem active={excludeBots} onClick={onBotsClick}>Exclude bots visits</DropdownItem>
 
       <DropdownItem divider />
       <DropdownItem disabled={!hasValue(selected)} onClick={() => onChange({ excludeBots: false })}>
