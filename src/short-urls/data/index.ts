@@ -80,3 +80,7 @@ export interface ExportableShortUrl {
   tags: string;
   visits: number;
 }
+
+export interface ShortUrlsFilter {
+  excludeBots?: boolean;
+}

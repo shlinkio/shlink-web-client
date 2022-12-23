@@ -11,6 +11,7 @@ import { ShortUrlVisitsCount } from './ShortUrlVisitsCount';
 import { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
 import { Tags } from './Tags';
 import { ShortUrlStatus } from './ShortUrlStatus';
+import { useShortUrlsQuery } from './hooks';
 import './ShortUrlsRow.scss';
 
 interface ShortUrlsRowProps {
@@ -33,7 +34,9 @@ export const ShortUrlsRow = (
   const [copiedToClipboard, setCopiedToClipboard] = useTimeoutToggle();
   const [active, setActive] = useTimeoutToggle(false, 500);
   const isFirstRun = useRef(true);
+  const [{ excludeBots }] = useShortUrlsQuery();
   const { visits } = settings;
+  const doExcludeBots = excludeBots ?? visits?.excludeBots;
 
   useEffect(() => {
     !isFirstRun.current && setActive();
@@ -73,7 +76,7 @@ export const ShortUrlsRow = (
       <td className="responsive-table__cell short-urls-row__cell text-lg-end" data-th="Visits">
         <ShortUrlVisitsCount
           visitsCount={(
-            visits?.excludeBots ? shortUrl.visitsSummary?.nonBots : shortUrl.visitsSummary?.total
+            doExcludeBots ? shortUrl.visitsSummary?.nonBots : shortUrl.visitsSummary?.total
           ) ?? shortUrl.visitsCount}
           shortUrl={shortUrl}
           selectedServer={selectedServer}

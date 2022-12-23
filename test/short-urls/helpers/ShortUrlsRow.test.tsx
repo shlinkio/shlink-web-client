@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import { last } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { addDays, formatISO, subDays } from 'date-fns';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
 import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
@@ -18,6 +19,11 @@ interface SetUpOptions {
   meta?: ShortUrlMeta;
   settings?: Partial<Settings>;
 }
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useLocation: jest.fn().mockReturnValue({}),
+}));
 
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = jest.fn(() => true);
@@ -43,18 +49,24 @@ describe('<ShortUrlsRow />', () => {
     },
   };
   const ShortUrlsRow = createShortUrlsRow(() => <span>ShortUrlsRowMenu</span>, colorGeneratorMock, useTimeoutToggle);
-  const setUp = ({ title, tags = [], meta = {}, settings = {} }: SetUpOptions = {}) => renderWithEvents(
-    <table>
-      <tbody>
-        <ShortUrlsRow
-          selectedServer={server}
-          shortUrl={{ ...shortUrl, title, tags, meta: { ...shortUrl.meta, ...meta } }}
-          onTagClick={() => null}
-          settings={Mock.of<Settings>(settings)}
-        />
-      </tbody>
-    </table>,
-  );
+
+  const setUp = ({ title, tags = [], meta = {}, settings = {} }: SetUpOptions = {}, search = '') => {
+    (useLocation as any).mockReturnValue({ search });
+    return renderWithEvents(
+      <MemoryRouter>
+        <table>
+          <tbody>
+            <ShortUrlsRow
+              selectedServer={server}
+              shortUrl={{ ...shortUrl, title, tags, meta: { ...shortUrl.meta, ...meta } }}
+              onTagClick={() => null}
+              settings={Mock.of<Settings>(settings)}
+            />
+          </tbody>
+        </table>
+      </MemoryRouter>,
+    );
+  };
 
   it.each([
     [null, 7],
@@ -105,11 +117,17 @@ describe('<ShortUrlsRow />', () => {
   });
 
   it.each([
-    [{}, shortUrl.visitsSummary?.total],
-    [Mock.of<Settings>({ visits: { excludeBots: false } }), shortUrl.visitsSummary?.total],
-    [Mock.of<Settings>({ visits: { excludeBots: true } }), shortUrl.visitsSummary?.nonBots],
-  ])('renders visits count in fifth row', (settings, expectedAmount) => {
-    setUp({ settings });
+    [{}, '', shortUrl.visitsSummary?.total],
+    [Mock.of<Settings>({ visits: { excludeBots: false } }), '', shortUrl.visitsSummary?.total],
+    [Mock.of<Settings>({ visits: { excludeBots: true } }), '', shortUrl.visitsSummary?.nonBots],
+    [Mock.of<Settings>({ visits: { excludeBots: false } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
+    [Mock.of<Settings>({ visits: { excludeBots: true } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
+    [{}, 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
+    [Mock.of<Settings>({ visits: { excludeBots: true } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
+    [Mock.of<Settings>({ visits: { excludeBots: false } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
+    [{}, 'excludeBots=false', shortUrl.visitsSummary?.total],
+  ])('renders visits count in fifth row', (settings, search, expectedAmount) => {
+    setUp({ settings }, search);
     expect(screen.getAllByRole('cell')[4]).toHaveTextContent(`${expectedAmount}`);
   });
 

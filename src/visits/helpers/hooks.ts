@@ -6,12 +6,13 @@ import { DateRange, datesToDateRange } from '../../utils/helpers/dateIntervals';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { formatIsoDate } from '../../utils/helpers/date';
+import { BooleanString } from '../../utils/utils';
 
 interface VisitsQuery {
   startDate?: string;
   endDate?: string;
   orphanVisitsType?: OrphanVisitType;
-  excludeBots?: 'true' | 'false';
+  excludeBots?: BooleanString;
   domain?: string;
 }
 

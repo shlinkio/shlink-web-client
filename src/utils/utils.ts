@@ -26,3 +26,7 @@ export const nonEmptyValueOrNull = <T>(value: T): T | null => (isEmpty(value) ? 
 export const capitalize = <T extends string>(value: T): string => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
 
 export const equals = (value: any) => (otherValue: any) => value === otherValue;
+
+export type BooleanString = 'true' | 'false';
+
+export const parseBooleanToString = (value: boolean): BooleanString => (value ? 'true' : 'false');
