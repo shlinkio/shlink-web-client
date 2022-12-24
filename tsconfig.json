@@ -2,11 +2,9 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es2021"
-    ],
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "types": ["vite/client"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -17,7 +15,7 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2021",
+    "target": "esnext",
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
