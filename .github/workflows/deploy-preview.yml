@@ -16,7 +16,7 @@ jobs:
       - name: Use node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.15
+          node-version: 18.12
       - name: Build
         run: |
           npm ci --force && \
