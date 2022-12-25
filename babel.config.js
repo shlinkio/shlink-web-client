@@ -1,11 +1,9 @@
 module.exports = {
   presets: [
-    [
-      'react-app',
-      {
-        runtime: 'automatic',
-        typescript: true,
-      },
-    ],
+    ['@babel/preset-env', {
+      targets: { esmodules: true }
+    }],
+    ['@babel/preset-react', { runtime: 'automatic' }],
+    '@babel/preset-typescript',
   ],
 };
