@@ -6,7 +6,7 @@ import { DateRange, datesToDateRange } from '../../utils/helpers/dateIntervals';
 import { OrphanVisitType, VisitsFilter } from '../types';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { formatIsoDate } from '../../utils/helpers/date';
-import { BooleanString } from '../../utils/utils';
+import { BooleanString, parseBooleanToString } from '../../utils/utils';
 
 interface VisitsQuery {
   startDate?: string;
@@ -47,11 +47,12 @@ export const useVisitsQuery = (): [VisitsFiltering, UpdateFiltering] => {
   );
   const updateFiltering = (extra: DeepPartial<VisitsFiltering>) => {
     const { dateRange, visitsFilter } = mergeDeepRight(filtering, extra);
+    const { excludeBots, orphanVisitsType } = visitsFilter;
     const query: VisitsQuery = {
       startDate: (dateRange?.startDate && formatIsoDate(dateRange.startDate)) || '',
       endDate: (dateRange?.endDate && formatIsoDate(dateRange.endDate)) || '',
-      excludeBots: visitsFilter.excludeBots ? 'true' : 'false',
-      orphanVisitsType: visitsFilter.orphanVisitsType,
+      excludeBots: excludeBots === undefined ? undefined : parseBooleanToString(excludeBots),
+      orphanVisitsType,
       domain: theDomain,
     };
     const stringifiedQuery = stringifyQuery(query);
