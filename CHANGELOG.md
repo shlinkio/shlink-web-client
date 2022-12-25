@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#753](https://github.com/shlinkio/shlink-web-client/issues/753) Migrated from react-scripts/webpack to vite.
+* [#770](https://github.com/shlinkio/shlink-web-client/issues/770) Updated to latest dependencies.
 
 ### Deprecated
 * *Nothing*

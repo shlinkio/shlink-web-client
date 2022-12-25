@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 import 'jest-canvas-mock';
+import 'chart.js/auto';
 import ResizeObserver from 'resize-observer-polyfill';
 import { setAutoFreeze } from 'immer';
 

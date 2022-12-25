@@ -21,6 +21,7 @@ export interface AsideMenuProps {
 
 interface AsideMenuItemProps extends NavLinkProps {
   to: string;
+  className?: string;
 }
 
 const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...rest }) => (

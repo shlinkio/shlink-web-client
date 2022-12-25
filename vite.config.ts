@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { manifest } from './manifest';
+import pack from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -19,4 +20,5 @@ export default defineConfig({
   server: {
     port: 3000,
   },
+  base: pack.homepage ?? '/',
 });

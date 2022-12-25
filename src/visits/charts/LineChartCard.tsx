@@ -30,8 +30,8 @@ import { ToggleSwitch } from '../../utils/ToggleSwitch';
 import { prettify } from '../../utils/helpers/numbers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
-import './LineChartCard.scss';
 import { STANDARD_DATE_FORMAT } from '../../utils/helpers/date';
+import './LineChartCard.scss';
 
 interface LineChartCardProps {
   title: string;
