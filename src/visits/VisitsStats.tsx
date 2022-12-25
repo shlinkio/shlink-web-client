@@ -87,13 +87,11 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     () => processStatsFromVisits(normalizedVisits),
     [normalizedVisits],
   );
+  const resolvedFilter = useMemo(() => ({
+    ...visitsFilter,
+    excludeBots: visitsFilter.excludeBots ?? settings.visits?.excludeBots,
+  }), [visitsFilter]);
   const mapLocations = values(citiesForMap);
-  const resolvedFilter = useMemo(() => (
-    !isFirstLoad.current ? visitsFilter : {
-      ...visitsFilter,
-      excludeBots: visitsFilter.excludeBots ?? settings.visits?.excludeBots,
-    }
-  ), [visitsFilter]);
 
   const setSelectedVisits = (selectedVisits: NormalizedVisit[]) => {
     selectedBar = undefined;
