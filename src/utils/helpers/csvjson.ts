@@ -1,5 +1,4 @@
 import csv from 'csvtojson';
-// @ts-expect-error gfgf
 import { Parser } from '@json2csv/plainjs';
 
 export const csvToJson = <T>(csvContent: string) => new Promise<T[]>((resolve) => {
