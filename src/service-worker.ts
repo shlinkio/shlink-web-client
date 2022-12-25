@@ -12,6 +12,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
+import pack from '../package.json';
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -49,7 +50,7 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL('/index.html') // TODO Add prefix
+  createHandlerBoundToURL(`${pack.homepage}/index.html`)
 );
 
 // An example runtime caching route for requests that aren't handled by the

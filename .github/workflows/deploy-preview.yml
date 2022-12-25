@@ -21,7 +21,6 @@ jobs:
         run: |
           npm ci --force && \
           node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
-          rm src/service-worker.ts && \
           npm run build
       - name: Deploy preview
         uses: shlinkio/deploy-preview-action@v1.0.1
