@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   This feature also comes with a new setting to disable visits from bots by default, both on short URLs lists and visits sections.
 
 ### Changed
-* *Nothing*
+* [#753](https://github.com/shlinkio/shlink-web-client/issues/753) Migrated from react-scripts/webpack to vite.
 
 ### Deprecated
 * *Nothing*
