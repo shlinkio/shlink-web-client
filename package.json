@@ -13,7 +13,7 @@
     "lint:css:fix": "npm run lint:css -- --fix",
     "lint:js:fix": "npm run lint:js -- --fix",
     "start": "vite serve --host=0.0.0.0",
-    "build": "tsc && vite build && node scripts/replace-version.mjs",
+    "build": "tsc --noEmit && vite build && node scripts/replace-version.mjs",
     "build:dist": "npm run build && node scripts/create-dist-file.mjs",
     "build:serve": "serve -p 5000 ./build",
     "test": "jest --env=jsdom --colors",
