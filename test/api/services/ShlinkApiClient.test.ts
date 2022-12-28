@@ -46,6 +46,28 @@ describe('ShlinkApiClient', () => {
         expect.anything(),
       );
     });
+
+    it.each([
+      [{}, ''],
+      [{ excludeMaxVisitsReached: false }, ''],
+      [{ excludeMaxVisitsReached: true }, '?excludeMaxVisitsReached=true'],
+      [{ excludePastValidUntil: false }, ''],
+      [{ excludePastValidUntil: true }, '?excludePastValidUntil=true'],
+      [
+        { excludePastValidUntil: true, excludeMaxVisitsReached: true },
+        '?excludeMaxVisitsReached=true&excludePastValidUntil=true',
+      ],
+    ])('parses disabled URLs params', async (params, expectedQuery) => {
+      fetchJson.mockResolvedValue({ data: expectedList });
+      const { listShortUrls } = buildApiClient();
+
+      await listShortUrls(params);
+
+      expect(fetchJson).toHaveBeenCalledWith(
+        expect.stringContaining(`/short-urls${expectedQuery}`),
+        expect.anything(),
+      );
+    });
   });
 
   describe('createShortUrl', () => {

@@ -83,4 +83,6 @@ export interface ExportableShortUrl {
 
 export interface ShortUrlsFilter {
   excludeBots?: boolean;
+  excludeMaxVisitsReached?: boolean;
+  excludePastValidUntil?: boolean;
 }
