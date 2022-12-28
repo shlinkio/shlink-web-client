@@ -30,3 +30,7 @@ export const equals = (value: any) => (otherValue: any) => value === otherValue;
 export type BooleanString = 'true' | 'false';
 
 export const parseBooleanToString = (value: boolean): BooleanString => (value ? 'true' : 'false');
+
+export const parseOptionalBooleanToString = (value?: boolean): BooleanString | undefined => (
+  value === undefined ? undefined : parseBooleanToString(value)
+);
