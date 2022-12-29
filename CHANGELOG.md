@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
   This feature also comes with a new setting to disable visits from bots by default, both on short URLs lists and visits sections.
 
+* [#760](https://github.com/shlinkio/shlink-web-client/issues/760) Added support to exclude short URLs which have reached the maximum amount of visits, or are valid until a date in the past.
+
 ### Changed
 * [#753](https://github.com/shlinkio/shlink-web-client/issues/753) Migrated from react-scripts/webpack to vite.
 * [#770](https://github.com/shlinkio/shlink-web-client/issues/770) Updated to latest dependencies.

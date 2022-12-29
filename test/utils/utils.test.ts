@@ -1,4 +1,10 @@
-import { capitalize, nonEmptyValueOrNull, parseBooleanToString, rangeOf } from '../../src/utils/utils';
+import {
+  capitalize,
+  nonEmptyValueOrNull,
+  parseBooleanToString,
+  parseOptionalBooleanToString,
+  rangeOf,
+} from '../../src/utils/utils';
 
 describe('utils', () => {
   describe('rangeOf', () => {
@@ -56,6 +62,16 @@ describe('utils', () => {
       [false, 'false'],
     ])('parses value as expected', (value, expectedResult) => {
       expect(parseBooleanToString(value)).toEqual(expectedResult);
+    });
+  });
+
+  describe('parseOptionalBooleanToString', () => {
+    it.each([
+      [undefined, undefined],
+      [true, 'true'],
+      [false, 'false'],
+    ])('parses value as expected', (value, expectedResult) => {
+      expect(parseOptionalBooleanToString(value)).toEqual(expectedResult);
     });
   });
 });

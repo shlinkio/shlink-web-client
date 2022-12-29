@@ -5,7 +5,7 @@ import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 import { orderToString, stringToOrder } from '../../utils/helpers/ordering';
 import { TagsFilteringMode } from '../../api/types';
-import { BooleanString, parseBooleanToString } from '../../utils/utils';
+import { BooleanString, parseOptionalBooleanToString } from '../../utils/utils';
 
 interface ShortUrlsQueryCommon {
   search?: string;
@@ -18,12 +18,16 @@ interface ShortUrlsQuery extends ShortUrlsQueryCommon {
   orderBy?: string;
   tags?: string;
   excludeBots?: BooleanString;
+  excludeMaxVisitsReached?: BooleanString;
+  excludePastValidUntil?: BooleanString;
 }
 
 interface ShortUrlsFiltering extends ShortUrlsQueryCommon {
   orderBy?: ShortUrlsOrder;
   tags: string[];
   excludeBots?: boolean;
+  excludeMaxVisitsReached?: boolean;
+  excludePastValidUntil?: boolean;
 }
 
 type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
@@ -36,7 +40,7 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
   const filtering = useMemo(
     pipe(
       () => parseQuery<ShortUrlsQuery>(search),
-      ({ orderBy, tags, excludeBots, ...rest }: ShortUrlsQuery): ShortUrlsFiltering => {
+      ({ orderBy, tags, excludeBots, excludeMaxVisitsReached, excludePastValidUntil, ...rest }): ShortUrlsFiltering => {
         const parsedOrderBy = orderBy ? stringToOrder<ShortUrlsOrderableFields>(orderBy) : undefined;
         const parsedTags = tags?.split(',') ?? [];
         return {
@@ -44,18 +48,23 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
           orderBy: parsedOrderBy,
           tags: parsedTags,
           excludeBots: excludeBots !== undefined ? excludeBots === 'true' : undefined,
+          excludeMaxVisitsReached: excludeMaxVisitsReached !== undefined ? excludeMaxVisitsReached === 'true' : undefined,
+          excludePastValidUntil: excludePastValidUntil !== undefined ? excludePastValidUntil === 'true' : undefined,
         };
       },
     ),
     [search],
   );
   const toFirstPageWithExtra = (extra: Partial<ShortUrlsFiltering>) => {
-    const { orderBy, tags, excludeBots, ...mergedFiltering } = { ...filtering, ...extra };
+    const merged = { ...filtering, ...extra };
+    const { orderBy, tags, excludeBots, excludeMaxVisitsReached, excludePastValidUntil, ...mergedFiltering } = merged;
     const query: ShortUrlsQuery = {
       ...mergedFiltering,
       orderBy: orderBy && orderToString(orderBy),
       tags: tags.length > 0 ? tags.join(',') : undefined,
-      excludeBots: excludeBots === undefined ? undefined : parseBooleanToString(excludeBots),
+      excludeBots: parseOptionalBooleanToString(excludeBots),
+      excludeMaxVisitsReached: parseOptionalBooleanToString(excludeMaxVisitsReached),
+      excludePastValidUntil: parseOptionalBooleanToString(excludePastValidUntil),
     };
     const stringifiedQuery = stringifyQuery(query);
     const queryString = isEmpty(stringifiedQuery) ? '' : `?${stringifiedQuery}`;

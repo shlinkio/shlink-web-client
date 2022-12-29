@@ -8,7 +8,7 @@ import { SearchField } from '../utils/SearchField';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import { DateRange, datesToDateRange } from '../utils/helpers/dateIntervals';
-import { supportsAllTagsFiltering } from '../utils/helpers/features';
+import { supportsAllTagsFiltering, supportsFilterDisabledUrls } from '../utils/helpers/features';
 import { SelectedServer } from '../servers/data';
 import { OrderDir } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
@@ -33,7 +33,19 @@ export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
   TagsSelector: FC<TagsSelectorProps>,
 ): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy, settings }) => {
-  const [{ search, tags, startDate, endDate, excludeBots, tagsMode = 'any' }, toFirstPage] = useShortUrlsQuery();
+  const [filter, toFirstPage] = useShortUrlsQuery();
+  const {
+    search,
+    tags,
+    startDate,
+    endDate,
+    excludeBots,
+    excludeMaxVisitsReached,
+    excludePastValidUntil,
+    tagsMode = 'any',
+  } = filter;
+  const supportsDisabledFiltering = supportsFilterDisabledUrls(selectedServer);
+
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
       startDate: formatIsoDate(theStartDate) ?? undefined,
@@ -82,8 +94,13 @@ export const ShortUrlsFilteringBar = (
             </div>
             <ShortUrlsFilterDropdown
               className="ms-0 ms-md-2 mt-3 mt-md-0"
-              selected={{ excludeBots: excludeBots ?? settings.visits?.excludeBots }}
+              selected={{
+                excludeBots: excludeBots ?? settings.visits?.excludeBots,
+                excludeMaxVisitsReached,
+                excludePastValidUntil,
+              }}
               onChange={toFirstPage}
+              supportsDisabledFiltering={supportsDisabledFiltering}
             />
           </div>
         </div>

@@ -117,20 +117,24 @@ describe('<ShortUrlsFilteringBar />', () => {
   });
 
   it.each([
-    ['', 'excludeBots=true'],
-    ['excludeBots=false', 'excludeBots=true'],
-    ['excludeBots=true', 'excludeBots=false'],
-  ])('allows to toggle excluding bots through filtering dropdown', async (search, expectedQuery) => {
-    const { user } = setUp(
-      search,
-      Mock.of<ReachableServer>({ version: '3.4.0' }),
-    );
-    const toggleBots = async (name = 'Exclude bots visits') => {
+    ['', /Ignore visits from bots/, 'excludeBots=true'],
+    ['excludeBots=false', /Ignore visits from bots/, 'excludeBots=true'],
+    ['excludeBots=true', /Ignore visits from bots/, 'excludeBots=false'],
+    ['', /Exclude with visits reached/, 'excludeMaxVisitsReached=true'],
+    ['excludeMaxVisitsReached=false', /Exclude with visits reached/, 'excludeMaxVisitsReached=true'],
+    ['excludeMaxVisitsReached=true', /Exclude with visits reached/, 'excludeMaxVisitsReached=false'],
+    ['', /Exclude enabled in the past/, 'excludePastValidUntil=true'],
+    ['excludePastValidUntil=false', /Exclude enabled in the past/, 'excludePastValidUntil=true'],
+    ['excludePastValidUntil=true', /Exclude enabled in the past/, 'excludePastValidUntil=false'],
+  ])('allows to toggle filters through filtering dropdown', async (search, menuItemName, expectedQuery) => {
+    const { user } = setUp(search, Mock.of<ReachableServer>({ version: '3.4.0' }));
+    const toggleFilter = async (name: RegExp) => {
       await user.click(screen.getByRole('button', { name: 'Filters' }));
-      await user.click(await screen.findByRole('menuitem', { name }));
+      await waitFor(() => screen.findByRole('menu'));
+      await user.click(screen.getByRole('menuitem', { name }));
     };
 
-    await toggleBots();
+    await toggleFilter(menuItemName);
     expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedQuery));
   });
 

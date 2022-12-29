@@ -96,14 +96,19 @@ export type ShlinkShortUrlsOrder = Order<ShlinkShortUrlsOrderableFields>;
 export interface ShlinkShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
-  tags?: string[];
   searchTerm?: string;
+  tags?: string[];
+  tagsMode?: TagsFilteringMode;
+  orderBy?: ShlinkShortUrlsOrder;
   startDate?: string;
   endDate?: string;
-  orderBy?: ShlinkShortUrlsOrder;
-  tagsMode?: TagsFilteringMode;
+  excludeMaxVisitsReached?: boolean;
+  excludePastValidUntil?: boolean;
 }
 
-export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {
+export interface ShlinkShortUrlsListNormalizedParams extends
+  Omit<ShlinkShortUrlsListParams, 'orderBy' | 'excludeMaxVisitsReached' | 'excludePastValidUntil'> {
   orderBy?: string;
+  excludeMaxVisitsReached?: 'true';
+  excludePastValidUntil?: 'true';
 }
