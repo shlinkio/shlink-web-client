@@ -31,7 +31,18 @@ export const ShortUrlsList = (
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
-  const [{ tags, search, startDate, endDate, orderBy, tagsMode, excludeBots }, toFirstPage] = useShortUrlsQuery();
+  const [filter, toFirstPage] = useShortUrlsQuery();
+  const {
+    tags,
+    search,
+    startDate,
+    endDate,
+    orderBy,
+    tagsMode,
+    excludeBots,
+    excludePastValidUntil,
+    excludeMaxVisitsReached,
+  } = filter;
   const [actualOrderBy, setActualOrderBy] = useState(
     // This separated state handling is needed to be able to fall back to settings value, but only once when loaded
     orderBy ?? settings.shortUrlsList?.defaultOrdering ?? DEFAULT_SHORT_URLS_ORDERING,
@@ -67,8 +78,21 @@ export const ShortUrlsList = (
       endDate,
       orderBy: parseOrderByForShlink(actualOrderBy),
       tagsMode,
+      excludePastValidUntil,
+      excludeMaxVisitsReached,
     });
-  }, [page, search, tags, startDate, endDate, actualOrderBy.field, actualOrderBy.dir, tagsMode]);
+  }, [
+    page,
+    search,
+    tags,
+    startDate,
+    endDate,
+    actualOrderBy.field,
+    actualOrderBy.dir,
+    tagsMode,
+    excludePastValidUntil,
+    excludeMaxVisitsReached,
+  ]);
 
   return (
     <>
