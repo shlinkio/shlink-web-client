@@ -107,8 +107,7 @@ export interface ShlinkShortUrlsListParams {
 }
 
 export interface ShlinkShortUrlsListNormalizedParams extends
-  Omit<ShlinkShortUrlsListParams, 'orderBy' | 'excludeMaxVisitsReached' | 'excludePastValidUntil'>
-{
+  Omit<ShlinkShortUrlsListParams, 'orderBy' | 'excludeMaxVisitsReached' | 'excludePastValidUntil'> {
   orderBy?: string;
   excludeMaxVisitsReached?: 'true';
   excludePastValidUntil?: 'true';
