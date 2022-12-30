@@ -8,8 +8,8 @@ import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSetti
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {
-  const toggleRealTimeUpdates = jest.fn();
-  const setRealTimeUpdatesInterval = jest.fn();
+  const toggleRealTimeUpdates = vi.fn();
+  const setRealTimeUpdatesInterval = vi.fn();
   const setUp = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => renderWithEvents(
     <RealTimeUpdatesSettings
       settings={Mock.of<Settings>({ realTimeUpdates })}
@@ -18,7 +18,7 @@ describe('<RealTimeUpdatesSettings />', () => {
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders enabled real time updates as expected', () => {
     setUp({ enabled: true });

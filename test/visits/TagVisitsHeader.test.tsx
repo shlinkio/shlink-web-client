@@ -9,7 +9,7 @@ describe('<TagVisitsHeader />', () => {
     tag: 'foo',
     visits: [{}, {}, {}, {}],
   });
-  const goBack = jest.fn();
+  const goBack = vi.fn();
   const colorGenerator = Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' });
   const setUp = () => render(<TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />);
 

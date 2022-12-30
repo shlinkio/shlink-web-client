@@ -8,20 +8,20 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 import { ProblemDetailsError } from '../../src/api/types/errors';
 
 describe('<ManageDomains />', () => {
-  const listDomains = jest.fn();
-  const filterDomains = jest.fn();
+  const listDomains = vi.fn();
+  const filterDomains = vi.fn();
   const setUp = (domainsList: DomainsList) => renderWithEvents(
     <ManageDomains
       listDomains={listDomains}
       filterDomains={filterDomains}
-      editDomainRedirects={jest.fn()}
-      checkDomainHealth={jest.fn()}
+      editDomainRedirects={vi.fn()}
+      checkDomainHealth={vi.fn()}
       domainsList={domainsList}
       selectedServer={Mock.all<SelectedServer>()}
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows loading message while domains are loading', () => {
     setUp(Mock.of<DomainsList>({ loading: true, filteredDomains: [] }));

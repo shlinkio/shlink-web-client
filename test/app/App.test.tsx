@@ -33,7 +33,7 @@ describe('<App />', () => {
     );
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders children components', () => {
     setUp();

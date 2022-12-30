@@ -4,8 +4,8 @@ import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
   const servers: RegularServer[] = [Mock.all<RegularServer>(), Mock.all<RegularServer>()];
-  const csvjsonMock = jest.fn().mockResolvedValue(servers);
-  const readAsText = jest.fn();
+  const csvjsonMock = vi.fn().mockResolvedValue(servers);
+  const readAsText = vi.fn();
   const fileReaderMock = Mock.of<FileReader>({
     readAsText,
     addEventListener: (_eventName: string, listener: (e: ProgressEvent<FileReader>) => void) => listener(
@@ -14,7 +14,7 @@ describe('ServersImporter', () => {
   });
   const importer = new ServersImporter(csvjsonMock, () => fileReaderMock);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('importServersFromFile', () => {
     it('rejects with error if no file was provided', async () => {

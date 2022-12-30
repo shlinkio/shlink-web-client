@@ -11,8 +11,8 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 import { VisitsInfo } from '../../src/visits/reducers/types';
 
 describe('<OrphanVisits />', () => {
-  const getOrphanVisits = jest.fn();
-  const exportVisits = jest.fn();
+  const getOrphanVisits = vi.fn();
+  const exportVisits = vi.fn();
   const orphanVisits = Mock.of<VisitsInfo>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const OrphanVisits = createOrphanVisits(Mock.of<ReportExporter>({ exportVisits }));
   const setUp = () => renderWithEvents(
@@ -21,7 +21,7 @@ describe('<OrphanVisits />', () => {
         {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
         getOrphanVisits={getOrphanVisits}
         orphanVisits={orphanVisits}
-        cancelGetOrphanVisits={jest.fn()}
+        cancelGetOrphanVisits={vi.fn()}
         settings={Mock.all<Settings>()}
       />
     </MemoryRouter>,

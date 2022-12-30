@@ -4,12 +4,12 @@ import { HttpClient } from '../../../src/common/services/HttpClient';
 import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ImageDownloader', () => {
-  const fetchBlob = jest.fn();
+  const fetchBlob = vi.fn();
   const httpClient = Mock.of<HttpClient>({ fetchBlob });
   let imageDownloader: ImageDownloader;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     (global as any).URL = { createObjectURL: () => '' };
 
     imageDownloader = new ImageDownloader(httpClient, windowMock);

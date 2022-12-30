@@ -2,10 +2,10 @@ import { CopyToClipboardIcon } from '../../src/utils/CopyToClipboardIcon';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<CopyToClipboardIcon />', () => {
-  const onCopy = jest.fn();
+  const onCopy = vi.fn();
   const setUp = (text = 'foo') => renderWithEvents(<CopyToClipboardIcon text={text} onCopy={onCopy} />);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('wraps expected components', () => {
     const { container } = setUp();

@@ -7,8 +7,8 @@ import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
 import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('ShlinkApiClient', () => {
-  const fetchJson = jest.fn().mockResolvedValue({});
-  const fetchEmpty = jest.fn().mockResolvedValue(undefined);
+  const fetchJson = vi.fn().mockResolvedValue({});
+  const fetchEmpty = vi.fn().mockResolvedValue(undefined);
   const httpClient = Mock.of<HttpClient>({ fetchJson, fetchEmpty });
   const buildApiClient = () => new ShlinkApiClient(httpClient, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
@@ -17,7 +17,7 @@ describe('ShlinkApiClient', () => {
     ['abc123', 'example.com'],
   ];
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('listShortUrls', () => {
     const expectedList = ['foo', 'bar'];

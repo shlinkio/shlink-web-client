@@ -8,11 +8,11 @@ describe('mercureInfoReducer', () => {
     mercureHubUrl: 'http://example.com/.well-known/mercure',
     token: 'abc.123.def',
   };
-  const getMercureInfo = jest.fn();
+  const getMercureInfo = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ mercureInfo: getMercureInfo });
   const { loadMercureInfo, reducer } = mercureInfoReducerCreator(buildShlinkApiClient);
 
-  beforeEach(jest.resetAllMocks);
+  beforeEach(vi.resetAllMocks);
 
   describe('reducer', () => {
     it('returns loading on GET_MERCURE_INFO_START', () => {
@@ -37,8 +37,8 @@ describe('mercureInfoReducer', () => {
   });
 
   describe('loadMercureInfo', () => {
-    const dispatch = jest.fn();
-    const createGetStateMock = (enabled: boolean): GetState => jest.fn().mockReturnValue({
+    const dispatch = vi.fn();
+    const createGetStateMock = (enabled: boolean): GetState => vi.fn().mockReturnValue({
       settings: {
         realTimeUpdates: { enabled },
       },

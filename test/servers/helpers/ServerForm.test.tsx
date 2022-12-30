@@ -2,10 +2,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
 
 describe('<ServerForm />', () => {
-  const onSubmit = jest.fn();
+  const onSubmit = vi.fn();
   const setUp = () => render(<ServerForm onSubmit={onSubmit}>Something</ServerForm>);
 
-  afterEach(jest.resetAllMocks);
+  afterEach(vi.resetAllMocks);
 
   it('renders components', () => {
     setUp();
@@ -18,7 +18,7 @@ describe('<ServerForm />', () => {
     setUp();
 
     expect(onSubmit).not.toHaveBeenCalled();
-    fireEvent.submit(screen.getByRole('form'), { preventDefault: jest.fn() });
+    fireEvent.submit(screen.getByRole('form'), { preventDefault: vi.fn() });
     expect(onSubmit).toHaveBeenCalled();
   });
 });

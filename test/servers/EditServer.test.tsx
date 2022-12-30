@@ -5,12 +5,12 @@ import { EditServer as editServerConstruct } from '../../src/servers/EditServer'
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
+vi.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: vi.fn() }));
 
 describe('<EditServer />', () => {
-  const ServerError = jest.fn();
-  const editServerMock = jest.fn();
-  const navigate = jest.fn();
+  const ServerError = vi.fn();
+  const editServerMock = vi.fn();
+  const navigate = vi.fn();
   const defaultSelectedServer = Mock.of<ReachableServer>({
     id: 'abc123',
     name: 'the_name',
@@ -19,14 +19,14 @@ describe('<EditServer />', () => {
   });
   const EditServer = editServerConstruct(ServerError);
   const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => renderWithEvents(
-    <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={jest.fn()} />,
+    <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />,
   );
 
   beforeEach(() => {
     (useNavigate as any).mockReturnValue(navigate);
   });
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders nothing if selected server is not reachable', () => {
     setUp(Mock.all<SelectedServer>());

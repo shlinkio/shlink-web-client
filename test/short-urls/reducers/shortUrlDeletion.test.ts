@@ -7,12 +7,12 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
-  const deleteShortUrlCall = jest.fn();
+  const deleteShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteShortUrl: deleteShortUrlCall });
   const deleteShortUrl = deleteShortUrlCretor(buildShlinkApiClient);
   const { reducer, resetDeleteShortUrl } = shortUrlDeletionReducerCreator(deleteShortUrl);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on DELETE_SHORT_URL_START', () =>
@@ -62,8 +62,8 @@ describe('shortUrlDeletionReducer', () => {
   });
 
   describe('deleteShortUrl', () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn().mockReturnValue({ selectedServer: {} });
+    const dispatch = vi.fn();
+    const getState = vi.fn().mockReturnValue({ selectedServer: {} });
 
     it.each(
       [[undefined], [null], ['example.com']],

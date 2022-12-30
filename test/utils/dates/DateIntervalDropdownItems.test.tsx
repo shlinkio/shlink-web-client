@@ -5,7 +5,7 @@ import { DropdownBtn } from '../../../src/utils/DropdownBtn';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalDropdownItems />', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const setUp = async () => {
     const { user, ...renderResult } = renderWithEvents(
       <DropdownBtn text="text">
@@ -19,7 +19,7 @@ describe('<DateIntervalDropdownItems />', () => {
     return { user, ...renderResult };
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected amount of items', async () => {
     await setUp();

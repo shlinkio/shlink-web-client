@@ -4,7 +4,7 @@ import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<SimplePaginator />', () => {
   const setUp = (pagesCount: number, currentPage = 1) => render(
-    <SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={jest.fn()} />,
+    <SimplePaginator pagesCount={pagesCount} currentPage={currentPage} setCurrentPage={vi.fn()} />,
   );
 
   it.each([-3, -2, 0, 1])('renders empty when the amount of pages is smaller than 2', (pagesCount) => {

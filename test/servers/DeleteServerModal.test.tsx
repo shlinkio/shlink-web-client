@@ -6,11 +6,11 @@ import { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 
-jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
+vi.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: vi.fn() }));
 
 describe('<DeleteServerModal />', () => {
-  const deleteServerMock = jest.fn();
-  const navigate = jest.fn();
+  const deleteServerMock = vi.fn();
+  const navigate = vi.fn();
   const serverName = 'the_server_name';
   const setUp = () => {
     (useNavigate as any).mockReturnValue(navigate);
@@ -28,7 +28,7 @@ describe('<DeleteServerModal />', () => {
     );
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders a modal window', () => {
     setUp();

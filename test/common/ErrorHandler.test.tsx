@@ -8,17 +8,17 @@ const ComponentWithError = () => {
 };
 
 describe('<ErrorHandler />', () => {
-  const reload = jest.fn();
+  const reload = vi.fn();
   const window = Mock.of<Window>({
     location: { reload },
   });
-  const cons = Mock.of<Console>({ error: jest.fn() });
+  const cons = Mock.of<Console>({ error: vi.fn() });
   const ErrorHandler = createErrorHandler(window, cons);
 
   beforeEach(() => {
     jest.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
   });
-  afterEach(jest.resetAllMocks);
+  afterEach(vi.resetAllMocks);
 
   it('renders children when no error has occurred', () => {
     render(<ErrorHandler children={<span>Foo</span>} />);

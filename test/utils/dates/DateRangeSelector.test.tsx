@@ -5,7 +5,7 @@ import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeSelector />', () => {
-  const onDatesChange = jest.fn();
+  const onDatesChange = vi.fn();
   const setUp = async (props: Partial<DateRangeSelectorProps> = {}) => {
     const result = renderWithEvents(
       <DateRangeSelector
@@ -21,7 +21,7 @@ describe('<DateRangeSelector />', () => {
     return result;
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders proper amount of items', async () => {
     const { container } = await setUp();

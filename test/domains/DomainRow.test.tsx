@@ -23,8 +23,8 @@ describe('<DomainRow />', () => {
           domain={domain}
           defaultRedirects={defaultRedirects}
           selectedServer={Mock.all<SelectedServer>()}
-          editDomainRedirects={jest.fn()}
-          checkDomainHealth={jest.fn()}
+          editDomainRedirects={vi.fn()}
+          checkDomainHealth={vi.fn()}
         />
       </tbody>
     </table>,

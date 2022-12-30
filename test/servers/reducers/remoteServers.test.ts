@@ -4,11 +4,11 @@ import { createServers } from '../../../src/servers/reducers/servers';
 import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('remoteServersReducer', () => {
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('fetchServers', () => {
-    const dispatch = jest.fn();
-    const fetchJson = jest.fn();
+    const dispatch = vi.fn();
+    const fetchJson = vi.fn();
     const httpClient = Mock.of<HttpClient>({ fetchJson });
 
     it.each([
@@ -82,7 +82,7 @@ describe('remoteServersReducer', () => {
       fetchJson.mockResolvedValue(mockedValue);
       const doFetchServers = fetchServers(httpClient);
 
-      await doFetchServers()(dispatch, jest.fn(), {});
+      await doFetchServers()(dispatch, vi.fn(), {});
 
       expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
         type: doFetchServers.pending.toString(),

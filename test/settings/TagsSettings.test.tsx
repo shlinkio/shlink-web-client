@@ -6,12 +6,12 @@ import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsSettings />', () => {
-  const setTagsSettings = jest.fn();
+  const setTagsSettings = vi.fn();
   const setUp = (tags?: TagsSettingsOptions) => renderWithEvents(
     <TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected amount of groups', () => {
     setUp();

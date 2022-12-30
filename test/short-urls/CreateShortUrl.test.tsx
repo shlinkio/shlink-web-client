@@ -9,7 +9,7 @@ describe('<CreateShortUrl />', () => {
   const CreateShortUrlResult = () => <span>CreateShortUrlResult</span>;
   const shortUrlCreation = { validateUrls: true };
   const shortUrlCreationResult = Mock.all<ShortUrlCreation>();
-  const createShortUrl = jest.fn(async () => Promise.resolve());
+  const createShortUrl = vi.fn(async () => Promise.resolve());
   const CreateShortUrl = createShortUrlsCreator(ShortUrlForm, CreateShortUrlResult);
   const setUp = () => render(
     <CreateShortUrl

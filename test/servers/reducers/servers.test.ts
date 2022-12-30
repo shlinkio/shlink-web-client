@@ -15,7 +15,7 @@ describe('serversReducer', () => {
     def456: Mock.of<RegularServer>({ id: 'def456' }),
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns edited server when action is EDIT_SERVER', () =>

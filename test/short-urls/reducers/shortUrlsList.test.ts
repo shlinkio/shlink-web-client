@@ -13,14 +13,14 @@ import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 
 describe('shortUrlsListReducer', () => {
   const shortCode = 'abc123';
-  const listShortUrlsMock = jest.fn();
+  const listShortUrlsMock = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
   const listShortUrls = listShortUrlsCreator(buildShlinkApiClient);
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer } = shortUrlsListReducerCreator(listShortUrls, editShortUrl, createShortUrl);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_SHORT_URLS_START', () =>
@@ -194,8 +194,8 @@ describe('shortUrlsListReducer', () => {
   });
 
   describe('listShortUrls', () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn().mockReturnValue({ selectedServer: {} });
+    const dispatch = vi.fn();
+    const getState = vi.fn().mockReturnValue({ selectedServer: {} });
 
     it('dispatches proper actions if API client request succeeds', async () => {
       listShortUrlsMock.mockResolvedValue({});

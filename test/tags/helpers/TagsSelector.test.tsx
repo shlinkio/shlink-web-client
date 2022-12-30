@@ -7,7 +7,7 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<TagsSelector />', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const TagsSelector = createTagsSelector(colorGeneratorMock);
   const tags = ['foo', 'bar'];
   const tagsList = Mock.of<TagsList>({ tags: [...tags, 'baz'] });
@@ -16,12 +16,12 @@ describe('<TagsSelector />', () => {
       selectedTags={tags}
       tagsList={tagsList}
       settings={Mock.all<Settings>()}
-      listTags={jest.fn()}
+      listTags={vi.fn()}
       onChange={onChange}
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('has an input for tags', () => {
     setUp();

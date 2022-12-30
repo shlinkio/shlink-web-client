@@ -19,13 +19,13 @@ import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 describe('domainVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
-  const getDomainVisitsCall = jest.fn();
+  const getDomainVisitsCall = vi.fn();
   const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
   const creator = getDomainVisitsCreator(buildApiClientMock);
   const { asyncThunk: getDomainVisits, progressChangedAction, largeAction, fallbackToIntervalAction } = creator;
   const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(creator);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<DomainVisits>) => Mock.of<DomainVisits>(data);
@@ -147,7 +147,7 @@ describe('domainVisitsReducer', () => {
   });
 
   describe('getDomainVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => Mock.of<ShlinkState>({
       domainVisits: { cancelLoad: false },
     });

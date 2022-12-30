@@ -17,13 +17,13 @@ import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 describe('tagVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
-  const getTagVisitsCall = jest.fn();
+  const getTagVisitsCall = vi.fn();
   const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
   const creator = getTagVisitsCreator(buildShlinkApiClientMock);
   const { asyncThunk: getTagVisits, fallbackToIntervalAction, largeAction, progressChangedAction } = creator;
   const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(creator);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<TagVisits>) => Mock.of<TagVisits>(data);
@@ -143,7 +143,7 @@ describe('tagVisitsReducer', () => {
   });
 
   describe('getTagVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => Mock.of<ShlinkState>({
       tagVisits: { cancelLoad: false },
     });

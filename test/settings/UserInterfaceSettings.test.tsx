@@ -6,12 +6,12 @@ import { Theme } from '../../src/utils/theme';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {
-  const setUiSettings = jest.fn();
+  const setUiSettings = vi.fn();
   const setUp = (ui?: UiSettings) => renderWithEvents(
     <UserInterfaceSettings settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it.each([
     [{ theme: 'dark' as Theme }, true],

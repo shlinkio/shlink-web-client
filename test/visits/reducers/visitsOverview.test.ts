@@ -12,12 +12,12 @@ import { ShlinkState } from '../../../src/container/types';
 import { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
 
 describe('visitsOverviewReducer', () => {
-  const getVisitsOverview = jest.fn();
+  const getVisitsOverview = vi.fn();
   const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getVisitsOverview });
   const loadVisitsOverview = loadVisitsOverviewCreator(buildApiClientMock);
   const { reducer } = visitsOverviewReducerCreator(loadVisitsOverview);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const action = (type: string) =>
@@ -87,7 +87,7 @@ describe('visitsOverviewReducer', () => {
   });
 
   describe('loadVisitsOverview', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => Mock.of<ShlinkState>();
 
     beforeEach(() => dispatchMock.mockReset());

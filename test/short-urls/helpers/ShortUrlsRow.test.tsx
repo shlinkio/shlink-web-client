@@ -20,14 +20,14 @@ interface SetUpOptions {
   settings?: Partial<Settings>;
 }
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useLocation: jest.fn().mockReturnValue({}),
+  useLocation: vi.fn().mockReturnValue({}),
 }));
 
 describe('<ShortUrlsRow />', () => {
-  const timeoutToggle = jest.fn(() => true);
-  const useTimeoutToggle = jest.fn(() => [false, timeoutToggle]) as TimeoutToggle;
+  const timeoutToggle = vi.fn(() => true);
+  const useTimeoutToggle = vi.fn(() => [false, timeoutToggle]) as TimeoutToggle;
   const server = Mock.of<ReachableServer>({ url: 'https://doma.in' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',

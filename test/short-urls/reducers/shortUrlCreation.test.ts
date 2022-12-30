@@ -10,12 +10,12 @@ import { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlCreationReducer', () => {
   const shortUrl = Mock.of<ShortUrl>();
-  const createShortUrlCall = jest.fn();
+  const createShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
 
-  afterEach(jest.resetAllMocks);
+  afterEach(vi.resetAllMocks);
 
   describe('reducer', () => {
     const action = (type: string, args: Partial<CreateShortUrlAction> = {}) => Mock.of<CreateShortUrlAction>(
@@ -61,7 +61,7 @@ describe('shortUrlCreationReducer', () => {
   });
 
   describe('createShortUrl', () => {
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const getState = () => Mock.all<ShlinkState>();
 
     it('calls API on success', async () => {

@@ -10,15 +10,15 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ domain: 'foo.com_DEFAULT' }),
+  useParams: vi.fn().mockReturnValue({ domain: 'foo.com_DEFAULT' }),
 }));
 
 describe('<DomainVisits />', () => {
-  const exportVisits = jest.fn();
-  const getDomainVisits = jest.fn();
-  const cancelGetDomainVisits = jest.fn();
+  const exportVisits = vi.fn();
+  const getDomainVisits = vi.fn();
+  const cancelGetDomainVisits = vi.fn();
   const domainVisits = Mock.of<DomainVisits>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const DomainVisits = createDomainVisits(Mock.of<ReportExporter>({ exportVisits }));
   const setUp = () => renderWithEvents(

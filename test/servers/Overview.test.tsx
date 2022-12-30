@@ -12,9 +12,9 @@ import { prettify } from '../../src/utils/helpers/numbers';
 describe('<Overview />', () => {
   const ShortUrlsTable = () => <>ShortUrlsTable</>;
   const CreateShortUrl = () => <>CreateShortUrl</>;
-  const listShortUrls = jest.fn();
-  const listTags = jest.fn();
-  const loadVisitsOverview = jest.fn();
+  const listShortUrls = vi.fn();
+  const listTags = vi.fn();
+  const loadVisitsOverview = vi.fn();
   const Overview = overviewCreator(ShortUrlsTable, CreateShortUrl);
   const shortUrls = {
     pagination: { totalItems: 83710 },
@@ -30,8 +30,8 @@ describe('<Overview />', () => {
         tagsList={Mock.of<TagsList>({ loading, tags: ['foo', 'bar', 'baz'] })}
         visitsOverview={Mock.of<VisitsOverview>({ loading, visitsCount: 3456, orphanVisitsCount: 28 })}
         selectedServer={Mock.of<ReachableServer>({ id: serverId })}
-        createNewVisits={jest.fn()}
-        loadMercureInfo={jest.fn()}
+        createNewVisits={vi.fn()}
+        loadMercureInfo={vi.fn()}
         mercureInfo={Mock.all<MercureInfo>()}
       />
     </MemoryRouter>,

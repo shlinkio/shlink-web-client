@@ -8,13 +8,13 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsTable />', () => {
   const shortUrlsList = Mock.all<ShortUrlsList>();
-  const orderByColumn = jest.fn();
+  const orderByColumn = vi.fn();
   const ShortUrlsTable = shortUrlsTableCreator(() => <span>ShortUrlsRow</span>);
   const setUp = (server: SelectedServer = null) => renderWithEvents(
     <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
   );
 
-  afterEach(jest.resetAllMocks);
+  afterEach(vi.resetAllMocks);
 
   it('should render inner table by default', () => {
     setUp();

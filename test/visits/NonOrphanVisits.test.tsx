@@ -11,9 +11,9 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 import { VisitsInfo } from '../../src/visits/reducers/types';
 
 describe('<NonOrphanVisits />', () => {
-  const exportVisits = jest.fn();
-  const getNonOrphanVisits = jest.fn();
-  const cancelGetNonOrphanVisits = jest.fn();
+  const exportVisits = vi.fn();
+  const getNonOrphanVisits = vi.fn();
+  const cancelGetNonOrphanVisits = vi.fn();
   const nonOrphanVisits = Mock.of<VisitsInfo>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const NonOrphanVisits = createNonOrphanVisits(Mock.of<ReportExporter>({ exportVisits }));
   const setUp = () => renderWithEvents(

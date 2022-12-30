@@ -17,8 +17,8 @@ describe('<EditShortUrl />', () => {
         selectedServer={null}
         shortUrlDetail={Mock.of<ShortUrlDetail>(detail)}
         shortUrlEdition={Mock.of<ShortUrlEdition>(edition)}
-        getShortUrlDetail={jest.fn()}
-        editShortUrl={jest.fn(async () => Promise.resolve())}
+        getShortUrlDetail={vi.fn()}
+        editShortUrl={vi.fn(async () => Promise.resolve())}
       />
     </MemoryRouter>,
   );

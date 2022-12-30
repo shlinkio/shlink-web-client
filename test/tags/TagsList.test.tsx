@@ -8,7 +8,7 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
-  const filterTags = jest.fn();
+  const filterTags = vi.fn();
   const TagsListComp = createTagsList(() => <>TagsTable</>);
   const setUp = (tagsList: Partial<TagsList>) => renderWithEvents(
     <TagsListComp
@@ -21,7 +21,7 @@ describe('<TagsList />', () => {
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows a loading message when tags are being loaded', () => {
     setUp({ loading: true });

@@ -5,7 +5,7 @@ import { appendChild, removeChild, windowMock } from '../../__mocks__/Window.moc
 
 describe('ServersExporter', () => {
   const storageMock = Mock.of<LocalStorage>({
-    get: jest.fn(() => ({
+    get: vi.fn(() => ({
       abc123: {
         id: 'abc123',
         name: 'foo',
@@ -18,16 +18,16 @@ describe('ServersExporter', () => {
       },
     })),
   });
-  const erroneousToCsv = jest.fn(() => {
+  const erroneousToCsv = vi.fn(() => {
     throw new Error('');
   });
-  const createCsvjsonMock = (throwError = false) => (throwError ? erroneousToCsv : jest.fn(() => ''));
+  const createCsvjsonMock = (throwError = false) => (throwError ? erroneousToCsv : vi.fn(() => ''));
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('exportServers', () => {
     let originalConsole: Console;
-    const error = jest.fn();
+    const error = vi.fn();
 
     beforeEach(() => {
       originalConsole = global.console;

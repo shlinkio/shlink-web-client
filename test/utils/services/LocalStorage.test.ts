@@ -2,13 +2,13 @@ import { Mock } from 'ts-mockery';
 import { LocalStorage } from '../../../src/utils/services/LocalStorage';
 
 describe('LocalStorage', () => {
-  const getItem = jest.fn((key) => (key === 'shlink.foo' ? JSON.stringify({ foo: 'bar' }) : null));
-  const setItem = jest.fn();
+  const getItem = vi.fn((key) => (key === 'shlink.foo' ? JSON.stringify({ foo: 'bar' }) : null));
+  const setItem = vi.fn();
   const localStorageMock = Mock.of<Storage>({ getItem, setItem });
   let storage: LocalStorage;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     storage = new LocalStorage(localStorageMock);
   });
 

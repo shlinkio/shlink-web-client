@@ -11,17 +11,17 @@ import { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { SemVer } from '../../src/utils/helpers/version';
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useNavigate: jest.fn().mockReturnValue(jest.fn()),
-  useLocation: jest.fn().mockReturnValue({ search: '?tags=test%20tag&search=example.com' }),
+  useNavigate: vi.fn().mockReturnValue(vi.fn()),
+  useLocation: vi.fn().mockReturnValue({ search: '?tags=test%20tag&search=example.com' }),
 }));
 
 describe('<ShortUrlsList />', () => {
   const ShortUrlsTable: ShortUrlsTableType = ({ onTagClick }) => <span onClick={() => onTagClick?.('foo')}>ShortUrlsTable</span>;
   const ShortUrlsFilteringBar = () => <span>ShortUrlsFilteringBar</span>;
-  const listShortUrlsMock = jest.fn();
-  const navigate = jest.fn();
+  const listShortUrlsMock = vi.fn();
+  const navigate = vi.fn();
   const shortUrlsList = Mock.of<ShortUrlsListModel>({
     shortUrls: {
       data: [
@@ -52,7 +52,7 @@ describe('<ShortUrlsList />', () => {
     (useNavigate as any).mockReturnValue(navigate);
   });
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('wraps expected components', () => {
     setUp();

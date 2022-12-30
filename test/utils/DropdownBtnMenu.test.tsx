@@ -5,7 +5,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtnMenu />', () => {
   const setUp = (props: Partial<DropdownBtnMenuProps> = {}) => renderWithEvents(
-    <DropdownBtnMenu {...Mock.of<DropdownBtnMenuProps>({ toggle: jest.fn(), ...props })}>the children</DropdownBtnMenu>,
+    <DropdownBtnMenu {...Mock.of<DropdownBtnMenuProps>({ toggle: vi.fn(), ...props })}>the children</DropdownBtnMenu>,
   );
 
   it('renders expected components', () => {

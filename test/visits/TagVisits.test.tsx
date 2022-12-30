@@ -11,14 +11,14 @@ import { Visit } from '../../src/visits/types';
 import { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({
+vi.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ tag: 'foo' }),
+  useParams: vi.fn().mockReturnValue({ tag: 'foo' }),
 }));
 
 describe('<TagVisits />', () => {
-  const getTagVisitsMock = jest.fn();
-  const exportVisits = jest.fn();
+  const getTagVisitsMock = vi.fn();
+  const exportVisits = vi.fn();
   const tagVisits = Mock.of<TagVisitsStats>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const TagVisits = createTagVisits(
     Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),

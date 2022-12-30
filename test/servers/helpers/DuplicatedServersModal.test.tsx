@@ -5,13 +5,13 @@ import { ServerData } from '../../../src/servers/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {
-  const onDiscard = jest.fn();
-  const onSave = jest.fn();
+  const onDiscard = vi.fn();
+  const onSave = vi.fn();
   const setUp = (duplicatedServers: ServerData[] = []) => renderWithEvents(
     <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
   );
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   it.each([
     [[], 0],

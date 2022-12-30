@@ -7,14 +7,14 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrlResult />', () => {
-  const copyToClipboard = jest.fn();
-  const useTimeoutToggle = jest.fn(() => [false, copyToClipboard]) as TimeoutToggle;
+  const copyToClipboard = vi.fn();
+  const useTimeoutToggle = vi.fn(() => [false, copyToClipboard]) as TimeoutToggle;
   const CreateShortUrlResult = createResult(useTimeoutToggle);
   const setUp = (creation: ShortUrlCreation) => renderWithEvents(
     <CreateShortUrlResult resetCreateShortUrl={() => {}} creation={creation} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders an error when error is true', () => {
     setUp({ error: true, saved: false, saving: false });

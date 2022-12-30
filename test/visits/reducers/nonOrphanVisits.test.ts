@@ -17,13 +17,13 @@ import { VisitsInfo } from '../../../src/visits/reducers/types';
 describe('nonOrphanVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
-  const getNonOrphanVisitsCall = jest.fn();
+  const getNonOrphanVisitsCall = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ getNonOrphanVisits: getNonOrphanVisitsCall });
   const creator = getNonOrphanVisitsCreator(buildShlinkApiClient);
   const { asyncThunk: getNonOrphanVisits, progressChangedAction, largeAction, fallbackToIntervalAction } = creator;
   const { reducer, cancelGetVisits: cancelGetNonOrphanVisits } = nonOrphanVisitsReducerCreator(creator);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => Mock.of<VisitsInfo>(data);
@@ -126,12 +126,12 @@ describe('nonOrphanVisitsReducer', () => {
   });
 
   describe('getNonOrphanVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => Mock.of<ShlinkState>({
       orphanVisits: { cancelLoad: false },
     });
 
-    beforeEach(jest.resetAllMocks);
+    beforeEach(vi.resetAllMocks);
 
     it('dispatches start and error when promise is rejected', async () => {
       getNonOrphanVisitsCall.mockRejectedValue({});

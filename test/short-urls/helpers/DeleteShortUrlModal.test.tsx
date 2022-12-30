@@ -13,8 +13,8 @@ describe('<DeleteShortUrlModal />', () => {
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
   });
-  const deleteShortUrl = jest.fn().mockResolvedValue(undefined);
-  const shortUrlDeleted = jest.fn();
+  const deleteShortUrl = vi.fn().mockResolvedValue(undefined);
+  const shortUrlDeleted = vi.fn();
   const setUp = (shortUrlDeletion: Partial<ShortUrlDeletion>) => renderWithEvents(
     <TestModalWrapper
       renderModal={(args) => (
@@ -24,13 +24,13 @@ describe('<DeleteShortUrlModal />', () => {
           shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
           deleteShortUrl={deleteShortUrl}
           shortUrlDeleted={shortUrlDeleted}
-          resetDeleteShortUrl={jest.fn()}
+          resetDeleteShortUrl={vi.fn()}
         />
       )}
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows generic error when non-threshold error occurs', () => {
     setUp({

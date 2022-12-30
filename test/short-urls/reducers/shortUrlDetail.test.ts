@@ -6,11 +6,11 @@ import { ShlinkState } from '../../../src/container/types';
 import { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {
-  const getShortUrlCall = jest.fn();
+  const getShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ getShortUrl: getShortUrlCall });
   const { reducer, getShortUrlDetail } = shortUrlDetailReducerCreator(buildShlinkApiClient);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const action = (type: string) => Mock.of<ShortUrlDetailAction>({ type });
@@ -45,7 +45,7 @@ describe('shortUrlDetailReducer', () => {
   });
 
   describe('getShortUrlDetail', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const buildGetState = (shortUrlsList?: ShortUrlsList) => () => Mock.of<ShlinkState>({ shortUrlsList });
 
     it('dispatches start and error when promise is rejected', async () => {

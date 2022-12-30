@@ -3,13 +3,13 @@ import { DateRangeRow } from '../../../src/utils/dates/DateRangeRow';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeRow />', () => {
-  const onEndDateChange = jest.fn();
-  const onStartDateChange = jest.fn();
+  const onEndDateChange = vi.fn();
+  const onStartDateChange = vi.fn();
   const setUp = () => renderWithEvents(
     <DateRangeRow onEndDateChange={onEndDateChange} onStartDateChange={onStartDateChange} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders two date inputs', () => {
     setUp();

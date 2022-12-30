@@ -7,17 +7,17 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('<EditTagModal />', () => {
-  const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'green') }));
-  const editTag = jest.fn().mockReturnValue(Promise.resolve());
-  const toggle = jest.fn();
+  const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: vi.fn(() => 'green') }));
+  const editTag = vi.fn().mockReturnValue(Promise.resolve());
+  const toggle = vi.fn();
   const setUp = (tagEdit: Partial<TagEdition> = {}) => {
     const edition = Mock.of<TagEdition>(tagEdit);
     return renderWithEvents(
-      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={jest.fn()} toggle={toggle} />,
+      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={vi.fn()} toggle={toggle} />,
     );
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('allows modal to be toggled with different mechanisms', async () => {
     const { user } = setUp();

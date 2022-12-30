@@ -12,7 +12,7 @@ describe('<ShortUrlVisitsHeader />', () => {
   const shortUrlVisits = Mock.of<ShortUrlVisits>({
     visits: [{}, {}, {}],
   });
-  const goBack = jest.fn();
+  const goBack = vi.fn();
   const setUp = (title?: string | null) => {
     const shortUrlDetail = Mock.of<ShortUrlDetail>({
       shortUrl: {

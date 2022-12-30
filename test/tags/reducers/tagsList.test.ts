@@ -13,12 +13,12 @@ import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
-  const buildShlinkApiClient = jest.fn();
+  const buildShlinkApiClient = vi.fn();
   const listTags = listTagsCreator(buildShlinkApiClient, true);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer } = tagsListReducerCreator(listTags, createShortUrl);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
@@ -127,9 +127,9 @@ describe('tagsListReducer', () => {
   });
 
   describe('listTags', () => {
-    const dispatch = jest.fn();
-    const getState = jest.fn(() => Mock.all<ShlinkState>());
-    const listTagsMock = jest.fn();
+    const dispatch = vi.fn();
+    const getState = vi.fn(() => Mock.all<ShlinkState>());
+    const listTagsMock = vi.fn();
 
     const assertNoAction = async (tagsList: TagsList) => {
       getState.mockReturnValue(Mock.of<ShlinkState>({ tagsList }));

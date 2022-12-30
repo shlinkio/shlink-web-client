@@ -5,12 +5,12 @@ import { VisitsSettings } from '../../src/settings/VisitsSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsSettings />', () => {
-  const setVisitsSettings = jest.fn();
+  const setVisitsSettings = vi.fn();
   const setUp = (settings: Partial<Settings> = {}) => renderWithEvents(
     <VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected components', () => {
     setUp();

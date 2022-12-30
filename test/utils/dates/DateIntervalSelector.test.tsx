@@ -5,7 +5,7 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalSelector />', () => {
   const activeInterval: DateInterval = 'last7Days';
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const setUp = () => renderWithEvents(
     <DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />,
   );

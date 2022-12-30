@@ -13,8 +13,8 @@ import { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {
-  const getShortUrlVisitsMock = jest.fn();
-  const exportVisits = jest.fn();
+  const getShortUrlVisitsMock = vi.fn();
+  const exportVisits = vi.fn();
   const shortUrlVisits = Mock.of<ShortUrlVisitsState>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
   const ShortUrlVisits = createShortUrlVisits(Mock.of<ReportExporter>({ exportVisits }));
   const setUp = () => renderWithEvents(

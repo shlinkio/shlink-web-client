@@ -8,7 +8,7 @@ import { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainDropdown />', () => {
-  const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
+  const editDomainRedirects = vi.fn().mockResolvedValue(undefined);
   const setUp = (domain?: Domain, selectedServer?: SelectedServer) => renderWithEvents(
     <MemoryRouter>
       <DomainDropdown
@@ -19,7 +19,7 @@ describe('<DomainDropdown />', () => {
     </MemoryRouter>,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected menu items', () => {
     setUp();

@@ -14,10 +14,10 @@ import { SelectedServer, ServerData } from '../../../src/servers/data';
 import { parseApiError } from '../../../src/api/utils';
 
 describe('domainsListReducer', () => {
-  const dispatch = jest.fn();
-  const getState = jest.fn();
-  const listDomains = jest.fn();
-  const health = jest.fn();
+  const dispatch = vi.fn();
+  const getState = vi.fn();
+  const listDomains = vi.fn();
+  const health = vi.fn();
   const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ listDomains, health });
   const filteredDomains = [
     Mock.of<Domain>({ domain: 'foo', status: 'validating' }),
@@ -31,7 +31,7 @@ describe('domainsListReducer', () => {
     editDomainRedirectsThunk,
   );
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_DOMAINS_START', () => {

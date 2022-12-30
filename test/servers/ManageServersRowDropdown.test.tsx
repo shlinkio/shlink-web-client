@@ -9,7 +9,7 @@ describe('<ManageServersRowDropdown />', () => {
   const ManageServersRowDropdown = createManageServersRowDropdown(
     ({ isOpen }) => <span>DeleteServerModal {isOpen ? '[OPEN]' : '[CLOSED]'}</span>,
   );
-  const setAutoConnect = jest.fn();
+  const setAutoConnect = vi.fn();
   const setUp = (autoConnect = false) => {
     const server = Mock.of<ServerWithId>({ id: 'abc123', autoConnect });
     return renderWithEvents(
@@ -19,7 +19,7 @@ describe('<ManageServersRowDropdown />', () => {
     );
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected amount of dropdown items', async () => {
     const { user } = setUp();

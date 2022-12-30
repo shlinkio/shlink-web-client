@@ -5,8 +5,8 @@ import { EditDomainRedirectsModal } from '../../../src/domains/helpers/EditDomai
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditDomainRedirectsModal />', () => {
-  const editDomainRedirects = jest.fn().mockResolvedValue(undefined);
-  const toggle = jest.fn();
+  const editDomainRedirects = vi.fn().mockResolvedValue(undefined);
+  const toggle = vi.fn();
   const domain = Mock.of<ShlinkDomain>({
     domain: 'foo.com',
     redirects: {
@@ -17,7 +17,7 @@ describe('<EditDomainRedirectsModal />', () => {
     <EditDomainRedirectsModal domain={domain} isOpen toggle={toggle} editDomainRedirects={editDomainRedirects} />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders domain in header', () => {
     setUp();
