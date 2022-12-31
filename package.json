@@ -108,6 +108,7 @@
     "ts-mockery": "^1.2.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.3",
+    "vite-plugin-chunk-split": "^0.4.7",
     "vite-plugin-pwa": "^0.14.0"
   },
   "browserslist": [
