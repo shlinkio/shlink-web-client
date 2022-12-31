@@ -21,9 +21,8 @@ describe('domainVisitsReducer', () => {
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
   const getDomainVisitsCall = jest.fn();
   const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
-  const creator = getDomainVisitsCreator(buildApiClientMock);
-  const { asyncThunk: getDomainVisits, progressChangedAction, largeAction, fallbackToIntervalAction } = creator;
-  const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(creator);
+  const getDomainVisits = getDomainVisitsCreator(buildApiClientMock);
+  const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(getDomainVisits);
 
   beforeEach(jest.clearAllMocks);
 
@@ -36,7 +35,7 @@ describe('domainVisitsReducer', () => {
     });
 
     it('returns loadingLarge on GET_DOMAIN_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: getDomainVisits.large.toString() });
       expect(loadingLarge).toEqual(true);
     });
 
@@ -130,7 +129,7 @@ describe('domainVisitsReducer', () => {
     });
 
     it('returns new progress on GET_DOMAIN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
+      const state = reducer(undefined, { type: getDomainVisits.progressChanged.toString(), payload: 85 });
 
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
@@ -139,7 +138,7 @@ describe('domainVisitsReducer', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval },
+        { type: getDomainVisits.fallbackToInterval.toString(), payload: fallbackInterval },
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
@@ -198,12 +197,12 @@ describe('domainVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last30Days' },
+        { type: getDomainVisits.fallbackToInterval.toString(), payload: 'last30Days' },
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last180Days' },
+        { type: getDomainVisits.fallbackToInterval.toString(), payload: 'last180Days' },
         3,
       ],
       [[], expect.objectContaining({ type: getDomainVisits.fulfilled.toString() }), 2],
