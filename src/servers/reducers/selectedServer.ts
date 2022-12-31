@@ -1,7 +1,7 @@
 import { createAction, createListenerMiddleware, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { identity, memoizeWith, pipe } from 'ramda';
+import { memoizeWith, pipe } from 'ramda';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
-import { isReachableServer, SelectedServer } from '../data';
+import { isReachableServer, SelectedServer, ServerWithId } from '../data';
 import { ShlinkHealth } from '../../api/types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
@@ -18,8 +18,8 @@ const versionToSemVer = pipe(
 );
 
 const getServerVersion = memoizeWith(
-  identity,
-  async (_serverId: string, health: () => Promise<ShlinkHealth>) => health().then(({ version }) => ({
+  (server: ServerWithId) => `${server.id}_${server.url}_${server.apiKey}`,
+  async (_server: ServerWithId, health: () => Promise<ShlinkHealth>) => health().then(({ version }) => ({
     version: versionToSemVer(version),
     printableVersion: versionToPrintable(version),
   })),
@@ -43,7 +43,7 @@ export const selectServer = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
 
     try {
       const { health } = buildShlinkApiClient(selectedServer);
-      const { version, printableVersion } = await getServerVersion(serverId, health);
+      const { version, printableVersion } = await getServerVersion(selectedServer, health);
 
       return {
         ...selectedServer,
