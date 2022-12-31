@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 * [#753](https://github.com/shlinkio/shlink-web-client/issues/753) Migrated from react-scripts/webpack to vite.
 * [#770](https://github.com/shlinkio/shlink-web-client/issues/770) Updated to latest dependencies.
+* [#741](https://github.com/shlinkio/shlink-web-client/issues/741) Improved `visitsAsyncThunk`, making it wrap pending/fulfilled/rejected actions, as well as custom ones, in a type-safe way.
 
 ### Deprecated
 * *Nothing*

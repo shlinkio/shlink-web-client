@@ -29,11 +29,11 @@ interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends V
 export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded>(
   { typePrefix, createLoaders, getExtraFulfilledPayload, shouldCancel }: VisitsAsyncThunkOptions<T, R>,
 ) => {
-  const progressChangedAction = createAction<number>(`${typePrefix}/progressChanged`);
-  const largeAction = createAction<void>(`${typePrefix}/large`);
-  const fallbackToIntervalAction = createAction<DateInterval>(`${typePrefix}/fallbackToInterval`);
+  const progressChanged = createAction<number>(`${typePrefix}/progressChanged`);
+  const large = createAction<void>(`${typePrefix}/large`);
+  const fallbackToInterval = createAction<DateInterval>(`${typePrefix}/fallbackToInterval`);
 
-  const asyncThunk = createAsyncThunk(typePrefix, async (params: T, { getState, dispatch }): Promise<R> => {
+  const asyncThunk = createAsyncThunk(typePrefix, async (params: T, { getState, dispatch }): Promise<Partial<R>> => {
     const [visitsLoader, lastVisitLoader] = createLoaders(params, getState);
 
     const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
@@ -46,7 +46,7 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
 
       const data = await loadVisitsInParallel(pagesBlocks[index]);
 
-      dispatch(progressChangedAction(calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE)));
+      dispatch(progressChanged(calcProgress(pagesBlocks.length, index + PARALLEL_STARTING_PAGE)));
 
       if (index < pagesBlocks.length - 1) {
         return data.concat(await loadPagesBlocks(pagesBlocks, index + 1));
@@ -68,7 +68,7 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
       const pagesBlocks = splitEvery(PARALLEL_REQUESTS_COUNT, pagesRange);
 
       if (pagination.pagesCount - 1 > PARALLEL_REQUESTS_COUNT) {
-        dispatch(largeAction());
+        dispatch(large());
       }
 
       return data.concat(await loadPagesBlocks(pagesBlocks));
@@ -77,13 +77,14 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
     const [visits, lastVisit] = await Promise.all([loadVisits(), lastVisitLoader()]);
 
     if (!visits.length && lastVisit) {
-      dispatch(fallbackToIntervalAction(dateToMatchingInterval(lastVisit.date)));
+      dispatch(fallbackToInterval(dateToMatchingInterval(lastVisit.date)));
     }
 
-    return { ...getExtraFulfilledPayload(params), visits } as any; // TODO Get rid of this casting
+    return { ...getExtraFulfilledPayload(params), visits };
   });
 
-  return { asyncThunk, progressChangedAction, largeAction, fallbackToIntervalAction };
+  // Enhance the async thunk with extra actions
+  return Object.assign(asyncThunk, { progressChanged, large, fallbackToInterval });
 };
 
 export const lastVisitLoaderForLoader = (
@@ -107,7 +108,7 @@ interface VisitsReducerOptions<State extends VisitsInfo, AT extends ReturnType<t
 export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>>(
   { name, asyncThunkCreator, initialState, filterCreatedVisits }: VisitsReducerOptions<State, AT>,
 ) => {
-  const { asyncThunk, largeAction, fallbackToIntervalAction, progressChangedAction } = asyncThunkCreator;
+  const { pending, rejected, fulfilled, large, progressChanged, fallbackToInterval } = asyncThunkCreator;
   const { reducer, actions } = createSlice({
     name,
     initialState,
@@ -115,17 +116,17 @@ export const createVisitsReducer = <State extends VisitsInfo, AT extends ReturnT
       cancelGetVisits: (state) => ({ ...state, cancelLoad: true }),
     },
     extraReducers: (builder) => {
-      builder.addCase(asyncThunk.pending, () => ({ ...initialState, loading: true }));
-      builder.addCase(asyncThunk.rejected, (_, { error }) => (
+      builder.addCase(pending, () => ({ ...initialState, loading: true }));
+      builder.addCase(rejected, (_, { error }) => (
         { ...initialState, error: true, errorData: parseApiError(error) }
       ));
-      builder.addCase(asyncThunk.fulfilled, (state, { payload }) => (
+      builder.addCase(fulfilled, (state, { payload }) => (
         { ...state, ...payload, loading: false, loadingLarge: false, error: false }
       ));
 
-      builder.addCase(largeAction, (state) => ({ ...state, loadingLarge: true }));
-      builder.addCase(progressChangedAction, (state, { payload: progress }) => ({ ...state, progress }));
-      builder.addCase(fallbackToIntervalAction, (state, { payload: fallbackInterval }) => (
+      builder.addCase(large, (state) => ({ ...state, loadingLarge: true }));
+      builder.addCase(progressChanged, (state, { payload: progress }) => ({ ...state, progress }));
+      builder.addCase(fallbackToInterval, (state, { payload: fallbackInterval }) => (
         { ...state, fallbackInterval }
       ));
 

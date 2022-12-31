@@ -19,9 +19,8 @@ describe('shortUrlVisitsReducer', () => {
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
   const getShortUrlVisitsCall = jest.fn();
   const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShortUrlVisitsCall });
-  const creator = getShortUrlVisitsCreator(buildApiClientMock);
-  const { asyncThunk: getShortUrlVisits, largeAction, progressChangedAction, fallbackToIntervalAction } = creator;
-  const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(creator);
+  const getShortUrlVisits = getShortUrlVisitsCreator(buildApiClientMock);
+  const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(getShortUrlVisits);
 
   beforeEach(jest.clearAllMocks);
 
@@ -34,7 +33,10 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it('returns loadingLarge on GET_SHORT_URL_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
+      const { loadingLarge } = reducer(
+        buildState({ loadingLarge: false }),
+        { type: getShortUrlVisits.large.toString() },
+      );
       expect(loadingLarge).toEqual(true);
     });
 
@@ -130,7 +132,7 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it('returns new progress on GET_SHORT_URL_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
+      const state = reducer(undefined, { type: getShortUrlVisits.progressChanged.toString(), payload: 85 });
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
@@ -138,7 +140,7 @@ describe('shortUrlVisitsReducer', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval },
+        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: fallbackInterval },
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
@@ -220,12 +222,12 @@ describe('shortUrlVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last7Days' },
+        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: 'last7Days' },
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last365Days' },
+        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: 'last365Days' },
         3,
       ],
       [[], expect.objectContaining({ type: getShortUrlVisits.fulfilled.toString() }), 2],
