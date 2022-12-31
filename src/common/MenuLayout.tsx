@@ -38,7 +38,6 @@ export const MenuLayout = (
   useEffect(() => hideSidebar(), [location]);
   useEffect(() => {
     showContent && sidebarPresent();
-
     return () => sidebarNotPresent();
   }, []);
 

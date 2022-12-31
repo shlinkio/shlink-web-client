@@ -7,6 +7,7 @@ import pack from './package.json';
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), VitePWA({
+    mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
     strategies: 'injectManifest',
     srcDir: './src',
     filename: 'service-worker.ts',
