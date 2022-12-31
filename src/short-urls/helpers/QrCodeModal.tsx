@@ -6,8 +6,8 @@ import { ExternalLink } from 'react-external-link';
 import { ShortUrlModalProps } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
-import { buildQrCodeUrl, QrCodeCapabilities, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
-import { supportsNonRestCors, supportsQrErrorCorrection } from '../../utils/helpers/features';
+import { buildQrCodeUrl, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
+import { supportsNonRestCors } from '../../utils/helpers/features';
 import { ImageDownloader } from '../../common/services/ImageDownloader';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
@@ -24,14 +24,10 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
   const [margin, setMargin] = useState(0);
   const [format, setFormat] = useState<QrCodeFormat>('png');
   const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
-  const capabilities: QrCodeCapabilities = useMemo(() => ({
-    errorCorrectionIsSupported: supportsQrErrorCorrection(selectedServer),
-  }), [selectedServer]);
   const displayDownloadBtn = supportsNonRestCors(selectedServer);
-  const willRenderThreeControls = !capabilities.errorCorrectionIsSupported;
   const qrCodeUrl = useMemo(
-    () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }, capabilities),
-    [shortUrl, size, format, margin, errorCorrection, capabilities],
+    () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }),
+    [shortUrl, size, format, margin, errorCorrection],
   );
   const totalSize = useMemo(() => size + margin, [size, margin]);
   const modalSize = useMemo(() => {
@@ -49,7 +45,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
       </ModalHeader>
       <ModalBody>
         <Row>
-          <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
+          <FormGroup className="d-grid col-md-4">
             <label>Size: {size}px</label>
             <input
               type="range"
@@ -61,7 +57,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
               onChange={(e) => setSize(Number(e.target.value))}
             />
           </FormGroup>
-          <FormGroup className={`d-grid ${willRenderThreeControls ? 'col-md-4' : 'col-md-6'}`}>
+          <FormGroup className="d-grid col-md-4">
             <label htmlFor="marginControl">Margin: {margin}px</label>
             <input
               id="marginControl"
@@ -74,14 +70,12 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
               onChange={(e) => setMargin(Number(e.target.value))}
             />
           </FormGroup>
-          <FormGroup className={willRenderThreeControls ? 'col-md-4' : 'col-md-6'}>
+          <FormGroup className="d-grid col-md-4">
             <QrFormatDropdown format={format} setFormat={setFormat} />
           </FormGroup>
-          {capabilities.errorCorrectionIsSupported && (
-            <FormGroup className="col-md-6">
-              <QrErrorCorrectionDropdown errorCorrection={errorCorrection} setErrorCorrection={setErrorCorrection} />
-            </FormGroup>
-          )}
+          <FormGroup className="col-md-6">
+            <QrErrorCorrectionDropdown errorCorrection={errorCorrection} setErrorCorrection={setErrorCorrection} />
+          </FormGroup>
         </Row>
         <div className="text-center">
           <div className="mb-3">

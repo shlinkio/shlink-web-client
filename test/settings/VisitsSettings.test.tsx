@@ -17,6 +17,7 @@ describe('<VisitsSettings />', () => {
 
     expect(screen.getByRole('heading')).toHaveTextContent('Visits');
     expect(screen.getByText('Default interval to load on visits sections:')).toBeInTheDocument();
+    expect(screen.getByText(/^Exclude bots wherever possible/)).toBeInTheDocument();
   });
 
   it.each([
@@ -58,5 +59,37 @@ describe('<VisitsSettings />', () => {
     expect(setVisitsSettings).toHaveBeenNthCalledWith(1, { defaultInterval: 'last7Days' });
     expect(setVisitsSettings).toHaveBeenNthCalledWith(2, { defaultInterval: 'last180Days' });
     expect(setVisitsSettings).toHaveBeenNthCalledWith(3, { defaultInterval: 'yesterday' });
+  });
+
+  it.each([
+    [
+      Mock.all<Settings>(),
+      /The visits coming from potential bots will be included.$/,
+      /The visits coming from potential bots will be excluded.$/,
+    ],
+    [
+      Mock.of<Settings>({ visits: { excludeBots: false } }),
+      /The visits coming from potential bots will be included.$/,
+      /The visits coming from potential bots will be excluded.$/,
+    ],
+    [
+      Mock.of<Settings>({ visits: { excludeBots: true } }),
+      /The visits coming from potential bots will be excluded.$/,
+      /The visits coming from potential bots will be included.$/,
+    ],
+  ])('displays expected helper text for exclude bots control', (settings, expectedText, notExpectedText) => {
+    setUp(settings);
+
+    const visitsComponent = screen.getByText(/^Exclude bots wherever possible/);
+
+    expect(visitsComponent).toHaveTextContent(expectedText);
+    expect(visitsComponent).not.toHaveTextContent(notExpectedText);
+  });
+
+  it('invokes setVisitsSettings when bot exclusion is toggled', async () => {
+    const { user } = setUp();
+
+    await user.click(screen.getByText(/^Exclude bots wherever possible/));
+    expect(setVisitsSettings).toHaveBeenCalledWith(expect.objectContaining({ excludeBots: true }));
   });
 });

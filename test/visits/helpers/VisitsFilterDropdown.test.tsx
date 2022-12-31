@@ -5,10 +5,9 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsFilterDropdown />', () => {
   const onChange = jest.fn();
-  const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true, botsSupported = true) => renderWithEvents(
+  const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true) => renderWithEvents(
     <VisitsFilterDropdown
       isOrphanVisits={isOrphanVisits}
-      botsSupported={botsSupported}
       selected={selected}
       onChange={onChange}
     />,
@@ -68,10 +67,5 @@ describe('<VisitsFilterDropdown />', () => {
     await user.click(screen.getByRole('button', { name: 'Filters' }));
     await user.click(screen.getAllByRole('menuitem')[index]);
     expect(onChange).toHaveBeenCalledWith(expectedSelection);
-  });
-
-  it('does not render the component when neither orphan visits or bots filtering will be displayed', () => {
-    const { container } = setUp({}, false, false);
-    expect(container.firstChild).toBeNull();
   });
 });

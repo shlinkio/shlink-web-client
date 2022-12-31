@@ -4,6 +4,7 @@ import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-urls/ShortUrlsFilteringBar';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { Settings } from '../../src/settings/reducers/settings';
 import { DateRange } from '../../src/utils/helpers/dateIntervals';
 import { formatDate } from '../../src/utils/helpers/date';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -30,6 +31,7 @@ describe('<ShortUrlsFilteringBar />', () => {
           selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
           order={{}}
           handleOrderBy={handleOrderBy}
+          settings={Mock.of<Settings>({ visits: {} })}
         />
       </MemoryRouter>,
     );
@@ -112,6 +114,28 @@ describe('<ShortUrlsFilteringBar />', () => {
     expect(navigate).not.toHaveBeenCalled();
     await user.click(screen.getByLabelText('Change tags mode'));
     expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedRedirectTagsMode));
+  });
+
+  it.each([
+    ['', /Ignore visits from bots/, 'excludeBots=true'],
+    ['excludeBots=false', /Ignore visits from bots/, 'excludeBots=true'],
+    ['excludeBots=true', /Ignore visits from bots/, 'excludeBots=false'],
+    ['', /Exclude with visits reached/, 'excludeMaxVisitsReached=true'],
+    ['excludeMaxVisitsReached=false', /Exclude with visits reached/, 'excludeMaxVisitsReached=true'],
+    ['excludeMaxVisitsReached=true', /Exclude with visits reached/, 'excludeMaxVisitsReached=false'],
+    ['', /Exclude enabled in the past/, 'excludePastValidUntil=true'],
+    ['excludePastValidUntil=false', /Exclude enabled in the past/, 'excludePastValidUntil=true'],
+    ['excludePastValidUntil=true', /Exclude enabled in the past/, 'excludePastValidUntil=false'],
+  ])('allows to toggle filters through filtering dropdown', async (search, menuItemName, expectedQuery) => {
+    const { user } = setUp(search, Mock.of<ReachableServer>({ version: '3.4.0' }));
+    const toggleFilter = async (name: RegExp) => {
+      await user.click(screen.getByRole('button', { name: 'Filters' }));
+      await waitFor(() => screen.findByRole('menu'));
+      await user.click(screen.getByRole('menuitem', { name }));
+    };
+
+    await toggleFilter(menuItemName);
+    expect(navigate).toHaveBeenCalledWith(expect.stringContaining(expectedQuery));
   });
 
   it('handles order through dropdown', async () => {

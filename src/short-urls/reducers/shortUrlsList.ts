@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { assoc, assocPath, last, pipe, reject } from 'ramda';
+import { assocPath, last, pipe, reject } from 'ramda';
 import { shortUrlMatches } from '../helpers';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
 import { createAsyncThunk } from '../../utils/helpers/redux';
@@ -101,18 +101,12 @@ export const shortUrlsListReducerCreator = (
       (state, { payload }) => assocPath(
         ['shortUrls', 'data'],
         state.shortUrls?.data?.map(
-          (currentShortUrl) => {
-            // Find the last of the new visit for this short URL, and pick the amount of visits from it
-            const lastVisit = last(
-              payload.createdVisits.filter(
-                ({ shortUrl }) => shortUrl && shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain),
-              ),
-            );
-
-            return lastVisit?.shortUrl
-              ? assoc('visitsCount', lastVisit.shortUrl.visitsCount, currentShortUrl)
-              : currentShortUrl;
-          },
+          // Find the last of the new visit for this short URL, and pick its short URL. It will have an up-to-date amount of visits.
+          (currentShortUrl) => last(
+            payload.createdVisits.filter(
+              ({ shortUrl }) => shortUrl && shortUrlMatches(currentShortUrl, shortUrl.shortCode, shortUrl.domain),
+            ),
+          )?.shortUrl ?? currentShortUrl,
         ),
         state,
       ),

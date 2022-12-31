@@ -1,4 +1,10 @@
-import { capitalize, nonEmptyValueOrNull, rangeOf } from '../../src/utils/utils';
+import {
+  capitalize,
+  nonEmptyValueOrNull,
+  parseBooleanToString,
+  parseOptionalBooleanToString,
+  rangeOf,
+} from '../../src/utils/utils';
 
 describe('utils', () => {
   describe('rangeOf', () => {
@@ -47,6 +53,25 @@ describe('utils', () => {
       ['with spaces', 'With spaces'],
     ])('sets first letter in uppercase', (value, expectedResult) => {
       expect(capitalize(value)).toEqual(expectedResult);
+    });
+  });
+
+  describe('parseBooleanToString', () => {
+    it.each([
+      [true, 'true'],
+      [false, 'false'],
+    ])('parses value as expected', (value, expectedResult) => {
+      expect(parseBooleanToString(value)).toEqual(expectedResult);
+    });
+  });
+
+  describe('parseOptionalBooleanToString', () => {
+    it.each([
+      [undefined, undefined],
+      [true, 'true'],
+      [false, 'false'],
+    ])('parses value as expected', (value, expectedResult) => {
+      expect(parseOptionalBooleanToString(value)).toEqual(expectedResult);
     });
   });
 });

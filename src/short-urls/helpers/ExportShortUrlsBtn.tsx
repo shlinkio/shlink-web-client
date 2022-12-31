@@ -52,7 +52,7 @@ export const ExportShortUrlsBtn = (
       longUrl: shortUrl.longUrl,
       title: shortUrl.title ?? '',
       tags: shortUrl.tags.join(','),
-      visits: shortUrl.visitsCount,
+      visits: shortUrl?.visitsSummary?.total ?? shortUrl.visitsCount,
     })));
     stopLoading();
   };

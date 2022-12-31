@@ -13,7 +13,7 @@ import { SelectedServer } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 
-export interface ShortUrlsRowMenuProps {
+interface ShortUrlsRowMenuProps {
   selectedServer: SelectedServer;
   shortUrl: ShortUrl;
 }
@@ -51,3 +51,5 @@ export const ShortUrlsRowMenu = (
     </DropdownBtnMenu>
   );
 };
+
+export type ShortUrlsRowMenuType = ReturnType<typeof ShortUrlsRowMenu>;

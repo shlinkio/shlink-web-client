@@ -77,7 +77,6 @@ describe('<MenuLayout />', () => {
     ['3.1.0' as SemVer, '/domain/domain.com/visits/foo', 'DomainVisits'],
     ['2.10.0' as SemVer, '/non-orphan-visits/foo', 'Oops! We could not find requested route.'],
     ['3.0.0' as SemVer, '/non-orphan-visits/foo', 'NonOrphanVisits'],
-    ['2.7.0' as SemVer, '/manage-domains', 'Oops! We could not find requested route.'],
     ['2.8.0' as SemVer, '/manage-domains', 'ManageDomains'],
   ])(
     'renders expected component based on location and server version',

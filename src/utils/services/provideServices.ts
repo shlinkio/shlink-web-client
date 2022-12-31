@@ -5,15 +5,15 @@ import { ColorGenerator } from './ColorGenerator';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
 
 const provideServices = (bottle: Bottle) => {
-  bottle.constant('localStorage', (global as any).localStorage);
+  bottle.constant('localStorage', window.localStorage);
   bottle.service('Storage', LocalStorage, 'localStorage');
   bottle.service('ColorGenerator', ColorGenerator, 'Storage');
 
   bottle.constant('csvToJson', csvToJson);
   bottle.constant('jsonToCsv', jsonToCsv);
 
-  bottle.constant('setTimeout', global.setTimeout);
-  bottle.constant('clearTimeout', global.clearTimeout);
+  bottle.constant('setTimeout', window.setTimeout);
+  bottle.constant('clearTimeout', window.clearTimeout);
   bottle.serviceFactory('useTimeoutToggle', useTimeoutToggle, 'setTimeout', 'clearTimeout');
 };
 

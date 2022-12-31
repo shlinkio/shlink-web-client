@@ -10,10 +10,6 @@
   word-break: break-all;
 }
 
-.short-urls-row__cell--relative {
-  position: relative;
-}
-
 .short-urls-row__cell--indivisible {
   @media (min-width: $lgMin) {
     white-space: nowrap;

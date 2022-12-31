@@ -28,19 +28,17 @@ export interface ShortUrlCreationSettings {
   forwardQuery?: boolean;
 }
 
-export type TagsMode = 'cards' | 'list';
-
 export interface UiSettings {
   theme: Theme;
 }
 
 export interface VisitsSettings {
   defaultInterval: DateInterval;
+  excludeBots?: boolean;
 }
 
 export interface TagsSettings {
   defaultOrdering?: TagsOrder;
-  defaultMode?: TagsMode;
 }
 
 export interface ShortUrlsListSettings {

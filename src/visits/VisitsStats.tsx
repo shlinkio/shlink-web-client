@@ -11,8 +11,6 @@ import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Settings } from '../settings/reducers/settings';
-import { SelectedServer } from '../servers/data';
-import { supportsBotVisits } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
 import { NavPillItem, NavPills } from '../utils/NavPills';
 import { ExportBtn } from '../utils/ExportBtn';
@@ -33,7 +31,6 @@ export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
   settings: Settings;
-  selectedServer: SelectedServer;
   cancelGetVisits: () => void;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
@@ -63,7 +60,6 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   cancelGetVisits,
   settings,
   exportCsv,
-  selectedServer,
   isOrphanVisits = false,
 }) => {
   const { visits, loading, loadingLarge, error, errorData, progress, fallbackInterval } = visitsInfo;
@@ -82,7 +78,6 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   );
   const [highlightedVisits, setHighlightedVisits] = useState<NormalizedVisit[]>([]);
   const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
-  const botsSupported = supportsBotVisits(selectedServer);
   const isFirstLoad = useRef(true);
   const { search } = useLocation();
 
@@ -92,6 +87,10 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     () => processStatsFromVisits(normalizedVisits),
     [normalizedVisits],
   );
+  const resolvedFilter = useMemo(() => ({
+    ...visitsFilter,
+    excludeBots: visitsFilter.excludeBots ?? settings.visits?.excludeBots,
+  }), [visitsFilter]);
   const mapLocations = values(citiesForMap);
 
   const setSelectedVisits = (selectedVisits: NormalizedVisit[]) => {
@@ -115,7 +114,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   useEffect(() => cancelGetVisits, []);
   useEffect(() => {
     const resolvedDateRange = !isFirstLoad.current ? dateRange : (dateRange ?? toDateRange(initialInterval.current));
-    getVisits({ dateRange: resolvedDateRange, filter: visitsFilter }, isFirstLoad.current);
+    getVisits({ dateRange: resolvedDateRange, filter: resolvedFilter }, isFirstLoad.current);
     isFirstLoad.current = false;
   }, [dateRange, visitsFilter]);
   useEffect(() => {
@@ -267,7 +266,6 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
                     selectedVisits={highlightedVisits}
                     setSelectedVisits={setSelectedVisits}
                     isOrphanVisits={isOrphanVisits}
-                    selectedServer={selectedServer}
                   />
                 </div>
               )}
@@ -300,8 +298,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
               <VisitsFilterDropdown
                 className="ms-0 ms-md-2 mt-3 mt-md-0"
                 isOrphanVisits={isOrphanVisits}
-                botsSupported={botsSupported}
-                selected={visitsFilter}
+                selected={resolvedFilter}
                 onChange={(newVisitsFilter) => updateFiltering({ visitsFilter: newVisitsFilter })}
               />
             </div>

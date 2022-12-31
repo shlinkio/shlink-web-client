@@ -11,12 +11,5 @@ export const migrateDeprecatedSettings = (state: Partial<ShlinkState>): Partial<
     state.settings.visits && (state.settings.visits.defaultInterval = 'last180Days');
   }
 
-  // The "tags display mode" option has been moved from "ui" to "tags"
-  state.settings.tags = {
-    ...state.settings.tags,
-    defaultMode: state.settings.tags?.defaultMode ?? (state.settings.ui as any)?.tagsMode,
-  };
-  state.settings.ui && delete (state.settings.ui as any).tagsMode;
-
   return state;
 };

@@ -16,12 +16,11 @@ jobs:
       - name: Use node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16.15
+          node-version: 18.12
       - name: Build
         run: |
           npm ci --force && \
           node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
-          rm src/service-worker.ts && \
           npm run build
       - name: Deploy preview
         uses: shlinkio/deploy-preview-action@v1.0.1

@@ -9,7 +9,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = jest.fn();
-  const TagsListComp = createTagsList(() => <>TagsCards</>, () => <>TagsTable</>);
+  const TagsListComp = createTagsList(() => <>TagsTable</>);
   const setUp = (tagsList: Partial<TagsList>) => renderWithEvents(
     <TagsListComp
       {...Mock.all<TagsListProps>()}
@@ -43,19 +43,6 @@ describe('<TagsList />', () => {
     expect(screen.getByText('No tags found')).toBeInTheDocument();
     expect(screen.queryByText('Error loading tags :(')).not.toBeInTheDocument();
     expect(screen.queryByText('Loading')).not.toBeInTheDocument();
-  });
-
-  it('renders proper component based on the display mode', async () => {
-    const { user } = setUp({ filteredTags: ['foo', 'bar'], stats: {} });
-
-    expect(screen.getByText('TagsCards')).toBeInTheDocument();
-    expect(screen.queryByText('TagsTable')).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole('button', { name: /^Display mode/ }));
-    await user.click(screen.getByRole('menuitem', { name: /List/ }));
-
-    expect(screen.queryByText('TagsCards')).not.toBeInTheDocument();
-    expect(screen.getByText('TagsTable')).toBeInTheDocument();
   });
 
   it('triggers tags filtering when search field changes', async () => {

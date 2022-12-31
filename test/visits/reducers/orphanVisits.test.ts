@@ -19,9 +19,8 @@ describe('orphanVisitsReducer', () => {
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
   const getOrphanVisitsCall = jest.fn();
   const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getOrphanVisits: getOrphanVisitsCall });
-  const creator = getOrphanVisitsCreator(buildShlinkApiClientMock);
-  const { asyncThunk: getOrphanVisits, largeAction, progressChangedAction, fallbackToIntervalAction } = creator;
-  const { reducer, cancelGetVisits: cancelGetOrphanVisits } = orphanVisitsReducerCreator(creator);
+  const getOrphanVisits = getOrphanVisitsCreator(buildShlinkApiClientMock);
+  const { reducer, cancelGetVisits: cancelGetOrphanVisits } = orphanVisitsReducerCreator(getOrphanVisits);
 
   beforeEach(jest.clearAllMocks);
 
@@ -34,7 +33,7 @@ describe('orphanVisitsReducer', () => {
     });
 
     it('returns loadingLarge on GET_ORPHAN_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: getOrphanVisits.large.toString() });
       expect(loadingLarge).toEqual(true);
     });
 
@@ -110,7 +109,7 @@ describe('orphanVisitsReducer', () => {
     });
 
     it('returns new progress on GET_ORPHAN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
+      const state = reducer(undefined, { type: getOrphanVisits.progressChanged.toString(), payload: 85 });
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
@@ -118,7 +117,7 @@ describe('orphanVisitsReducer', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: fallbackToIntervalAction.toString(), payload: fallbackInterval },
+        { type: getOrphanVisits.fallbackToInterval.toString(), payload: fallbackInterval },
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
@@ -176,12 +175,12 @@ describe('orphanVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last7Days' },
+        { type: getOrphanVisits.fallbackToInterval.toString(), payload: 'last7Days' },
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last365Days' },
+        { type: getOrphanVisits.fallbackToInterval.toString(), payload: 'last365Days' },
         3,
       ],
       [[], expect.objectContaining({ type: getOrphanVisits.fulfilled.toString() }), 2],

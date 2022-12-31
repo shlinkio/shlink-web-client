@@ -21,7 +21,6 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
   orphanVisits,
   cancelGetOrphanVisits,
   settings,
-  selectedServer,
 }: OrphanVisitsProps) => {
   const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
@@ -36,7 +35,6 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       visitsInfo={orphanVisits}
       settings={settings}
       exportCsv={exportCsv}
-      selectedServer={selectedServer}
       isOrphanVisits
     >
       <VisitsHeader title="Orphan visits" goBack={goBack} visits={orphanVisits.visits} />

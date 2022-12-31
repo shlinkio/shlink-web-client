@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import { supportsDomainRedirects, supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
+import { supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
 import { isReachableServer } from '../servers/data';
 import { NotFound } from './NotFound';
 import { AsideMenuProps } from './AsideMenu';
@@ -38,7 +38,6 @@ export const MenuLayout = (
   useEffect(() => hideSidebar(), [location]);
   useEffect(() => {
     showContent && sidebarPresent();
-
     return () => sidebarNotPresent();
   }, []);
 
@@ -47,7 +46,6 @@ export const MenuLayout = (
   }
 
   const addNonOrphanVisitsRoute = supportsNonOrphanVisits(selectedServer);
-  const addManageDomainsRoute = supportsDomainRedirects(selectedServer);
   const addDomainVisitsRoute = supportsDomainVisits(selectedServer);
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
@@ -73,7 +71,7 @@ export const MenuLayout = (
                 <Route path="/orphan-visits/*" element={<OrphanVisits />} />
                 {addNonOrphanVisitsRoute && <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />}
                 <Route path="/manage-tags" element={<TagsList />} />
-                {addManageDomainsRoute && <Route path="/manage-domains" element={<ManageDomains />} />}
+                <Route path="/manage-domains" element={<ManageDomains />} />
                 <Route
                   path="*"
                   element={<NotFound to={`/server/${selectedServer.id}/list-short-urls/1`}>List short URLs</NotFound>}

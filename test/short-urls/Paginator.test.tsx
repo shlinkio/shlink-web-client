@@ -18,9 +18,11 @@ describe('<Paginator />', () => {
     [buildPaginator()],
     [buildPaginator(0)],
     [buildPaginator(1)],
-  ])('renders nothing if the number of pages is below 2', (paginator) => {
+  ])('renders an empty gap if the number of pages is below 2', (paginator) => {
     const { container } = setUp(paginator);
-    expect(container.firstChild).toBeNull();
+
+    expect(container.firstChild).toBeEmptyDOMElement();
+    expect(container.firstChild).toHaveClass('pb-3');
   });
 
   it.each([

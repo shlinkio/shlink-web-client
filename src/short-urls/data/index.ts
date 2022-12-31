@@ -31,7 +31,9 @@ export interface ShortUrl {
   shortUrl: string;
   longUrl: string;
   dateCreated: string;
-  visitsCount: number;
+  /** @deprecated */
+  visitsCount: number; // Deprecated since Shlink 3.4.0
+  visitsSummary?: ShortUrlVisitsSummary; // Optional only before Shlink 3.4.0
   meta: Required<Nullable<ShortUrlMeta>>;
   tags: string[];
   domain: string | null;
@@ -44,6 +46,12 @@ export interface ShortUrlMeta {
   validSince?: string;
   validUntil?: string;
   maxVisits?: number;
+}
+
+export interface ShortUrlVisitsSummary {
+  total: number;
+  nonBots: number;
+  bots: number;
 }
 
 export interface ShortUrlModalProps {
@@ -71,4 +79,10 @@ export interface ExportableShortUrl {
   longUrl: string;
   tags: string;
   visits: number;
+}
+
+export interface ShortUrlsFilter {
+  excludeBots?: boolean;
+  excludeMaxVisitsReached?: boolean;
+  excludePastValidUntil?: boolean;
 }

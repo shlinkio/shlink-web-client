@@ -1,6 +1,7 @@
 import { Visit } from '../../visits/types';
 import { OptionalString } from '../../utils/utils';
-import { ShortUrl, ShortUrlMeta, ShortUrlsOrder } from '../../short-urls/data';
+import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import { Order } from '../../utils/helpers/ordering';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -88,17 +89,26 @@ export interface ShlinkDomainsResponse {
 
 export type TagsFilteringMode = 'all' | 'any';
 
+type ShlinkShortUrlsOrderableFields = 'dateCreated' | 'shortCode' | 'longUrl' | 'title' | 'visits' | 'nonBotVisits';
+
+export type ShlinkShortUrlsOrder = Order<ShlinkShortUrlsOrderableFields>;
+
 export interface ShlinkShortUrlsListParams {
   page?: string;
   itemsPerPage?: number;
-  tags?: string[];
   searchTerm?: string;
+  tags?: string[];
+  tagsMode?: TagsFilteringMode;
+  orderBy?: ShlinkShortUrlsOrder;
   startDate?: string;
   endDate?: string;
-  orderBy?: ShortUrlsOrder;
-  tagsMode?: TagsFilteringMode;
+  excludeMaxVisitsReached?: boolean;
+  excludePastValidUntil?: boolean;
 }
 
-export interface ShlinkShortUrlsListNormalizedParams extends Omit<ShlinkShortUrlsListParams, 'orderBy'> {
+export interface ShlinkShortUrlsListNormalizedParams extends
+  Omit<ShlinkShortUrlsListParams, 'orderBy' | 'excludeMaxVisitsReached' | 'excludePastValidUntil'> {
   orderBy?: string;
+  excludeMaxVisitsReached?: 'true';
+  excludePastValidUntil?: 'true';
 }

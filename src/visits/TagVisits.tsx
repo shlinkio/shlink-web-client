@@ -23,7 +23,6 @@ export const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: Repo
   tagVisits,
   cancelGetTagVisits,
   settings,
-  selectedServer,
 }: TagVisitsProps) => {
   const goBack = useGoBack();
   const { tag = '' } = useParams();
@@ -38,7 +37,6 @@ export const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: Repo
       visitsInfo={tagVisits}
       settings={settings}
       exportCsv={exportCsv}
-      selectedServer={selectedServer}
     >
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />
     </VisitsStats>

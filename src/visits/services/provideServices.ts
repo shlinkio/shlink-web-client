@@ -22,31 +22,31 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'ReportExporter');
   bottle.decorator('ShortUrlVisits', connect(
-    ['shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings', 'selectedServer'],
+    ['shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings'],
     ['getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator', 'ReportExporter');
   bottle.decorator('TagVisits', connect(
-    ['tagVisits', 'mercureInfo', 'settings', 'selectedServer'],
+    ['tagVisits', 'mercureInfo', 'settings'],
     ['getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('DomainVisits', DomainVisits, 'ReportExporter');
   bottle.decorator('DomainVisits', connect(
-    ['domainVisits', 'mercureInfo', 'settings', 'selectedServer'],
+    ['domainVisits', 'mercureInfo', 'settings'],
     ['getDomainVisits', 'cancelGetDomainVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('OrphanVisits', OrphanVisits, 'ReportExporter');
   bottle.decorator('OrphanVisits', connect(
-    ['orphanVisits', 'mercureInfo', 'settings', 'selectedServer'],
+    ['orphanVisits', 'mercureInfo', 'settings'],
     ['getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('NonOrphanVisits', NonOrphanVisits, 'ReportExporter');
   bottle.decorator('NonOrphanVisits', connect(
-    ['nonOrphanVisits', 'mercureInfo', 'settings', 'selectedServer'],
+    ['nonOrphanVisits', 'mercureInfo', 'settings'],
     ['getNonOrphanVisits', 'cancelGetNonOrphanVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
@@ -54,24 +54,19 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('VisitsParser', () => visitsParser);
 
   // Actions
-  bottle.serviceFactory('getShortUrlVisitsCreator', getShortUrlVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getShortUrlVisits', prop('asyncThunk'), 'getShortUrlVisitsCreator');
+  bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetShortUrlVisits', prop('cancelGetVisits'), 'shortUrlVisitsReducerCreator');
 
-  bottle.serviceFactory('getTagVisitsCreator', getTagVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getTagVisits', prop('asyncThunk'), 'getTagVisitsCreator');
+  bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetTagVisits', prop('cancelGetVisits'), 'tagVisitsReducerCreator');
 
-  bottle.serviceFactory('getDomainVisitsCreator', getDomainVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getDomainVisits', prop('asyncThunk'), 'getDomainVisitsCreator');
+  bottle.serviceFactory('getDomainVisits', getDomainVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetDomainVisits', prop('cancelGetVisits'), 'domainVisitsReducerCreator');
 
-  bottle.serviceFactory('getOrphanVisitsCreator', getOrphanVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getOrphanVisits', prop('asyncThunk'), 'getOrphanVisitsCreator');
+  bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetOrphanVisits', prop('cancelGetVisits'), 'orphanVisitsReducerCreator');
 
-  bottle.serviceFactory('getNonOrphanVisitsCreator', getNonOrphanVisits, 'buildShlinkApiClient');
-  bottle.serviceFactory('getNonOrphanVisits', prop('asyncThunk'), 'getNonOrphanVisitsCreator');
+  bottle.serviceFactory('getNonOrphanVisits', getNonOrphanVisits, 'buildShlinkApiClient');
   bottle.serviceFactory('cancelGetNonOrphanVisits', prop('cancelGetVisits'), 'nonOrphanVisitsReducerCreator');
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
@@ -81,19 +76,19 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('visitsOverviewReducerCreator', visitsOverviewReducerCreator, 'loadVisitsOverview');
   bottle.serviceFactory('visitsOverviewReducer', prop('reducer'), 'visitsOverviewReducerCreator');
 
-  bottle.serviceFactory('domainVisitsReducerCreator', domainVisitsReducerCreator, 'getDomainVisitsCreator');
+  bottle.serviceFactory('domainVisitsReducerCreator', domainVisitsReducerCreator, 'getDomainVisits');
   bottle.serviceFactory('domainVisitsReducer', prop('reducer'), 'domainVisitsReducerCreator');
 
-  bottle.serviceFactory('nonOrphanVisitsReducerCreator', nonOrphanVisitsReducerCreator, 'getNonOrphanVisitsCreator');
+  bottle.serviceFactory('nonOrphanVisitsReducerCreator', nonOrphanVisitsReducerCreator, 'getNonOrphanVisits');
   bottle.serviceFactory('nonOrphanVisitsReducer', prop('reducer'), 'nonOrphanVisitsReducerCreator');
 
-  bottle.serviceFactory('orphanVisitsReducerCreator', orphanVisitsReducerCreator, 'getOrphanVisitsCreator');
+  bottle.serviceFactory('orphanVisitsReducerCreator', orphanVisitsReducerCreator, 'getOrphanVisits');
   bottle.serviceFactory('orphanVisitsReducer', prop('reducer'), 'orphanVisitsReducerCreator');
 
-  bottle.serviceFactory('shortUrlVisitsReducerCreator', shortUrlVisitsReducerCreator, 'getShortUrlVisitsCreator');
+  bottle.serviceFactory('shortUrlVisitsReducerCreator', shortUrlVisitsReducerCreator, 'getShortUrlVisits');
   bottle.serviceFactory('shortUrlVisitsReducer', prop('reducer'), 'shortUrlVisitsReducerCreator');
 
-  bottle.serviceFactory('tagVisitsReducerCreator', tagVisitsReducerCreator, 'getTagVisitsCreator');
+  bottle.serviceFactory('tagVisitsReducerCreator', tagVisitsReducerCreator, 'getTagVisits');
   bottle.serviceFactory('tagVisitsReducer', prop('reducer'), 'tagVisitsReducerCreator');
 };
 

@@ -12,7 +12,6 @@ import { NavLink, NavLinkProps, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import { isServerWithId, SelectedServer } from '../servers/data';
-import { supportsDomainRedirects } from '../utils/helpers/features';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {
@@ -22,6 +21,7 @@ export interface AsideMenuProps {
 
 interface AsideMenuItemProps extends NavLinkProps {
   to: string;
+  className?: string;
 }
 
 const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...rest }) => (
@@ -40,7 +40,6 @@ export const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
   const hasId = isServerWithId(selectedServer);
   const serverId = hasId ? selectedServer.id : '';
   const { pathname } = useLocation();
-  const addManageDomainsLink = supportsDomainRedirects(selectedServer);
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
@@ -68,12 +67,10 @@ export const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
           <FontAwesomeIcon fixedWidth icon={tagsIcon} />
           <span className="aside-menu__item-text">Manage tags</span>
         </AsideMenuItem>
-        {addManageDomainsLink && (
-          <AsideMenuItem to={buildPath('/manage-domains')}>
-            <FontAwesomeIcon fixedWidth icon={domainsIcon} />
-            <span className="aside-menu__item-text">Manage domains</span>
-          </AsideMenuItem>
-        )}
+        <AsideMenuItem to={buildPath('/manage-domains')}>
+          <FontAwesomeIcon fixedWidth icon={domainsIcon} />
+          <span className="aside-menu__item-text">Manage domains</span>
+        </AsideMenuItem>
         <AsideMenuItem to={buildPath('/edit')} className="aside-menu__item--push">
           <FontAwesomeIcon fixedWidth icon={editIcon} />
           <span className="aside-menu__item-text">Edit this server</span>
