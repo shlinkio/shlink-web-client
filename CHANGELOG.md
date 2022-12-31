@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.9.1] - 2022-12-31
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#787](https://github.com/shlinkio/shlink-web-client/issues/787) Fixed wrong base path set in vite config when homepage is set as empty string.
+
+
 ## [3.9.0] - 2022-12-31
 ### Added
 * [#750](https://github.com/shlinkio/shlink-web-client/issues/750) Added new icon indicators telling if a short URL can be normally visited, it received the max amount of visits, is still not enabled, etc.
