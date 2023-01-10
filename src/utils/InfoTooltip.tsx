@@ -1,9 +1,9 @@
-import { FC, PropsWithChildren, useRef } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import { Placement } from '@popperjs/core';
-import { mutableRefToElementRef } from './helpers/components';
+import { useElementRef } from './helpers/hooks';
 
 export type InfoTooltipProps = PropsWithChildren<{
   className?: string;
@@ -11,14 +11,14 @@ export type InfoTooltipProps = PropsWithChildren<{
 }>;
 
 export const InfoTooltip: FC<InfoTooltipProps> = ({ className = '', placement, children }) => {
-  const ref = useRef<HTMLSpanElement | undefined>();
+  const ref = useElementRef<HTMLSpanElement>();
 
   return (
     <>
-      <span className={className} ref={mutableRefToElementRef(ref)}>
+      <span className={className} ref={ref}>
         <FontAwesomeIcon icon={infoIcon} />
       </span>
-      <UncontrolledTooltip target={(() => ref.current) as any} placement={placement}>{children}</UncontrolledTooltip>
+      <UncontrolledTooltip target={ref} placement={placement}>{children}</UncontrolledTooltip>
     </>
   );
 };

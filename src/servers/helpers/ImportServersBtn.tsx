@@ -1,10 +1,9 @@
-import { useRef, ChangeEvent, useState, useEffect, FC, PropsWithChildren } from 'react';
+import { ChangeEvent, useState, useEffect, FC, PropsWithChildren } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { complement, pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToggle } from '../../utils/helpers/hooks';
-import { mutableRefToElementRef } from '../../utils/helpers/components';
+import { useElementRef, useToggle } from '../../utils/helpers/hooks';
 import { ServersImporter } from '../services/ServersImporter';
 import { ServerData, ServersMap } from '../data';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
@@ -34,7 +33,7 @@ export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC
   tooltipPlacement = 'bottom',
   className = '',
 }) => {
-  const ref = useRef<HTMLInputElement>();
+  const ref = useElementRef<HTMLInputElement>();
   const [serversToCreate, setServersToCreate] = useState<ServerData[] | undefined>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
@@ -79,7 +78,7 @@ export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC
         type="file"
         accept="text/csv"
         className="import-servers-btn__csv-select"
-        ref={mutableRefToElementRef(ref)}
+        ref={ref}
         onChange={onFile}
       />
 
