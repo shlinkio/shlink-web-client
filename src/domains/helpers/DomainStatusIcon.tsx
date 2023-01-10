@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +8,8 @@ import {
   faCircleNotch as loadingStatusIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { MediaMatcher } from '../../utils/types';
-import { mutableRefToElementRef } from '../../utils/helpers/components';
 import { DomainStatus } from '../data';
+import { useElementRef } from '../../utils/helpers/hooks';
 
 interface DomainStatusIconProps {
   status: DomainStatus;
@@ -17,7 +17,7 @@ interface DomainStatusIconProps {
 }
 
 export const DomainStatusIcon: FC<DomainStatusIconProps> = ({ status, matchMedia = window.matchMedia }) => {
-  const ref = useRef<HTMLSpanElement>();
+  const ref = useElementRef<HTMLSpanElement>();
   const matchesMobile = () => matchMedia('(max-width: 991px)').matches;
   const [isMobile, setIsMobile] = useState<boolean>(matchesMobile());
 
@@ -35,13 +35,13 @@ export const DomainStatusIcon: FC<DomainStatusIconProps> = ({ status, matchMedia
 
   return (
     <>
-      <span ref={mutableRefToElementRef(ref)}>
+      <span ref={ref}>
         {status === 'valid'
           ? <FontAwesomeIcon fixedWidth icon={checkIcon} className="text-muted" />
           : <FontAwesomeIcon fixedWidth icon={invalidIcon} className="text-danger" />}
       </span>
       <UncontrolledTooltip
-        target={(() => ref.current) as any}
+        target={ref}
         placement={isMobile ? 'top-start' : 'left'}
         autohide={status === 'valid'}
       >
