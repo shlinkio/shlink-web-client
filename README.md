@@ -5,7 +5,7 @@
 [![GitHub release](https://img.shields.io/github/release/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/releases/latest)
 [![Docker pulls](https://img.shields.io/docker/pulls/shlinkio/shlink-web-client.svg?logo=docker&style=flat-square)](https://hub.docker.com/r/shlinkio/shlink-web-client/)
 [![GitHub license](https://img.shields.io/github/license/shlinkio/shlink-web-client.svg?style=flat-square)](https://github.com/shlinkio/shlink-web-client/blob/main/LICENSE)
-[![Twitter](https://img.shields.io/twitter/follow/shlinkio?color=blue&label=follow&logo=twitter&style=flat-square)](https://twitter.com/shlinkio)
+[![Twitter](https://img.shields.io/badge/follow-shlinkio-blue.svg?style=flat-square&logo=twitter&color=blue)](https://twitter.com/shlinkio)
 [![Mastodon](https://img.shields.io/mastodon/follow/109329425426175098?color=%236364ff&domain=https%3A%2F%2Ffosstodon.org&label=follow&logo=mastodon&logoColor=white&style=flat-square)](https://fosstodon.org/@shlinkio)
 [![Paypal Donate](https://img.shields.io/badge/Donate-paypal-blue.svg?style=flat-square&logo=paypal&colorA=cccccc)](https://slnk.to/donate)
 
