@@ -91,7 +91,7 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-tag-autocomplete": "^6.3.0",
     "@types/uuid": "^8.3.4",
-    "@vitejs/plugin-react": "^3.0.0",
+    "@vitejs/plugin-react": "^3.1.0",
     "adm-zip": "^0.5.10",
     "babel-jest": "^29.3.1",
     "chalk": "^5.2.0",
@@ -107,8 +107,8 @@
     "stylelint": "^14.16.0",
     "ts-mockery": "^1.2.0",
     "typescript": "^4.9.4",
-    "vite": "^4.0.3",
-    "vite-plugin-pwa": "^0.14.0"
+    "vite": "^4.1.1",
+    "vite-plugin-pwa": "^0.14.1"
   },
   "browserslist": [
     ">0.2%",
