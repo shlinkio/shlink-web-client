@@ -16,7 +16,7 @@ describe('<ErrorHandler />', () => {
   const ErrorHandler = createErrorHandler(window, cons);
 
   beforeEach(() => {
-    jest.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
+    vi.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
   });
   afterEach(vi.resetAllMocks);
 

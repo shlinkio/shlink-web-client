@@ -3,7 +3,7 @@ import matchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
 import ResizeObserver from 'resize-observer-polyfill';
 import { setAutoFreeze } from 'immer';
-// import 'vitest-canvas-mock';
+import 'vitest-canvas-mock';
 import 'chart.js/auto';
 
 // extends Vitest's expect method with methods from react-testing-library
