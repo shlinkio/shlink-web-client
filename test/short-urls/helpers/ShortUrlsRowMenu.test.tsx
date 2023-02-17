@@ -11,7 +11,7 @@ describe('<ShortUrlsRowMenu />', () => {
   const selectedServer = Mock.of<ReachableServer>({ id: 'abc123' });
   const shortUrl = Mock.of<ShortUrl>({
     shortCode: 'abc123',
-    shortUrl: 'https://doma.in/abc123',
+    shortUrl: 'https://s.test/abc123',
   });
   const setUp = () => renderWithEvents(
     <MemoryRouter>

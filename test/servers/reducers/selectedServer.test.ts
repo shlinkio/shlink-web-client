@@ -39,11 +39,12 @@ describe('selectedServerReducer', () => {
   });
 
   describe('selectServer', () => {
-    const selectedServer = {
-      id: 'abc123',
-    };
     const version = '1.19.0';
-    const createGetStateMock = (id: string) => vi.fn().mockReturnValue({ servers: { [id]: selectedServer } });
+    const createGetStateMock = (id: string) => vi.fn().mockReturnValue({
+      servers: {
+        [id]: { id },
+      },
+    });
 
     it.each([
       [version, version, `v${version}`],
@@ -53,7 +54,7 @@ describe('selectedServerReducer', () => {
       const id = uuid();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = {
-        ...selectedServer,
+        id,
         version: expectedVersion,
         printableVersion: expectedPrintableVersion,
       };
@@ -84,7 +85,7 @@ describe('selectedServerReducer', () => {
     it('dispatches error when health endpoint fails', async () => {
       const id = uuid();
       const getState = createGetStateMock(id);
-      const expectedSelectedServer = Mock.of<NonReachableServer>({ ...selectedServer, serverNotReachable: true });
+      const expectedSelectedServer = Mock.of<NonReachableServer>({ id, serverNotReachable: true });
 
       health.mockRejectedValue({});
 

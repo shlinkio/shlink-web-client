@@ -19,9 +19,8 @@ describe('tagVisitsReducer', () => {
   const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
   const getTagVisitsCall = vi.fn();
   const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
-  const creator = getTagVisitsCreator(buildShlinkApiClientMock);
-  const { asyncThunk: getTagVisits, fallbackToIntervalAction, largeAction, progressChangedAction } = creator;
-  const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(creator);
+  const getTagVisits = getTagVisitsCreator(buildShlinkApiClientMock);
+  const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(getTagVisits);
 
   beforeEach(vi.clearAllMocks);
 
@@ -34,7 +33,7 @@ describe('tagVisitsReducer', () => {
     });
 
     it('returns loadingLarge on GET_TAG_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: largeAction.toString() });
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: getTagVisits.large.toString() });
       expect(loadingLarge).toEqual(true);
     });
 
@@ -130,13 +129,13 @@ describe('tagVisitsReducer', () => {
     });
 
     it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: progressChangedAction.toString(), payload: 85 });
+      const state = reducer(undefined, { type: getTagVisits.progressChanged.toString(), payload: 85 });
       expect(state).toEqual(expect.objectContaining({ progress: 85 }));
     });
 
     it('returns fallbackInterval on GET_TAG_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(undefined, { type: fallbackToIntervalAction.toString(), payload: fallbackInterval });
+      const state = reducer(undefined, { type: getTagVisits.fallbackToInterval.toString(), payload: fallbackInterval });
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
@@ -194,12 +193,12 @@ describe('tagVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last30Days' },
+        { type: getTagVisits.fallbackToInterval.toString(), payload: 'last30Days' },
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
-        { type: fallbackToIntervalAction.toString(), payload: 'last180Days' },
+        { type: getTagVisits.fallbackToInterval.toString(), payload: 'last180Days' },
         3,
       ],
       [[], expect.objectContaining({ type: getTagVisits.fulfilled.toString() }), 2],

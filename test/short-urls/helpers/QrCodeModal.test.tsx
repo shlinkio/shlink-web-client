@@ -10,7 +10,7 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 describe('<QrCodeModal />', () => {
   const saveImage = vi.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }));
-  const shortUrl = 'https://doma.in/abc123';
+  const shortUrl = 'https://s.test/abc123';
   const setUp = (version: SemVer = '2.8.0') => renderWithEvents(
     <QrCodeModal
       isOpen

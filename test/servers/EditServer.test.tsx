@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { useNavigate } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
 import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -19,7 +19,9 @@ describe('<EditServer />', () => {
   });
   const EditServer = editServerConstruct(ServerError);
   const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => renderWithEvents(
-    <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />,
+    <MemoryRouter>
+      <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />
+    </MemoryRouter>,
   );
 
   beforeEach(() => {

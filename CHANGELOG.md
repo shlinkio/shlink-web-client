@@ -6,6 +6,41 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
+* *Nothing*
+
+### Changed
+* Updated to Vite 4.1
+* [#798](https://github.com/shlinkio/shlink-web-client/issues/798) Remove stryker and mutation testing.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
+## [3.9.1] - 2022-12-31
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#787](https://github.com/shlinkio/shlink-web-client/issues/787) Fixed wrong base path set in vite config when homepage is set as empty string.
+
+
+## [3.9.0] - 2022-12-31
+### Added
 * [#750](https://github.com/shlinkio/shlink-web-client/issues/750) Added new icon indicators telling if a short URL can be normally visited, it received the max amount of visits, is still not enabled, etc.
 * [#764](https://github.com/shlinkio/shlink-web-client/issues/764) Added support to exclude visits from visits on short URLs list when consuming Shlink 3.4.0.
 
@@ -16,6 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 * [#753](https://github.com/shlinkio/shlink-web-client/issues/753) Migrated from react-scripts/webpack to vite.
 * [#770](https://github.com/shlinkio/shlink-web-client/issues/770) Updated to latest dependencies.
+* [#741](https://github.com/shlinkio/shlink-web-client/issues/741) Improved `visitsAsyncThunk`, making it wrap pending/fulfilled/rejected actions, as well as custom ones, in a type-safe way.
 
 ### Deprecated
 * *Nothing*
@@ -25,7 +61,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#774](https://github.com/shlinkio/shlink-web-client/issues/774) Dropped support for Shlink older than 2.8.0.
 
 ### Fixed
-* *Nothing*
+* [#715](https://github.com/shlinkio/shlink-web-client/issues/715) Fixed connection still failing on miss-configured servers, after editing their params to set proper values.
 
 
 ## [3.8.2] - 2022-12-17

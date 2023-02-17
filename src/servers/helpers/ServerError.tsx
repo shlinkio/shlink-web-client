@@ -37,7 +37,7 @@ export const ServerError = (DeleteServerButton: FC<DeleteServerButtonProps>): FC
           <h5>
             Alternatively, if you think you may have miss-configured this server, you
             can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove it</DeleteServerButton> or&nbsp;
-            <Link to={`/server/${selectedServer.id}/edit`}>edit it</Link>.
+            <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
           </h5>
         </div>
       )}

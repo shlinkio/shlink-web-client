@@ -28,10 +28,10 @@ vi.mock('react-router-dom', () => ({
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = vi.fn(() => true);
   const useTimeoutToggle = vi.fn(() => [false, timeoutToggle]) as TimeoutToggle;
-  const server = Mock.of<ReachableServer>({ url: 'https://doma.in' });
+  const server = Mock.of<ReachableServer>({ url: 'https://s.test' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
-    shortUrl: 'https://doma.in/abc123',
+    shortUrl: 'https://s.test/abc123',
     longUrl: 'https://foo.com/bar',
     dateCreated: formatISO(parseDate('2018-05-23 18:30:41', 'yyyy-MM-dd HH:mm:ss')),
     tags: [],

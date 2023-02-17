@@ -16,7 +16,7 @@ describe('<ShortUrlVisitsHeader />', () => {
   const setUp = (title?: string | null) => {
     const shortUrlDetail = Mock.of<ShortUrlDetail>({
       shortUrl: {
-        shortUrl: 'https://doma.in/abc123',
+        shortUrl: 'https://s.test/abc123',
         longUrl,
         dateCreated,
         title,

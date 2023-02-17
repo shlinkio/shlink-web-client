@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -7,8 +6,8 @@ import { prettify } from '../../utils/helpers/numbers';
 import { ShortUrl } from '../data';
 import { SelectedServer } from '../../servers/data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
-import { mutableRefToElementRef } from '../../utils/helpers/components';
 import { formatHumanFriendly, parseISO } from '../../utils/helpers/date';
+import { useElementRef } from '../../utils/helpers/hooks';
 import './ShortUrlVisitsCount.scss';
 
 interface ShortUrlVisitsCountProps {
@@ -37,20 +36,20 @@ export const ShortUrlVisitsCount = (
     return visitsLink;
   }
 
-  const tooltipRef = useRef<HTMLElement | undefined>();
+  const tooltipRef = useElementRef<HTMLElement>();
 
   return (
     <>
       <span className="indivisible">
         {visitsLink}
-        <small className="short-urls-visits-count__max-visits-control" ref={mutableRefToElementRef(tooltipRef)}>
+        <small className="short-urls-visits-count__max-visits-control" ref={tooltipRef}>
           {maxVisits && <> / {prettify(maxVisits)}</>}
           <sup className="ms-1">
             <FontAwesomeIcon icon={infoIcon} />
           </sup>
         </small>
       </span>
-      <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
+      <UncontrolledTooltip target={tooltipRef} placement="bottom">
         <ul className="list-unstyled mb-0">
           {maxVisits && (
             <li className="short-url-visits-count__tooltip-list-item">
