@@ -17,7 +17,6 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.ts'],
   testMatch: ['<rootDir>/test/**/*.test.{ts,tsx}'],
-  modulePathIgnorePatterns: ['<rootDir>/.stryker-tmp'],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     url: 'http://localhost',
@@ -28,7 +27,6 @@ module.exports = {
     '^(?!.*\\.(ts|tsx|js|json|scss)$)': '<rootDir>/config/jest/fileTransform.js',
   },
   transformIgnorePatterns: [
-    '<rootDir>/.stryker-tmp',
     'node_modules\/(?!(\@react-leaflet|react-leaflet|leaflet|react-chartjs-2|react-colorful)\/)',
     '^.+\\.module\\.scss$',
   ],
