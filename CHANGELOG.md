@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * Updated to Vite 4.1
+* [#798](https://github.com/shlinkio/shlink-web-client/issues/798) Remove stryker and mutation testing.
 
 ### Deprecated
 * *Nothing*
