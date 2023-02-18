@@ -2,8 +2,8 @@ import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { formatDistance, parseISO } from 'date-fns';
 import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
-import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
+import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisitsHeader />', () => {

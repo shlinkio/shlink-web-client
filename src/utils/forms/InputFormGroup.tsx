@@ -1,5 +1,5 @@
-import { FC, PropsWithChildren } from 'react';
-import { InputType } from 'reactstrap/types/lib/Input';
+import type { FC, PropsWithChildren } from 'react';
+import type { InputType } from 'reactstrap/types/lib/Input';
 import { LabeledFormGroup } from './LabeledFormGroup';
 import { useDomId } from '../helpers/hooks';
 

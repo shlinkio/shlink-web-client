@@ -1,7 +1,7 @@
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
-import { ShortUrlsFilter } from '../data';
+import type { ShortUrlsFilter } from '../data';
 
 interface ShortUrlsFilterDropdownProps {
   onChange: (filters: ShortUrlsFilter) => void;

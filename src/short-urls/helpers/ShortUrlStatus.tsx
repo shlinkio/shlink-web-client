@@ -1,10 +1,10 @@
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faLinkSlash, faCalendarXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { UncontrolledTooltip } from 'reactstrap';
 import { isBefore } from 'date-fns';
-import { ShortUrl } from '../data';
+import type { ShortUrl } from '../data';
 import { formatHumanFriendly, now, parseISO } from '../../utils/helpers/date';
 import { useElementRef } from '../../utils/helpers/hooks';
 

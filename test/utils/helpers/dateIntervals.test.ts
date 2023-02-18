@@ -1,6 +1,7 @@
 import { endOfDay, format, formatISO, startOfDay, subDays } from 'date-fns';
+import type {
+  DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import {
-  DateInterval,
   dateRangeIsEmpty,
   dateToMatchingInterval,
   intervalToDateRange,

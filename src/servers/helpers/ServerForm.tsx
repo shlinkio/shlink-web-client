@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren, ReactNode, useEffect, useState } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 import { InputFormGroup } from '../../utils/forms/InputFormGroup';
 import { handleEventPreventingDefault } from '../../utils/utils';
-import { ServerData } from '../data';
+import type { ServerData } from '../data';
 import { SimpleCard } from '../../utils/SimpleCard';
 
 type ServerFormProps = PropsWithChildren<{

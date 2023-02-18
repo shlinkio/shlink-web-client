@@ -1,11 +1,12 @@
-import { ChangeEvent, useState, useEffect, FC, PropsWithChildren } from 'react';
+import type { ChangeEvent, FC, PropsWithChildren } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { complement, pipe } from 'ramda';
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '../../utils/helpers/hooks';
-import { ServersImporter } from '../services/ServersImporter';
-import { ServerData, ServersMap } from '../data';
+import type { ServersImporter } from '../services/ServersImporter';
+import type { ServerData, ServersMap } from '../data';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
 import './ImportServersBtn.scss';
 

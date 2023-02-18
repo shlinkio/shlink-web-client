@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { useTimeoutToggle } from '../helpers/hooks';
 import { LocalStorage } from './LocalStorage';
 import { ColorGenerator } from './ColorGenerator';

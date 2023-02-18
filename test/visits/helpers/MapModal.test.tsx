@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MapModal } from '../../../src/visits/helpers/MapModal';
-import { CityStats } from '../../../src/visits/types';
+import type { CityStats } from '../../../src/visits/types';
 
 describe('<MapModal />', () => {
   const toggle = jest.fn();

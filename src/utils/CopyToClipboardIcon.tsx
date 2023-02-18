@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import CopyToClipboard from 'react-copy-to-clipboard';

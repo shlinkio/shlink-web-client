@@ -1,6 +1,7 @@
 import { compare } from 'compare-versions';
 import { identity, memoizeWith } from 'ramda';
-import { Empty, hasValue } from '../utils';
+import type { Empty } from '../utils';
+import { hasValue } from '../utils';
 
 type SemVerPatternFragment = `${bigint | '*'}`;
 

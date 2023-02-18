@@ -3,17 +3,17 @@ import { useLocation, useParams } from 'react-router-dom';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { parseQuery } from '../utils/helpers/query';
 import { Topics } from '../mercure/helpers/Topics';
-import { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
+import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { useGoBack } from '../utils/helpers/hooks';
-import { ReportExporter } from '../common/services/ReportExporter';
-import { LoadShortUrlVisits, ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
+import type { ReportExporter } from '../common/services/ReportExporter';
+import type { LoadShortUrlVisits, ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import { ShortUrlVisitsHeader } from './ShortUrlVisitsHeader';
 import { VisitsStats } from './VisitsStats';
-import { NormalizedVisit, VisitsParams } from './types';
-import { CommonVisitsProps } from './types/CommonVisitsProps';
+import type { NormalizedVisit, VisitsParams } from './types';
+import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { urlDecodeShortCode } from '../short-urls/helpers';
-import { ShortUrlIdentifier } from '../short-urls/data';
+import type { ShortUrlIdentifier } from '../short-urls/data';
 
 export interface ShortUrlVisitsProps extends CommonVisitsProps {
   getShortUrlVisits: (params: LoadShortUrlVisits) => void;

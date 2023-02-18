@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from 'react';
+import type { FC, MouseEventHandler } from 'react';
 import { Alert, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt as reloadIcon } from '@fortawesome/free-solid-svg-icons';

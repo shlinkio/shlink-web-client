@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { isNil } from 'ramda';
-import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
+import type { ReactDatePickerProps } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';

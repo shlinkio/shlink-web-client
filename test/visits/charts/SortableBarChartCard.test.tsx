@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { screen } from '@testing-library/react';
 import { range } from 'ramda';
 import { rangeOf } from '../../../src/utils/utils';
-import { Stats } from '../../../src/visits/types';
+import type { Stats } from '../../../src/visits/types';
 import { SortableBarChartCard } from '../../../src/visits/charts/SortableBarChartCard';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

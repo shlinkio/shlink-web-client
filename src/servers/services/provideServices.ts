@@ -1,5 +1,5 @@
 import { prop } from 'ramda';
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { CreateServer } from '../CreateServer';
 import { ServersDropdown } from '../ServersDropdown';
 import { DeleteServerModal } from '../DeleteServerModal';
@@ -15,7 +15,7 @@ import {
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { fetchServers } from '../reducers/remoteServers';
 import { ServerError } from '../helpers/ServerError';
-import { ConnectDecorator } from '../../container/types';
+import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import { Overview } from '../Overview';
 import { ManageServers } from '../ManageServers';

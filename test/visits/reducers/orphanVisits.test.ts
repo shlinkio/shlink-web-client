@@ -5,14 +5,14 @@ import {
   orphanVisitsReducerCreator,
 } from '../../../src/visits/reducers/orphanVisits';
 import { rangeOf } from '../../../src/utils/utils';
-import { Visit } from '../../../src/visits/types';
-import { ShlinkVisits } from '../../../src/api/types';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkState } from '../../../src/container/types';
+import type { Visit } from '../../../src/visits/types';
+import type { ShlinkVisits } from '../../../src/api/types';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
-import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
+import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import { VisitsInfo } from '../../../src/visits/reducers/types';
+import type { VisitsInfo } from '../../../src/visits/reducers/types';
 
 describe('orphanVisitsReducer', () => {
   const now = new Date();

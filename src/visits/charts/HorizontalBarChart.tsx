@@ -1,11 +1,12 @@
-import { FC, MutableRefObject, useRef } from 'react';
-import { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
+import type { FC, MutableRefObject } from 'react';
+import { useRef } from 'react';
+import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import { keys, values } from 'ramda';
 import { Bar, getElementAtEvent } from 'react-chartjs-2';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { prettify } from '../../utils/helpers/numbers';
-import { Stats } from '../types';
+import type { Stats } from '../types';
 import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../utils/theme';
 
 export interface HorizontalBarChartProps {

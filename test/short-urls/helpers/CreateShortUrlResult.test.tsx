@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
-import { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
+import type { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrlResult />', () => {
   const copyToClipboard = jest.fn();

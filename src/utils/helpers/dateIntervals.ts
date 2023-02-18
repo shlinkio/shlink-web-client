@@ -1,6 +1,7 @@
 import { subDays, startOfDay, endOfDay } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
-import { dateOrNull, DateOrString, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
+import type { DateOrString } from './date';
+import { dateOrNull, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
 import { equals } from '../utils';
 
 export interface DateRange {

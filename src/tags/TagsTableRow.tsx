@@ -1,15 +1,16 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash as deleteIcon, faPencilAlt as editIcon } from '@fortawesome/free-solid-svg-icons';
-import { getServerId, SelectedServer } from '../servers/data';
-import { ColorGenerator } from '../utils/services/ColorGenerator';
+import type { SelectedServer } from '../servers/data';
+import { getServerId } from '../servers/data';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import { prettify } from '../utils/helpers/numbers';
 import { useToggle } from '../utils/helpers/hooks';
 import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { TagBullet } from './helpers/TagBullet';
-import { NormalizedTag, TagModalProps } from './data';
+import type { NormalizedTag, TagModalProps } from './data';
 
 export interface TagsTableRowProps {
   tag: NormalizedTag;

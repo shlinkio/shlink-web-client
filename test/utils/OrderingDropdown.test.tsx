@@ -1,7 +1,8 @@
 import { screen } from '@testing-library/react';
 import { values } from 'ramda';
-import { OrderingDropdown, OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
-import { OrderDir } from '../../src/utils/helpers/ordering';
+import type { OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
+import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
+import type { OrderDir } from '../../src/utils/helpers/ordering';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrderingDropdown />', () => {

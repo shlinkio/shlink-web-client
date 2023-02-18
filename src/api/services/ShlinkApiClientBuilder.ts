@@ -1,7 +1,8 @@
-import { hasServerData, ServerWithId } from '../../servers/data';
-import { GetState } from '../../container/types';
+import type { ServerWithId } from '../../servers/data';
+import { hasServerData } from '../../servers/data';
+import type { GetState } from '../../container/types';
 import { ShlinkApiClient } from './ShlinkApiClient';
-import { HttpClient } from '../../common/services/HttpClient';
+import type { HttpClient } from '../../common/services/HttpClient';
 
 const apiClients: Record<string, ShlinkApiClient> = {};
 

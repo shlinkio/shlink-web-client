@@ -3,12 +3,13 @@ import { Modal, FormGroup, ModalBody, ModalHeader, Row, Button } from 'reactstra
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileDownload as downloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
-import { ShortUrlModalProps } from '../data';
-import { SelectedServer } from '../../servers/data';
+import type { ShortUrlModalProps } from '../data';
+import type { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
-import { buildQrCodeUrl, QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
+import type { QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
+import { buildQrCodeUrl } from '../../utils/helpers/qrCodes';
 import { supportsNonRestCors } from '../../utils/helpers/features';
-import { ImageDownloader } from '../../common/services/ImageDownloader';
+import type { ImageDownloader } from '../../common/services/ImageDownloader';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 import './QrCodeModal.scss';

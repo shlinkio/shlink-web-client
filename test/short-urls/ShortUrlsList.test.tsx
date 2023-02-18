@@ -2,14 +2,14 @@ import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
-import { ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
-import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
-import { ReachableServer } from '../../src/servers/data';
-import { Settings } from '../../src/settings/reducers/settings';
-import { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
+import type { ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
+import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
+import type { ReachableServer } from '../../src/servers/data';
+import type { Settings } from '../../src/settings/reducers/settings';
+import type { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
-import { SemVer } from '../../src/utils/helpers/version';
+import type { SemVer } from '../../src/utils/helpers/version';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

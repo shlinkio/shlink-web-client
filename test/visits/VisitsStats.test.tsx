@@ -3,11 +3,11 @@ import { Mock } from 'ts-mockery';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { VisitsStats } from '../../src/visits/VisitsStats';
-import { Visit } from '../../src/visits/types';
-import { Settings } from '../../src/settings/reducers/settings';
+import type { Visit } from '../../src/visits/types';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { rangeOf } from '../../src/utils/utils';
-import { VisitsInfo } from '../../src/visits/reducers/types';
+import type { VisitsInfo } from '../../src/visits/reducers/types';
 
 describe('<VisitsStats />', () => {
   const visits = rangeOf(3, () => Mock.of<Visit>({ date: '2020-01-01' }));

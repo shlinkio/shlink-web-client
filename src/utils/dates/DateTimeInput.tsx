@@ -1,5 +1,5 @@
-import { ReactDatePickerProps } from 'react-datepicker';
-import { FC } from 'react';
+import type { ReactDatePickerProps } from 'react-datepicker';
+import type { FC } from 'react';
 import { DateInput } from './DateInput';
 import { STANDARD_DATE_AND_TIME_FORMAT } from '../helpers/date';
 

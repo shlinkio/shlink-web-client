@@ -3,7 +3,8 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import { Link } from 'react-router-dom';
 import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getServerId, SelectedServer, ServersMap } from './data';
+import type { SelectedServer, ServersMap } from './data';
+import { getServerId } from './data';
 
 export interface ServersDropdownProps {
   servers: ServersMap;

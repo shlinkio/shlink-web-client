@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Card, Row } from 'reactstrap';
 import classNames from 'classnames';
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';

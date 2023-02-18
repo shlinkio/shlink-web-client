@@ -5,11 +5,11 @@ import {
   faEdit as editIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { useToggle } from '../../utils/helpers/hooks';
-import { ShortUrl, ShortUrlModalProps } from '../data';
-import { SelectedServer } from '../../servers/data';
+import type { ShortUrl, ShortUrlModalProps } from '../data';
+import type { SelectedServer } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 

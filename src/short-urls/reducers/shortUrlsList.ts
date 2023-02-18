@@ -3,12 +3,12 @@ import { assocPath, last, pipe, reject } from 'ramda';
 import { shortUrlMatches } from '../helpers';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
 import { shortUrlDeleted } from './shortUrlDeletion';
-import { createShortUrl } from './shortUrlCreation';
-import { editShortUrl } from './shortUrlEdition';
-import { ShortUrl } from '../data';
+import type { createShortUrl } from './shortUrlCreation';
+import type { editShortUrl } from './shortUrlEdition';
+import type { ShortUrl } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlsList';
 export const ITEMS_IN_OVERVIEW_PAGE = 5;

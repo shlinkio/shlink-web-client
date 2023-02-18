@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../DropdownBtn';
 import { useEffectExceptFirstTime } from '../helpers/hooks';
-import {
+import type {
   DateInterval,
-  DateRange,
+  DateRange } from '../helpers/dateIntervals';
+import {
   rangeOrIntervalToString,
   intervalToDateRange,
   rangeIsInterval,

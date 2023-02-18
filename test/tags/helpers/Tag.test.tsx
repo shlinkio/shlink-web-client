@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { ReactNode } from 'react';
-import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import type { ReactNode } from 'react';
+import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 import { Tag } from '../../../src/tags/helpers/Tag';
 import { renderWithEvents } from '../../__helpers__/setUpTest';

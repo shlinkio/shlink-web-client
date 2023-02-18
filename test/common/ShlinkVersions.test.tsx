@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { ShlinkVersions, ShlinkVersionsProps } from '../../src/common/ShlinkVersions';
-import { NonReachableServer, NotFoundServer, ReachableServer } from '../../src/servers/data';
+import type { ShlinkVersionsProps } from '../../src/common/ShlinkVersions';
+import { ShlinkVersions } from '../../src/common/ShlinkVersions';
+import type { NonReachableServer, NotFoundServer, ReachableServer } from '../../src/servers/data';
 
 describe('<ShlinkVersions />', () => {
   const setUp = (props: ShlinkVersionsProps) => render(<ShlinkVersions {...props} />);

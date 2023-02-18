@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { buildShlinkApiClient } from './ShlinkApiClientBuilder';
 
 const provideServices = (bottle: Bottle) => {

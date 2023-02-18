@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import { MapModal } from '../helpers/MapModal';
 import { createNewVisits } from '../reducers/visitCreation';
@@ -11,7 +11,7 @@ import { getTagVisits, tagVisitsReducerCreator } from '../reducers/tagVisits';
 import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
 import { getOrphanVisits, orphanVisitsReducerCreator } from '../reducers/orphanVisits';
 import { getNonOrphanVisits, nonOrphanVisitsReducerCreator } from '../reducers/nonOrphanVisits';
-import { ConnectDecorator } from '../../container/types';
+import type { ConnectDecorator } from '../../container/types';
 import { loadVisitsOverview, visitsOverviewReducerCreator } from '../reducers/visitsOverview';
 import * as visitsParser from './VisitsParser';
 import { DomainVisits } from '../DomainVisits';

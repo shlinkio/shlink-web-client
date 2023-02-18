@@ -1,11 +1,12 @@
 import { screen } from '@testing-library/react';
-import { UserEvent } from '@testing-library/user-event/setup/setup';
+import type { UserEvent } from '@testing-library/user-event/setup/setup';
 import { formatISO } from 'date-fns';
 import { Mock } from 'ts-mockery';
-import { ShortUrlForm as createShortUrlForm, Mode } from '../../src/short-urls/ShortUrlForm';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
+import type { Mode } from '../../src/short-urls/ShortUrlForm';
+import { ShortUrlForm as createShortUrlForm } from '../../src/short-urls/ShortUrlForm';
+import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { parseDate } from '../../src/utils/helpers/date';
-import { OptionalString } from '../../src/utils/utils';
+import type { OptionalString } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlForm />', () => {

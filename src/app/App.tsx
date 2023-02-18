@@ -1,9 +1,10 @@
-import { useEffect, FC } from 'react';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
 import { NotFound } from '../common/NotFound';
-import { ServersMap } from '../servers/data';
-import { Settings } from '../settings/reducers/settings';
+import type { ServersMap } from '../servers/data';
+import type { Settings } from '../settings/reducers/settings';
 import { changeThemeInMarkup } from '../utils/theme';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { forceUpdate } from '../utils/helpers/sw';

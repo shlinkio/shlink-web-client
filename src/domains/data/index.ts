@@ -1,4 +1,4 @@
-import { ShlinkDomain } from '../../api/types';
+import type { ShlinkDomain } from '../../api/types';
 
 export type DomainStatus = 'validating' | 'valid' | 'invalid';
 

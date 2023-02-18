@@ -3,9 +3,9 @@ import { Mock } from 'ts-mockery';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-urls/ShortUrlsFilteringBar';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { Settings } from '../../src/settings/reducers/settings';
-import { DateRange } from '../../src/utils/helpers/dateIntervals';
+import type { ReachableServer, SelectedServer } from '../../src/servers/data';
+import type { Settings } from '../../src/settings/reducers/settings';
+import type { DateRange } from '../../src/utils/helpers/dateIntervals';
 import { formatDate } from '../../src/utils/helpers/date';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

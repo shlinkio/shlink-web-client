@@ -1,10 +1,10 @@
-import { IContainer } from 'bottlejs';
+import type { IContainer } from 'bottlejs';
 import { combineReducers } from '@reduxjs/toolkit';
 import { serversReducer } from '../servers/reducers/servers';
 import { settingsReducer } from '../settings/reducers/settings';
 import { appUpdatesReducer } from '../app/reducers/appUpdates';
 import { sidebarReducer } from '../common/reducers/sidebar';
-import { ShlinkState } from '../container/types';
+import type { ShlinkState } from '../container/types';
 
 export default (container: IContainer) => combineReducers<ShlinkState>({
   servers: serversReducer,

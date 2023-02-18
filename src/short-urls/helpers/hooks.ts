@@ -2,10 +2,11 @@ import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { isEmpty, pipe } from 'ramda';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
-import { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
+import type { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 import { orderToString, stringToOrder } from '../../utils/helpers/ordering';
-import { TagsFilteringMode } from '../../api/types';
-import { BooleanString, parseOptionalBooleanToString } from '../../utils/utils';
+import type { TagsFilteringMode } from '../../api/types';
+import type { BooleanString } from '../../utils/utils';
+import { parseOptionalBooleanToString } from '../../utils/utils';
 
 interface ShortUrlsQueryCommon {
   search?: string;

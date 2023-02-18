@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Settings, UiSettings } from '../../src/settings/reducers/settings';
+import type { Settings, UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
-import { Theme } from '../../src/utils/theme';
+import type { Theme } from '../../src/utils/theme';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {

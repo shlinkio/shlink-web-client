@@ -1,9 +1,10 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/ShortUrlsTable';
-import { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { ShortUrlsOrderableFields, SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
+import type { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
+import type { ReachableServer, SelectedServer } from '../../src/servers/data';
+import type { ShortUrlsOrderableFields } from '../../src/short-urls/data';
+import { SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsTable />', () => {

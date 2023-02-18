@@ -1,5 +1,6 @@
-import { DropdownItem, DropdownItemProps } from 'reactstrap';
-import { OrphanVisitType, VisitsFilter } from '../types';
+import type { DropdownItemProps } from 'reactstrap';
+import { DropdownItem } from 'reactstrap';
+import type { OrphanVisitType, VisitsFilter } from '../types';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
 

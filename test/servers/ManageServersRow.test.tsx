@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ManageServersRow as createManageServersRow } from '../../src/servers/ManageServersRow';
-import { ServerWithId } from '../../src/servers/data';
+import type { ServerWithId } from '../../src/servers/data';
 
 describe('<ManageServersRow />', () => {
   const ManageServersRow = createManageServersRow(() => <span>ManageServersRowDropdown</span>);

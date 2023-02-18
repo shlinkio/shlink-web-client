@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
 import { ShortUrlsList } from '../ShortUrlsList';
@@ -12,7 +12,7 @@ import { shortUrlCreationReducerCreator, createShortUrl } from '../reducers/shor
 import { shortUrlDeletionReducerCreator, deleteShortUrl, shortUrlDeleted } from '../reducers/shortUrlDeletion';
 import { editShortUrl, shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
 import { shortUrlDetailReducerCreator } from '../reducers/shortUrlDetail';
-import { ConnectDecorator } from '../../container/types';
+import type { ConnectDecorator } from '../../container/types';
 import { ShortUrlsTable } from '../ShortUrlsTable';
 import { ShortUrlForm } from '../ShortUrlForm';
 import { EditShortUrl } from '../EditShortUrl';

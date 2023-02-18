@@ -1,8 +1,8 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { DeleteServerButton as createDeleteServerButton } from '../../src/servers/DeleteServerButton';
-import { ServerWithId } from '../../src/servers/data';
+import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DeleteServerButton />', () => {

@@ -1,7 +1,9 @@
-import { FC, useEffect } from 'react';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Message } from '../../utils/Message';
-import { isNotFoundServer, SelectedServer } from '../data';
+import type { SelectedServer } from '../data';
+import { isNotFoundServer } from '../data';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
 
 interface WithSelectedServerProps {

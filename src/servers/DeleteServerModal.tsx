@@ -1,7 +1,8 @@
-import { FC, useRef } from 'react';
+import type { FC } from 'react';
+import { useRef } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
-import { ServerWithId } from './data';
+import type { ServerWithId } from './data';
 
 export interface DeleteServerModalProps {
   server: ServerWithId;

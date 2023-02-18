@@ -1,4 +1,5 @@
-import { determineOrderDir, OrderDir, orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
+import type { OrderDir } from '../../../src/utils/helpers/ordering';
+import { determineOrderDir, orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
 
 describe('ordering', () => {
   describe('determineOrderDir', () => {

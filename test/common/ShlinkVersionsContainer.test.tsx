@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { ShlinkVersionsContainer } from '../../src/common/ShlinkVersionsContainer';
-import { SelectedServer } from '../../src/servers/data';
-import { Sidebar } from '../../src/common/reducers/sidebar';
+import type { SelectedServer } from '../../src/servers/data';
+import type { Sidebar } from '../../src/common/reducers/sidebar';
 
 describe('<ShlinkVersionsContainer />', () => {
   const setUp = (sidebar: Sidebar) => render(

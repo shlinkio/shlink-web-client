@@ -1,10 +1,11 @@
 import { screen, waitFor } from '@testing-library/react';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
-import { TagsList as createTagsList, TagsListProps } from '../../src/tags/TagsList';
-import { TagsList } from '../../src/tags/reducers/tagsList';
-import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { Settings } from '../../src/settings/reducers/settings';
+import type { TagsListProps } from '../../src/tags/TagsList';
+import { TagsList as createTagsList } from '../../src/tags/TagsList';
+import type { TagsList } from '../../src/tags/reducers/tagsList';
+import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {

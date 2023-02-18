@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { migrateDeprecatedSettings } from '../../../src/settings/helpers';
-import { ShlinkState } from '../../../src/container/types';
+import type { ShlinkState } from '../../../src/container/types';
 
 describe('settings-helpers', () => {
   describe('migrateDeprecatedSettings', () => {

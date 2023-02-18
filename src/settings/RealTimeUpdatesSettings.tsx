@@ -4,7 +4,7 @@ import { ToggleSwitch } from '../utils/ToggleSwitch';
 import { SimpleCard } from '../utils/SimpleCard';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { Settings } from './reducers/settings';
+import type { Settings } from './reducers/settings';
 import { useDomId } from '../utils/helpers/hooks';
 
 interface RealTimeUpdatesProps {

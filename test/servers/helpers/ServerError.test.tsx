@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { ServerError as createServerError } from '../../../src/servers/helpers/ServerError';
-import { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
+import type { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
 
 describe('<ServerError />', () => {
   const ServerError = createServerError(() => null);

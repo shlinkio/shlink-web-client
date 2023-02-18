@@ -1,10 +1,10 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { TagEdition } from '../../../src/tags/reducers/tagEdit';
+import type { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import { EditTagModal as createEditTagModal } from '../../../src/tags/helpers/EditTagModal';
-import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
-import { ProblemDetailsError } from '../../../src/api/types/errors';
+import type { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('<EditTagModal />', () => {
   const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'green') }));

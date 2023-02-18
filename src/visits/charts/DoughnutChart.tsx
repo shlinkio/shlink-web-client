@@ -1,10 +1,11 @@
-import { FC, useState, memo } from 'react';
-import { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
+import type { FC } from 'react';
+import { useState, memo } from 'react';
+import type { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { keys, values } from 'ramda';
 import { Doughnut } from 'react-chartjs-2';
 import { renderPieChartLabel } from '../../utils/helpers/charts';
 import { isDarkThemeEnabled, PRIMARY_DARK_COLOR, PRIMARY_LIGHT_COLOR } from '../../utils/theme';
-import { Stats } from '../types';
+import type { Stats } from '../types';
 import { DoughnutChartLegend } from './DoughnutChartLegend';
 
 interface DoughnutChartProps {

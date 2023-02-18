@@ -3,7 +3,7 @@ import { values } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
-import { ServersMap, ServerWithId } from '../../src/servers/data';
+import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {

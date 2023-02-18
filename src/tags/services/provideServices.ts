@@ -1,5 +1,6 @@
 import { prop } from 'ramda';
-import Bottle, { IContainer } from 'bottlejs';
+import type { IContainer } from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { TagsSelector } from '../helpers/TagsSelector';
 import { DeleteTagConfirmModal } from '../helpers/DeleteTagConfirmModal';
 import { EditTagModal } from '../helpers/EditTagModal';
@@ -7,7 +8,7 @@ import { TagsList } from '../TagsList';
 import { filterTags, listTags, tagsListReducerCreator } from '../reducers/tagsList';
 import { tagDeleted, tagDeleteReducerCreator } from '../reducers/tagDelete';
 import { editTag, tagEdited, tagEditReducerCreator } from '../reducers/tagEdit';
-import { ConnectDecorator } from '../../container/types';
+import type { ConnectDecorator } from '../../container/types';
 import { TagsTable } from '../TagsTable';
 import { TagsTableRow } from '../TagsTableRow';
 

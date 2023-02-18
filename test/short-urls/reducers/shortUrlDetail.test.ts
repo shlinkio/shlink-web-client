@@ -1,9 +1,10 @@
 import { Mock } from 'ts-mockery';
-import { ShortUrlDetailAction, shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkState } from '../../../src/container/types';
-import { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
+import type { ShortUrlDetailAction } from '../../../src/short-urls/reducers/shortUrlDetail';
+import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
+import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {
   const getShortUrlCall = jest.fn();

@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { OptionalString } from '../../../src/utils/utils';
-import { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
-import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
+import type { OptionalString } from '../../../src/utils/utils';
+import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
+import type { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
-import { HttpClient } from '../../../src/common/services/HttpClient';
+import type { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('ShlinkApiClient', () => {
   const fetchJson = jest.fn().mockResolvedValue({});

@@ -1,7 +1,7 @@
 import { Tag } from '../tags/helpers/Tag';
-import { ColorGenerator } from '../utils/services/ColorGenerator';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import { VisitsHeader } from './VisitsHeader';
-import { TagVisits } from './reducers/tagVisits';
+import type { TagVisits } from './reducers/tagVisits';
 import './ShortUrlVisitsHeader.scss';
 
 interface TagVisitsHeaderProps {

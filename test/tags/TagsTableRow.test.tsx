@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
-import { ReachableServer } from '../../src/servers/data';
+import type { ReachableServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
 

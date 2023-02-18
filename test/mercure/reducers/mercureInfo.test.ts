@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
 import { mercureInfoReducerCreator } from '../../../src/mercure/reducers/mercureInfo';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { GetState } from '../../../src/container/types';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { GetState } from '../../../src/container/types';
 
 describe('mercureInfoReducer', () => {
   const mercureInfo = {

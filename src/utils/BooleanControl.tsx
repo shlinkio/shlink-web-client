@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, PropsWithChildren } from 'react';
+import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import { identity } from 'ramda';
 import { useDomId } from './helpers/hooks';

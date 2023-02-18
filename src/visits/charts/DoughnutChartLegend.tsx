@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Chart } from 'chart.js';
+import type { FC } from 'react';
+import type { Chart } from 'chart.js';
 import './DoughnutChartLegend.scss';
 
 interface DoughnutChartLegendProps {

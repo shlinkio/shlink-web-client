@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import './NoMenuLayout.scss';
 
 export const NoMenuLayout: FC<PropsWithChildren<unknown>> = ({ children }) => (

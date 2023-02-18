@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import ReactTags, { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
-import { ColorGenerator } from '../../utils/services/ColorGenerator';
-import { Settings } from '../../settings/reducers/settings';
-import { TagsList } from '../reducers/tagsList';
+import type { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
+import ReactTags from 'react-tag-autocomplete';
+import type { ColorGenerator } from '../../utils/services/ColorGenerator';
+import type { Settings } from '../../settings/reducers/settings';
+import type { TagsList } from '../reducers/tagsList';
 import { TagBullet } from './TagBullet';
 import { Tag } from './Tag';
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import { pipe } from 'ramda';
-import { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
-import { ShortUrlIdentifier, ShortUrlModalProps } from '../data';
+import type { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
+import type { ShortUrlIdentifier, ShortUrlModalProps } from '../data';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import { Result } from '../../utils/Result';
 import { isInvalidDeletionError } from '../../api/utils';

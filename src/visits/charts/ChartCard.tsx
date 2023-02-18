@@ -1,5 +1,5 @@
 import { Card, CardHeader, CardBody, CardFooter } from 'reactstrap';
-import { FC, PropsWithChildren, ReactNode } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 import './ChartCard.scss';
 
 type ChartCardProps = PropsWithChildren<{

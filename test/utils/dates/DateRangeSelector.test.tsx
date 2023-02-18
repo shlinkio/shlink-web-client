@@ -1,7 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { DateRangeSelector, DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
-import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
+import type { DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
+import { DateRangeSelector } from '../../../src/utils/dates/DateRangeSelector';
+import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeSelector />', () => {

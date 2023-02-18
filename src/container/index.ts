@@ -1,4 +1,5 @@
-import Bottle, { IContainer } from 'bottlejs';
+import type { IContainer } from 'bottlejs';
+import Bottle from 'bottlejs';
 import { connect as reduxConnect } from 'react-redux';
 import { pick } from 'ramda';
 import provideApiServices from '../api/services/provideServices';
@@ -12,7 +13,7 @@ import provideMercureServices from '../mercure/services/provideServices';
 import provideSettingsServices from '../settings/services/provideServices';
 import provideDomainsServices from '../domains/services/provideServices';
 import provideAppServices from '../app/services/provideServices';
-import { ConnectDecorator } from './types';
+import type { ConnectDecorator } from './types';
 
 type LazyActionMap = Record<string, Function>;
 

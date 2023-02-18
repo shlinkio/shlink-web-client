@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
-import { ServerWithId } from '../../src/servers/data';
+import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));

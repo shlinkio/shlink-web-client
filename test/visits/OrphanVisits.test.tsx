@@ -3,12 +3,12 @@ import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
 import { OrphanVisits as createOrphanVisits } from '../../src/visits/OrphanVisits';
-import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { Visit } from '../../src/visits/types';
-import { Settings } from '../../src/settings/reducers/settings';
-import { ReportExporter } from '../../src/common/services/ReportExporter';
+import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { Visit } from '../../src/visits/types';
+import type { Settings } from '../../src/settings/reducers/settings';
+import type { ReportExporter } from '../../src/common/services/ReportExporter';
 import { renderWithEvents } from '../__helpers__/setUpTest';
-import { VisitsInfo } from '../../src/visits/reducers/types';
+import type { VisitsInfo } from '../../src/visits/reducers/types';
 
 describe('<OrphanVisits />', () => {
   const getOrphanVisits = jest.fn();

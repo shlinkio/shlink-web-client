@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { QrCodeFormat } from '../../../../src/utils/helpers/qrCodes';
+import type { QrCodeFormat } from '../../../../src/utils/helpers/qrCodes';
 import { QrFormatDropdown } from '../../../../src/short-urls/helpers/qr-codes/QrFormatDropdown';
 import { renderWithEvents } from '../../../__helpers__/setUpTest';
 

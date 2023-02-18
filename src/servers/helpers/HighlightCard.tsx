@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Card, CardText, CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { faArrowAltCircleRight as linkIcon } from '@fortawesome/free-regular-svg-icons';

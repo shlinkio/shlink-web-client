@@ -7,7 +7,7 @@ import {
   setAutoConnect,
   serversReducer,
 } from '../../../src/servers/reducers/servers';
-import { RegularServer } from '../../../src/servers/data';
+import type { RegularServer } from '../../../src/servers/data';
 
 describe('serversReducer', () => {
   const list = {

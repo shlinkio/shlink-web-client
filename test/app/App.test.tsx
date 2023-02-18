@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import { Mock } from 'ts-mockery';
-import { Settings } from '../../src/settings/reducers/settings';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { App as createApp } from '../../src/app/App';
 
 describe('<App />', () => {

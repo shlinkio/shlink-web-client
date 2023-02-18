@@ -8,9 +8,9 @@ import {
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
 } from '../../../src/servers/reducers/selectedServer';
-import { ShlinkState } from '../../../src/container/types';
-import { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
+import type { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 
 describe('selectedServerReducer', () => {
   const dispatch = jest.fn();

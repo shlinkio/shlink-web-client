@@ -6,12 +6,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { UncontrolledTooltip } from 'reactstrap';
 import { SimplePaginator } from '../common/SimplePaginator';
 import { SearchField } from '../utils/SearchField';
-import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
+import type { Order } from '../utils/helpers/ordering';
+import { determineOrderDir, sortList } from '../utils/helpers/ordering';
 import { prettify } from '../utils/helpers/numbers';
 import { Time } from '../utils/dates/Time';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { MediaMatcher } from '../utils/types';
-import { NormalizedOrphanVisit, NormalizedVisit } from './types';
+import type { MediaMatcher } from '../utils/types';
+import type { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
 export interface VisitsTableProps {

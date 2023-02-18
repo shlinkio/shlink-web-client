@@ -1,4 +1,4 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { RealTimeUpdatesSettings } from '../RealTimeUpdatesSettings';
 import { Settings } from '../Settings';
 import {
@@ -10,7 +10,7 @@ import {
   setVisitsSettings,
   toggleRealTimeUpdates,
 } from '../reducers/settings';
-import { ConnectDecorator } from '../../container/types';
+import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { ShortUrlCreationSettings } from '../ShortUrlCreationSettings';
 import { UserInterfaceSettings } from '../UserInterfaceSettings';

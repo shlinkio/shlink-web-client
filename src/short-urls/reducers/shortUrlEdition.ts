@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { EditShortUrlData, ShortUrl, ShortUrlIdentifier } from '../data';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { EditShortUrlData, ShortUrl, ShortUrlIdentifier } from '../data';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { parseApiError } from '../../api/utils';
-import { ProblemDetailsError } from '../../api/types/errors';
+import type { ProblemDetailsError } from '../../api/types/errors';
 
 const REDUCER_PREFIX = 'shlink/shortUrlEdition';
 

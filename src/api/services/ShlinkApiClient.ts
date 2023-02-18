@@ -1,7 +1,7 @@
 import { isEmpty, isNil, reject } from 'ramda';
-import { ShortUrl, ShortUrlData } from '../../short-urls/data';
-import { OptionalString } from '../../utils/utils';
-import {
+import type { ShortUrl, ShortUrlData } from '../../short-urls/data';
+import type { OptionalString } from '../../utils/utils';
+import type {
   ShlinkHealth,
   ShlinkMercureInfo,
   ShlinkShortUrlsResponse,
@@ -20,7 +20,7 @@ import {
 import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
 import { stringifyQuery } from '../../utils/helpers/query';
-import { HttpClient } from '../../common/services/HttpClient';
+import type { HttpClient } from '../../common/services/HttpClient';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);

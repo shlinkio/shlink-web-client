@@ -1,10 +1,11 @@
-import {
-  ErrorTypeV2,
-  ErrorTypeV3,
+import type {
   InvalidArgumentError,
   InvalidShortUrlDeletion,
   ProblemDetailsError,
-  RegularNotFound,
+  RegularNotFound } from '../types/errors';
+import {
+  ErrorTypeV2,
+  ErrorTypeV3,
 } from '../types/errors';
 
 const isProblemDetails = (e: unknown): e is ProblemDetailsError =>

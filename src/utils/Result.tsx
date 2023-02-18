@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 import { Row } from 'reactstrap';
 import classNames from 'classnames';
 import { SimpleCard } from './SimpleCard';

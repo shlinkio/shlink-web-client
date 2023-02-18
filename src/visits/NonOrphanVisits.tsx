@@ -1,13 +1,13 @@
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
-import { ReportExporter } from '../common/services/ReportExporter';
+import type { ReportExporter } from '../common/services/ReportExporter';
 import { VisitsStats } from './VisitsStats';
-import { NormalizedVisit, VisitsParams } from './types';
-import { CommonVisitsProps } from './types/CommonVisitsProps';
+import type { NormalizedVisit, VisitsParams } from './types';
+import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
-import { LoadVisits, VisitsInfo } from './reducers/types';
+import type { LoadVisits, VisitsInfo } from './reducers/types';
 
 export interface NonOrphanVisitsProps extends CommonVisitsProps {
   getNonOrphanVisits: (params: LoadVisits) => void;

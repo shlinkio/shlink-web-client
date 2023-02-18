@@ -3,13 +3,14 @@ import { MemoryRouter } from 'react-router-dom';
 import { identity } from 'ramda';
 import { Mock } from 'ts-mockery';
 import { formatISO } from 'date-fns';
-import { ShortUrlVisits as createShortUrlVisits, ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
-import { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
-import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { ReportExporter } from '../../src/common/services/ReportExporter';
-import { Visit } from '../../src/visits/types';
-import { Settings } from '../../src/settings/reducers/settings';
+import type { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
+import { ShortUrlVisits as createShortUrlVisits } from '../../src/visits/ShortUrlVisits';
+import type { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
+import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
+import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { ReportExporter } from '../../src/common/services/ReportExporter';
+import type { Visit } from '../../src/visits/types';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {

@@ -1,7 +1,7 @@
-import { Visit } from '../../visits/types';
-import { OptionalString } from '../../utils/utils';
-import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
-import { Order } from '../../utils/helpers/ordering';
+import type { Visit } from '../../visits/types';
+import type { OptionalString } from '../../utils/utils';
+import type { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import type { Order } from '../../utils/helpers/ordering';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];

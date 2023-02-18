@@ -7,11 +7,13 @@ import {
   faGlobe as domainsIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
-import { NavLink, NavLinkProps, useLocation } from 'react-router-dom';
+import type { FC } from 'react';
+import type { NavLinkProps } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-import { DeleteServerButtonProps } from '../servers/DeleteServerButton';
-import { isServerWithId, SelectedServer } from '../servers/data';
+import type { DeleteServerButtonProps } from '../servers/DeleteServerButton';
+import type { SelectedServer } from '../servers/data';
+import { isServerWithId } from '../servers/data';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {

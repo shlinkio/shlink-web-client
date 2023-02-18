@@ -1,9 +1,10 @@
-import { IContainer } from 'bottlejs';
-import { save, load, RLSOptions } from 'redux-localstorage-simple';
+import type { IContainer } from 'bottlejs';
+import type { RLSOptions } from 'redux-localstorage-simple';
+import { save, load } from 'redux-localstorage-simple';
 import { configureStore } from '@reduxjs/toolkit';
 import reducer from '../reducers';
 import { migrateDeprecatedSettings } from '../settings/helpers';
-import { ShlinkState } from './types';
+import type { ShlinkState } from './types';
 
 const isProduction = process.env.NODE_ENV === 'production';
 const localStorageConfig: RLSOptions = {

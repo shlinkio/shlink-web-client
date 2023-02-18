@@ -1,4 +1,5 @@
-import { FC, Children, isValidElement, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren } from 'react';
+import { Children, isValidElement } from 'react';
 import { Card, Nav, NavLink } from 'reactstrap';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import './NavPills.scss';

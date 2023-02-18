@@ -1,20 +1,22 @@
-import { FC, useEffect, useState } from 'react';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
 import { pipe } from 'ramda';
 import { Message } from '../utils/Message';
 import { SearchField } from '../utils/SearchField';
-import { SelectedServer } from '../servers/data';
+import type { SelectedServer } from '../servers/data';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Result } from '../utils/Result';
 import { ShlinkApiError } from '../api/ShlinkApiError';
 import { Topics } from '../mercure/helpers/Topics';
-import { Settings } from '../settings/reducers/settings';
+import type { Settings } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
-import { TagsList as TagsListState } from './reducers/tagsList';
-import { TagsOrderableFields, TAGS_ORDERABLE_FIELDS, TagsOrder } from './data/TagsListChildrenProps';
-import { NormalizedTag } from './data';
-import { TagsTableProps } from './TagsTable';
+import type { TagsList as TagsListState } from './reducers/tagsList';
+import type { TagsOrderableFields, TagsOrder } from './data/TagsListChildrenProps';
+import { TAGS_ORDERABLE_FIELDS } from './data/TagsListChildrenProps';
+import type { NormalizedTag } from './data';
+import type { TagsTableProps } from './TagsTable';
 
 export interface TagsListProps {
   filterTags: (searchTerm: string) => void;

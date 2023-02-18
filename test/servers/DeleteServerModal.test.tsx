@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
-import { ServerWithId } from '../../src/servers/data';
+import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 

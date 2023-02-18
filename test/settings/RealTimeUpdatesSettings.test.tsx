@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import {
+import type {
   RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
   Settings,
 } from '../../src/settings/reducers/settings';

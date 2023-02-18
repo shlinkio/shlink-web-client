@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,8 +11,8 @@ import {
 import { faCircle as toggleOnIcon } from '@fortawesome/free-regular-svg-icons';
 import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { useToggle } from '../utils/helpers/hooks';
-import { DeleteServerModalProps } from './DeleteServerModal';
-import { ServerWithId } from './data';
+import type { DeleteServerModalProps } from './DeleteServerModal';
+import type { ServerWithId } from './data';
 
 export interface ManageServersRowDropdownProps {
   server: ServerWithId;

@@ -1,13 +1,15 @@
-import { FC, ReactNode, useState } from 'react';
+import type { FC, ReactNode } from 'react';
+import { useState } from 'react';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import { rangeOf } from '../../utils/utils';
-import { Order } from '../../utils/helpers/ordering';
+import type { Order } from '../../utils/helpers/ordering';
 import { SimplePaginator } from '../../common/SimplePaginator';
 import { roundTen } from '../../utils/helpers/numbers';
 import { OrderingDropdown } from '../../utils/OrderingDropdown';
 import { PaginationDropdown } from '../../utils/PaginationDropdown';
-import { Stats, StatsRow } from '../types';
-import { HorizontalBarChart, HorizontalBarChartProps } from './HorizontalBarChart';
+import type { Stats, StatsRow } from '../types';
+import type { HorizontalBarChartProps } from './HorizontalBarChart';
+import { HorizontalBarChart } from './HorizontalBarChart';
 import { ChartCard } from './ChartCard';
 
 interface SortableBarChartCardProps extends Omit<HorizontalBarChartProps, 'max'> {

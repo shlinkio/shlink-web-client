@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction, PrepareAction } from '@reduxjs/toolkit';
+import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
-import { Theme } from '../../utils/theme';
-import { DateInterval } from '../../utils/helpers/dateIntervals';
-import { TagsOrder } from '../../tags/data/TagsListChildrenProps';
-import { ShortUrlsOrder } from '../../short-urls/data';
+import type { Theme } from '../../utils/theme';
+import type { DateInterval } from '../../utils/helpers/dateIntervals';
+import type { TagsOrder } from '../../tags/data/TagsListChildrenProps';
+import type { ShortUrlsOrder } from '../../short-urls/data';
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',

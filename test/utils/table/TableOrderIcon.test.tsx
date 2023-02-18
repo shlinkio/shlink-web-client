@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import { TableOrderIcon } from '../../../src/utils/table/TableOrderIcon';
-import { OrderDir } from '../../../src/utils/helpers/ordering';
+import type { OrderDir } from '../../../src/utils/helpers/ordering';
 
 describe('<TableOrderIcon />', () => {
   const setUp = (field: string, currentDir?: OrderDir, className?: string) => render(

@@ -1,6 +1,6 @@
 import { prop } from 'ramda';
-import Bottle from 'bottlejs';
-import { ConnectDecorator } from '../../container/types';
+import type Bottle from 'bottlejs';
+import type { ConnectDecorator } from '../../container/types';
 import { domainsListReducerCreator } from '../reducers/domainsList';
 import { DomainSelector } from '../DomainSelector';
 import { ManageDomains } from '../ManageDomains';

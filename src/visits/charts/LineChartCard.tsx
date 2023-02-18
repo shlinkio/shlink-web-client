@@ -1,4 +1,5 @@
-import { useState, useMemo, MutableRefObject, useRef } from 'react';
+import type { MutableRefObject } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import {
   Card,
   CardHeader,
@@ -21,8 +22,8 @@ import {
   startOfISOWeek,
   endOfISOWeek,
 } from 'date-fns';
-import { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
-import { NormalizedVisit, Stats } from '../types';
+import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
+import type { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../../utils/helpers/visits';
 import { useToggle } from '../../utils/helpers/hooks';
 import { rangeOf } from '../../utils/utils';

@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import { HighlightCard, HighlightCardProps } from '../../../src/servers/helpers/HighlightCard';
+import type { HighlightCardProps } from '../../../src/servers/helpers/HighlightCard';
+import { HighlightCard } from '../../../src/servers/helpers/HighlightCard';
 
 describe('<HighlightCard />', () => {
   const setUp = (props: HighlightCardProps & { children?: ReactNode }) => render(

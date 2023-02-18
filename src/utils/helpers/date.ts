@@ -1,5 +1,5 @@
 import { format, formatISO, isBefore, isEqual, isWithinInterval, parse, parseISO as stdParseISO } from 'date-fns';
-import { OptionalString } from '../utils';
+import type { OptionalString } from '../utils';
 
 export const STANDARD_DATE_FORMAT = 'yyyy-MM-dd';
 

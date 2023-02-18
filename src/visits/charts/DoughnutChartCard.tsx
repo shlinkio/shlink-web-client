@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { Stats } from '../types';
+import type { FC } from 'react';
+import type { Stats } from '../types';
 import { DoughnutChart } from './DoughnutChart';
 import { ChartCard } from './ChartCard';
 

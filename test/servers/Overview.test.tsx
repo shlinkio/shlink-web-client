@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { ShortUrlsList as ShortUrlsListState } from '../../src/short-urls/reducers/shortUrlsList';
+import type { ShortUrlsList as ShortUrlsListState } from '../../src/short-urls/reducers/shortUrlsList';
 import { Overview as overviewCreator } from '../../src/servers/Overview';
-import { TagsList } from '../../src/tags/reducers/tagsList';
-import { VisitsOverview } from '../../src/visits/reducers/visitsOverview';
-import { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
-import { ReachableServer } from '../../src/servers/data';
+import type { TagsList } from '../../src/tags/reducers/tagsList';
+import type { VisitsOverview } from '../../src/visits/reducers/visitsOverview';
+import type { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
+import type { ReachableServer } from '../../src/servers/data';
 import { prettify } from '../../src/utils/helpers/numbers';
 
 describe('<Overview />', () => {

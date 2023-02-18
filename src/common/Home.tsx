@@ -6,7 +6,7 @@ import { ExternalLink } from 'react-external-link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { ServersListGroup } from '../servers/ServersListGroup';
-import { ServersMap } from '../servers/data';
+import type { ServersMap } from '../servers/data';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './Home.scss';
 

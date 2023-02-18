@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import ServersExporter from '../../../src/servers/services/ServersExporter';
-import { LocalStorage } from '../../../src/utils/services/LocalStorage';
+import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 import { appendChild, removeChild, windowMock } from '../../__mocks__/Window.mock';
 
 describe('ServersExporter', () => {

@@ -1,7 +1,7 @@
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { isBetween } from '../../utils/helpers/date';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
-import { LoadVisits, VisitsInfo } from './types';
+import type { LoadVisits, VisitsInfo } from './types';
 
 const REDUCER_PREFIX = 'shlink/tagVisits';
 

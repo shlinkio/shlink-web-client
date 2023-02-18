@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { isEmpty } from 'ramda';
 import { Tag } from '../../tags/helpers/Tag';
-import { ColorGenerator } from '../../utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 
 interface TagsProps {
   tags: string[];

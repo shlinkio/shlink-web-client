@@ -1,15 +1,17 @@
 import { Mock } from 'ts-mockery';
-import {
+import type {
   GetVisitsOverviewAction,
-  VisitsOverview,
+  VisitsOverview } from '../../../src/visits/reducers/visitsOverview';
+import {
   loadVisitsOverview as loadVisitsOverviewCreator,
   visitsOverviewReducerCreator,
 } from '../../../src/visits/reducers/visitsOverview';
-import { createNewVisits, CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkVisitsOverview } from '../../../src/api/types';
-import { ShlinkState } from '../../../src/container/types';
-import { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
+import type { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkVisitsOverview } from '../../../src/api/types';
+import type { ShlinkState } from '../../../src/container/types';
+import type { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
 
 describe('visitsOverviewReducer', () => {
   const getVisitsOverview = jest.fn();

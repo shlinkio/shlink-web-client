@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Chart, ChartDataset } from 'chart.js';
+import type { Chart, ChartDataset } from 'chart.js';
 import { DoughnutChartLegend } from '../../../src/visits/charts/DoughnutChartLegend';
 
 describe('<DoughnutChartLegend />', () => {

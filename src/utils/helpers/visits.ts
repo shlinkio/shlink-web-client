@@ -1,7 +1,8 @@
 import bowser from 'bowser';
 import { zipObj } from 'ramda';
-import { Empty, hasValue } from '../utils';
-import { Stats, UserAgent } from '../../visits/types';
+import type { Empty } from '../utils';
+import { hasValue } from '../utils';
+import type { Stats, UserAgent } from '../../visits/types';
 
 const DEFAULT = 'Others';
 const BROWSERS_WHITELIST = [

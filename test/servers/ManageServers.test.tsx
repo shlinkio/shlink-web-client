@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
 import { screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import ServersExporter from '../../src/servers/services/ServersExporter';
+import type ServersExporter from '../../src/servers/services/ServersExporter';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
-import { ServersMap, ServerWithId } from '../../src/servers/data';
+import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {

@@ -1,12 +1,13 @@
 import { Mock } from 'ts-mockery';
+import type {
+  ShortUrlEditedAction } from '../../../src/short-urls/reducers/shortUrlEdition';
 import {
-  ShortUrlEditedAction,
   shortUrlEditionReducerCreator,
   editShortUrl as editShortUrlCreator,
 } from '../../../src/short-urls/reducers/shortUrlEdition';
-import { ShlinkState } from '../../../src/container/types';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { SelectedServer } from '../../../src/servers/data';
+import type { ShlinkState } from '../../../src/container/types';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { SelectedServer } from '../../../src/servers/data';
 
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
