@@ -1,13 +1,13 @@
+import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import classNames from 'classnames';
+import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { ServersMap } from '../servers/data';
 import type { Settings } from '../settings/reducers/settings';
-import { changeThemeInMarkup } from '../utils/theme';
-import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { forceUpdate } from '../utils/helpers/sw';
+import { changeThemeInMarkup } from '../utils/theme';
 import './App.scss';
 
 interface AppProps {

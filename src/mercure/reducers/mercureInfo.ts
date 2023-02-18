@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../utils/helpers/redux';
-import type { ShlinkMercureInfo } from '../../api/types';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkMercureInfo } from '../../api/types';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 
 const REDUCER_PREFIX = 'shlink/mercure';
 

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Router, useParams } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { Router, useParams } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import { MenuLayout as createMenuLayout } from '../../src/common/MenuLayout';
 import type { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';

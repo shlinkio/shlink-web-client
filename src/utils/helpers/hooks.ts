@@ -1,7 +1,7 @@
 import type { DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { v4 as uuid } from 'uuid';
 import { parseQuery, stringifyQuery } from './query';
 

@@ -1,8 +1,8 @@
-import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { toPairs } from 'ramda';
+import { faSortAmountDown as sortDescIcon, faSortAmountUp as sortAscIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSortAmountUp as sortAscIcon, faSortAmountDown as sortDescIcon } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
+import { toPairs } from 'ramda';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import type { Order, OrderDir } from './helpers/ordering';
 import { determineOrderDir } from './helpers/ordering';
 import './OrderingDropdown.scss';

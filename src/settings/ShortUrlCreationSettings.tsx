@@ -1,10 +1,10 @@
 import type { FC, ReactNode } from 'react';
 import { DropdownItem, FormGroup } from 'reactstrap';
-import { SimpleCard } from '../utils/SimpleCard';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { SimpleCard } from '../utils/SimpleCard';
+import { ToggleSwitch } from '../utils/ToggleSwitch';
 import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
 
 interface ShortUrlCreationProps {

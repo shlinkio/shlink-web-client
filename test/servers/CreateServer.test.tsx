@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { useNavigate } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
 import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';

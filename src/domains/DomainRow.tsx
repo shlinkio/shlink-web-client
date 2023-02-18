@@ -1,14 +1,14 @@
+import { faDotCircle as defaultDomainIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDotCircle as defaultDomainIcon } from '@fortawesome/free-solid-svg-icons';
 import type { ShlinkDomainRedirects } from '../api/types';
-import type { OptionalString } from '../utils/utils';
 import type { SelectedServer } from '../servers/data';
+import type { OptionalString } from '../utils/utils';
 import type { Domain } from './data';
-import { DomainStatusIcon } from './helpers/DomainStatusIcon';
 import { DomainDropdown } from './helpers/DomainDropdown';
+import { DomainStatusIcon } from './helpers/DomainStatusIcon';
 import type { EditDomainRedirects } from './reducers/domainRedirects';
 
 interface DomainRowProps {

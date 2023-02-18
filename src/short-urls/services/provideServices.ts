@@ -1,23 +1,23 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
-import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
-import { ShortUrlsList } from '../ShortUrlsList';
+import type { ConnectDecorator } from '../../container/types';
+import { CreateShortUrl } from '../CreateShortUrl';
+import { EditShortUrl } from '../EditShortUrl';
+import { CreateShortUrlResult } from '../helpers/CreateShortUrlResult';
+import { DeleteShortUrlModal } from '../helpers/DeleteShortUrlModal';
+import { ExportShortUrlsBtn } from '../helpers/ExportShortUrlsBtn';
+import { QrCodeModal } from '../helpers/QrCodeModal';
 import { ShortUrlsRow } from '../helpers/ShortUrlsRow';
 import { ShortUrlsRowMenu } from '../helpers/ShortUrlsRowMenu';
-import { CreateShortUrl } from '../CreateShortUrl';
-import { DeleteShortUrlModal } from '../helpers/DeleteShortUrlModal';
-import { CreateShortUrlResult } from '../helpers/CreateShortUrlResult';
-import { listShortUrls, shortUrlsListReducerCreator } from '../reducers/shortUrlsList';
-import { shortUrlCreationReducerCreator, createShortUrl } from '../reducers/shortUrlCreation';
-import { shortUrlDeletionReducerCreator, deleteShortUrl, shortUrlDeleted } from '../reducers/shortUrlDeletion';
-import { editShortUrl, shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
+import { createShortUrl, shortUrlCreationReducerCreator } from '../reducers/shortUrlCreation';
+import { deleteShortUrl, shortUrlDeleted, shortUrlDeletionReducerCreator } from '../reducers/shortUrlDeletion';
 import { shortUrlDetailReducerCreator } from '../reducers/shortUrlDetail';
-import type { ConnectDecorator } from '../../container/types';
-import { ShortUrlsTable } from '../ShortUrlsTable';
+import { editShortUrl, shortUrlEditionReducerCreator } from '../reducers/shortUrlEdition';
+import { listShortUrls, shortUrlsListReducerCreator } from '../reducers/shortUrlsList';
 import { ShortUrlForm } from '../ShortUrlForm';
-import { EditShortUrl } from '../EditShortUrl';
-import { QrCodeModal } from '../helpers/QrCodeModal';
-import { ExportShortUrlsBtn } from '../helpers/ExportShortUrlsBtn';
+import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
+import { ShortUrlsList } from '../ShortUrlsList';
+import { ShortUrlsTable } from '../ShortUrlsTable';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components

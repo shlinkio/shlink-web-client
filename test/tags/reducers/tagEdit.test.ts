@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
-import type { EditTagAction } from '../../../src/tags/reducers/tagEdit';
-import { tagEdited, editTag as editTagCreator, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import type { ShlinkState } from '../../../src/container/types';
+import type { EditTagAction } from '../../../src/tags/reducers/tagEdit';
+import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
+import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 
 describe('tagEditReducer', () => {
   const oldName = 'foo';

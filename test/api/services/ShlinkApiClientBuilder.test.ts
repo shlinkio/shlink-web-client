@@ -1,8 +1,8 @@
 import { Mock } from 'ts-mockery';
 import { buildShlinkApiClient } from '../../../src/api/services/ShlinkApiClientBuilder';
-import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
-import type { ShlinkState } from '../../../src/container/types';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
+import type { ShlinkState } from '../../../src/container/types';
+import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
 
 describe('ShlinkApiClientBuilder', () => {
   const server = (data: Partial<ReachableServer>) => Mock.of<ReachableServer>(data);

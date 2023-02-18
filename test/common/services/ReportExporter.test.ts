@@ -1,7 +1,7 @@
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
+import type { ExportableShortUrl } from '../../../src/short-urls/data';
 import type { NormalizedVisit } from '../../../src/visits/types';
 import { windowMock } from '../../__mocks__/Window.mock';
-import type { ExportableShortUrl } from '../../../src/short-urls/data';
 
 describe('ReportExporter', () => {
   const jsonToCsv = jest.fn();

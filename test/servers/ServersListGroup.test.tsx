@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { ServersListGroup } from '../../src/servers/ServersListGroup';
+import { Mock } from 'ts-mockery';
 import type { ServerWithId } from '../../src/servers/data';
+import { ServersListGroup } from '../../src/servers/ServersListGroup';
 
 describe('<ServersListGroup />', () => {
   const servers = [

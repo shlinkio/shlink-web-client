@@ -1,6 +1,6 @@
-import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import { identity } from 'ramda';
+import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { useDomId } from './helpers/hooks';
 
 export type BooleanControlProps = PropsWithChildren<{

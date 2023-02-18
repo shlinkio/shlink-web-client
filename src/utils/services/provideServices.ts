@@ -1,8 +1,8 @@
 import type Bottle from 'bottlejs';
-import { useTimeoutToggle } from '../helpers/hooks';
-import { LocalStorage } from './LocalStorage';
-import { ColorGenerator } from './ColorGenerator';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
+import { useTimeoutToggle } from '../helpers/hooks';
+import { ColorGenerator } from './ColorGenerator';
+import { LocalStorage } from './LocalStorage';
 
 const provideServices = (bottle: Bottle) => {
   bottle.constant('localStorage', window.localStorage);

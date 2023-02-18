@@ -1,37 +1,37 @@
-import type { MutableRefObject } from 'react';
-import { useState, useMemo, useRef } from 'react';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap';
-import { getElementAtEvent, Line } from 'react-chartjs-2';
-import { always, cond, countBy, reverse } from 'ramda';
+import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import {
   add,
   differenceInDays,
   differenceInHours,
   differenceInMonths,
   differenceInWeeks,
-  parseISO,
-  format,
-  startOfISOWeek,
   endOfISOWeek,
+  format,
+  parseISO,
+  startOfISOWeek,
 } from 'date-fns';
-import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
-import type { NormalizedVisit, Stats } from '../types';
-import { fillTheGaps } from '../../utils/helpers/visits';
-import { useToggle } from '../../utils/helpers/hooks';
-import { rangeOf } from '../../utils/utils';
-import { ToggleSwitch } from '../../utils/ToggleSwitch';
-import { prettify } from '../../utils/helpers/numbers';
+import { always, cond, countBy, reverse } from 'ramda';
+import type { MutableRefObject } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import { getElementAtEvent, Line } from 'react-chartjs-2';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  UncontrolledDropdown,
+} from 'reactstrap';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
-import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
 import { STANDARD_DATE_FORMAT } from '../../utils/helpers/date';
+import { useToggle } from '../../utils/helpers/hooks';
+import { prettify } from '../../utils/helpers/numbers';
+import { fillTheGaps } from '../../utils/helpers/visits';
+import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../utils/theme';
+import { ToggleSwitch } from '../../utils/ToggleSwitch';
+import { rangeOf } from '../../utils/utils';
+import type { NormalizedVisit, Stats } from '../types';
 import './LineChartCard.scss';
 
 interface LineChartCardProps {

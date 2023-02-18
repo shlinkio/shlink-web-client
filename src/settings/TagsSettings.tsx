@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import { SimpleCard } from '../utils/SimpleCard';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
+import { SimpleCard } from '../utils/SimpleCard';
 import type { Settings, TagsSettings as TagsSettingsOptions } from './reducers/settings';
 
 interface TagsProps {

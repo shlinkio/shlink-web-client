@@ -1,10 +1,10 @@
-import { prop } from 'ramda';
 import type Bottle from 'bottlejs';
+import { prop } from 'ramda';
 import type { ConnectDecorator } from '../../container/types';
-import { domainsListReducerCreator } from '../reducers/domainsList';
 import { DomainSelector } from '../DomainSelector';
 import { ManageDomains } from '../ManageDomains';
 import { editDomainRedirects } from '../reducers/domainRedirects';
+import { domainsListReducerCreator } from '../reducers/domainsList';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components

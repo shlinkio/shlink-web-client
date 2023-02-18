@@ -1,8 +1,8 @@
-import type { FC, PropsWithChildren } from 'react';
-import { Card, Row } from 'reactstrap';
-import classNames from 'classnames';
 import { faCircleNotch as preloader } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
+import type { FC, PropsWithChildren } from 'react';
+import { Card, Row } from 'reactstrap';
 
 type MessageType = 'default' | 'error';
 

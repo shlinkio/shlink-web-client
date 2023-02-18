@@ -1,12 +1,12 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAction, createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
 import { memoizeWith, pipe } from 'ramda';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkHealth } from '../../api/types';
+import { createAsyncThunk } from '../../utils/helpers/redux';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 import type { SelectedServer, ServerWithId } from '../data';
 import { isReachableServer } from '../data';
-import type { ShlinkHealth } from '../../api/types';
-import { createAsyncThunk } from '../../utils/helpers/redux';
-import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 
 const REDUCER_PREFIX = 'shlink/selectedServer';
 

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { Paginator } from '../../src/short-urls/Paginator';
+import { Mock } from 'ts-mockery';
 import type { ShlinkPaginator } from '../../src/api/types';
+import { Paginator } from '../../src/short-urls/Paginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<Paginator />', () => {

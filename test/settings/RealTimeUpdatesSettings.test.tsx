@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
 import type {
   RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
   Settings,
 } from '../../src/settings/reducers/settings';
-import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {

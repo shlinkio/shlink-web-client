@@ -1,6 +1,7 @@
 import type Bottle from 'bottlejs';
+import type { ConnectDecorator } from '../../container/types';
+import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { RealTimeUpdatesSettings } from '../RealTimeUpdatesSettings';
-import { Settings } from '../Settings';
 import {
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
@@ -10,13 +11,12 @@ import {
   setVisitsSettings,
   toggleRealTimeUpdates,
 } from '../reducers/settings';
-import type { ConnectDecorator } from '../../container/types';
-import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
+import { Settings } from '../Settings';
 import { ShortUrlCreationSettings } from '../ShortUrlCreationSettings';
+import { ShortUrlsListSettings } from '../ShortUrlsListSettings';
+import { TagsSettings } from '../TagsSettings';
 import { UserInterfaceSettings } from '../UserInterfaceSettings';
 import { VisitsSettings } from '../VisitsSettings';
-import { TagsSettings } from '../TagsSettings';
-import { ShortUrlsListSettings } from '../ShortUrlsListSettings';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components

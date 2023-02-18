@@ -1,8 +1,8 @@
 import { isNil } from 'ramda';
-import type { ShortUrl, ShortUrlData } from '../data';
+import type { ShortUrlCreationSettings } from '../../settings/reducers/settings';
 import type { OptionalString } from '../../utils/utils';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
-import type { ShortUrlCreationSettings } from '../../settings/reducers/settings';
+import type { ShortUrl, ShortUrlData } from '../data';
 
 export const shortUrlMatches = (shortUrl: ShortUrl, shortCode: string, domain: OptionalString): boolean => {
   if (isNil(domain)) {

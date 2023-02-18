@@ -1,15 +1,15 @@
-import type { FC } from 'react';
-import { useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { withSelectedServer } from '../servers/helpers/withSelectedServer';
-import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import { supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
+import type { FC } from 'react';
+import { useEffect } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { isReachableServer } from '../servers/data';
-import { NotFound } from './NotFound';
+import { withSelectedServer } from '../servers/helpers/withSelectedServer';
+import { supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
+import { useSwipeable, useToggle } from '../utils/helpers/hooks';
 import type { AsideMenuProps } from './AsideMenu';
+import { NotFound } from './NotFound';
 import './MenuLayout.scss';
 
 interface MenuLayoutProps {

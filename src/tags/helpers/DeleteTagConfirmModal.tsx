@@ -1,8 +1,8 @@
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import type { TagDeletion } from '../reducers/tagDelete';
-import type { TagModalProps } from '../data';
-import { Result } from '../../utils/Result';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { Result } from '../../utils/Result';
+import type { TagModalProps } from '../data';
+import type { TagDeletion } from '../reducers/tagDelete';
 
 interface DeleteTagConfirmModalProps extends TagModalProps {
   deleteTag: (tag: string) => Promise<void>;

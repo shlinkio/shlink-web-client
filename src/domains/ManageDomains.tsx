@@ -1,14 +1,14 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import { ShlinkApiError } from '../api/ShlinkApiError';
+import type { SelectedServer } from '../servers/data';
 import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
-import { ShlinkApiError } from '../api/ShlinkApiError';
-import { SimpleCard } from '../utils/SimpleCard';
 import { SearchField } from '../utils/SearchField';
-import type { EditDomainRedirects } from './reducers/domainRedirects';
-import type { SelectedServer } from '../servers/data';
-import type { DomainsList } from './reducers/domainsList';
+import { SimpleCard } from '../utils/SimpleCard';
 import { DomainRow } from './DomainRow';
+import type { EditDomainRedirects } from './reducers/domainRedirects';
+import type { DomainsList } from './reducers/domainsList';
 
 interface ManageDomainsProps {
   listDomains: Function;

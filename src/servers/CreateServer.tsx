@@ -1,16 +1,16 @@
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
-import { v4 as uuid } from 'uuid';
-import { Button } from 'reactstrap';
 import { useNavigate } from 'react-router-dom';
-import { Result } from '../utils/Result';
+import { Button } from 'reactstrap';
+import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
 import { useGoBack, useToggle } from '../utils/helpers/hooks';
-import { ServerForm } from './helpers/ServerForm';
-import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
+import { Result } from '../utils/Result';
 import type { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
+import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
+import { ServerForm } from './helpers/ServerForm';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 

@@ -1,11 +1,11 @@
-import { FormGroup, Input } from 'reactstrap';
 import classNames from 'classnames';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
-import { SimpleCard } from '../utils/SimpleCard';
+import { FormGroup, Input } from 'reactstrap';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import type { Settings } from './reducers/settings';
 import { useDomId } from '../utils/helpers/hooks';
+import { SimpleCard } from '../utils/SimpleCard';
+import { ToggleSwitch } from '../utils/ToggleSwitch';
+import type { Settings } from './reducers/settings';
 
 interface RealTimeUpdatesProps {
   settings: Settings;

@@ -1,6 +1,6 @@
+import { pipe } from 'ramda';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { pipe } from 'ramda';
 import { useParams } from 'react-router-dom';
 import type { CreateVisit } from '../../visits/types';
 import type { MercureInfo } from '../reducers/mercureInfo';

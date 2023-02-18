@@ -1,19 +1,19 @@
 import {
-  faList as listIcon,
-  faLink as createIcon,
-  faTags as tagsIcon,
-  faPen as editIcon,
-  faHome as overviewIcon,
   faGlobe as domainsIcon,
+  faHome as overviewIcon,
+  faLink as createIcon,
+  faList as listIcon,
+  faPen as editIcon,
+  faTags as tagsIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
 import type { FC } from 'react';
 import type { NavLinkProps } from 'react-router-dom';
 import { NavLink, useLocation } from 'react-router-dom';
-import classNames from 'classnames';
-import type { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import type { SelectedServer } from '../servers/data';
 import { isServerWithId } from '../servers/data';
+import type { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {

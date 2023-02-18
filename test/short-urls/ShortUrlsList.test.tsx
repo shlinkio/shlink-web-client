@@ -1,15 +1,15 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
-import type { ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
+import { Mock } from 'ts-mockery';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import type { ReachableServer } from '../../src/servers/data';
 import type { Settings } from '../../src/settings/reducers/settings';
+import type { ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
+import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
+import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
 import type { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
-import { renderWithEvents } from '../__helpers__/setUpTest';
 import type { SemVer } from '../../src/utils/helpers/version';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

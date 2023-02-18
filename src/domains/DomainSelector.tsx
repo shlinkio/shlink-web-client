@@ -1,9 +1,9 @@
+import { faUndo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isEmpty, pipe } from 'ramda';
 import { useEffect } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUndo } from '@fortawesome/free-solid-svg-icons';
-import { isEmpty, pipe } from 'ramda';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { useToggle } from '../utils/helpers/hooks';
 import type { DomainsList } from './reducers/domainsList';

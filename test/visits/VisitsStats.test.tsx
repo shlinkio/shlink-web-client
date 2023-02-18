@@ -1,13 +1,13 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { VisitsStats } from '../../src/visits/VisitsStats';
-import type { Visit } from '../../src/visits/types';
+import { Router } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import type { Settings } from '../../src/settings/reducers/settings';
-import { renderWithEvents } from '../__helpers__/setUpTest';
 import { rangeOf } from '../../src/utils/utils';
 import type { VisitsInfo } from '../../src/visits/reducers/types';
+import type { Visit } from '../../src/visits/types';
+import { VisitsStats } from '../../src/visits/VisitsStats';
+import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsStats />', () => {
   const visits = rangeOf(3, () => Mock.of<Visit>({ date: '2020-01-01' }));

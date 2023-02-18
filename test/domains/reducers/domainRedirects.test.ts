@@ -1,8 +1,8 @@
 import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import type { EditDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
-import type { ShlinkDomainRedirects } from '../../../src/api/types';
 
 describe('domainRedirectsReducer', () => {
   beforeEach(jest.clearAllMocks);

@@ -1,5 +1,5 @@
-import type { Nullable, OptionalString } from '../../utils/utils';
 import type { Order } from '../../utils/helpers/ordering';
+import type { Nullable, OptionalString } from '../../utils/utils';
 
 export interface EditShortUrlData {
   longUrl?: string;

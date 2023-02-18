@@ -1,8 +1,8 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
+import { Mock } from 'ts-mockery';
 import type { Domain } from '../../../src/domains/data';
+import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
 import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';

@@ -2,10 +2,10 @@ import type { FC } from 'react';
 import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import { useGoBack, useParsedQuery } from '../utils/helpers/hooks';
-import { ServerForm } from './helpers/ServerForm';
-import { withSelectedServer } from './helpers/withSelectedServer';
 import type { ServerData } from './data';
 import { isServerWithId } from './data';
+import { ServerForm } from './helpers/ServerForm';
+import { withSelectedServer } from './helpers/withSelectedServer';
 
 interface EditServerProps {
   editServer: (serverId: string, serverData: ServerData) => void;

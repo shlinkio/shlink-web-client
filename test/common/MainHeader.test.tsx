@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import { MainHeader as createMainHeader } from '../../src/common/MainHeader';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

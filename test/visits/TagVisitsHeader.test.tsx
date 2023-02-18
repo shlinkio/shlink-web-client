@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
-import type { TagVisits } from '../../src/visits/reducers/tagVisits';
 import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
+import type { TagVisits } from '../../src/visits/reducers/tagVisits';
+import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
 
 describe('<TagVisitsHeader />', () => {
   const tagVisits = Mock.of<TagVisits>({

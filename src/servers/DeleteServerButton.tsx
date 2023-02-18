@@ -1,9 +1,9 @@
-import type { FC, PropsWithChildren } from 'react';
 import { faMinusCircle as deleteIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { FC, PropsWithChildren } from 'react';
 import { useToggle } from '../utils/helpers/hooks';
-import type { DeleteServerModalProps } from './DeleteServerModal';
 import type { ServerWithId } from './data';
+import type { DeleteServerModalProps } from './DeleteServerModal';
 
 export type DeleteServerButtonProps = PropsWithChildren<{
   server: ServerWithId;

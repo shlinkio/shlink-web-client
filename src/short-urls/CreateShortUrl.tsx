@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import type { SelectedServer } from '../servers/data';
 import type { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
 import type { ShortUrlData } from './data';
-import type { ShortUrlCreation } from './reducers/shortUrlCreation';
 import type { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
+import type { ShortUrlCreation } from './reducers/shortUrlCreation';
 import type { ShortUrlFormProps } from './ShortUrlForm';
 
 export interface CreateShortUrlProps {

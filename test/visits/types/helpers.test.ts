@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
-import type { GroupedNewVisits } from '../../../src/visits/types/helpers';
-import { groupNewVisitsByType, toApiParams } from '../../../src/visits/types/helpers';
-import type { CreateVisit, OrphanVisit, Visit, VisitsParams } from '../../../src/visits/types';
 import type { ShlinkVisitsParams } from '../../../src/api/types';
 import { formatIsoDate, parseDate } from '../../../src/utils/helpers/date';
+import type { CreateVisit, OrphanVisit, Visit, VisitsParams } from '../../../src/visits/types';
+import type { GroupedNewVisits } from '../../../src/visits/types/helpers';
+import { groupNewVisitsByType, toApiParams } from '../../../src/visits/types/helpers';
 
 describe('visitsTypeHelpers', () => {
   describe('groupNewVisitsByType', () => {

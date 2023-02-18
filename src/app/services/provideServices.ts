@@ -1,7 +1,7 @@
 import type Bottle from 'bottlejs';
-import { appUpdateAvailable, resetAppUpdate } from '../reducers/appUpdates';
-import { App } from '../App';
 import type { ConnectDecorator } from '../../container/types';
+import { App } from '../App';
+import { appUpdateAvailable, resetAppUpdate } from '../reducers/appUpdates';
 
 const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components

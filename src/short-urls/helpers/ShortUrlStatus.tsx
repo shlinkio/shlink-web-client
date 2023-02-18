@@ -1,12 +1,12 @@
-import type { FC, ReactNode } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faLinkSlash, faCalendarXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { UncontrolledTooltip } from 'reactstrap';
+import { faCalendarXmark, faCheck, faLinkSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isBefore } from 'date-fns';
-import type { ShortUrl } from '../data';
+import type { FC, ReactNode } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
 import { formatHumanFriendly, now, parseISO } from '../../utils/helpers/date';
 import { useElementRef } from '../../utils/helpers/hooks';
+import type { ShortUrl } from '../data';
 
 interface ShortUrlStatusProps {
   shortUrl: ShortUrl;

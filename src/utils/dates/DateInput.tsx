@@ -1,10 +1,10 @@
-import { useRef } from 'react';
+import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
 import { isNil } from 'ramda';
+import { useRef } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarAlt as calendarIcon } from '@fortawesome/free-regular-svg-icons';
-import classNames from 'classnames';
 import { STANDARD_DATE_FORMAT } from '../helpers/date';
 import './DateInput.scss';
 

@@ -1,15 +1,15 @@
 import { useParams } from 'react-router-dom';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import type { ShlinkVisitsParams } from '../api/types';
-import type { DomainVisits as DomainVisitsState, LoadDomainVisits } from './reducers/domainVisits';
 import type { ReportExporter } from '../common/services/ReportExporter';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
-import { toApiParams } from './types/helpers';
+import type { DomainVisits as DomainVisitsState, LoadDomainVisits } from './reducers/domainVisits';
 import type { NormalizedVisit } from './types';
-import { VisitsStats } from './VisitsStats';
+import type { CommonVisitsProps } from './types/CommonVisitsProps';
+import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
+import { VisitsStats } from './VisitsStats';
 
 export interface DomainVisitsProps extends CommonVisitsProps {
   getDomainVisits: (params: LoadDomainVisits) => void;

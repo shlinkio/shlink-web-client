@@ -1,7 +1,7 @@
+import { configureStore } from '@reduxjs/toolkit';
 import type { IContainer } from 'bottlejs';
 import type { RLSOptions } from 'redux-localstorage-simple';
-import { save, load } from 'redux-localstorage-simple';
-import { configureStore } from '@reduxjs/toolkit';
+import { load, save } from 'redux-localstorage-simple';
 import reducer from '../reducers';
 import { migrateDeprecatedSettings } from '../settings/helpers';
 import type { ShlinkState } from './types';

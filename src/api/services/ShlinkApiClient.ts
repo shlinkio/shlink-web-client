@@ -1,26 +1,26 @@
 import { isEmpty, isNil, reject } from 'ramda';
+import type { HttpClient } from '../../common/services/HttpClient';
 import type { ShortUrl, ShortUrlData } from '../../short-urls/data';
+import { orderToString } from '../../utils/helpers/ordering';
+import { stringifyQuery } from '../../utils/helpers/query';
 import type { OptionalString } from '../../utils/utils';
 import type {
+  ShlinkDomainRedirects,
+  ShlinkDomainsResponse,
+  ShlinkEditDomainRedirects,
   ShlinkHealth,
   ShlinkMercureInfo,
+  ShlinkShortUrlData,
+  ShlinkShortUrlsListNormalizedParams,
+  ShlinkShortUrlsListParams,
   ShlinkShortUrlsResponse,
   ShlinkTags,
   ShlinkTagsResponse,
   ShlinkVisits,
-  ShlinkVisitsParams,
-  ShlinkShortUrlData,
-  ShlinkDomainsResponse,
   ShlinkVisitsOverview,
-  ShlinkEditDomainRedirects,
-  ShlinkDomainRedirects,
-  ShlinkShortUrlsListParams,
-  ShlinkShortUrlsListNormalizedParams,
+  ShlinkVisitsParams,
 } from '../types';
-import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
-import { stringifyQuery } from '../../utils/helpers/query';
-import type { HttpClient } from '../../common/services/HttpClient';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);

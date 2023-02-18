@@ -1,5 +1,5 @@
-import type { FC } from 'react';
 import { isEmpty } from 'ramda';
+import type { FC } from 'react';
 import { Tag } from '../../tags/helpers/Tag';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 

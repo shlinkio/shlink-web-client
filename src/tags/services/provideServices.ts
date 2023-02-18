@@ -1,14 +1,14 @@
-import { prop } from 'ramda';
 import type { IContainer } from 'bottlejs';
 import type Bottle from 'bottlejs';
-import { TagsSelector } from '../helpers/TagsSelector';
+import { prop } from 'ramda';
+import type { ConnectDecorator } from '../../container/types';
 import { DeleteTagConfirmModal } from '../helpers/DeleteTagConfirmModal';
 import { EditTagModal } from '../helpers/EditTagModal';
-import { TagsList } from '../TagsList';
-import { filterTags, listTags, tagsListReducerCreator } from '../reducers/tagsList';
+import { TagsSelector } from '../helpers/TagsSelector';
 import { tagDeleted, tagDeleteReducerCreator } from '../reducers/tagDelete';
 import { editTag, tagEdited, tagEditReducerCreator } from '../reducers/tagEdit';
-import type { ConnectDecorator } from '../../container/types';
+import { filterTags, listTags, tagsListReducerCreator } from '../reducers/tagsList';
+import { TagsList } from '../TagsList';
 import { TagsTable } from '../TagsTable';
 import { TagsTableRow } from '../TagsTableRow';
 

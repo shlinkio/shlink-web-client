@@ -1,12 +1,12 @@
+import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { pipe } from 'ramda';
-import type { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
-import type { ShortUrlIdentifier, ShortUrlModalProps } from '../data';
-import { handleEventPreventingDefault } from '../../utils/utils';
-import { Result } from '../../utils/Result';
-import { isInvalidDeletionError } from '../../api/utils';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { isInvalidDeletionError } from '../../api/utils';
+import { Result } from '../../utils/Result';
+import { handleEventPreventingDefault } from '../../utils/utils';
+import type { ShortUrlIdentifier, ShortUrlModalProps } from '../data';
+import type { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 
 interface DeleteShortUrlModalConnectProps extends ShortUrlModalProps {
   shortUrlDeletion: ShortUrlDeletion;

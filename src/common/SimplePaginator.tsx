@@ -1,13 +1,13 @@
-import type { FC } from 'react';
 import classNames from 'classnames';
+import type { FC } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import type {
   NumberOrEllipsis } from '../utils/helpers/pagination';
 import {
-  pageIsEllipsis,
   keyForPage,
-  progressivePagination,
+  pageIsEllipsis,
   prettifyPageNumber,
+  progressivePagination,
 } from '../utils/helpers/pagination';
 import './SimplePaginator.scss';
 

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import type { SelectedServer } from '../servers/data';
-import { ShlinkVersions } from './ShlinkVersions';
 import type { Sidebar } from './reducers/sidebar';
+import { ShlinkVersions } from './ShlinkVersions';
 import './ShlinkVersionsContainer.scss';
 
 export interface ShlinkVersionsContainerProps {

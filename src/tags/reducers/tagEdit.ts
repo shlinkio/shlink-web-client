@@ -1,11 +1,11 @@
-import { pick } from 'ramda';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAction, createSlice } from '@reduxjs/toolkit';
+import { pick } from 'ramda';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ProblemDetailsError } from '../../api/types/errors';
+import { parseApiError } from '../../api/utils';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
-import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { parseApiError } from '../../api/utils';
-import type { ProblemDetailsError } from '../../api/types/errors';
 
 const REDUCER_PREFIX = 'shlink/tagEdit';
 

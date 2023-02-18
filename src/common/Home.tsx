@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
+import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isEmpty, values } from 'ramda';
+import { useEffect } from 'react';
+import { ExternalLink } from 'react-external-link';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Row } from 'reactstrap';
-import { ExternalLink } from 'react-external-link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { ServersListGroup } from '../servers/ServersListGroup';
 import type { ServersMap } from '../servers/data';
+import { ServersListGroup } from '../servers/ServersListGroup';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './Home.scss';
 

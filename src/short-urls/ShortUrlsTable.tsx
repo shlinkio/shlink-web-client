@@ -1,10 +1,10 @@
-import type { ReactNode } from 'react';
-import { isEmpty } from 'ramda';
 import classNames from 'classnames';
+import { isEmpty } from 'ramda';
+import type { ReactNode } from 'react';
 import type { SelectedServer } from '../servers/data';
-import type { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import type { ShortUrlsRowType } from './helpers/ShortUrlsRow';
 import type { ShortUrlsOrderableFields } from './data';
+import type { ShortUrlsRowType } from './helpers/ShortUrlsRow';
+import type { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
 import './ShortUrlsTable.scss';
 
 interface ShortUrlsTableProps {

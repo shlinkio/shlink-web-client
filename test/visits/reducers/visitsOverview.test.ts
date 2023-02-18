@@ -1,4 +1,9 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkVisitsOverview } from '../../../src/api/types';
+import type { ShlinkState } from '../../../src/container/types';
+import type { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 import type {
   GetVisitsOverviewAction,
   VisitsOverview } from '../../../src/visits/reducers/visitsOverview';
@@ -6,11 +11,6 @@ import {
   loadVisitsOverview as loadVisitsOverviewCreator,
   visitsOverviewReducerCreator,
 } from '../../../src/visits/reducers/visitsOverview';
-import type { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
-import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ShlinkVisitsOverview } from '../../../src/api/types';
-import type { ShlinkState } from '../../../src/container/types';
 import type { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
 
 describe('visitsOverviewReducer', () => {

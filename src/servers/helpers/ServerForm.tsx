@@ -1,9 +1,9 @@
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 import { InputFormGroup } from '../../utils/forms/InputFormGroup';
+import { SimpleCard } from '../../utils/SimpleCard';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import type { ServerData } from '../data';
-import { SimpleCard } from '../../utils/SimpleCard';
 
 type ServerFormProps = PropsWithChildren<{
   onSubmit: (server: ServerData) => void;

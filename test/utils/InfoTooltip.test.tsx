@@ -1,5 +1,5 @@
-import { screen, waitFor } from '@testing-library/react';
 import type { Placement } from '@popperjs/core';
+import { screen, waitFor } from '@testing-library/react';
 import type { InfoTooltipProps } from '../../src/utils/InfoTooltip';
 import { InfoTooltip } from '../../src/utils/InfoTooltip';
 import { renderWithEvents } from '../__helpers__/setUpTest';

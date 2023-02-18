@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { values } from 'ramda';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { ServersDropdown } from '../../src/servers/ServersDropdown';
+import { Mock } from 'ts-mockery';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
+import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {

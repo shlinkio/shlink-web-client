@@ -1,12 +1,12 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
 import {
   ImportServersBtn as createImportServersBtn,
 } from '../../../src/servers/helpers/ImportServersBtn';
 import type { ServersImporter } from '../../../src/servers/services/ServersImporter';
-import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {

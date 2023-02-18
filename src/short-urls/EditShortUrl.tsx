@@ -1,22 +1,22 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { useEffect, useMemo } from 'react';
-import { Button, Card } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
+import { Button, Card } from 'reactstrap';
+import { ShlinkApiError } from '../api/ShlinkApiError';
 import type { SelectedServer } from '../servers/data';
 import type { Settings } from '../settings/reducers/settings';
-import type { ShortUrlIdentifier } from './data';
+import { useGoBack } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
 import { Message } from '../utils/Message';
 import { Result } from '../utils/Result';
-import { ShlinkApiError } from '../api/ShlinkApiError';
-import { useGoBack } from '../utils/helpers/hooks';
-import type { ShortUrlFormProps } from './ShortUrlForm';
+import type { ShortUrlIdentifier } from './data';
+import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
 import type { ShortUrlDetail } from './reducers/shortUrlDetail';
 import type { EditShortUrl as EditShortUrlInfo, ShortUrlEdition } from './reducers/shortUrlEdition';
-import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
+import type { ShortUrlFormProps } from './ShortUrlForm';
 
 interface EditShortUrlConnectProps {
   settings: Settings;

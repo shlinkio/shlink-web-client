@@ -1,16 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import type { ShlinkVisitsParams } from '../api/types';
+import type { ReportExporter } from '../common/services/ReportExporter';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { useGoBack } from '../utils/helpers/hooks';
-import type { ReportExporter } from '../common/services/ReportExporter';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import type { LoadTagVisits, TagVisits as TagVisitsState } from './reducers/tagVisits';
 import { TagVisitsHeader } from './TagVisitsHeader';
-import { VisitsStats } from './VisitsStats';
 import type { NormalizedVisit } from './types';
 import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
+import { VisitsStats } from './VisitsStats';
 
 export interface TagVisitsProps extends CommonVisitsProps {
   getTagVisits: (params: LoadTagVisits) => void;

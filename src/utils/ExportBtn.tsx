@@ -1,8 +1,8 @@
+import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import type { ButtonProps } from 'reactstrap';
 import { Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { prettify } from './helpers/numbers';
 
 interface ExportBtnProps extends Omit<ButtonProps, 'outline' | 'color' | 'disabled'> {

@@ -1,16 +1,16 @@
-import { v4 as uuid } from 'uuid';
 import { Mock } from 'ts-mockery';
-import {
-  selectServer as selectServerCreator,
-  resetSelectedServer,
-  selectedServerReducerCreator,
-  selectServerListener,
-  MAX_FALLBACK_VERSION,
-  MIN_FALLBACK_VERSION,
-} from '../../../src/servers/reducers/selectedServer';
+import { v4 as uuid } from 'uuid';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 import type { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import {
+  MAX_FALLBACK_VERSION,
+  MIN_FALLBACK_VERSION,
+  resetSelectedServer,
+  selectedServerReducerCreator,
+  selectServer as selectServerCreator,
+  selectServerListener,
+} from '../../../src/servers/reducers/selectedServer';
 
 describe('selectedServerReducer', () => {
   const dispatch = jest.fn();

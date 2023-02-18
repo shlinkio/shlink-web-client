@@ -1,8 +1,8 @@
-import type { FC } from 'react';
-import { Modal, ModalBody } from 'reactstrap';
-import type { MapContainerProps } from 'react-leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { prop } from 'ramda';
+import type { FC } from 'react';
+import type { MapContainerProps } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Modal, ModalBody } from 'reactstrap';
 import type { CityStats } from '../types';
 import './MapModal.scss';
 

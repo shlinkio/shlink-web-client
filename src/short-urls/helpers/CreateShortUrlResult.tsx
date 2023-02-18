@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
-import type { ShortUrlCreation } from '../reducers/shortUrlCreation';
+import { ShlinkApiError } from '../../api/ShlinkApiError';
 import type { TimeoutToggle } from '../../utils/helpers/hooks';
 import { Result } from '../../utils/Result';
+import type { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import './CreateShortUrlResult.scss';
-import { ShlinkApiError } from '../../api/ShlinkApiError';
 
 export interface CreateShortUrlResultProps {
   creation: ShortUrlCreation;

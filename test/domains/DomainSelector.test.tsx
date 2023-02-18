@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { ShlinkDomain } from '../../src/api/types';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import type { DomainsList } from '../../src/domains/reducers/domainsList';
-import type { ShlinkDomain } from '../../src/api/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DomainSelector />', () => {

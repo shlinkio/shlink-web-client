@@ -1,5 +1,5 @@
-import type { FC, MouseEventHandler, PropsWithChildren } from 'react';
 import classNames from 'classnames';
+import type { FC, MouseEventHandler, PropsWithChildren } from 'react';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import './Tag.scss';
 

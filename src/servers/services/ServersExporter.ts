@@ -1,9 +1,9 @@
 import { values } from 'ramda';
+import type { JsonToCsv } from '../../utils/helpers/csvjson';
+import { saveCsv } from '../../utils/helpers/files';
 import type { LocalStorage } from '../../utils/services/LocalStorage';
 import type { ServersMap } from '../data';
 import { serverWithIdToServerData } from '../data';
-import { saveCsv } from '../../utils/helpers/files';
-import type { JsonToCsv } from '../../utils/helpers/csvjson';
 
 const SERVERS_FILENAME = 'shlink-servers.csv';
 

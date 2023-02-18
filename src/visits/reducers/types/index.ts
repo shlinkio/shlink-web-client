@@ -1,6 +1,6 @@
 import type { ShlinkVisitsParams } from '../../../api/types';
-import type { DateInterval } from '../../../utils/helpers/dateIntervals';
 import type { ProblemDetailsError } from '../../../api/types/errors';
+import type { DateInterval } from '../../../utils/helpers/dateIntervals';
 import type { Visit } from '../../types';
 
 export interface VisitsInfo {

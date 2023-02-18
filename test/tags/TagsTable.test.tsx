@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { useLocation } from 'react-router-dom';
-import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
+import { Mock } from 'ts-mockery';
 import type { SelectedServer } from '../../src/servers/data';
-import { rangeOf } from '../../src/utils/utils';
 import type { NormalizedTag } from '../../src/tags/data';
+import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
+import { rangeOf } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useLocation: jest.fn() }));

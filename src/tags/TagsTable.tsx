@@ -1,13 +1,13 @@
+import { splitEvery } from 'ramda';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { splitEvery } from 'ramda';
 import { useLocation } from 'react-router-dom';
-import { SimpleCard } from '../utils/SimpleCard';
 import { SimplePaginator } from '../common/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';
+import { SimpleCard } from '../utils/SimpleCard';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import type { TagsOrderableFields, TagsListChildrenProps, TagsOrder } from './data/TagsListChildrenProps';
+import type { TagsListChildrenProps, TagsOrder, TagsOrderableFields } from './data/TagsListChildrenProps';
 import type { TagsTableRowProps } from './TagsTableRow';
 import './TagsTable.scss';
 

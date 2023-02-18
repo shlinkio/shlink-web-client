@@ -1,8 +1,8 @@
-import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
-import { ShortUrlStatus } from '../../../src/short-urls/helpers/ShortUrlStatus';
 import type { ShortUrl, ShortUrlMeta, ShortUrlVisitsSummary } from '../../../src/short-urls/data';
+import { ShortUrlStatus } from '../../../src/short-urls/helpers/ShortUrlStatus';
 
 describe('<ShortUrlStatus />', () => {
   const setUp = (shortUrl: ShortUrl) => ({

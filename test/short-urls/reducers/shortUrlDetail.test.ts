@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
-import type { ShortUrlDetailAction } from '../../../src/short-urls/reducers/shortUrlDetail';
-import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
-import type { ShortUrl } from '../../../src/short-urls/data';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShortUrlDetailAction } from '../../../src/short-urls/reducers/shortUrlDetail';
+import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
 import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {

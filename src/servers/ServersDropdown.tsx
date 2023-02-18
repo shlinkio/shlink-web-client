@@ -1,8 +1,8 @@
-import { isEmpty, values } from 'ramda';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { isEmpty, values } from 'ramda';
+import { Link } from 'react-router-dom';
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import type { SelectedServer, ServersMap } from './data';
 import { getServerId } from './data';
 

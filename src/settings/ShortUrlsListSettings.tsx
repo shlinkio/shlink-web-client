@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { SHORT_URLS_ORDERABLE_FIELDS } from '../short-urls/data';
-import { SimpleCard } from '../utils/SimpleCard';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import { OrderingDropdown } from '../utils/OrderingDropdown';
+import { SimpleCard } from '../utils/SimpleCard';
 import type { Settings, ShortUrlsListSettings as ShortUrlsSettings } from './reducers/settings';
 import { DEFAULT_SHORT_URLS_ORDERING } from './reducers/settings';
 

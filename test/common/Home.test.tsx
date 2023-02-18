@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import { Home } from '../../src/common/Home';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 

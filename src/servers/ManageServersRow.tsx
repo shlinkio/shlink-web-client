@@ -1,8 +1,8 @@
-import type { FC } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck as checkIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { FC } from 'react';
+import { Link } from 'react-router-dom';
+import { UncontrolledTooltip } from 'reactstrap';
 import type { ServerWithId } from './data';
 import type { ManageServersRowDropdownProps } from './ManageServersRowDropdown';
 

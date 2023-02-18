@@ -1,11 +1,11 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import type { DomainsList } from '../../src/domains/reducers/domainsList';
-import { ManageDomains } from '../../src/domains/ManageDomains';
 import type { ShlinkDomain } from '../../src/api/types';
+import type { ProblemDetailsError } from '../../src/api/types/errors';
+import { ManageDomains } from '../../src/domains/ManageDomains';
+import type { DomainsList } from '../../src/domains/reducers/domainsList';
 import type { SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
-import type { ProblemDetailsError } from '../../src/api/types/errors';
 
 describe('<ManageDomains />', () => {
   const listDomains = jest.fn();

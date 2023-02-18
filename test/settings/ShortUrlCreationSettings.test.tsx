@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import type { ShortUrlCreationSettings as ShortUrlsSettings, Settings } from '../../src/settings/reducers/settings';
+import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

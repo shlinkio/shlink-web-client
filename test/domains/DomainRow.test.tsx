@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
 import type { ShlinkDomainRedirects } from '../../src/api/types';
+import type { Domain } from '../../src/domains/data';
 import { DomainRow } from '../../src/domains/DomainRow';
 import type { SelectedServer } from '../../src/servers/data';
-import type { Domain } from '../../src/domains/data';
 
 describe('<DomainRow />', () => {
   const redirectsCombinations = [

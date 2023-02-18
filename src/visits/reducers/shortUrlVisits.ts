@@ -1,6 +1,6 @@
-import { shortUrlMatches } from '../../short-urls/helpers';
-import type { ShortUrlIdentifier } from '../../short-urls/data';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShortUrlIdentifier } from '../../short-urls/data';
+import { shortUrlMatches } from '../../short-urls/helpers';
 import { isBetween } from '../../utils/helpers/date';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
 import type { LoadVisits, VisitsInfo } from './types';

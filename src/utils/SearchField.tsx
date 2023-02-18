@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch as searchIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
+import { useState } from 'react';
 import './SearchField.scss';
 
 const DEFAULT_SEARCH_INTERVAL = 500;

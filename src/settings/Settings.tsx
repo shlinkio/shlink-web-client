@@ -1,5 +1,5 @@
 import type { FC, ReactNode } from 'react';
-import { Navigate, Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import { NavPillItem, NavPills } from '../utils/NavPills';
 

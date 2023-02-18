@@ -1,5 +1,5 @@
-import { UncontrolledTooltip } from 'reactstrap';
 import { ExternalLink } from 'react-external-link';
+import { UncontrolledTooltip } from 'reactstrap';
 import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { Time } from '../utils/dates/Time';
 import type { ShortUrlVisits } from './reducers/shortUrlVisits';

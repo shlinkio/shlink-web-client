@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { VisitsHeader } from '../../src/visits/VisitsHeader';
 import type { Visit } from '../../src/visits/types';
+import { VisitsHeader } from '../../src/visits/VisitsHeader';
 
 describe('<VisitsHeader />', () => {
   const visits = [Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>()];
