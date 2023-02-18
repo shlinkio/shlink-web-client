@@ -6,7 +6,7 @@ import type { ShlinkState } from '../container/types';
 import { serversReducer } from '../servers/reducers/servers';
 import { settingsReducer } from '../settings/reducers/settings';
 
-export default (container: IContainer) => combineReducers<ShlinkState>({
+export const initReducers = (container: IContainer) => combineReducers<ShlinkState>({
   servers: serversReducer,
   selectedServer: container.selectedServerReducer,
   shortUrlsList: container.shortUrlsListReducer,

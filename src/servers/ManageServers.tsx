@@ -12,7 +12,7 @@ import { SimpleCard } from '../utils/SimpleCard';
 import type { ServersMap } from './data';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import type { ManageServersRowProps } from './ManageServersRow';
-import type ServersExporter from './services/ServersExporter';
+import type { ServersExporter } from './services/ServersExporter';
 
 interface ManageServersProps {
   servers: ServersMap;

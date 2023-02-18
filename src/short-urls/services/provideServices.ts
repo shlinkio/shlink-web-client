@@ -19,7 +19,7 @@ import { ShortUrlsFilteringBar } from '../ShortUrlsFilteringBar';
 import { ShortUrlsList } from '../ShortUrlsList';
 import { ShortUrlsTable } from '../ShortUrlsTable';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'ShortUrlsFilteringBar');
   bottle.decorator('ShortUrlsList', connect(
@@ -98,5 +98,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('editShortUrl', editShortUrl, 'buildShlinkApiClient');
 };
-
-export default provideServices;

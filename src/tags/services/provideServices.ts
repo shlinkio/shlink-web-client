@@ -12,7 +12,7 @@ import { TagsList } from '../TagsList';
 import { TagsTable } from '../TagsTable';
 import { TagsTableRow } from '../TagsTableRow';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
   bottle.decorator('TagsSelector', connect(['tagsList', 'settings'], ['listTags']));
@@ -57,5 +57,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('editTag', editTag, 'buildShlinkApiClient', 'ColorGenerator');
   bottle.serviceFactory('tagEdited', () => tagEdited);
 };
-
-export default provideServices;

@@ -6,7 +6,7 @@ import { ManageDomains } from '../ManageDomains';
 import { editDomainRedirects } from '../reducers/domainRedirects';
 import { domainsListReducerCreator } from '../reducers/domainsList';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('DomainSelector', () => DomainSelector);
   bottle.decorator('DomainSelector', connect(['domainsList'], ['listDomains']));
@@ -32,5 +32,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('editDomainRedirects', editDomainRedirects, 'buildShlinkApiClient');
   bottle.serviceFactory('checkDomainHealth', prop('checkDomainHealth'), 'domainsListReducerCreator');
 };
-
-export default provideServices;

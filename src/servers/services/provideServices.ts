@@ -21,10 +21,10 @@ import {
 } from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { ServersDropdown } from '../ServersDropdown';
-import ServersExporter from './ServersExporter';
+import { ServersExporter } from './ServersExporter';
 import { ServersImporter } from './ServersImporter';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'ManageServers',
@@ -89,5 +89,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
   bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };
-
-export default provideServices;

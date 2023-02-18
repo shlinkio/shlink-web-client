@@ -3,7 +3,7 @@ import type { ConnectDecorator } from '../../container/types';
 import { App } from '../App';
 import { appUpdateAvailable, resetAppUpdate } from '../reducers/appUpdates';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'App',
@@ -23,5 +23,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('appUpdateAvailable', () => appUpdateAvailable);
   bottle.serviceFactory('resetAppUpdate', () => resetAppUpdate);
 };
-
-export default provideServices;

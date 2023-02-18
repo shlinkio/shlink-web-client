@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
-import type ServersExporter from '../../src/servers/services/ServersExporter';
+import type { ServersExporter } from '../../src/servers/services/ServersExporter';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {

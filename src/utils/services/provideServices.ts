@@ -4,7 +4,7 @@ import { useTimeoutToggle } from '../helpers/hooks';
 import { ColorGenerator } from './ColorGenerator';
 import { LocalStorage } from './LocalStorage';
 
-const provideServices = (bottle: Bottle) => {
+export const provideServices = (bottle: Bottle) => {
   bottle.constant('localStorage', window.localStorage);
   bottle.service('Storage', LocalStorage, 'localStorage');
   bottle.service('ColorGenerator', ColorGenerator, 'Storage');
@@ -16,5 +16,3 @@ const provideServices = (bottle: Bottle) => {
   bottle.constant('clearTimeout', window.clearTimeout);
   bottle.serviceFactory('useTimeoutToggle', useTimeoutToggle, 'setTimeout', 'clearTimeout');
 };
-
-export default provideServices;

@@ -16,7 +16,7 @@ import { ShortUrlVisits } from '../ShortUrlVisits';
 import { TagVisits } from '../TagVisits';
 import * as visitsParser from './VisitsParser';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
 
@@ -91,5 +91,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('tagVisitsReducerCreator', tagVisitsReducerCreator, 'getTagVisits');
   bottle.serviceFactory('tagVisitsReducer', prop('reducer'), 'tagVisitsReducerCreator');
 };
-
-export default provideServices;

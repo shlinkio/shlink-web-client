@@ -18,7 +18,7 @@ import { TagsSettings } from '../TagsSettings';
 import { UserInterfaceSettings } from '../UserInterfaceSettings';
 import { VisitsSettings } from '../VisitsSettings';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'Settings',
@@ -63,5 +63,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('setVisitsSettings', () => setVisitsSettings);
   bottle.serviceFactory('setTagsSettings', () => setTagsSettings);
 };
-
-export default provideServices;

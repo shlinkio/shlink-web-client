@@ -2,7 +2,7 @@ import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import { mercureInfoReducerCreator } from '../reducers/mercureInfo';
 
-const provideServices = (bottle: Bottle) => {
+export const provideServices = (bottle: Bottle) => {
   // Reducer
   bottle.serviceFactory('mercureInfoReducerCreator', mercureInfoReducerCreator, 'buildShlinkApiClient');
   bottle.serviceFactory('mercureInfoReducer', prop('reducer'), 'mercureInfoReducerCreator');
@@ -10,5 +10,3 @@ const provideServices = (bottle: Bottle) => {
   // Actions
   bottle.serviceFactory('loadMercureInfo', prop('loadMercureInfo'), 'mercureInfoReducerCreator');
 };
-
-export default provideServices;

@@ -1,8 +1,6 @@
 import type Bottle from 'bottlejs';
 import { buildShlinkApiClient } from './ShlinkApiClientBuilder';
 
-const provideServices = (bottle: Bottle) => {
+export const provideServices = (bottle: Bottle) => {
   bottle.serviceFactory('buildShlinkApiClient', buildShlinkApiClient, 'HttpClient');
 };
-
-export default provideServices;

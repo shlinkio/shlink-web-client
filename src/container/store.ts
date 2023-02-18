@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import type { IContainer } from 'bottlejs';
 import type { RLSOptions } from 'redux-localstorage-simple';
 import { load, save } from 'redux-localstorage-simple';
-import reducer from '../reducers';
+import { initReducers } from '../reducers';
 import { migrateDeprecatedSettings } from '../settings/helpers';
 import type { ShlinkState } from './types';
 
@@ -17,7 +17,7 @@ const preloadedState = migrateDeprecatedSettings(load(localStorageConfig) as Shl
 
 export const setUpStore = (container: IContainer) => configureStore({
   devTools: !isProduction,
-  reducer: reducer(container),
+  reducer: initReducers(container),
   preloadedState,
   middleware: (defaultMiddlewaresIncludingReduxThunk) =>
     defaultMiddlewaresIncludingReduxThunk({ immutableCheck: false, serializableCheck: false }) // State is too big for these

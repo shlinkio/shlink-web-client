@@ -7,7 +7,7 @@ import { serverWithIdToServerData } from '../data';
 
 const SERVERS_FILENAME = 'shlink-servers.csv';
 
-export default class ServersExporter {
+export class ServersExporter {
   public constructor(
     private readonly storage: LocalStorage,
     private readonly window: Window,

@@ -13,7 +13,7 @@ import { HttpClient } from './HttpClient';
 import { ImageDownloader } from './ImageDownloader';
 import { ReportExporter } from './ReportExporter';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', window);
   bottle.constant('console', console);
@@ -62,5 +62,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('sidebarPresent', () => sidebarPresent);
   bottle.serviceFactory('sidebarNotPresent', () => sidebarNotPresent);
 };
-
-export default provideServices;
