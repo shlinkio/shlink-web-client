@@ -70,7 +70,7 @@
     "workbox-strategies": "^6.5.4"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~2.0.2",
+    "@shlinkio/eslint-config-js-coding-standard": "~2.1.0",
     "@shlinkio/stylelint-config-css-coding-standard": "~1.0.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
