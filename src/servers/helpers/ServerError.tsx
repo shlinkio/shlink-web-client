@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Message } from '../../utils/Message';
-import { ServersListGroup } from '../ServersListGroup';
-import { DeleteServerButtonProps } from '../DeleteServerButton';
-import { isServerWithId, SelectedServer, ServersMap } from '../data';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
+import { Message } from '../../utils/Message';
+import type { SelectedServer, ServersMap } from '../data';
+import { isServerWithId } from '../data';
+import type { DeleteServerButtonProps } from '../DeleteServerButton';
+import { ServersListGroup } from '../ServersListGroup';
 import './ServerError.scss';
 
 interface ServerErrorProps {

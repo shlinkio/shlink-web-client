@@ -1,10 +1,11 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { InvalidShortUrlDeletion, ProblemDetailsError } from '../../../src/api/types/errors';
+import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import type { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
-import { ErrorTypeV2, ErrorTypeV3, InvalidShortUrlDeletion, ProblemDetailsError } from '../../../src/api/types/errors';
 import { TestModalWrapper } from '../../__helpers__/TestModalWrapper';
 
 describe('<DeleteShortUrlModal />', () => {

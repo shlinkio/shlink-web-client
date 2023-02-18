@@ -1,10 +1,10 @@
-import { FC, PropsWithChildren } from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import classNames from 'classnames';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
-import { ServerWithId } from './data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
+import type { FC, PropsWithChildren } from 'react';
+import { Link } from 'react-router-dom';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import type { ServerWithId } from './data';
 import './ServersListGroup.scss';
 
 type ServersListGroupProps = PropsWithChildren<{

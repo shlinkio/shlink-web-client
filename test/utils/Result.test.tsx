@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { Result, ResultProps, ResultType } from '../../src/utils/Result';
+import type { ResultProps, ResultType } from '../../src/utils/Result';
+import { Result } from '../../src/utils/Result';
 
 describe('<Result />', () => {
   const setUp = (props: ResultProps) => render(<Result {...props} />);

@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { TimeProps, Time } from '../../../src/utils/dates/Time';
+import type { TimeProps } from '../../../src/utils/dates/Time';
+import { Time } from '../../../src/utils/dates/Time';
 import { parseDate } from '../../../src/utils/helpers/date';
 
 describe('<Time />', () => {

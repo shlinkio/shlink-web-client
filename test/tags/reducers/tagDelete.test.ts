@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
 import { tagDeleted, tagDeleteReducerCreator } from '../../../src/tags/reducers/tagDelete';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkState } from '../../../src/container/types';
 
 describe('tagDeleteReducer', () => {
   const deleteTagsCall = jest.fn();

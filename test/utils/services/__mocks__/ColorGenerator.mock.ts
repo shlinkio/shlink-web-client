@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { ColorGenerator } from '../../../../src/utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../../../src/utils/services/ColorGenerator';
 
 export const colorGeneratorMock = Mock.of<ColorGenerator>({
   getColorForKey: jest.fn(() => 'red'),

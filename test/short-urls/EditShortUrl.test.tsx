@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
+import type { Settings } from '../../src/settings/reducers/settings';
+import type { ShortUrl } from '../../src/short-urls/data';
 import { EditShortUrl as createEditShortUrl } from '../../src/short-urls/EditShortUrl';
-import { Settings } from '../../src/settings/reducers/settings';
-import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
-import { ShortUrl } from '../../src/short-urls/data';
+import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
 
 describe('<EditShortUrl />', () => {
   const shortUrlCreation = { validateUrls: true };

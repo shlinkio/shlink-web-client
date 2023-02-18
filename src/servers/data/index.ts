@@ -1,5 +1,5 @@
 import { omit } from 'ramda';
-import { SemVer } from '../../utils/helpers/version';
+import type { SemVer } from '../../utils/helpers/version';
 
 export interface ServerData {
   name: string;

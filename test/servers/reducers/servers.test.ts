@@ -1,13 +1,13 @@
 import { dissoc, values } from 'ramda';
 import { Mock } from 'ts-mockery';
+import type { RegularServer } from '../../../src/servers/data';
 import {
-  deleteServer,
   createServers,
+  deleteServer,
   editServer,
-  setAutoConnect,
   serversReducer,
+  setAutoConnect,
 } from '../../../src/servers/reducers/servers';
-import { RegularServer } from '../../../src/servers/data';
 
 describe('serversReducer', () => {
   const list = {

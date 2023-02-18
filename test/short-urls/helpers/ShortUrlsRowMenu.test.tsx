@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
+import type { ReachableServer } from '../../../src/servers/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlsRowMenu as createShortUrlsRowMenu } from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
-import { ReachableServer } from '../../../src/servers/data';
-import { ShortUrl } from '../../../src/short-urls/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ShortUrlsRowMenu />', () => {

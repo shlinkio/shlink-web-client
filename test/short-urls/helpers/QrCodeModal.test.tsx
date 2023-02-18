@@ -1,10 +1,10 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { ImageDownloader } from '../../../src/common/services/ImageDownloader';
+import type { ReachableServer } from '../../../src/servers/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { QrCodeModal as createQrCodeModal } from '../../../src/short-urls/helpers/QrCodeModal';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { ReachableServer } from '../../../src/servers/data';
-import { SemVer } from '../../../src/utils/helpers/version';
-import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
+import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<QrCodeModal />', () => {

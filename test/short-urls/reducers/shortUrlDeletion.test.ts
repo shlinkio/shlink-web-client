@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ProblemDetailsError } from '../../../src/api/types/errors';
 import {
-  shortUrlDeletionReducerCreator,
   deleteShortUrl as deleteShortUrlCretor,
+  shortUrlDeletionReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = jest.fn();

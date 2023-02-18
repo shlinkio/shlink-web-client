@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren } from 'react';
-import { Row } from 'reactstrap';
 import classNames from 'classnames';
+import type { FC, PropsWithChildren } from 'react';
+import { Row } from 'reactstrap';
 import { SimpleCard } from './SimpleCard';
 
 export type ResultType = 'success' | 'error' | 'warning';

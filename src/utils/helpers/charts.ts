@@ -1,4 +1,4 @@
-import { ActiveElement, ChartEvent, ChartType, TooltipItem } from 'chart.js';
+import type { ActiveElement, ChartEvent, ChartType, TooltipItem } from 'chart.js';
 import { prettify } from './numbers';
 
 export const pointerOnHover = ({ native }: ChartEvent, [firstElement]: ActiveElement[]) => {

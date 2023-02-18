@@ -1,9 +1,9 @@
-import { OrphanVisit, OrphanVisitType } from '../types';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { isOrphanVisit } from '../types/helpers';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { isBetween } from '../../utils/helpers/date';
+import type { OrphanVisit, OrphanVisitType } from '../types';
+import { isOrphanVisit } from '../types/helpers';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
-import { LoadVisits, VisitsInfo } from './types';
+import type { LoadVisits, VisitsInfo } from './types';
 
 const REDUCER_PREFIX = 'shlink/orphanVisits';
 

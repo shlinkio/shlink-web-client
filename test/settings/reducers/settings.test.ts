@@ -1,13 +1,13 @@
 import {
   DEFAULT_SHORT_URLS_ORDERING,
-  settingsReducer,
-  toggleRealTimeUpdates,
   setRealTimeUpdatesInterval,
   setShortUrlCreationSettings,
+  setShortUrlsListSettings,
+  setTagsSettings,
+  settingsReducer,
   setUiSettings,
   setVisitsSettings,
-  setTagsSettings,
-  setShortUrlsListSettings,
+  toggleRealTimeUpdates,
 } from '../../../src/settings/reducers/settings';
 
 describe('settingsReducer', () => {

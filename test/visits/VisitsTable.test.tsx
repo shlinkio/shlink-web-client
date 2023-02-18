@@ -1,8 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { VisitsTable, VisitsTableProps } from '../../src/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
-import { NormalizedVisit } from '../../src/visits/types';
+import type { NormalizedVisit } from '../../src/visits/types';
+import type { VisitsTableProps } from '../../src/visits/VisitsTable';
+import { VisitsTable } from '../../src/visits/VisitsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsTable />', () => {

@@ -1,8 +1,8 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
+import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
-import { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));

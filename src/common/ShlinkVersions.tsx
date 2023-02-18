@@ -1,7 +1,8 @@
 import { pipe } from 'ramda';
 import { ExternalLink } from 'react-external-link';
+import type { SelectedServer } from '../servers/data';
+import { isReachableServer } from '../servers/data';
 import { versionToPrintable, versionToSemVer } from '../utils/helpers/version';
-import { isReachableServer, SelectedServer } from '../servers/data';
 
 const SHLINK_WEB_CLIENT_VERSION = '%_VERSION_%';
 const normalizeVersion = pipe(versionToSemVer(), versionToPrintable);

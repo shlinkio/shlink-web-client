@@ -1,10 +1,11 @@
-import { FC, useMemo } from 'react';
-import { SelectedServer } from '../servers/data';
-import { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
-import { ShortUrlData } from './data';
-import { ShortUrlCreation } from './reducers/shortUrlCreation';
-import { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
-import { ShortUrlFormProps } from './ShortUrlForm';
+import type { FC } from 'react';
+import { useMemo } from 'react';
+import type { SelectedServer } from '../servers/data';
+import type { Settings, ShortUrlCreationSettings } from '../settings/reducers/settings';
+import type { ShortUrlData } from './data';
+import type { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
+import type { ShortUrlCreation } from './reducers/shortUrlCreation';
+import type { ShortUrlFormProps } from './ShortUrlForm';
 
 export interface CreateShortUrlProps {
   basicMode?: boolean;

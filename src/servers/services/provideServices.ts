@@ -1,11 +1,18 @@
+import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
-import Bottle from 'bottlejs';
+import type { ConnectDecorator } from '../../container/types';
 import { CreateServer } from '../CreateServer';
-import { ServersDropdown } from '../ServersDropdown';
-import { DeleteServerModal } from '../DeleteServerModal';
 import { DeleteServerButton } from '../DeleteServerButton';
+import { DeleteServerModal } from '../DeleteServerModal';
 import { EditServer } from '../EditServer';
 import { ImportServersBtn } from '../helpers/ImportServersBtn';
+import { ServerError } from '../helpers/ServerError';
+import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
+import { ManageServers } from '../ManageServers';
+import { ManageServersRow } from '../ManageServersRow';
+import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
+import { Overview } from '../Overview';
+import { fetchServers } from '../reducers/remoteServers';
 import {
   resetSelectedServer,
   selectedServerReducerCreator,
@@ -13,18 +20,11 @@ import {
   selectServerListener,
 } from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
-import { fetchServers } from '../reducers/remoteServers';
-import { ServerError } from '../helpers/ServerError';
-import { ConnectDecorator } from '../../container/types';
-import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
-import { Overview } from '../Overview';
-import { ManageServers } from '../ManageServers';
-import { ManageServersRow } from '../ManageServersRow';
-import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
+import { ServersDropdown } from '../ServersDropdown';
+import { ServersExporter } from './ServersExporter';
 import { ServersImporter } from './ServersImporter';
-import ServersExporter from './ServersExporter';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory(
     'ManageServers',
@@ -89,5 +89,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
   bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };
-
-export default provideServices;

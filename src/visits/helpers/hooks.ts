@@ -1,12 +1,14 @@
-import { DeepPartial } from '@reduxjs/toolkit';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import type { DeepPartial } from '@reduxjs/toolkit';
 import { isEmpty, isNil, mergeDeepRight, pipe } from 'ramda';
-import { DateRange, datesToDateRange } from '../../utils/helpers/dateIntervals';
-import { OrphanVisitType, VisitsFilter } from '../types';
-import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
+import { useMemo } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { formatIsoDate } from '../../utils/helpers/date';
-import { BooleanString, parseBooleanToString } from '../../utils/utils';
+import type { DateRange } from '../../utils/helpers/dateIntervals';
+import { datesToDateRange } from '../../utils/helpers/dateIntervals';
+import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
+import type { BooleanString } from '../../utils/utils';
+import { parseBooleanToString } from '../../utils/utils';
+import type { OrphanVisitType, VisitsFilter } from '../types';
 
 interface VisitsQuery {
   startDate?: string;

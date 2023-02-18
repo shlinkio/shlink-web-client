@@ -1,7 +1,7 @@
 import { countBy, groupBy, pipe, prop } from 'ramda';
+import type { ShlinkVisitsParams } from '../../api/types';
 import { formatIsoDate } from '../../utils/helpers/date';
-import { ShlinkVisitsParams } from '../../api/types';
-import { CreateVisit, NormalizedOrphanVisit, NormalizedVisit, OrphanVisit, Stats, Visit, VisitsParams } from './index';
+import type { CreateVisit, NormalizedOrphanVisit, NormalizedVisit, OrphanVisit, Stats, Visit, VisitsParams } from './index';
 
 export const isOrphanVisit = (visit: Visit): visit is OrphanVisit => (visit as OrphanVisit).visitedUrl !== undefined;
 

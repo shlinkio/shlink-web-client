@@ -1,4 +1,4 @@
-import { Fetch } from '../../utils/types';
+import type { Fetch } from '../../utils/types';
 
 const applicationJsonHeader = { 'Content-Type': 'application/json' };
 const withJsonContentType = (options?: RequestInit): RequestInit | undefined => {

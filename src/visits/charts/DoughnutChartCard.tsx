@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Stats } from '../types';
-import { DoughnutChart } from './DoughnutChart';
+import type { FC } from 'react';
+import type { Stats } from '../types';
 import { ChartCard } from './ChartCard';
+import { DoughnutChart } from './DoughnutChart';
 
 interface DoughnutChartCardProps {
   title: string;

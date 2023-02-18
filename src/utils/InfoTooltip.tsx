@@ -1,8 +1,8 @@
-import { FC, PropsWithChildren } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { Placement } from '@popperjs/core';
+import type { FC, PropsWithChildren } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { Placement } from '@popperjs/core';
 import { useElementRef } from './helpers/hooks';
 
 export type InfoTooltipProps = PropsWithChildren<{

@@ -1,16 +1,16 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { isEmpty, reject } from 'ramda';
-import { createNewVisits } from '../../visits/reducers/visitCreation';
-import { createAsyncThunk } from '../../utils/helpers/redux';
-import { ShlinkTags } from '../../api/types';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { CreateVisit, Stats } from '../../visits/types';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkTags } from '../../api/types';
+import type { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
-import { TagStats } from '../data';
-import { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import { createAsyncThunk } from '../../utils/helpers/redux';
+import { createNewVisits } from '../../visits/reducers/visitCreation';
+import type { CreateVisit, Stats } from '../../visits/types';
+import type { TagStats } from '../data';
 import { tagDeleted } from './tagDelete';
 import { tagEdited } from './tagEdit';
-import { ProblemDetailsError } from '../../api/types/errors';
 
 const REDUCER_PREFIX = 'shlink/tagsList';
 

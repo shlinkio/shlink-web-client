@@ -1,16 +1,16 @@
 import { screen } from '@testing-library/react';
-import { last } from 'ramda';
-import { Mock } from 'ts-mockery';
 import { addDays, formatISO, subDays } from 'date-fns';
+import { last } from 'ramda';
 import { MemoryRouter, useLocation } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
+import type { ReachableServer } from '../../../src/servers/data';
+import type { Settings } from '../../../src/settings/reducers/settings';
+import type { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
-import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
-import { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
-import { Settings } from '../../../src/settings/reducers/settings';
-import { ReachableServer } from '../../../src/servers/data';
-import { parseDate, now } from '../../../src/utils/helpers/date';
+import { now, parseDate } from '../../../src/utils/helpers/date';
+import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import type { OptionalString } from '../../../src/utils/utils';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
-import { OptionalString } from '../../../src/utils/utils';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 interface SetUpOptions {

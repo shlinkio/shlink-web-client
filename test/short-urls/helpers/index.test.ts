@@ -1,5 +1,5 @@
 import { Mock } from 'ts-mockery';
-import { ShortUrl } from '../../../src/short-urls/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode, urlEncodeShortCode } from '../../../src/short-urls/helpers';
 
 describe('helpers', () => {

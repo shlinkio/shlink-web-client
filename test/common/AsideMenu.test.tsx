@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
+import { Mock } from 'ts-mockery';
 import { AsideMenu as createAsideMenu } from '../../src/common/AsideMenu';
-import { ReachableServer } from '../../src/servers/data';
+import type { ReachableServer } from '../../src/servers/data';
 
 describe('<AsideMenu />', () => {
   const AsideMenu = createAsideMenu(() => <>DeleteServerButton</>);

@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
-import { UncontrolledTooltip } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import { prettify } from '../../utils/helpers/numbers';
-import { ShortUrl } from '../data';
-import { SelectedServer } from '../../servers/data';
-import { ShortUrlDetailLink } from './ShortUrlDetailLink';
+import { UncontrolledTooltip } from 'reactstrap';
+import type { SelectedServer } from '../../servers/data';
 import { formatHumanFriendly, parseISO } from '../../utils/helpers/date';
 import { useElementRef } from '../../utils/helpers/hooks';
+import { prettify } from '../../utils/helpers/numbers';
+import type { ShortUrl } from '../data';
+import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
 
 interface ShortUrlVisitsCountProps {

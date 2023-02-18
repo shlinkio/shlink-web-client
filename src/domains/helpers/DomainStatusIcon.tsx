@@ -1,15 +1,16 @@
-import { FC, useEffect, useState } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
-import { ExternalLink } from 'react-external-link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTimes as invalidIcon,
   faCheck as checkIcon,
   faCircleNotch as loadingStatusIcon,
+  faTimes as invalidIcon,
 } from '@fortawesome/free-solid-svg-icons';
-import { MediaMatcher } from '../../utils/types';
-import { DomainStatus } from '../data';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { ExternalLink } from 'react-external-link';
+import { UncontrolledTooltip } from 'reactstrap';
 import { useElementRef } from '../../utils/helpers/hooks';
+import type { MediaMatcher } from '../../utils/types';
+import type { DomainStatus } from '../data';
 
 interface DomainStatusIconProps {
   status: DomainStatus;

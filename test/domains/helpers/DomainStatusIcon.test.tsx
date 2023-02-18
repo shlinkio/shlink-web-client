@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { DomainStatus } from '../../../src/domains/data';
+import type { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
