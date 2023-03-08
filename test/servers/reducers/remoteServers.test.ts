@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
+import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 import { createServers } from '../../../src/servers/reducers/servers';
-import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('remoteServersReducer', () => {
   afterEach(jest.clearAllMocks);

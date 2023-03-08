@@ -1,12 +1,12 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { FormGroup } from 'reactstrap';
-import { SimpleCard } from '../utils/SimpleCard';
 import { DateIntervalSelector } from '../utils/dates/DateIntervalSelector';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { Settings, VisitsSettings as VisitsSettingsConfig } from './reducers/settings';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
 import { FormText } from '../utils/forms/FormText';
-import { DateInterval } from '../utils/helpers/dateIntervals';
+import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
+import type { DateInterval } from '../utils/helpers/dateIntervals';
+import { SimpleCard } from '../utils/SimpleCard';
+import { ToggleSwitch } from '../utils/ToggleSwitch';
+import type { Settings, VisitsSettings as VisitsSettingsConfig } from './reducers/settings';
 
 interface VisitsProps {
   settings: Settings;

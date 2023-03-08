@@ -1,7 +1,8 @@
-import { DropdownItem, DropdownItemProps } from 'reactstrap';
-import { OrphanVisitType, VisitsFilter } from '../types';
+import type { DropdownItemProps } from 'reactstrap';
+import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../../utils/DropdownBtn';
 import { hasValue } from '../../utils/utils';
+import type { OrphanVisitType, VisitsFilter } from '../types';
 
 interface VisitsFilterDropdownProps {
   onChange: (filters: VisitsFilter) => void;

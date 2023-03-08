@@ -1,4 +1,4 @@
-import { sidebarReducer, sidebarNotPresent, sidebarPresent } from '../../../src/common/reducers/sidebar';
+import { sidebarNotPresent, sidebarPresent, sidebarReducer } from '../../../src/common/reducers/sidebar';
 
 describe('sidebarReducer', () => {
   describe('reducer', () => {

@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { PropsWithChildren } from 'react';
-import { Message, MessageProps } from '../../src/utils/Message';
+import type { PropsWithChildren } from 'react';
+import type { MessageProps } from '../../src/utils/Message';
+import { Message } from '../../src/utils/Message';
 
 describe('<Message />', () => {
   const setUp = (props: PropsWithChildren<MessageProps> = {}) => render(<Message {...props} />);

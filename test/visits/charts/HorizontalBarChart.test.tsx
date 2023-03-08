@@ -1,4 +1,5 @@
-import { HorizontalBarChart, HorizontalBarChartProps } from '../../../src/visits/charts/HorizontalBarChart';
+import type { HorizontalBarChartProps } from '../../../src/visits/charts/HorizontalBarChart';
+import { HorizontalBarChart } from '../../../src/visits/charts/HorizontalBarChart';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
 
 describe('<HorizontalBarChart />', () => {

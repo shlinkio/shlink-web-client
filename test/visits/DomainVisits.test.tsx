@@ -1,13 +1,13 @@
 import { screen } from '@testing-library/react';
+import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { formatISO } from 'date-fns';
+import type { ReportExporter } from '../../src/common/services/ReportExporter';
+import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { DomainVisits as createDomainVisits } from '../../src/visits/DomainVisits';
-import { ReportExporter } from '../../src/common/services/ReportExporter';
-import { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import { DomainVisits } from '../../src/visits/reducers/domainVisits';
-import { Settings } from '../../src/settings/reducers/settings';
-import { Visit } from '../../src/visits/types';
+import type { DomainVisits } from '../../src/visits/reducers/domainVisits';
+import type { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({

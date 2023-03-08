@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
-import { processStatsFromVisits, normalizeVisits } from '../../../src/visits/services/VisitsParser';
-import { OrphanVisit, Visit, VisitsStats } from '../../../src/visits/types';
+import { normalizeVisits, processStatsFromVisits } from '../../../src/visits/services/VisitsParser';
+import type { OrphanVisit, Visit, VisitsStats } from '../../../src/visits/types';
 
 describe('VisitsParser', () => {
   const visits: Visit[] = [

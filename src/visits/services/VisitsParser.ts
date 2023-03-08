@@ -1,7 +1,7 @@
 import { isNil, map } from 'ramda';
 import { extractDomain, parseUserAgent } from '../../utils/helpers/visits';
 import { hasValue } from '../../utils/utils';
-import { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
+import type { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
 import { isNormalizedOrphanVisit, isOrphanVisit } from '../types/helpers';
 
 /* eslint-disable no-param-reassign */

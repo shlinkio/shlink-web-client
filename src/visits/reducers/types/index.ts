@@ -1,7 +1,7 @@
-import { ShlinkVisitsParams } from '../../../api/types';
-import { DateInterval } from '../../../utils/helpers/dateIntervals';
-import { ProblemDetailsError } from '../../../api/types/errors';
-import { Visit } from '../../types';
+import type { ShlinkVisitsParams } from '../../../api/types';
+import type { ProblemDetailsError } from '../../../api/types/errors';
+import type { DateInterval } from '../../../utils/helpers/dateIntervals';
+import type { Visit } from '../../types';
 
 export interface VisitsInfo {
   visits: Visit[];

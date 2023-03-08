@@ -1,19 +1,19 @@
-import Bottle from 'bottlejs';
-import { ScrollToTop } from '../ScrollToTop';
-import { MainHeader } from '../MainHeader';
-import { Home } from '../Home';
-import { MenuLayout } from '../MenuLayout';
+import type Bottle from 'bottlejs';
+import type { ConnectDecorator } from '../../container/types';
+import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { AsideMenu } from '../AsideMenu';
 import { ErrorHandler } from '../ErrorHandler';
-import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
-import { ConnectDecorator } from '../../container/types';
-import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
+import { Home } from '../Home';
+import { MainHeader } from '../MainHeader';
+import { MenuLayout } from '../MenuLayout';
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
+import { ScrollToTop } from '../ScrollToTop';
+import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
+import { HttpClient } from './HttpClient';
 import { ImageDownloader } from './ImageDownloader';
 import { ReportExporter } from './ReportExporter';
-import { HttpClient } from './HttpClient';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', window);
   bottle.constant('console', console);
@@ -62,5 +62,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('sidebarPresent', () => sidebarPresent);
   bottle.serviceFactory('sidebarNotPresent', () => sidebarNotPresent);
 };
-
-export default provideServices;

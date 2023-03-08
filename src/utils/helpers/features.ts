@@ -1,5 +1,7 @@
-import { isReachableServer, SelectedServer } from '../../servers/data';
-import { SemVerPattern, versionMatch } from './version';
+import type { SelectedServer } from '../../servers/data';
+import { isReachableServer } from '../../servers/data';
+import type { SemVerPattern } from './version';
+import { versionMatch } from './version';
 
 const serverMatchesMinVersion = (minVersion: SemVerPattern) => (selectedServer: SelectedServer): boolean =>
   isReachableServer(selectedServer) && versionMatch(selectedServer.version, { minVersion });

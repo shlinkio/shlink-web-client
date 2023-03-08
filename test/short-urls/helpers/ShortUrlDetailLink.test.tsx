@@ -1,9 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { MemoryRouter } from 'react-router-dom';
-import { ShortUrlDetailLink, LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
-import { NotFoundServer, ReachableServer } from '../../../src/servers/data';
-import { ShortUrl } from '../../../src/short-urls/data';
+import { Mock } from 'ts-mockery';
+import type { NotFoundServer, ReachableServer } from '../../../src/servers/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
+import { ShortUrlDetailLink } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
 
 describe('<ShortUrlDetailLink />', () => {
   it.each([

@@ -1,9 +1,9 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkedAlt as mapIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 import { Button, Dropdown, DropdownItem, DropdownMenu, UncontrolledTooltip } from 'reactstrap';
 import { useDomId, useToggle } from '../../utils/helpers/hooks';
-import { CityStats } from '../types';
+import type { CityStats } from '../types';
 import { MapModal } from './MapModal';
 import './OpenMapModalBtn.scss';
 

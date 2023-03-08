@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { isServerWithId, SelectedServer, ServerWithId } from '../../servers/data';
-import { ShortUrl } from '../data';
+import type { SelectedServer, ServerWithId } from '../../servers/data';
+import { isServerWithId } from '../../servers/data';
+import type { ShortUrl } from '../data';
 import { urlEncodeShortCode } from './index';
 
 export type LinkSuffix = 'visits' | 'edit';

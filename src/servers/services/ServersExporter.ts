@@ -1,12 +1,13 @@
 import { values } from 'ramda';
-import { LocalStorage } from '../../utils/services/LocalStorage';
-import { ServersMap, serverWithIdToServerData } from '../data';
+import type { JsonToCsv } from '../../utils/helpers/csvjson';
 import { saveCsv } from '../../utils/helpers/files';
-import { JsonToCsv } from '../../utils/helpers/csvjson';
+import type { LocalStorage } from '../../utils/services/LocalStorage';
+import type { ServersMap } from '../data';
+import { serverWithIdToServerData } from '../data';
 
 const SERVERS_FILENAME = 'shlink-servers.csv';
 
-export default class ServersExporter {
+export class ServersExporter {
   public constructor(
     private readonly storage: LocalStorage,
     private readonly window: Window,

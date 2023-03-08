@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import type { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
+import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
-import { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrlResult />', () => {
   const copyToClipboard = jest.fn();
@@ -28,14 +28,14 @@ describe('<CreateShortUrlResult />', () => {
 
   it('renders a result message when result is provided', () => {
     setUp(
-      { result: Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }), saving: false, saved: true, error: false },
+      { result: Mock.of<ShortUrl>({ shortUrl: 'https://s.test/abc123' }), saving: false, saved: true, error: false },
     );
-    expect(screen.getByText(/The short URL is/)).toHaveTextContent('Great! The short URL is https://doma.in/abc123');
+    expect(screen.getByText(/The short URL is/)).toHaveTextContent('Great! The short URL is https://s.test/abc123');
   });
 
   it('Invokes tooltip timeout when copy to clipboard button is clicked', async () => {
     const { user } = setUp(
-      { result: Mock.of<ShortUrl>({ shortUrl: 'https://doma.in/abc123' }), saving: false, saved: true, error: false },
+      { result: Mock.of<ShortUrl>({ shortUrl: 'https://s.test/abc123' }), saving: false, saved: true, error: false },
     );
 
     expect(copyToClipboard).not.toHaveBeenCalled();

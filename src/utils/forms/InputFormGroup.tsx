@@ -1,7 +1,7 @@
-import { FC, PropsWithChildren } from 'react';
-import { InputType } from 'reactstrap/types/lib/Input';
-import { LabeledFormGroup } from './LabeledFormGroup';
+import type { FC, PropsWithChildren } from 'react';
+import type { InputType } from 'reactstrap/types/lib/Input';
 import { useDomId } from '../helpers/hooks';
+import { LabeledFormGroup } from './LabeledFormGroup';
 
 export type InputFormGroupProps = PropsWithChildren<{
   value: string;

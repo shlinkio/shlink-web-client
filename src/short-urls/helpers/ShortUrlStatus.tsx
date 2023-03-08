@@ -1,12 +1,12 @@
-import { FC, ReactNode, useRef } from 'react';
+import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import { faCalendarXmark, faCheck, faLinkSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faLinkSlash, faCalendarXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { UncontrolledTooltip } from 'reactstrap';
 import { isBefore } from 'date-fns';
-import { mutableRefToElementRef } from '../../utils/helpers/components';
-import { ShortUrl } from '../data';
+import type { FC, ReactNode } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
 import { formatHumanFriendly, now, parseISO } from '../../utils/helpers/date';
+import { useElementRef } from '../../utils/helpers/hooks';
+import type { ShortUrl } from '../data';
 
 interface ShortUrlStatusProps {
   shortUrl: ShortUrl;
@@ -70,15 +70,15 @@ const resolveShortUrlStatus = (shortUrl: ShortUrl): StatusResult => {
 };
 
 export const ShortUrlStatus: FC<ShortUrlStatusProps> = ({ shortUrl }) => {
-  const tooltipRef = useRef<HTMLElement | undefined>();
+  const tooltipRef = useElementRef<HTMLElement>();
   const { icon, className, description } = resolveShortUrlStatus(shortUrl);
 
   return (
     <>
-      <span style={{ cursor: !description ? undefined : 'help' }} ref={mutableRefToElementRef(tooltipRef)}>
+      <span style={{ cursor: !description ? undefined : 'help' }} ref={tooltipRef}>
         <FontAwesomeIcon icon={icon} className={className} />
       </span>
-      <UncontrolledTooltip target={(() => tooltipRef.current) as any} placement="bottom">
+      <UncontrolledTooltip target={tooltipRef} placement="bottom">
         {description}
       </UncontrolledTooltip>
     </>

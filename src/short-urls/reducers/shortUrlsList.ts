@@ -1,14 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { assocPath, last, pipe, reject } from 'ramda';
-import { shortUrlMatches } from '../helpers';
-import { createNewVisits } from '../../visits/reducers/visitCreation';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api/types';
+import { createNewVisits } from '../../visits/reducers/visitCreation';
+import type { ShortUrl } from '../data';
+import { shortUrlMatches } from '../helpers';
+import type { createShortUrl } from './shortUrlCreation';
 import { shortUrlDeleted } from './shortUrlDeletion';
-import { createShortUrl } from './shortUrlCreation';
-import { editShortUrl } from './shortUrlEdition';
-import { ShortUrl } from '../data';
+import type { editShortUrl } from './shortUrlEdition';
 
 const REDUCER_PREFIX = 'shlink/shortUrlsList';
 export const ITEMS_IN_OVERVIEW_PAGE = 5;

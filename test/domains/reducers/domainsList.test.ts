@@ -1,17 +1,18 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkDomainRedirects } from '../../../src/api/types';
+import { parseApiError } from '../../../src/api/utils';
+import type { ShlinkState } from '../../../src/container/types';
+import type { Domain } from '../../../src/domains/data';
+import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
+import type {
+  DomainsList } from '../../../src/domains/reducers/domainsList';
 import {
-  DomainsList,
+  domainsListReducerCreator,
   replaceRedirectsOnDomain,
   replaceStatusOnDomain,
-  domainsListReducerCreator,
 } from '../../../src/domains/reducers/domainsList';
-import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
-import { ShlinkDomainRedirects } from '../../../src/api/types';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { Domain } from '../../../src/domains/data';
-import { ShlinkState } from '../../../src/container/types';
-import { SelectedServer, ServerData } from '../../../src/servers/data';
-import { parseApiError } from '../../../src/api/utils';
+import type { SelectedServer, ServerData } from '../../../src/servers/data';
 
 describe('domainsListReducer', () => {
   const dispatch = jest.fn();

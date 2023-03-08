@@ -1,4 +1,4 @@
-import { ColorGenerator } from '../../utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import './TagBullet.scss';
 
 interface TagBulletProps {

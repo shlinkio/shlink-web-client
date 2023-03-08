@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
-import { ServerData } from '../../../src/servers/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {

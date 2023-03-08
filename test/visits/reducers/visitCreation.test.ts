@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { Visit } from '../../../src/visits/types';
+import type { Visit } from '../../../src/visits/types';
 
 describe('visitCreationReducer', () => {
   describe('createNewVisits', () => {

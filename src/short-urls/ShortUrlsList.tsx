@@ -1,21 +1,24 @@
 import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
-import { Card } from 'reactstrap';
 import { useLocation, useParams } from 'react-router-dom';
-import { determineOrderDir, OrderDir } from '../utils/helpers/ordering';
-import { getServerId, SelectedServer } from '../servers/data';
+import { Card } from 'reactstrap';
+import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api/types';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
-import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api/types';
-import { DEFAULT_SHORT_URLS_ORDERING, Settings } from '../settings/reducers/settings';
-import { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
-import { ShortUrlsTableType } from './ShortUrlsTable';
-import { Paginator } from './Paginator';
-import { useShortUrlsQuery } from './helpers/hooks';
-import { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
-import { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
+import type { SelectedServer } from '../servers/data';
+import { getServerId } from '../servers/data';
+import type { Settings } from '../settings/reducers/settings';
+import { DEFAULT_SHORT_URLS_ORDERING } from '../settings/reducers/settings';
 import { supportsExcludeBotsOnShortUrls } from '../utils/helpers/features';
+import type { OrderDir } from '../utils/helpers/ordering';
+import { determineOrderDir } from '../utils/helpers/ordering';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
+import type { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
+import { useShortUrlsQuery } from './helpers/hooks';
+import { Paginator } from './Paginator';
+import type { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
+import type { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
+import type { ShortUrlsTableType } from './ShortUrlsTable';
 
 interface ShortUrlsListProps {
   selectedServer: SelectedServer;

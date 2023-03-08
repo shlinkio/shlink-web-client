@@ -1,11 +1,12 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import { manifest } from './manifest';
 import pack from './package.json';
 
 const homepage = pack.homepage?.trim();
 
+/* eslint-disable-next-line no-restricted-exports */
 export default defineConfig({
   plugins: [react(), VitePWA({
     mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',

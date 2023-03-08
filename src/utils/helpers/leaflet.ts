@@ -1,6 +1,6 @@
 import L from 'leaflet';
-import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import marker from 'leaflet/dist/images/marker-icon.png';
+import marker2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
 export const fixLeafletIcons = () => {

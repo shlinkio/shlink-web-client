@@ -1,16 +1,17 @@
-import { FC } from 'react';
-import { DropdownItem } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { faChartPie as pieChartIcon, faEdit as editIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToggle } from '../../utils/helpers/hooks';
+import type { FC } from 'react';
+import { Link } from 'react-router-dom';
+import { DropdownItem } from 'reactstrap';
+import type { SelectedServer } from '../../servers/data';
+import { getServerId } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
-import { EditDomainRedirectsModal } from './EditDomainRedirectsModal';
-import { Domain } from '../data';
-import { EditDomainRedirects } from '../reducers/domainRedirects';
 import { supportsDefaultDomainRedirectsEdition, supportsDomainVisits } from '../../utils/helpers/features';
-import { getServerId, SelectedServer } from '../../servers/data';
+import { useToggle } from '../../utils/helpers/hooks';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
+import type { Domain } from '../data';
+import type { EditDomainRedirects } from '../reducers/domainRedirects';
+import { EditDomainRedirectsModal } from './EditDomainRedirectsModal';
 
 interface DomainDropdownProps {
   domain: Domain;

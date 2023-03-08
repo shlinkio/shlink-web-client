@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { formatISO, subDays, subMonths, subYears } from 'date-fns';
 import { Mock } from 'ts-mockery';
 import { LineChartCard } from '../../../src/visits/charts/LineChartCard';
-import { NormalizedVisit } from '../../../src/visits/types';
+import type { NormalizedVisit } from '../../../src/visits/types';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
 
 describe('<LineChartCard />', () => {

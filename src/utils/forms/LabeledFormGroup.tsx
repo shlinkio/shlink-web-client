@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, ReactNode } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 type LabeledFormGroupProps = PropsWithChildren<{
   label: ReactNode;

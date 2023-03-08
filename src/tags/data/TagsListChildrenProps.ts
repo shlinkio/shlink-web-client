@@ -1,6 +1,6 @@
-import { SelectedServer } from '../../servers/data';
-import { Order } from '../../utils/helpers/ordering';
-import { NormalizedTag } from './index';
+import type { SelectedServer } from '../../servers/data';
+import type { Order } from '../../utils/helpers/ordering';
+import type { NormalizedTag } from './index';
 
 export const TAGS_ORDERABLE_FIELDS = {
   tag: 'Tag',

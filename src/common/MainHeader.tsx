@@ -1,9 +1,10 @@
 import { faChevronDown as arrowIcon, faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useEffect } from 'react';
+import classNames from 'classnames';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import classNames from 'classnames';
 import { useToggle } from '../utils/helpers/hooks';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';

@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { Settings } from '../../../src/settings/reducers/settings';
 import { TagsSelector as createTagsSelector } from '../../../src/tags/helpers/TagsSelector';
-import { TagsList } from '../../../src/tags/reducers/tagsList';
-import { Settings } from '../../../src/settings/reducers/settings';
+import type { TagsList } from '../../../src/tags/reducers/tagsList';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 

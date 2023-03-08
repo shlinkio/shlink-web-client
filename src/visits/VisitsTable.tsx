@@ -1,17 +1,18 @@
-import { useEffect, useMemo, useState, useRef } from 'react';
-import classNames from 'classnames';
-import { min, splitEvery } from 'ramda';
 import { faCheck as checkIcon, faRobot as botIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import classNames from 'classnames';
+import { min, splitEvery } from 'ramda';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { SimplePaginator } from '../common/SimplePaginator';
-import { SearchField } from '../utils/SearchField';
-import { determineOrderDir, Order, sortList } from '../utils/helpers/ordering';
-import { prettify } from '../utils/helpers/numbers';
 import { Time } from '../utils/dates/Time';
+import { prettify } from '../utils/helpers/numbers';
+import type { Order } from '../utils/helpers/ordering';
+import { determineOrderDir, sortList } from '../utils/helpers/ordering';
+import { SearchField } from '../utils/SearchField';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
-import { MediaMatcher } from '../utils/types';
-import { NormalizedOrphanVisit, NormalizedVisit } from './types';
+import type { MediaMatcher } from '../utils/types';
+import type { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 
 export interface VisitsTableProps {

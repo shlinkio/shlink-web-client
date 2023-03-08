@@ -1,15 +1,15 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
 import {
   listShortUrls as listShortUrlsCreator,
   shortUrlsListReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlsList';
-import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
-import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
-import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 
 describe('shortUrlsListReducer', () => {
   const shortCode = 'abc123';

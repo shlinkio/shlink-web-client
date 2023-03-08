@@ -1,7 +1,7 @@
-import { FC, PropsWithChildren } from 'react';
-import { ButtonDropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisV as menuIcon } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { FC, PropsWithChildren } from 'react';
+import { ButtonDropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import './DropdownBtnMenu.scss';
 
 export type DropdownBtnMenuProps = PropsWithChildren<{

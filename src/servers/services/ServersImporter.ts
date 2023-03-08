@@ -1,5 +1,5 @@
-import { ServerData } from '../data';
-import { CsvToJson } from '../../utils/helpers/csvjson';
+import type { CsvToJson } from '../../utils/helpers/csvjson';
+import type { ServerData } from '../data';
 
 const validateServer = (server: any): server is ServerData =>
   typeof server.url === 'string' && typeof server.apiKey === 'string' && typeof server.name === 'string';

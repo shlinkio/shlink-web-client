@@ -1,18 +1,19 @@
-import { Mock } from 'ts-mockery';
 import { addDays, formatISO, subDays } from 'date-fns';
+import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkVisits } from '../../../src/api/types';
+import type { ShlinkState } from '../../../src/container/types';
+import { formatIsoDate } from '../../../src/utils/helpers/date';
+import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
+import { rangeOf } from '../../../src/utils/utils';
+import type {
+  TagVisits } from '../../../src/visits/reducers/tagVisits';
 import {
   getTagVisits as getTagVisitsCreator,
   tagVisitsReducerCreator,
-  TagVisits,
 } from '../../../src/visits/reducers/tagVisits';
-import { rangeOf } from '../../../src/utils/utils';
-import { Visit } from '../../../src/visits/types';
-import { ShlinkVisits } from '../../../src/api/types';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkState } from '../../../src/container/types';
-import { formatIsoDate } from '../../../src/utils/helpers/date';
-import { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
+import type { Visit } from '../../../src/visits/types';
 
 describe('tagVisitsReducer', () => {
   const now = new Date();
