@@ -18,7 +18,7 @@ const isLastPage = ({ currentPage, pagesCount }: ShlinkPaginator): boolean => cu
 const calcProgress = (total: number, current: number): number => (current * 100) / total;
 
 type VisitsLoader = (page: number, itemsPerPage: number) => Promise<ShlinkVisits>;
-type LastVisitLoader = () => Promise<Visit | undefined>;
+type LastVisitLoader = (excludeBots?: boolean) => Promise<Visit | undefined>;
 
 interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded> {
   typePrefix: string;
@@ -75,7 +75,7 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
       return data.concat(await loadPagesBlocks(pagesBlocks));
     };
 
-    const [visits, lastVisit] = await Promise.all([loadVisits(), lastVisitLoader()]);
+    const [visits, lastVisit] = await Promise.all([loadVisits(), lastVisitLoader(params.query?.excludeBots)]);
 
     if (!visits.length && lastVisit) {
       dispatch(fallbackToInterval(dateToMatchingInterval(lastVisit.date)));
@@ -91,13 +91,11 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
 export const lastVisitLoaderForLoader = (
   doIntervalFallback: boolean,
   loader: (params: ShlinkVisitsParams) => Promise<ShlinkVisits>,
-): LastVisitLoader => {
-  if (!doIntervalFallback) {
-    return async () => Promise.resolve(undefined);
-  }
-
-  return async () => loader({ page: 1, itemsPerPage: 1 }).then(({ data }) => data[0]);
-};
+): LastVisitLoader => async (excludeBots?: boolean) => (
+  !doIntervalFallback
+    ? Promise.resolve(undefined)
+    : loader({ page: 1, itemsPerPage: 1, excludeBots }).then(({ data }) => data[0])
+);
 
 interface VisitsReducerOptions<State extends VisitsInfo, AT extends ReturnType<typeof createVisitsAsyncThunk>> {
   name: string;
