@@ -20,7 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [#799](https://github.com/shlinkio/shlink-web-client/issues/799) Fix fallback visits not taking into account configuration regarding excluding bots.
 
 
 ## [3.9.1] - 2022-12-31
