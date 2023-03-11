@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
-import { supportsDomainVisits, supportsNonOrphanVisits } from '../utils/helpers/features';
+import { useFeature } from '../utils/helpers/features';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
 import type { AsideMenuProps } from './AsideMenu';
 import { NotFound } from './NotFound';
@@ -46,8 +46,8 @@ export const MenuLayout = (
     return <ServerError />;
   }
 
-  const addNonOrphanVisitsRoute = supportsNonOrphanVisits(selectedServer);
-  const addDomainVisitsRoute = supportsDomainVisits(selectedServer);
+  const addNonOrphanVisitsRoute = useFeature('nonOrphanVisits', selectedServer);
+  const addDomainVisitsRoute = useFeature('domainVisits', selectedServer);
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 

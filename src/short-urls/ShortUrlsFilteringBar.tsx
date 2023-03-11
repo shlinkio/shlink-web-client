@@ -11,7 +11,7 @@ import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/helpers/date';
 import type { DateRange } from '../utils/helpers/dateIntervals';
 import { datesToDateRange } from '../utils/helpers/dateIntervals';
-import { supportsAllTagsFiltering, supportsFilterDisabledUrls } from '../utils/helpers/features';
+import { useFeature } from '../utils/helpers/features';
 import type { OrderDir } from '../utils/helpers/ordering';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { SearchField } from '../utils/SearchField';
@@ -46,7 +46,7 @@ export const ShortUrlsFilteringBar = (
     excludePastValidUntil,
     tagsMode = 'any',
   } = filter;
-  const supportsDisabledFiltering = supportsFilterDisabledUrls(selectedServer);
+  const supportsDisabledFiltering = useFeature('filterDisabledUrls', selectedServer);
 
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
@@ -60,7 +60,7 @@ export const ShortUrlsFilteringBar = (
     (searchTerm) => toFirstPage({ search: searchTerm }),
   );
   const changeTagSelection = (selectedTags: string[]) => toFirstPage({ tags: selectedTags });
-  const canChangeTagsMode = supportsAllTagsFiltering(selectedServer);
+  const canChangeTagsMode = useFeature('allTagsFiltering', selectedServer);
   const toggleTagsMode = pipe(
     () => (tagsMode === 'any' ? 'all' : 'any'),
     (mode) => toFirstPage({ tagsMode: mode }),

@@ -6,7 +6,7 @@ import { DropdownItem } from 'reactstrap';
 import type { SelectedServer } from '../../servers/data';
 import { getServerId } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
-import { supportsDefaultDomainRedirectsEdition, supportsDomainVisits } from '../../utils/helpers/features';
+import { useFeature } from '../../utils/helpers/features';
 import { useToggle } from '../../utils/helpers/hooks';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 import type { Domain } from '../data';
@@ -23,8 +23,8 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
   const [isOpen, toggle] = useToggle();
   const [isModalOpen, toggleModal] = useToggle();
   const { isDefault } = domain;
-  const canBeEdited = !isDefault || supportsDefaultDomainRedirectsEdition(selectedServer);
-  const withVisits = supportsDomainVisits(selectedServer);
+  const canBeEdited = !isDefault || useFeature('defaultDomainRedirectsEdition', selectedServer);
+  const withVisits = useFeature('domainVisits', selectedServer);
   const serverId = getServerId(selectedServer);
 
   return (

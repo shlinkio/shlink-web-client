@@ -9,7 +9,7 @@ import type { SelectedServer } from '../servers/data';
 import { getServerId } from '../servers/data';
 import type { Settings } from '../settings/reducers/settings';
 import { DEFAULT_SHORT_URLS_ORDERING } from '../settings/reducers/settings';
-import { supportsExcludeBotsOnShortUrls } from '../utils/helpers/features';
+import { useFeature } from '../utils/helpers/features';
 import type { OrderDir } from '../utils/helpers/ordering';
 import { determineOrderDir } from '../utils/helpers/ordering';
 import { TableOrderIcon } from '../utils/table/TableOrderIcon';
@@ -52,6 +52,7 @@ export const ShortUrlsList = (
   );
   const { pagination } = shortUrlsList?.shortUrls ?? {};
   const doExcludeBots = excludeBots ?? settings.visits?.excludeBots;
+  const supportsExcludingBots = useFeature('excludeBotsOnShortUrls', selectedServer);
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
     setActualOrderBy({ field, dir });
@@ -65,7 +66,7 @@ export const ShortUrlsList = (
     (updatedTags) => toFirstPage({ tags: updatedTags }),
   );
   const parseOrderByForShlink = ({ field, dir }: ShortUrlsOrder): ShlinkShortUrlsOrder => {
-    if (supportsExcludeBotsOnShortUrls(selectedServer) && doExcludeBots && field === 'visits') {
+    if (supportsExcludingBots && doExcludeBots && field === 'visits') {
       return { field: 'nonBotVisits', dir };
     }
 
