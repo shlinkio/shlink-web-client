@@ -10,7 +10,7 @@ import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers
 import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
-import { supportsNonOrphanVisits } from '../utils/helpers/features';
+import { useFeature } from '../utils/helpers/features';
 import { prettify } from '../utils/helpers/numbers';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';
 import type { SelectedServer } from './data';
@@ -43,7 +43,7 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
   const serverId = getServerId(selectedServer);
-  const linkToNonOrphanVisits = supportsNonOrphanVisits(selectedServer);
+  const linkToNonOrphanVisits = useFeature('nonOrphanVisits', selectedServer);
   const navigate = useNavigate();
 
   useEffect(() => {

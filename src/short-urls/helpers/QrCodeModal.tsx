@@ -6,7 +6,7 @@ import { Button, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstra
 import type { ImageDownloader } from '../../common/services/ImageDownloader';
 import type { SelectedServer } from '../../servers/data';
 import { CopyToClipboardIcon } from '../../utils/CopyToClipboardIcon';
-import { supportsNonRestCors } from '../../utils/helpers/features';
+import { useFeature } from '../../utils/helpers/features';
 import type { QrCodeFormat, QrErrorCorrection } from '../../utils/helpers/qrCodes';
 import { buildQrCodeUrl } from '../../utils/helpers/qrCodes';
 import type { ShortUrlModalProps } from '../data';
@@ -25,7 +25,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
   const [margin, setMargin] = useState(0);
   const [format, setFormat] = useState<QrCodeFormat>('png');
   const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
-  const displayDownloadBtn = supportsNonRestCors(selectedServer);
+  const displayDownloadBtn = useFeature('nonRestCors', selectedServer);
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }),
     [shortUrl, size, format, margin, errorCorrection],

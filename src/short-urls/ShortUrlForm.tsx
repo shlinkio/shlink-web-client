@@ -11,7 +11,7 @@ import { Checkbox } from '../utils/Checkbox';
 import type { DateTimeInputProps } from '../utils/dates/DateTimeInput';
 import { DateTimeInput } from '../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../utils/helpers/date';
-import { supportsForwardQuery } from '../utils/helpers/features';
+import { useFeature } from '../utils/helpers/features';
 import { SimpleCard } from '../utils/SimpleCard';
 import type { OptionalString } from '../utils/utils';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
@@ -116,7 +116,7 @@ export const ShortUrlForm = (
     </>
   );
 
-  const showForwardQueryControl = supportsForwardQuery(selectedServer);
+  const showForwardQueryControl = useFeature('forwardQuery', selectedServer);
 
   return (
     <form name="shortUrlForm" className="short-url-form" onSubmit={submit}>
