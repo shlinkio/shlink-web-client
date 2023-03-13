@@ -1,12 +1,12 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faAppleAlt, faDesktop, faMobileAndroidAlt } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAndroid, faApple } from '@fortawesome/free-brands-svg-icons';
+import { faDesktop } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import { isEmpty, pipe, replace, trim } from 'ramda';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
-import { Button, FormGroup, Input, InputGroup, InputGroupText, Row } from 'reactstrap';
+import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
 import type { SelectedServer } from '../servers/data';
@@ -16,6 +16,7 @@ import type { DateTimeInputProps } from '../utils/dates/DateTimeInput';
 import { DateTimeInput } from '../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../utils/helpers/date';
 import { useFeature } from '../utils/helpers/features';
+import { IconInput } from '../utils/IconInput';
 import { SimpleCard } from '../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
 import type { DeviceLongUrls, ShortUrlData } from './data';
@@ -90,24 +91,20 @@ export const ShortUrlForm = (
     </FormGroup>
   );
   const renderDeviceLongUrlInput = (id: keyof DeviceLongUrls, placeholder: string, icon: IconProp) => (
-    <InputGroup>
-      <InputGroupText>
-        <FontAwesomeIcon icon={icon} fixedWidth />
-      </InputGroupText>
-      <Input
-        id={id}
-        type="url"
-        placeholder={placeholder}
-        value={shortUrlData.deviceLongUrls?.[id] ?? ''}
-        onChange={(e) => setShortUrlData({
-          ...shortUrlData,
-          deviceLongUrls: {
-            ...(shortUrlData.deviceLongUrls ?? {}),
-            [id]: setResettableValue(e.target.value, initialState.deviceLongUrls?.[id]),
-          },
-        })}
-      />
-    </InputGroup>
+    <IconInput
+      icon={icon}
+      id={id}
+      type="url"
+      placeholder={placeholder}
+      value={shortUrlData.deviceLongUrls?.[id] ?? ''}
+      onChange={(e) => setShortUrlData({
+        ...shortUrlData,
+        deviceLongUrls: {
+          ...(shortUrlData.deviceLongUrls ?? {}),
+          [id]: setResettableValue(e.target.value, initialState.deviceLongUrls?.[id]),
+        },
+      })}
+    />
   );
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateTimeInputProps> = {}) => (
     <DateTimeInput
@@ -158,10 +155,10 @@ export const ShortUrlForm = (
               <div className="col-sm-6 mb-3">
                 <SimpleCard title="Device-specific long URLs">
                   <FormGroup>
-                    {renderDeviceLongUrlInput('android', 'Android-specific redirection', faMobileAndroidAlt)}
+                    {renderDeviceLongUrlInput('android', 'Android-specific redirection', faAndroid)}
                   </FormGroup>
                   <FormGroup>
-                    {renderDeviceLongUrlInput('ios', 'iOS-specific redirection', faAppleAlt)}
+                    {renderDeviceLongUrlInput('ios', 'iOS-specific redirection', faApple)}
                   </FormGroup>
                   {renderDeviceLongUrlInput('desktop', 'Desktop-specific redirection', faDesktop)}
                 </SimpleCard>
