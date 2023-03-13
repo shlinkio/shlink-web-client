@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [#807](https://github.com/shlinkio/shlink-web-client/issues/807) Add support for device-specific long-URLs when creating or editing short URLs.
 
 ### Changed
 * Update to Vite 4.1
