@@ -1,8 +1,15 @@
 import type { Order } from '../../utils/helpers/ordering';
 import type { Nullable, OptionalString } from '../../utils/utils';
 
+export interface DeviceLongUrls {
+  android?: OptionalString;
+  ios?: OptionalString;
+  desktop?: OptionalString;
+}
+
 export interface EditShortUrlData {
   longUrl?: string;
+  deviceLongUrls?: DeviceLongUrls;
   tags?: string[];
   title?: string | null;
   validSince?: Date | string | null;
@@ -30,6 +37,7 @@ export interface ShortUrl {
   shortCode: string;
   shortUrl: string;
   longUrl: string;
+  deviceLongUrls?: Required<DeviceLongUrls>, // Optional only before Shlink 3.5.0
   dateCreated: string;
   /** @deprecated */
   visitsCount: number; // Deprecated since Shlink 3.4.0
