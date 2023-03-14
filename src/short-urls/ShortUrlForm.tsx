@@ -1,6 +1,10 @@
+import type { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faAndroid, faApple } from '@fortawesome/free-brands-svg-icons';
+import { faDesktop } from '@fortawesome/free-solid-svg-icons';
+import classNames from 'classnames';
 import { parseISO } from 'date-fns';
-import { cond, isEmpty, pipe, replace, T, trim } from 'ramda';
-import type { FC } from 'react';
+import { isEmpty, pipe, replace, trim } from 'ramda';
+import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
@@ -12,10 +16,10 @@ import type { DateTimeInputProps } from '../utils/dates/DateTimeInput';
 import { DateTimeInput } from '../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../utils/helpers/date';
 import { useFeature } from '../utils/helpers/features';
+import { IconInput } from '../utils/IconInput';
 import { SimpleCard } from '../utils/SimpleCard';
-import type { OptionalString } from '../utils/utils';
 import { handleEventPreventingDefault, hasValue } from '../utils/utils';
-import type { ShortUrlData } from './data';
+import type { DeviceLongUrls, ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
 import './ShortUrlForm.scss';
@@ -41,38 +45,38 @@ export const ShortUrlForm = (
   DomainSelector: FC<DomainSelectorProps>,
 ): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
   const [shortUrlData, setShortUrlData] = useState(initialState);
+  const reset = () => setShortUrlData(initialState);
+  const supportsDeviceLongUrls = useFeature('deviceLongUrls', selectedServer);
+
   const isEdit = mode === 'edit';
   const isBasicMode = mode === 'create-basic';
-  const hadTitleOriginally = hasValue(initialState.title);
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
-  const reset = () => setShortUrlData(initialState);
-  const resolveNewTitle = (): OptionalString => {
-    const hasNewTitle = hasValue(shortUrlData.title);
-    const matcher = cond<never, OptionalString>([
-      [() => !hasNewTitle && !hadTitleOriginally, () => undefined],
-      [() => !hasNewTitle && hadTitleOriginally, () => null],
-      [T, () => shortUrlData.title],
-    ]);
+  const setResettableValue = (value: string, initialValue?: any) => {
+    if (hasValue(value)) {
+      return value;
+    }
 
-    return matcher();
+    // If an initial value was provided for this when the input is "emptied", explicitly set it to null so that the
+    // value gets removed. Otherwise, set undefined so that it gets ignored.
+    return hasValue(initialValue) ? null : undefined;
   };
   const submit = handleEventPreventingDefault(async () => onSave({
     ...shortUrlData,
     validSince: formatIsoDate(shortUrlData.validSince) ?? null,
     validUntil: formatIsoDate(shortUrlData.validUntil) ?? null,
     maxVisits: !hasValue(shortUrlData.maxVisits) ? null : Number(shortUrlData.maxVisits),
-    title: resolveNewTitle(),
   }).then(() => !isEdit && reset()).catch(() => {}));
 
   useEffect(() => {
     setShortUrlData(initialState);
   }, [initialState]);
 
+  // TODO Consider extracting these functions to local components
   const renderOptionalInput = (
     id: NonDateFields,
     placeholder: string,
     type: InputType = 'text',
-    props = {},
+    props: any = {},
     fromGroupProps = {},
   ) => (
     <FormGroup {...fromGroupProps}>
@@ -81,10 +85,26 @@ export const ShortUrlForm = (
         type={type}
         placeholder={placeholder}
         value={shortUrlData[id] ?? ''}
-        onChange={(e) => setShortUrlData({ ...shortUrlData, [id]: e.target.value })}
+        onChange={props.onChange ?? ((e) => setShortUrlData({ ...shortUrlData, [id]: e.target.value }))}
         {...props}
       />
     </FormGroup>
+  );
+  const renderDeviceLongUrlInput = (id: keyof DeviceLongUrls, placeholder: string, icon: IconProp) => (
+    <IconInput
+      icon={icon}
+      id={id}
+      type="url"
+      placeholder={placeholder}
+      value={shortUrlData.deviceLongUrls?.[id] ?? ''}
+      onChange={(e) => setShortUrlData({
+        ...shortUrlData,
+        deviceLongUrls: {
+          ...(shortUrlData.deviceLongUrls ?? {}),
+          [id]: setResettableValue(e.target.value, initialState.deviceLongUrls?.[id]),
+        },
+      })}
+    />
   );
   const renderDateInput = (id: DateFields, placeholder: string, props: Partial<DateTimeInputProps> = {}) => (
     <DateTimeInput
@@ -123,14 +143,38 @@ export const ShortUrlForm = (
       {isBasicMode && basicComponents}
       {!isBasicMode && (
         <>
-          <SimpleCard title="Main options" className="mb-3">
-            {basicComponents}
-          </SimpleCard>
+          <Row>
+            <div
+              className={classNames('mb-3', { 'col-sm-6': supportsDeviceLongUrls, 'col-12': !supportsDeviceLongUrls })}
+            >
+              <SimpleCard title="Main options" className="mb-3">
+                {basicComponents}
+              </SimpleCard>
+            </div>
+            {supportsDeviceLongUrls && (
+              <div className="col-sm-6 mb-3">
+                <SimpleCard title="Device-specific long URLs">
+                  <FormGroup>
+                    {renderDeviceLongUrlInput('android', 'Android-specific redirection', faAndroid)}
+                  </FormGroup>
+                  <FormGroup>
+                    {renderDeviceLongUrlInput('ios', 'iOS-specific redirection', faApple)}
+                  </FormGroup>
+                  {renderDeviceLongUrlInput('desktop', 'Desktop-specific redirection', faDesktop)}
+                </SimpleCard>
+              </div>
+            )}
+          </Row>
 
           <Row>
             <div className="col-sm-6 mb-3">
               <SimpleCard title="Customize the short URL">
-                {renderOptionalInput('title', 'Title')}
+                {renderOptionalInput('title', 'Title', 'text', {
+                  onChange: ({ target }: ChangeEvent<HTMLInputElement>) => setShortUrlData({
+                    ...shortUrlData,
+                    title: setResettableValue(target.value, initialState.title),
+                  }),
+                })}
                 {!isEdit && (
                   <>
                     <Row>

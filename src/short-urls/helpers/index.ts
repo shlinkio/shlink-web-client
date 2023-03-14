@@ -37,6 +37,7 @@ export const shortUrlDataFromShortUrl = (shortUrl?: ShortUrl, settings?: ShortUr
     maxVisits: shortUrl.meta.maxVisits ?? undefined,
     crawlable: shortUrl.crawlable,
     forwardQuery: shortUrl.forwardQuery,
+    deviceLongUrls: shortUrl.deviceLongUrls,
     validateUrl,
   };
 };

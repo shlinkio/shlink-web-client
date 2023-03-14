@@ -1,4 +1,4 @@
-import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { faClone as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import { faTimes as closeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
