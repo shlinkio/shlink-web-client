@@ -16,7 +16,7 @@ export const DateInput = (props: DateInputProps) => {
   const ref = useRef<{ input: HTMLInputElement }>();
 
   return (
-    <div className="date-input-container">
+    <div className="icon-input-container">
       <DatePicker
         {...props}
         popperModifiers={[
@@ -26,14 +26,14 @@ export const DateInput = (props: DateInputProps) => {
           },
         ]}
         dateFormat={dateFormat ?? STANDARD_DATE_FORMAT}
-        className={classNames('date-input-container__input form-control', className)}
+        className={classNames('icon-input-container__input form-control', className)}
         // @ts-expect-error The DatePicker type definition is wrong. It has a ref prop
         ref={ref}
       />
       {showCalendarIcon && (
         <FontAwesomeIcon
           icon={calendarIcon}
-          className="date-input-container__icon"
+          className="icon-input-container__icon"
           onClick={() => ref.current?.input.focus()}
         />
       )}
