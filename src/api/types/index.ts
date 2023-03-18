@@ -31,7 +31,12 @@ export interface ShlinkTags {
 
 export interface ShlinkTagsResponse {
   data: string[];
+  /** @deprecated Present only when withStats=true is provided, which is deprecated */
   stats: ShlinkTagsStats[];
+}
+
+export interface ShlinkTagsStatsResponse {
+  data: ShlinkTagsStats[];
 }
 
 export interface ShlinkPaginator {

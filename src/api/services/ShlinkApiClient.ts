@@ -16,6 +16,7 @@ import type {
   ShlinkShortUrlsResponse,
   ShlinkTags,
   ShlinkTagsResponse,
+  ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
   ShlinkVisitsParams,
@@ -85,10 +86,14 @@ export class ShlinkApiClient {
   ): Promise<ShortUrl> =>
     this.performRequest<ShortUrl>(`/short-urls/${shortCode}`, 'PATCH', { domain }, edit);
 
-  public readonly listTags = async (): Promise<ShlinkTags> =>
-    this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })
-      .then(({ tags }) => tags)
-      .then(({ data, stats }) => ({ tags: data, stats }));
+  public readonly listTags = async (useTagsStatsEndpoint: boolean): Promise<ShlinkTags> =>
+    (useTagsStatsEndpoint
+      ? this.performRequest<{ tags: ShlinkTagsStatsResponse }>('/tags/stats', 'GET')
+        .then(({ tags }) => tags)
+        .then(({ data }) => ({ tags: data.map(({ tag }) => tag), stats: data }))
+      : this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })
+        .then(({ tags }) => tags)
+        .then(({ data, stats }) => ({ tags: data, stats })));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
     this.performEmptyRequest('/tags', 'DELETE', { tags }).then(() => ({ tags }));
