@@ -38,10 +38,7 @@ const initialState: ShortUrlCreation = {
 
 export const createShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
   `${REDUCER_PREFIX}/createShortUrl`,
-  (data: ShortUrlData, { getState }): Promise<ShortUrl> => {
-    const { createShortUrl: shlinkCreateShortUrl } = buildShlinkApiClient(getState);
-    return shlinkCreateShortUrl(data);
-  },
+  (data: ShortUrlData, { getState }): Promise<ShortUrl> => buildShlinkApiClient(getState).createShortUrl(data),
 );
 
 export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {

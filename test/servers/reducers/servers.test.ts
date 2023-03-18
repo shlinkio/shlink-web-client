@@ -1,6 +1,6 @@
 import { dissoc, values } from 'ramda';
 import { Mock } from 'ts-mockery';
-import type { RegularServer } from '../../../src/servers/data';
+import type { RegularServer, ServerWithId } from '../../../src/servers/data';
 import {
   createServers,
   deleteServer,
@@ -19,38 +19,24 @@ describe('serversReducer', () => {
 
   describe('reducer', () => {
     it('returns edited server when action is EDIT_SERVER', () =>
-      expect(serversReducer(list, {
-        type: editServer.toString(),
-        payload: { serverId: 'abc123', serverData: { foo: 'foo' } },
-      })).toEqual({
-        abc123: { id: 'abc123', foo: 'foo' },
+      expect(serversReducer(list, editServer('abc123', { name: 'foo' }))).toEqual({
+        abc123: { id: 'abc123', name: 'foo' },
         def456: { id: 'def456' },
       }));
 
     it('returns as it is when action is EDIT_SERVER and server does not exist', () =>
-      expect(serversReducer(list, {
-        type: editServer.toString(),
-        payload: { serverId: 'invalid', serverData: { foo: 'foo' } },
-      })).toEqual({
+      expect(serversReducer(list, editServer('invalid', { name: 'foo' }))).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
       }));
 
     it('removes server when action is DELETE_SERVER', () =>
-      expect(serversReducer(list, {
-        type: deleteServer.toString(),
-        payload: { id: 'abc123' },
-      })).toEqual({
+      expect(serversReducer(list, deleteServer(Mock.of<ServerWithId>({ id: 'abc123' })))).toEqual({
         def456: { id: 'def456' },
       }));
 
     it('appends server when action is CREATE_SERVERS', () =>
-      expect(serversReducer(list, {
-        type: createServers.toString(),
-        payload: {
-          ghi789: { id: 'ghi789' },
-        },
-      })).toEqual({
+      expect(serversReducer(list, createServers([Mock.of<ServerWithId>({ id: 'ghi789' })]))).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -60,10 +46,7 @@ describe('serversReducer', () => {
       [true],
       [false],
     ])('returns state as it is when trying to set auto-connect on invalid server', (autoConnect) =>
-      expect(serversReducer(list, {
-        type: setAutoConnect.toString(),
-        payload: { serverId: 'invalid', autoConnect },
-      })).toEqual({
+      expect(serversReducer(list, setAutoConnect(Mock.of<ServerWithId>({ id: 'invalid' }), autoConnect))).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
       }));
@@ -74,10 +57,10 @@ describe('serversReducer', () => {
         abc123: { ...list.abc123, autoConnect: true },
       };
 
-      expect(serversReducer(listWithDisabledAutoConnect, {
-        type: setAutoConnect.toString(),
-        payload: { serverId: 'abc123', autoConnect: false },
-      })).toEqual({
+      expect(serversReducer(
+        listWithDisabledAutoConnect,
+        setAutoConnect(Mock.of<ServerWithId>({ id: 'abc123' }), false),
+      )).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456' },
       });
@@ -89,10 +72,10 @@ describe('serversReducer', () => {
         abc123: { ...list.abc123, autoConnect: true },
       };
 
-      expect(serversReducer(listWithEnabledAutoConnect, {
-        type: setAutoConnect.toString(),
-        payload: { serverId: 'def456', autoConnect: true },
-      })).toEqual({
+      expect(serversReducer(
+        listWithEnabledAutoConnect,
+        setAutoConnect(Mock.of<ServerWithId>({ id: 'def456' }), true),
+      )).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456', autoConnect: true },
       });
@@ -103,33 +86,27 @@ describe('serversReducer', () => {
     describe('editServer', () => {
       it('returns expected action', () => {
         const serverData = { name: 'edited' };
-        const result = editServer('123', serverData);
+        const { payload } = editServer('123', serverData);
 
-        expect(result).toEqual({
-          type: editServer.toString(),
-          payload: { serverId: '123', serverData },
-        });
+        expect(payload).toEqual({ serverId: '123', serverData });
       });
     });
 
     describe('deleteServer', () => {
       it('returns expected action', () => {
         const serverToDelete = Mock.of<RegularServer>({ id: 'abc123' });
-        const result = deleteServer(serverToDelete);
+        const { payload } = deleteServer(serverToDelete);
 
-        expect(result).toEqual({
-          type: deleteServer.toString(),
-          payload: { id: 'abc123' },
-        });
+        expect(payload).toEqual({ id: 'abc123' });
       });
     });
 
     describe('createServers', () => {
       it('returns expected action', () => {
         const newServers = values(list);
-        const result = createServers(newServers);
+        const { payload } = createServers(newServers);
 
-        expect(result).toEqual(expect.objectContaining({ type: createServers.toString() }));
+        expect(payload).toEqual(list);
       });
 
       it('generates an id for every provided server if they do not have it', () => {
@@ -146,12 +123,9 @@ describe('serversReducer', () => {
         [false],
       ])('returns expected action', (autoConnect) => {
         const serverToEdit = Mock.of<RegularServer>({ id: 'abc123' });
-        const result = setAutoConnect(serverToEdit, autoConnect);
+        const { payload } = setAutoConnect(serverToEdit, autoConnect);
 
-        expect(result).toEqual({
-          type: setAutoConnect.toString(),
-          payload: { serverId: 'abc123', autoConnect },
-        });
+        expect(payload).toEqual({ serverId: 'abc123', autoConnect });
       });
     });
   });
