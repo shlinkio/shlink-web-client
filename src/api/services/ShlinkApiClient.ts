@@ -16,6 +16,7 @@ import type {
   ShlinkShortUrlsResponse,
   ShlinkTags,
   ShlinkTagsResponse,
+  ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
   ShlinkVisitsParams,
@@ -89,6 +90,11 @@ export class ShlinkApiClient {
     this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })
       .then(({ tags }) => tags)
       .then(({ data, stats }) => ({ tags: data, stats }));
+
+  public readonly tagsStats = async (): Promise<ShlinkTags> =>
+    this.performRequest<{ tags: ShlinkTagsStatsResponse }>('/tags/stats', 'GET')
+      .then(({ tags }) => tags)
+      .then(({ data }) => ({ tags: data.map(({ tag }) => tag), stats: data }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
     this.performEmptyRequest('/tags', 'DELETE', { tags }).then(() => ({ tags }));

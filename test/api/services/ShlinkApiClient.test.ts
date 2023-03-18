@@ -212,6 +212,28 @@ describe('ShlinkApiClient', () => {
     });
   });
 
+  describe('tagsStats', () => {
+    it('can use /tags/stats endpoint', async () => {
+      const expectedTags = ['foo', 'bar'];
+      const expectedStats = expectedTags.map((tag) => ({ tag, shortUrlsCount: 10, visitsCount: 10 }));
+
+      fetchJson.mockResolvedValue({
+        tags: {
+          data: expectedStats,
+        },
+      });
+      const { tagsStats } = buildApiClient();
+
+      const result = await tagsStats();
+
+      expect({ tags: expectedTags, stats: expectedStats }).toEqual(result);
+      expect(fetchJson).toHaveBeenCalledWith(
+        expect.stringContaining('/tags/stats'),
+        expect.objectContaining({ method: 'GET' }),
+      );
+    });
+  });
+
   describe('deleteTags', () => {
     it('properly deletes provided tags', async () => {
       const tags = ['foo', 'bar'];

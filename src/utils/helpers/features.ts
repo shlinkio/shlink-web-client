@@ -14,11 +14,12 @@ export const supportedFeatures = {
   defaultDomainRedirectsEdition: matchesMinVersion('2.10.0'),
   nonOrphanVisits: matchesMinVersion('3.0.0'),
   allTagsFiltering: matchesMinVersion('3.0.0'),
+  tagsStats: matchesMinVersion('3.0.0'),
   domainVisits: matchesMinVersion('3.1.0'),
   excludeBotsOnShortUrls: matchesMinVersion('3.4.0'),
   filterDisabledUrls: matchesMinVersion('3.4.0'),
   deviceLongUrls: matchesMinVersion('3.5.0'),
-} as const;
+} as const satisfies Record<string, ReturnType<typeof matchesMinVersion>>;
 
 Object.freeze(supportedFeatures);
 

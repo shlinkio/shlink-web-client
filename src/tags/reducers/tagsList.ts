@@ -5,6 +5,7 @@ import type { ShlinkTags } from '../../api/types';
 import type { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
 import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import { supportedFeatures } from '../../utils/helpers/features';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
 import type { CreateVisit, Stats } from '../../visits/types';
@@ -70,14 +71,16 @@ const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => O
 export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = true) => createAsyncThunk(
   `${REDUCER_PREFIX}/listTags`,
   async (_: void, { getState }): Promise<ListTags> => {
-    const { tagsList } = getState();
+    const { tagsList, selectedServer } = getState();
 
     if (!force && !isEmpty(tagsList.tags)) {
       return tagsList;
     }
 
-    const { listTags: shlinkListTags } = buildShlinkApiClient(getState);
-    const { tags, stats = [] }: ShlinkTags = await shlinkListTags();
+    const { listTags: shlinkListTags, tagsStats } = buildShlinkApiClient(getState);
+    const { tags, stats = [] }: ShlinkTags = await (
+      supportedFeatures.tagsStats(selectedServer) ? tagsStats() : shlinkListTags()
+    );
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
       acc[tag] = { shortUrlsCount, visitsCount };
 
