@@ -10,9 +10,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#808](https://github.com/shlinkio/shlink-web-client/issues/808) Respect settings on excluding bots in the overview section, for visits cards.
 
 ### Changed
-* Update to Vite 4.1
-* Update to coding standard v2.1.0
 * [#798](https://github.com/shlinkio/shlink-web-client/issues/798) Remove stryker and mutation testing.
+* [#800](https://github.com/shlinkio/shlink-web-client/issues/800) Use `/tags/stats` endpoint to load tags stats, when the server supports it.
+* Update to Vite 4.2
+* Update to TypeScript 5
+* Update to coding standard v2.1.0
+* Decouple tests from RTK internals.
 
 ### Deprecated
 * *Nothing*
