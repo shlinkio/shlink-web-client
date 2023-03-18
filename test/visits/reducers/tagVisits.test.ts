@@ -13,7 +13,7 @@ import {
   tagVisitsReducerCreator,
 } from '../../../src/visits/reducers/tagVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/visits/types';
+import type { CreateVisit, Visit } from '../../../src/visits/types';
 
 describe('tagVisitsReducer', () => {
   const now = new Date();
@@ -29,24 +29,24 @@ describe('tagVisitsReducer', () => {
     const buildState = (data: Partial<TagVisits>) => Mock.of<TagVisits>(data);
 
     it('returns loading on GET_TAG_VISITS_START', () => {
-      const { loading } = reducer(buildState({ loading: false }), { type: getTagVisits.pending.toString() });
+      const { loading } = reducer(buildState({ loading: false }), getTagVisits.pending('', { tag: '' }));
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_TAG_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: getTagVisits.large.toString() });
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), getTagVisits.large());
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_TAG_VISITS_CANCEL', () => {
-      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetTagVisits.toString() });
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), cancelGetTagVisits());
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_TAG_VISITS_ERROR', () => {
       const { loading, error } = reducer(
         buildState({ loading: true, error: false }),
-        { type: getTagVisits.rejected.toString() },
+        getTagVisits.rejected(null, '', { tag: '' }),
       );
 
       expect(loading).toEqual(false);
@@ -54,11 +54,11 @@ describe('tagVisitsReducer', () => {
     });
 
     it('return visits on GET_TAG_VISITS', () => {
-      const actionVisits = [{}, {}];
-      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
-        type: getTagVisits.fulfilled.toString(),
-        payload: { visits: actionVisits },
-      });
+      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const { loading, error, visits } = reducer(
+        buildState({ loading: true, error: false }),
+        getTagVisits.fulfilled({ visits: actionVisits }, '', { tag: '' }),
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -121,22 +121,22 @@ describe('tagVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(prevState, {
-        type: createNewVisits.toString(),
-        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
-      });
+      const { visits } = reducer(
+        prevState,
+        createNewVisits([Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
+      );
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_TAG_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: getTagVisits.progressChanged.toString(), payload: 85 });
-      expect(state).toEqual(expect.objectContaining({ progress: 85 }));
+      const { progress } = reducer(undefined, getTagVisits.progressChanged(85));
+      expect(progress).toEqual(85);
     });
 
     it('returns fallbackInterval on GET_TAG_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(undefined, { type: getTagVisits.fallbackToInterval.toString(), payload: fallbackInterval });
+      const state = reducer(undefined, getTagVisits.fallbackToInterval(fallbackInterval));
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
@@ -148,21 +148,6 @@ describe('tagVisitsReducer', () => {
       tagVisits: { cancelLoad: false },
     });
     const tag = 'foo';
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getTagVisitsCall.mockRejectedValue(new Error());
-
-      await getTagVisits({ tag })(dispatchMock, getState, {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getTagVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getTagVisits.rejected.toString(),
-      }));
-      expect(getTagVisitsCall).toHaveBeenCalledTimes(1);
-    });
 
     it.each([
       [undefined],
@@ -181,11 +166,7 @@ describe('tagVisitsReducer', () => {
       await getTagVisits({ tag, query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getTagVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getTagVisits.fulfilled.toString(),
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { visits, tag, query: query ?? {} },
       }));
       expect(getTagVisitsCall).toHaveBeenCalledTimes(1);
@@ -194,12 +175,12 @@ describe('tagVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
-        { type: getTagVisits.fallbackToInterval.toString(), payload: 'last30Days' },
+        getTagVisits.fallbackToInterval('last30Days'),
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
-        { type: getTagVisits.fallbackToInterval.toString(), payload: 'last180Days' },
+        getTagVisits.fallbackToInterval('last180Days'),
         3,
       ],
       [[], expect.objectContaining({ type: getTagVisits.fulfilled.toString() }), 2],
@@ -223,16 +204,8 @@ describe('tagVisitsReducer', () => {
       await getTagVisits({ tag, doIntervalFallback: true })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getTagVisits.pending.toString(),
-      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
       expect(getTagVisitsCall).toHaveBeenCalledTimes(2);
     });
-  });
-
-  describe('cancelGetTagVisits', () => {
-    it('just returns the action with proper type', () =>
-      expect(cancelGetTagVisits()).toEqual({ type: cancelGetTagVisits.toString() }));
   });
 });

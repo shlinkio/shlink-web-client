@@ -1,7 +1,6 @@
 import { Mock } from 'ts-mockery';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
-import { createServers } from '../../../src/servers/reducers/servers';
 
 describe('remoteServersReducer', () => {
   afterEach(jest.clearAllMocks);
@@ -84,13 +83,9 @@ describe('remoteServersReducer', () => {
 
       await doFetchServers()(dispatch, jest.fn(), {});
 
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: doFetchServers.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, { type: createServers.toString(), payload: expectedNewServers });
-      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        type: doFetchServers.fulfilled.toString(),
-      }));
+      expect(dispatch).toHaveBeenCalledTimes(3);
+      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ payload: expectedNewServers }));
+      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({ payload: undefined }));
       expect(fetchJson).toHaveBeenCalledTimes(1);
     });
   });

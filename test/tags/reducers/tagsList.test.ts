@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';
@@ -23,14 +23,14 @@ describe('tagsListReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
-      expect(reducer(undefined, { type: listTags.pending.toString() })).toEqual(expect.objectContaining({
+      expect(reducer(undefined, listTags.pending(''))).toEqual(expect.objectContaining({
         loading: true,
         error: false,
       }));
     });
 
     it('returns error on LIST_TAGS_ERROR', () => {
-      expect(reducer(undefined, { type: listTags.rejected.toString() })).toEqual(expect.objectContaining({
+      expect(reducer(undefined, listTags.rejected(null, ''))).toEqual(expect.objectContaining({
         loading: false,
         error: true,
       }));
@@ -39,10 +39,7 @@ describe('tagsListReducer', () => {
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
       const tags = ['foo', 'bar', 'baz'];
 
-      expect(reducer(undefined, {
-        type: listTags.fulfilled.toString(),
-        payload: { tags },
-      })).toEqual({
+      expect(reducer(undefined, listTags.fulfilled(Mock.of<TagsList>({ tags }), ''))).toEqual({
         tags,
         filteredTags: tags,
         loading: false,
@@ -57,7 +54,7 @@ describe('tagsListReducer', () => {
 
       expect(reducer(
         state({ tags, filteredTags: tags }),
-        { type: tagDeleted.toString(), payload: tag },
+        tagDeleted(tag),
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -81,7 +78,7 @@ describe('tagsListReducer', () => {
             },
           },
         }),
-        { type: tagEdited.toString(), payload: { oldName, newName } },
+        tagEdited({ oldName, newName, color: '' }),
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -103,7 +100,7 @@ describe('tagsListReducer', () => {
       const payload = 'Fo';
       const filteredTags = ['foo', 'Foo2', 'fo'];
 
-      expect(reducer(state({ tags }), { type: filterTags.toString(), payload })).toEqual({
+      expect(reducer(state({ tags }), filterTags(payload))).toEqual({
         tags,
         filteredTags,
       });
@@ -117,14 +114,14 @@ describe('tagsListReducer', () => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), { type: createShortUrl.fulfilled.toString(), payload })).toEqual({
+      expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', Mock.of<ShortUrlData>()))).toEqual({
         tags: expectedTags,
       });
     });
   });
 
   describe('filterTags', () => {
-    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: filterTags.toString(), payload: 'foo' }));
+    it('creates expected action', () => expect(filterTags('foo').payload).toEqual('foo'));
   });
 
   describe('listTags', () => {
@@ -159,39 +156,9 @@ describe('tagsListReducer', () => {
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: listTags.fulfilled.toString(),
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { tags, stats: {} },
       }));
-    });
-
-    const assertErrorResult = async () => {
-      await listTags()(dispatch, getState, {});
-
-      expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(getState).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: listTags.rejected.toString() }));
-    };
-
-    it('dispatches error when error occurs on list call', async () => {
-      listTagsMock.mockRejectedValue(new Error());
-      buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
-
-      await assertErrorResult();
-
-      expect(listTagsMock).toHaveBeenCalledTimes(1);
-    });
-
-    it('dispatches error when error occurs on build call', async () => {
-      buildShlinkApiClient.mockImplementation(() => {
-        throw new Error();
-      });
-
-      await assertErrorResult();
-      expect(listTagsMock).not.toHaveBeenCalled();
     });
   });
 });

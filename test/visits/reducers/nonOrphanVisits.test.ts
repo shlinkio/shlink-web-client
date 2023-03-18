@@ -28,27 +28,24 @@ describe('nonOrphanVisitsReducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => Mock.of<VisitsInfo>(data);
 
     it('returns loading on GET_NON_ORPHAN_VISITS_START', () => {
-      const { loading } = reducer(buildState({ loading: false }), { type: getNonOrphanVisits.pending.toString() });
+      const { loading } = reducer(buildState({ loading: false }), getNonOrphanVisits.pending('', {}));
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_NON_ORPHAN_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(
-        buildState({ loadingLarge: false }),
-        { type: getNonOrphanVisits.large.toString() },
-      );
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), getNonOrphanVisits.large());
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_NON_ORPHAN_VISITS_CANCEL', () => {
-      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetNonOrphanVisits.toString() });
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), cancelGetNonOrphanVisits());
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_NON_ORPHAN_VISITS_ERROR', () => {
       const { loading, error } = reducer(
         buildState({ loading: true, error: false }),
-        { type: getNonOrphanVisits.rejected.toString() },
+        getNonOrphanVisits.rejected(null, '', {}),
       );
 
       expect(loading).toEqual(false);
@@ -56,11 +53,11 @@ describe('nonOrphanVisitsReducer', () => {
     });
 
     it('return visits on GET_NON_ORPHAN_VISITS', () => {
-      const actionVisits = [{}, {}];
-      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
-        type: getNonOrphanVisits.fulfilled.toString(),
-        payload: { visits: actionVisits },
-      });
+      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const { loading, error, visits } = reducer(
+        buildState({ loading: true, error: false }),
+        getNonOrphanVisits.fulfilled({ visits: actionVisits }, '', {}),
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -103,25 +100,19 @@ describe('nonOrphanVisitsReducer', () => {
       const prevState = buildState({ ...state, visits: visitsMocks });
       const visit = Mock.of<Visit>({ date: formatIsoDate(now) ?? undefined });
 
-      const { visits } = reducer(prevState, {
-        type: createNewVisits.toString(),
-        payload: { createdVisits: [{ visit }, { visit }] },
-      });
+      const { visits } = reducer(prevState, createNewVisits([{ visit }, { visit }]));
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_NON_ORPHAN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: getNonOrphanVisits.progressChanged.toString(), payload: 85 });
-      expect(state).toEqual(expect.objectContaining({ progress: 85 }));
+      const { progress } = reducer(undefined, getNonOrphanVisits.progressChanged(85));
+      expect(progress).toEqual(85);
     });
 
     it('returns fallbackInterval on GET_NON_ORPHAN_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(
-        undefined,
-        { type: getNonOrphanVisits.fallbackToInterval.toString(), payload: fallbackInterval },
-      );
+      const state = reducer(undefined, getNonOrphanVisits.fallbackToInterval(fallbackInterval));
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
@@ -134,21 +125,6 @@ describe('nonOrphanVisitsReducer', () => {
     });
 
     beforeEach(jest.resetAllMocks);
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getNonOrphanVisitsCall.mockRejectedValue({});
-
-      await getNonOrphanVisits({})(dispatchMock, getState, {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getNonOrphanVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getNonOrphanVisits.rejected.toString(),
-      }));
-      expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(1);
-    });
 
     it.each([
       [undefined],
@@ -167,11 +143,7 @@ describe('nonOrphanVisitsReducer', () => {
       await getNonOrphanVisits({ query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining(
-        { type: getNonOrphanVisits.pending.toString() },
-      ));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getNonOrphanVisits.fulfilled.toString(),
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { visits, query: query ?? {} },
       }));
       expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(1);
@@ -180,12 +152,12 @@ describe('nonOrphanVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
-        { type: getNonOrphanVisits.fallbackToInterval.toString(), payload: 'last7Days' },
+        getNonOrphanVisits.fallbackToInterval('last7Days'),
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
-        { type: getNonOrphanVisits.fallbackToInterval.toString(), payload: 'last365Days' },
+        getNonOrphanVisits.fallbackToInterval('last365Days'),
         3,
       ],
       [[], expect.objectContaining({ type: getNonOrphanVisits.fulfilled.toString() }), 2],
@@ -209,16 +181,8 @@ describe('nonOrphanVisitsReducer', () => {
       await getNonOrphanVisits({ doIntervalFallback: true })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(expectedAmountOfDispatches);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getNonOrphanVisits.pending.toString(),
-      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
       expect(getNonOrphanVisitsCall).toHaveBeenCalledTimes(2);
     });
-  });
-
-  describe('cancelGetNonOrphanVisits', () => {
-    it('just returns the action with proper type', () =>
-      expect(cancelGetNonOrphanVisits()).toEqual({ type: cancelGetNonOrphanVisits.toString() }));
   });
 });

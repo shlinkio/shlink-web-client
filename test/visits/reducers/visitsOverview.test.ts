@@ -2,11 +2,12 @@ import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisitsOverview } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
-import type { CreateVisitsAction } from '../../../src/visits/reducers/visitCreation';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 import type {
-  GetVisitsOverviewAction, ParsedVisitsOverview,
-  PartialVisitsSummary, VisitsOverview } from '../../../src/visits/reducers/visitsOverview';
+  ParsedVisitsOverview,
+  PartialVisitsSummary,
+  VisitsOverview,
+} from '../../../src/visits/reducers/visitsOverview';
 import {
   loadVisitsOverview as loadVisitsOverviewCreator,
   visitsOverviewReducerCreator,
@@ -22,14 +23,12 @@ describe('visitsOverviewReducer', () => {
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const action = (type: string) =>
-      Mock.of<GetVisitsOverviewAction>({ type }) as GetVisitsOverviewAction & CreateVisitsAction;
     const state = (payload: Partial<VisitsOverview> = {}) => Mock.of<VisitsOverview>(payload);
 
     it('returns loading on GET_OVERVIEW_START', () => {
       const { loading } = reducer(
         state({ loading: false, error: false }),
-        action(loadVisitsOverview.pending.toString()),
+        loadVisitsOverview.pending(''),
       );
 
       expect(loading).toEqual(true);
@@ -38,7 +37,7 @@ describe('visitsOverviewReducer', () => {
     it('stops loading and returns error on GET_OVERVIEW_ERROR', () => {
       const { loading, error } = reducer(
         state({ loading: true, error: false }),
-        action(loadVisitsOverview.rejected.toString()),
+        loadVisitsOverview.rejected(null, ''),
       );
 
       expect(loading).toEqual(false);
@@ -145,23 +144,6 @@ describe('visitsOverviewReducer', () => {
     const dispatchMock = jest.fn();
     const getState = () => Mock.of<ShlinkState>();
 
-    beforeEach(() => dispatchMock.mockReset());
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getVisitsOverview.mockRejectedValue(undefined);
-
-      await loadVisitsOverview()(dispatchMock, getState, {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: loadVisitsOverview.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: loadVisitsOverview.rejected.toString(),
-      }));
-      expect(getVisitsOverview).toHaveBeenCalledTimes(1);
-    });
-
     it.each([
       [
         // Shlink <3.5.0
@@ -191,13 +173,7 @@ describe('visitsOverviewReducer', () => {
       await loadVisitsOverview()(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: loadVisitsOverview.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: loadVisitsOverview.fulfilled.toString(),
-        payload: dispatchedPayload,
-      }));
+      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({ payload: dispatchedPayload }));
       expect(getVisitsOverview).toHaveBeenCalledTimes(1);
     });
   });

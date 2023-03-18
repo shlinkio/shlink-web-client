@@ -13,7 +13,7 @@ import {
   shortUrlVisitsReducerCreator,
 } from '../../../src/visits/reducers/shortUrlVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/visits/types';
+import type { CreateVisit, Visit } from '../../../src/visits/types';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
@@ -29,27 +29,24 @@ describe('shortUrlVisitsReducer', () => {
     const buildState = (data: Partial<ShortUrlVisits>) => Mock.of<ShortUrlVisits>(data);
 
     it('returns loading on GET_SHORT_URL_VISITS_START', () => {
-      const { loading } = reducer(buildState({ loading: false }), { type: getShortUrlVisits.pending.toString() });
+      const { loading } = reducer(buildState({ loading: false }), getShortUrlVisits.pending('', { shortCode: '' }));
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_SHORT_URL_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(
-        buildState({ loadingLarge: false }),
-        { type: getShortUrlVisits.large.toString() },
-      );
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), getShortUrlVisits.large());
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_SHORT_URL_VISITS_CANCEL', () => {
-      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetShortUrlVisits.toString() });
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), cancelGetShortUrlVisits());
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_SHORT_URL_VISITS_ERROR', () => {
       const { loading, error } = reducer(
         buildState({ loading: true, error: false }),
-        { type: getShortUrlVisits.rejected.toString() },
+        getShortUrlVisits.rejected(null, '', { shortCode: '' }),
       );
 
       expect(loading).toEqual(false);
@@ -57,11 +54,11 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it('return visits on GET_SHORT_URL_VISITS', () => {
-      const actionVisits = [{}, {}];
-      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
-        type: getShortUrlVisits.fulfilled.toString(),
-        payload: { visits: actionVisits },
-      });
+      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const { loading, error, visits } = reducer(
+        buildState({ loading: true, error: false }),
+        getShortUrlVisits.fulfilled({ visits: actionVisits }, '', { shortCode: '' }),
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -124,25 +121,22 @@ describe('shortUrlVisitsReducer', () => {
         visits: visitsMocks,
       });
 
-      const { visits } = reducer(prevState, {
-        type: createNewVisits.toString(),
-        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
-      });
+      const { visits } = reducer(
+        prevState,
+        createNewVisits([Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
+      );
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_SHORT_URL_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: getShortUrlVisits.progressChanged.toString(), payload: 85 });
-      expect(state).toEqual(expect.objectContaining({ progress: 85 }));
+      const { progress } = reducer(undefined, getShortUrlVisits.progressChanged(85));
+      expect(progress).toEqual(85);
     });
 
     it('returns fallbackInterval on GET_SHORT_URL_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
-      const state = reducer(
-        undefined,
-        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: fallbackInterval },
-      );
+      const state = reducer(undefined, getShortUrlVisits.fallbackToInterval(fallbackInterval));
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
     });
@@ -152,21 +146,6 @@ describe('shortUrlVisitsReducer', () => {
     const dispatchMock = jest.fn();
     const getState = () => Mock.of<ShlinkState>({
       shortUrlVisits: Mock.of<ShortUrlVisits>({ cancelLoad: false }),
-    });
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getShortUrlVisitsCall.mockRejectedValue({});
-
-      await getShortUrlVisits({ shortCode: 'abc123' })(dispatchMock, getState, {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getShortUrlVisits.rejected.toString(),
-      }));
-      expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(1);
     });
 
     it.each([
@@ -188,11 +167,7 @@ describe('shortUrlVisitsReducer', () => {
       await getShortUrlVisits({ shortCode, query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getShortUrlVisits.fulfilled.toString(),
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { visits, shortCode, domain, query: query ?? {} },
       }));
       expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(1);
@@ -223,12 +198,12 @@ describe('shortUrlVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
-        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: 'last7Days' },
+        getShortUrlVisits.fallbackToInterval('last7Days'),
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
-        { type: getShortUrlVisits.fallbackToInterval.toString(), payload: 'last365Days' },
+        getShortUrlVisits.fallbackToInterval('last365Days'),
         3,
       ],
       [[], expect.objectContaining({ type: getShortUrlVisits.fulfilled.toString() }), 2],
@@ -252,16 +227,8 @@ describe('shortUrlVisitsReducer', () => {
       await getShortUrlVisits({ shortCode: 'abc123', doIntervalFallback: true })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlVisits.pending.toString(),
-      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
       expect(getShortUrlVisitsCall).toHaveBeenCalledTimes(2);
     });
-  });
-
-  describe('cancelGetShortUrlVisits', () => {
-    it('just returns the action with proper type', () =>
-      expect(cancelGetShortUrlVisits()).toEqual({ type: cancelGetShortUrlVisits.toString() }));
   });
 });

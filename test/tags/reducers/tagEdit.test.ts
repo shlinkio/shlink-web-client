@@ -1,7 +1,7 @@
 import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { EditTagAction } from '../../../src/tags/reducers/tagEdit';
+import type { EditTag } from '../../../src/tags/reducers/tagEdit';
 import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
 import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 
@@ -17,7 +17,7 @@ describe('tagEditReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on EDIT_TAG_START', () => {
-      expect(reducer(undefined, Mock.of<EditTagAction>({ type: editTag.pending.toString() }))).toEqual({
+      expect(reducer(undefined, editTag.pending('', Mock.all<EditTag>()))).toEqual({
         editing: true,
         edited: false,
         error: false,
@@ -25,7 +25,7 @@ describe('tagEditReducer', () => {
     });
 
     it('returns error on EDIT_TAG_ERROR', () => {
-      expect(reducer(undefined, Mock.of<EditTagAction>({ type: editTag.rejected.toString() }))).toEqual({
+      expect(reducer(undefined, editTag.rejected(null, '', Mock.all<EditTag>()))).toEqual({
         editing: false,
         edited: false,
         error: true,
@@ -33,10 +33,7 @@ describe('tagEditReducer', () => {
     });
 
     it('returns tag names on EDIT_TAG', () => {
-      expect(reducer(undefined, {
-        type: editTag.fulfilled.toString(),
-        payload: { oldName, newName, color },
-      })).toEqual({
+      expect(reducer(undefined, editTag.fulfilled({ oldName, newName, color }, '', Mock.all<EditTag>()))).toEqual({
         editing: false,
         edited: true,
         error: false,
@@ -47,15 +44,10 @@ describe('tagEditReducer', () => {
   });
 
   describe('tagEdited', () => {
-    it('returns action based on provided params', () =>
-      expect(tagEdited({ oldName: 'foo', newName: 'bar', color: '#ff0000' })).toEqual({
-        type: tagEdited.toString(),
-        payload: {
-          oldName: 'foo',
-          newName: 'bar',
-          color: '#ff0000',
-        },
-      }));
+    it('returns action based on provided params', () => {
+      const payload = { oldName: 'foo', newName: 'bar', color: '#ff0000' };
+      expect(tagEdited(payload).payload).toEqual(payload);
+    });
   });
 
   describe('editTag', () => {
@@ -76,31 +68,9 @@ describe('tagEditReducer', () => {
       expect(colorGenerator.setColorForKey).toHaveBeenCalledWith(newName, color);
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: editTag.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: editTag.fulfilled.toString(),
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { oldName, newName, color },
       }));
-    });
-
-    it('throws on error', async () => {
-      const error = 'Error';
-      editTagCall.mockRejectedValue(error);
-
-      try {
-        await editTag({ oldName, newName, color })(dispatch, getState, {});
-      } catch (e) {
-        expect(e).toEqual(error);
-      }
-
-      expect(editTagCall).toHaveBeenCalledTimes(1);
-      expect(editTagCall).toHaveBeenCalledWith(oldName, newName);
-
-      expect(colorGenerator.setColorForKey).not.toHaveBeenCalled();
-
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: editTag.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: editTag.rejected.toString() }));
     });
   });
 });

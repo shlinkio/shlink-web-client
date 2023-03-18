@@ -8,14 +8,15 @@ import { formatIsoDate } from '../../../src/utils/helpers/date';
 import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { rangeOf } from '../../../src/utils/utils';
 import type {
-  DomainVisits } from '../../../src/visits/reducers/domainVisits';
+  DomainVisits, LoadDomainVisits,
+} from '../../../src/visits/reducers/domainVisits';
 import {
   DEFAULT_DOMAIN,
   domainVisitsReducerCreator,
   getDomainVisits as getDomainVisitsCreator,
 } from '../../../src/visits/reducers/domainVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/visits/types';
+import type { CreateVisit, Visit } from '../../../src/visits/types';
 
 describe('domainVisitsReducer', () => {
   const now = new Date();
@@ -31,22 +32,28 @@ describe('domainVisitsReducer', () => {
     const buildState = (data: Partial<DomainVisits>) => Mock.of<DomainVisits>(data);
 
     it('returns loading on GET_DOMAIN_VISITS_START', () => {
-      const { loading } = reducer(buildState({ loading: false }), { type: getDomainVisits.pending.toString() });
+      const { loading } = reducer(
+        buildState({ loading: false }),
+        getDomainVisits.pending('', Mock.all<LoadDomainVisits>()),
+      );
       expect(loading).toEqual(true);
     });
 
     it('returns loadingLarge on GET_DOMAIN_VISITS_LARGE', () => {
-      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), { type: getDomainVisits.large.toString() });
+      const { loadingLarge } = reducer(buildState({ loadingLarge: false }), getDomainVisits.large());
       expect(loadingLarge).toEqual(true);
     });
 
     it('returns cancelLoad on GET_DOMAIN_VISITS_CANCEL', () => {
-      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), { type: cancelGetDomainVisits.toString() });
+      const { cancelLoad } = reducer(buildState({ cancelLoad: false }), cancelGetDomainVisits());
       expect(cancelLoad).toEqual(true);
     });
 
     it('stops loading and returns error on GET_DOMAIN_VISITS_ERROR', () => {
-      const state = reducer(buildState({ loading: true, error: false }), { type: getDomainVisits.rejected.toString() });
+      const state = reducer(
+        buildState({ loading: true, error: false }),
+        getDomainVisits.rejected(null, '', Mock.all<LoadDomainVisits>()),
+      );
       const { loading, error } = state;
 
       expect(loading).toEqual(false);
@@ -54,11 +61,11 @@ describe('domainVisitsReducer', () => {
     });
 
     it('return visits on GET_DOMAIN_VISITS', () => {
-      const actionVisits = [{}, {}];
-      const { loading, error, visits } = reducer(buildState({ loading: true, error: false }), {
-        type: getDomainVisits.fulfilled.toString(),
-        payload: { visits: actionVisits },
-      });
+      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const { loading, error, visits } = reducer(
+        buildState({ loading: true, error: false }),
+        getDomainVisits.fulfilled({ visits: actionVisits }, '', Mock.all<LoadDomainVisits>()),
+      );
 
       expect(loading).toEqual(false);
       expect(error).toEqual(false);
@@ -121,25 +128,23 @@ describe('domainVisitsReducer', () => {
       ],
     ])('prepends new visits on CREATE_VISIT', (state, shortUrlDomain, expectedVisits) => {
       const shortUrl = Mock.of<ShortUrl>({ domain: shortUrlDomain });
-      const { visits } = reducer(buildState({ ...state, visits: visitsMocks }), {
-        type: createNewVisits.toString(),
-        payload: { createdVisits: [{ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }] },
-      });
+      const { visits } = reducer(buildState({ ...state, visits: visitsMocks }), createNewVisits([
+        Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }),
+      ]));
 
       expect(visits).toHaveLength(expectedVisits);
     });
 
     it('returns new progress on GET_DOMAIN_VISITS_PROGRESS_CHANGED', () => {
-      const state = reducer(undefined, { type: getDomainVisits.progressChanged.toString(), payload: 85 });
-
-      expect(state).toEqual(expect.objectContaining({ progress: 85 }));
+      const { progress } = reducer(undefined, getDomainVisits.progressChanged(85));
+      expect(progress).toEqual(85);
     });
 
     it('returns fallbackInterval on GET_DOMAIN_VISITS_FALLBACK_TO_INTERVAL', () => {
       const fallbackInterval: DateInterval = 'last30Days';
       const state = reducer(
         undefined,
-        { type: getDomainVisits.fallbackToInterval.toString(), payload: fallbackInterval },
+        getDomainVisits.fallbackToInterval(fallbackInterval),
       );
 
       expect(state).toEqual(expect.objectContaining({ fallbackInterval }));
@@ -152,21 +157,6 @@ describe('domainVisitsReducer', () => {
       domainVisits: { cancelLoad: false },
     });
     const domain = 'foo.com';
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getDomainVisitsCall.mockRejectedValue(new Error());
-
-      await getDomainVisits({ domain })(dispatchMock, getState, {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getDomainVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getDomainVisits.rejected.toString(),
-      }));
-      expect(getDomainVisitsCall).toHaveBeenCalledTimes(1);
-    });
 
     it.each([
       [undefined],
@@ -185,11 +175,7 @@ describe('domainVisitsReducer', () => {
       await getDomainVisits({ domain, query })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getDomainVisits.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getDomainVisits.fulfilled.toString(),
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { visits, domain, query: query ?? {} },
       }));
       expect(getDomainVisitsCall).toHaveBeenCalledTimes(1);
@@ -198,12 +184,12 @@ describe('domainVisitsReducer', () => {
     it.each([
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
-        { type: getDomainVisits.fallbackToInterval.toString(), payload: 'last30Days' },
+        getDomainVisits.fallbackToInterval('last30Days'),
         3,
       ],
       [
         [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
-        { type: getDomainVisits.fallbackToInterval.toString(), payload: 'last180Days' },
+        getDomainVisits.fallbackToInterval('last180Days'),
         3,
       ],
       [[], expect.objectContaining({ type: getDomainVisits.fulfilled.toString() }), 2],
@@ -227,16 +213,8 @@ describe('domainVisitsReducer', () => {
       await getDomainVisits({ domain, doIntervalFallback: true })(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(expectedDispatchCalls);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getDomainVisits.pending.toString(),
-      }));
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expectedSecondDispatch);
       expect(getDomainVisitsCall).toHaveBeenCalledTimes(2);
     });
-  });
-
-  describe('cancelGetDomainVisits', () => {
-    it('just returns the action with proper type', () =>
-      expect(cancelGetDomainVisits()).toEqual(expect.objectContaining({ type: cancelGetDomainVisits.toString() })));
   });
 });

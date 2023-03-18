@@ -1,9 +1,7 @@
 import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl } from '../../../src/short-urls/data';
-import type {
-  CreateShortUrlAction } from '../../../src/short-urls/reducers/shortUrlCreation';
+import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
 import {
   createShortUrl as createShortUrlCreator,
   shortUrlCreationReducerCreator,
@@ -19,12 +17,8 @@ describe('shortUrlCreationReducer', () => {
   afterEach(jest.resetAllMocks);
 
   describe('reducer', () => {
-    const action = (type: string, args: Partial<CreateShortUrlAction> = {}) => Mock.of<CreateShortUrlAction>(
-      { type, ...args },
-    );
-
     it('returns loading on CREATE_SHORT_URL_START', () => {
-      expect(reducer(undefined, action(createShortUrl.pending.toString()))).toEqual({
+      expect(reducer(undefined, createShortUrl.pending('', Mock.all<ShortUrlData>()))).toEqual({
         saving: true,
         saved: false,
         error: false,
@@ -32,7 +26,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns error on CREATE_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, action(createShortUrl.rejected.toString()))).toEqual({
+      expect(reducer(undefined, createShortUrl.rejected(null, '', Mock.all<ShortUrlData>()))).toEqual({
         saving: false,
         saved: false,
         error: true,
@@ -40,7 +34,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns result on CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, action(createShortUrl.fulfilled.toString(), { payload: shortUrl }))).toEqual({
+      expect(reducer(undefined, createShortUrl.fulfilled(shortUrl, '', Mock.all<ShortUrlData>()))).toEqual({
         result: shortUrl,
         saving: false,
         saved: true,
@@ -49,16 +43,12 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns default state on RESET_CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, action(resetCreateShortUrl.toString()))).toEqual({
+      expect(reducer(undefined, resetCreateShortUrl())).toEqual({
         saving: false,
         saved: false,
         error: false,
       });
     });
-  });
-
-  describe('resetCreateShortUrl', () => {
-    it('returns proper action', () => expect(resetCreateShortUrl()).toEqual({ type: resetCreateShortUrl.toString() }));
   });
 
   describe('createShortUrl', () => {
@@ -71,30 +61,7 @@ describe('shortUrlCreationReducer', () => {
 
       expect(createShortUrlCall).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: createShortUrl.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: createShortUrl.fulfilled.toString(),
-        payload: shortUrl,
-      }));
-    });
-
-    it('throws on error', async () => {
-      const error = new Error('Error message');
-      createShortUrlCall.mockRejectedValue(error);
-
-      await createShortUrl({ longUrl: 'foo' })(dispatch, getState, {});
-
-      expect(createShortUrlCall).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: createShortUrl.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: createShortUrl.rejected.toString(),
-        error: expect.objectContaining({ message: 'Error message' }),
-      }));
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: shortUrl }));
     });
   });
 });

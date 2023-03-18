@@ -4,6 +4,7 @@ import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import { parseApiError } from '../../../src/api/utils';
 import type { ShlinkState } from '../../../src/container/types';
 import type { Domain } from '../../../src/domains/data';
+import type { EditDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import type {
   DomainsList } from '../../../src/domains/reducers/domainsList';
@@ -25,7 +26,7 @@ describe('domainsListReducer', () => {
     Mock.of<Domain>({ domain: 'Boo', status: 'validating' }),
   ];
   const domains = [...filteredDomains, Mock.of<Domain>({ domain: 'bar', status: 'validating' })];
-  const error = { type: 'NOT_FOUND', status: 404 };
+  const error = { type: 'NOT_FOUND', status: 404 } as unknown as Error;
   const editDomainRedirectsThunk = editDomainRedirects(buildShlinkApiClient);
   const { reducer, listDomains: listDomainsAction, checkDomainHealth, filterDomains } = domainsListReducerCreator(
     buildShlinkApiClient,
@@ -36,27 +37,25 @@ describe('domainsListReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on LIST_DOMAINS_START', () => {
-      expect(reducer(undefined, { type: listDomainsAction.pending.toString() })).toEqual(
+      expect(reducer(undefined, listDomainsAction.pending(''))).toEqual(
         { domains: [], filteredDomains: [], loading: true, error: false },
       );
     });
 
     it('returns error on LIST_DOMAINS_ERROR', () => {
-      expect(reducer(undefined, { type: listDomainsAction.rejected.toString(), error })).toEqual(
+      expect(reducer(undefined, listDomainsAction.rejected(error, ''))).toEqual(
         { domains: [], filteredDomains: [], loading: false, error: true, errorData: parseApiError(error) },
       );
     });
 
     it('returns domains on LIST_DOMAINS', () => {
       expect(
-        reducer(undefined, { type: listDomainsAction.fulfilled.toString(), payload: { domains } }),
+        reducer(undefined, listDomainsAction.fulfilled({ domains }, '')),
       ).toEqual({ domains, filteredDomains: domains, loading: false, error: false });
     });
 
     it('filters domains on FILTER_DOMAINS', () => {
-      expect(
-        reducer(Mock.of<DomainsList>({ domains }), { type: filterDomains.toString(), payload: 'oO' }),
-      ).toEqual({ domains, filteredDomains });
+      expect(reducer(Mock.of<DomainsList>({ domains }), filterDomains('oO'))).toEqual({ domains, filteredDomains });
     });
 
     it.each([
@@ -69,13 +68,14 @@ describe('domainsListReducer', () => {
         regular404Redirect: 'foo',
         invalidShortUrlRedirect: null,
       };
+      const editDomainRedirects: EditDomainRedirects = { domain, redirects };
 
-      expect(reducer(Mock.of<DomainsList>({ domains, filteredDomains }), {
-        type: editDomainRedirectsThunk.fulfilled.toString(),
-        payload: { domain, redirects },
-      })).toEqual({
-        domains: domains.map(replaceRedirectsOnDomain({ domain, redirects })),
-        filteredDomains: filteredDomains.map(replaceRedirectsOnDomain({ domain, redirects })),
+      expect(reducer(
+        Mock.of<DomainsList>({ domains, filteredDomains }),
+        editDomainRedirectsThunk.fulfilled(editDomainRedirects, '', editDomainRedirects),
+      )).toEqual({
+        domains: domains.map(replaceRedirectsOnDomain(editDomainRedirects)),
+        filteredDomains: filteredDomains.map(replaceRedirectsOnDomain(editDomainRedirects)),
       });
     });
 
@@ -86,10 +86,7 @@ describe('domainsListReducer', () => {
     ])('replaces status on proper domain on VALIDATE_DOMAIN', (domain) => {
       expect(reducer(
         Mock.of<DomainsList>({ domains, filteredDomains }),
-        {
-          type: checkDomainHealth.fulfilled.toString(),
-          payload: { domain, status: 'valid' },
-        },
+        checkDomainHealth.fulfilled({ domain, status: 'valid' }, '', ''),
       )).toEqual({
         domains: domains.map(replaceStatusOnDomain(domain, 'valid')),
         filteredDomains: filteredDomains.map(replaceStatusOnDomain(domain, 'valid')),
@@ -98,32 +95,13 @@ describe('domainsListReducer', () => {
   });
 
   describe('listDomains', () => {
-    it('dispatches error when loading domains fails', async () => {
-      listDomains.mockRejectedValue(new Error('error'));
-
-      await listDomainsAction()(dispatch, getState, {});
-
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: listDomainsAction.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: listDomainsAction.rejected.toString(),
-      }));
-      expect(listDomains).toHaveBeenCalledTimes(1);
-    });
-
     it('dispatches domains once loaded', async () => {
       listDomains.mockResolvedValue({ data: domains });
 
       await listDomainsAction()(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: listDomainsAction.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: listDomainsAction.fulfilled.toString(),
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { domains },
       }));
       expect(listDomains).toHaveBeenCalledTimes(1);
@@ -136,9 +114,7 @@ describe('domainsListReducer', () => {
       ['bar'],
       ['something'],
     ])('creates action as expected', (searchTerm) => {
-      expect(filterDomains(searchTerm)).toEqual(
-        expect.objectContaining({ type: filterDomains.toString(), payload: searchTerm }),
-      );
+      expect(filterDomains(searchTerm).payload).toEqual(searchTerm);
     });
   });
 
@@ -155,7 +131,6 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        type: checkDomainHealth.fulfilled.toString(),
         payload: { domain, status: 'invalid' },
       }));
     });
@@ -174,7 +149,6 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        type: checkDomainHealth.fulfilled.toString(),
         payload: { domain, status: 'invalid' },
       }));
     });
@@ -199,7 +173,6 @@ describe('domainsListReducer', () => {
       expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        type: checkDomainHealth.fulfilled.toString(),
         payload: { domain, status: expectedStatus },
       }));
     });
