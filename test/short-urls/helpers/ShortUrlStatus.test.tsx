@@ -1,7 +1,8 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Mock } from 'ts-mockery';
-import type { ShortUrl, ShortUrlMeta, ShortUrlVisitsSummary } from '../../../src/short-urls/data';
+import type { ShlinkVisitsSummary } from '../../../src/api/types';
+import type { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
 import { ShortUrlStatus } from '../../../src/short-urls/helpers/ShortUrlStatus';
 
 describe('<ShortUrlStatus />', () => {
@@ -23,12 +24,12 @@ describe('<ShortUrlStatus />', () => {
     ],
     [
       Mock.of<ShortUrlMeta>({ maxVisits: 10 }),
-      Mock.of<ShortUrlVisitsSummary>({ total: 10 }),
+      Mock.of<ShlinkVisitsSummary>({ total: 10 }),
       'This short URL cannot be currently visited because it has reached the maximum amount of 10 visits.',
     ],
     [
       Mock.of<ShortUrlMeta>({ maxVisits: 1 }),
-      Mock.of<ShortUrlVisitsSummary>({ total: 1 }),
+      Mock.of<ShlinkVisitsSummary>({ total: 1 }),
       'This short URL cannot be currently visited because it has reached the maximum amount of 1 visit.',
     ],
     [{}, {}, 'This short URL can be visited normally.'],
@@ -36,7 +37,7 @@ describe('<ShortUrlStatus />', () => {
     [Mock.of<ShortUrlMeta>({ validSince: '2020-01-01T10:30:15' }), {}, 'This short URL can be visited normally.'],
     [
       Mock.of<ShortUrlMeta>({ maxVisits: 10 }),
-      Mock.of<ShortUrlVisitsSummary>({ total: 1 }),
+      Mock.of<ShlinkVisitsSummary>({ total: 1 }),
       'This short URL can be visited normally.',
     ],
   ])('shows expected tooltip', async (meta, visitsSummary, expectedTooltip) => {
