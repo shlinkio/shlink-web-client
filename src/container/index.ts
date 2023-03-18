@@ -1,7 +1,7 @@
 import type { IContainer } from 'bottlejs';
 import Bottle from 'bottlejs';
-import { pick } from 'ramda';
 import { connect as reduxConnect } from 'react-redux';
+import { pick } from 'remeda';
 import { provideServices as provideApiServices } from '../api/services/provideServices';
 import { provideServices as provideAppServices } from '../app/services/provideServices';
 import { provideServices as provideCommonServices } from '../common/services/provideServices';
@@ -30,7 +30,7 @@ const mapActionService = (map: LazyActionMap, actionName: string): LazyActionMap
 });
 const connect: ConnectDecorator = (propsFromState: string[] | null, actionServiceNames: string[] = []) =>
   reduxConnect(
-    propsFromState ? pick(propsFromState) : null,
+    propsFromState ? pick(propsFromState as any) : null,
     actionServiceNames.reduce(mapActionService, {}),
   );
 

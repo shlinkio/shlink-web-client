@@ -1,5 +1,6 @@
 import { isEmpty, isNil, pipe, range } from 'ramda';
 import type { SyntheticEvent } from 'react';
+import { set } from 'remeda';
 
 export const rangeOf = <T>(size: number, mappingFn: (value: number) => T, startAt = 1): T[] =>
   range(startAt, size + 1).map(mappingFn);
@@ -34,3 +35,7 @@ export const parseBooleanToString = (value: boolean): BooleanString => (value ? 
 export const parseOptionalBooleanToString = (value?: boolean): BooleanString | undefined => (
   value === undefined ? undefined : parseBooleanToString(value)
 );
+
+// FIXME Can't use remeda's `set` as types are wrong
+export const assoc = <T, U, K extends string>(object: U, prop: K, value: T): Record<K, T> & U =>
+  set(object, prop as any, value as any) as any;

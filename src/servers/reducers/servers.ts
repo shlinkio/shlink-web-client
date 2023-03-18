@@ -1,7 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { assoc, dissoc, fromPairs, map, pipe, reduce, toPairs } from 'ramda';
+import { createPipe, map, omit, reduce } from 'remeda';
 import { v4 as uuid } from 'uuid';
+import { assoc } from '../../utils/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
 
 interface EditServer {
@@ -21,10 +22,10 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
     return server as ServerWithId;
   }
 
-  return assoc('id', uuid(), server);
+  return assoc(server, 'id', uuid());
 };
 
-const serversListToMap = reduce<ServerWithId, ServersMap>((acc, server) => assoc(server.id, server, acc), {});
+const serversListToMap = reduce<ServerWithId, ServersMap>((acc, server) => assoc(acc, server.id, server), {});
 
 export const { actions, reducer } = createSlice({
   name: 'shlink/servers',
@@ -37,11 +38,11 @@ export const { actions, reducer } = createSlice({
       reducer: (state, { payload }: PayloadAction<EditServer>) => {
         const { serverId, serverData } = payload;
         return (
-          !state[serverId] ? state : assoc(serverId, { ...state[serverId], ...serverData }, state)
+          !state[serverId] ? state : assoc(state, serverId, { ...state[serverId], ...serverData })
         );
       },
     },
-    deleteServer: (state, { payload }) => dissoc(payload.id, state),
+    deleteServer: (state, { payload }) => omit(state, [payload.id]),
     setAutoConnect: {
       prepare: ({ id: serverId }: ServerWithId, autoConnect: boolean) => ({
         payload: { serverId, autoConnect },
@@ -53,11 +54,11 @@ export const { actions, reducer } = createSlice({
         }
 
         if (!autoConnect) {
-          return assoc(serverId, { ...state[serverId], autoConnect }, state);
+          return assoc(state, serverId, { ...state[serverId], autoConnect });
         }
 
-        return fromPairs(
-          toPairs(state).map(([evaluatedServerId, server]) => [
+        return Object.fromEntries(
+          Object.entries(state).map(([evaluatedServerId, server]) => [
             evaluatedServerId,
             { ...server, autoConnect: evaluatedServerId === serverId },
           ]),
@@ -65,7 +66,7 @@ export const { actions, reducer } = createSlice({
       },
     },
     createServers: {
-      prepare: pipe(
+      prepare: createPipe(
         map(serverWithId),
         serversListToMap,
         (payload: ServersMap) => ({ payload }),

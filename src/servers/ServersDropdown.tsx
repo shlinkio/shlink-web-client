@@ -1,6 +1,5 @@
 import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isEmpty, values } from 'ramda';
 import { Link } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
 import type { SelectedServer, ServersMap } from './data';
@@ -12,10 +11,10 @@ export interface ServersDropdownProps {
 }
 
 export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProps) => {
-  const serversList = values(servers);
+  const serversList = Object.values(servers);
 
   const renderServers = () => {
-    if (isEmpty(serversList)) {
+    if (!serversList.length) {
       return (
         <DropdownItem tag={Link} to="/server/create">
           <FontAwesomeIcon icon={plusIcon} /> <span className="ms-1">Add a server</span>

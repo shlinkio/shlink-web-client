@@ -1,9 +1,9 @@
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isEmpty, pipe } from 'ramda';
 import { useEffect } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip } from 'reactstrap';
+import { createPipe } from 'remeda';
 import { DropdownBtn } from '../utils/DropdownBtn';
 import { useToggle } from '../utils/helpers/hooks';
 import type { DomainsList } from './reducers/domainsList';
@@ -22,7 +22,7 @@ interface DomainSelectorConnectProps extends DomainSelectorProps {
 export const DomainSelector = ({ listDomains, value, domainsList, onChange }: DomainSelectorConnectProps) => {
   const [inputDisplayed,, showInput, hideInput] = useToggle();
   const { domains } = domainsList;
-  const valueIsEmpty = isEmpty(value);
+  const valueIsEmpty = !value;
   const unselectDomain = () => onChange('');
 
   useEffect(() => {
@@ -42,7 +42,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
         type="button"
         className="domains-dropdown__back-btn"
         aria-label="Back to domains list"
-        onClick={pipe(unselectDomain, hideInput)}
+        onClick={createPipe(unselectDomain, hideInput)}
       >
         <FontAwesomeIcon icon={faUndo} />
       </Button>
@@ -66,7 +66,7 @@ export const DomainSelector = ({ listDomains, value, domainsList, onChange }: Do
         </DropdownItem>
       ))}
       <DropdownItem divider />
-      <DropdownItem onClick={pipe(unselectDomain, showInput)}>
+      <DropdownItem onClick={createPipe(unselectDomain, showInput)}>
         <i>New domain</i>
       </DropdownItem>
     </DropdownBtn>

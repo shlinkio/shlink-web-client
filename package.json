@@ -63,6 +63,7 @@
     "redux": "^4.2.0",
     "redux-localstorage-simple": "^2.5.1",
     "redux-thunk": "^2.4.2",
+    "remeda": "^1.9.0",
     "uuid": "^8.3.2",
     "workbox-core": "^6.5.4",
     "workbox-expiration": "^6.5.4",

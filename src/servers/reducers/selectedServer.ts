@@ -1,9 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAction, createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
-import { memoizeWith, pipe } from 'ramda';
+import { createPipe } from 'remeda';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import type { ShlinkHealth } from '../../api/types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
+import type { SemVer } from '../../utils/helpers/version';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 import type { SelectedServer, ServerWithId } from '../data';
 import { isReachableServer } from '../data';
@@ -14,18 +15,25 @@ export const MIN_FALLBACK_VERSION = '1.0.0';
 export const MAX_FALLBACK_VERSION = '999.999.999';
 export const LATEST_VERSION_CONSTRAINT = 'latest';
 
-const versionToSemVer = pipe(
+const versionToSemVer = createPipe(
   (version: string) => (version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version),
   toSemVer(MIN_FALLBACK_VERSION),
 );
 
-const getServerVersion = memoizeWith(
-  (server: ServerWithId) => `${server.id}_${server.url}_${server.apiKey}`,
-  async (_server: ServerWithId, health: () => Promise<ShlinkHealth>) => health().then(({ version }) => ({
-    version: versionToSemVer(version),
-    printableVersion: versionToPrintable(version),
-  })),
-);
+const versionsCache: Record<string, { version: SemVer; printableVersion: string }> = {};
+
+const getServerVersion = async (server: ServerWithId, health: () => Promise<ShlinkHealth>) => {
+  const cacheId = `${server.id}_${server.url}_${server.apiKey}`;
+
+  if (!versionsCache[cacheId]) {
+    versionsCache[cacheId] = await health().then(({ version }) => ({
+      version: versionToSemVer(version),
+      printableVersion: versionToPrintable(version),
+    }));
+  }
+
+  return versionsCache[cacheId];
+};
 
 const initialState: SelectedServer = null;
 

@@ -1,9 +1,9 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { complement, pipe } from 'ramda';
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
+import { createPipe } from 'remeda';
 import { useElementRef, useToggle } from '../../utils/helpers/hooks';
 import type { ServerData, ServersMap } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
@@ -38,10 +38,10 @@ export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC
   const [serversToCreate, setServersToCreate] = useState<ServerData[] | undefined>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
-  const create = pipe(createServers, onImport);
-  const createAllServers = pipe(() => create(serversToCreate ?? []), hideModal);
-  const createNonDuplicatedServers = pipe(
-    () => create((serversToCreate ?? []).filter(complement(serversFiltering(duplicatedServers)))),
+  const create = createPipe(createServers, onImport);
+  const createAllServers = createPipe<void, void, void>(() => create(serversToCreate ?? []), hideModal);
+  const createNonDuplicatedServers = createPipe<void, void, void>(
+    () => create((serversToCreate ?? []).filter((serverData) => !serversFiltering(duplicatedServers)(serverData))),
     hideModal,
   );
   const onFile = async ({ target }: ChangeEvent<HTMLInputElement>) =>

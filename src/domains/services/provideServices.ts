@@ -1,5 +1,5 @@
 import type Bottle from 'bottlejs';
-import { prop } from 'ramda';
+import { prop } from 'remeda';
 import type { ConnectDecorator } from '../../container/types';
 import { DomainSelector } from '../DomainSelector';
 import { ManageDomains } from '../ManageDomains';

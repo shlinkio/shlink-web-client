@@ -1,5 +1,5 @@
 import type Bottle from 'bottlejs';
-import { prop } from 'ramda';
+import { prop } from 'remeda';
 import { mercureInfoReducerCreator } from '../reducers/mercureInfo';
 
 export const provideServices = (bottle: Bottle) => {

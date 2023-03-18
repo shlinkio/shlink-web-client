@@ -1,7 +1,7 @@
-import { pipe } from 'ramda';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { createPipe } from 'remeda';
 import type { CreateVisit } from '../../visits/types';
 import type { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
@@ -37,7 +37,7 @@ export function boundToMercureHub<T = {}>(
         pendingUpdates.clear();
       }, interval * 1000 * 60);
 
-      return pipe(() => clearInterval(timer), () => closeEventSource?.());
+      return () => createPipe(() => clearInterval(timer), () => closeEventSource?.())(undefined);
     }, [mercureInfo]);
 
     return <WrappedComponent {...props} />;
