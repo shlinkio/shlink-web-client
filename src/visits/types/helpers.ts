@@ -10,13 +10,13 @@ export const isNormalizedOrphanVisit = (visit: NormalizedVisit): visit is Normal
 
 export interface GroupedNewVisits {
   orphanVisits: CreateVisit[];
-  regularVisits: CreateVisit[];
+  nonOrphanVisits: CreateVisit[];
 }
 
 export const groupNewVisitsByType = pipe(
-  groupBy((newVisit: CreateVisit) => (isOrphanVisit(newVisit.visit) ? 'orphanVisits' : 'regularVisits')),
+  groupBy((newVisit: CreateVisit) => (isOrphanVisit(newVisit.visit) ? 'orphanVisits' : 'nonOrphanVisits')),
   // @ts-expect-error Type declaration on groupBy is not correct. It can return undefined props
-  (result): GroupedNewVisits => ({ orphanVisits: [], regularVisits: [], ...result }),
+  (result): GroupedNewVisits => ({ orphanVisits: [], nonOrphanVisits: [], ...result }),
 );
 
 export type HighlightableProps<T extends NormalizedVisit> = T extends NormalizedOrphanVisit
