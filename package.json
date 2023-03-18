@@ -25,7 +25,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
-    "@babel/preset-typescript": "^7.18.6",
+    "@babel/preset-typescript": "^7.21.0",
     "@fortawesome/fontawesome-free": "^6.3.0",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
     "@fortawesome/free-brands-svg-icons": "^6.3.0",
@@ -90,7 +90,7 @@
     "@types/uuid": "^8.3.4",
     "@vitejs/plugin-react": "^3.1.0",
     "adm-zip": "^0.5.10",
-    "babel-jest": "^29.3.1",
+    "babel-jest": "^29.5.0",
     "chalk": "^5.2.0",
     "eslint": "^8.30.0",
     "identity-obj-proxy": "^3.0.0",
