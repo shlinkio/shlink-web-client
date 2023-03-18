@@ -4,7 +4,7 @@ import type { PartialVisitsSummary } from '../../visits/reducers/visitsOverview'
 import type { HighlightCardProps } from './HighlightCard';
 import { HighlightCard } from './HighlightCard';
 
-type VisitsHighlightCardProps = Omit<HighlightCardProps, 'tooltip'> & {
+export type VisitsHighlightCardProps = Omit<HighlightCardProps, 'tooltip' | 'children'> & {
   loading: boolean;
   excludeBots: boolean;
   visitsSummary: PartialVisitsSummary;
