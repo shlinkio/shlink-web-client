@@ -77,8 +77,10 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
       return tagsList;
     }
 
-    const { listTags: shlinkListTags } = buildShlinkApiClient(getState);
-    const { tags, stats = [] }: ShlinkTags = await shlinkListTags(supportedFeatures.tagsStats(selectedServer));
+    const { listTags: shlinkListTags, tagsStats } = buildShlinkApiClient(getState);
+    const { tags, stats = [] }: ShlinkTags = await (
+      supportedFeatures.tagsStats(selectedServer) ? tagsStats() : shlinkListTags()
+    );
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
       acc[tag] = { shortUrlsCount, visitsCount };
 

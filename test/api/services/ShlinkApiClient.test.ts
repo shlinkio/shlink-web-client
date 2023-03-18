@@ -202,7 +202,7 @@ describe('ShlinkApiClient', () => {
       });
       const { listTags } = buildApiClient();
 
-      const result = await listTags(false);
+      const result = await listTags();
 
       expect({ tags: expectedTags }).toEqual(result);
       expect(fetchJson).toHaveBeenCalledWith(
@@ -210,7 +210,9 @@ describe('ShlinkApiClient', () => {
         expect.objectContaining({ method: 'GET' }),
       );
     });
+  });
 
+  describe('tagsStats', () => {
     it('can use /tags/stats endpoint', async () => {
       const expectedTags = ['foo', 'bar'];
       const expectedStats = expectedTags.map((tag) => ({ tag, shortUrlsCount: 10, visitsCount: 10 }));
@@ -220,9 +222,9 @@ describe('ShlinkApiClient', () => {
           data: expectedStats,
         },
       });
-      const { listTags } = buildApiClient();
+      const { tagsStats } = buildApiClient();
 
-      const result = await listTags(true);
+      const result = await tagsStats();
 
       expect({ tags: expectedTags, stats: expectedStats }).toEqual(result);
       expect(fetchJson).toHaveBeenCalledWith(
