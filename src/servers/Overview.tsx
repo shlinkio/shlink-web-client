@@ -5,6 +5,7 @@ import { Card, CardBody, CardHeader, Row } from 'reactstrap';
 import type { ShlinkShortUrlsListParams } from '../api/types';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
+import type { Settings } from '../settings/reducers/settings';
 import type { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
@@ -16,6 +17,7 @@ import type { VisitsOverview } from '../visits/reducers/visitsOverview';
 import type { SelectedServer } from './data';
 import { getServerId } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
+import { VisitsHighlightCard } from './helpers/VisitsHighlightCard';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
@@ -25,6 +27,7 @@ interface OverviewConnectProps {
   selectedServer: SelectedServer;
   visitsOverview: VisitsOverview;
   loadVisitsOverview: Function;
+  settings: Settings;
 }
 
 export const Overview = (
@@ -38,10 +41,11 @@ export const Overview = (
   selectedServer,
   loadVisitsOverview,
   visitsOverview,
+  settings: { visits },
 }: OverviewConnectProps) => {
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
-  const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
+  const { loading: loadingVisits, nonOrphanVisits, orphanVisits } = visitsOverview;
   const serverId = getServerId(selectedServer);
   const linkToNonOrphanVisits = useFeature('nonOrphanVisits', selectedServer);
   const navigate = useNavigate();
@@ -56,14 +60,22 @@ export const Overview = (
     <>
       <Row>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Visits" link={linkToNonOrphanVisits && `/server/${serverId}/non-orphan-visits`}>
-            {loadingVisits ? 'Loading...' : prettify(visitsCount)}
-          </HighlightCard>
+          <VisitsHighlightCard
+            title="Visits"
+            link={linkToNonOrphanVisits ? `/server/${serverId}/non-orphan-visits` : undefined}
+            excludeBots={visits?.excludeBots ?? false}
+            loading={loadingVisits}
+            visitsSummary={nonOrphanVisits}
+          />
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
-            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount)}
-          </HighlightCard>
+          <VisitsHighlightCard
+            title="Orphan visits"
+            link={`/server/${serverId}/orphan-visits`}
+            excludeBots={visits?.excludeBots ?? false}
+            loading={loadingVisits}
+            visitsSummary={orphanVisits}
+          />
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
           <HighlightCard title="Short URLs" link={`/server/${serverId}/list-short-urls/1`}>

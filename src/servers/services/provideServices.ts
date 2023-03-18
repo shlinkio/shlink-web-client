@@ -65,7 +65,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
   bottle.decorator('Overview', connect(
-    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview'],
+    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview', 'settings'],
     ['listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview'],
   ));
 

@@ -8,7 +8,7 @@ import { groupNewVisitsByType, toApiParams } from '../../../src/visits/types/hel
 describe('visitsTypeHelpers', () => {
   describe('groupNewVisitsByType', () => {
     it.each([
-      [[], { orphanVisits: [], regularVisits: [] }],
+      [[], { orphanVisits: [], nonOrphanVisits: [] }],
       ((): [CreateVisit[], GroupedNewVisits] => {
         const orphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({
@@ -18,7 +18,7 @@ describe('visitsTypeHelpers', () => {
             visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
           }),
         ];
-        const regularVisits: CreateVisit[] = [
+        const nonOrphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
@@ -27,8 +27,8 @@ describe('visitsTypeHelpers', () => {
         ];
 
         return [
-          [...orphanVisits, ...regularVisits],
-          { orphanVisits, regularVisits },
+          [...orphanVisits, ...nonOrphanVisits],
+          { orphanVisits, nonOrphanVisits },
         ];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
@@ -44,16 +44,16 @@ describe('visitsTypeHelpers', () => {
           }),
         ];
 
-        return [orphanVisits, { orphanVisits, regularVisits: [] }];
+        return [orphanVisits, { orphanVisits, nonOrphanVisits: [] }];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
-        const regularVisits: CreateVisit[] = [
+        const nonOrphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
         ];
 
-        return [regularVisits, { orphanVisits: [], regularVisits }];
+        return [nonOrphanVisits, { orphanVisits: [], nonOrphanVisits }];
       })(),
     ])('groups new visits as expected', (createdVisits, expectedResult) => {
       expect(groupNewVisitsByType(createdVisits)).toEqual(expectedResult);

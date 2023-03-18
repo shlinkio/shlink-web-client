@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 ### Added
 * [#807](https://github.com/shlinkio/shlink-web-client/issues/807) Add support for device-specific long-URLs when creating or editing short URLs.
+* [#808](https://github.com/shlinkio/shlink-web-client/issues/808) Respect settings on excluding bots in the overview section, for visits cards.
 
 ### Changed
 * Update to Vite 4.1

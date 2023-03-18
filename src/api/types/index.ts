@@ -40,13 +40,24 @@ export interface ShlinkPaginator {
   totalItems: number;
 }
 
+export interface ShlinkVisitsSummary {
+  total: number;
+  nonBots: number;
+  bots: number;
+}
+
 export interface ShlinkVisits {
   data: Visit[];
   pagination: ShlinkPaginator;
 }
 
 export interface ShlinkVisitsOverview {
+  nonOrphanVisits?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+  orphanVisits?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+
+  /** @deprecated */
   visitsCount: number;
+  /** @deprecated */
   orphanVisitsCount: number;
 }
 
