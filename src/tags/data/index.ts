@@ -1,10 +1,6 @@
-import type { ShlinkVisitsSummary } from '../../api/types';
+import type { ShlinkTagsStats } from '../../api/types';
 
-export interface TagStats {
-  shortUrlsCount: number;
-  visitsCount: number;
-  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
-}
+export type TagStats = Omit<ShlinkTagsStats, 'tag'>;
 
 export interface TagModalProps {
   tag: string;
