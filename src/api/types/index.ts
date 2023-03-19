@@ -21,6 +21,9 @@ export interface ShlinkHealth {
 interface ShlinkTagsStats {
   tag: string;
   shortUrlsCount: number;
+  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+
+  /** @deprecated */
   visitsCount: number;
 }
 

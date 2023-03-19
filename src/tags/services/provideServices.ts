@@ -24,6 +24,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('EditTagModal', connect(['tagEdit'], ['editTag', 'tagEdited']));
 
   bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
+  bottle.decorator('TagsTableRow', connect(['settings']));
 
   bottle.serviceFactory('TagsTable', TagsTable, 'TagsTableRow');
 

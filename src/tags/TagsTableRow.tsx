@@ -9,11 +9,11 @@ import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { useToggle } from '../utils/helpers/hooks';
 import { prettify } from '../utils/helpers/numbers';
 import type { ColorGenerator } from '../utils/services/ColorGenerator';
-import type { NormalizedTag, TagModalProps } from './data';
+import type { SimplifiedTag, TagModalProps } from './data';
 import { TagBullet } from './helpers/TagBullet';
 
 export interface TagsTableRowProps {
-  tag: NormalizedTag;
+  tag: SimplifiedTag;
   selectedServer: SelectedServer;
 }
 

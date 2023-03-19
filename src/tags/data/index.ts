@@ -1,6 +1,9 @@
+import type { ShlinkVisitsSummary } from '../../api/types';
+
 export interface TagStats {
   shortUrlsCount: number;
   visitsCount: number;
+  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
 }
 
 export interface TagModalProps {
@@ -9,7 +12,7 @@ export interface TagModalProps {
   toggle: () => void;
 }
 
-export interface NormalizedTag {
+export interface SimplifiedTag {
   tag: string;
   shortUrls: number;
   visits: number;

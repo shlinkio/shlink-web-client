@@ -10,7 +10,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = jest.fn();
-  const TagsListComp = createTagsList(() => <>TagsTable</>);
+  const TagsListComp = createTagsList(({ sortedTags }) => <>TagsTable ({sortedTags.map((t) => t.visits).join(',')})</>);
   const setUp = (tagsList: Partial<TagsList>) => renderWithEvents(
     <TagsListComp
       {...Mock.all<TagsListProps>()}

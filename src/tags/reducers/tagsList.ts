@@ -50,6 +50,7 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
 
   const tagStats = theStats[tag];
 
+  // TODO take into consideration bots, nonBots and total
   return {
     ...theStats,
     [tag]: {
@@ -78,12 +79,11 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
     }
 
     const { listTags: shlinkListTags, tagsStats } = buildShlinkApiClient(getState);
-    const { tags, stats = [] }: ShlinkTags = await (
+    const { tags, stats }: ShlinkTags = await (
       supportedFeatures.tagsStats(selectedServer) ? tagsStats() : shlinkListTags()
     );
-    const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
-      acc[tag] = { shortUrlsCount, visitsCount };
-
+    const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, ...rest }) => {
+      acc[tag] = rest;
       return acc;
     }, {});
 
