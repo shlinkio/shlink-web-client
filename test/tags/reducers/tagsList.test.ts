@@ -11,6 +11,8 @@ import {
   listTags as listTagsCreator,
   tagsListReducerCreator,
 } from '../../../src/tags/reducers/tagsList';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
+import type { CreateVisit, Visit } from '../../../src/visits/types';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
@@ -117,6 +119,75 @@ describe('tagsListReducer', () => {
       expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', Mock.of<ShortUrlData>()))).toEqual({
         tags: expectedTags,
       });
+    });
+
+    it('increases amounts when visits are created', () => {
+      const createdVisits = [
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
+          visit: Mock.of<Visit>({ potentialBot: true }),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
+          visit: Mock.all<Visit>(),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['bar'] }),
+          visit: Mock.all<Visit>(),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['baz'] }),
+          visit: Mock.of<Visit>({ potentialBot: true }),
+        }),
+      ];
+      const tagStats = (total: number) => ({
+        shortUrlsCount: 1,
+        visitsCount: total,
+        visitsSummary: {
+          total,
+          nonBots: total - 10,
+          bots: 10,
+        },
+      });
+      const stateBefore = state({
+        stats: {
+          foo: tagStats(100),
+          bar: tagStats(200),
+          baz: tagStats(150),
+        },
+      });
+
+      expect(reducer(stateBefore, createNewVisits(createdVisits))).toEqual(expect.objectContaining({
+        stats: {
+          foo: {
+            shortUrlsCount: 1,
+            visitsCount: 100 + 2,
+            visitsSummary: {
+              total: 100 + 2,
+              nonBots: 90 + 1,
+              bots: 10 + 1,
+            },
+          },
+          bar: {
+            shortUrlsCount: 1,
+            visitsCount: 200 + 3,
+            visitsSummary: {
+              total: 200 + 3,
+              nonBots: 190 + 2,
+              bots: 10 + 1,
+            },
+          },
+          baz: {
+            shortUrlsCount: 1,
+            visitsCount: 150 + 1,
+            visitsSummary: {
+              total: 150 + 1,
+              nonBots: 140,
+              bots: 10 + 1,
+            },
+          },
+        },
+      }));
     });
   });
 
