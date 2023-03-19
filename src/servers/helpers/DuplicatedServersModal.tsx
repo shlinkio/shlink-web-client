@@ -1,6 +1,7 @@
-import { FC, Fragment } from 'react';
+import type { FC } from 'react';
+import { Fragment } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { ServerData } from '../data';
+import type { ServerData } from '../data';
 
 interface DuplicatedServersModalProps {
   duplicatedServers: ServerData[];

@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { assoc, dissoc, fromPairs, map, pipe, reduce, toPairs } from 'ramda';
 import { v4 as uuid } from 'uuid';
-import { ServerData, ServersMap, ServerWithId } from '../data';
+import type { ServerData, ServersMap, ServerWithId } from '../data';
 
 interface EditServer {
   serverId: string;

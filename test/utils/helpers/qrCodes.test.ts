@@ -1,4 +1,5 @@
-import { buildQrCodeUrl, QrCodeFormat, QrErrorCorrection } from '../../../src/utils/helpers/qrCodes';
+import type { QrCodeFormat, QrErrorCorrection } from '../../../src/utils/helpers/qrCodes';
+import { buildQrCodeUrl } from '../../../src/utils/helpers/qrCodes';
 
 describe('qrCodes', () => {
   describe('buildQrCodeUrl', () => {

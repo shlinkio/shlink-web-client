@@ -1,7 +1,7 @@
-import { Visit } from '../../visits/types';
-import { OptionalString } from '../../utils/utils';
-import { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
-import { Order } from '../../utils/helpers/ordering';
+import type { ShortUrl, ShortUrlMeta } from '../../short-urls/data';
+import type { Order } from '../../utils/helpers/ordering';
+import type { OptionalString } from '../../utils/utils';
+import type { Visit } from '../../visits/types';
 
 export interface ShlinkShortUrlsResponse {
   data: ShortUrl[];
@@ -18,9 +18,12 @@ export interface ShlinkHealth {
   version: string;
 }
 
-interface ShlinkTagsStats {
+export interface ShlinkTagsStats {
   tag: string;
   shortUrlsCount: number;
+  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+
+  /** @deprecated */
   visitsCount: number;
 }
 
@@ -31,7 +34,12 @@ export interface ShlinkTags {
 
 export interface ShlinkTagsResponse {
   data: string[];
+  /** @deprecated Present only when withStats=true is provided, which is deprecated */
   stats: ShlinkTagsStats[];
+}
+
+export interface ShlinkTagsStatsResponse {
+  data: ShlinkTagsStats[];
 }
 
 export interface ShlinkPaginator {
@@ -40,13 +48,24 @@ export interface ShlinkPaginator {
   totalItems: number;
 }
 
+export interface ShlinkVisitsSummary {
+  total: number;
+  nonBots: number;
+  bots: number;
+}
+
 export interface ShlinkVisits {
   data: Visit[];
   pagination: ShlinkPaginator;
 }
 
 export interface ShlinkVisitsOverview {
+  nonOrphanVisits?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+  orphanVisits?: ShlinkVisitsSummary; // Optional only before Shlink 3.5.0
+
+  /** @deprecated */
   visitsCount: number;
+  /** @deprecated */
   orphanVisitsCount: number;
 }
 

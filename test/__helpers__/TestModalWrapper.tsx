@@ -1,4 +1,4 @@
-import { FC, ReactElement } from 'react';
+import type { FC, ReactElement } from 'react';
 import { useToggle } from '../../src/utils/helpers/hooks';
 
 interface RenderModalArgs {

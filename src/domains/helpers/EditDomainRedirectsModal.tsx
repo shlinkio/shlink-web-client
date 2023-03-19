@@ -1,10 +1,12 @@
-import { FC, useState } from 'react';
+import type { FC } from 'react';
+import { useState } from 'react';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { ShlinkDomain } from '../../api/types';
-import { InputFormGroup, InputFormGroupProps } from '../../utils/forms/InputFormGroup';
-import { handleEventPreventingDefault, nonEmptyValueOrNull } from '../../utils/utils';
+import type { ShlinkDomain } from '../../api/types';
+import type { InputFormGroupProps } from '../../utils/forms/InputFormGroup';
+import { InputFormGroup } from '../../utils/forms/InputFormGroup';
 import { InfoTooltip } from '../../utils/InfoTooltip';
-import { EditDomainRedirects } from '../reducers/domainRedirects';
+import { handleEventPreventingDefault, nonEmptyValueOrNull } from '../../utils/utils';
+import type { EditDomainRedirects } from '../reducers/domainRedirects';
 
 interface EditDomainRedirectsModalProps {
   domain: ShlinkDomain;

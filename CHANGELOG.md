@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.10.0] - 2023-03-19
+### Added
+* [#807](https://github.com/shlinkio/shlink-web-client/issues/807) Add support for device-specific long-URLs when creating or editing short URLs.
+* [#808](https://github.com/shlinkio/shlink-web-client/issues/808) Respect settings on excluding bots in the overview section, for visits cards.
+* [#809](https://github.com/shlinkio/shlink-web-client/issues/809) Respect settings on excluding bots in the tags list.
+
+### Changed
+* [#798](https://github.com/shlinkio/shlink-web-client/issues/798) Remove stryker and mutation testing.
+* [#800](https://github.com/shlinkio/shlink-web-client/issues/800) Use `/tags/stats` endpoint to load tags stats, when the server supports it.
+* Update to Vite 4.2
+* Update to TypeScript 5
+* Update to coding standard v2.1.0
+* Decouple tests from RTK internals.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#799](https://github.com/shlinkio/shlink-web-client/issues/799) Fix fallback visits not taking into account configuration regarding excluding bots.
+
+
 ## [3.9.1] - 2022-12-31
 ### Added
 * *Nothing*

@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
-import { Settings } from '../../src/settings/reducers/settings';
 import { App as createApp } from '../../src/app/App';
+import type { Settings } from '../../src/settings/reducers/settings';
 
 describe('<App />', () => {
   const App = createApp(

@@ -1,8 +1,8 @@
 import { isNil } from 'ramda';
-import { ShortUrl, ShortUrlData } from '../data';
-import { OptionalString } from '../../utils/utils';
+import type { ShortUrlCreationSettings } from '../../settings/reducers/settings';
+import type { OptionalString } from '../../utils/utils';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
-import { ShortUrlCreationSettings } from '../../settings/reducers/settings';
+import type { ShortUrl, ShortUrlData } from '../data';
 
 export const shortUrlMatches = (shortUrl: ShortUrl, shortCode: string, domain: OptionalString): boolean => {
   if (isNil(domain)) {
@@ -37,6 +37,7 @@ export const shortUrlDataFromShortUrl = (shortUrl?: ShortUrl, settings?: ShortUr
     maxVisits: shortUrl.meta.maxVisits ?? undefined,
     crawlable: shortUrl.crawlable,
     forwardQuery: shortUrl.forwardQuery,
+    deviceLongUrls: shortUrl.deviceLongUrls,
     validateUrl,
   };
 };

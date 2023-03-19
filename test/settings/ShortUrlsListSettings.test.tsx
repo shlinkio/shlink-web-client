@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Settings, ShortUrlsListSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
+import type { Settings, ShortUrlsListSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
-import { ShortUrlsOrder } from '../../src/short-urls/data';
+import type { ShortUrlsOrder } from '../../src/short-urls/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsListSettings />', () => {

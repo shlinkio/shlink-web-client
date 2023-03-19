@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { Settings, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
+import type { Settings, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
-import { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
+import type { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsSettings />', () => {

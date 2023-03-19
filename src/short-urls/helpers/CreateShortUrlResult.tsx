@@ -1,14 +1,14 @@
-import { faCopy as copyIcon } from '@fortawesome/free-regular-svg-icons';
+import { faClone as copyIcon } from '@fortawesome/free-regular-svg-icons';
 import { faTimes as closeIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
-import { ShortUrlCreation } from '../reducers/shortUrlCreation';
-import { TimeoutToggle } from '../../utils/helpers/hooks';
-import { Result } from '../../utils/Result';
-import './CreateShortUrlResult.scss';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import type { TimeoutToggle } from '../../utils/helpers/hooks';
+import { Result } from '../../utils/Result';
+import type { ShortUrlCreation } from '../reducers/shortUrlCreation';
+import './CreateShortUrlResult.scss';
 
 export interface CreateShortUrlResultProps {
   creation: ShortUrlCreation;

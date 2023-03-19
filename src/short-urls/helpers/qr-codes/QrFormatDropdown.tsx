@@ -1,7 +1,7 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../../../utils/DropdownBtn';
-import { QrCodeFormat } from '../../../utils/helpers/qrCodes';
+import type { QrCodeFormat } from '../../../utils/helpers/qrCodes';
 
 interface QrFormatDropdownProps {
   format: QrCodeFormat;

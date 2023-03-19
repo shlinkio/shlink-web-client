@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
+import type { RegularServer } from '../../../src/servers/data';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
-import { RegularServer } from '../../../src/servers/data';
 
 describe('ServersImporter', () => {
   const servers: RegularServer[] = [Mock.all<RegularServer>(), Mock.all<RegularServer>()];

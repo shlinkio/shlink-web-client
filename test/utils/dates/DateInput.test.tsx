@@ -1,7 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { parseISO } from 'date-fns';
-import { DateInput, DateInputProps } from '../../../src/utils/dates/DateInput';
+import { Mock } from 'ts-mockery';
+import type { DateInputProps } from '../../../src/utils/dates/DateInput';
+import { DateInput } from '../../../src/utils/dates/DateInput';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateInput />', () => {

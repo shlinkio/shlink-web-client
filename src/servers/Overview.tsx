@@ -1,18 +1,23 @@
-import { FC, useEffect } from 'react';
-import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ITEMS_IN_OVERVIEW_PAGE, ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
-import { prettify } from '../utils/helpers/numbers';
-import { TagsList } from '../tags/reducers/tagsList';
-import { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
+import { Card, CardBody, CardHeader, Row } from 'reactstrap';
+import type { ShlinkShortUrlsListParams } from '../api/types';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
-import { VisitsOverview } from '../visits/reducers/visitsOverview';
 import { Topics } from '../mercure/helpers/Topics';
-import { ShlinkShortUrlsListParams } from '../api/types';
-import { supportsNonOrphanVisits } from '../utils/helpers/features';
-import { getServerId, SelectedServer } from './data';
+import type { Settings } from '../settings/reducers/settings';
+import type { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
+import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
+import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
+import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
+import type { TagsList } from '../tags/reducers/tagsList';
+import { useFeature } from '../utils/helpers/features';
+import { prettify } from '../utils/helpers/numbers';
+import type { VisitsOverview } from '../visits/reducers/visitsOverview';
+import type { SelectedServer } from './data';
+import { getServerId } from './data';
 import { HighlightCard } from './helpers/HighlightCard';
+import { VisitsHighlightCard } from './helpers/VisitsHighlightCard';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
@@ -22,6 +27,7 @@ interface OverviewConnectProps {
   selectedServer: SelectedServer;
   visitsOverview: VisitsOverview;
   loadVisitsOverview: Function;
+  settings: Settings;
 }
 
 export const Overview = (
@@ -35,12 +41,13 @@ export const Overview = (
   selectedServer,
   loadVisitsOverview,
   visitsOverview,
+  settings: { visits },
 }: OverviewConnectProps) => {
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
-  const { loading: loadingVisits, visitsCount, orphanVisitsCount } = visitsOverview;
+  const { loading: loadingVisits, nonOrphanVisits, orphanVisits } = visitsOverview;
   const serverId = getServerId(selectedServer);
-  const linkToNonOrphanVisits = supportsNonOrphanVisits(selectedServer);
+  const linkToNonOrphanVisits = useFeature('nonOrphanVisits', selectedServer);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,14 +60,22 @@ export const Overview = (
     <>
       <Row>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Visits" link={linkToNonOrphanVisits && `/server/${serverId}/non-orphan-visits`}>
-            {loadingVisits ? 'Loading...' : prettify(visitsCount)}
-          </HighlightCard>
+          <VisitsHighlightCard
+            title="Visits"
+            link={linkToNonOrphanVisits ? `/server/${serverId}/non-orphan-visits` : undefined}
+            excludeBots={visits?.excludeBots ?? false}
+            loading={loadingVisits}
+            visitsSummary={nonOrphanVisits}
+          />
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Orphan visits" link={`/server/${serverId}/orphan-visits`}>
-            {loadingVisits ? 'Loading...' : prettify(orphanVisitsCount)}
-          </HighlightCard>
+          <VisitsHighlightCard
+            title="Orphan visits"
+            link={`/server/${serverId}/orphan-visits`}
+            excludeBots={visits?.excludeBots ?? false}
+            loading={loadingVisits}
+            visitsSummary={orphanVisits}
+          />
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
           <HighlightCard title="Short URLs" link={`/server/${serverId}/list-short-urls/1`}>

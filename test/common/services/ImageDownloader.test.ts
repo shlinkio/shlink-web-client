@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
+import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
-import { HttpClient } from '../../../src/common/services/HttpClient';
 import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ImageDownloader', () => {

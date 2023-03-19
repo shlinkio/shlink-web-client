@@ -1,6 +1,7 @@
 import { Mock } from 'ts-mockery';
-import { SemVer, versionMatch, Versions } from '../../../src/utils/helpers/version';
-import { Empty } from '../../../src/utils/utils';
+import type { SemVer, Versions } from '../../../src/utils/helpers/version';
+import { versionMatch } from '../../../src/utils/helpers/version';
+import type { Empty } from '../../../src/utils/utils';
 
 describe('version', () => {
   describe('versionMatch', () => {

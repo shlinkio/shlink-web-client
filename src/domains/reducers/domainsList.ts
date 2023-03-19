@@ -1,13 +1,14 @@
-import { createSlice, createAction, SliceCaseReducers, AsyncThunk } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../utils/helpers/redux';
-import { ShlinkDomainRedirects } from '../../api/types';
-import { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import { Domain, DomainStatus } from '../data';
-import { hasServerData } from '../../servers/data';
-import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
-import { ProblemDetailsError } from '../../api/types/errors';
+import type { AsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
+import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkDomainRedirects } from '../../api/types';
+import type { ProblemDetailsError } from '../../api/types/errors';
 import { parseApiError } from '../../api/utils';
-import { EditDomainRedirects } from './domainRedirects';
+import { hasServerData } from '../../servers/data';
+import { createAsyncThunk } from '../../utils/helpers/redux';
+import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
+import type { Domain, DomainStatus } from '../data';
+import type { EditDomainRedirects } from './domainRedirects';
 
 const REDUCER_PREFIX = 'shlink/domainsList';
 

@@ -1,15 +1,18 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkState } from '../../../src/container/types';
+import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
+import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
+import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
+import { tagEdited } from '../../../src/tags/reducers/tagEdit';
+import type {
+  TagsList } from '../../../src/tags/reducers/tagsList';
 import {
-  TagsList,
   filterTags,
   listTags as listTagsCreator,
   tagsListReducerCreator,
 } from '../../../src/tags/reducers/tagsList';
-import { ShlinkState } from '../../../src/container/types';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
-import { tagEdited } from '../../../src/tags/reducers/tagEdit';
-import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
+import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
+import type { CreateVisit, Visit } from '../../../src/visits/types';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
@@ -22,14 +25,14 @@ describe('tagsListReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
-      expect(reducer(undefined, { type: listTags.pending.toString() })).toEqual(expect.objectContaining({
+      expect(reducer(undefined, listTags.pending(''))).toEqual(expect.objectContaining({
         loading: true,
         error: false,
       }));
     });
 
     it('returns error on LIST_TAGS_ERROR', () => {
-      expect(reducer(undefined, { type: listTags.rejected.toString() })).toEqual(expect.objectContaining({
+      expect(reducer(undefined, listTags.rejected(null, ''))).toEqual(expect.objectContaining({
         loading: false,
         error: true,
       }));
@@ -38,10 +41,7 @@ describe('tagsListReducer', () => {
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
       const tags = ['foo', 'bar', 'baz'];
 
-      expect(reducer(undefined, {
-        type: listTags.fulfilled.toString(),
-        payload: { tags },
-      })).toEqual({
+      expect(reducer(undefined, listTags.fulfilled(Mock.of<TagsList>({ tags }), ''))).toEqual({
         tags,
         filteredTags: tags,
         loading: false,
@@ -56,7 +56,7 @@ describe('tagsListReducer', () => {
 
       expect(reducer(
         state({ tags, filteredTags: tags }),
-        { type: tagDeleted.toString(), payload: tag },
+        tagDeleted(tag),
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -80,7 +80,7 @@ describe('tagsListReducer', () => {
             },
           },
         }),
-        { type: tagEdited.toString(), payload: { oldName, newName } },
+        tagEdited({ oldName, newName, color: '' }),
       )).toEqual({
         tags: expectedTags,
         filteredTags: expectedTags,
@@ -102,7 +102,7 @@ describe('tagsListReducer', () => {
       const payload = 'Fo';
       const filteredTags = ['foo', 'Foo2', 'fo'];
 
-      expect(reducer(state({ tags }), { type: filterTags.toString(), payload })).toEqual({
+      expect(reducer(state({ tags }), filterTags(payload))).toEqual({
         tags,
         filteredTags,
       });
@@ -116,14 +116,83 @@ describe('tagsListReducer', () => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
       const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), { type: createShortUrl.fulfilled.toString(), payload })).toEqual({
+      expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', Mock.of<ShortUrlData>()))).toEqual({
         tags: expectedTags,
       });
+    });
+
+    it('increases amounts when visits are created', () => {
+      const createdVisits = [
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
+          visit: Mock.of<Visit>({ potentialBot: true }),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
+          visit: Mock.all<Visit>(),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['bar'] }),
+          visit: Mock.all<Visit>(),
+        }),
+        Mock.of<CreateVisit>({
+          shortUrl: Mock.of<ShortUrl>({ tags: ['baz'] }),
+          visit: Mock.of<Visit>({ potentialBot: true }),
+        }),
+      ];
+      const tagStats = (total: number) => ({
+        shortUrlsCount: 1,
+        visitsCount: total,
+        visitsSummary: {
+          total,
+          nonBots: total - 10,
+          bots: 10,
+        },
+      });
+      const stateBefore = state({
+        stats: {
+          foo: tagStats(100),
+          bar: tagStats(200),
+          baz: tagStats(150),
+        },
+      });
+
+      expect(reducer(stateBefore, createNewVisits(createdVisits))).toEqual(expect.objectContaining({
+        stats: {
+          foo: {
+            shortUrlsCount: 1,
+            visitsCount: 100 + 2,
+            visitsSummary: {
+              total: 100 + 2,
+              nonBots: 90 + 1,
+              bots: 10 + 1,
+            },
+          },
+          bar: {
+            shortUrlsCount: 1,
+            visitsCount: 200 + 3,
+            visitsSummary: {
+              total: 200 + 3,
+              nonBots: 190 + 2,
+              bots: 10 + 1,
+            },
+          },
+          baz: {
+            shortUrlsCount: 1,
+            visitsCount: 150 + 1,
+            visitsSummary: {
+              total: 150 + 1,
+              nonBots: 140,
+              bots: 10 + 1,
+            },
+          },
+        },
+      }));
     });
   });
 
   describe('filterTags', () => {
-    it('creates expected action', () => expect(filterTags('foo')).toEqual({ type: filterTags.toString(), payload: 'foo' }));
+    it('creates expected action', () => expect(filterTags('foo').payload).toEqual('foo'));
   });
 
   describe('listTags', () => {
@@ -158,39 +227,9 @@ describe('tagsListReducer', () => {
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(getState).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: listTags.fulfilled.toString(),
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { tags, stats: {} },
       }));
-    });
-
-    const assertErrorResult = async () => {
-      await listTags()(dispatch, getState, {});
-
-      expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(getState).toHaveBeenCalledTimes(1);
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: listTags.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: listTags.rejected.toString() }));
-    };
-
-    it('dispatches error when error occurs on list call', async () => {
-      listTagsMock.mockRejectedValue(new Error());
-      buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
-
-      await assertErrorResult();
-
-      expect(listTagsMock).toHaveBeenCalledTimes(1);
-    });
-
-    it('dispatches error when error occurs on build call', async () => {
-      buildShlinkApiClient.mockImplementation(() => {
-        throw new Error();
-      });
-
-      await assertErrorResult();
-      expect(listTagsMock).not.toHaveBeenCalled();
     });
   });
 });

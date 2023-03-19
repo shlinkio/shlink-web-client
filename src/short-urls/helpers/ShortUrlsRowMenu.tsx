@@ -1,16 +1,16 @@
 import {
   faChartPie as pieChartIcon,
-  faQrcode as qrIcon,
-  faMinusCircle as deleteIcon,
   faEdit as editIcon,
+  faMinusCircle as deleteIcon,
+  faQrcode as qrIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC } from 'react';
+import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { useToggle } from '../../utils/helpers/hooks';
-import { ShortUrl, ShortUrlModalProps } from '../data';
-import { SelectedServer } from '../../servers/data';
+import type { SelectedServer } from '../../servers/data';
 import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
+import { useToggle } from '../../utils/helpers/hooks';
+import type { ShortUrl, ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 
 interface ShortUrlsRowMenuProps {

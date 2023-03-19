@@ -1,8 +1,9 @@
 import pack from '../../../package.json';
-import { hasServerData, ServerData } from '../data';
-import { createServers } from './servers';
+import type { HttpClient } from '../../common/services/HttpClient';
 import { createAsyncThunk } from '../../utils/helpers/redux';
-import { HttpClient } from '../../common/services/HttpClient';
+import type { ServerData } from '../data';
+import { hasServerData } from '../data';
+import { createServers } from './servers';
 
 const responseToServersList = (data: any): ServerData[] => (Array.isArray(data) ? data.filter(hasServerData) : []);
 

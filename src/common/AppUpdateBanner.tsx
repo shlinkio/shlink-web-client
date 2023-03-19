@@ -1,9 +1,9 @@
-import { FC, MouseEventHandler } from 'react';
-import { Alert, Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt as reloadIcon } from '@fortawesome/free-solid-svg-icons';
-import { SimpleCard } from '../utils/SimpleCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { FC, MouseEventHandler } from 'react';
+import { Alert, Button } from 'reactstrap';
 import { useToggle } from '../utils/helpers/hooks';
+import { SimpleCard } from '../utils/SimpleCard';
 import './AppUpdateBanner.scss';
 
 interface AppUpdateBannerProps {

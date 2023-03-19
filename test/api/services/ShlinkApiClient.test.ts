@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { OptionalString } from '../../../src/utils/utils';
-import { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
-import { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
+import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
-import { HttpClient } from '../../../src/common/services/HttpClient';
+import type { HttpClient } from '../../../src/common/services/HttpClient';
+import type { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
+import type { OptionalString } from '../../../src/utils/utils';
 
 describe('ShlinkApiClient', () => {
   const fetchJson = jest.fn().mockResolvedValue({});
@@ -207,6 +207,28 @@ describe('ShlinkApiClient', () => {
       expect({ tags: expectedTags }).toEqual(result);
       expect(fetchJson).toHaveBeenCalledWith(
         expect.stringContaining('/tags'),
+        expect.objectContaining({ method: 'GET' }),
+      );
+    });
+  });
+
+  describe('tagsStats', () => {
+    it('can use /tags/stats endpoint', async () => {
+      const expectedTags = ['foo', 'bar'];
+      const expectedStats = expectedTags.map((tag) => ({ tag, shortUrlsCount: 10, visitsCount: 10 }));
+
+      fetchJson.mockResolvedValue({
+        tags: {
+          data: expectedStats,
+        },
+      });
+      const { tagsStats } = buildApiClient();
+
+      const result = await tagsStats();
+
+      expect({ tags: expectedTags, stats: expectedStats }).toEqual(result);
+      expect(fetchJson).toHaveBeenCalledWith(
+        expect.stringContaining('/tags/stats'),
         expect.objectContaining({ method: 'GET' }),
       );
     });

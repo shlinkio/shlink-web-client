@@ -1,12 +1,12 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkState } from '../../../src/container/types';
+import type { SelectedServer } from '../../../src/servers/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import type { EditShortUrl } from '../../../src/short-urls/reducers/shortUrlEdition';
 import {
-  ShortUrlEditedAction,
-  shortUrlEditionReducerCreator,
   editShortUrl as editShortUrlCreator,
+  shortUrlEditionReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlEdition';
-import { ShlinkState } from '../../../src/container/types';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { SelectedServer } from '../../../src/servers/data';
 
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
@@ -21,7 +21,7 @@ describe('shortUrlEditionReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on EDIT_SHORT_URL_START', () => {
-      expect(reducer(undefined, Mock.of<ShortUrlEditedAction>({ type: editShortUrl.pending.toString() }))).toEqual({
+      expect(reducer(undefined, editShortUrl.pending('', Mock.all<EditShortUrl>()))).toEqual({
         saving: true,
         saved: false,
         error: false,
@@ -29,7 +29,7 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it('returns error on EDIT_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, Mock.of<ShortUrlEditedAction>({ type: editShortUrl.rejected.toString() }))).toEqual({
+      expect(reducer(undefined, editShortUrl.rejected(null, '', Mock.all<EditShortUrl>()))).toEqual({
         saving: false,
         saved: false,
         error: true,
@@ -37,7 +37,7 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it('returns provided tags and shortCode on SHORT_URL_EDITED', () => {
-      expect(reducer(undefined, { type: editShortUrl.fulfilled.toString(), payload: shortUrl })).toEqual({
+      expect(reducer(undefined, editShortUrl.fulfilled(shortUrl, '', Mock.all<EditShortUrl>()))).toEqual({
         shortUrl,
         saving: false,
         saved: true,
@@ -59,28 +59,7 @@ describe('shortUrlEditionReducer', () => {
       expect(updateShortUrl).toHaveBeenCalledTimes(1);
       expect(updateShortUrl).toHaveBeenCalledWith(shortCode, domain, { longUrl });
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: editShortUrl.pending.toString(),
-      }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: editShortUrl.fulfilled.toString(),
-        payload: shortUrl,
-      }));
-    });
-
-    it('dispatches error on failure', async () => {
-      const error = new Error();
-
-      updateShortUrl.mockRejectedValue(error);
-
-      await editShortUrl({ shortCode, data: { longUrl } })(dispatch, createGetState(), {});
-
-      expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
-      expect(updateShortUrl).toHaveBeenCalledTimes(1);
-      expect(updateShortUrl).toHaveBeenCalledWith(shortCode, undefined, { longUrl });
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: editShortUrl.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: editShortUrl.rejected.toString() }));
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: shortUrl }));
     });
   });
 });

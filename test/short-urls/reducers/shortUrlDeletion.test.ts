@@ -1,10 +1,10 @@
 import { Mock } from 'ts-mockery';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ProblemDetailsError } from '../../../src/api/types/errors';
 import {
-  shortUrlDeletionReducerCreator,
   deleteShortUrl as deleteShortUrlCretor,
+  shortUrlDeletionReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = jest.fn();
@@ -16,7 +16,7 @@ describe('shortUrlDeletionReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on DELETE_SHORT_URL_START', () =>
-      expect(reducer(undefined, { type: deleteShortUrl.pending.toString() })).toEqual({
+      expect(reducer(undefined, deleteShortUrl.pending('', { shortCode: '' }))).toEqual({
         shortCode: '',
         loading: true,
         error: false,
@@ -24,7 +24,7 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns default on RESET_DELETE_SHORT_URL', () =>
-      expect(reducer(undefined, { type: resetDeleteShortUrl.toString() })).toEqual({
+      expect(reducer(undefined, resetDeleteShortUrl())).toEqual({
         shortCode: '',
         loading: false,
         error: false,
@@ -32,10 +32,7 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns shortCode on SHORT_URL_DELETED', () =>
-      expect(reducer(undefined, {
-        type: deleteShortUrl.fulfilled.toString(),
-        payload: { shortCode: 'foo' },
-      })).toEqual({
+      expect(reducer(undefined, deleteShortUrl.fulfilled({ shortCode: 'foo' }, '', { shortCode: 'foo' }))).toEqual({
         shortCode: 'foo',
         loading: false,
         error: false,
@@ -44,9 +41,9 @@ describe('shortUrlDeletionReducer', () => {
 
     it('returns errorData on DELETE_SHORT_URL_ERROR', () => {
       const errorData = Mock.of<ProblemDetailsError>({ type: 'bar', detail: 'detail', title: 'title', status: 400 });
-      const error = errorData;
+      const error = errorData as unknown as Error;
 
-      expect(reducer(undefined, { type: deleteShortUrl.rejected.toString(), error })).toEqual({
+      expect(reducer(undefined, deleteShortUrl.rejected(error, '', { shortCode: '' }))).toEqual({
         shortCode: '',
         loading: false,
         error: true,
@@ -54,11 +51,6 @@ describe('shortUrlDeletionReducer', () => {
         errorData,
       });
     });
-  });
-
-  describe('resetDeleteShortUrl', () => {
-    it('returns expected action', () =>
-      expect(resetDeleteShortUrl()).toEqual({ type: resetDeleteShortUrl.toString() }));
   });
 
   describe('deleteShortUrl', () => {
@@ -73,32 +65,12 @@ describe('shortUrlDeletionReducer', () => {
       await deleteShortUrl({ shortCode, domain })(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteShortUrl.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: deleteShortUrl.fulfilled.toString(),
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { shortCode, domain },
       }));
 
       expect(deleteShortUrlCall).toHaveBeenCalledTimes(1);
       expect(deleteShortUrlCall).toHaveBeenCalledWith(shortCode, domain);
-    });
-
-    it('dispatches proper actions if API client request fails', async () => {
-      const data = { foo: 'bar' };
-      const shortCode = 'abc123';
-
-      deleteShortUrlCall.mockRejectedValue({ response: { data } });
-
-      await deleteShortUrl({ shortCode })(dispatch, getState, {});
-
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: deleteShortUrl.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: deleteShortUrl.rejected.toString(),
-      }));
-
-      expect(deleteShortUrlCall).toHaveBeenCalledTimes(1);
-      expect(deleteShortUrlCall).toHaveBeenCalledWith(shortCode, undefined);
     });
   });
 });

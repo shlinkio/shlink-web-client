@@ -1,6 +1,6 @@
 import { Mock } from 'ts-mockery';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
-import { LocalStorage } from '../../../src/utils/services/LocalStorage';
+import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('ColorGenerator', () => {

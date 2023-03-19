@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
-import { PropsWithChildren } from 'react';
-import { DropdownBtn, DropdownBtnProps } from '../../src/utils/DropdownBtn';
+import type { PropsWithChildren } from 'react';
+import type { DropdownBtnProps } from '../../src/utils/DropdownBtn';
+import { DropdownBtn } from '../../src/utils/DropdownBtn';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtn />', () => {

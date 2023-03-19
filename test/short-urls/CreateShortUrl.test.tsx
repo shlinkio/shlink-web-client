@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
+import type { Settings } from '../../src/settings/reducers/settings';
 import { CreateShortUrl as createShortUrlsCreator } from '../../src/short-urls/CreateShortUrl';
-import { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
-import { Settings } from '../../src/settings/reducers/settings';
+import type { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrl />', () => {
   const ShortUrlForm = () => <span>ShortUrlForm</span>;

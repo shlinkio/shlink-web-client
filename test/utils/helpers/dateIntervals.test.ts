@@ -1,6 +1,8 @@
 import { endOfDay, format, formatISO, startOfDay, subDays } from 'date-fns';
+import { now, parseDate } from '../../../src/utils/helpers/date';
+import type {
+  DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import {
-  DateInterval,
   dateRangeIsEmpty,
   dateToMatchingInterval,
   intervalToDateRange,
@@ -8,7 +10,6 @@ import {
   rangeOrIntervalToString,
   toDateRange,
 } from '../../../src/utils/helpers/dateIntervals';
-import { parseDate, now } from '../../../src/utils/helpers/date';
 
 describe('date-types', () => {
   const daysBack = (days: number) => subDays(now(), days);

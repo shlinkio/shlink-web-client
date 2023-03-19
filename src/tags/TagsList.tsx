@@ -1,20 +1,22 @@
-import { FC, useEffect, useState } from 'react';
-import { Row } from 'reactstrap';
 import { pipe } from 'ramda';
-import { Message } from '../utils/Message';
-import { SearchField } from '../utils/SearchField';
-import { SelectedServer } from '../servers/data';
-import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
-import { Result } from '../utils/Result';
+import type { FC } from 'react';
+import { useEffect, useState } from 'react';
+import { Row } from 'reactstrap';
 import { ShlinkApiError } from '../api/ShlinkApiError';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
-import { Settings } from '../settings/reducers/settings';
+import type { SelectedServer } from '../servers/data';
+import type { Settings } from '../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../utils/helpers/ordering';
+import { Message } from '../utils/Message';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
-import { TagsList as TagsListState } from './reducers/tagsList';
-import { TagsOrderableFields, TAGS_ORDERABLE_FIELDS, TagsOrder } from './data/TagsListChildrenProps';
-import { NormalizedTag } from './data';
-import { TagsTableProps } from './TagsTable';
+import { Result } from '../utils/Result';
+import { SearchField } from '../utils/SearchField';
+import type { SimplifiedTag } from './data';
+import type { TagsOrder, TagsOrderableFields } from './data/TagsListChildrenProps';
+import { TAGS_ORDERABLE_FIELDS } from './data/TagsListChildrenProps';
+import type { TagsList as TagsListState } from './reducers/tagsList';
+import type { TagsTableProps } from './TagsTable';
 
 export interface TagsListProps {
   filterTags: (searchTerm: string) => void;
@@ -29,12 +31,19 @@ export const TagsList = (TagsTable: FC<TagsTableProps>) => boundToMercureHub((
 ) => {
   const [order, setOrder] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
   const resolveSortedTags = pipe(
-    () => tagsList.filteredTags.map((tag): NormalizedTag => ({
-      tag,
-      shortUrls: tagsList.stats[tag]?.shortUrlsCount ?? 0,
-      visits: tagsList.stats[tag]?.visitsCount ?? 0,
-    })),
-    (normalizedTags) => sortList<NormalizedTag>(normalizedTags, order),
+    () => tagsList.filteredTags.map((tag): SimplifiedTag => {
+      const theTag = tagsList.stats[tag];
+      const visits = (
+        settings.visits?.excludeBots ? theTag?.visitsSummary?.nonBots : theTag?.visitsSummary?.total
+      ) ?? theTag?.visitsCount ?? 0;
+
+      return {
+        tag,
+        visits,
+        shortUrls: theTag?.shortUrlsCount ?? 0,
+      };
+    }),
+    (simplifiedTags) => sortList<SimplifiedTag>(simplifiedTags, order),
   );
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, PropsWithChildren } from 'react';
+import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { Checkbox } from '../../utils/Checkbox';
 import { InfoTooltip } from '../../utils/InfoTooltip';
 

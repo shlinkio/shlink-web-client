@@ -1,16 +1,16 @@
-import { pipe } from 'ramda';
-import { useState } from 'react';
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Popover, InputGroup } from 'reactstrap';
-import { HexColorPicker } from 'react-colorful';
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToggle } from '../../utils/helpers/hooks';
-import { handleEventPreventingDefault } from '../../utils/utils';
-import { ColorGenerator } from '../../utils/services/ColorGenerator';
-import { TagModalProps } from '../data';
-import { EditTag, TagEdition } from '../reducers/tagEdit';
-import { Result } from '../../utils/Result';
+import { pipe } from 'ramda';
+import { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
+import { Button, Input, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
+import { useToggle } from '../../utils/helpers/hooks';
+import { Result } from '../../utils/Result';
+import type { ColorGenerator } from '../../utils/services/ColorGenerator';
+import { handleEventPreventingDefault } from '../../utils/utils';
+import type { TagModalProps } from '../data';
+import type { EditTag, TagEdition } from '../reducers/tagEdit';
 import './EditTagModal.scss';
 
 interface EditTagModalProps extends TagModalProps {

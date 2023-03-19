@@ -1,5 +1,5 @@
 import { saveUrl } from '../../utils/helpers/files';
-import { HttpClient } from './HttpClient';
+import type { HttpClient } from './HttpClient';
 
 export class ImageDownloader {
   public constructor(private readonly httpClient: HttpClient, private readonly window: Window) {}

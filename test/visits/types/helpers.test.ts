@@ -1,13 +1,14 @@
 import { Mock } from 'ts-mockery';
-import { GroupedNewVisits, groupNewVisitsByType, toApiParams } from '../../../src/visits/types/helpers';
-import { CreateVisit, OrphanVisit, Visit, VisitsParams } from '../../../src/visits/types';
-import { ShlinkVisitsParams } from '../../../src/api/types';
+import type { ShlinkVisitsParams } from '../../../src/api/types';
 import { formatIsoDate, parseDate } from '../../../src/utils/helpers/date';
+import type { CreateVisit, OrphanVisit, Visit, VisitsParams } from '../../../src/visits/types';
+import type { GroupedNewVisits } from '../../../src/visits/types/helpers';
+import { groupNewVisitsByType, toApiParams } from '../../../src/visits/types/helpers';
 
 describe('visitsTypeHelpers', () => {
   describe('groupNewVisitsByType', () => {
     it.each([
-      [[], { orphanVisits: [], regularVisits: [] }],
+      [[], { orphanVisits: [], nonOrphanVisits: [] }],
       ((): [CreateVisit[], GroupedNewVisits] => {
         const orphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({
@@ -17,7 +18,7 @@ describe('visitsTypeHelpers', () => {
             visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
           }),
         ];
-        const regularVisits: CreateVisit[] = [
+        const nonOrphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
@@ -26,8 +27,8 @@ describe('visitsTypeHelpers', () => {
         ];
 
         return [
-          [...orphanVisits, ...regularVisits],
-          { orphanVisits, regularVisits },
+          [...orphanVisits, ...nonOrphanVisits],
+          { orphanVisits, nonOrphanVisits },
         ];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
@@ -43,16 +44,16 @@ describe('visitsTypeHelpers', () => {
           }),
         ];
 
-        return [orphanVisits, { orphanVisits, regularVisits: [] }];
+        return [orphanVisits, { orphanVisits, nonOrphanVisits: [] }];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
-        const regularVisits: CreateVisit[] = [
+        const nonOrphanVisits: CreateVisit[] = [
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
           Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
         ];
 
-        return [regularVisits, { orphanVisits: [], regularVisits }];
+        return [nonOrphanVisits, { orphanVisits: [], nonOrphanVisits }];
       })(),
     ])('groups new visits as expected', (createdVisits, expectedResult) => {
       expect(groupNewVisitsByType(createdVisits)).toEqual(expectedResult);

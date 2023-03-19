@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { ShlinkApiError, ShlinkApiErrorProps } from '../../src/api/ShlinkApiError';
-import { ErrorTypeV2, ErrorTypeV3, InvalidArgumentError, ProblemDetailsError } from '../../src/api/types/errors';
+import type { ShlinkApiErrorProps } from '../../src/api/ShlinkApiError';
+import { ShlinkApiError } from '../../src/api/ShlinkApiError';
+import type { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types/errors';
+import { ErrorTypeV2, ErrorTypeV3 } from '../../src/api/types/errors';
 
 describe('<ShlinkApiError />', () => {
   const setUp = (props: ShlinkApiErrorProps) => render(<ShlinkApiError {...props} />);

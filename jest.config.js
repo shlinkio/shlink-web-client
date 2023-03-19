@@ -10,14 +10,13 @@ module.exports = {
   coverageThreshold: {
     global: {
       statements: 90,
-      branches: 80,
-      functions: 85,
+      branches: 85,
+      functions: 90,
       lines: 90,
     },
   },
   setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.ts'],
   testMatch: ['<rootDir>/test/**/*.test.{ts,tsx}'],
-  modulePathIgnorePatterns: ['<rootDir>/.stryker-tmp'],
   testEnvironment: 'jsdom',
   testEnvironmentOptions: {
     url: 'http://localhost',
@@ -28,7 +27,6 @@ module.exports = {
     '^(?!.*\\.(ts|tsx|js|json|scss)$)': '<rootDir>/config/jest/fileTransform.js',
   },
   transformIgnorePatterns: [
-    '<rootDir>/.stryker-tmp',
     'node_modules\/(?!(\@react-leaflet|react-leaflet|leaflet|react-chartjs-2|react-colorful)\/)',
     '^.+\\.module\\.scss$',
   ],

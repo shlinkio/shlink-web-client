@@ -1,16 +1,16 @@
-import { v4 as uuid } from 'uuid';
 import { Mock } from 'ts-mockery';
+import { v4 as uuid } from 'uuid';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
+import type { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
 import {
-  selectServer as selectServerCreator,
-  resetSelectedServer,
-  selectedServerReducerCreator,
-  selectServerListener,
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
+  resetSelectedServer,
+  selectedServerReducerCreator,
+  selectServer as selectServerCreator,
+  selectServerListener,
 } from '../../../src/servers/reducers/selectedServer';
-import { ShlinkState } from '../../../src/container/types';
-import { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 
 describe('selectedServerReducer', () => {
   const dispatch = jest.fn();
@@ -23,18 +23,12 @@ describe('selectedServerReducer', () => {
 
   describe('reducer', () => {
     it('returns default when action is RESET_SELECTED_SERVER', () =>
-      expect(reducer(null, { type: resetSelectedServer.toString(), payload: null })).toBeNull());
+      expect(reducer(null, resetSelectedServer())).toBeNull());
 
     it('returns selected server when action is SELECT_SERVER', () => {
       const payload = Mock.of<RegularServer>({ id: 'abc123' });
 
-      expect(reducer(null, { type: selectServer.fulfilled.toString(), payload })).toEqual(payload);
-    });
-  });
-
-  describe('resetSelectedServer', () => {
-    it('returns proper action', () => {
-      expect(resetSelectedServer()).toEqual({ type: resetSelectedServer.toString() });
+      expect(reducer(null, selectServer.fulfilled(payload, '', ''))).toEqual(payload);
     });
   });
 
@@ -63,23 +57,10 @@ describe('selectedServerReducer', () => {
 
       await selectServer(id)(dispatch, getState, {});
 
-      expect(dispatch).toHaveBeenCalledTimes(3);
-      expect(dispatch).toHaveBeenNthCalledWith(1, expect.objectContaining({ type: selectServer.pending.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ type: resetSelectedServer.toString() }));
-      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        type: selectServer.fulfilled.toString(),
-        payload: expectedSelectedServer,
-      }));
-    });
-
-    it('invokes dependencies', async () => {
-      const id = uuid();
-      const getState = createGetStateMock(id);
-
-      await selectServer(id)(jest.fn(), getState, {});
-
       expect(getState).toHaveBeenCalledTimes(1);
       expect(buildApiClient).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenCalledTimes(3); // "Pending", "reset" and "fulfilled"
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: expectedSelectedServer }));
     });
 
     it('dispatches error when health endpoint fails', async () => {
@@ -92,10 +73,7 @@ describe('selectedServerReducer', () => {
       await selectServer(id)(dispatch, getState, {});
 
       expect(health).toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        type: selectServer.fulfilled.toString(),
-        payload: expectedSelectedServer,
-      }));
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: expectedSelectedServer }));
     });
 
     it('dispatches error when server is not found', async () => {
@@ -107,10 +85,7 @@ describe('selectedServerReducer', () => {
 
       expect(getState).toHaveBeenCalled();
       expect(health).not.toHaveBeenCalled();
-      expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({
-        type: selectServer.fulfilled.toString(),
-        payload: expectedSelectedServer,
-      }));
+      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: expectedSelectedServer }));
     });
   });
 

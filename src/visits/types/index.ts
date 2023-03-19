@@ -1,5 +1,5 @@
-import { ShortUrl } from '../../short-urls/data';
-import { DateRange } from '../../utils/helpers/dateIntervals';
+import type { ShortUrl } from '../../short-urls/data';
+import type { DateRange } from '../../utils/helpers/dateIntervals';
 
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
 

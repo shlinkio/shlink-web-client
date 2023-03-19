@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
 import { formatDistance, parseISO } from 'date-fns';
+import { Mock } from 'ts-mockery';
+import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
-import { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisitsHeader />', () => {
@@ -16,7 +16,7 @@ describe('<ShortUrlVisitsHeader />', () => {
   const setUp = (title?: string | null) => {
     const shortUrlDetail = Mock.of<ShortUrlDetail>({
       shortUrl: {
-        shortUrl: 'https://doma.in/abc123',
+        shortUrl: 'https://s.test/abc123',
         longUrl,
         dateCreated,
         title,

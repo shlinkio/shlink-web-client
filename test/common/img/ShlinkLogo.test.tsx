@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { ShlinkLogo, ShlinkLogoProps } from '../../../src/common/img/ShlinkLogo';
+import type { ShlinkLogoProps } from '../../../src/common/img/ShlinkLogo';
+import { ShlinkLogo } from '../../../src/common/img/ShlinkLogo';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('<ShlinkLogo />', () => {

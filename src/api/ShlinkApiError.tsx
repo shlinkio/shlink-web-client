@@ -1,5 +1,5 @@
+import type { ProblemDetailsError } from './types/errors';
 import { isInvalidArgumentError } from './utils';
-import { ProblemDetailsError } from './types/errors';
 
 export interface ShlinkApiErrorProps {
   errorData?: ProblemDetailsError;

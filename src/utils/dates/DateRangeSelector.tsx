@@ -1,18 +1,19 @@
 import { useState } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../DropdownBtn';
-import { useEffectExceptFirstTime } from '../helpers/hooks';
-import {
+import type {
   DateInterval,
-  DateRange,
-  rangeOrIntervalToString,
+  DateRange } from '../helpers/dateIntervals';
+import {
+  ALL,
+  dateRangeIsEmpty,
   intervalToDateRange,
   rangeIsInterval,
-  dateRangeIsEmpty,
-  ALL,
+  rangeOrIntervalToString,
 } from '../helpers/dateIntervals';
-import { DateRangeRow } from './DateRangeRow';
+import { useEffectExceptFirstTime } from '../helpers/hooks';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
+import { DateRangeRow } from './DateRangeRow';
 
 export interface DateRangeSelectorProps {
   initialDateRange?: DateInterval | DateRange;

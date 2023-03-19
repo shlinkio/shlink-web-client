@@ -1,8 +1,16 @@
-import { Nullable, OptionalString } from '../../utils/utils';
-import { Order } from '../../utils/helpers/ordering';
+import type { ShlinkVisitsSummary } from '../../api/types';
+import type { Order } from '../../utils/helpers/ordering';
+import type { Nullable, OptionalString } from '../../utils/utils';
+
+export interface DeviceLongUrls {
+  android?: OptionalString;
+  ios?: OptionalString;
+  desktop?: OptionalString;
+}
 
 export interface EditShortUrlData {
   longUrl?: string;
+  deviceLongUrls?: DeviceLongUrls;
   tags?: string[];
   title?: string | null;
   validSince?: Date | string | null;
@@ -30,10 +38,11 @@ export interface ShortUrl {
   shortCode: string;
   shortUrl: string;
   longUrl: string;
+  deviceLongUrls?: Required<DeviceLongUrls>, // Optional only before Shlink 3.5.0
   dateCreated: string;
   /** @deprecated */
   visitsCount: number; // Deprecated since Shlink 3.4.0
-  visitsSummary?: ShortUrlVisitsSummary; // Optional only before Shlink 3.4.0
+  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.4.0
   meta: Required<Nullable<ShortUrlMeta>>;
   tags: string[];
   domain: string | null;
@@ -46,12 +55,6 @@ export interface ShortUrlMeta {
   validSince?: string;
   validUntil?: string;
   maxVisits?: number;
-}
-
-export interface ShortUrlVisitsSummary {
-  total: number;
-  nonBots: number;
-  bots: number;
 }
 
 export interface ShortUrlModalProps {

@@ -1,6 +1,7 @@
 import { screen } from '@testing-library/react';
 import { Mock } from 'ts-mockery';
-import { DropdownBtnMenu, DropdownBtnMenuProps } from '../../src/utils/DropdownBtnMenu';
+import type { DropdownBtnMenuProps } from '../../src/utils/DropdownBtnMenu';
+import { DropdownBtnMenu } from '../../src/utils/DropdownBtnMenu';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtnMenu />', () => {

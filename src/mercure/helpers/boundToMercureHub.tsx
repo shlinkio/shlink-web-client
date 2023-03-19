@@ -1,8 +1,9 @@
-import { FC, useEffect } from 'react';
 import { pipe } from 'ramda';
+import type { FC } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { CreateVisit } from '../../visits/types';
-import { MercureInfo } from '../reducers/mercureInfo';
+import type { CreateVisit } from '../../visits/types';
+import type { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
 
 export interface MercureBoundProps {

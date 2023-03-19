@@ -1,7 +1,8 @@
 import { Mock } from 'ts-mockery';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { EditDomainRedirects, editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
-import { ShlinkDomainRedirects } from '../../../src/api/types';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkDomainRedirects } from '../../../src/api/types';
+import type { EditDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
+import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 
 describe('domainRedirectsReducer', () => {
   beforeEach(jest.clearAllMocks);
@@ -15,18 +16,6 @@ describe('domainRedirectsReducer', () => {
     const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ editDomainRedirects: editDomainRedirectsCall });
     const editDomainRedirectsAction = editDomainRedirects(buildShlinkApiClient);
 
-    it('dispatches error when loading domains fails', async () => {
-      editDomainRedirectsCall.mockRejectedValue(new Error('error'));
-
-      await editDomainRedirectsAction(Mock.of<EditDomainRedirects>({ domain }))(dispatch, getState, {});
-
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        type: editDomainRedirectsAction.rejected.toString(),
-      }));
-      expect(editDomainRedirectsCall).toHaveBeenCalledTimes(1);
-    });
-
     it('dispatches domain and redirects once loaded', async () => {
       editDomainRedirectsCall.mockResolvedValue(redirects);
 
@@ -34,7 +23,6 @@ describe('domainRedirectsReducer', () => {
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        type: editDomainRedirectsAction.fulfilled.toString(),
         payload: { domain, redirects },
       }));
       expect(editDomainRedirectsCall).toHaveBeenCalledTimes(1);

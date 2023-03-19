@@ -1,26 +1,27 @@
 import { isEmpty, isNil, reject } from 'ramda';
-import { ShortUrl, ShortUrlData } from '../../short-urls/data';
-import { OptionalString } from '../../utils/utils';
-import {
+import type { HttpClient } from '../../common/services/HttpClient';
+import type { ShortUrl, ShortUrlData } from '../../short-urls/data';
+import { orderToString } from '../../utils/helpers/ordering';
+import { stringifyQuery } from '../../utils/helpers/query';
+import type { OptionalString } from '../../utils/utils';
+import type {
+  ShlinkDomainRedirects,
+  ShlinkDomainsResponse,
+  ShlinkEditDomainRedirects,
   ShlinkHealth,
   ShlinkMercureInfo,
+  ShlinkShortUrlData,
+  ShlinkShortUrlsListNormalizedParams,
+  ShlinkShortUrlsListParams,
   ShlinkShortUrlsResponse,
   ShlinkTags,
   ShlinkTagsResponse,
+  ShlinkTagsStatsResponse,
   ShlinkVisits,
-  ShlinkVisitsParams,
-  ShlinkShortUrlData,
-  ShlinkDomainsResponse,
   ShlinkVisitsOverview,
-  ShlinkEditDomainRedirects,
-  ShlinkDomainRedirects,
-  ShlinkShortUrlsListParams,
-  ShlinkShortUrlsListNormalizedParams,
+  ShlinkVisitsParams,
 } from '../types';
-import { orderToString } from '../../utils/helpers/ordering';
 import { isRegularNotFound, parseApiError } from '../utils';
-import { stringifyQuery } from '../../utils/helpers/query';
-import { HttpClient } from '../../common/services/HttpClient';
 
 const buildShlinkBaseUrl = (url: string, version: 2 | 3) => `${url}/rest/v${version}`;
 const rejectNilProps = reject(isNil);
@@ -89,6 +90,11 @@ export class ShlinkApiClient {
     this.performRequest<{ tags: ShlinkTagsResponse }>('/tags', 'GET', { withStats: 'true' })
       .then(({ tags }) => tags)
       .then(({ data, stats }) => ({ tags: data, stats }));
+
+  public readonly tagsStats = async (): Promise<ShlinkTags> =>
+    this.performRequest<{ tags: ShlinkTagsStatsResponse }>('/tags/stats', 'GET')
+      .then(({ tags }) => tags)
+      .then(({ data }) => ({ tags: data.map(({ tag }) => tag), stats: data }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
     this.performEmptyRequest('/tags', 'DELETE', { tags }).then(() => ({ tags }));

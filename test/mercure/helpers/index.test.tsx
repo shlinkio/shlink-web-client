@@ -1,8 +1,8 @@
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { Mock } from 'ts-mockery';
 import { identity } from 'ramda';
+import { Mock } from 'ts-mockery';
 import { bindToMercureTopic } from '../../../src/mercure/helpers';
-import { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
+import type { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
 
 jest.mock('event-source-polyfill');
 

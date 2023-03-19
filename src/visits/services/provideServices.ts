@@ -1,22 +1,22 @@
-import Bottle from 'bottlejs';
+import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
+import type { ConnectDecorator } from '../../container/types';
+import { DomainVisits } from '../DomainVisits';
 import { MapModal } from '../helpers/MapModal';
-import { createNewVisits } from '../reducers/visitCreation';
-import { ShortUrlVisits } from '../ShortUrlVisits';
-import { TagVisits } from '../TagVisits';
-import { OrphanVisits } from '../OrphanVisits';
 import { NonOrphanVisits } from '../NonOrphanVisits';
+import { OrphanVisits } from '../OrphanVisits';
+import { domainVisitsReducerCreator, getDomainVisits } from '../reducers/domainVisits';
+import { getNonOrphanVisits, nonOrphanVisitsReducerCreator } from '../reducers/nonOrphanVisits';
+import { getOrphanVisits, orphanVisitsReducerCreator } from '../reducers/orphanVisits';
 import { getShortUrlVisits, shortUrlVisitsReducerCreator } from '../reducers/shortUrlVisits';
 import { getTagVisits, tagVisitsReducerCreator } from '../reducers/tagVisits';
-import { getDomainVisits, domainVisitsReducerCreator } from '../reducers/domainVisits';
-import { getOrphanVisits, orphanVisitsReducerCreator } from '../reducers/orphanVisits';
-import { getNonOrphanVisits, nonOrphanVisitsReducerCreator } from '../reducers/nonOrphanVisits';
-import { ConnectDecorator } from '../../container/types';
+import { createNewVisits } from '../reducers/visitCreation';
 import { loadVisitsOverview, visitsOverviewReducerCreator } from '../reducers/visitsOverview';
+import { ShortUrlVisits } from '../ShortUrlVisits';
+import { TagVisits } from '../TagVisits';
 import * as visitsParser from './VisitsParser';
-import { DomainVisits } from '../DomainVisits';
 
-const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
+export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('MapModal', () => MapModal);
 
@@ -91,5 +91,3 @@ const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('tagVisitsReducerCreator', tagVisitsReducerCreator, 'getTagVisits');
   bottle.serviceFactory('tagVisitsReducer', prop('reducer'), 'tagVisitsReducerCreator');
 };
-
-export default provideServices;

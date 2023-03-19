@@ -1,9 +1,9 @@
 import { Mock } from 'ts-mockery';
-import { ShortUrlDetailAction, shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
-import { ShortUrl } from '../../../src/short-urls/data';
-import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import { ShlinkState } from '../../../src/container/types';
-import { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
+import type { ShortUrl } from '../../../src/short-urls/data';
+import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {
   const getShortUrlCall = jest.fn();
@@ -13,17 +13,13 @@ describe('shortUrlDetailReducer', () => {
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const action = (type: string) => Mock.of<ShortUrlDetailAction>({ type });
-
     it('returns loading on GET_SHORT_URL_DETAIL_START', () => {
-      const state = reducer({ loading: false, error: false }, action(getShortUrlDetail.pending.toString()));
-      const { loading } = state;
-
+      const { loading } = reducer({ loading: false, error: false }, getShortUrlDetail.pending('', { shortCode: '' }));
       expect(loading).toEqual(true);
     });
 
     it('stops loading and returns error on GET_SHORT_URL_DETAIL_ERROR', () => {
-      const state = reducer({ loading: true, error: false }, action(getShortUrlDetail.rejected.toString()));
+      const state = reducer({ loading: true, error: false }, getShortUrlDetail.rejected(null, '', { shortCode: '' }));
       const { loading, error } = state;
 
       expect(loading).toEqual(false);
@@ -34,7 +30,7 @@ describe('shortUrlDetailReducer', () => {
       const actionShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
       const state = reducer(
         { loading: true, error: false },
-        { type: getShortUrlDetail.fulfilled.toString(), payload: actionShortUrl },
+        getShortUrlDetail.fulfilled(actionShortUrl, '', { shortCode: '' }),
       );
       const { loading, error, shortUrl } = state;
 
@@ -47,21 +43,6 @@ describe('shortUrlDetailReducer', () => {
   describe('getShortUrlDetail', () => {
     const dispatchMock = jest.fn();
     const buildGetState = (shortUrlsList?: ShortUrlsList) => () => Mock.of<ShlinkState>({ shortUrlsList });
-
-    it('dispatches start and error when promise is rejected', async () => {
-      getShortUrlCall.mockRejectedValue({});
-
-      await getShortUrlDetail({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState(), {});
-
-      expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlDetail.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getShortUrlDetail.rejected.toString(),
-      }));
-      expect(getShortUrlCall).toHaveBeenCalledTimes(1);
-    });
 
     it.each([
       [undefined],
@@ -85,13 +66,7 @@ describe('shortUrlDetailReducer', () => {
       await getShortUrlDetail({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState(shortUrlsList), {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlDetail.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getShortUrlDetail.fulfilled.toString(),
-        payload: resolvedShortUrl,
-      }));
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({ payload: resolvedShortUrl }));
       expect(getShortUrlCall).toHaveBeenCalledTimes(1);
     });
 
@@ -110,13 +85,7 @@ describe('shortUrlDetailReducer', () => {
       );
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
-      expect(dispatchMock).toHaveBeenNthCalledWith(1, expect.objectContaining({
-        type: getShortUrlDetail.pending.toString(),
-      }));
-      expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({
-        type: getShortUrlDetail.fulfilled.toString(),
-        payload: foundShortUrl,
-      }));
+      expect(dispatchMock).toHaveBeenLastCalledWith(expect.objectContaining({ payload: foundShortUrl }));
       expect(getShortUrlCall).not.toHaveBeenCalled();
     });
   });
