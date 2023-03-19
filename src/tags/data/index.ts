@@ -1,7 +1,6 @@
-export interface TagStats {
-  shortUrlsCount: number;
-  visitsCount: number;
-}
+import type { ShlinkTagsStats } from '../../api/types';
+
+export type TagStats = Omit<ShlinkTagsStats, 'tag'>;
 
 export interface TagModalProps {
   tag: string;
@@ -9,7 +8,7 @@ export interface TagModalProps {
   toggle: () => void;
 }
 
-export interface NormalizedTag {
+export interface SimplifiedTag {
   tag: string;
   shortUrls: number;
   visits: number;

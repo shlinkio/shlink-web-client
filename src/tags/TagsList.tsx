@@ -12,7 +12,7 @@ import { Message } from '../utils/Message';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { Result } from '../utils/Result';
 import { SearchField } from '../utils/SearchField';
-import type { NormalizedTag } from './data';
+import type { SimplifiedTag } from './data';
 import type { TagsOrder, TagsOrderableFields } from './data/TagsListChildrenProps';
 import { TAGS_ORDERABLE_FIELDS } from './data/TagsListChildrenProps';
 import type { TagsList as TagsListState } from './reducers/tagsList';
@@ -31,12 +31,19 @@ export const TagsList = (TagsTable: FC<TagsTableProps>) => boundToMercureHub((
 ) => {
   const [order, setOrder] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
   const resolveSortedTags = pipe(
-    () => tagsList.filteredTags.map((tag): NormalizedTag => ({
-      tag,
-      shortUrls: tagsList.stats[tag]?.shortUrlsCount ?? 0,
-      visits: tagsList.stats[tag]?.visitsCount ?? 0,
-    })),
-    (normalizedTags) => sortList<NormalizedTag>(normalizedTags, order),
+    () => tagsList.filteredTags.map((tag): SimplifiedTag => {
+      const theTag = tagsList.stats[tag];
+      const visits = (
+        settings.visits?.excludeBots ? theTag?.visitsSummary?.nonBots : theTag?.visitsSummary?.total
+      ) ?? theTag?.visitsCount ?? 0;
+
+      return {
+        tag,
+        visits,
+        shortUrls: theTag?.shortUrlsCount ?? 0,
+      };
+    }),
+    (simplifiedTags) => sortList<SimplifiedTag>(simplifiedTags, order),
   );
 
   useEffect(() => {

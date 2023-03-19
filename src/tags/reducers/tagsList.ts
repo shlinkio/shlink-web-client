@@ -8,7 +8,7 @@ import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation'
 import { supportedFeatures } from '../../utils/helpers/features';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
-import type { CreateVisit, Stats } from '../../visits/types';
+import type { CreateVisit } from '../../visits/types';
 import type { TagStats } from '../data';
 import { tagDeleted } from './tagDelete';
 import { tagEdited } from './tagEdit';
@@ -39,7 +39,8 @@ const initialState: TagsList = {
   error: false,
 };
 
-type TagIncrease = [string, number];
+type TagIncreaseRecord = Record<string, { bots: number; nonBots: number }>;
+type TagIncrease = [string, { bots: number; nonBots: number }];
 
 const renameTag = (oldName: string, newName: string) => (tag: string) => (tag === oldName ? newName : tag);
 const rejectTag = (tags: string[], tagToReject: string) => reject((tag) => tag === tagToReject, tags);
@@ -48,20 +49,34 @@ const increaseVisitsForTags = (tags: TagIncrease[], stats: TagsStatsMap) => tags
     return theStats;
   }
 
+  const { bots, nonBots } = increase;
   const tagStats = theStats[tag];
 
   return {
     ...theStats,
     [tag]: {
       ...tagStats,
-      visitsCount: tagStats.visitsCount + increase,
+      visitsSummary: tagStats.visitsSummary && {
+        total: tagStats.visitsSummary.total + bots + nonBots,
+        bots: tagStats.visitsSummary.bots + bots,
+        nonBots: tagStats.visitsSummary.nonBots + nonBots,
+      },
+      visitsCount: tagStats.visitsCount + bots + nonBots,
     },
   };
 }, { ...stats });
 const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => Object.entries(
-  createdVisits.reduce<Stats>((acc, { shortUrl }) => {
+  createdVisits.reduce<TagIncreaseRecord>((acc, { shortUrl, visit }) => {
     shortUrl?.tags.forEach((tag) => {
-      acc[tag] = (acc[tag] || 0) + 1;
+      if (!acc[tag]) {
+        acc[tag] = { bots: 0, nonBots: 0 };
+      }
+
+      if (visit.potentialBot) {
+        acc[tag].bots += 1;
+      } else {
+        acc[tag].nonBots += 1;
+      }
     });
 
     return acc;
@@ -78,12 +93,11 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
     }
 
     const { listTags: shlinkListTags, tagsStats } = buildShlinkApiClient(getState);
-    const { tags, stats = [] }: ShlinkTags = await (
+    const { tags, stats }: ShlinkTags = await (
       supportedFeatures.tagsStats(selectedServer) ? tagsStats() : shlinkListTags()
     );
-    const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, shortUrlsCount, visitsCount }) => {
-      acc[tag] = { shortUrlsCount, visitsCount };
-
+    const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, ...rest }) => {
+      acc[tag] = rest;
       return acc;
     }, {});
 

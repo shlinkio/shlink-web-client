@@ -1,6 +1,6 @@
 import type { SelectedServer } from '../../servers/data';
 import type { Order } from '../../utils/helpers/ordering';
-import type { NormalizedTag } from './index';
+import type { SimplifiedTag } from './index';
 
 export const TAGS_ORDERABLE_FIELDS = {
   tag: 'Tag',
@@ -13,6 +13,6 @@ export type TagsOrderableFields = keyof typeof TAGS_ORDERABLE_FIELDS;
 export type TagsOrder = Order<TagsOrderableFields>;
 
 export interface TagsListChildrenProps {
-  sortedTags: NormalizedTag[];
+  sortedTags: SimplifiedTag[];
   selectedServer: SelectedServer;
 }

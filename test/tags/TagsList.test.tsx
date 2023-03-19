@@ -10,15 +10,15 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = jest.fn();
-  const TagsListComp = createTagsList(() => <>TagsTable</>);
-  const setUp = (tagsList: Partial<TagsList>) => renderWithEvents(
+  const TagsListComp = createTagsList(({ sortedTags }) => <>TagsTable ({sortedTags.map((t) => t.visits).join(',')})</>);
+  const setUp = (tagsList: Partial<TagsList>, excludeBots = false) => renderWithEvents(
     <TagsListComp
       {...Mock.all<TagsListProps>()}
       {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
       forceListTags={identity}
       filterTags={filterTags}
       tagsList={Mock.of<TagsList>(tagsList)}
-      settings={Mock.all<Settings>()}
+      settings={Mock.of<Settings>({ visits: { excludeBots } })}
     />,
   );
 
@@ -52,5 +52,50 @@ describe('<TagsList />', () => {
     expect(filterTags).not.toHaveBeenCalled();
     await user.type(screen.getByPlaceholderText('Search...'), 'Hello');
     await waitFor(() => expect(filterTags).toHaveBeenCalledTimes(1));
+  });
+
+  it.each([
+    [false, undefined, '25,25,25'],
+    [true, undefined, '25,25,25'],
+    [
+      false,
+      {
+        total: 20,
+        nonBots: 15,
+        bots: 5,
+      },
+      '20,20,20',
+    ],
+    [
+      true,
+      {
+        total: 20,
+        nonBots: 15,
+        bots: 5,
+      },
+      '15,15,15',
+    ],
+  ])('displays proper amount of visits', (excludeBots, visitsSummary, expectedAmounts) => {
+    setUp({
+      filteredTags: ['foo', 'bar', 'baz'],
+      stats: {
+        foo: {
+          visitsSummary,
+          visitsCount: 25,
+          shortUrlsCount: 1,
+        },
+        bar: {
+          visitsSummary,
+          visitsCount: 25,
+          shortUrlsCount: 1,
+        },
+        baz: {
+          visitsSummary,
+          visitsCount: 25,
+          shortUrlsCount: 1,
+        },
+      },
+    }, excludeBots);
+    expect(screen.getByText(`TagsTable (${expectedAmounts})`)).toBeInTheDocument();
   });
 });

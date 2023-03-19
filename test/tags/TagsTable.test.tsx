@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { useLocation } from 'react-router-dom';
 import { Mock } from 'ts-mockery';
 import type { SelectedServer } from '../../src/servers/data';
-import type { NormalizedTag } from '../../src/tags/data';
+import type { SimplifiedTag } from '../../src/tags/data';
 import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { rangeOf } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -17,7 +17,7 @@ describe('<TagsTable />', () => {
     (useLocation as any).mockReturnValue({ search });
     return renderWithEvents(
       <TagsTable
-        sortedTags={sortedTags.map((tag) => Mock.of<NormalizedTag>({ tag }))}
+        sortedTags={sortedTags.map((tag) => Mock.of<SimplifiedTag>({ tag }))}
         selectedServer={Mock.all<SelectedServer>()}
         currentOrder={{}}
         orderByColumn={() => orderByColumn}
