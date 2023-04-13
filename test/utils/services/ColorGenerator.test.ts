@@ -1,11 +1,11 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
-  const storageMock = Mock.of<LocalStorage>({
+  const storageMock = fromPartial<LocalStorage>({
     set: jest.fn(),
     get: jest.fn(),
   });

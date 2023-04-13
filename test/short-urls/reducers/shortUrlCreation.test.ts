@@ -1,16 +1,16 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import {
   createShortUrl as createShortUrlCreator,
   shortUrlCreationReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('shortUrlCreationReducer', () => {
-  const shortUrl = Mock.of<ShortUrl>();
+  const shortUrl = fromPartial<ShortUrl>({});
   const createShortUrlCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
 
@@ -18,7 +18,7 @@ describe('shortUrlCreationReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on CREATE_SHORT_URL_START', () => {
-      expect(reducer(undefined, createShortUrl.pending('', Mock.all<ShortUrlData>()))).toEqual({
+      expect(reducer(undefined, createShortUrl.pending('', fromPartial({})))).toEqual({
         saving: true,
         saved: false,
         error: false,
@@ -26,7 +26,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns error on CREATE_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, createShortUrl.rejected(null, '', Mock.all<ShortUrlData>()))).toEqual({
+      expect(reducer(undefined, createShortUrl.rejected(null, '', fromPartial({})))).toEqual({
         saving: false,
         saved: false,
         error: true,
@@ -34,7 +34,7 @@ describe('shortUrlCreationReducer', () => {
     });
 
     it('returns result on CREATE_SHORT_URL', () => {
-      expect(reducer(undefined, createShortUrl.fulfilled(shortUrl, '', Mock.all<ShortUrlData>()))).toEqual({
+      expect(reducer(undefined, createShortUrl.fulfilled(shortUrl, '', fromPartial({})))).toEqual({
         result: shortUrl,
         saving: false,
         saved: true,
@@ -53,7 +53,7 @@ describe('shortUrlCreationReducer', () => {
 
   describe('createShortUrl', () => {
     const dispatch = jest.fn();
-    const getState = () => Mock.all<ShlinkState>();
+    const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {
       createShortUrlCall.mockResolvedValue(shortUrl);

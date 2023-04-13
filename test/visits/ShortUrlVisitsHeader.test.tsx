@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatDistance, parseISO } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import type { ShortUrlVisits } from '../../src/visits/reducers/shortUrlVisits';
 import { ShortUrlVisitsHeader } from '../../src/visits/ShortUrlVisitsHeader';
@@ -9,12 +9,12 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 describe('<ShortUrlVisitsHeader />', () => {
   const dateCreated = '2018-01-01T10:00:00+00:00';
   const longUrl = 'https://foo.bar/bar/foo';
-  const shortUrlVisits = Mock.of<ShortUrlVisits>({
+  const shortUrlVisits = fromPartial<ShortUrlVisits>({
     visits: [{}, {}, {}],
   });
   const goBack = jest.fn();
   const setUp = (title?: string | null) => {
-    const shortUrlDetail = Mock.of<ShortUrlDetail>({
+    const shortUrlDetail = fromPartial<ShortUrlDetail>({
       shortUrl: {
         shortUrl: 'https://s.test/abc123',
         longUrl,

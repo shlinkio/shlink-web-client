@@ -1,13 +1,10 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ReportExporter } from '../../src/common/services/ReportExporter';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { Settings } from '../../src/settings/reducers/settings';
 import { DomainVisits as createDomainVisits } from '../../src/visits/DomainVisits';
 import type { DomainVisits } from '../../src/visits/reducers/domainVisits';
-import type { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
@@ -19,16 +16,16 @@ describe('<DomainVisits />', () => {
   const exportVisits = jest.fn();
   const getDomainVisits = jest.fn();
   const cancelGetDomainVisits = jest.fn();
-  const domainVisits = Mock.of<DomainVisits>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
-  const DomainVisits = createDomainVisits(Mock.of<ReportExporter>({ exportVisits }));
+  const domainVisits = fromPartial<DomainVisits>({ visits: [{ date: formatISO(new Date()) }] });
+  const DomainVisits = createDomainVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
     <MemoryRouter>
       <DomainVisits
-        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
         getDomainVisits={getDomainVisits}
         cancelGetDomainVisits={cancelGetDomainVisits}
         domainVisits={domainVisits}
-        settings={Mock.all<Settings>()}
+        settings={fromPartial({})}
       />
     </MemoryRouter>,
   );

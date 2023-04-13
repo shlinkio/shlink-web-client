@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { Settings } from '../../../src/settings/reducers/settings';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { TagsSelector as createTagsSelector } from '../../../src/tags/helpers/TagsSelector';
 import type { TagsList } from '../../../src/tags/reducers/tagsList';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
@@ -10,12 +9,12 @@ describe('<TagsSelector />', () => {
   const onChange = jest.fn();
   const TagsSelector = createTagsSelector(colorGeneratorMock);
   const tags = ['foo', 'bar'];
-  const tagsList = Mock.of<TagsList>({ tags: [...tags, 'baz'] });
+  const tagsList = fromPartial<TagsList>({ tags: [...tags, 'baz'] });
   const setUp = () => renderWithEvents(
     <TagsSelector
       selectedTags={tags}
       tagsList={tagsList}
-      settings={Mock.all<Settings>()}
+      settings={fromPartial({})}
       listTags={jest.fn()}
       onChange={onChange}
     />,

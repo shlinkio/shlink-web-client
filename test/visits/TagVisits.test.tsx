@@ -1,15 +1,11 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ReportExporter } from '../../src/common/services/ReportExporter';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { Settings } from '../../src/settings/reducers/settings';
-import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import type { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import type { TagVisitsProps } from '../../src/visits/TagVisits';
 import { TagVisits as createTagVisits } from '../../src/visits/TagVisits';
-import type { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 jest.mock('react-router-dom', () => ({
@@ -20,19 +16,19 @@ jest.mock('react-router-dom', () => ({
 describe('<TagVisits />', () => {
   const getTagVisitsMock = jest.fn();
   const exportVisits = jest.fn();
-  const tagVisits = Mock.of<TagVisitsStats>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
+  const tagVisits = fromPartial<TagVisitsStats>({ visits: [{ date: formatISO(new Date()) }] });
   const TagVisits = createTagVisits(
-    Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),
-    Mock.of<ReportExporter>({ exportVisits }),
+    fromPartial({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),
+    fromPartial({ exportVisits }),
   );
   const setUp = () => renderWithEvents(
     <MemoryRouter>
       <TagVisits
-        {...Mock.all<TagVisitsProps>()}
-        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        {...fromPartial<TagVisitsProps>({})}
+        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
         getTagVisits={getTagVisitsMock}
         tagVisits={tagVisits}
-        settings={Mock.all<Settings>()}
+        settings={fromPartial({})}
         cancelGetTagVisits={() => {}}
       />
     </MemoryRouter>,

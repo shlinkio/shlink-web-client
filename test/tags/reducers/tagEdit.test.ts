@@ -1,7 +1,6 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { EditTag } from '../../../src/tags/reducers/tagEdit';
 import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
 import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 
@@ -10,14 +9,14 @@ describe('tagEditReducer', () => {
   const newName = 'bar';
   const color = '#ff0000';
   const editTagCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ editTag: editTagCall });
-  const colorGenerator = Mock.of<ColorGenerator>({ setColorForKey: jest.fn() });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ editTag: editTagCall });
+  const colorGenerator = fromPartial<ColorGenerator>({ setColorForKey: jest.fn() });
   const editTag = editTagCreator(buildShlinkApiClient, colorGenerator);
   const { reducer } = tagEditReducerCreator(editTag);
 
   describe('reducer', () => {
     it('returns loading on EDIT_TAG_START', () => {
-      expect(reducer(undefined, editTag.pending('', Mock.all<EditTag>()))).toEqual({
+      expect(reducer(undefined, editTag.pending('', fromPartial({})))).toEqual({
         editing: true,
         edited: false,
         error: false,
@@ -25,7 +24,7 @@ describe('tagEditReducer', () => {
     });
 
     it('returns error on EDIT_TAG_ERROR', () => {
-      expect(reducer(undefined, editTag.rejected(null, '', Mock.all<EditTag>()))).toEqual({
+      expect(reducer(undefined, editTag.rejected(null, '', fromPartial({})))).toEqual({
         editing: false,
         edited: false,
         error: true,
@@ -33,7 +32,7 @@ describe('tagEditReducer', () => {
     });
 
     it('returns tag names on EDIT_TAG', () => {
-      expect(reducer(undefined, editTag.fulfilled({ oldName, newName, color }, '', Mock.all<EditTag>()))).toEqual({
+      expect(reducer(undefined, editTag.fulfilled({ oldName, newName, color }, '', fromPartial({})))).toEqual({
         editing: false,
         edited: true,
         error: false,
@@ -52,7 +51,7 @@ describe('tagEditReducer', () => {
 
   describe('editTag', () => {
     const dispatch = jest.fn();
-    const getState = () => Mock.of<ShlinkState>();
+    const getState = () => fromPartial<ShlinkState>({});
 
     afterEach(jest.clearAllMocks);
 

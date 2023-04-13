@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { Visit } from '../../src/visits/types';
 import { VisitsHeader } from '../../src/visits/VisitsHeader';
 
 describe('<VisitsHeader />', () => {
-  const visits = [Mock.all<Visit>(), Mock.all<Visit>(), Mock.all<Visit>()];
+  const visits: Visit[] = [fromPartial({}), fromPartial({}), fromPartial({})];
   const title = 'My header title';
   const goBack = jest.fn();
   const setUp = () => render(<VisitsHeader visits={visits} goBack={goBack} title={title} />);

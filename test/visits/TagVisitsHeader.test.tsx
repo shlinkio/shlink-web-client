@@ -1,16 +1,16 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import type { TagVisits } from '../../src/visits/reducers/tagVisits';
 import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
 
 describe('<TagVisitsHeader />', () => {
-  const tagVisits = Mock.of<TagVisits>({
+  const tagVisits = fromPartial<TagVisits>({
     tag: 'foo',
     visits: [{}, {}, {}, {}],
   });
   const goBack = jest.fn();
-  const colorGenerator = Mock.of<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' });
+  const colorGenerator = fromPartial<ColorGenerator>({ isColorLightForKey: () => false, getColorForKey: () => 'red' });
   const setUp = () => render(<TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />);
 
   it('shows expected visits', () => {

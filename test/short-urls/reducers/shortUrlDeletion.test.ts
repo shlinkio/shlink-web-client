@@ -1,15 +1,15 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../src/api/types/errors';
 import {
-  deleteShortUrl as deleteShortUrlCretor,
+  deleteShortUrl as deleteShortUrlCreator,
   shortUrlDeletionReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlDeletion';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteShortUrl: deleteShortUrlCall });
-  const deleteShortUrl = deleteShortUrlCretor(buildShlinkApiClient);
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ deleteShortUrl: deleteShortUrlCall });
+  const deleteShortUrl = deleteShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetDeleteShortUrl } = shortUrlDeletionReducerCreator(deleteShortUrl);
 
   beforeEach(jest.clearAllMocks);
@@ -40,7 +40,9 @@ describe('shortUrlDeletionReducer', () => {
       }));
 
     it('returns errorData on DELETE_SHORT_URL_ERROR', () => {
-      const errorData = Mock.of<ProblemDetailsError>({ type: 'bar', detail: 'detail', title: 'title', status: 400 });
+      const errorData = fromPartial<ProblemDetailsError>(
+        { type: 'bar', detail: 'detail', title: 'title', status: 400 },
+      );
       const error = errorData as unknown as Error;
 
       expect(reducer(undefined, deleteShortUrl.rejected(error, '', { shortCode: '' }))).toEqual({

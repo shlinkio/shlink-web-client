@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 import type { ShortUrl } from '../../../src/short-urls/data';
@@ -7,7 +7,7 @@ import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsLi
 
 describe('shortUrlDetailReducer', () => {
   const getShortUrlCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ getShortUrl: getShortUrlCall });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ getShortUrl: getShortUrlCall });
   const { reducer, getShortUrlDetail } = shortUrlDetailReducerCreator(buildShlinkApiClient);
 
   beforeEach(jest.clearAllMocks);
@@ -27,7 +27,7 @@ describe('shortUrlDetailReducer', () => {
     });
 
     it('return short URL on GET_SHORT_URL_DETAIL', () => {
-      const actionShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
+      const actionShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
       const state = reducer(
         { loading: true, error: false },
         getShortUrlDetail.fulfilled(actionShortUrl, '', { shortCode: '' }),
@@ -42,25 +42,25 @@ describe('shortUrlDetailReducer', () => {
 
   describe('getShortUrlDetail', () => {
     const dispatchMock = jest.fn();
-    const buildGetState = (shortUrlsList?: ShortUrlsList) => () => Mock.of<ShlinkState>({ shortUrlsList });
+    const buildGetState = (shortUrlsList?: ShortUrlsList) => () => fromPartial<ShlinkState>({ shortUrlsList });
 
     it.each([
       [undefined],
-      [Mock.all<ShortUrlsList>()],
+      [fromPartial<ShortUrlsList>({})],
       [
-        Mock.of<ShortUrlsList>({
+        fromPartial<ShortUrlsList>({
           shortUrls: { data: [] },
         }),
       ],
       [
-        Mock.of<ShortUrlsList>({
+        fromPartial<ShortUrlsList>({
           shortUrls: {
-            data: [Mock.of<ShortUrl>({ shortCode: 'this_will_not_match' })],
+            data: [{ shortCode: 'this_will_not_match' }],
           },
         }),
       ],
     ])('performs API call when short URL is not found in local state', async (shortUrlsList?: ShortUrlsList) => {
-      const resolvedShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
+      const resolvedShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
       getShortUrlCall.mockResolvedValue(resolvedShortUrl);
 
       await getShortUrlDetail({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState(shortUrlsList), {});
@@ -71,12 +71,12 @@ describe('shortUrlDetailReducer', () => {
     });
 
     it('avoids API calls when short URL is found in local state', async () => {
-      const foundShortUrl = Mock.of<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
-      getShortUrlCall.mockResolvedValue(Mock.all<ShortUrl>());
+      const foundShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
+      getShortUrlCall.mockResolvedValue(fromPartial<ShortUrl>({}));
 
       await getShortUrlDetail(foundShortUrl)(
         dispatchMock,
-        buildGetState(Mock.of<ShortUrlsList>({
+        buildGetState(fromPartial({
           shortUrls: {
             data: [foundShortUrl],
           },

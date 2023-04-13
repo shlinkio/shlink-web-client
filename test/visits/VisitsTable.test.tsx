@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { rangeOf } from '../../src/utils/utils';
 import type { NormalizedVisit } from '../../src/visits/types';
 import type { VisitsTableProps } from '../../src/visits/VisitsTable';
@@ -7,7 +7,7 @@ import { VisitsTable } from '../../src/visits/VisitsTable';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsTable />', () => {
-  const matchMedia = () => Mock.of<MediaQueryList>({ matches: false });
+  const matchMedia = () => fromPartial<MediaQueryList>({ matches: false });
   const setSelectedVisits = jest.fn();
   const setUpFactory = (props: Partial<VisitsTableProps> = {}) => renderWithEvents(
     <VisitsTable
@@ -23,8 +23,8 @@ describe('<VisitsTable />', () => {
   const setUpForOrphanVisits = (isOrphanVisits: boolean) => setUpFactory({ isOrphanVisits });
   const setUpWithBots = () => setUpFactory({
     visits: [
-      Mock.of<NormalizedVisit>({ potentialBot: false, date: '2022-05-05' }),
-      Mock.of<NormalizedVisit>({ potentialBot: true, date: '2022-05-05' }),
+      fromPartial({ potentialBot: false, date: '2022-05-05' }),
+      fromPartial({ potentialBot: true, date: '2022-05-05' }),
     ],
   });
 
@@ -48,7 +48,7 @@ describe('<VisitsTable />', () => {
     [115, 7, 2], // This one will have ellipsis
   ])('renders the expected amount of pages', (visitsCount, expectedAmountOfPageItems, expectedDisabledItems) => {
     const { container } = setUp(
-      rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' })),
+      rangeOf(visitsCount, () => fromPartial<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' })),
     );
     expect(container.querySelectorAll('.page-item')).toHaveLength(expectedAmountOfPageItems);
     expect(container.querySelectorAll('.disabled')).toHaveLength(expectedDisabledItems);
@@ -58,7 +58,7 @@ describe('<VisitsTable />', () => {
     rangeOf(20, (value) => [value]),
   )('does not render footer when there is only one page to render', (visitsCount) => {
     const { container } = setUp(
-      rangeOf(visitsCount, () => Mock.of<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' })),
+      rangeOf(visitsCount, () => fromPartial<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' })),
     );
 
     expect(container.querySelector('tfoot')).not.toBeInTheDocument();
@@ -66,7 +66,7 @@ describe('<VisitsTable />', () => {
   });
 
   it('selected rows are highlighted', async () => {
-    const visits = rangeOf(10, () => Mock.of<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' }));
+    const visits = rangeOf(10, () => fromPartial<NormalizedVisit>({ browser: '', date: '2022-01-01', referer: '' }));
     const { container, user } = setUp(visits, [visits[1], visits[2]]);
 
     // Initial situation
@@ -86,7 +86,7 @@ describe('<VisitsTable />', () => {
   });
 
   it('orders visits when column is clicked', async () => {
-    const { user } = setUp(rangeOf(9, (index) => Mock.of<NormalizedVisit>({
+    const { user } = setUp(rangeOf(9, (index) => fromPartial<NormalizedVisit>({
       browser: '',
       date: `2022-01-0${10 - index}`,
       referer: `${index}`,
@@ -108,8 +108,8 @@ describe('<VisitsTable />', () => {
 
   it('filters list when writing in search box', async () => {
     const { user } = setUp([
-      ...rangeOf(7, () => Mock.of<NormalizedVisit>({ browser: 'aaa', date: '2022-01-01', referer: 'aaa' })),
-      ...rangeOf(2, () => Mock.of<NormalizedVisit>({ browser: 'bbb', date: '2022-01-01', referer: 'bbb' })),
+      ...rangeOf(7, () => fromPartial<NormalizedVisit>({ browser: 'aaa', date: '2022-01-01', referer: 'aaa' })),
+      ...rangeOf(2, () => fromPartial<NormalizedVisit>({ browser: 'bbb', date: '2022-01-01', referer: 'bbb' })),
     ]);
     const searchField = screen.getByPlaceholderText('Search...');
     const searchText = async (text: string) => {
