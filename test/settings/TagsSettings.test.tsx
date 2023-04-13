@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { Settings, TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
+import { fromPartial } from '@total-typescript/shoehorn';
+import type { TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import type { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -8,7 +8,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 describe('<TagsSettings />', () => {
   const setTagsSettings = jest.fn();
   const setUp = (tags?: TagsSettingsOptions) => renderWithEvents(
-    <TagsSettings settings={Mock.of<Settings>({ tags })} setTagsSettings={setTagsSettings} />,
+    <TagsSettings settings={fromPartial({ tags })} setTagsSettings={setTagsSettings} />,
   );
 
   afterEach(jest.clearAllMocks);

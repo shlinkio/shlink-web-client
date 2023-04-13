@@ -1,14 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
-import type { ReachableServer } from '../../src/servers/data';
 import { Overview as overviewCreator } from '../../src/servers/Overview';
-import type { Settings } from '../../src/settings/reducers/settings';
-import type { ShortUrlsList as ShortUrlsListState } from '../../src/short-urls/reducers/shortUrlsList';
-import type { TagsList } from '../../src/tags/reducers/tagsList';
 import { prettify } from '../../src/utils/helpers/numbers';
-import type { VisitsOverview } from '../../src/visits/reducers/visitsOverview';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<Overview />', () => {
@@ -28,18 +23,18 @@ describe('<Overview />', () => {
         listShortUrls={listShortUrls}
         listTags={listTags}
         loadVisitsOverview={loadVisitsOverview}
-        shortUrlsList={Mock.of<ShortUrlsListState>({ loading, shortUrls })}
-        tagsList={Mock.of<TagsList>({ loading, tags: ['foo', 'bar', 'baz'] })}
-        visitsOverview={Mock.of<VisitsOverview>({
+        shortUrlsList={fromPartial({ loading, shortUrls })}
+        tagsList={fromPartial({ loading, tags: ['foo', 'bar', 'baz'] })}
+        visitsOverview={fromPartial({
           loading,
           nonOrphanVisits: { total: 3456, bots: 1000, nonBots: 2456 },
           orphanVisits: { total: 28, bots: 15, nonBots: 13 },
         })}
-        selectedServer={Mock.of<ReachableServer>({ id: serverId })}
+        selectedServer={fromPartial({ id: serverId })}
         createNewVisits={jest.fn()}
         loadMercureInfo={jest.fn()}
-        mercureInfo={Mock.all<MercureInfo>()}
-        settings={Mock.of<Settings>({ visits: { excludeBots } })}
+        mercureInfo={fromPartial<MercureInfo>({})}
+        settings={fromPartial({ visits: { excludeBots } })}
       />
     </MemoryRouter>,
   );

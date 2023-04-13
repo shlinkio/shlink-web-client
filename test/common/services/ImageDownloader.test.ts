@@ -1,11 +1,11 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { ImageDownloader } from '../../../src/common/services/ImageDownloader';
 import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ImageDownloader', () => {
   const fetchBlob = jest.fn();
-  const httpClient = Mock.of<HttpClient>({ fetchBlob });
+  const httpClient = fromPartial<HttpClient>({ fetchBlob });
   let imageDownloader: ImageDownloader;
 
   beforeEach(() => {

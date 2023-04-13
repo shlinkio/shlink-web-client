@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ShlinkPaginator } from '../../src/api/types';
 import { Paginator } from '../../src/short-urls/Paginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<Paginator />', () => {
-  const buildPaginator = (pagesCount?: number) => Mock.of<ShlinkPaginator>({ pagesCount, currentPage: 1 });
+  const buildPaginator = (pagesCount?: number) => fromPartial<ShlinkPaginator>({ pagesCount, currentPage: 1 });
   const setUp = (paginator?: ShlinkPaginator, currentQueryString?: string) => render(
     <MemoryRouter>
       <Paginator serverId="abc123" paginator={paginator} currentQueryString={currentQueryString} />

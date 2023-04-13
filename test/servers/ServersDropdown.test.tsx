@@ -1,16 +1,16 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { values } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ServersMap, ServerWithId } from '../../src/servers/data';
+import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {
   const fallbackServers: ServersMap = {
-    '1a': Mock.of<ServerWithId>({ name: 'foo', id: '1a' }),
-    '2b': Mock.of<ServerWithId>({ name: 'bar', id: '2b' }),
-    '3c': Mock.of<ServerWithId>({ name: 'baz', id: '3c' }),
+    '1a': fromPartial({ name: 'foo', id: '1a' }),
+    '2b': fromPartial({ name: 'bar', id: '2b' }),
+    '3c': fromPartial({ name: 'baz', id: '3c' }),
   };
   const setUp = (servers: ServersMap = fallbackServers) => renderWithEvents(
     <MemoryRouter><ServersDropdown servers={servers} selectedServer={null} /></MemoryRouter>,

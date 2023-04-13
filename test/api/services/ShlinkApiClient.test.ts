@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
@@ -9,7 +9,7 @@ import type { OptionalString } from '../../../src/utils/utils';
 describe('ShlinkApiClient', () => {
   const fetchJson = jest.fn().mockResolvedValue({});
   const fetchEmpty = jest.fn().mockResolvedValue(undefined);
-  const httpClient = Mock.of<HttpClient>({ fetchJson, fetchEmpty });
+  const httpClient = fromPartial<HttpClient>({ fetchJson, fetchEmpty });
   const buildApiClient = () => new ShlinkApiClient(httpClient, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
     ['abc123', null],
@@ -177,7 +177,7 @@ describe('ShlinkApiClient', () => {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
       };
-      const expectedResp = Mock.of<ShortUrl>();
+      const expectedResp = fromPartial<ShortUrl>({});
       fetchJson.mockResolvedValue(expectedResp);
       const { updateShortUrl } = buildApiClient();
       const expectedQuery = domain ? `?domain=${domain}` : '';
@@ -311,7 +311,7 @@ describe('ShlinkApiClient', () => {
 
   describe('listDomains', () => {
     it('returns domains', async () => {
-      const expectedData = { data: [Mock.all<ShlinkDomain>(), Mock.all<ShlinkDomain>()] };
+      const expectedData = { data: [fromPartial<ShlinkDomain>({}), fromPartial<ShlinkDomain>({})] };
       fetchJson.mockResolvedValue({ domains: expectedData });
       const { listDomains } = buildApiClient();
 
@@ -324,7 +324,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getVisitsOverview', () => {
     it('returns visits overview', async () => {
-      const expectedData = Mock.all<ShlinkVisitsOverview>();
+      const expectedData = fromPartial<ShlinkVisitsOverview>({});
       fetchJson.mockResolvedValue({ visits: expectedData });
       const { getVisitsOverview } = buildApiClient();
 
@@ -337,7 +337,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getOrphanVisits', () => {
     it('returns orphan visits', async () => {
-      fetchJson.mockResolvedValue({ visits: Mock.of<ShlinkVisits>({ data: [] }) });
+      fetchJson.mockResolvedValue({ visits: fromPartial<ShlinkVisits>({ data: [] }) });
       const { getOrphanVisits } = buildApiClient();
 
       const result = await getOrphanVisits();
@@ -349,7 +349,7 @@ describe('ShlinkApiClient', () => {
 
   describe('getNonOrphanVisits', () => {
     it('returns non-orphan visits', async () => {
-      fetchJson.mockResolvedValue({ visits: Mock.of<ShlinkVisits>({ data: [] }) });
+      fetchJson.mockResolvedValue({ visits: fromPartial<ShlinkVisits>({ data: [] }) });
       const { getNonOrphanVisits } = buildApiClient();
 
       const result = await getNonOrphanVisits();

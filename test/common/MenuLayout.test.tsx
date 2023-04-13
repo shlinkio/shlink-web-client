@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router, useParams } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import { MenuLayout as createMenuLayout } from '../../src/common/MenuLayout';
-import type { NonReachableServer, NotFoundServer, ReachableServer, SelectedServer } from '../../src/servers/data';
+import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import type { SemVer } from '../../src/utils/helpers/version';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useParams: jest.fn() }));
@@ -54,8 +54,8 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    [Mock.of<NotFoundServer>({ serverNotFound: true })],
-    [Mock.of<NonReachableServer>({ serverNotReachable: true })],
+    [fromPartial<NotFoundServer>({ serverNotFound: true })],
+    [fromPartial<NonReachableServer>({ serverNotReachable: true })],
   ])('shows error for non reachable servers', (selectedServer) => {
     setUp(selectedServer);
 
@@ -81,7 +81,7 @@ describe('<MenuLayout />', () => {
   ])(
     'renders expected component based on location and server version',
     (version, currentPath, expectedContent) => {
-      setUp(Mock.of<ReachableServer>({ version }), currentPath);
+      setUp(fromPartial({ version }), currentPath);
       expect(screen.getByText(expectedContent)).toBeInTheDocument();
     },
   );

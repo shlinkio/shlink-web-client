@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown as createManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -11,7 +11,7 @@ describe('<ManageServersRowDropdown />', () => {
   );
   const setAutoConnect = jest.fn();
   const setUp = (autoConnect = false) => {
-    const server = Mock.of<ServerWithId>({ id: 'abc123', autoConnect });
+    const server = fromPartial<ServerWithId>({ id: 'abc123', autoConnect });
     return renderWithEvents(
       <MemoryRouter>
         <ManageServersRowDropdown setAutoConnect={setAutoConnect} server={server} />

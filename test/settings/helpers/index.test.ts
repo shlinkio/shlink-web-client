@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkState } from '../../../src/container/types';
 import { migrateDeprecatedSettings } from '../../../src/settings/helpers';
 
@@ -9,7 +9,7 @@ describe('settings-helpers', () => {
     });
 
     it('updates settings as expected', () => {
-      const state = Mock.of<ShlinkState>({
+      const state = fromPartial<ShlinkState>({
         settings: {
           visits: {
             defaultInterval: 'last180days' as any,

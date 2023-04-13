@@ -1,11 +1,11 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { DomainStatus } from '../../../src/domains/data';
 import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainStatusIcon />', () => {
-  const matchMedia = jest.fn().mockReturnValue(Mock.of<MediaQueryList>({ matches: false }));
+  const matchMedia = jest.fn().mockReturnValue(fromPartial<MediaQueryList>({ matches: false }));
   const setUp = (status: DomainStatus) => renderWithEvents(
     <DomainStatusIcon status={status} matchMedia={matchMedia} />,
   );

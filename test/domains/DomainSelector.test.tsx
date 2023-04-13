@@ -1,16 +1,15 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { ShlinkDomain } from '../../src/api/types';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { DomainSelector } from '../../src/domains/DomainSelector';
 import type { DomainsList } from '../../src/domains/reducers/domainsList';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DomainSelector />', () => {
-  const domainsList = Mock.of<DomainsList>({
+  const domainsList = fromPartial<DomainsList>({
     domains: [
-      Mock.of<ShlinkDomain>({ domain: 'default.com', isDefault: true }),
-      Mock.of<ShlinkDomain>({ domain: 'foo.com' }),
-      Mock.of<ShlinkDomain>({ domain: 'bar.com' }),
+      fromPartial({ domain: 'default.com', isDefault: true }),
+      fromPartial({ domain: 'foo.com' }),
+      fromPartial({ domain: 'bar.com' }),
     ],
   });
   const setUp = (value = '') => renderWithEvents(

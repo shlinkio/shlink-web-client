@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ServerWithId } from '../../src/servers/data';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
@@ -20,7 +19,7 @@ describe('<DeleteServerModal />', () => {
         renderModal={(args) => (
           <DeleteServerModal
             {...args}
-            server={Mock.of<ServerWithId>({ name: serverName })}
+            server={fromPartial({ name: serverName })}
             deleteServer={deleteServerMock}
           />
         )}

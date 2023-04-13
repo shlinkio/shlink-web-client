@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
-import { Mock } from 'ts-mockery';
-import type { ServerWithId } from '../../src/servers/data';
 import { DeleteServerButton as createDeleteServerButton } from '../../src/servers/DeleteServerButton';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -10,7 +9,7 @@ describe('<DeleteServerButton />', () => {
     ({ isOpen }) => <>DeleteServerModal {isOpen ? '[Open]' : '[Closed]'}</>,
   );
   const setUp = (children?: ReactNode) => renderWithEvents(
-    <DeleteServerButton server={Mock.all<ServerWithId>()} textClassName="button">{children}</DeleteServerButton>,
+    <DeleteServerButton server={fromPartial({})} textClassName="button">{children}</DeleteServerButton>,
   );
 
   it.each([

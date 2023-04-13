@@ -1,6 +1,6 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { identity } from 'ramda';
-import { Mock } from 'ts-mockery';
 import { bindToMercureTopic } from '../../../src/mercure/helpers';
 import type { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
 
@@ -14,11 +14,11 @@ describe('helpers', () => {
     const onTokenExpired = jest.fn();
 
     it.each([
-      [Mock.of<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' })],
-      [Mock.of<MercureInfo>({ loading: false, error: true, mercureHubUrl: 'foo' })],
-      [Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: 'foo' })],
-      [Mock.of<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined })],
-      [Mock.of<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined })],
+      [fromPartial<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' })],
+      [fromPartial<MercureInfo>({ loading: false, error: true, mercureHubUrl: 'foo' })],
+      [fromPartial<MercureInfo>({ loading: true, error: true, mercureHubUrl: 'foo' })],
+      [fromPartial<MercureInfo>({ loading: false, error: false, mercureHubUrl: undefined })],
+      [fromPartial<MercureInfo>({ loading: true, error: true, mercureHubUrl: undefined })],
     ])('does not bind an EventSource when loading, error or no hub URL', (mercureInfo) => {
       bindToMercureTopic(mercureInfo, [''], identity, () => {});
 

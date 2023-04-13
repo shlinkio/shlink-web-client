@@ -1,12 +1,11 @@
 import { render } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { Sidebar } from '../../src/common/reducers/sidebar';
 import { ShlinkVersionsContainer } from '../../src/common/ShlinkVersionsContainer';
-import type { SelectedServer } from '../../src/servers/data';
 
 describe('<ShlinkVersionsContainer />', () => {
   const setUp = (sidebar: Sidebar) => render(
-    <ShlinkVersionsContainer selectedServer={Mock.all<SelectedServer>()} sidebar={sidebar} />,
+    <ShlinkVersionsContainer selectedServer={fromPartial({})} sidebar={sidebar} />,
   );
 
   it.each([

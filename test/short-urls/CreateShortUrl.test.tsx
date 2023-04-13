@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { Settings } from '../../src/settings/reducers/settings';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { CreateShortUrl as createShortUrlsCreator } from '../../src/short-urls/CreateShortUrl';
 import type { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
 
@@ -8,7 +7,7 @@ describe('<CreateShortUrl />', () => {
   const ShortUrlForm = () => <span>ShortUrlForm</span>;
   const CreateShortUrlResult = () => <span>CreateShortUrlResult</span>;
   const shortUrlCreation = { validateUrls: true };
-  const shortUrlCreationResult = Mock.all<ShortUrlCreation>();
+  const shortUrlCreationResult = fromPartial<ShortUrlCreation>({});
   const createShortUrl = jest.fn(async () => Promise.resolve());
   const CreateShortUrl = createShortUrlsCreator(ShortUrlForm, CreateShortUrlResult);
   const setUp = () => render(
@@ -17,7 +16,7 @@ describe('<CreateShortUrl />', () => {
       createShortUrl={createShortUrl}
       selectedServer={null}
       resetCreateShortUrl={() => {}}
-      settings={Mock.of<Settings>({ shortUrlCreation })}
+      settings={fromPartial({ shortUrlCreation })}
     />,
   );
 

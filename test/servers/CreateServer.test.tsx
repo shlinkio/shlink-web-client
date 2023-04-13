@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
 import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -10,7 +10,7 @@ jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom')
 describe('<CreateServer />', () => {
   const createServersMock = jest.fn();
   const navigate = jest.fn();
-  const servers = { foo: Mock.of<ServerWithId>({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }) };
+  const servers = { foo: fromPartial<ServerWithId>({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }) };
   const setUp = (serversImported = false, importFailed = false) => {
     (useNavigate as any).mockReturnValue(navigate);
 

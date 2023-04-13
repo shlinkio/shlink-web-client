@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { ReachableServer, SelectedServer } from '../../src/servers/data';
+import { fromPartial } from '@total-typescript/shoehorn';
+import type { SelectedServer } from '../../src/servers/data';
 import type { ShortUrlsOrderableFields } from '../../src/short-urls/data';
 import { SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 import type { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
@@ -8,7 +8,7 @@ import { ShortUrlsTable as shortUrlsTableCreator } from '../../src/short-urls/Sh
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsTable />', () => {
-  const shortUrlsList = Mock.all<ShortUrlsList>();
+  const shortUrlsList = fromPartial<ShortUrlsList>({});
   const orderByColumn = jest.fn();
   const ShortUrlsTable = shortUrlsTableCreator(() => <span>ShortUrlsRow</span>);
   const setUp = (server: SelectedServer = null) => renderWithEvents(
@@ -56,7 +56,7 @@ describe('<ShortUrlsTable />', () => {
   });
 
   it('should render composed title column', () => {
-    setUp(Mock.of<ReachableServer>({ version: '2.0.0' }));
+    setUp(fromPartial({ version: '2.0.0' }));
 
     const { innerHTML } = screen.getAllByRole('columnheader')[2];
 

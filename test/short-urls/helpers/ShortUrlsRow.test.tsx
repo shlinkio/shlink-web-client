@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
 import { last } from 'ramda';
 import { MemoryRouter, useLocation } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ReachableServer } from '../../../src/servers/data';
 import type { Settings } from '../../../src/settings/reducers/settings';
 import type { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
@@ -28,7 +28,7 @@ jest.mock('react-router-dom', () => ({
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = jest.fn(() => true);
   const useTimeoutToggle = jest.fn(() => [false, timeoutToggle]) as TimeoutToggle;
-  const server = Mock.of<ReachableServer>({ url: 'https://s.test' });
+  const server = fromPartial<ReachableServer>({ url: 'https://s.test' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
     shortUrl: 'https://s.test/abc123',
@@ -60,7 +60,7 @@ describe('<ShortUrlsRow />', () => {
               selectedServer={server}
               shortUrl={{ ...shortUrl, title, tags, meta: { ...shortUrl.meta, ...meta } }}
               onTagClick={() => null}
-              settings={Mock.of<Settings>(settings)}
+              settings={fromPartial(settings)}
             />
           </tbody>
         </table>
@@ -118,13 +118,13 @@ describe('<ShortUrlsRow />', () => {
 
   it.each([
     [{}, '', shortUrl.visitsSummary?.total],
-    [Mock.of<Settings>({ visits: { excludeBots: false } }), '', shortUrl.visitsSummary?.total],
-    [Mock.of<Settings>({ visits: { excludeBots: true } }), '', shortUrl.visitsSummary?.nonBots],
-    [Mock.of<Settings>({ visits: { excludeBots: false } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
-    [Mock.of<Settings>({ visits: { excludeBots: true } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
+    [fromPartial<Settings>({ visits: { excludeBots: false } }), '', shortUrl.visitsSummary?.total],
+    [fromPartial<Settings>({ visits: { excludeBots: true } }), '', shortUrl.visitsSummary?.nonBots],
+    [fromPartial<Settings>({ visits: { excludeBots: false } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
+    [fromPartial<Settings>({ visits: { excludeBots: true } }), 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
     [{}, 'excludeBots=true', shortUrl.visitsSummary?.nonBots],
-    [Mock.of<Settings>({ visits: { excludeBots: true } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
-    [Mock.of<Settings>({ visits: { excludeBots: false } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
+    [fromPartial<Settings>({ visits: { excludeBots: true } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
+    [fromPartial<Settings>({ visits: { excludeBots: false } }), 'excludeBots=false', shortUrl.visitsSummary?.total],
     [{}, 'excludeBots=false', shortUrl.visitsSummary?.total],
   ])('renders visits count in fifth row', (settings, search, expectedAmount) => {
     setUp({ settings }, search);

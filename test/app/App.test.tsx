@@ -1,9 +1,8 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import { App as createApp } from '../../src/app/App';
-import type { Settings } from '../../src/settings/reducers/settings';
 
 describe('<App />', () => {
   const App = createApp(
@@ -25,7 +24,7 @@ describe('<App />', () => {
         <App
           fetchServers={() => {}}
           servers={{}}
-          settings={Mock.all<Settings>()}
+          settings={fromPartial({})}
           appUpdated
           resetAppUpdate={() => {}}
         />
