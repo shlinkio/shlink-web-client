@@ -102,7 +102,6 @@
     "resize-observer-polyfill": "^1.5.1",
     "sass": "^1.57.1",
     "stylelint": "^14.16.0",
-    "ts-mockery": "^1.2.0",
     "typescript": "^5.0.2",
     "vite": "^4.2.0",
     "vite-plugin-pwa": "^0.14.4"
