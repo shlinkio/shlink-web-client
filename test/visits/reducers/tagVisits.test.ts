@@ -1,5 +1,5 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
@@ -13,20 +13,20 @@ import {
   tagVisitsReducerCreator,
 } from '../../../src/visits/reducers/tagVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { CreateVisit, Visit } from '../../../src/visits/types';
+import type { Visit } from '../../../src/visits/types';
 
 describe('tagVisitsReducer', () => {
   const now = new Date();
-  const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
   const getTagVisitsCall = jest.fn();
-  const buildShlinkApiClientMock = () => Mock.of<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
+  const buildShlinkApiClientMock = () => fromPartial<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
   const getTagVisits = getTagVisitsCreator(buildShlinkApiClientMock);
   const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(getTagVisits);
 
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const buildState = (data: Partial<TagVisits>) => Mock.of<TagVisits>(data);
+    const buildState = (data: Partial<TagVisits>) => fromPartial<TagVisits>(data);
 
     it('returns loading on GET_TAG_VISITS_START', () => {
       const { loading } = reducer(buildState({ loading: false }), getTagVisits.pending('', { tag: '' }));
@@ -54,7 +54,7 @@ describe('tagVisitsReducer', () => {
     });
 
     it('return visits on GET_TAG_VISITS', () => {
-      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const actionVisits: Visit[] = [fromPartial({}), fromPartial({})];
       const { loading, error, visits } = reducer(
         buildState({ loading: true, error: false }),
         getTagVisits.fulfilled({ visits: actionVisits }, '', { tag: '' }),
@@ -69,21 +69,21 @@ describe('tagVisitsReducer', () => {
       [{ tag: 'foo' }, visitsMocks.length + 1],
       [{ tag: 'bar' }, visitsMocks.length],
       [
-        Mock.of<TagVisits>({
+        fromPartial<TagVisits>({
           tag: 'foo',
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<TagVisits>({
+        fromPartial<TagVisits>({
           tag: 'foo',
           query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<TagVisits>({
+        fromPartial<TagVisits>({
           tag: 'foo',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -93,7 +93,7 @@ describe('tagVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<TagVisits>({
+        fromPartial<TagVisits>({
           tag: 'foo',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -103,7 +103,7 @@ describe('tagVisitsReducer', () => {
         visitsMocks.length + 1,
       ],
       [
-        Mock.of<TagVisits>({
+        fromPartial<TagVisits>({
           tag: 'bar',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -123,7 +123,7 @@ describe('tagVisitsReducer', () => {
 
       const { visits } = reducer(
         prevState,
-        createNewVisits([Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
+        createNewVisits([fromPartial({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
       );
 
       expect(visits).toHaveLength(expectedVisits);
@@ -144,7 +144,7 @@ describe('tagVisitsReducer', () => {
 
   describe('getTagVisits', () => {
     const dispatchMock = jest.fn();
-    const getState = () => Mock.of<ShlinkState>({
+    const getState = () => fromPartial<ShlinkState>({
       tagVisits: { cancelLoad: false },
     });
     const tag = 'foo';
@@ -174,12 +174,12 @@ describe('tagVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 20)) })],
         getTagVisits.fallbackToInterval('last30Days'),
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 100)) })],
         getTagVisits.fallbackToInterval('last180Days'),
         3,
       ],

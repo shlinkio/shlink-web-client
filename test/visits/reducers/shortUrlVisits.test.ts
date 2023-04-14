@@ -1,5 +1,5 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
@@ -13,20 +13,20 @@ import {
   shortUrlVisitsReducerCreator,
 } from '../../../src/visits/reducers/shortUrlVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { CreateVisit, Visit } from '../../../src/visits/types';
+import type { Visit } from '../../../src/visits/types';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
-  const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
   const getShortUrlVisitsCall = jest.fn();
-  const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getShortUrlVisits: getShortUrlVisitsCall });
+  const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getShortUrlVisits: getShortUrlVisitsCall });
   const getShortUrlVisits = getShortUrlVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(getShortUrlVisits);
 
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const buildState = (data: Partial<ShortUrlVisits>) => Mock.of<ShortUrlVisits>(data);
+    const buildState = (data: Partial<ShortUrlVisits>) => fromPartial<ShortUrlVisits>(data);
 
     it('returns loading on GET_SHORT_URL_VISITS_START', () => {
       const { loading } = reducer(buildState({ loading: false }), getShortUrlVisits.pending('', { shortCode: '' }));
@@ -54,7 +54,7 @@ describe('shortUrlVisitsReducer', () => {
     });
 
     it('return visits on GET_SHORT_URL_VISITS', () => {
-      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const actionVisits: Visit[] = [fromPartial({}), fromPartial({})];
       const { loading, error, visits } = reducer(
         buildState({ loading: true, error: false }),
         getShortUrlVisits.fulfilled({ visits: actionVisits }, '', { shortCode: '' }),
@@ -69,21 +69,21 @@ describe('shortUrlVisitsReducer', () => {
       [{ shortCode: 'abc123' }, visitsMocks.length + 1],
       [{ shortCode: 'def456' }, visitsMocks.length],
       [
-        Mock.of<ShortUrlVisits>({
+        fromPartial<ShortUrlVisits>({
           shortCode: 'abc123',
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<ShortUrlVisits>({
+        fromPartial<ShortUrlVisits>({
           shortCode: 'abc123',
           query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<ShortUrlVisits>({
+        fromPartial<ShortUrlVisits>({
           shortCode: 'abc123',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -93,7 +93,7 @@ describe('shortUrlVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<ShortUrlVisits>({
+        fromPartial<ShortUrlVisits>({
           shortCode: 'abc123',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -103,7 +103,7 @@ describe('shortUrlVisitsReducer', () => {
         visitsMocks.length + 1,
       ],
       [
-        Mock.of<ShortUrlVisits>({
+        fromPartial<ShortUrlVisits>({
           shortCode: 'def456',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -123,7 +123,7 @@ describe('shortUrlVisitsReducer', () => {
 
       const { visits } = reducer(
         prevState,
-        createNewVisits([Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
+        createNewVisits([fromPartial({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } })]),
       );
 
       expect(visits).toHaveLength(expectedVisits);
@@ -144,8 +144,8 @@ describe('shortUrlVisitsReducer', () => {
 
   describe('getShortUrlVisits', () => {
     const dispatchMock = jest.fn();
-    const getState = () => Mock.of<ShlinkState>({
-      shortUrlVisits: Mock.of<ShortUrlVisits>({ cancelLoad: false }),
+    const getState = () => fromPartial<ShlinkState>({
+      shortUrlVisits: { cancelLoad: false },
     });
 
     it.each([
@@ -197,12 +197,12 @@ describe('shortUrlVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 5)) })],
         getShortUrlVisits.fallbackToInterval('last7Days'),
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 200)) })],
         getShortUrlVisits.fallbackToInterval('last365Days'),
         3,
       ],

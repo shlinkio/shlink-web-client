@@ -1,6 +1,6 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { dissoc, values } from 'ramda';
-import { Mock } from 'ts-mockery';
-import type { RegularServer, ServerWithId } from '../../../src/servers/data';
+import type { RegularServer, ServersMap, ServerWithId } from '../../../src/servers/data';
 import {
   createServers,
   deleteServer,
@@ -10,9 +10,9 @@ import {
 } from '../../../src/servers/reducers/servers';
 
 describe('serversReducer', () => {
-  const list = {
-    abc123: Mock.of<RegularServer>({ id: 'abc123' }),
-    def456: Mock.of<RegularServer>({ id: 'def456' }),
+  const list: ServersMap = {
+    abc123: fromPartial({ id: 'abc123' }),
+    def456: fromPartial({ id: 'def456' }),
   };
 
   afterEach(jest.clearAllMocks);
@@ -31,12 +31,12 @@ describe('serversReducer', () => {
       }));
 
     it('removes server when action is DELETE_SERVER', () =>
-      expect(serversReducer(list, deleteServer(Mock.of<ServerWithId>({ id: 'abc123' })))).toEqual({
+      expect(serversReducer(list, deleteServer(fromPartial<ServerWithId>({ id: 'abc123' })))).toEqual({
         def456: { id: 'def456' },
       }));
 
     it('appends server when action is CREATE_SERVERS', () =>
-      expect(serversReducer(list, createServers([Mock.of<ServerWithId>({ id: 'ghi789' })]))).toEqual({
+      expect(serversReducer(list, createServers([fromPartial<ServerWithId>({ id: 'ghi789' })]))).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
         ghi789: { id: 'ghi789' },
@@ -46,7 +46,7 @@ describe('serversReducer', () => {
       [true],
       [false],
     ])('returns state as it is when trying to set auto-connect on invalid server', (autoConnect) =>
-      expect(serversReducer(list, setAutoConnect(Mock.of<ServerWithId>({ id: 'invalid' }), autoConnect))).toEqual({
+      expect(serversReducer(list, setAutoConnect(fromPartial<ServerWithId>({ id: 'invalid' }), autoConnect))).toEqual({
         abc123: { id: 'abc123' },
         def456: { id: 'def456' },
       }));
@@ -59,7 +59,7 @@ describe('serversReducer', () => {
 
       expect(serversReducer(
         listWithDisabledAutoConnect,
-        setAutoConnect(Mock.of<ServerWithId>({ id: 'abc123' }), false),
+        setAutoConnect(fromPartial<ServerWithId>({ id: 'abc123' }), false),
       )).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456' },
@@ -74,7 +74,7 @@ describe('serversReducer', () => {
 
       expect(serversReducer(
         listWithEnabledAutoConnect,
-        setAutoConnect(Mock.of<ServerWithId>({ id: 'def456' }), true),
+        setAutoConnect(fromPartial<ServerWithId>({ id: 'def456' }), true),
       )).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456', autoConnect: true },
@@ -94,7 +94,7 @@ describe('serversReducer', () => {
 
     describe('deleteServer', () => {
       it('returns expected action', () => {
-        const serverToDelete = Mock.of<RegularServer>({ id: 'abc123' });
+        const serverToDelete = fromPartial<RegularServer>({ id: 'abc123' });
         const { payload } = deleteServer(serverToDelete);
 
         expect(payload).toEqual({ id: 'abc123' });
@@ -122,7 +122,7 @@ describe('serversReducer', () => {
         [true],
         [false],
       ])('returns expected action', (autoConnect) => {
-        const serverToEdit = Mock.of<RegularServer>({ id: 'abc123' });
+        const serverToEdit = fromPartial<RegularServer>({ id: 'abc123' });
         const { payload } = setAutoConnect(serverToEdit, autoConnect);
 
         expect(payload).toEqual({ serverId: 'abc123', autoConnect });

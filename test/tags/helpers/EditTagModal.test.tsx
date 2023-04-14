@@ -1,17 +1,15 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { ProblemDetailsError } from '../../../src/api/types/errors';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { EditTagModal as createEditTagModal } from '../../../src/tags/helpers/EditTagModal';
 import type { TagEdition } from '../../../src/tags/reducers/tagEdit';
-import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditTagModal />', () => {
-  const EditTagModal = createEditTagModal(Mock.of<ColorGenerator>({ getColorForKey: jest.fn(() => 'green') }));
+  const EditTagModal = createEditTagModal(fromPartial({ getColorForKey: jest.fn(() => 'green') }));
   const editTag = jest.fn().mockReturnValue(Promise.resolve());
   const toggle = jest.fn();
   const setUp = (tagEdit: Partial<TagEdition> = {}) => {
-    const edition = Mock.of<TagEdition>(tagEdit);
+    const edition = fromPartial<TagEdition>(tagEdit);
     return renderWithEvents(
       <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={jest.fn()} toggle={toggle} />,
     );
@@ -43,7 +41,7 @@ describe('<EditTagModal />', () => {
     [true, 1],
     [false, 0],
   ])('displays error result in case of error', (error, expectedResultCount) => {
-    setUp({ error, errorData: Mock.all<ProblemDetailsError>() });
+    setUp({ error, errorData: fromPartial({}) });
     expect(screen.queryAllByText('Something went wrong while editing the tag :(')).toHaveLength(expectedResultCount);
   });
 

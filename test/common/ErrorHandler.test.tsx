@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -9,10 +9,10 @@ const ComponentWithError = () => {
 
 describe('<ErrorHandler />', () => {
   const reload = jest.fn();
-  const window = Mock.of<Window>({
+  const window = fromPartial<Window>({
     location: { reload },
   });
-  const cons = Mock.of<Console>({ error: jest.fn() });
+  const cons = fromPartial<Console>({ error: jest.fn() });
   const ErrorHandler = createErrorHandler(window, cons);
 
   beforeEach(() => {

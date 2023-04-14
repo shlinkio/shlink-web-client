@@ -1,8 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { identity } from 'ramda';
-import { Mock } from 'ts-mockery';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { Settings } from '../../src/settings/reducers/settings';
 import type { TagsList } from '../../src/tags/reducers/tagsList';
 import type { TagsListProps } from '../../src/tags/TagsList';
 import { TagsList as createTagsList } from '../../src/tags/TagsList';
@@ -13,12 +12,12 @@ describe('<TagsList />', () => {
   const TagsListComp = createTagsList(({ sortedTags }) => <>TagsTable ({sortedTags.map((t) => t.visits).join(',')})</>);
   const setUp = (tagsList: Partial<TagsList>, excludeBots = false) => renderWithEvents(
     <TagsListComp
-      {...Mock.all<TagsListProps>()}
-      {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+      {...fromPartial<TagsListProps>({})}
+      {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
       forceListTags={identity}
       filterTags={filterTags}
-      tagsList={Mock.of<TagsList>(tagsList)}
-      settings={Mock.of<Settings>({ visits: { excludeBots } })}
+      tagsList={fromPartial(tagsList)}
+      settings={fromPartial({ visits: { excludeBots } })}
     />,
   );
 

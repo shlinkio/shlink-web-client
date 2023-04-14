@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ReachableServer } from '../../../src/servers/data';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlsRowMenu as createShortUrlsRowMenu } from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
@@ -8,8 +8,8 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ShortUrlsRowMenu />', () => {
   const ShortUrlsRowMenu = createShortUrlsRowMenu(() => <i>DeleteShortUrlModal</i>, () => <i>QrCodeModal</i>);
-  const selectedServer = Mock.of<ReachableServer>({ id: 'abc123' });
-  const shortUrl = Mock.of<ShortUrl>({
+  const selectedServer = fromPartial<ReachableServer>({ id: 'abc123' });
+  const shortUrl = fromPartial<ShortUrl>({
     shortCode: 'abc123',
     shortUrl: 'https://s.test/abc123',
   });

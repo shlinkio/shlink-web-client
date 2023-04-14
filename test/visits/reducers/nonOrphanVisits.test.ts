@@ -1,5 +1,5 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
@@ -16,16 +16,16 @@ import type { Visit } from '../../../src/visits/types';
 
 describe('nonOrphanVisitsReducer', () => {
   const now = new Date();
-  const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
   const getNonOrphanVisitsCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ getNonOrphanVisits: getNonOrphanVisitsCall });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ getNonOrphanVisits: getNonOrphanVisitsCall });
   const getNonOrphanVisits = getNonOrphanVisitsCreator(buildShlinkApiClient);
   const { reducer, cancelGetVisits: cancelGetNonOrphanVisits } = nonOrphanVisitsReducerCreator(getNonOrphanVisits);
 
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const buildState = (data: Partial<VisitsInfo>) => Mock.of<VisitsInfo>(data);
+    const buildState = (data: Partial<VisitsInfo>) => fromPartial<VisitsInfo>(data);
 
     it('returns loading on GET_NON_ORPHAN_VISITS_START', () => {
       const { loading } = reducer(buildState({ loading: false }), getNonOrphanVisits.pending('', {}));
@@ -53,7 +53,7 @@ describe('nonOrphanVisitsReducer', () => {
     });
 
     it('return visits on GET_NON_ORPHAN_VISITS', () => {
-      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const actionVisits: Visit[] = [fromPartial({}), fromPartial({})];
       const { loading, error, visits } = reducer(
         buildState({ loading: true, error: false }),
         getNonOrphanVisits.fulfilled({ visits: actionVisits }, '', {}),
@@ -67,19 +67,19 @@ describe('nonOrphanVisitsReducer', () => {
     it.each([
       [{}, visitsMocks.length + 2],
       [
-        Mock.of<VisitsInfo>({
+        fromPartial<VisitsInfo>({
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<VisitsInfo>({
+        fromPartial<VisitsInfo>({
           query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
         }),
         visitsMocks.length,
       ],
       [
-        Mock.of<VisitsInfo>({
+        fromPartial<VisitsInfo>({
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
             endDate: formatIsoDate(subDays(now, 2)) ?? undefined,
@@ -88,7 +88,7 @@ describe('nonOrphanVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<VisitsInfo>({
+        fromPartial<VisitsInfo>({
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
             endDate: formatIsoDate(addDays(now, 3)) ?? undefined,
@@ -98,7 +98,7 @@ describe('nonOrphanVisitsReducer', () => {
       ],
     ])('prepends new visits on CREATE_VISIT', (state, expectedVisits) => {
       const prevState = buildState({ ...state, visits: visitsMocks });
-      const visit = Mock.of<Visit>({ date: formatIsoDate(now) ?? undefined });
+      const visit = fromPartial<Visit>({ date: formatIsoDate(now) ?? undefined });
 
       const { visits } = reducer(prevState, createNewVisits([{ visit }, { visit }]));
 
@@ -120,7 +120,7 @@ describe('nonOrphanVisitsReducer', () => {
 
   describe('getNonOrphanVisits', () => {
     const dispatchMock = jest.fn();
-    const getState = () => Mock.of<ShlinkState>({
+    const getState = () => fromPartial<ShlinkState>({
       orphanVisits: { cancelLoad: false },
     });
 
@@ -151,12 +151,12 @@ describe('nonOrphanVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 5)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 5)) })],
         getNonOrphanVisits.fallbackToInterval('last7Days'),
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 200)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 200)) })],
         getNonOrphanVisits.fallbackToInterval('last365Days'),
         3,
       ],

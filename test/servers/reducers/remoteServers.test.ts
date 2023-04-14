@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 
@@ -8,7 +8,7 @@ describe('remoteServersReducer', () => {
   describe('fetchServers', () => {
     const dispatch = jest.fn();
     const fetchJson = jest.fn();
-    const httpClient = Mock.of<HttpClient>({ fetchJson });
+    const httpClient = fromPartial<HttpClient>({ fetchJson });
 
     it.each([
       [

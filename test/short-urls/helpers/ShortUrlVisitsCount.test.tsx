@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlVisitsCount } from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
 
@@ -14,7 +14,7 @@ describe('<ShortUrlVisitsCount />', () => {
 
   it.each([undefined, {}])('just returns visits when no limits are provided', (meta) => {
     const visitsCount = 45;
-    const { container } = setUp(visitsCount, Mock.of<ShortUrl>({ meta }));
+    const { container } = setUp(visitsCount, fromPartial({ meta }));
 
     expect(container.firstChild).toHaveTextContent(`${visitsCount}`);
     expect(container.querySelector('.short-urls-visits-count__max-visits-control')).not.toBeInTheDocument();
@@ -24,7 +24,7 @@ describe('<ShortUrlVisitsCount />', () => {
     const visitsCount = 45;
     const maxVisits = 500;
     const meta = { maxVisits };
-    const { container } = setUp(visitsCount, Mock.of<ShortUrl>({ meta }));
+    const { container } = setUp(visitsCount, fromPartial({ meta }));
 
     expect(container.firstChild).toHaveTextContent(`/ ${maxVisits}`);
   });
@@ -44,7 +44,7 @@ describe('<ShortUrlVisitsCount />', () => {
       'This short URL will not accept visits after 2023-05-05 15:30',
     ], { validSince: '2023-01-01T10:00:00', validUntil: '2023-05-05T15:30:30', maxVisits: 100 }],
   ])('displays proper amount of tooltip list items', async (expectedListItems, meta) => {
-    const { user } = setUp(100, Mock.of<ShortUrl>({ meta }));
+    const { user } = setUp(100, fromPartial({ meta }));
 
     await user.hover(screen.getByRole('img', { hidden: true }));
     await waitFor(() => expect(screen.getByRole('list')));

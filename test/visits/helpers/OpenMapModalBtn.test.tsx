@@ -1,14 +1,14 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
 import type { CityStats } from '../../../src/visits/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<OpenMapModalBtn />', () => {
   const title = 'Foo';
-  const locations = [
-    Mock.of<CityStats>({ cityName: 'foo', count: 30, latLong: [5, 5] }),
-    Mock.of<CityStats>({ cityName: 'bar', count: 45, latLong: [88, 88] }),
+  const locations: CityStats[] = [
+    fromPartial({ cityName: 'foo', count: 30, latLong: [5, 5] }),
+    fromPartial({ cityName: 'bar', count: 45, latLong: [88, 88] }),
   ];
   const setUp = (activeCities?: string[]) => renderWithEvents(
     <OpenMapModalBtn modalTitle={title} locations={locations} activeCities={activeCities} />,

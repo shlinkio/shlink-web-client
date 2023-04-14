@@ -1,16 +1,16 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { RegularServer } from '../../../src/servers/data';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
-  const servers: RegularServer[] = [Mock.all<RegularServer>(), Mock.all<RegularServer>()];
+  const servers: RegularServer[] = [fromPartial<RegularServer>({}), fromPartial<RegularServer>({})];
   const csvjsonMock = jest.fn().mockResolvedValue(servers);
   const readAsText = jest.fn();
-  const fileReaderMock = Mock.of<FileReader>({
+  const fileReaderMock = fromPartial<FileReader>({
     readAsText,
-    addEventListener: (_eventName: string, listener: (e: ProgressEvent<FileReader>) => void) => listener(
-      Mock.of<ProgressEvent<FileReader>>({ target: { result: '' } }),
-    ),
+    addEventListener: ((_eventName: string, listener: (e: ProgressEvent<FileReader>) => void) => listener(
+      fromPartial({ target: { result: '' } }),
+    )) as any,
   });
   const importer = new ServersImporter(csvjsonMock, () => fileReaderMock);
 
@@ -28,7 +28,7 @@ describe('ServersImporter', () => {
 
       csvjsonMock.mockRejectedValue(expectedError);
 
-      await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(expectedError);
+      await expect(importer.importServersFromFile(fromPartial({ type: 'text/html' }))).rejects.toEqual(expectedError);
     });
 
     it.each([
@@ -57,7 +57,7 @@ describe('ServersImporter', () => {
     ])('rejects with error if provided file does not parse to valid list of servers', async (parsedObject) => {
       csvjsonMock.mockResolvedValue(parsedObject);
 
-      await expect(importer.importServersFromFile(Mock.of<File>({ type: 'text/html' }))).rejects.toEqual(
+      await expect(importer.importServersFromFile(fromPartial({ type: 'text/html' }))).rejects.toEqual(
         new Error('Provided file does not have the right format.'),
       );
     });
@@ -78,7 +78,7 @@ describe('ServersImporter', () => {
 
       csvjsonMock.mockResolvedValue(expectedServers);
 
-      const result = await importer.importServersFromFile(Mock.all<File>());
+      const result = await importer.importServersFromFile(fromPartial({}));
 
       expect(result).toEqual(expectedServers);
       expect(readAsText).toHaveBeenCalledTimes(1);

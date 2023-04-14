@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
@@ -10,15 +10,16 @@ describe('<DuplicatedServersModal />', () => {
   const setUp = (duplicatedServers: ServerData[] = []) => renderWithEvents(
     <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
   );
+  const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
 
   beforeEach(jest.clearAllMocks);
 
   it.each([
     [[], 0],
-    [[Mock.all<ServerData>()], 2],
-    [[Mock.all<ServerData>(), Mock.all<ServerData>()], 2],
-    [[Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>()], 3],
-    [[Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>(), Mock.all<ServerData>()], 4],
+    [[mockServer()], 2],
+    [[mockServer(), mockServer()], 2],
+    [[mockServer(), mockServer(), mockServer()], 3],
+    [[mockServer(), mockServer(), mockServer(), mockServer()], 4],
   ])('renders expected amount of items', (duplicatedServers, expectedItems) => {
     setUp(duplicatedServers);
     expect(screen.queryAllByRole('listitem')).toHaveLength(expectedItems);
@@ -26,7 +27,7 @@ describe('<DuplicatedServersModal />', () => {
 
   it.each([
     [
-      [Mock.all<ServerData>()],
+      [mockServer()],
       {
         header: 'Duplicated server',
         firstParagraph: 'There is already a server with:',
@@ -35,7 +36,7 @@ describe('<DuplicatedServersModal />', () => {
       },
     ],
     [
-      [Mock.all<ServerData>(), Mock.all<ServerData>()],
+      [mockServer(), mockServer()],
       {
         header: 'Duplicated servers',
         firstParagraph: 'The next servers already exist:',
@@ -54,10 +55,10 @@ describe('<DuplicatedServersModal />', () => {
 
   it.each([
     [[]],
-    [[Mock.of<ServerData>({ url: 'url', apiKey: 'apiKey' })]],
+    [[mockServer({ url: 'url', apiKey: 'apiKey' })]],
     [[
-      Mock.of<ServerData>({ url: 'url_1', apiKey: 'apiKey_1' }),
-      Mock.of<ServerData>({ url: 'url_2', apiKey: 'apiKey_2' }),
+      mockServer({ url: 'url_1', apiKey: 'apiKey_1' }),
+      mockServer({ url: 'url_2', apiKey: 'apiKey_2' }),
     ]],
   ])('displays provided server data', (duplicatedServers) => {
     setUp(duplicatedServers);

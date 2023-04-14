@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode, urlEncodeShortCode } from '../../../src/short-urls/helpers';
 
@@ -8,7 +8,7 @@ describe('helpers', () => {
       [undefined, { validateUrls: true }, { longUrl: '', validateUrl: true }],
       [undefined, undefined, { longUrl: '', validateUrl: false }],
       [
-        Mock.of<ShortUrl>({ meta: {} }),
+        fromPartial<ShortUrl>({ meta: {} }),
         { validateUrls: false },
         {
           longUrl: undefined,

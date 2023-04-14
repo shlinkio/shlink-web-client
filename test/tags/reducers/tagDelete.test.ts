@@ -1,11 +1,11 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 import { tagDeleted, tagDeleteReducerCreator } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagDeleteReducer', () => {
   const deleteTagsCall = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ deleteTags: deleteTagsCall });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ deleteTags: deleteTagsCall });
   const { reducer, deleteTag } = tagDeleteReducerCreator(buildShlinkApiClient);
 
   beforeEach(jest.clearAllMocks);
@@ -44,7 +44,7 @@ describe('tagDeleteReducer', () => {
 
   describe('deleteTag', () => {
     const dispatch = jest.fn();
-    const getState = () => Mock.all<ShlinkState>();
+    const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {
       const tag = 'foo';

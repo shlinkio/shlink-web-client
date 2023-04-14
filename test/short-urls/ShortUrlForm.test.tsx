@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event/setup/setup';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import type { Mode } from '../../src/short-urls/ShortUrlForm';
 import { ShortUrlForm as createShortUrlForm } from '../../src/short-urls/ShortUrlForm';
@@ -51,7 +51,7 @@ describe('<ShortUrlForm />', () => {
           ios: 'https://ios.com',
         },
       },
-      Mock.of<ReachableServer>({ version: '3.5.0' }),
+      fromPartial<ReachableServer>({ version: '3.5.0' }),
     ],
   ])('saves short URL with data set in form controls', async (extraFields, extraExpectedValues, selectedServer) => {
     const { user } = setUp(selectedServer);
@@ -102,7 +102,7 @@ describe('<ShortUrlForm />', () => {
     [undefined, false, undefined],
     ['old title', false, null],
   ])('sends expected title based on original and new values', async (originalTitle, withNewTitle, expectedSentTitle) => {
-    const { user } = setUp(Mock.of<ReachableServer>({ version: '2.6.0' }), 'create', originalTitle);
+    const { user } = setUp(fromPartial({ version: '2.6.0' }), 'create', originalTitle);
 
     await user.type(screen.getByPlaceholderText('URL to be shortened'), 'https://long-domain.com/foo/bar');
     await user.clear(screen.getByPlaceholderText('Title'));
@@ -117,10 +117,10 @@ describe('<ShortUrlForm />', () => {
   });
 
   it.each([
-    [Mock.of<ReachableServer>({ version: '3.0.0' }), false],
-    [Mock.of<ReachableServer>({ version: '3.4.0' }), false],
-    [Mock.of<ReachableServer>({ version: '3.5.0' }), true],
-    [Mock.of<ReachableServer>({ version: '3.6.0' }), true],
+    [fromPartial<ReachableServer>({ version: '3.0.0' }), false],
+    [fromPartial<ReachableServer>({ version: '3.4.0' }), false],
+    [fromPartial<ReachableServer>({ version: '3.5.0' }), true],
+    [fromPartial<ReachableServer>({ version: '3.6.0' }), true],
   ])('shows device-specific long URLs only for servers supporting it', (selectedServer, fieldsExist) => {
     setUp(selectedServer);
     const placeholders = ['Android-specific redirection', 'iOS-specific redirection', 'Desktop-specific redirection'];

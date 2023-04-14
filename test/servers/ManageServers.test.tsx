@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
 import type { ServersExporter } from '../../src/servers/services/ServersExporter';
@@ -8,7 +8,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {
   const exportServers = jest.fn();
-  const serversExporter = Mock.of<ServersExporter>({ exportServers });
+  const serversExporter = fromPartial<ServersExporter>({ exportServers });
   const useTimeoutToggle = jest.fn().mockReturnValue([false, jest.fn()]);
   const ManageServers = createManageServers(
     serversExporter,
@@ -16,7 +16,7 @@ describe('<ManageServers />', () => {
     useTimeoutToggle,
     ({ hasAutoConnect }) => <tr><td>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</td></tr>,
   );
-  const createServerMock = (value: string, autoConnect = false) => Mock.of<ServerWithId>(
+  const createServerMock = (value: string, autoConnect = false) => fromPartial<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
   );
   const setUp = (servers: ServersMap = {}) => renderWithEvents(

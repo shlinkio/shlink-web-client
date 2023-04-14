@@ -1,10 +1,10 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { ServersExporter } from '../../../src/servers/services/ServersExporter';
 import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 import { appendChild, removeChild, windowMock } from '../../__mocks__/Window.mock';
 
 describe('ServersExporter', () => {
-  const storageMock = Mock.of<LocalStorage>({
+  const storageMock = fromPartial<LocalStorage>({
     get: jest.fn(() => ({
       abc123: {
         id: 'abc123',
@@ -16,7 +16,7 @@ describe('ServersExporter', () => {
         name: 'bar',
         autoConnect: false,
       },
-    })),
+    } as any)),
   });
   const erroneousToCsv = jest.fn(() => {
     throw new Error('');
@@ -31,7 +31,7 @@ describe('ServersExporter', () => {
 
     beforeEach(() => {
       originalConsole = global.console;
-      global.console = Mock.of<Console>({ error });
+      global.console = fromPartial<Console>({ error });
       (global as any).Blob = class Blob {};
       (global as any).URL = { createObjectURL: () => '' };
     });

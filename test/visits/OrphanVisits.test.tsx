@@ -1,28 +1,25 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ReportExporter } from '../../src/common/services/ReportExporter';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { Settings } from '../../src/settings/reducers/settings';
 import { OrphanVisits as createOrphanVisits } from '../../src/visits/OrphanVisits';
 import type { VisitsInfo } from '../../src/visits/reducers/types';
-import type { Visit } from '../../src/visits/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrphanVisits />', () => {
   const getOrphanVisits = jest.fn();
   const exportVisits = jest.fn();
-  const orphanVisits = Mock.of<VisitsInfo>({ visits: [Mock.of<Visit>({ date: formatISO(new Date()) })] });
-  const OrphanVisits = createOrphanVisits(Mock.of<ReportExporter>({ exportVisits }));
+  const orphanVisits = fromPartial<VisitsInfo>({ visits: [{ date: formatISO(new Date()) }] });
+  const OrphanVisits = createOrphanVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
     <MemoryRouter>
       <OrphanVisits
-        {...Mock.of<MercureBoundProps>({ mercureInfo: {} })}
+        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
         getOrphanVisits={getOrphanVisits}
         orphanVisits={orphanVisits}
         cancelGetOrphanVisits={jest.fn()}
-        settings={Mock.all<Settings>()}
+        settings={fromPartial({})}
       />
     </MemoryRouter>,
   );

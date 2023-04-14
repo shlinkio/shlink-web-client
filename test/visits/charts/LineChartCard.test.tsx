@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO, subDays, subMonths, subYears } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import { LineChartCard } from '../../../src/visits/charts/LineChartCard';
 import type { NormalizedVisit } from '../../../src/visits/types';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
@@ -29,7 +29,7 @@ describe('<LineChartCard />', () => {
     visits,
     expectedActiveIndex,
   ) => {
-    const { user } = setUp(visits.map((visit) => Mock.of<NormalizedVisit>(visit)));
+    const { user } = setUp(visits.map((visit) => fromPartial(visit)));
 
     await user.click(screen.getByRole('button', { name: /Group by/ }));
 
@@ -46,8 +46,8 @@ describe('<LineChartCard />', () => {
   it.each([
     [undefined, undefined],
     [[], []],
-    [[Mock.of<NormalizedVisit>({ date: '2016-04-01' })], []],
-    [[Mock.of<NormalizedVisit>({ date: '2016-04-01' })], [Mock.of<NormalizedVisit>({ date: '2016-04-01' })]],
+    [[fromPartial<NormalizedVisit>({ date: '2016-04-01' })], []],
+    [[fromPartial<NormalizedVisit>({ date: '2016-04-01' })], [fromPartial<NormalizedVisit>({ date: '2016-04-01' })]],
   ])('renders chart with expected data', (visits, highlightedVisits) => {
     const { events } = setUp(visits, highlightedVisits);
 
@@ -57,8 +57,8 @@ describe('<LineChartCard />', () => {
 
   it('includes stats for visits with no dates if selected', async () => {
     const { getEvents, user } = setUp([
-      Mock.of<NormalizedVisit>({ date: '2016-04-01' }),
-      Mock.of<NormalizedVisit>({ date: '2016-01-01' }),
+      fromPartial({ date: '2016-04-01' }),
+      fromPartial({ date: '2016-01-01' }),
     ]);
 
     const eventsBefore = getEvents();

@@ -1,6 +1,6 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';
@@ -12,10 +12,10 @@ import {
   tagsListReducerCreator,
 } from '../../../src/tags/reducers/tagsList';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { CreateVisit, Visit } from '../../../src/visits/types';
+import type { CreateVisit } from '../../../src/visits/types';
 
 describe('tagsListReducer', () => {
-  const state = (props: Partial<TagsList>) => Mock.of<TagsList>(props);
+  const state = (props: Partial<TagsList>) => fromPartial<TagsList>(props);
   const buildShlinkApiClient = jest.fn();
   const listTags = listTagsCreator(buildShlinkApiClient, true);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
@@ -41,7 +41,7 @@ describe('tagsListReducer', () => {
     it('returns provided tags as filtered and regular tags on LIST_TAGS', () => {
       const tags = ['foo', 'bar', 'baz'];
 
-      expect(reducer(undefined, listTags.fulfilled(Mock.of<TagsList>({ tags }), ''))).toEqual({
+      expect(reducer(undefined, listTags.fulfilled(fromPartial({ tags }), ''))).toEqual({
         tags,
         filteredTags: tags,
         loading: false,
@@ -114,30 +114,30 @@ describe('tagsListReducer', () => {
       [['new', 'tag'], ['foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag']],
     ])('appends new short URL\'s tags to the list of tags on CREATE_SHORT_URL', (shortUrlTags, expectedTags) => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
-      const payload = Mock.of<ShortUrl>({ tags: shortUrlTags });
+      const payload = fromPartial<ShortUrl>({ tags: shortUrlTags });
 
-      expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', Mock.of<ShortUrlData>()))).toEqual({
+      expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', fromPartial({})))).toEqual({
         tags: expectedTags,
       });
     });
 
     it('increases amounts when visits are created', () => {
-      const createdVisits = [
-        Mock.of<CreateVisit>({
-          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
-          visit: Mock.of<Visit>({ potentialBot: true }),
+      const createdVisits: CreateVisit[] = [
+        fromPartial({
+          shortUrl: { tags: ['foo', 'bar'] },
+          visit: { potentialBot: true },
         }),
-        Mock.of<CreateVisit>({
-          shortUrl: Mock.of<ShortUrl>({ tags: ['foo', 'bar'] }),
-          visit: Mock.all<Visit>(),
+        fromPartial({
+          shortUrl: { tags: ['foo', 'bar'] },
+          visit: {},
         }),
-        Mock.of<CreateVisit>({
-          shortUrl: Mock.of<ShortUrl>({ tags: ['bar'] }),
-          visit: Mock.all<Visit>(),
+        fromPartial({
+          shortUrl: { tags: ['bar'] },
+          visit: {},
         }),
-        Mock.of<CreateVisit>({
-          shortUrl: Mock.of<ShortUrl>({ tags: ['baz'] }),
-          visit: Mock.of<Visit>({ potentialBot: true }),
+        fromPartial({
+          shortUrl: { tags: ['baz'] },
+          visit: { potentialBot: true },
         }),
       ];
       const tagStats = (total: number) => ({
@@ -197,11 +197,11 @@ describe('tagsListReducer', () => {
 
   describe('listTags', () => {
     const dispatch = jest.fn();
-    const getState = jest.fn(() => Mock.all<ShlinkState>());
+    const getState = jest.fn(() => fromPartial<ShlinkState>({}));
     const listTagsMock = jest.fn();
 
     const assertNoAction = async (tagsList: TagsList) => {
-      getState.mockReturnValue(Mock.of<ShlinkState>({ tagsList }));
+      getState.mockReturnValue(fromPartial<ShlinkState>({ tagsList }));
 
       await listTagsCreator(buildShlinkApiClient, false)()(dispatch, getState, {});
 

@@ -1,13 +1,13 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { parseISO } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { DateInputProps } from '../../../src/utils/dates/DateInput';
 import { DateInput } from '../../../src/utils/dates/DateInput';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateInput />', () => {
   const setUp = (props: Partial<DateInputProps> = {}) => renderWithEvents(
-    <DateInput {...Mock.of<DateInputProps>(props)} />,
+    <DateInput {...fromPartial<DateInputProps>(props)} />,
   );
 
   it('shows calendar icon when input is not clearable', () => {

@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromAny, fromPartial } from '@total-typescript/shoehorn';
 
 const createLinkMock = () => ({
   setAttribute: jest.fn(),
@@ -10,9 +10,9 @@ export const appendChild = jest.fn();
 
 export const removeChild = jest.fn();
 
-export const windowMock = Mock.of<Window>({
-  document: {
+export const windowMock = fromPartial<Window>({
+  document: fromAny({
     createElement: jest.fn(createLinkMock),
     body: { appendChild, removeChild },
-  },
+  }),
 });

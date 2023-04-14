@@ -1,10 +1,10 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { normalizeVisits, processStatsFromVisits } from '../../../src/visits/services/VisitsParser';
 import type { OrphanVisit, Visit, VisitsStats } from '../../../src/visits/types';
 
 describe('VisitsParser', () => {
   const visits: Visit[] = [
-    Mock.of<Visit>({
+    fromPartial({
       userAgent: 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0',
       referer: 'https://google.com',
       potentialBot: false,
@@ -15,7 +15,7 @@ describe('VisitsParser', () => {
         longitude: -543.21,
       },
     }),
-    Mock.of<Visit>({
+    fromPartial({
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0',
       referer: 'https://google.com',
       potentialBot: false,
@@ -26,7 +26,7 @@ describe('VisitsParser', () => {
         longitude: 6758,
       },
     }),
-    Mock.of<Visit>({
+    fromPartial({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
       potentialBot: false,
       visitLocation: {
@@ -34,7 +34,7 @@ describe('VisitsParser', () => {
         cityName: '',
       },
     }),
-    Mock.of<Visit>({
+    fromPartial({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',
       referer: 'https://m.facebook.com',
       potentialBot: false,
@@ -45,13 +45,13 @@ describe('VisitsParser', () => {
         longitude: -543.21,
       },
     }),
-    Mock.of<Visit>({
+    fromPartial({
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36 OPR/38.0.2220.41',
       potentialBot: true,
     }),
   ];
   const orphanVisits: OrphanVisit[] = [
-    Mock.of<OrphanVisit>({
+    fromPartial({
       type: 'base_url',
       visitedUrl: 'foo',
       userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0',
@@ -64,12 +64,12 @@ describe('VisitsParser', () => {
         longitude: 6758,
       },
     }),
-    Mock.of<OrphanVisit>({
+    fromPartial({
       type: 'regular_404',
       visitedUrl: 'bar',
       potentialBot: true,
     }),
-    Mock.of<OrphanVisit>({
+    fromPartial({
       type: 'invalid_short_url',
       visitedUrl: 'bar',
       userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36',

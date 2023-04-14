@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
 import { ServerError as createServerError } from '../../../src/servers/helpers/ServerError';
 
@@ -9,7 +9,7 @@ describe('<ServerError />', () => {
 
   it.each([
     [
-      Mock.all<NotFoundServer>(),
+      fromPartial<NotFoundServer>({}),
       {
         found: ['Could not find this Shlink server.'],
         notFound: [
@@ -20,7 +20,7 @@ describe('<ServerError />', () => {
       },
     ],
     [
-      Mock.of<NonReachableServer>({ id: 'abc123' }),
+      fromPartial<NonReachableServer>({ id: 'abc123' }),
       {
         found: [
           'Oops! Could not connect to this Shlink server.',

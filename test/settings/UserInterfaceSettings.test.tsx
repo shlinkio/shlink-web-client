@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { Settings, UiSettings } from '../../src/settings/reducers/settings';
+import { fromPartial } from '@total-typescript/shoehorn';
+import type { UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
 import type { Theme } from '../../src/utils/theme';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -8,7 +8,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 describe('<UserInterfaceSettings />', () => {
   const setUiSettings = jest.fn();
   const setUp = (ui?: UiSettings) => renderWithEvents(
-    <UserInterfaceSettings settings={Mock.of<Settings>({ ui })} setUiSettings={setUiSettings} />,
+    <UserInterfaceSettings settings={fromPartial({ ui })} setUiSettings={setUiSettings} />,
   );
 
   afterEach(jest.clearAllMocks);

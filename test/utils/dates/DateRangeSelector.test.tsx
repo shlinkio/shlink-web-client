@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { DateRangeSelectorProps } from '../../../src/utils/dates/DateRangeSelector';
 import { DateRangeSelector } from '../../../src/utils/dates/DateRangeSelector';
 import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
@@ -10,7 +10,7 @@ describe('<DateRangeSelector />', () => {
   const setUp = async (props: Partial<DateRangeSelectorProps> = {}) => {
     const result = renderWithEvents(
       <DateRangeSelector
-        {...Mock.of<DateRangeSelectorProps>(props)}
+        {...fromPartial<DateRangeSelectorProps>(props)}
         defaultText="Default text"
         onDatesChange={onDatesChange}
       />,

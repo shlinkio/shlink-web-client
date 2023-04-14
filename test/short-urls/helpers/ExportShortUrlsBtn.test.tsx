@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ReportExporter } from '../../../src/common/services/ReportExporter';
-import type { NotFoundServer, ReachableServer, SelectedServer } from '../../../src/servers/data';
+import type { NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
@@ -10,11 +10,11 @@ describe('<ExportShortUrlsBtn />', () => {
   const listShortUrls = jest.fn();
   const buildShlinkApiClient = jest.fn().mockReturnValue({ listShortUrls });
   const exportShortUrls = jest.fn();
-  const reportExporter = Mock.of<ReportExporter>({ exportShortUrls });
+  const reportExporter = fromPartial<ReportExporter>({ exportShortUrls });
   const ExportShortUrlsBtn = createExportShortUrlsBtn(buildShlinkApiClient, reportExporter);
   const setUp = (amount?: number, selectedServer?: SelectedServer) => renderWithEvents(
     <MemoryRouter>
-      <ExportShortUrlsBtn selectedServer={selectedServer ?? Mock.all<SelectedServer>()} amount={amount} />
+      <ExportShortUrlsBtn selectedServer={selectedServer ?? fromPartial({})} amount={amount} />
     </MemoryRouter>,
   );
 
@@ -31,7 +31,7 @@ describe('<ExportShortUrlsBtn />', () => {
 
   it.each([
     [null],
-    [Mock.of<NotFoundServer>()],
+    [fromPartial<NotFoundServer>({})],
   ])('does nothing on click if selected server is not reachable', async (selectedServer) => {
     const { user } = setUp(0, selectedServer);
 
@@ -49,7 +49,7 @@ describe('<ExportShortUrlsBtn />', () => {
     [385, 20],
   ])('loads proper amount of pages based on the amount of results', async (amount, expectedPageLoads) => {
     listShortUrls.mockResolvedValue({ data: [] });
-    const { user } = setUp(amount, Mock.of<ReachableServer>({ id: '123' }));
+    const { user } = setUp(amount, fromPartial({ id: '123' }));
 
     await user.click(screen.getByRole('button'));
 

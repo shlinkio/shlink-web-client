@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
@@ -13,7 +13,7 @@ describe('<ImportServersBtn />', () => {
   const onImportMock = jest.fn();
   const createServersMock = jest.fn();
   const importServersFromFile = jest.fn().mockResolvedValue([]);
-  const serversImporterMock = Mock.of<ServersImporter>({ importServersFromFile });
+  const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
   const ImportServersBtn = createImportServersBtn(serversImporterMock);
   const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithEvents(
     <ImportServersBtn
@@ -67,8 +67,8 @@ describe('<ImportServersBtn />', () => {
     ['Save anyway', true],
     ['Discard', false],
   ])('creates expected servers depending on selected option in modal', async (btnName, savesDuplicatedServers) => {
-    const existingServer = Mock.of<ServerWithId>({ id: 'abc', url: 'existingUrl', apiKey: 'existingApiKey' });
-    const newServer = Mock.of<ServerWithId>({ url: 'newUrl', apiKey: 'newApiKey' });
+    const existingServer = fromPartial<ServerWithId>({ id: 'abc', url: 'existingUrl', apiKey: 'existingApiKey' });
+    const newServer = fromPartial<ServerWithId>({ url: 'newUrl', apiKey: 'newApiKey' });
     const { container, user } = setUp({}, { abc: existingServer });
     const input = container.querySelector('[type=file]');
     importServersFromFile.mockResolvedValue([existingServer, newServer]);
