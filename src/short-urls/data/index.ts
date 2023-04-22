@@ -79,6 +79,8 @@ export interface ExportableShortUrl {
   createdAt: string;
   title: string;
   shortUrl: string;
+  domain?: string;
+  shortCode: string;
   longUrl: string;
   tags: string;
   visits: number;

@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { useCallback } from 'react';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import type { ReportExporter } from '../../common/services/ReportExporter';
 import type { SelectedServer } from '../../servers/data';
@@ -24,7 +25,7 @@ export const ExportShortUrlsBtn = (
 ): FC<ExportShortUrlsBtnConnectProps> => ({ amount = 0, selectedServer }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
   const [loading,, startLoading, stopLoading] = useToggle();
-  const exportAllUrls = async () => {
+  const exportAllUrls = useCallback(async () => {
     if (!isServerWithId(selectedServer)) {
       return;
     }
@@ -47,16 +48,23 @@ export const ExportShortUrlsBtn = (
     startLoading();
     const shortUrls = await loadAllUrls();
 
-    exportShortUrls(shortUrls.map((shortUrl) => ({
-      createdAt: shortUrl.dateCreated,
-      shortUrl: shortUrl.shortUrl,
-      longUrl: shortUrl.longUrl,
-      title: shortUrl.title ?? '',
-      tags: shortUrl.tags.join(','),
-      visits: shortUrl?.visitsSummary?.total ?? shortUrl.visitsCount,
-    })));
+    exportShortUrls(shortUrls.map((shortUrl) => {
+      const { hostname: domain, pathname } = new URL(shortUrl.shortUrl);
+      const shortCode = pathname.substring(1); // Remove trailing slash
+
+      return {
+        createdAt: shortUrl.dateCreated,
+        domain,
+        shortCode,
+        shortUrl: shortUrl.shortUrl,
+        longUrl: shortUrl.longUrl,
+        title: shortUrl.title ?? '',
+        tags: shortUrl.tags.join('|'),
+        visits: shortUrl?.visitsSummary?.total ?? shortUrl.visitsCount,
+      };
+    }));
     stopLoading();
-  };
+  }, [selectedServer]);
 
   return <ExportBtn loading={loading} className="btn-md-block" amount={amount} onClick={exportAllUrls} />;
 };

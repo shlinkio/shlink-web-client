@@ -24,7 +24,6 @@ export class ReportExporter {
 
   private readonly exportCsv = (filename: string, rows: object[]) => {
     const csv = this.jsonToCsv(rows);
-
     saveCsv(this.window, csv, filename);
   };
 }

@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { ReportExporter } from '../../../src/common/services/ReportExporter';
 import type { NotFoundServer, SelectedServer } from '../../../src/servers/data';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
@@ -55,5 +56,23 @@ describe('<ExportShortUrlsBtn />', () => {
 
     expect(listShortUrls).toHaveBeenCalledTimes(expectedPageLoads);
     expect(exportShortUrls).toHaveBeenCalled();
+  });
+
+  it('maps short URLs for exporting', async () => {
+    listShortUrls.mockResolvedValue({
+      data: [fromPartial<ShortUrl>({
+        shortUrl: 'https://s.test/short-code',
+        tags: [],
+      })],
+    });
+    const { user } = setUp(undefined, fromPartial({ id: '123' }));
+
+    await user.click(screen.getByRole('button'));
+
+    expect(exportShortUrls).toHaveBeenCalledWith([expect.objectContaining({
+      shortUrl: 'https://s.test/short-code',
+      domain: 's.test',
+      shortCode: 'short-code',
+    })]);
   });
 });
