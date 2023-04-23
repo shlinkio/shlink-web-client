@@ -1,8 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { Settings } from '../../src/settings/reducers/settings';
 import { rangeOf } from '../../src/utils/utils';
 import type { VisitsInfo } from '../../src/visits/reducers/types';
 import type { Visit } from '../../src/visits/types';
@@ -10,7 +9,7 @@ import { VisitsStats } from '../../src/visits/VisitsStats';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsStats />', () => {
-  const visits = rangeOf(3, () => Mock.of<Visit>({ date: '2020-01-01' }));
+  const visits = rangeOf(3, () => fromPartial<Visit>({ date: '2020-01-01' }));
   const getVisitsMock = jest.fn();
   const exportCsv = jest.fn();
   const setUp = (visitsInfo: Partial<VisitsInfo>, activeRoute = '/by-time') => {
@@ -23,9 +22,9 @@ describe('<VisitsStats />', () => {
         <Router location={history.location} navigator={history}>
           <VisitsStats
             getVisits={getVisitsMock}
-            visitsInfo={Mock.of<VisitsInfo>(visitsInfo)}
+            visitsInfo={fromPartial(visitsInfo)}
             cancelGetVisits={() => {}}
-            settings={Mock.all<Settings>()}
+            settings={fromPartial({})}
             exportCsv={exportCsv}
           />
         </Router>,

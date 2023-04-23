@@ -1,12 +1,14 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { DropdownBtnMenuProps } from '../../src/utils/DropdownBtnMenu';
 import { DropdownBtnMenu } from '../../src/utils/DropdownBtnMenu';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtnMenu />', () => {
   const setUp = (props: Partial<DropdownBtnMenuProps> = {}) => renderWithEvents(
-    <DropdownBtnMenu {...Mock.of<DropdownBtnMenuProps>({ toggle: jest.fn(), ...props })}>the children</DropdownBtnMenu>,
+    <DropdownBtnMenu {...fromPartial<DropdownBtnMenuProps>({ toggle: jest.fn(), ...props })}>
+      the children
+    </DropdownBtnMenu>,
   );
 
   it('renders expected components', () => {

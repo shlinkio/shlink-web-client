@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { InvalidShortUrlDeletion, ProblemDetailsError } from '../../../src/api/types/errors';
+import { fromPartial } from '@total-typescript/shoehorn';
+import type { InvalidShortUrlDeletion } from '../../../src/api/types/errors';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
@@ -9,7 +9,7 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { TestModalWrapper } from '../../__helpers__/TestModalWrapper';
 
 describe('<DeleteShortUrlModal />', () => {
-  const shortUrl = Mock.of<ShortUrl>({
+  const shortUrl = fromPartial<ShortUrl>({
     tags: [],
     shortCode: 'abc123',
     longUrl: 'https://long-domain.com/foo/bar',
@@ -22,7 +22,7 @@ describe('<DeleteShortUrlModal />', () => {
         <DeleteShortUrlModal
           {...args}
           shortUrl={shortUrl}
-          shortUrlDeletion={Mock.of<ShortUrlDeletion>(shortUrlDeletion)}
+          shortUrlDeletion={fromPartial(shortUrlDeletion)}
           deleteShortUrl={deleteShortUrl}
           shortUrlDeleted={shortUrlDeleted}
           resetDeleteShortUrl={jest.fn()}
@@ -38,7 +38,7 @@ describe('<DeleteShortUrlModal />', () => {
       loading: false,
       error: true,
       shortCode: 'abc123',
-      errorData: Mock.of<ProblemDetailsError>({ type: 'OTHER_ERROR' }),
+      errorData: fromPartial({ type: 'OTHER_ERROR' }),
     });
     expect(screen.getByText('Something went wrong while deleting the URL :(').parentElement).not.toHaveClass(
       'bg-warning',
@@ -46,8 +46,8 @@ describe('<DeleteShortUrlModal />', () => {
   });
 
   it.each([
-    [Mock.of<InvalidShortUrlDeletion>({ type: ErrorTypeV3.INVALID_SHORT_URL_DELETION })],
-    [Mock.of<InvalidShortUrlDeletion>({ type: ErrorTypeV2.INVALID_SHORT_URL_DELETION })],
+    [fromPartial<InvalidShortUrlDeletion>({ type: ErrorTypeV3.INVALID_SHORT_URL_DELETION })],
+    [fromPartial<InvalidShortUrlDeletion>({ type: ErrorTypeV2.INVALID_SHORT_URL_DELETION })],
   ])('shows specific error when threshold error occurs', (errorData) => {
     setUp({ loading: false, error: true, shortCode: 'abc123', errorData });
     expect(screen.getByText('Something went wrong while deleting the URL :(').parentElement).toHaveClass('bg-warning');

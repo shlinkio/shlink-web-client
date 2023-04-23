@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
-import { Mock } from 'ts-mockery';
 import { Tag } from '../../../src/tags/helpers/Tag';
 import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
@@ -24,7 +24,7 @@ describe('<Tag />', () => {
   const onClose = jest.fn();
   const isColorLightForKey = jest.fn(() => false);
   const getColorForKey = jest.fn(() => MAIN_COLOR);
-  const colorGenerator = Mock.of<ColorGenerator>({ getColorForKey, isColorLightForKey });
+  const colorGenerator = fromPartial<ColorGenerator>({ getColorForKey, isColorLightForKey });
   const setUp = (text: string, clearable?: boolean, children?: ReactNode) => renderWithEvents(
     <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
       {children}

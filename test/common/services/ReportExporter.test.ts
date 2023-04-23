@@ -53,6 +53,7 @@ describe('ReportExporter', () => {
           createdAt: '',
           longUrl: '',
           tags: '',
+          shortCode: '',
         },
       ];
 

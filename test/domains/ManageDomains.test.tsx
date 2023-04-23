@@ -1,10 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkDomain } from '../../src/api/types';
 import type { ProblemDetailsError } from '../../src/api/types/errors';
 import { ManageDomains } from '../../src/domains/ManageDomains';
 import type { DomainsList } from '../../src/domains/reducers/domainsList';
-import type { SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageDomains />', () => {
@@ -17,14 +16,14 @@ describe('<ManageDomains />', () => {
       editDomainRedirects={jest.fn()}
       checkDomainHealth={jest.fn()}
       domainsList={domainsList}
-      selectedServer={Mock.all<SelectedServer>()}
+      selectedServer={fromPartial({})}
     />,
   );
 
   afterEach(jest.clearAllMocks);
 
   it('shows loading message while domains are loading', () => {
-    setUp(Mock.of<DomainsList>({ loading: true, filteredDomains: [] }));
+    setUp(fromPartial({ loading: true, filteredDomains: [] }));
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
     expect(screen.queryByText('Error loading domains :(')).not.toBeInTheDocument();
@@ -32,17 +31,17 @@ describe('<ManageDomains />', () => {
 
   it.each([
     [undefined, 'Error loading domains :('],
-    [Mock.of<ProblemDetailsError>(), 'Error loading domains :('],
-    [Mock.of<ProblemDetailsError>({ detail: 'Foo error!!' }), 'Foo error!!'],
+    [fromPartial<ProblemDetailsError>({}), 'Error loading domains :('],
+    [fromPartial<ProblemDetailsError>({ detail: 'Foo error!!' }), 'Foo error!!'],
   ])('shows error result when domains loading fails', (errorData, expectedErrorMessage) => {
-    setUp(Mock.of<DomainsList>({ loading: false, error: true, errorData, filteredDomains: [] }));
+    setUp(fromPartial({ loading: false, error: true, errorData, filteredDomains: [] }));
 
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
     expect(screen.getByText(expectedErrorMessage)).toBeInTheDocument();
   });
 
   it('filters domains when SearchField changes', async () => {
-    const { user } = setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
+    const { user } = setUp(fromPartial({ loading: false, error: false, filteredDomains: [] }));
 
     expect(filterDomains).not.toHaveBeenCalled();
     await user.type(screen.getByPlaceholderText('Search...'), 'Foo');
@@ -50,19 +49,19 @@ describe('<ManageDomains />', () => {
   });
 
   it('shows expected headers and one row when list of domains is empty', () => {
-    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains: [] }));
+    setUp(fromPartial({ loading: false, error: false, filteredDomains: [] }));
 
     expect(screen.getAllByRole('columnheader')).toHaveLength(7);
     expect(screen.getByText('No results found')).toBeInTheDocument();
   });
 
   it('has many rows if multiple domains are provided', () => {
-    const filteredDomains = [
-      Mock.of<ShlinkDomain>({ domain: 'foo' }),
-      Mock.of<ShlinkDomain>({ domain: 'bar' }),
-      Mock.of<ShlinkDomain>({ domain: 'baz' }),
+    const filteredDomains: ShlinkDomain[] = [
+      fromPartial({ domain: 'foo' }),
+      fromPartial({ domain: 'bar' }),
+      fromPartial({ domain: 'baz' }),
     ];
-    setUp(Mock.of<DomainsList>({ loading: false, error: false, filteredDomains }));
+    setUp(fromPartial({ loading: false, error: false, filteredDomains }));
 
     expect(screen.getAllByRole('row')).toHaveLength(filteredDomains.length + 1);
     expect(screen.getByText('foo')).toBeInTheDocument();

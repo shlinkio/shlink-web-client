@@ -1,14 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import { AsideMenu as createAsideMenu } from '../../src/common/AsideMenu';
-import type { ReachableServer } from '../../src/servers/data';
 
 describe('<AsideMenu />', () => {
   const AsideMenu = createAsideMenu(() => <>DeleteServerButton</>);
   const setUp = (id: string | false = 'abc123') => render(
     <MemoryRouter>
-      <AsideMenu selectedServer={Mock.of<ReachableServer>({ id: id || undefined, version: '2.8.0' })} />
+      <AsideMenu selectedServer={fromPartial({ id: id || undefined, version: '2.8.0' })} />
     </MemoryRouter>,
   );
 

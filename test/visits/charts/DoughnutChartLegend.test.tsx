@@ -1,14 +1,14 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { Chart, ChartDataset } from 'chart.js';
-import { Mock } from 'ts-mockery';
 import { DoughnutChartLegend } from '../../../src/visits/charts/DoughnutChartLegend';
 
 describe('<DoughnutChartLegend />', () => {
   const labels = ['foo', 'bar', 'baz', 'foo2', 'bar2'];
   const colors = ['green', 'blue', 'yellow'];
   const defaultColor = 'red';
-  const datasets = [Mock.of<ChartDataset>({ backgroundColor: colors })];
-  const chart = Mock.of<Chart>({
+  const datasets = [fromPartial<ChartDataset>({ backgroundColor: colors })];
+  const chart = fromPartial<Chart>({
     config: {
       data: { labels, datasets },
       options: { defaultColor } as any,

@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -11,7 +11,7 @@ describe('<EditServer />', () => {
   const ServerError = jest.fn();
   const editServerMock = jest.fn();
   const navigate = jest.fn();
-  const defaultSelectedServer = Mock.of<ReachableServer>({
+  const defaultSelectedServer = fromPartial<ReachableServer>({
     id: 'abc123',
     name: 'the_name',
     url: 'the_url',
@@ -31,7 +31,7 @@ describe('<EditServer />', () => {
   afterEach(jest.clearAllMocks);
 
   it('renders nothing if selected server is not reachable', () => {
-    setUp(Mock.all<SelectedServer>());
+    setUp(fromPartial<SelectedServer>({}));
 
     expect(screen.queryByText('Edit')).not.toBeInTheDocument();
     expect(screen.queryByText('Cancel')).not.toBeInTheDocument();

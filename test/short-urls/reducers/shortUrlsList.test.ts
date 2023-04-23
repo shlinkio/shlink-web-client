@@ -1,10 +1,9 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ShlinkPaginator, ShlinkShortUrlsResponse } from '../../../src/api/types';
-import type { ShortUrl, ShortUrlData } from '../../../src/short-urls/data';
+import type { ShlinkShortUrlsResponse } from '../../../src/api/types';
+import type { ShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import type { EditShortUrl } from '../../../src/short-urls/reducers/shortUrlEdition';
 import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
 import {
   listShortUrls as listShortUrlsCreator,
@@ -16,7 +15,7 @@ import type { CreateVisit } from '../../../src/visits/types';
 describe('shortUrlsListReducer', () => {
   const shortCode = 'abc123';
   const listShortUrlsMock = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ listShortUrls: listShortUrlsMock });
   const listShortUrls = listShortUrlsCreator(buildShlinkApiClient);
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
@@ -32,7 +31,7 @@ describe('shortUrlsListReducer', () => {
       }));
 
     it('returns short URLs on LIST_SHORT_URLS', () =>
-      expect(reducer(undefined, listShortUrls.fulfilled(Mock.of<ShlinkShortUrlsResponse>({ data: [] }), ''))).toEqual({
+      expect(reducer(undefined, listShortUrls.fulfilled(fromPartial({ data: [] }), ''))).toEqual({
         shortUrls: { data: [] },
         loading: false,
         error: false,
@@ -46,21 +45,19 @@ describe('shortUrlsListReducer', () => {
 
     it('removes matching URL and reduces total on SHORT_URL_DELETED', () => {
       const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
+        shortUrls: fromPartial<ShlinkShortUrlsResponse>({
           data: [
-            Mock.of<ShortUrl>({ shortCode }),
-            Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
-            Mock.of<ShortUrl>({ shortCode: 'foo' }),
+            { shortCode },
+            { shortCode, domain: 'example.com' },
+            { shortCode: 'foo' },
           ],
-          pagination: Mock.of<ShlinkPaginator>({
-            totalItems: 10,
-          }),
+          pagination: { totalItems: 10 },
         }),
         loading: false,
         error: false,
       };
 
-      expect(reducer(state, shortUrlDeleted(Mock.of<ShortUrl>({ shortCode })))).toEqual({
+      expect(reducer(state, shortUrlDeleted(fromPartial({ shortCode })))).toEqual({
         shortUrls: {
           data: [{ shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
           pagination: { totalItems: 9 },
@@ -70,7 +67,7 @@ describe('shortUrlsListReducer', () => {
       });
     });
 
-    const createNewShortUrlVisit = (visitsCount: number) => Mock.of<CreateVisit>({
+    const createNewShortUrlVisit = (visitsCount: number) => fromPartial<CreateVisit>({
       shortUrl: { shortCode: 'abc123', visitsCount },
     });
 
@@ -81,11 +78,11 @@ describe('shortUrlsListReducer', () => {
       [[], 10],
     ])('updates visits count on CREATE_VISITS', (createdVisits, expectedCount) => {
       const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
+        shortUrls: fromPartial<ShlinkShortUrlsResponse>({
           data: [
-            Mock.of<ShortUrl>({ shortCode, domain: 'example.com', visitsCount: 5 }),
-            Mock.of<ShortUrl>({ shortCode, visitsCount: 10 }),
-            Mock.of<ShortUrl>({ shortCode: 'foo', visitsCount: 8 }),
+            { shortCode, domain: 'example.com', visitsCount: 5 },
+            { shortCode, visitsCount: 10 },
+            { shortCode: 'foo', visitsCount: 8 },
           ],
         }),
         loading: false,
@@ -108,48 +105,46 @@ describe('shortUrlsListReducer', () => {
     it.each([
       [
         [
-          Mock.of<ShortUrl>({ shortCode }),
-          Mock.of<ShortUrl>({ shortCode, domain: 'example.com' }),
-          Mock.of<ShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShortUrl>({ shortCode }),
+          fromPartial<ShortUrl>({ shortCode, domain: 'example.com' }),
+          fromPartial<ShortUrl>({ shortCode: 'foo' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
       ],
       [
         [
-          Mock.of<ShortUrl>({ shortCode }),
-          Mock.of<ShortUrl>({ shortCode: 'code' }),
-          Mock.of<ShortUrl>({ shortCode: 'foo' }),
-          Mock.of<ShortUrl>({ shortCode: 'bar' }),
-          Mock.of<ShortUrl>({ shortCode: 'baz' }),
+          fromPartial<ShortUrl>({ shortCode }),
+          fromPartial<ShortUrl>({ shortCode: 'code' }),
+          fromPartial<ShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShortUrl>({ shortCode: 'bar' }),
+          fromPartial<ShortUrl>({ shortCode: 'baz' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
       ],
       [
         [
-          Mock.of<ShortUrl>({ shortCode }),
-          Mock.of<ShortUrl>({ shortCode: 'code' }),
-          Mock.of<ShortUrl>({ shortCode: 'foo' }),
-          Mock.of<ShortUrl>({ shortCode: 'bar' }),
-          Mock.of<ShortUrl>({ shortCode: 'baz1' }),
-          Mock.of<ShortUrl>({ shortCode: 'baz2' }),
-          Mock.of<ShortUrl>({ shortCode: 'baz3' }),
+          fromPartial<ShortUrl>({ shortCode }),
+          fromPartial<ShortUrl>({ shortCode: 'code' }),
+          fromPartial<ShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShortUrl>({ shortCode: 'bar' }),
+          fromPartial<ShortUrl>({ shortCode: 'baz1' }),
+          fromPartial<ShortUrl>({ shortCode: 'baz2' }),
+          fromPartial<ShortUrl>({ shortCode: 'baz3' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
       ],
     ])('prepends new short URL and increases total on CREATE_SHORT_URL', (data, expectedData) => {
-      const newShortUrl = Mock.of<ShortUrl>({ shortCode: 'newOne' });
+      const newShortUrl = fromPartial<ShortUrl>({ shortCode: 'newOne' });
       const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
+        shortUrls: fromPartial<ShlinkShortUrlsResponse>({
           data,
-          pagination: Mock.of<ShlinkPaginator>({
-            totalItems: 15,
-          }),
+          pagination: { totalItems: 15 },
         }),
         loading: false,
         error: false,
       };
 
-      expect(reducer(state, createShortUrl.fulfilled(newShortUrl, '', Mock.all<ShortUrlData>()))).toEqual({
+      expect(reducer(state, createShortUrl.fulfilled(newShortUrl, '', fromPartial({})))).toEqual({
         shortUrls: {
           data: expectedData,
           pagination: { totalItems: 16 },
@@ -161,16 +156,16 @@ describe('shortUrlsListReducer', () => {
 
     it.each([
       ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
-        const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'notMatching' });
-        const list = [Mock.of<ShortUrl>({ shortCode: 'foo' }), Mock.of<ShortUrl>({ shortCode: 'bar' })];
+        const editedShortUrl = fromPartial<ShortUrl>({ shortCode: 'notMatching' });
+        const list: ShortUrl[] = [fromPartial({ shortCode: 'foo' }), fromPartial({ shortCode: 'bar' })];
 
         return [editedShortUrl, list, list];
       })(),
       ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
-        const editedShortUrl = Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
-        const list = [
-          Mock.of<ShortUrl>({ shortCode: 'matching', longUrl: 'old_one' }),
-          Mock.of<ShortUrl>({ shortCode: 'bar' }),
+        const editedShortUrl = fromPartial<ShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
+        const list: ShortUrl[] = [
+          fromPartial({ shortCode: 'matching', longUrl: 'old_one' }),
+          fromPartial({ shortCode: 'bar' }),
         ];
         const expectedList = [editedShortUrl, list[1]];
 
@@ -178,17 +173,15 @@ describe('shortUrlsListReducer', () => {
       })(),
     ])('updates matching short URL on SHORT_URL_EDITED', (editedShortUrl, initialList, expectedList) => {
       const state = {
-        shortUrls: Mock.of<ShlinkShortUrlsResponse>({
+        shortUrls: fromPartial<ShlinkShortUrlsResponse>({
           data: initialList,
-          pagination: Mock.of<ShlinkPaginator>({
-            totalItems: 15,
-          }),
+          pagination: { totalItems: 15 },
         }),
         loading: false,
         error: false,
       };
 
-      const result = reducer(state, editShortUrl.fulfilled(editedShortUrl, '', Mock.of<EditShortUrl>()));
+      const result = reducer(state, editShortUrl.fulfilled(editedShortUrl, '', fromPartial({})));
 
       expect(result.shortUrls?.data).toEqual(expectedList);
     });

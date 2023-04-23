@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { Settings } from '../../src/settings/reducers/settings';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -7,7 +7,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 describe('<VisitsSettings />', () => {
   const setVisitsSettings = jest.fn();
   const setUp = (settings: Partial<Settings> = {}) => renderWithEvents(
-    <VisitsSettings settings={Mock.of<Settings>(settings)} setVisitsSettings={setVisitsSettings} />,
+    <VisitsSettings settings={fromPartial(settings)} setVisitsSettings={setVisitsSettings} />,
   );
 
   afterEach(jest.clearAllMocks);
@@ -21,10 +21,10 @@ describe('<VisitsSettings />', () => {
   });
 
   it.each([
-    [Mock.all<Settings>(), 'Last 30 days'],
-    [Mock.of<Settings>({ visits: {} }), 'Last 30 days'],
+    [fromPartial<Settings>({}), 'Last 30 days'],
+    [fromPartial<Settings>({ visits: {} }), 'Last 30 days'],
     [
-      Mock.of<Settings>({
+      fromPartial<Settings>({
         visits: {
           defaultInterval: 'last7Days',
         },
@@ -32,7 +32,7 @@ describe('<VisitsSettings />', () => {
       'Last 7 days',
     ],
     [
-      Mock.of<Settings>({
+      fromPartial<Settings>({
         visits: {
           defaultInterval: 'today',
         },
@@ -63,17 +63,17 @@ describe('<VisitsSettings />', () => {
 
   it.each([
     [
-      Mock.all<Settings>(),
+      fromPartial<Settings>({}),
       /The visits coming from potential bots will be included.$/,
       /The visits coming from potential bots will be excluded.$/,
     ],
     [
-      Mock.of<Settings>({ visits: { excludeBots: false } }),
+      fromPartial<Settings>({ visits: { excludeBots: false } }),
       /The visits coming from potential bots will be included.$/,
       /The visits coming from potential bots will be excluded.$/,
     ],
     [
-      Mock.of<Settings>({ visits: { excludeBots: true } }),
+      fromPartial<Settings>({ visits: { excludeBots: true } }),
       /The visits coming from potential bots will be excluded.$/,
       /The visits coming from potential bots will be included.$/,
     ],

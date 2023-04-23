@@ -1,10 +1,9 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { ReachableServer } from '../../src/servers/data';
 import type { Settings } from '../../src/settings/reducers/settings';
-import type { ShortUrl, ShortUrlsOrder } from '../../src/short-urls/data';
+import type { ShortUrlsOrder } from '../../src/short-urls/data';
 import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
 import type { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
@@ -22,15 +21,15 @@ describe('<ShortUrlsList />', () => {
   const ShortUrlsFilteringBar = () => <span>ShortUrlsFilteringBar</span>;
   const listShortUrlsMock = jest.fn();
   const navigate = jest.fn();
-  const shortUrlsList = Mock.of<ShortUrlsListModel>({
+  const shortUrlsList = fromPartial<ShortUrlsListModel>({
     shortUrls: {
       data: [
-        Mock.of<ShortUrl>({
+        {
           shortCode: 'testShortCode',
           shortUrl: 'https://www.example.com/testShortUrl',
           longUrl: 'https://www.example.com/testLongUrl',
           tags: ['test tag'],
-        }),
+        },
       ],
       pagination: { pagesCount: 3 },
     },
@@ -39,11 +38,11 @@ describe('<ShortUrlsList />', () => {
   const setUp = (settings: Partial<Settings> = {}, version: SemVer = '3.0.0') => renderWithEvents(
     <MemoryRouter>
       <ShortUrlsList
-        {...Mock.of<MercureBoundProps>({ mercureInfo: { loading: true } })}
+        {...fromPartial<MercureBoundProps>({ mercureInfo: { loading: true } })}
         listShortUrls={listShortUrlsMock}
         shortUrlsList={shortUrlsList}
-        selectedServer={Mock.of<ReachableServer>({ id: '1', version })}
-        settings={Mock.of<Settings>(settings)}
+        selectedServer={fromPartial({ id: '1', version })}
+        settings={fromPartial(settings)}
       />
     </MemoryRouter>,
   );
@@ -81,9 +80,9 @@ describe('<ShortUrlsList />', () => {
   });
 
   it.each([
-    [Mock.of<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC'],
-    [Mock.of<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC'],
-    [Mock.all<ShortUrlsOrder>(), undefined, undefined],
+    [fromPartial<ShortUrlsOrder>({ field: 'visits', dir: 'ASC' }), 'visits', 'ASC'],
+    [fromPartial<ShortUrlsOrder>({ field: 'title', dir: 'DESC' }), 'title', 'DESC'],
+    [fromPartial<ShortUrlsOrder>({}), undefined, undefined],
   ])('has expected initial ordering based on settings', (defaultOrdering, field, dir) => {
     setUp({ shortUrlsList: { defaultOrdering } });
     expect(listShortUrlsMock).toHaveBeenCalledWith(expect.objectContaining({
@@ -92,23 +91,23 @@ describe('<ShortUrlsList />', () => {
   });
 
   it.each([
-    [Mock.of<Settings>({
+    [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
     }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
-    [Mock.of<Settings>({
+    [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
       visits: { excludeBots: true },
     }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
-    [Mock.of<Settings>({
+    [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
     }), '3.4.0' as SemVer, { field: 'visits', dir: 'ASC' }],
-    [Mock.of<Settings>({
+    [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },

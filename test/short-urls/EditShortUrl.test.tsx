@@ -1,8 +1,6 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { Settings } from '../../src/settings/reducers/settings';
-import type { ShortUrl } from '../../src/short-urls/data';
 import { EditShortUrl as createEditShortUrl } from '../../src/short-urls/EditShortUrl';
 import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
 import type { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
@@ -13,10 +11,10 @@ describe('<EditShortUrl />', () => {
   const setUp = (detail: Partial<ShortUrlDetail> = {}, edition: Partial<ShortUrlEdition> = {}) => render(
     <MemoryRouter>
       <EditShortUrl
-        settings={Mock.of<Settings>({ shortUrlCreation })}
+        settings={fromPartial({ shortUrlCreation })}
         selectedServer={null}
-        shortUrlDetail={Mock.of<ShortUrlDetail>(detail)}
-        shortUrlEdition={Mock.of<ShortUrlEdition>(edition)}
+        shortUrlDetail={fromPartial(detail)}
+        shortUrlEdition={fromPartial(edition)}
         getShortUrlDetail={jest.fn()}
         editShortUrl={jest.fn(async () => Promise.resolve())}
       />
@@ -38,7 +36,7 @@ describe('<EditShortUrl />', () => {
   });
 
   it('renders form when detail properly loads', () => {
-    setUp({ shortUrl: Mock.of<ShortUrl>({ meta: {} }) });
+    setUp({ shortUrl: fromPartial({ meta: {} }) });
 
     expect(screen.getByText('ShortUrlForm')).toBeInTheDocument();
     expect(screen.queryByText('Loading...')).not.toBeInTheDocument();

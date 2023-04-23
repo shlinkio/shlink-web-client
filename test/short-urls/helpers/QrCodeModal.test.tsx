@@ -1,21 +1,18 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
-import type { ImageDownloader } from '../../../src/common/services/ImageDownloader';
-import type { ReachableServer } from '../../../src/servers/data';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { QrCodeModal as createQrCodeModal } from '../../../src/short-urls/helpers/QrCodeModal';
 import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<QrCodeModal />', () => {
   const saveImage = jest.fn().mockReturnValue(Promise.resolve());
-  const QrCodeModal = createQrCodeModal(Mock.of<ImageDownloader>({ saveImage }));
+  const QrCodeModal = createQrCodeModal(fromPartial({ saveImage }));
   const shortUrl = 'https://s.test/abc123';
   const setUp = (version: SemVer = '2.8.0') => renderWithEvents(
     <QrCodeModal
       isOpen
-      shortUrl={Mock.of<ShortUrl>({ shortUrl })}
-      selectedServer={Mock.of<ReachableServer>({ version })}
+      shortUrl={fromPartial({ shortUrl })}
+      selectedServer={fromPartial({ version })}
       toggle={() => {}}
     />,
   );

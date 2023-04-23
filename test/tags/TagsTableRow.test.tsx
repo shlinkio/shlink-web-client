@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
-import type { ReachableServer } from '../../src/servers/data';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
@@ -18,7 +17,7 @@ describe('<TagsTableRow />', () => {
         <tbody>
           <TagsTableRow
             tag={{ tag: 'foo&bar', visits: tagStats?.visits ?? 0, shortUrls: tagStats?.shortUrls ?? 0 }}
-            selectedServer={Mock.of<ReachableServer>({ id: 'abc123' })}
+            selectedServer={fromPartial({ id: 'abc123' })}
           />
         </tbody>
       </table>

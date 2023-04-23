@@ -1,7 +1,7 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkVisitsParams } from '../../../src/api/types';
 import { formatIsoDate, parseDate } from '../../../src/utils/helpers/date';
-import type { CreateVisit, OrphanVisit, Visit, VisitsParams } from '../../../src/visits/types';
+import type { CreateVisit, OrphanVisit, VisitsParams } from '../../../src/visits/types';
 import type { GroupedNewVisits } from '../../../src/visits/types/helpers';
 import { groupNewVisitsByType, toApiParams } from '../../../src/visits/types/helpers';
 
@@ -11,19 +11,15 @@ describe('visitsTypeHelpers', () => {
       [[], { orphanVisits: [], nonOrphanVisits: [] }],
       ((): [CreateVisit[], GroupedNewVisits] => {
         const orphanVisits: CreateVisit[] = [
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
         ];
         const nonOrphanVisits: CreateVisit[] = [
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
         ];
 
         return [
@@ -33,24 +29,18 @@ describe('visitsTypeHelpers', () => {
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
         const orphanVisits: CreateVisit[] = [
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
         ];
 
         return [orphanVisits, { orphanVisits, nonOrphanVisits: [] }];
       })(),
       ((): [CreateVisit[], GroupedNewVisits] => {
         const nonOrphanVisits: CreateVisit[] = [
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
         ];
 
         return [nonOrphanVisits, { orphanVisits: [], nonOrphanVisits }];

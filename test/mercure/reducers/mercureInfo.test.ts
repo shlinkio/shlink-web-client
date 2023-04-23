@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { GetState } from '../../../src/container/types';
 import { mercureInfoReducerCreator } from '../../../src/mercure/reducers/mercureInfo';
@@ -9,7 +9,7 @@ describe('mercureInfoReducer', () => {
     token: 'abc.123.def',
   };
   const getMercureInfo = jest.fn();
-  const buildShlinkApiClient = () => Mock.of<ShlinkApiClient>({ mercureInfo: getMercureInfo });
+  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ mercureInfo: getMercureInfo });
   const { loadMercureInfo, reducer } = mercureInfoReducerCreator(buildShlinkApiClient);
 
   beforeEach(jest.resetAllMocks);

@@ -1,5 +1,5 @@
+import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import { Mock } from 'ts-mockery';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
@@ -16,25 +16,25 @@ import {
   getDomainVisits as getDomainVisitsCreator,
 } from '../../../src/visits/reducers/domainVisits';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { CreateVisit, Visit } from '../../../src/visits/types';
+import type { Visit } from '../../../src/visits/types';
 
 describe('domainVisitsReducer', () => {
   const now = new Date();
-  const visitsMocks = rangeOf(2, () => Mock.all<Visit>());
+  const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
   const getDomainVisitsCall = jest.fn();
-  const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
+  const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
   const getDomainVisits = getDomainVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(getDomainVisits);
 
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const buildState = (data: Partial<DomainVisits>) => Mock.of<DomainVisits>(data);
+    const buildState = (data: Partial<DomainVisits>) => fromPartial<DomainVisits>(data);
 
     it('returns loading on GET_DOMAIN_VISITS_START', () => {
       const { loading } = reducer(
         buildState({ loading: false }),
-        getDomainVisits.pending('', Mock.all<LoadDomainVisits>()),
+        getDomainVisits.pending('', fromPartial<LoadDomainVisits>({})),
       );
       expect(loading).toEqual(true);
     });
@@ -52,7 +52,7 @@ describe('domainVisitsReducer', () => {
     it('stops loading and returns error on GET_DOMAIN_VISITS_ERROR', () => {
       const state = reducer(
         buildState({ loading: true, error: false }),
-        getDomainVisits.rejected(null, '', Mock.all<LoadDomainVisits>()),
+        getDomainVisits.rejected(null, '', fromPartial({})),
       );
       const { loading, error } = state;
 
@@ -61,10 +61,10 @@ describe('domainVisitsReducer', () => {
     });
 
     it('return visits on GET_DOMAIN_VISITS', () => {
-      const actionVisits = [Mock.all<Visit>(), Mock.all<Visit>()];
+      const actionVisits: Visit[] = [fromPartial({}), fromPartial({})];
       const { loading, error, visits } = reducer(
         buildState({ loading: true, error: false }),
-        getDomainVisits.fulfilled({ visits: actionVisits }, '', Mock.all<LoadDomainVisits>()),
+        getDomainVisits.fulfilled({ visits: actionVisits }, '', fromPartial({})),
       );
 
       expect(loading).toEqual(false);
@@ -75,10 +75,10 @@ describe('domainVisitsReducer', () => {
     it.each([
       [{ domain: 'foo.com' }, 'foo.com', visitsMocks.length + 1],
       [{ domain: 'bar.com' }, 'foo.com', visitsMocks.length],
-      [Mock.of<DomainVisits>({ domain: 'foo.com' }), 'foo.com', visitsMocks.length + 1],
-      [Mock.of<DomainVisits>({ domain: DEFAULT_DOMAIN }), null, visitsMocks.length + 1],
+      [fromPartial<DomainVisits>({ domain: 'foo.com' }), 'foo.com', visitsMocks.length + 1],
+      [fromPartial<DomainVisits>({ domain: DEFAULT_DOMAIN }), null, visitsMocks.length + 1],
       [
-        Mock.of<DomainVisits>({
+        fromPartial<DomainVisits>({
           domain: 'foo.com',
           query: { endDate: formatIsoDate(subDays(now, 1)) ?? undefined },
         }),
@@ -86,7 +86,7 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<DomainVisits>({
+        fromPartial<DomainVisits>({
           domain: 'foo.com',
           query: { startDate: formatIsoDate(addDays(now, 1)) ?? undefined },
         }),
@@ -94,7 +94,7 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<DomainVisits>({
+        fromPartial<DomainVisits>({
           domain: 'foo.com',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -105,7 +105,7 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length,
       ],
       [
-        Mock.of<DomainVisits>({
+        fromPartial<DomainVisits>({
           domain: 'foo.com',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -116,7 +116,7 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length + 1,
       ],
       [
-        Mock.of<DomainVisits>({
+        fromPartial<DomainVisits>({
           domain: 'bar.com',
           query: {
             startDate: formatIsoDate(subDays(now, 5)) ?? undefined,
@@ -127,9 +127,9 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length,
       ],
     ])('prepends new visits on CREATE_VISIT', (state, shortUrlDomain, expectedVisits) => {
-      const shortUrl = Mock.of<ShortUrl>({ domain: shortUrlDomain });
+      const shortUrl = fromPartial<ShortUrl>({ domain: shortUrlDomain });
       const { visits } = reducer(buildState({ ...state, visits: visitsMocks }), createNewVisits([
-        Mock.of<CreateVisit>({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }),
+        fromPartial({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }),
       ]));
 
       expect(visits).toHaveLength(expectedVisits);
@@ -153,7 +153,7 @@ describe('domainVisitsReducer', () => {
 
   describe('getDomainVisits', () => {
     const dispatchMock = jest.fn();
-    const getState = () => Mock.of<ShlinkState>({
+    const getState = () => fromPartial<ShlinkState>({
       domainVisits: { cancelLoad: false },
     });
     const domain = 'foo.com';
@@ -183,12 +183,12 @@ describe('domainVisitsReducer', () => {
 
     it.each([
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 20)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 20)) })],
         getDomainVisits.fallbackToInterval('last30Days'),
         3,
       ],
       [
-        [Mock.of<Visit>({ date: formatISO(subDays(now, 100)) })],
+        [fromPartial<Visit>({ date: formatISO(subDays(now, 100)) })],
         getDomainVisits.fallbackToInterval('last180Days'),
         3,
       ],

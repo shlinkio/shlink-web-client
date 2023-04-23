@@ -1,10 +1,9 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisitsOverview } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 import type {
-  ParsedVisitsOverview,
   PartialVisitsSummary,
   VisitsOverview,
 } from '../../../src/visits/reducers/visitsOverview';
@@ -12,18 +11,18 @@ import {
   loadVisitsOverview as loadVisitsOverviewCreator,
   visitsOverviewReducerCreator,
 } from '../../../src/visits/reducers/visitsOverview';
-import type { CreateVisit, OrphanVisit, Visit } from '../../../src/visits/types';
+import type { OrphanVisit } from '../../../src/visits/types';
 
 describe('visitsOverviewReducer', () => {
   const getVisitsOverview = jest.fn();
-  const buildApiClientMock = () => Mock.of<ShlinkApiClient>({ getVisitsOverview });
+  const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getVisitsOverview });
   const loadVisitsOverview = loadVisitsOverviewCreator(buildApiClientMock);
   const { reducer } = visitsOverviewReducerCreator(loadVisitsOverview);
 
   beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
-    const state = (payload: Partial<VisitsOverview> = {}) => Mock.of<VisitsOverview>(payload);
+    const state = (payload: Partial<VisitsOverview> = {}) => fromPartial<VisitsOverview>(payload);
 
     it('returns loading on GET_OVERVIEW_START', () => {
       const { loading } = reducer(
@@ -45,7 +44,7 @@ describe('visitsOverviewReducer', () => {
     });
 
     it('return visits overview on GET_OVERVIEW', () => {
-      const action = loadVisitsOverview.fulfilled(Mock.of<ParsedVisitsOverview>({
+      const action = loadVisitsOverview.fulfilled(fromPartial({
         nonOrphanVisits: { total: 100 },
       }), 'requestId');
       const { loading, error, nonOrphanVisits } = reducer(state({ loading: true, error: false }), action);
@@ -65,17 +64,11 @@ describe('visitsOverviewReducer', () => {
           orphanVisits: { total: providedOrphanVisitsCount },
         }),
         createNewVisits([
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
         ]),
       );
 
@@ -120,18 +113,12 @@ describe('visitsOverviewReducer', () => {
           orphanVisits: { total: 200, ...initialOrphanVisits },
         }),
         createNewVisits([
-          Mock.of<CreateVisit>({ visit: Mock.all<Visit>() }),
-          Mock.of<CreateVisit>({ visit: Mock.of<Visit>({ potentialBot: true }) }),
-          Mock.of<CreateVisit>({ visit: Mock.of<Visit>({ potentialBot: true }) }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '' }),
-          }),
-          Mock.of<CreateVisit>({
-            visit: Mock.of<OrphanVisit>({ visitedUrl: '', potentialBot: true }),
-          }),
+          fromPartial({ visit: {} }),
+          fromPartial({ visit: { potentialBot: true } }),
+          fromPartial({ visit: { potentialBot: true } }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '' }) }),
+          fromPartial({ visit: fromPartial<OrphanVisit>({ visitedUrl: '', potentialBot: true }) }),
         ]),
       );
 
@@ -142,7 +129,7 @@ describe('visitsOverviewReducer', () => {
 
   describe('loadVisitsOverview', () => {
     const dispatchMock = jest.fn();
-    const getState = () => Mock.of<ShlinkState>();
+    const getState = () => fromPartial<ShlinkState>({});
 
     it.each([
       [
@@ -167,7 +154,7 @@ describe('visitsOverviewReducer', () => {
         },
       ],
     ])('dispatches start and success when promise is resolved', async (serverResult, dispatchedPayload) => {
-      const resolvedOverview = Mock.of<ShlinkVisitsOverview>(serverResult);
+      const resolvedOverview = fromPartial<ShlinkVisitsOverview>(serverResult);
       getVisitsOverview.mockResolvedValue(resolvedOverview);
 
       await loadVisitsOverview()(dispatchMock, getState, {});

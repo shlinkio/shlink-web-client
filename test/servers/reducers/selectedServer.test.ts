@@ -1,4 +1,4 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { v4 as uuid } from 'uuid';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
@@ -15,7 +15,7 @@ import {
 describe('selectedServerReducer', () => {
   const dispatch = jest.fn();
   const health = jest.fn();
-  const buildApiClient = jest.fn().mockReturnValue(Mock.of<ShlinkApiClient>({ health }));
+  const buildApiClient = jest.fn().mockReturnValue(fromPartial<ShlinkApiClient>({ health }));
   const selectServer = selectServerCreator(buildApiClient);
   const { reducer } = selectedServerReducerCreator(selectServer);
 
@@ -26,8 +26,7 @@ describe('selectedServerReducer', () => {
       expect(reducer(null, resetSelectedServer())).toBeNull());
 
     it('returns selected server when action is SELECT_SERVER', () => {
-      const payload = Mock.of<RegularServer>({ id: 'abc123' });
-
+      const payload = fromPartial<RegularServer>({ id: 'abc123' });
       expect(reducer(null, selectServer.fulfilled(payload, '', ''))).toEqual(payload);
     });
   });
@@ -66,7 +65,7 @@ describe('selectedServerReducer', () => {
     it('dispatches error when health endpoint fails', async () => {
       const id = uuid();
       const getState = createGetStateMock(id);
-      const expectedSelectedServer = Mock.of<NonReachableServer>({ id, serverNotReachable: true });
+      const expectedSelectedServer = fromPartial<NonReachableServer>({ id, serverNotReachable: true });
 
       health.mockRejectedValue({});
 
@@ -78,7 +77,7 @@ describe('selectedServerReducer', () => {
 
     it('dispatches error when server is not found', async () => {
       const id = uuid();
-      const getState = jest.fn(() => Mock.of<ShlinkState>({ servers: {} }));
+      const getState = jest.fn(() => fromPartial<ShlinkState>({ servers: {} }));
       const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 
       await selectServer(id)(dispatch, getState, {});
@@ -95,9 +94,9 @@ describe('selectedServerReducer', () => {
     const { middleware } = selectServerListener(selectServer, loadMercureInfo);
 
     it.each([
-      [Mock.of<ReachableServer>({ version: '1.2.3' }), 1],
-      [Mock.of<NotFoundServer>({ serverNotFound: true }), 0],
-      [Mock.of<NonReachableServer>({ serverNotReachable: true }), 0],
+      [fromPartial<ReachableServer>({ version: '1.2.3' }), 1],
+      [fromPartial<NotFoundServer>({ serverNotFound: true }), 0],
+      [fromPartial<NonReachableServer>({ serverNotReachable: true }), 0],
     ])('dispatches loadMercureInfo when provided server is reachable', (payload, expectedCalls) => {
       middleware({ dispatch, getState })(jest.fn())({
         payload,
@@ -110,7 +109,7 @@ describe('selectedServerReducer', () => {
 
     it('does not dispatch loadMercureInfo when action is not of the proper type', () => {
       middleware({ dispatch, getState })(jest.fn())({
-        payload: Mock.of<ReachableServer>({ version: '1.2.3' }),
+        payload: fromPartial<ReachableServer>({ version: '1.2.3' }),
         type: 'something_else',
       });
 

@@ -1,9 +1,8 @@
 import { screen } from '@testing-library/react';
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
 import type {
   RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
-  Settings,
 } from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -12,7 +11,7 @@ describe('<RealTimeUpdatesSettings />', () => {
   const setRealTimeUpdatesInterval = jest.fn();
   const setUp = (realTimeUpdates: Partial<RealTimeUpdatesSettingsOptions> = {}) => renderWithEvents(
     <RealTimeUpdatesSettings
-      settings={Mock.of<Settings>({ realTimeUpdates })}
+      settings={fromPartial({ realTimeUpdates })}
       toggleRealTimeUpdates={toggleRealTimeUpdates}
       setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
     />,

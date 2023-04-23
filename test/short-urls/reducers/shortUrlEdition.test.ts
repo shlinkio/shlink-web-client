@@ -1,8 +1,7 @@
-import { Mock } from 'ts-mockery';
+import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkState } from '../../../src/container/types';
 import type { SelectedServer } from '../../../src/servers/data';
 import type { ShortUrl } from '../../../src/short-urls/data';
-import type { EditShortUrl } from '../../../src/short-urls/reducers/shortUrlEdition';
 import {
   editShortUrl as editShortUrlCreator,
   shortUrlEditionReducerCreator,
@@ -11,7 +10,7 @@ import {
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
   const shortCode = 'abc123';
-  const shortUrl = Mock.of<ShortUrl>({ longUrl, shortCode });
+  const shortUrl = fromPartial<ShortUrl>({ longUrl, shortCode });
   const updateShortUrl = jest.fn().mockResolvedValue(shortUrl);
   const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
@@ -21,7 +20,7 @@ describe('shortUrlEditionReducer', () => {
 
   describe('reducer', () => {
     it('returns loading on EDIT_SHORT_URL_START', () => {
-      expect(reducer(undefined, editShortUrl.pending('', Mock.all<EditShortUrl>()))).toEqual({
+      expect(reducer(undefined, editShortUrl.pending('', fromPartial({})))).toEqual({
         saving: true,
         saved: false,
         error: false,
@@ -29,7 +28,7 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it('returns error on EDIT_SHORT_URL_ERROR', () => {
-      expect(reducer(undefined, editShortUrl.rejected(null, '', Mock.all<EditShortUrl>()))).toEqual({
+      expect(reducer(undefined, editShortUrl.rejected(null, '', fromPartial({})))).toEqual({
         saving: false,
         saved: false,
         error: true,
@@ -37,7 +36,7 @@ describe('shortUrlEditionReducer', () => {
     });
 
     it('returns provided tags and shortCode on SHORT_URL_EDITED', () => {
-      expect(reducer(undefined, editShortUrl.fulfilled(shortUrl, '', Mock.all<EditShortUrl>()))).toEqual({
+      expect(reducer(undefined, editShortUrl.fulfilled(shortUrl, '', fromPartial({})))).toEqual({
         shortUrl,
         saving: false,
         saved: true,
@@ -48,7 +47,9 @@ describe('shortUrlEditionReducer', () => {
 
   describe('editShortUrl', () => {
     const dispatch = jest.fn();
-    const createGetState = (selectedServer: SelectedServer = null) => () => Mock.of<ShlinkState>({ selectedServer });
+    const createGetState = (selectedServer: SelectedServer = null) => () => fromPartial<ShlinkState>({
+      selectedServer,
+    });
 
     afterEach(jest.clearAllMocks);
 

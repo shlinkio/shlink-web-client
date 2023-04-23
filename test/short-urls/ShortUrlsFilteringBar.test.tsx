@@ -1,9 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
-import type { Settings } from '../../src/settings/reducers/settings';
 import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-urls/ShortUrlsFilteringBar';
 import { formatDate } from '../../src/utils/helpers/date';
 import type { DateRange } from '../../src/utils/helpers/dateIntervals';
@@ -28,10 +27,10 @@ describe('<ShortUrlsFilteringBar />', () => {
     return renderWithEvents(
       <MemoryRouter>
         <ShortUrlsFilteringBar
-          selectedServer={selectedServer ?? Mock.all<SelectedServer>()}
+          selectedServer={selectedServer ?? fromPartial({})}
           order={{}}
           handleOrderBy={handleOrderBy}
-          settings={Mock.of<Settings>({ visits: {} })}
+          settings={fromPartial({ visits: {} })}
         />
       </MemoryRouter>,
     );
@@ -74,12 +73,12 @@ describe('<ShortUrlsFilteringBar />', () => {
   });
 
   it.each([
-    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '3.0.0' }), true],
-    ['tags=foo,bar', Mock.of<ReachableServer>({ version: '3.1.0' }), true],
-    ['tags=foo', Mock.of<ReachableServer>({ version: '3.0.0' }), false],
-    ['', Mock.of<ReachableServer>({ version: '3.0.0' }), false],
-    ['tags=foo,bar,baz', Mock.of<ReachableServer>({ version: '2.10.0' }), false],
-    ['', Mock.of<ReachableServer>({ version: '2.10.0' }), false],
+    ['tags=foo,bar,baz', fromPartial<ReachableServer>({ version: '3.0.0' }), true],
+    ['tags=foo,bar', fromPartial<ReachableServer>({ version: '3.1.0' }), true],
+    ['tags=foo', fromPartial<ReachableServer>({ version: '3.0.0' }), false],
+    ['', fromPartial<ReachableServer>({ version: '3.0.0' }), false],
+    ['tags=foo,bar,baz', fromPartial<ReachableServer>({ version: '2.10.0' }), false],
+    ['', fromPartial<ReachableServer>({ version: '2.10.0' }), false],
   ])(
     'renders tags mode toggle if the server supports it and there is more than one tag selected',
     (search, selectedServer, shouldHaveComponent) => {
@@ -98,7 +97,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     ['&tagsMode=all', 'With all the tags.'],
     ['&tagsMode=any', 'With any of the tags.'],
   ])('expected tags mode tooltip title', async (initialTagsMode, expectedToggleText) => {
-    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
+    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, fromPartial({ version: '3.0.0' }));
 
     await user.hover(screen.getByLabelText('Change tags mode'));
     expect(await screen.findByRole('tooltip')).toHaveTextContent(expectedToggleText);
@@ -109,7 +108,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     ['&tagsMode=all', 'tagsMode=any'],
     ['&tagsMode=any', 'tagsMode=all'],
   ])('redirects to first page when tags mode changes', async (initialTagsMode, expectedRedirectTagsMode) => {
-    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, Mock.of<ReachableServer>({ version: '3.0.0' }));
+    const { user } = setUp(`tags=foo,bar${initialTagsMode}`, fromPartial({ version: '3.0.0' }));
 
     expect(navigate).not.toHaveBeenCalled();
     await user.click(screen.getByLabelText('Change tags mode'));
@@ -127,7 +126,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     ['excludePastValidUntil=false', /Exclude enabled in the past/, 'excludePastValidUntil=true'],
     ['excludePastValidUntil=true', /Exclude enabled in the past/, 'excludePastValidUntil=false'],
   ])('allows to toggle filters through filtering dropdown', async (search, menuItemName, expectedQuery) => {
-    const { user } = setUp(search, Mock.of<ReachableServer>({ version: '3.4.0' }));
+    const { user } = setUp(search, fromPartial({ version: '3.4.0' }));
     const toggleFilter = async (name: RegExp) => {
       await user.click(screen.getByRole('button', { name: 'Filters' }));
       await waitFor(() => screen.findByRole('menu'));

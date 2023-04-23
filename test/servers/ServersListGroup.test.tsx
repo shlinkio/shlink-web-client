@@ -1,13 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { Mock } from 'ts-mockery';
 import type { ServerWithId } from '../../src/servers/data';
 import { ServersListGroup } from '../../src/servers/ServersListGroup';
 
 describe('<ServersListGroup />', () => {
-  const servers = [
-    Mock.of<ServerWithId>({ name: 'foo', id: '123' }),
-    Mock.of<ServerWithId>({ name: 'bar', id: '456' }),
+  const servers: ServerWithId[] = [
+    fromPartial({ name: 'foo', id: '123' }),
+    fromPartial({ name: 'bar', id: '456' }),
   ];
   const setUp = (params: { servers?: ServerWithId[]; withChildren?: boolean; embedded?: boolean }) => {
     const { servers = [], withChildren = true, embedded } = params;
