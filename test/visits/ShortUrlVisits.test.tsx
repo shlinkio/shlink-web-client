@@ -10,8 +10,8 @@ import { ShortUrlVisits as createShortUrlVisits } from '../../src/visits/ShortUr
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {
-  const getShortUrlVisitsMock = jest.fn();
-  const exportVisits = jest.fn();
+  const getShortUrlVisitsMock = vi.fn();
+  const exportVisits = vi.fn();
   const shortUrlVisits = fromPartial<ShortUrlVisitsState>({ visits: [{ date: formatISO(new Date()) }] });
   const ShortUrlVisits = createShortUrlVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(

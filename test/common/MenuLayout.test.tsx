@@ -6,7 +6,7 @@ import { MenuLayout as createMenuLayout } from '../../src/common/MenuLayout';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import type { SemVer } from '../../src/utils/helpers/version';
 
-jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useParams: jest.fn() }));
+vi.mock('react-router-dom', async () => ({ ...(await vi.importActual<any>('react-router-dom')), useParams: vi.fn() }));
 
 describe('<MenuLayout />', () => {
   const MenuLayout = createMenuLayout(
@@ -31,9 +31,9 @@ describe('<MenuLayout />', () => {
     return render(
       <Router location={history.location} navigator={history}>
         <MenuLayout
-          sidebarNotPresent={jest.fn()}
-          sidebarPresent={jest.fn()}
-          selectServer={jest.fn()}
+          sidebarNotPresent={vi.fn()}
+          sidebarPresent={vi.fn()}
+          selectServer={vi.fn()}
           selectedServer={selectedServer}
         />
       </Router>,
@@ -44,7 +44,7 @@ describe('<MenuLayout />', () => {
     (useParams as any).mockReturnValue({ serverId: 'abc123' });
   });
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows loading indicator while loading server', () => {
     setUp(null);

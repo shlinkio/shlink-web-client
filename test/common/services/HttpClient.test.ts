@@ -1,10 +1,10 @@
 import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('HttpClient', () => {
-  const fetch = jest.fn();
+  const fetch = vi.fn();
   const httpClient = new HttpClient(fetch);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('fetchJson', () => {
     it('throws json on success', async () => {

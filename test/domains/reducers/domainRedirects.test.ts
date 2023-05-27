@@ -4,14 +4,14 @@ import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 
 describe('domainRedirectsReducer', () => {
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('editDomainRedirects', () => {
     const domain = 'example.com';
     const redirects = fromPartial<ShlinkDomainRedirects>({});
-    const dispatch = jest.fn();
-    const getState = jest.fn();
-    const editDomainRedirectsCall = jest.fn();
+    const dispatch = vi.fn();
+    const getState = vi.fn();
+    const editDomainRedirectsCall = vi.fn();
     const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ editDomainRedirects: editDomainRedirectsCall });
     const editDomainRedirectsAction = editDomainRedirects(buildShlinkApiClient);
 

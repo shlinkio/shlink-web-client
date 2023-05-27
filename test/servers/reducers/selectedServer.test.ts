@@ -13,13 +13,13 @@ import {
 } from '../../../src/servers/reducers/selectedServer';
 
 describe('selectedServerReducer', () => {
-  const dispatch = jest.fn();
-  const health = jest.fn();
-  const buildApiClient = jest.fn().mockReturnValue(fromPartial<ShlinkApiClient>({ health }));
+  const dispatch = vi.fn();
+  const health = vi.fn();
+  const buildApiClient = vi.fn().mockReturnValue(fromPartial<ShlinkApiClient>({ health }));
   const selectServer = selectServerCreator(buildApiClient);
   const { reducer } = selectedServerReducerCreator(selectServer);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns default when action is RESET_SELECTED_SERVER', () =>
@@ -33,7 +33,7 @@ describe('selectedServerReducer', () => {
 
   describe('selectServer', () => {
     const version = '1.19.0';
-    const createGetStateMock = (id: string) => jest.fn().mockReturnValue({
+    const createGetStateMock = (id: string) => vi.fn().mockReturnValue({
       servers: {
         [id]: { id },
       },
@@ -77,7 +77,7 @@ describe('selectedServerReducer', () => {
 
     it('dispatches error when server is not found', async () => {
       const id = uuid();
-      const getState = jest.fn(() => fromPartial<ShlinkState>({ servers: {} }));
+      const getState = vi.fn(() => fromPartial<ShlinkState>({ servers: {} }));
       const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 
       await selectServer(id)(dispatch, getState, {});
@@ -89,8 +89,8 @@ describe('selectedServerReducer', () => {
   });
 
   describe('selectServerListener', () => {
-    const getState = jest.fn(() => ({}));
-    const loadMercureInfo = jest.fn();
+    const getState = vi.fn(() => ({}));
+    const loadMercureInfo = vi.fn();
     const { middleware } = selectServerListener(selectServer, loadMercureInfo);
 
     it.each([
@@ -98,7 +98,7 @@ describe('selectedServerReducer', () => {
       [fromPartial<NotFoundServer>({ serverNotFound: true }), 0],
       [fromPartial<NonReachableServer>({ serverNotReachable: true }), 0],
     ])('dispatches loadMercureInfo when provided server is reachable', (payload, expectedCalls) => {
-      middleware({ dispatch, getState })(jest.fn())({
+      middleware({ dispatch, getState })(vi.fn())({
         payload,
         type: selectServer.fulfilled.toString(),
       });
@@ -108,7 +108,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('does not dispatch loadMercureInfo when action is not of the proper type', () => {
-      middleware({ dispatch, getState })(jest.fn())({
+      middleware({ dispatch, getState })(vi.fn())({
         payload: fromPartial<ReachableServer>({ version: '1.2.3' }),
         type: 'something_else',
       });

@@ -8,17 +8,17 @@ import { formatDate } from '../../src/utils/helpers/date';
 import type { DateRange } from '../../src/utils/helpers/dateIntervals';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ serverId: '1' }),
-  useNavigate: jest.fn(),
-  useLocation: jest.fn().mockReturnValue({}),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useParams: vi.fn().mockReturnValue({ serverId: '1' }),
+  useNavigate: vi.fn(),
+  useLocation: vi.fn().mockReturnValue({}),
 }));
 
 describe('<ShortUrlsFilteringBar />', () => {
   const ShortUrlsFilteringBar = filteringBarCreator(() => <>ExportShortUrlsBtn</>, () => <>TagsSelector</>);
-  const navigate = jest.fn();
-  const handleOrderBy = jest.fn();
+  const navigate = vi.fn();
+  const handleOrderBy = vi.fn();
   const now = new Date();
   const setUp = (search = '', selectedServer?: SelectedServer) => {
     (useLocation as any).mockReturnValue({ search });
@@ -36,7 +36,7 @@ describe('<ShortUrlsFilteringBar />', () => {
     );
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected children components', () => {
     setUp();

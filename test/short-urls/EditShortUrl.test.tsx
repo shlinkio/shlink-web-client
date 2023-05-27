@@ -15,8 +15,8 @@ describe('<EditShortUrl />', () => {
         selectedServer={null}
         shortUrlDetail={fromPartial(detail)}
         shortUrlEdition={fromPartial(edition)}
-        getShortUrlDetail={jest.fn()}
-        editShortUrl={jest.fn(async () => Promise.resolve())}
+        getShortUrlDetail={vi.fn()}
+        editShortUrl={vi.fn(async () => Promise.resolve())}
       />
     </MemoryRouter>,
   );

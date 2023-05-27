@@ -5,7 +5,7 @@ import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<QrCodeModal />', () => {
-  const saveImage = jest.fn().mockReturnValue(Promise.resolve());
+  const saveImage = vi.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(fromPartial({ saveImage }));
   const shortUrl = 'https://s.test/abc123';
   const setUp = (version: SemVer = '2.8.0') => renderWithEvents(
@@ -17,7 +17,7 @@ describe('<QrCodeModal />', () => {
     />,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows an external link to the URL in the header', () => {
     setUp();

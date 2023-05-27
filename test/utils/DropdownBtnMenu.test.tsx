@@ -6,7 +6,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtnMenu />', () => {
   const setUp = (props: Partial<DropdownBtnMenuProps> = {}) => renderWithEvents(
-    <DropdownBtnMenu {...fromPartial<DropdownBtnMenuProps>({ toggle: jest.fn(), ...props })}>
+    <DropdownBtnMenu {...fromPartial<DropdownBtnMenuProps>({ toggle: vi.fn(), ...props })}>
       the children
     </DropdownBtnMenu>,
   );

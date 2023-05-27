@@ -1,4 +1,1234 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 1`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-arrow-up-wide-short ordering-dropdown__sort-icon"
+              data-icon="arrow-up-wide-short"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 2`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-arrow-up-wide-short ordering-dropdown__sort-icon"
+              data-icon="arrow-up-wide-short"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 3`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-arrow-up-wide-short ordering-dropdown__sort-icon"
+              data-icon="arrow-up-wide-short"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 4`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-arrow-up-wide-short ordering-dropdown__sort-icon"
+              data-icon="arrow-up-wide-short"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z"
+                fill="currentColor"
+              />
+            </svg>
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 1`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="disabled dropdown-item"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 me-3 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Paginate
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              50
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              100
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              200
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              500
+            </b>
+             items per page
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear pagination
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+  <div
+    class="chart-card__footer--sticky card-footer"
+  >
+    <nav
+      aria-label="pagination"
+      class=""
+    >
+      <ul
+        class="flex-wrap mb-0 simple-paginator justify-content-center pagination"
+      >
+        <li
+          class="page-item disabled"
+        >
+          <span
+            aria-label="Previous"
+            class="page-link"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ‹
+            </span>
+            <span
+              class="visually-hidden"
+            >
+              Previous
+            </span>
+          </span>
+        </li>
+        <li
+          class="page-item active"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            1
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            2
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            3
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            4
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            aria-label="Next"
+            class="page-link"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ›
+            </span>
+            <span
+              class="visually-hidden"
+            >
+              Next
+            </span>
+          </span>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 2`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="disabled dropdown-item"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 me-3 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Paginate
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              50
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              100
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              200
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              500
+            </b>
+             items per page
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear pagination
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+  <div
+    class="chart-card__footer--sticky card-footer"
+  >
+    <nav
+      aria-label="pagination"
+      class=""
+    >
+      <ul
+        class="flex-wrap mb-0 simple-paginator justify-content-center pagination"
+      >
+        <li
+          class="page-item disabled"
+        >
+          <span
+            aria-label="Previous"
+            class="page-link"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ‹
+            </span>
+            <span
+              class="visually-hidden"
+            >
+              Previous
+            </span>
+          </span>
+        </li>
+        <li
+          class="page-item active"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            1
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            class="page-link"
+            role="link"
+          >
+            2
+          </span>
+        </li>
+        <li
+          class="page-item"
+        >
+          <span
+            aria-label="Next"
+            class="page-link"
+          >
+            <span
+              aria-hidden="true"
+            >
+              ›
+            </span>
+            <span
+              class="visually-hidden"
+            >
+              Next
+            </span>
+          </span>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 3`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="disabled dropdown-item"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 me-3 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Paginate
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              50
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              100
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              200
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              500
+            </b>
+             items per page
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear pagination
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 4`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="disabled dropdown-item"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 me-3 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Paginate
+        </button>
+        <div
+          aria-hidden="true"
+          class="dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              50
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              100
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              200
+            </b>
+             items per page
+          </button>
+          <button
+            class="dropdown-item active"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <b>
+              500
+            </b>
+             items per page
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            <i>
+              Clear pagination
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
+
+exports[`<SortableBarChartCard /> > renders stats unchanged when no ordering is set 1`] = `
+<div
+  class="card"
+  role="document"
+>
+  <div
+    class="chart-card__header card-header"
+  >
+    Foo
+    <div
+      class="float-end"
+    >
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="btn-sm p-0 dropdown-toggle btn btn-link"
+          type="button"
+        >
+          Order by
+        </button>
+        <div
+          aria-hidden="true"
+          class="w-100 ordering-dropdown__menu--link dropdown-menu dropdown-menu-end"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Name
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
+            Amount
+          </button>
+          <div
+            class="dropdown-divider"
+            tabindex="-1"
+          />
+          <button
+            class="disabled dropdown-item"
+            disabled=""
+            tabindex="-1"
+            type="button"
+          >
+            <i>
+              Clear selection
+            </i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <canvas
+      height="0"
+      role="img"
+      style="display: block; box-sizing: border-box; height: 0px; width: 0px;"
+      width="0"
+    />
+  </div>
+</div>
+`;
 
 exports[`<SortableBarChartCard /> renders properly ordered stats when ordering is set 1`] = `
 <div

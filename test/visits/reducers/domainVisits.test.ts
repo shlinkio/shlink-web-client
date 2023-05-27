@@ -21,12 +21,12 @@ import type { Visit } from '../../../src/visits/types';
 describe('domainVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
-  const getDomainVisitsCall = jest.fn();
+  const getDomainVisitsCall = vi.fn();
   const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getDomainVisits: getDomainVisitsCall });
   const getDomainVisits = getDomainVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(getDomainVisits);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<DomainVisits>) => fromPartial<DomainVisits>(data);
@@ -152,7 +152,7 @@ describe('domainVisitsReducer', () => {
   });
 
   describe('getDomainVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => fromPartial<ShlinkState>({
       domainVisits: { cancelLoad: false },
     });

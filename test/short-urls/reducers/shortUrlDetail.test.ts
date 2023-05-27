@@ -6,11 +6,11 @@ import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/s
 import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {
-  const getShortUrlCall = jest.fn();
+  const getShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ getShortUrl: getShortUrlCall });
   const { reducer, getShortUrlDetail } = shortUrlDetailReducerCreator(buildShlinkApiClient);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on GET_SHORT_URL_DETAIL_START', () => {
@@ -41,7 +41,7 @@ describe('shortUrlDetailReducer', () => {
   });
 
   describe('getShortUrlDetail', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const buildGetState = (shortUrlsList?: ShortUrlsList) => () => fromPartial<ShlinkState>({ shortUrlsList });
 
     it.each([

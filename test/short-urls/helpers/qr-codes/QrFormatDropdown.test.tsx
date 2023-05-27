@@ -5,10 +5,10 @@ import { renderWithEvents } from '../../../__helpers__/setUpTest';
 
 describe('<QrFormatDropdown />', () => {
   const initialFormat: QrCodeFormat = 'svg';
-  const setFormat = jest.fn();
+  const setFormat = vi.fn();
   const setUp = () => renderWithEvents(<QrFormatDropdown format={initialFormat} setFormat={setFormat} />);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders initial state', async () => {
     const { user } = setUp();

@@ -3,7 +3,7 @@ import { PaginationDropdown } from '../../src/utils/PaginationDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<PaginationDropdown />', () => {
-  const setValue = jest.fn();
+  const setValue = vi.fn();
   const setUp = async () => {
     const result = renderWithEvents(<PaginationDropdown ranges={[10, 50, 100, 200]} value={50} setValue={setValue} />);
     const { user } = result;
@@ -13,7 +13,7 @@ describe('<PaginationDropdown />', () => {
     return result;
   };
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('renders expected amount of items', async () => {
     await setUp();

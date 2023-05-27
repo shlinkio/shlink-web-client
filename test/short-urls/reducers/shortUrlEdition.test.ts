@@ -11,12 +11,12 @@ describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
   const shortCode = 'abc123';
   const shortUrl = fromPartial<ShortUrl>({ longUrl, shortCode });
-  const updateShortUrl = jest.fn().mockResolvedValue(shortUrl);
-  const buildShlinkApiClient = jest.fn().mockReturnValue({ updateShortUrl });
+  const updateShortUrl = vi.fn().mockResolvedValue(shortUrl);
+  const buildShlinkApiClient = vi.fn().mockReturnValue({ updateShortUrl });
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
   const { reducer } = shortUrlEditionReducerCreator(editShortUrl);
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on EDIT_SHORT_URL_START', () => {
@@ -46,12 +46,12 @@ describe('shortUrlEditionReducer', () => {
   });
 
   describe('editShortUrl', () => {
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const createGetState = (selectedServer: SelectedServer = null) => () => fromPartial<ShlinkState>({
       selectedServer,
     });
 
-    afterEach(jest.clearAllMocks);
+    afterEach(vi.clearAllMocks);
 
     it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
       await editShortUrl({ shortCode, domain, data: { longUrl } })(dispatch, createGetState(), {});

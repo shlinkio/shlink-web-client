@@ -4,7 +4,7 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ShortUrlsFilterDropdown />', () => {
   const setUp = (supportsDisabledFiltering: boolean) => renderWithEvents(
-    <ShortUrlsFilterDropdown onChange={jest.fn()} supportsDisabledFiltering={supportsDisabledFiltering} />,
+    <ShortUrlsFilterDropdown onChange={vi.fn()} supportsDisabledFiltering={supportsDisabledFiltering} />,
   );
 
   it.each([

@@ -7,9 +7,9 @@ import type { ServersExporter } from '../../src/servers/services/ServersExporter
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {
-  const exportServers = jest.fn();
+  const exportServers = vi.fn();
   const serversExporter = fromPartial<ServersExporter>({ exportServers });
-  const useTimeoutToggle = jest.fn().mockReturnValue([false, jest.fn()]);
+  const useTimeoutToggle = vi.fn().mockReturnValue([false, vi.fn()]);
   const ManageServers = createManageServers(
     serversExporter,
     () => <span>ImportServersBtn</span>,
@@ -23,7 +23,7 @@ describe('<ManageServers />', () => {
     <MemoryRouter><ManageServers servers={servers} /></MemoryRouter>,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
     const { user } = setUp({
@@ -85,7 +85,7 @@ describe('<ManageServers />', () => {
   });
 
   it.each([[true], [false]])('shows an error message if an error occurs while importing servers', (hasError) => {
-    useTimeoutToggle.mockReturnValue([hasError, jest.fn()]);
+    useTimeoutToggle.mockReturnValue([hasError, vi.fn()]);
 
     setUp({ foo: createServerMock('foo') });
 

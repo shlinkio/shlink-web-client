@@ -13,10 +13,10 @@ import {
 } from '../../../src/domains/reducers/domainsList';
 
 describe('domainsListReducer', () => {
-  const dispatch = jest.fn();
-  const getState = jest.fn();
-  const listDomains = jest.fn();
-  const health = jest.fn();
+  const dispatch = vi.fn();
+  const getState = vi.fn();
+  const listDomains = vi.fn();
+  const health = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ listDomains, health });
   const filteredDomains: Domain[] = [
     fromPartial({ domain: 'foo', status: 'validating' }),
@@ -30,7 +30,7 @@ describe('domainsListReducer', () => {
     editDomainRedirectsThunk,
   );
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on LIST_DOMAINS_START', () => {

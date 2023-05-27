@@ -8,9 +8,9 @@ import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/sho
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ExportShortUrlsBtn />', () => {
-  const listShortUrls = jest.fn();
-  const buildShlinkApiClient = jest.fn().mockReturnValue({ listShortUrls });
-  const exportShortUrls = jest.fn();
+  const listShortUrls = vi.fn();
+  const buildShlinkApiClient = vi.fn().mockReturnValue({ listShortUrls });
+  const exportShortUrls = vi.fn();
   const reportExporter = fromPartial<ReportExporter>({ exportShortUrls });
   const ExportShortUrlsBtn = createExportShortUrlsBtn(buildShlinkApiClient, reportExporter);
   const setUp = (amount?: number, selectedServer?: SelectedServer) => renderWithEvents(
@@ -19,7 +19,7 @@ describe('<ExportShortUrlsBtn />', () => {
     </MemoryRouter>,
   );
 
-  afterEach(jest.clearAllMocks);
+  afterEach(vi.clearAllMocks);
 
   it.each([
     [undefined, '0'],

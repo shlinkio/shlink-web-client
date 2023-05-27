@@ -17,12 +17,12 @@ import type { Visit } from '../../../src/visits/types';
 describe('nonOrphanVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
-  const getNonOrphanVisitsCall = jest.fn();
+  const getNonOrphanVisitsCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ getNonOrphanVisits: getNonOrphanVisitsCall });
   const getNonOrphanVisits = getNonOrphanVisitsCreator(buildShlinkApiClient);
   const { reducer, cancelGetVisits: cancelGetNonOrphanVisits } = nonOrphanVisitsReducerCreator(getNonOrphanVisits);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => fromPartial<VisitsInfo>(data);
@@ -119,12 +119,12 @@ describe('nonOrphanVisitsReducer', () => {
   });
 
   describe('getNonOrphanVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => fromPartial<ShlinkState>({
       orphanVisits: { cancelLoad: false },
     });
 
-    beforeEach(jest.resetAllMocks);
+    beforeEach(vi.resetAllMocks);
 
     it.each([
       [undefined],

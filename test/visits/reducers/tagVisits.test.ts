@@ -18,12 +18,12 @@ import type { Visit } from '../../../src/visits/types';
 describe('tagVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
-  const getTagVisitsCall = jest.fn();
+  const getTagVisitsCall = vi.fn();
   const buildShlinkApiClientMock = () => fromPartial<ShlinkApiClient>({ getTagVisits: getTagVisitsCall });
   const getTagVisits = getTagVisitsCreator(buildShlinkApiClientMock);
   const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(getTagVisits);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<TagVisits>) => fromPartial<TagVisits>(data);
@@ -143,7 +143,7 @@ describe('tagVisitsReducer', () => {
   });
 
   describe('getTagVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => fromPartial<ShlinkState>({
       tagVisits: { cancelLoad: false },
     });

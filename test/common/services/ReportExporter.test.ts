@@ -4,10 +4,10 @@ import type { NormalizedVisit } from '../../../src/visits/types';
 import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ReportExporter', () => {
-  const jsonToCsv = jest.fn();
+  const jsonToCsv = vi.fn();
   let exporter: ReportExporter;
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
   beforeEach(() => {
     (global as any).Blob = class Blob {};
     (global as any).URL = { createObjectURL: () => '' };

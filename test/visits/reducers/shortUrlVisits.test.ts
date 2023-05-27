@@ -18,12 +18,12 @@ import type { Visit } from '../../../src/visits/types';
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();
   const visitsMocks = rangeOf(2, () => fromPartial<Visit>({}));
-  const getShortUrlVisitsCall = jest.fn();
+  const getShortUrlVisitsCall = vi.fn();
   const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getShortUrlVisits: getShortUrlVisitsCall });
   const getShortUrlVisits = getShortUrlVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(getShortUrlVisits);
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   describe('reducer', () => {
     const buildState = (data: Partial<ShortUrlVisits>) => fromPartial<ShortUrlVisits>(data);
@@ -143,7 +143,7 @@ describe('shortUrlVisitsReducer', () => {
   });
 
   describe('getShortUrlVisits', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => fromPartial<ShlinkState>({
       shortUrlVisits: { cancelLoad: false },
     });

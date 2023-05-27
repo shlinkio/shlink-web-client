@@ -5,17 +5,20 @@ import { CreateServer as createCreateServer } from '../../src/servers/CreateServ
 import type { ServerWithId } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useNavigate: jest.fn() }));
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useNavigate: vi.fn(),
+}));
 
 describe('<CreateServer />', () => {
-  const createServersMock = jest.fn();
-  const navigate = jest.fn();
+  const createServersMock = vi.fn();
+  const navigate = vi.fn();
   const servers = { foo: fromPartial<ServerWithId>({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }) };
   const setUp = (serversImported = false, importFailed = false) => {
     (useNavigate as any).mockReturnValue(navigate);
 
     let callCount = 0;
-    const useTimeoutToggle = jest.fn().mockImplementation(() => {
+    const useTimeoutToggle = vi.fn().mockImplementation(() => {
       const result = [callCount % 2 === 0 ? serversImported : importFailed, () => null];
       callCount += 1;
       return result;
@@ -25,7 +28,7 @@ describe('<CreateServer />', () => {
     return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
   };
 
-  beforeEach(jest.clearAllMocks);
+  beforeEach(vi.clearAllMocks);
 
   it('shows success message when imported is true', () => {
     setUp(true);
