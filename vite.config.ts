@@ -25,6 +25,7 @@ export default defineConfig({
   },
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
 
+  // Vitest config
   test: {
     globals: true,
     environment: 'jsdom',

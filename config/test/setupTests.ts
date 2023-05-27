@@ -17,7 +17,7 @@ expect.extend(matchers);
 afterEach(() => {
   // Clears all mocks after every test
   vi.clearAllMocks();
-  // runs a cleanup after each test case (e.g. clearing jsdom)
+  // Run a cleanup after each test case (e.g. clearing jsdom)
   cleanup();
 });
 
