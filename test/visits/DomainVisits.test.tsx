@@ -7,15 +7,15 @@ import { DomainVisits as createDomainVisits } from '../../src/visits/DomainVisit
 import type { DomainVisits } from '../../src/visits/reducers/domainVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ domain: 'foo.com_DEFAULT' }),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useParams: vi.fn().mockReturnValue({ domain: 'foo.com_DEFAULT' }),
 }));
 
 describe('<DomainVisits />', () => {
-  const exportVisits = jest.fn();
-  const getDomainVisits = jest.fn();
-  const cancelGetDomainVisits = jest.fn();
+  const exportVisits = vi.fn();
+  const getDomainVisits = vi.fn();
+  const cancelGetDomainVisits = vi.fn();
   const domainVisits = fromPartial<DomainVisits>({ visits: [{ date: formatISO(new Date()) }] });
   const DomainVisits = createDomainVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(

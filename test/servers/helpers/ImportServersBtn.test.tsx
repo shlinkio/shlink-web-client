@@ -10,9 +10,9 @@ import type { ServersImporter } from '../../../src/servers/services/ServersImpor
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
-  const onImportMock = jest.fn();
-  const createServersMock = jest.fn();
-  const importServersFromFile = jest.fn().mockResolvedValue([]);
+  const onImportMock = vi.fn();
+  const createServersMock = vi.fn();
+  const importServersFromFile = vi.fn().mockResolvedValue([]);
   const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
   const ImportServersBtn = createImportServersBtn(serversImporterMock);
   const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithEvents(
@@ -23,8 +23,6 @@ describe('<ImportServersBtn />', () => {
       onImport={onImportMock}
     />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it('shows tooltip on button hover', async () => {
     const { user } = setUp();

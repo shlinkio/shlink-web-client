@@ -22,8 +22,8 @@ describe('<DomainRow />', () => {
           domain={domain}
           defaultRedirects={defaultRedirects}
           selectedServer={fromPartial({})}
-          editDomainRedirects={jest.fn()}
-          checkDomainHealth={jest.fn()}
+          editDomainRedirects={vi.fn()}
+          checkDomainHealth={vi.fn()}
         />
       </tbody>
     </table>,

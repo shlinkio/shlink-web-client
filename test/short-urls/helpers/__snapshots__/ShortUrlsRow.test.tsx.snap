@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<ShortUrlsRow /> displays expected status icon 1`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 1`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-calendar-xmark text-danger"
@@ -18,7 +18,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 1`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 2`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 2`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-calendar-xmark text-warning"
@@ -36,7 +36,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 2`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 3`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 3`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-link-slash text-danger"
@@ -54,7 +54,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 3`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 4`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 4`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-link-slash text-danger"
@@ -72,7 +72,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 4`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 5`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 5`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-calendar-xmark text-danger"
@@ -90,7 +90,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 5`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 6`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 6`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-check text-primary"
@@ -108,7 +108,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 6`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 7`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 7`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-check text-primary"
@@ -126,7 +126,7 @@ exports[`<ShortUrlsRow /> displays expected status icon 7`] = `
 </svg>
 `;
 
-exports[`<ShortUrlsRow /> displays expected status icon 8`] = `
+exports[`<ShortUrlsRow /> > displays expected status icon 8`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-check text-primary"

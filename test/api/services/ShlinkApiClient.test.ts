@@ -7,8 +7,8 @@ import type { ShortUrl, ShortUrlsOrder } from '../../../src/short-urls/data';
 import type { OptionalString } from '../../../src/utils/utils';
 
 describe('ShlinkApiClient', () => {
-  const fetchJson = jest.fn().mockResolvedValue({});
-  const fetchEmpty = jest.fn().mockResolvedValue(undefined);
+  const fetchJson = vi.fn().mockResolvedValue({});
+  const fetchEmpty = vi.fn().mockResolvedValue(undefined);
   const httpClient = fromPartial<HttpClient>({ fetchJson, fetchEmpty });
   const buildApiClient = () => new ShlinkApiClient(httpClient, '', '');
   const shortCodesWithDomainCombinations: [string, OptionalString][] = [
@@ -16,8 +16,6 @@ describe('ShlinkApiClient', () => {
     ['abc123', undefined],
     ['abc123', 'example.com'],
   ];
-
-  beforeEach(jest.clearAllMocks);
 
   describe('listShortUrls', () => {
     const expectedList = ['foo', 'bar'];

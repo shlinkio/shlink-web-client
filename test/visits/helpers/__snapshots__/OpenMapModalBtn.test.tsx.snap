@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<OpenMapModalBtn /> filters out non-active cities from list of locations 1`] = `
+exports[`<OpenMapModalBtn /> > filters out non-active cities from list of locations 1`] = `
 <div
   class="modal fade"
   role="dialog"
@@ -182,7 +182,7 @@ exports[`<OpenMapModalBtn /> filters out non-active cities from list of location
 </div>
 `;
 
-exports[`<OpenMapModalBtn /> filters out non-active cities from list of locations 2`] = `
+exports[`<OpenMapModalBtn /> > filters out non-active cities from list of locations 2`] = `
 <div
   class="modal fade"
   role="dialog"

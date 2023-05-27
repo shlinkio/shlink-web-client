@@ -10,7 +10,7 @@ import type { OptionalString } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlForm />', () => {
-  const createShortUrl = jest.fn(async () => Promise.resolve());
+  const createShortUrl = vi.fn(async () => Promise.resolve());
   const ShortUrlForm = createShortUrlForm(() => <span>TagsSelector</span>, () => <span>DomainSelector</span>);
   const setUp = (selectedServer: SelectedServer = null, mode: Mode = 'create', title?: OptionalString) =>
     renderWithEvents(
@@ -22,8 +22,6 @@ describe('<ShortUrlForm />', () => {
         onSave={createShortUrl}
       />,
     );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     [

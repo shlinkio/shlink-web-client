@@ -8,9 +8,9 @@ describe('tagEditReducer', () => {
   const oldName = 'foo';
   const newName = 'bar';
   const color = '#ff0000';
-  const editTagCall = jest.fn();
+  const editTagCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ editTag: editTagCall });
-  const colorGenerator = fromPartial<ColorGenerator>({ setColorForKey: jest.fn() });
+  const colorGenerator = fromPartial<ColorGenerator>({ setColorForKey: vi.fn() });
   const editTag = editTagCreator(buildShlinkApiClient, colorGenerator);
   const { reducer } = tagEditReducerCreator(editTag);
 
@@ -50,10 +50,8 @@ describe('tagEditReducer', () => {
   });
 
   describe('editTag', () => {
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const getState = () => fromPartial<ShlinkState>({});
-
-    afterEach(jest.clearAllMocks);
 
     it('calls API on success', async () => {
       editTagCall.mockResolvedValue(undefined);

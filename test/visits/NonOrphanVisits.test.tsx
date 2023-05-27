@@ -8,9 +8,9 @@ import type { VisitsInfo } from '../../src/visits/reducers/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<NonOrphanVisits />', () => {
-  const exportVisits = jest.fn();
-  const getNonOrphanVisits = jest.fn();
-  const cancelGetNonOrphanVisits = jest.fn();
+  const exportVisits = vi.fn();
+  const getNonOrphanVisits = vi.fn();
+  const cancelGetNonOrphanVisits = vi.fn();
   const nonOrphanVisits = fromPartial<VisitsInfo>({ visits: [{ date: formatISO(new Date()) }] });
   const NonOrphanVisits = createNonOrphanVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(

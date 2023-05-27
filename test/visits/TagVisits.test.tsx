@@ -1,21 +1,21 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import type { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import type { TagVisitsProps } from '../../src/visits/TagVisits';
 import { TagVisits as createTagVisits } from '../../src/visits/TagVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
-  useParams: jest.fn().mockReturnValue({ tag: 'foo' }),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useParams: vi.fn().mockReturnValue({ tag: 'foo' }),
 }));
 
 describe('<TagVisits />', () => {
-  const getTagVisitsMock = jest.fn();
-  const exportVisits = jest.fn();
+  const getTagVisitsMock = vi.fn();
+  const exportVisits = vi.fn();
   const tagVisits = fromPartial<TagVisitsStats>({ visits: [{ date: formatISO(new Date()) }] });
   const TagVisits = createTagVisits(
     fromPartial({ isColorLightForKey: () => false, getColorForKey: () => 'red' }),

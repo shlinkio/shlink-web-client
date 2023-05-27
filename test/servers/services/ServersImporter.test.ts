@@ -4,8 +4,8 @@ import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
   const servers: RegularServer[] = [fromPartial<RegularServer>({}), fromPartial<RegularServer>({})];
-  const csvjsonMock = jest.fn().mockResolvedValue(servers);
-  const readAsText = jest.fn();
+  const csvjsonMock = vi.fn().mockResolvedValue(servers);
+  const readAsText = vi.fn();
   const fileReaderMock = fromPartial<FileReader>({
     readAsText,
     addEventListener: ((_eventName: string, listener: (e: ProgressEvent<FileReader>) => void) => listener(
@@ -13,8 +13,6 @@ describe('ServersImporter', () => {
     )) as any,
   });
   const importer = new ServersImporter(csvjsonMock, () => fileReaderMock);
-
-  beforeEach(jest.clearAllMocks);
 
   describe('importServersFromFile', () => {
     it('rejects with error if no file was provided', async () => {

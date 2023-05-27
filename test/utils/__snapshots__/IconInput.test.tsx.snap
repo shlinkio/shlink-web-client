@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<IconInput /> displays provided icon 1`] = `
+exports[`<IconInput /> > displays provided icon 1`] = `
 <div>
   <div
     class="icon-input-container"
@@ -28,7 +28,7 @@ exports[`<IconInput /> displays provided icon 1`] = `
 </div>
 `;
 
-exports[`<IconInput /> displays provided icon 2`] = `
+exports[`<IconInput /> > displays provided icon 2`] = `
 <div>
   <div
     class="icon-input-container"
@@ -56,7 +56,7 @@ exports[`<IconInput /> displays provided icon 2`] = `
 </div>
 `;
 
-exports[`<IconInput /> displays provided icon 3`] = `
+exports[`<IconInput /> > displays provided icon 3`] = `
 <div>
   <div
     class="icon-input-container"

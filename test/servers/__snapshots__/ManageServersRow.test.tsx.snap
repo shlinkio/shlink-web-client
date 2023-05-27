@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<ManageServersRow /> renders auto-connect icon only if server is autoConnect 1`] = `
+exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 1`] = `
 <div>
   <table>
     <tbody>
@@ -57,7 +57,7 @@ exports[`<ManageServersRow /> renders auto-connect icon only if server is autoCo
 </div>
 `;
 
-exports[`<ManageServersRow /> renders auto-connect icon only if server is autoConnect 2`] = `
+exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 2`] = `
 <div>
   <table>
     <tbody>

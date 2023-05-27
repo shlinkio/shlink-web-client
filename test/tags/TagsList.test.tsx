@@ -8,7 +8,7 @@ import { TagsList as createTagsList } from '../../src/tags/TagsList';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
-  const filterTags = jest.fn();
+  const filterTags = vi.fn();
   const TagsListComp = createTagsList(({ sortedTags }) => <>TagsTable ({sortedTags.map((t) => t.visits).join(',')})</>);
   const setUp = (tagsList: Partial<TagsList>, excludeBots = false) => renderWithEvents(
     <TagsListComp
@@ -20,8 +20,6 @@ describe('<TagsList />', () => {
       settings={fromPartial({ visits: { excludeBots } })}
     />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it('shows a loading message when tags are being loaded', () => {
     setUp({ loading: true });

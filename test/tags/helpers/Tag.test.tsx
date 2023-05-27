@@ -20,18 +20,16 @@ const hexToRgb = (hex: string) => {
 };
 
 describe('<Tag />', () => {
-  const onClick = jest.fn();
-  const onClose = jest.fn();
-  const isColorLightForKey = jest.fn(() => false);
-  const getColorForKey = jest.fn(() => MAIN_COLOR);
+  const onClick = vi.fn();
+  const onClose = vi.fn();
+  const isColorLightForKey = vi.fn(() => false);
+  const getColorForKey = vi.fn(() => MAIN_COLOR);
   const colorGenerator = fromPartial<ColorGenerator>({ getColorForKey, isColorLightForKey });
   const setUp = (text: string, clearable?: boolean, children?: ReactNode) => renderWithEvents(
     <Tag text={text} clearable={clearable} colorGenerator={colorGenerator} onClick={onClick} onClose={onClose}>
       {children}
     </Tag>,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     [true],

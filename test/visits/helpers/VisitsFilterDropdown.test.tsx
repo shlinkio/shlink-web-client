@@ -4,7 +4,7 @@ import type { OrphanVisitType, VisitsFilter } from '../../../src/visits/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsFilterDropdown />', () => {
-  const onChange = jest.fn();
+  const onChange = vi.fn();
   const setUp = (selected: VisitsFilter = {}, isOrphanVisits = true) => renderWithEvents(
     <VisitsFilterDropdown
       isOrphanVisits={isOrphanVisits}
@@ -12,8 +12,6 @@ describe('<VisitsFilterDropdown />', () => {
       onChange={onChange}
     />,
   );
-
-  beforeEach(jest.clearAllMocks);
 
   it('has expected text', () => {
     setUp();

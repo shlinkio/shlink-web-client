@@ -4,14 +4,12 @@ import { identity } from 'ramda';
 import { bindToMercureTopic } from '../../../src/mercure/helpers';
 import type { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
 
-jest.mock('event-source-polyfill');
+vi.mock('event-source-polyfill');
 
 describe('helpers', () => {
-  afterEach(jest.resetAllMocks);
-
   describe('bindToMercureTopic', () => {
-    const onMessage = jest.fn();
-    const onTokenExpired = jest.fn();
+    const onMessage = vi.fn();
+    const onTokenExpired = vi.fn();
 
     it.each([
       [fromPartial<MercureInfo>({ loading: true, error: false, mercureHubUrl: 'foo' })],

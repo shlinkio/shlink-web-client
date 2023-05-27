@@ -8,7 +8,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsTable />', () => {
   const matchMedia = () => fromPartial<MediaQueryList>({ matches: false });
-  const setSelectedVisits = jest.fn();
+  const setSelectedVisits = vi.fn();
   const setUpFactory = (props: Partial<VisitsTableProps> = {}) => renderWithEvents(
     <VisitsTable
       visits={[]}
@@ -27,8 +27,6 @@ describe('<VisitsTable />', () => {
       fromPartial({ potentialBot: true, date: '2022-05-05' }),
     ],
   });
-
-  afterEach(jest.resetAllMocks);
 
   it('renders expected amount of columns', () => {
     setUp([], []);

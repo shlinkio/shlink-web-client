@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<SortableBarChartCard /> renders properly ordered stats when ordering is set 1`] = `
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 1`] = `
 <div
   class="card"
   role="document"
@@ -91,7 +91,7 @@ exports[`<SortableBarChartCard /> renders properly ordered stats when ordering i
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly ordered stats when ordering is set 2`] = `
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 2`] = `
 <div
   class="card"
   role="document"
@@ -182,7 +182,7 @@ exports[`<SortableBarChartCard /> renders properly ordered stats when ordering i
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly ordered stats when ordering is set 3`] = `
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 3`] = `
 <div
   class="card"
   role="document"
@@ -273,7 +273,7 @@ exports[`<SortableBarChartCard /> renders properly ordered stats when ordering i
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly ordered stats when ordering is set 4`] = `
+exports[`<SortableBarChartCard /> > renders properly ordered stats when ordering is set 4`] = `
 <div
   class="card"
   role="document"
@@ -364,7 +364,7 @@ exports[`<SortableBarChartCard /> renders properly ordered stats when ordering i
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly paginated stats when pagination is set 1`] = `
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 1`] = `
 <div
   class="card"
   role="document"
@@ -612,7 +612,7 @@ exports[`<SortableBarChartCard /> renders properly paginated stats when paginati
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly paginated stats when pagination is set 2`] = `
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 2`] = `
 <div
   class="card"
   role="document"
@@ -840,7 +840,7 @@ exports[`<SortableBarChartCard /> renders properly paginated stats when paginati
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly paginated stats when pagination is set 3`] = `
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 3`] = `
 <div
   class="card"
   role="document"
@@ -997,7 +997,7 @@ exports[`<SortableBarChartCard /> renders properly paginated stats when paginati
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders properly paginated stats when pagination is set 4`] = `
+exports[`<SortableBarChartCard /> > renders properly paginated stats when pagination is set 4`] = `
 <div
   class="card"
   role="document"
@@ -1154,7 +1154,7 @@ exports[`<SortableBarChartCard /> renders properly paginated stats when paginati
 </div>
 `;
 
-exports[`<SortableBarChartCard /> renders stats unchanged when no ordering is set 1`] = `
+exports[`<SortableBarChartCard /> > renders stats unchanged when no ordering is set 1`] = `
 <div
   class="card"
   role="document"

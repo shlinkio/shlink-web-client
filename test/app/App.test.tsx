@@ -32,8 +32,6 @@ describe('<App />', () => {
     );
   };
 
-  afterEach(jest.clearAllMocks);
-
   it('renders children components', () => {
     setUp();
 

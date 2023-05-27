@@ -5,10 +5,13 @@ import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
 import { rangeOf } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom'), useLocation: jest.fn() }));
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useLocation: vi.fn(),
+}));
 
 describe('<TagsTable />', () => {
-  const orderByColumn = jest.fn();
+  const orderByColumn = vi.fn();
   const TagsTable = createTagsTable(({ tag }) => <tr><td>TagsTableRow [{tag.tag}]</td></tr>);
   const tags = (amount: number) => rangeOf(amount, (i) => `tag_${i}`);
   const setUp = (sortedTags: string[] = [], search = '') => {
@@ -22,8 +25,6 @@ describe('<TagsTable />', () => {
       />,
     );
   };
-
-  afterEach(jest.clearAllMocks);
 
   it('renders empty result if there are no tags', () => {
     setUp();

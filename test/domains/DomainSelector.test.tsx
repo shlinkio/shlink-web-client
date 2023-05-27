@@ -13,10 +13,8 @@ describe('<DomainSelector />', () => {
     ],
   });
   const setUp = (value = '') => renderWithEvents(
-    <DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />,
+    <DomainSelector value={value} domainsList={domainsList} listDomains={vi.fn()} onChange={vi.fn()} />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     ['', 'Domain', 'domains-dropdown__toggle-btn'],

@@ -12,7 +12,7 @@ describe('<ShortUrlVisitsHeader />', () => {
   const shortUrlVisits = fromPartial<ShortUrlVisits>({
     visits: [{}, {}, {}],
   });
-  const goBack = jest.fn();
+  const goBack = vi.fn();
   const setUp = (title?: string | null) => {
     const shortUrlDetail = fromPartial<ShortUrlDetail>({
       shortUrl: {

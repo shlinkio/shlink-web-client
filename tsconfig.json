@@ -4,7 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "esnext"],
-    "types": ["vite/client"],
+    "types": ["vite/client", "vitest/globals"],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,

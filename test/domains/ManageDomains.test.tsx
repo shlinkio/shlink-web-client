@@ -7,20 +7,18 @@ import type { DomainsList } from '../../src/domains/reducers/domainsList';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageDomains />', () => {
-  const listDomains = jest.fn();
-  const filterDomains = jest.fn();
+  const listDomains = vi.fn();
+  const filterDomains = vi.fn();
   const setUp = (domainsList: DomainsList) => renderWithEvents(
     <ManageDomains
       listDomains={listDomains}
       filterDomains={filterDomains}
-      editDomainRedirects={jest.fn()}
-      checkDomainHealth={jest.fn()}
+      editDomainRedirects={vi.fn()}
+      checkDomainHealth={vi.fn()}
       domainsList={domainsList}
       selectedServer={fromPartial({})}
     />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it('shows loading message while domains are loading', () => {
     setUp(fromPartial({ loading: true, filteredDomains: [] }));
