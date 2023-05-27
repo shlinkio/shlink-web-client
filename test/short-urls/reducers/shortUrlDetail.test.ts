@@ -10,8 +10,6 @@ describe('shortUrlDetailReducer', () => {
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ getShortUrl: getShortUrlCall });
   const { reducer, getShortUrlDetail } = shortUrlDetailReducerCreator(buildShlinkApiClient);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on GET_SHORT_URL_DETAIL_START', () => {
       const { loading } = reducer({ loading: false, error: false }, getShortUrlDetail.pending('', { shortCode: '' }));

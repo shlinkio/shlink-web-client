@@ -8,8 +8,6 @@ describe('tagDeleteReducer', () => {
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ deleteTags: deleteTagsCall });
   const { reducer, deleteTag } = tagDeleteReducerCreator(buildShlinkApiClient);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on DELETE_TAG_START', () => {
       expect(reducer(undefined, deleteTag.pending('', ''))).toEqual({

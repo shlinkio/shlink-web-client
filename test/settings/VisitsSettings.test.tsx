@@ -10,8 +10,6 @@ describe('<VisitsSettings />', () => {
     <VisitsSettings settings={fromPartial(settings)} setVisitsSettings={setVisitsSettings} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected components', () => {
     setUp();
 

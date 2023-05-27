@@ -24,8 +24,6 @@ describe('<ImportServersBtn />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows tooltip on button hover', async () => {
     const { user } = setUp();
 

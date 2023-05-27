@@ -28,8 +28,6 @@ describe('<VisitsTable />', () => {
     ],
   });
 
-  afterEach(vi.resetAllMocks);
-
   it('renders expected amount of columns', () => {
     setUp([], []);
     expect(screen.getAllByRole('columnheader')).toHaveLength(8);

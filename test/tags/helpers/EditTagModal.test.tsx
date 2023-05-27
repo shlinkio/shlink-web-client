@@ -15,8 +15,6 @@ describe('<EditTagModal />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('allows modal to be toggled with different mechanisms', async () => {
     const { user } = setUp();
 

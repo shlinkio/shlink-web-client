@@ -12,8 +12,6 @@ describe('shortUrlDeletionReducer', () => {
   const deleteShortUrl = deleteShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetDeleteShortUrl } = shortUrlDeletionReducerCreator(deleteShortUrl);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on DELETE_SHORT_URL_START', () =>
       expect(reducer(undefined, deleteShortUrl.pending('', { shortCode: '' }))).toEqual({

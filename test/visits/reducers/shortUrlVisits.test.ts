@@ -23,8 +23,6 @@ describe('shortUrlVisitsReducer', () => {
   const getShortUrlVisits = getShortUrlVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetShortUrlVisits } = shortUrlVisitsReducerCreator(getShortUrlVisits);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const buildState = (data: Partial<ShortUrlVisits>) => fromPartial<ShortUrlVisits>(data);
 

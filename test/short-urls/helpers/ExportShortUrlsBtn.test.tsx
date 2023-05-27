@@ -19,8 +19,6 @@ describe('<ExportShortUrlsBtn />', () => {
     </MemoryRouter>,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [undefined, '0'],
     [1, '1'],

@@ -41,10 +41,10 @@ export default defineConfig({
       ],
 
       // Required code coverage. Lower than this will make the check fail
-      statements: 90,
-      branches: 80,
-      functions: 85,
-      lines: 90,
+      statements: 95,
+      branches: 90,
+      functions: 90,
+      lines: 95,
     },
     deps: {
       inline: ['vitest-canvas-mock'],

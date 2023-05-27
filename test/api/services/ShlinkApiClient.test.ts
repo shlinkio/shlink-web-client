@@ -17,8 +17,6 @@ describe('ShlinkApiClient', () => {
     ['abc123', 'example.com'],
   ];
 
-  beforeEach(vi.clearAllMocks);
-
   describe('listShortUrls', () => {
     const expectedList = ['foo', 'bar'];
 

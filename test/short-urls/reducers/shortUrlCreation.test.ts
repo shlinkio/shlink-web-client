@@ -14,8 +14,6 @@ describe('shortUrlCreationReducer', () => {
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
 
-  afterEach(vi.resetAllMocks);
-
   describe('reducer', () => {
     it('returns loading on CREATE_SHORT_URL_START', () => {
       expect(reducer(undefined, createShortUrl.pending('', fromPartial({})))).toEqual({

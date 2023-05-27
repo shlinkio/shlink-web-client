@@ -28,8 +28,6 @@ describe('<CreateServer />', () => {
     return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
   };
 
-  beforeEach(vi.clearAllMocks);
-
   it('shows success message when imported is true', () => {
     setUp(true);
 

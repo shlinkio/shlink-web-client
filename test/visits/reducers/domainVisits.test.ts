@@ -26,8 +26,6 @@ describe('domainVisitsReducer', () => {
   const getDomainVisits = getDomainVisitsCreator(buildApiClientMock);
   const { reducer, cancelGetVisits: cancelGetDomainVisits } = domainVisitsReducerCreator(getDomainVisits);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const buildState = (data: Partial<DomainVisits>) => fromPartial<DomainVisits>(data);
 

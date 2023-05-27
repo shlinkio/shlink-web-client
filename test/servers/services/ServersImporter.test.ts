@@ -14,8 +14,6 @@ describe('ServersImporter', () => {
   });
   const importer = new ServersImporter(csvjsonMock, () => fileReaderMock);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('importServersFromFile', () => {
     it('rejects with error if no file was provided', async () => {
       await expect(importer.importServersFromFile()).rejects.toEqual(

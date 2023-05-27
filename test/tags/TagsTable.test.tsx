@@ -26,7 +26,9 @@ describe('<TagsTable />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('renders empty result if there are no tags', () => {
     setUp();

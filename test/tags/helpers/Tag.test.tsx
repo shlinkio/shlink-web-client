@@ -31,8 +31,6 @@ describe('<Tag />', () => {
     </Tag>,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [true],
     [false],

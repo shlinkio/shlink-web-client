@@ -31,8 +31,6 @@ describe('<EditServer />', () => {
     (useNavigate as any).mockReturnValue(navigate);
   });
 
-  afterEach(vi.clearAllMocks);
-
   it('renders nothing if selected server is not reachable', () => {
     setUp(fromPartial<SelectedServer>({}));
 

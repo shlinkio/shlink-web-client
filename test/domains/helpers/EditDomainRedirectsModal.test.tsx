@@ -17,8 +17,6 @@ describe('<EditDomainRedirectsModal />', () => {
     <EditDomainRedirectsModal domain={domain} isOpen toggle={toggle} editDomainRedirects={editDomainRedirects} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders domain in header', () => {
     setUp();
     expect(screen.getByRole('heading')).toHaveTextContent('Edit redirects for foo.com');

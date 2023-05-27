@@ -51,8 +51,6 @@ describe('<ShortUrlsList />', () => {
     (useNavigate as any).mockReturnValue(navigate);
   });
 
-  afterEach(vi.clearAllMocks);
-
   it('wraps expected components', () => {
     setUp();
 

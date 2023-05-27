@@ -21,8 +21,6 @@ describe('tagsListReducer', () => {
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer } = tagsListReducerCreator(listTags, createShortUrl);
 
-  afterEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on LIST_TAGS_START', () => {
       expect(reducer(undefined, listTags.pending(''))).toEqual(expect.objectContaining({

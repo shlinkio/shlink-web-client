@@ -10,8 +10,6 @@ describe('<DomainStatusIcon />', () => {
     <DomainStatusIcon status={status} matchMedia={matchMedia} />,
   );
 
-  beforeEach(vi.clearAllMocks);
-
   it.each([
     ['validating' as DomainStatus],
     ['invalid' as DomainStatus],

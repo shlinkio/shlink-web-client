@@ -17,8 +17,6 @@ describe('<RealTimeUpdatesSettings />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders enabled real time updates as expected', () => {
     setUp({ enabled: true });
 

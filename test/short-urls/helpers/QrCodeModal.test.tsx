@@ -17,8 +17,6 @@ describe('<QrCodeModal />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows an external link to the URL in the header', () => {
     setUp();
     const externalLink = screen.getByRole('heading').querySelector('a');

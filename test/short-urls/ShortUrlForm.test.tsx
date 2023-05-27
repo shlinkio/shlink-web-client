@@ -23,8 +23,6 @@ describe('<ShortUrlForm />', () => {
       />,
     );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [
       async (user: UserEvent) => {

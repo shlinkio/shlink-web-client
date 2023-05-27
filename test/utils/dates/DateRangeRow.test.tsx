@@ -9,8 +9,6 @@ describe('<DateRangeRow />', () => {
     <DateRangeRow onEndDateChange={onEndDateChange} onStartDateChange={onStartDateChange} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders two date inputs', () => {
     setUp();
     expect(screen.getAllByRole('textbox')).toHaveLength(2);

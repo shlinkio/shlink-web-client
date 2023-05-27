@@ -8,8 +8,6 @@ describe('<QrFormatDropdown />', () => {
   const setFormat = vi.fn();
   const setUp = () => renderWithEvents(<QrFormatDropdown format={initialFormat} setFormat={setFormat} />);
 
-  afterEach(vi.clearAllMocks);
-
   it('renders initial state', async () => {
     const { user } = setUp();
     const btn = screen.getByRole('button');

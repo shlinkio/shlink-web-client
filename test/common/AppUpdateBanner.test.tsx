@@ -7,8 +7,6 @@ describe('<AppUpdateBanner />', () => {
   const forceUpdate = vi.fn();
   const setUp = () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
 
-  afterEach(vi.clearAllMocks);
-
   it('renders initial state', () => {
     setUp();
 

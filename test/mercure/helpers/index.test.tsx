@@ -7,8 +7,6 @@ import type { MercureInfo } from '../../../src/mercure/reducers/mercureInfo';
 vi.mock('event-source-polyfill');
 
 describe('helpers', () => {
-  afterEach(vi.resetAllMocks);
-
   describe('bindToMercureTopic', () => {
     const onMessage = vi.fn();
     const onTokenExpired = vi.fn();

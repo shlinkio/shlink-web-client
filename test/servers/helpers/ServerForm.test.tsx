@@ -5,8 +5,6 @@ describe('<ServerForm />', () => {
   const onSubmit = vi.fn();
   const setUp = () => render(<ServerForm onSubmit={onSubmit}>Something</ServerForm>);
 
-  afterEach(vi.resetAllMocks);
-
   it('renders components', () => {
     setUp();
 

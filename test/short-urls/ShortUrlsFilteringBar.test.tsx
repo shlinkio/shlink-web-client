@@ -36,8 +36,6 @@ describe('<ShortUrlsFilteringBar />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected children components', () => {
     setUp();
 

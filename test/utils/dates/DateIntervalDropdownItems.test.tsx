@@ -20,8 +20,6 @@ describe('<DateIntervalDropdownItems />', () => {
     return { user, ...renderResult };
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected amount of items', async () => {
     await setUp();
 

@@ -13,8 +13,6 @@ describe('<ShortUrlCreationSettings />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [{ validateUrls: true }, true],
     [{ validateUrls: false }, false],

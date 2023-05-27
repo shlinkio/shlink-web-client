@@ -1,16 +1,23 @@
 import 'vitest-canvas-mock';
 import 'chart.js/auto';
+import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
 import matchers from '@testing-library/jest-dom/matchers';
 import { cleanup } from '@testing-library/react';
-import { setAutoFreeze } from 'immer';
 import ResizeObserver from 'resize-observer-polyfill';
 import { afterEach, expect } from 'vitest';
 
-// extends Vitest's expect method with methods from react-testing-library
+// Workaround for TypeScript error: https://github.com/testing-library/jest-dom/issues/439#issuecomment-1536524120
+declare module 'vitest' {
+  interface Assertion<T = any> extends jest.Matchers<void, T>, TestingLibraryMatchers<T, void> {}
+}
+
+// Extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers);
 
-// runs a cleanup after each test case (e.g. clearing jsdom)
 afterEach(() => {
+  // Clears all mocks after every test
+  vi.clearAllMocks();
+  // runs a cleanup after each test case (e.g. clearing jsdom)
   cleanup();
 });
 
@@ -18,5 +25,3 @@ afterEach(() => {
 (global as any).scrollTo = () => {};
 (global as any).prompt = () => {};
 (global as any).matchMedia = (media: string) => ({ matches: false, media });
-
-setAutoFreeze(false); // TODO Bypassing a bug on jest

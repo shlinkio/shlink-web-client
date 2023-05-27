@@ -4,8 +4,6 @@ describe('HttpClient', () => {
   const fetch = vi.fn();
   const httpClient = new HttpClient(fetch);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('fetchJson', () => {
     it('throws json on success', async () => {
       const theError = { error: true, foo: 'bar' };

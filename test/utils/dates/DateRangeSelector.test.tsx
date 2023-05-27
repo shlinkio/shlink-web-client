@@ -22,8 +22,6 @@ describe('<DateRangeSelector />', () => {
     return result;
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders proper amount of items', async () => {
     const { container } = await setUp();
 

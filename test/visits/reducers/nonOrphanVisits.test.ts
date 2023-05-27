@@ -22,8 +22,6 @@ describe('nonOrphanVisitsReducer', () => {
   const getNonOrphanVisits = getNonOrphanVisitsCreator(buildShlinkApiClient);
   const { reducer, cancelGetVisits: cancelGetNonOrphanVisits } = nonOrphanVisitsReducerCreator(getNonOrphanVisits);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => fromPartial<VisitsInfo>(data);
 
@@ -123,8 +121,6 @@ describe('nonOrphanVisitsReducer', () => {
     const getState = () => fromPartial<ShlinkState>({
       orphanVisits: { cancelLoad: false },
     });
-
-    beforeEach(vi.resetAllMocks);
 
     it.each([
       [undefined],

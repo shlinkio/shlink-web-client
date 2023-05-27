@@ -13,8 +13,6 @@ describe('<CreateShortUrlResult />', () => {
     <CreateShortUrlResult resetCreateShortUrl={() => {}} creation={creation} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders an error when error is true', () => {
     setUp({ error: true, saved: false, saving: false });
     expect(screen.getByText('An error occurred while creating the URL :(')).toBeInTheDocument();

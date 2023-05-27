@@ -19,8 +19,6 @@ describe('selectedServerReducer', () => {
   const selectServer = selectServerCreator(buildApiClient);
   const { reducer } = selectedServerReducerCreator(selectServer);
 
-  afterEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns default when action is RESET_SELECTED_SERVER', () =>
       expect(reducer(null, resetSelectedServer())).toBeNull());

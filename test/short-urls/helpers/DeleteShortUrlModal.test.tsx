@@ -31,8 +31,6 @@ describe('<DeleteShortUrlModal />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows generic error when non-threshold error occurs', () => {
     setUp({
       loading: false,

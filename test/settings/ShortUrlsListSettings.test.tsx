@@ -11,8 +11,6 @@ describe('<ShortUrlsListSettings />', () => {
     <ShortUrlsListSettings settings={fromPartial({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [undefined, 'Order by: Created at - DESC'],
     [{}, 'Order by: Created at - DESC'],

@@ -53,8 +53,6 @@ describe('tagEditReducer', () => {
     const dispatch = vi.fn();
     const getState = () => fromPartial<ShlinkState>({});
 
-    afterEach(vi.clearAllMocks);
-
     it('calls API on success', async () => {
       editTagCall.mockResolvedValue(undefined);
 

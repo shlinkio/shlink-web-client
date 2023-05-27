@@ -18,7 +18,6 @@ describe('<ErrorHandler />', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
   });
-  afterEach(vi.resetAllMocks);
 
   it('renders children when no error has occurred', () => {
     render(<ErrorHandler children={<span>Foo</span>} />);

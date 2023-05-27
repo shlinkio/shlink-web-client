@@ -16,8 +16,6 @@ describe('shortUrlEditionReducer', () => {
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);
   const { reducer } = shortUrlEditionReducerCreator(editShortUrl);
 
-  afterEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on EDIT_SHORT_URL_START', () => {
       expect(reducer(undefined, editShortUrl.pending('', fromPartial({})))).toEqual({
@@ -50,8 +48,6 @@ describe('shortUrlEditionReducer', () => {
     const createGetState = (selectedServer: SelectedServer = null) => () => fromPartial<ShlinkState>({
       selectedServer,
     });
-
-    afterEach(vi.clearAllMocks);
 
     it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
       await editShortUrl({ shortCode, domain, data: { longUrl } })(dispatch, createGetState(), {});

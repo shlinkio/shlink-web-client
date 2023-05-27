@@ -19,8 +19,6 @@ describe('<DomainDropdown />', () => {
     </MemoryRouter>,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected menu items', () => {
     setUp();
 

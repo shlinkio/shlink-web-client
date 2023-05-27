@@ -19,8 +19,6 @@ describe('visitsOverviewReducer', () => {
   const loadVisitsOverview = loadVisitsOverviewCreator(buildApiClientMock);
   const { reducer } = visitsOverviewReducerCreator(loadVisitsOverview);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const state = (payload: Partial<VisitsOverview> = {}) => fromPartial<VisitsOverview>(payload);
 

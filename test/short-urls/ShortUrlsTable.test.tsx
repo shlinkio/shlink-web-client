@@ -15,8 +15,6 @@ describe('<ShortUrlsTable />', () => {
     <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
   );
 
-  afterEach(vi.resetAllMocks);
-
   it('should render inner table by default', () => {
     setUp();
     expect(screen.getByRole('table')).toBeInTheDocument();

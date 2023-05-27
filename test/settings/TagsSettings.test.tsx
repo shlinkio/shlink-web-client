@@ -11,8 +11,6 @@ describe('<TagsSettings />', () => {
     <TagsSettings settings={fromPartial({ tags })} setTagsSettings={setTagsSettings} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected amount of groups', () => {
     setUp();
 

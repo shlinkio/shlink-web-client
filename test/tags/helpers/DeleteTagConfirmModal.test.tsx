@@ -18,8 +18,6 @@ describe('<DeleteTagConfirmModal />', () => {
     />,
   );
 
-  afterEach(vi.resetAllMocks);
-
   it('asks confirmation for provided tag to be deleted', () => {
     setUp({ error: false, deleted: false, deleting: false });
 

@@ -16,8 +16,6 @@ describe('<DomainSelector />', () => {
     <DomainSelector value={value} domainsList={domainsList} listDomains={vi.fn()} onChange={vi.fn()} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     ['', 'Domain', 'domains-dropdown__toggle-btn'],
     ['my-domain.com', 'Domain: my-domain.com', 'domains-dropdown__toggle-btn--active'],

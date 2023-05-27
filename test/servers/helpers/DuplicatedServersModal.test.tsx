@@ -12,8 +12,6 @@ describe('<DuplicatedServersModal />', () => {
   );
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
 
-  beforeEach(vi.clearAllMocks);
-
   it.each([
     [[], 0],
     [[mockServer()], 2],

@@ -30,8 +30,6 @@ describe('<DeleteServerModal />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders a modal window', () => {
     setUp();
 

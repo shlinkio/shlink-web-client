@@ -20,8 +20,6 @@ describe('<TagsSelector />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('has an input for tags', () => {
     setUp();
     expect(screen.getByPlaceholderText('Add tags to the URL')).toBeInTheDocument();

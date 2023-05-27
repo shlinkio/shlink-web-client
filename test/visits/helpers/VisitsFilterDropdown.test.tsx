@@ -13,8 +13,6 @@ describe('<VisitsFilterDropdown />', () => {
     />,
   );
 
-  beforeEach(vi.clearAllMocks);
-
   it('has expected text', () => {
     setUp();
     expect(screen.getByRole('button', { name: 'Filters' })).toBeInTheDocument();

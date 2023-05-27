@@ -32,8 +32,6 @@ describe('<App />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders children components', () => {
     setUp();
 

@@ -30,8 +30,6 @@ describe('domainsListReducer', () => {
     editDomainRedirectsThunk,
   );
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     it('returns loading on LIST_DOMAINS_START', () => {
       expect(reducer(undefined, listDomainsAction.pending(''))).toEqual(

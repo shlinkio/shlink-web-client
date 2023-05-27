@@ -21,8 +21,6 @@ describe('<TagsList />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows a loading message when tags are being loaded', () => {
     setUp({ loading: true });
 

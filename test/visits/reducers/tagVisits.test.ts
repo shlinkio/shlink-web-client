@@ -23,8 +23,6 @@ describe('tagVisitsReducer', () => {
   const getTagVisits = getTagVisitsCreator(buildShlinkApiClientMock);
   const { reducer, cancelGetVisits: cancelGetTagVisits } = tagVisitsReducerCreator(getTagVisits);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const buildState = (data: Partial<TagVisits>) => fromPartial<TagVisits>(data);
 

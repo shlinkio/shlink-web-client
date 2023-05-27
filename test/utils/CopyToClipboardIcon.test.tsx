@@ -5,8 +5,6 @@ describe('<CopyToClipboardIcon />', () => {
   const onCopy = vi.fn();
   const setUp = (text = 'foo') => renderWithEvents(<CopyToClipboardIcon text={text} onCopy={onCopy} />);
 
-  afterEach(vi.clearAllMocks);
-
   it('wraps expected components', () => {
     const { container } = setUp();
     expect(container).toMatchSnapshot();

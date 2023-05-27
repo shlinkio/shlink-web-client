@@ -3,8 +3,6 @@ import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 
 describe('remoteServersReducer', () => {
-  afterEach(vi.clearAllMocks);
-
   describe('fetchServers', () => {
     const dispatch = vi.fn();
     const fetchJson = vi.fn();

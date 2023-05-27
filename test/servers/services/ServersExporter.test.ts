@@ -23,8 +23,6 @@ describe('ServersExporter', () => {
   });
   const createCsvjsonMock = (throwError = false) => (throwError ? erroneousToCsv : vi.fn(() => ''));
 
-  beforeEach(vi.clearAllMocks);
-
   describe('exportServers', () => {
     let originalConsole: Console;
     const error = vi.fn();

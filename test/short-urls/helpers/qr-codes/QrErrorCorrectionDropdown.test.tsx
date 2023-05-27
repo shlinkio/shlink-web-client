@@ -10,8 +10,6 @@ describe('<QrErrorCorrectionDropdown />', () => {
     <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('renders initial state', async () => {
     const { user } = setUp();
     const btn = screen.getByRole('button');

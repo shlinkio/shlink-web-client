@@ -11,8 +11,6 @@ describe('<UserInterfaceSettings />', () => {
     <UserInterfaceSettings settings={fromPartial({ ui })} setUiSettings={setUiSettings} />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it.each([
     [{ theme: 'dark' as Theme }, true],
     [{ theme: 'light' as Theme }, false],

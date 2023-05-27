@@ -44,8 +44,6 @@ describe('<MenuLayout />', () => {
     (useParams as any).mockReturnValue({ serverId: 'abc123' });
   });
 
-  afterEach(vi.clearAllMocks);
-
   it('shows loading indicator while loading server', () => {
     setUp(null);
 

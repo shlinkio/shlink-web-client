@@ -12,8 +12,6 @@ describe('mercureInfoReducer', () => {
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ mercureInfo: getMercureInfo });
   const { loadMercureInfo, reducer } = mercureInfoReducerCreator(buildShlinkApiClient);
 
-  beforeEach(vi.resetAllMocks);
-
   describe('reducer', () => {
     it('returns loading on GET_MERCURE_INFO_START', () => {
       expect(reducer(undefined, loadMercureInfo.pending(''))).toEqual({

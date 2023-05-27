@@ -20,8 +20,6 @@ describe('<ManageDomains />', () => {
     />,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows loading message while domains are loading', () => {
     setUp(fromPartial({ loading: true, filteredDomains: [] }));
 

@@ -22,8 +22,6 @@ describe('orphanVisitsReducer', () => {
   const getOrphanVisits = getOrphanVisitsCreator(buildShlinkApiClientMock);
   const { reducer, cancelGetVisits: cancelGetOrphanVisits } = orphanVisitsReducerCreator(getOrphanVisits);
 
-  beforeEach(vi.clearAllMocks);
-
   describe('reducer', () => {
     const buildState = (data: Partial<VisitsInfo>) => fromPartial<VisitsInfo>(data);
 

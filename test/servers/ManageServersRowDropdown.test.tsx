@@ -19,8 +19,6 @@ describe('<ManageServersRowDropdown />', () => {
     );
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected amount of dropdown items', async () => {
     const { user } = setUp();
 

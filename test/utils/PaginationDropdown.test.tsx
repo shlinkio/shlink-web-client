@@ -13,8 +13,6 @@ describe('<PaginationDropdown />', () => {
     return result;
   };
 
-  afterEach(vi.clearAllMocks);
-
   it('renders expected amount of items', async () => {
     await setUp();
     expect(screen.getAllByRole('menuitem')).toHaveLength(5);

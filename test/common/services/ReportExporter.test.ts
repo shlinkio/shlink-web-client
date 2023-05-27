@@ -7,7 +7,6 @@ describe('ReportExporter', () => {
   const jsonToCsv = vi.fn();
   let exporter: ReportExporter;
 
-  beforeEach(vi.clearAllMocks);
   beforeEach(() => {
     (global as any).Blob = class Blob {};
     (global as any).URL = { createObjectURL: () => '' };

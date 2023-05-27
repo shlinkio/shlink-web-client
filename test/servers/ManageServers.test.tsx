@@ -23,8 +23,6 @@ describe('<ManageServers />', () => {
     <MemoryRouter><ManageServers servers={servers} /></MemoryRouter>,
   );
 
-  afterEach(vi.clearAllMocks);
-
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
     const { user } = setUp({
       foo: createServerMock('foo'),

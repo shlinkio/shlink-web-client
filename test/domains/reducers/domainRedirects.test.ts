@@ -4,8 +4,6 @@ import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 
 describe('domainRedirectsReducer', () => {
-  beforeEach(vi.clearAllMocks);
-
   describe('editDomainRedirects', () => {
     const domain = 'example.com';
     const redirects = fromPartial<ShlinkDomainRedirects>({});
