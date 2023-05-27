@@ -87,7 +87,7 @@ export const ShortUrlsRow = (
       <td className="responsive-table__cell short-urls-row__cell" data-th="Status">
         <ShortUrlStatus shortUrl={shortUrl} />
       </td>
-      <td className="responsive-table__cell short-urls-row__cell">
+      <td className="responsive-table__cell short-urls-row__cell text-end">
         <ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />
       </td>
     </tr>
