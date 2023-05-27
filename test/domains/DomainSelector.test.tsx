@@ -26,9 +26,8 @@ describe('<DomainSelector />', () => {
     const btn = screen.getByRole('button', { name: expectedText });
 
     expect(screen.queryByPlaceholderText('Domain')).not.toBeInTheDocument();
-    expect(btn).toHaveAttribute(
-      'class',
-      `dropdown-btn__toggle btn-block ${expectedClassName} dropdown-toggle btn btn-primary`,
+    expect(btn).toHaveClass(
+      `dropdown-btn__toggle ${expectedClassName} btn-block dropdown-btn__toggle--with-caret dropdown-toggle btn btn-primary`,
     );
     await user.click(btn);
 

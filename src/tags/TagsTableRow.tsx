@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
 import type { SelectedServer } from '../servers/data';
 import { getServerId } from '../servers/data';
-import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { useToggle } from '../utils/helpers/hooks';
 import { prettify } from '../utils/helpers/numbers';
+import { RowDropdownBtn } from '../utils/RowDropdownBtn';
 import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import type { SimplifiedTag, TagModalProps } from './data';
 import { TagBullet } from './helpers/TagBullet';
@@ -24,7 +24,6 @@ export const TagsTableRow = (
 ) => ({ tag, selectedServer }: TagsTableRowProps) => {
   const [isDeleteModalOpen, toggleDelete] = useToggle();
   const [isEditModalOpen, toggleEdit] = useToggle();
-  const [isDropdownOpen, toggleDropdown] = useToggle();
   const serverId = getServerId(selectedServer);
 
   return (
@@ -43,14 +42,14 @@ export const TagsTableRow = (
         </Link>
       </td>
       <td className="responsive-table__cell text-lg-end">
-        <DropdownBtnMenu toggle={toggleDropdown} isOpen={isDropdownOpen}>
+        <RowDropdownBtn>
           <DropdownItem onClick={toggleEdit}>
             <FontAwesomeIcon icon={editIcon} fixedWidth className="me-1" /> Edit
           </DropdownItem>
           <DropdownItem onClick={toggleDelete}>
             <FontAwesomeIcon icon={deleteIcon} fixedWidth className="me-1" /> Delete
           </DropdownItem>
-        </DropdownBtnMenu>
+        </RowDropdownBtn>
       </td>
 
       <EditTagModal tag={tag.tag} toggle={toggleEdit} isOpen={isEditModalOpen} />

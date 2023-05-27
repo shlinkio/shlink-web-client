@@ -17,7 +17,7 @@ export const ShortUrlsFilterDropdown = (
   const onFilterClick = (key: keyof ShortUrlsFilter) => () => onChange({ ...selected, [key]: !selected?.[key] });
 
   return (
-    <DropdownBtn text="Filters" dropdownClassName={className} className="me-3" right minWidth={250}>
+    <DropdownBtn text="Filters" dropdownClassName={className} inline end minWidth={250}>
       <DropdownItem header>Visits:</DropdownItem>
       <DropdownItem active={excludeBots} onClick={onFilterClick('excludeBots')}>Ignore visits from bots</DropdownItem>
 
