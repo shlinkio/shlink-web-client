@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import { useToggle } from './helpers/hooks';
@@ -9,14 +10,15 @@ export type DropdownBtnProps = PropsWithChildren<{
   className?: string;
   dropdownClassName?: string;
   right?: boolean;
+  inline?: boolean;
   minWidth?: number;
 }>;
 
 export const DropdownBtn: FC<DropdownBtnProps> = (
-  { text, disabled = false, className = '', children, dropdownClassName, right = false, minWidth },
+  { text, disabled = false, className, children, dropdownClassName, right = false, minWidth, inline },
 ) => {
   const [isOpen, toggle] = useToggle();
-  const toggleClasses = `dropdown-btn__toggle btn-block ${className}`;
+  const toggleClasses = classNames('dropdown-btn__toggle', className, { 'btn-block': !inline });
   const style = { minWidth: minWidth && `${minWidth}px` };
 
   return (

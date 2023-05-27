@@ -5,10 +5,10 @@ import type { ButtonProps } from 'reactstrap';
 import { Button } from 'reactstrap';
 import { prettify } from './helpers/numbers';
 
-interface ExportBtnProps extends Omit<ButtonProps, 'outline' | 'color' | 'disabled'> {
+type ExportBtnProps = Omit<ButtonProps, 'outline' | 'color' | 'disabled'> & {
   amount?: number;
   loading?: boolean;
-}
+};
 
 export const ExportBtn: FC<ExportBtnProps> = ({ amount = 0, loading = false, ...rest }) => (
   <Button {...rest} outline color="primary" disabled={loading}>
