@@ -18,7 +18,7 @@
     "build": "npm run types && vite build && node scripts/replace-version.mjs",
     "build:dist": "npm run build && node scripts/create-dist-file.mjs",
     "test": "vitest run --run",
-    "test:watch": "vitest run --watch",
+    "test:watch": "vitest --watch",
     "test:ci": "npm run test -- --coverage",
     "test:verbose": "npm run test -- --verbose"
   },
