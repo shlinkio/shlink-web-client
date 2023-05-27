@@ -7,11 +7,10 @@ describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
   const storageMock = fromPartial<LocalStorage>({
     set: vi.fn(),
-    get: vi.fn(),
+    get: vi.fn().mockImplementation(() => undefined),
   });
 
   beforeEach(() => {
-    vi.clearAllMocks();
     colorGenerator = new ColorGenerator(storageMock);
   });
 

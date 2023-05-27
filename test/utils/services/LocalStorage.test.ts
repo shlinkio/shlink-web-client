@@ -8,7 +8,6 @@ describe('LocalStorage', () => {
   let storage: LocalStorage;
 
   beforeEach(() => {
-    vi.clearAllMocks();
     storage = new LocalStorage(localStorageMock);
   });
 

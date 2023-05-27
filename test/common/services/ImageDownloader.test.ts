@@ -9,7 +9,6 @@ describe('ImageDownloader', () => {
   let imageDownloader: ImageDownloader;
 
   beforeEach(() => {
-    vi.clearAllMocks();
     (global as any).URL = { createObjectURL: () => '' };
 
     imageDownloader = new ImageDownloader(httpClient, windowMock);
