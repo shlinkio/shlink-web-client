@@ -93,7 +93,7 @@
     "sass": "^1.57.1",
     "stylelint": "^14.16.0",
     "typescript": "^5.0.2",
-    "vite": "^4.3.1",
+    "vite": "^4.3.9",
     "vite-plugin-pwa": "^0.14.4",
     "vitest": "^0.31.1",
     "vitest-canvas-mock": "^0.2.2"
