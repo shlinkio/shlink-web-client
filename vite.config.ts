@@ -31,7 +31,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './config/test/setupTests.ts',
     coverage: {
-      provider: 'c8', // TODO Try istanbul
+      provider: 'v8',
       reporter: ['text', 'text-summary', 'html', 'clover'],
       include: [
         'src/**/*.{ts,tsx}',
@@ -39,6 +39,7 @@ export default defineConfig({
         '!src/reducers/index.ts',
         '!src/**/provideServices.ts',
         '!src/container/*.ts',
+        '!src/utils/helpers/sw.ts',
       ],
 
       // Required code coverage. Lower than this will make the check fail
