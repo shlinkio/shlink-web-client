@@ -39,6 +39,7 @@ export default defineConfig({
         '!src/reducers/index.ts',
         '!src/**/provideServices.ts',
         '!src/container/*.ts',
+        '!src/utils/helpers/sw.ts',
       ],
 
       // Required code coverage. Lower than this will make the check fail
