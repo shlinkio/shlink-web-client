@@ -31,7 +31,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './config/test/setupTests.ts',
     coverage: {
-      provider: 'c8', // TODO Try istanbul
+      provider: 'v8',
       reporter: ['text', 'text-summary', 'html', 'clover'],
       include: [
         'src/**/*.{ts,tsx}',
