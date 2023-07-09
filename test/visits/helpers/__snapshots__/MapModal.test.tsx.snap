@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<MapModal /> renders expected map 1`] = `
+exports[`<MapModal /> > renders expected map 1`] = `
 <div
   class="modal fade"
   role="dialog"

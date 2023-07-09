@@ -9,12 +9,10 @@ import {
 
 describe('shortUrlCreationReducer', () => {
   const shortUrl = fromPartial<ShortUrl>({});
-  const createShortUrlCall = jest.fn();
+  const createShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);
   const { reducer, resetCreateShortUrl } = shortUrlCreationReducerCreator(createShortUrl);
-
-  afterEach(jest.resetAllMocks);
 
   describe('reducer', () => {
     it('returns loading on CREATE_SHORT_URL_START', () => {
@@ -52,7 +50,7 @@ describe('shortUrlCreationReducer', () => {
   });
 
   describe('createShortUrl', () => {
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {

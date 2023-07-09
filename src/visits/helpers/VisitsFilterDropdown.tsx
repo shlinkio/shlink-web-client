@@ -22,7 +22,7 @@ export const VisitsFilterDropdown = (
   const onBotsClick = () => onChange({ ...selected, excludeBots: !selected?.excludeBots });
 
   return (
-    <DropdownBtn text="Filters" dropdownClassName={className} className="me-3" right minWidth={250}>
+    <DropdownBtn text="Filters" dropdownClassName={className} inline end minWidth={250}>
       <DropdownItem header>Bots:</DropdownItem>
       <DropdownItem active={excludeBots} onClick={onBotsClick}>Exclude potential bots</DropdownItem>
 

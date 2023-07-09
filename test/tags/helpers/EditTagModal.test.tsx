@@ -5,17 +5,15 @@ import type { TagEdition } from '../../../src/tags/reducers/tagEdit';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditTagModal />', () => {
-  const EditTagModal = createEditTagModal(fromPartial({ getColorForKey: jest.fn(() => 'green') }));
-  const editTag = jest.fn().mockReturnValue(Promise.resolve());
-  const toggle = jest.fn();
+  const EditTagModal = createEditTagModal(fromPartial({ getColorForKey: vi.fn(() => 'green') }));
+  const editTag = vi.fn().mockReturnValue(Promise.resolve());
+  const toggle = vi.fn();
   const setUp = (tagEdit: Partial<TagEdition> = {}) => {
     const edition = fromPartial<TagEdition>(tagEdit);
     return renderWithEvents(
-      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={jest.fn()} toggle={toggle} />,
+      <EditTagModal isOpen tag="foo" tagEdit={edition} editTag={editTag} tagEdited={vi.fn()} toggle={toggle} />,
     );
   };
-
-  afterEach(jest.clearAllMocks);
 
   it('allows modal to be toggled with different mechanisms', async () => {
     const { user } = setUp();

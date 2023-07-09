@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<DeleteServerButton /> renders expected content 1`] = `
+exports[`<DeleteServerButton /> > renders expected content 1`] = `
 <span>
   <span
     class="button"
@@ -10,7 +10,7 @@ exports[`<DeleteServerButton /> renders expected content 1`] = `
 </span>
 `;
 
-exports[`<DeleteServerButton /> renders expected content 2`] = `
+exports[`<DeleteServerButton /> > renders expected content 2`] = `
 <span>
   <span
     class="button"
@@ -20,7 +20,7 @@ exports[`<DeleteServerButton /> renders expected content 2`] = `
 </span>
 `;
 
-exports[`<DeleteServerButton /> renders expected content 3`] = `
+exports[`<DeleteServerButton /> > renders expected content 3`] = `
 <span>
   <span
     class="button"
@@ -30,7 +30,7 @@ exports[`<DeleteServerButton /> renders expected content 3`] = `
 </span>
 `;
 
-exports[`<DeleteServerButton /> renders expected content 4`] = `
+exports[`<DeleteServerButton /> > renders expected content 4`] = `
 <span>
   <svg
     aria-hidden="true"

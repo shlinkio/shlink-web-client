@@ -14,12 +14,10 @@ import {
 import type { OrphanVisit } from '../../../src/visits/types';
 
 describe('visitsOverviewReducer', () => {
-  const getVisitsOverview = jest.fn();
+  const getVisitsOverview = vi.fn();
   const buildApiClientMock = () => fromPartial<ShlinkApiClient>({ getVisitsOverview });
   const loadVisitsOverview = loadVisitsOverviewCreator(buildApiClientMock);
   const { reducer } = visitsOverviewReducerCreator(loadVisitsOverview);
-
-  beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     const state = (payload: Partial<VisitsOverview> = {}) => fromPartial<VisitsOverview>(payload);
@@ -128,7 +126,7 @@ describe('visitsOverviewReducer', () => {
   });
 
   describe('loadVisitsOverview', () => {
-    const dispatchMock = jest.fn();
+    const dispatchMock = vi.fn();
     const getState = () => fromPartial<ShlinkState>({});
 
     it.each([

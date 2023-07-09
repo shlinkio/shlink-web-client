@@ -5,12 +5,10 @@ import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon'
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainStatusIcon />', () => {
-  const matchMedia = jest.fn().mockReturnValue(fromPartial<MediaQueryList>({ matches: false }));
+  const matchMedia = vi.fn().mockReturnValue(fromPartial<MediaQueryList>({ matches: false }));
   const setUp = (status: DomainStatus) => renderWithEvents(
     <DomainStatusIcon status={status} matchMedia={matchMedia} />,
   );
-
-  beforeEach(jest.clearAllMocks);
 
   it.each([
     ['validating' as DomainStatus],

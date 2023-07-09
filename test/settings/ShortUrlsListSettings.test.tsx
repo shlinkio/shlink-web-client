@@ -6,12 +6,10 @@ import type { ShortUrlsOrder } from '../../src/short-urls/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsListSettings />', () => {
-  const setSettings = jest.fn();
+  const setSettings = vi.fn();
   const setUp = (shortUrlsList?: ShortUrlsSettings) => renderWithEvents(
     <ShortUrlsListSettings settings={fromPartial({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     [undefined, 'Order by: Created at - DESC'],

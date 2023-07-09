@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
 import type { SelectedServer } from '../../servers/data';
 import { getServerId } from '../../servers/data';
-import { DropdownBtnMenu } from '../../utils/DropdownBtnMenu';
 import { useFeature } from '../../utils/helpers/features';
 import { useToggle } from '../../utils/helpers/hooks';
+import { RowDropdownBtn } from '../../utils/RowDropdownBtn';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 import type { Domain } from '../data';
 import type { EditDomainRedirects } from '../reducers/domainRedirects';
@@ -20,7 +20,6 @@ interface DomainDropdownProps {
 }
 
 export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedirects, selectedServer }) => {
-  const [isOpen, toggle] = useToggle();
   const [isModalOpen, toggleModal] = useToggle();
   const { isDefault } = domain;
   const canBeEdited = !isDefault || useFeature('defaultDomainRedirectsEdition', selectedServer);
@@ -28,7 +27,7 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
   const serverId = getServerId(selectedServer);
 
   return (
-    <DropdownBtnMenu isOpen={isOpen} toggle={toggle}>
+    <RowDropdownBtn>
       {withVisits && (
         <DropdownItem
           tag={Link}
@@ -47,6 +46,6 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
         toggle={toggleModal}
         editDomainRedirects={editDomainRedirects}
       />
-    </DropdownBtnMenu>
+    </RowDropdownBtn>
   );
 };

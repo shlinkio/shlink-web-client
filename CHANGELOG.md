@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [3.10.2] - 2023-07-09
+### Added
+* *Nothing*
+
+### Changed
+* [#781](https://github.com/shlinkio/shlink-web-client/issues/781) Migrate tests from jest to vitest.
+* [#843](https://github.com/shlinkio/shlink-web-client/issues/843) Build docker image only for new tags, making sure it always includes an actual version number.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [3.10.1] - 2023-04-23
 ### Added
 * *Nothing*

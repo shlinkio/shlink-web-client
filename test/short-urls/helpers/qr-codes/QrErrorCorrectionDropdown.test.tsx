@@ -5,12 +5,10 @@ import { renderWithEvents } from '../../../__helpers__/setUpTest';
 
 describe('<QrErrorCorrectionDropdown />', () => {
   const initialErrorCorrection: QrErrorCorrection = 'Q';
-  const setErrorCorrection = jest.fn();
+  const setErrorCorrection = vi.fn();
   const setUp = () => renderWithEvents(
     <QrErrorCorrectionDropdown errorCorrection={initialErrorCorrection} setErrorCorrection={setErrorCorrection} />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it('renders initial state', async () => {
     const { user } = setUp();

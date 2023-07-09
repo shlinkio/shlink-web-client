@@ -1,6 +1,6 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from 'vitest/config';
 import { manifest } from './manifest';
 import pack from './package.json';
 
@@ -24,4 +24,32 @@ export default defineConfig({
     port: 3000,
   },
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
+
+  // Vitest config
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './config/test/setupTests.ts',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'text-summary', 'html', 'clover'],
+      include: [
+        'src/**/*.{ts,tsx}',
+        '!src/*.{ts,tsx}',
+        '!src/reducers/index.ts',
+        '!src/**/provideServices.ts',
+        '!src/container/*.ts',
+        '!src/utils/helpers/sw.ts',
+      ],
+
+      // Required code coverage. Lower than this will make the check fail
+      statements: 95,
+      branches: 90,
+      functions: 90,
+      lines: 95,
+    },
+    deps: {
+      inline: ['vitest-canvas-mock'],
+    },
+  },
 });

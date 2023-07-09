@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { AsideMenu as createAsideMenu } from '../../src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {

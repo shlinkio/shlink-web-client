@@ -6,12 +6,11 @@ import { MAIN_COLOR } from '../../../src/utils/theme';
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
   const storageMock = fromPartial<LocalStorage>({
-    set: jest.fn(),
-    get: jest.fn(),
+    set: vi.fn(),
+    get: vi.fn().mockImplementation(() => undefined),
   });
 
   beforeEach(() => {
-    jest.clearAllMocks();
     colorGenerator = new ColorGenerator(storageMock);
   });
 

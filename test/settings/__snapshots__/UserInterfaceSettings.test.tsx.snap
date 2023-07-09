@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<UserInterfaceSettings /> shows different icons based on theme 1`] = `
+exports[`<UserInterfaceSettings /> > shows different icons based on theme 1`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-moon user-interface__theme-icon"
@@ -18,7 +18,7 @@ exports[`<UserInterfaceSettings /> shows different icons based on theme 1`] = `
 </svg>
 `;
 
-exports[`<UserInterfaceSettings /> shows different icons based on theme 2`] = `
+exports[`<UserInterfaceSettings /> > shows different icons based on theme 2`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-sun user-interface__theme-icon"
@@ -36,7 +36,7 @@ exports[`<UserInterfaceSettings /> shows different icons based on theme 2`] = `
 </svg>
 `;
 
-exports[`<UserInterfaceSettings /> shows different icons based on theme 3`] = `
+exports[`<UserInterfaceSettings /> > shows different icons based on theme 3`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-sun user-interface__theme-icon"

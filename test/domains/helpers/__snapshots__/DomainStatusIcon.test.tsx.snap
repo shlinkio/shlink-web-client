@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is not validating 1`] = `
+exports[`<DomainStatusIcon /> > renders expected icon and tooltip when status is not validating 1`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-circle-notch fa-spin fa-fw "
@@ -18,7 +18,7 @@ exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is n
 </svg>
 `;
 
-exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is not validating 2`] = `
+exports[`<DomainStatusIcon /> > renders expected icon and tooltip when status is not validating 2`] = `
 <span>
   <svg
     aria-hidden="true"
@@ -38,7 +38,7 @@ exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is n
 </span>
 `;
 
-exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is not validating 3`] = `
+exports[`<DomainStatusIcon /> > renders expected icon and tooltip when status is not validating 3`] = `
 <span>
   <svg
     aria-hidden="true"
@@ -58,7 +58,7 @@ exports[`<DomainStatusIcon /> renders expected icon and tooltip when status is n
 </span>
 `;
 
-exports[`<DomainStatusIcon /> renders proper tooltip based on state 1`] = `
+exports[`<DomainStatusIcon /> > renders proper tooltip based on state 1`] = `
 <div
   class="tooltip-inner"
   role="tooltip"
@@ -79,7 +79,7 @@ exports[`<DomainStatusIcon /> renders proper tooltip based on state 1`] = `
 </div>
 `;
 
-exports[`<DomainStatusIcon /> renders proper tooltip based on state 2`] = `
+exports[`<DomainStatusIcon /> > renders proper tooltip based on state 2`] = `
 <div
   class="tooltip-inner"
   role="tooltip"

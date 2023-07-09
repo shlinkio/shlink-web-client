@@ -10,8 +10,8 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsStats />', () => {
   const visits = rangeOf(3, () => fromPartial<Visit>({ date: '2020-01-01' }));
-  const getVisitsMock = jest.fn();
-  const exportCsv = jest.fn();
+  const getVisitsMock = vi.fn();
+  const exportCsv = vi.fn();
   const setUp = (visitsInfo: Partial<VisitsInfo>, activeRoute = '/by-time') => {
     const history = createMemoryHistory();
     history.push(activeRoute);

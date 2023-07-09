@@ -8,8 +8,8 @@ import type { VisitsInfo } from '../../src/visits/reducers/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrphanVisits />', () => {
-  const getOrphanVisits = jest.fn();
-  const exportVisits = jest.fn();
+  const getOrphanVisits = vi.fn();
+  const exportVisits = vi.fn();
   const orphanVisits = fromPartial<VisitsInfo>({ visits: [{ date: formatISO(new Date()) }] });
   const OrphanVisits = createOrphanVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
@@ -18,7 +18,7 @@ describe('<OrphanVisits />', () => {
         {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
         getOrphanVisits={getOrphanVisits}
         orphanVisits={orphanVisits}
-        cancelGetOrphanVisits={jest.fn()}
+        cancelGetOrphanVisits={vi.fn()}
         settings={fromPartial({})}
       />
     </MemoryRouter>,

@@ -6,7 +6,7 @@ import { VisitsHeader } from '../../src/visits/VisitsHeader';
 describe('<VisitsHeader />', () => {
   const visits: Visit[] = [fromPartial({}), fromPartial({}), fromPartial({})];
   const title = 'My header title';
-  const goBack = jest.fn();
+  const goBack = vi.fn();
   const setUp = () => render(<VisitsHeader visits={visits} goBack={goBack} title={title} />);
 
   it('shows the amount of visits', () => {

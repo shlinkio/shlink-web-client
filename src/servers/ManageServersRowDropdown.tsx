@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { DropdownBtnMenu } from '../utils/DropdownBtnMenu';
 import { useToggle } from '../utils/helpers/hooks';
+import { RowDropdownBtn } from '../utils/RowDropdownBtn';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 
@@ -25,14 +25,13 @@ interface ManageServersRowDropdownConnectProps extends ManageServersRowDropdownP
 export const ManageServersRowDropdown = (
   DeleteServerModal: FC<DeleteServerModalProps>,
 ): FC<ManageServersRowDropdownConnectProps> => ({ server, setAutoConnect }) => {
-  const [isMenuOpen, toggleMenu] = useToggle();
   const [isModalOpen,, showModal, hideModal] = useToggle();
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;
 
   return (
-    <DropdownBtnMenu isOpen={isMenuOpen} toggle={toggleMenu}>
+    <RowDropdownBtn minWidth={170}>
       <DropdownItem tag={Link} to={serverUrl}>
         <FontAwesomeIcon icon={connectIcon} fixedWidth /> Connect
       </DropdownItem>
@@ -48,6 +47,6 @@ export const ManageServersRowDropdown = (
       </DropdownItem>
 
       <DeleteServerModal redirectHome={false} server={server} isOpen={isModalOpen} toggle={hideModal} />
-    </DropdownBtnMenu>
+    </RowDropdownBtn>
   );
 };

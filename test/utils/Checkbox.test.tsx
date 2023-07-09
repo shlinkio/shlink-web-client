@@ -24,7 +24,7 @@ describe('<Checkbox />', () => {
   });
 
   it.each([[true], [false]])('changes checked status on input change', async (checked) => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { user } = renderWithEvents(<Checkbox onChange={onChange} checked={checked}>Foo</Checkbox>);
 
     expect(onChange).not.toHaveBeenCalled();

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<TableOrderIcon /> renders an icon when all conditions are met 1`] = `
+exports[`<TableOrderIcon /> > renders an icon when all conditions are met 1`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-caret-down ms-1"
@@ -18,7 +18,7 @@ exports[`<TableOrderIcon /> renders an icon when all conditions are met 1`] = `
 </svg>
 `;
 
-exports[`<TableOrderIcon /> renders an icon when all conditions are met 2`] = `
+exports[`<TableOrderIcon /> > renders an icon when all conditions are met 2`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-caret-up ms-1"

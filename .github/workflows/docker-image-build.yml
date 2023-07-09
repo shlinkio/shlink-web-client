@@ -2,8 +2,6 @@ name: Build and publish docker image
 
 on:
   push:
-    branches:
-      - develop
     tags:
       - 'v*'
 
@@ -14,3 +12,4 @@ jobs:
     with:
       image-name: shlinkio/shlink-web-client
       version-arg-name: VERSION
+      platforms: 'linux/arm64/v8,linux/amd64'

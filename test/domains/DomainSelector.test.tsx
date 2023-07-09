@@ -13,10 +13,8 @@ describe('<DomainSelector />', () => {
     ],
   });
   const setUp = (value = '') => renderWithEvents(
-    <DomainSelector value={value} domainsList={domainsList} listDomains={jest.fn()} onChange={jest.fn()} />,
+    <DomainSelector value={value} domainsList={domainsList} listDomains={vi.fn()} onChange={vi.fn()} />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     ['', 'Domain', 'domains-dropdown__toggle-btn'],
@@ -26,9 +24,8 @@ describe('<DomainSelector />', () => {
     const btn = screen.getByRole('button', { name: expectedText });
 
     expect(screen.queryByPlaceholderText('Domain')).not.toBeInTheDocument();
-    expect(btn).toHaveAttribute(
-      'class',
-      `dropdown-btn__toggle btn-block ${expectedClassName} dropdown-toggle btn btn-primary`,
+    expect(btn).toHaveClass(
+      `dropdown-btn__toggle ${expectedClassName} btn-block dropdown-btn__toggle--with-caret dropdown-toggle btn btn-primary`,
     );
     await user.click(btn);
 

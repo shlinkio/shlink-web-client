@@ -3,7 +3,7 @@ import { MapModal } from '../../../src/visits/helpers/MapModal';
 import type { CityStats } from '../../../src/visits/types';
 
 describe('<MapModal />', () => {
-  const toggle = jest.fn();
+  const toggle = vi.fn();
   const zaragozaLat = 41.6563497;
   const zaragozaLong = -0.876566;
   const newYorkLat = 40.730610;

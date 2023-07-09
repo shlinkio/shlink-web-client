@@ -12,7 +12,7 @@ describe('<OrderingDropdown />', () => {
     baz: 'Hello World',
   };
   const setUp = (props: Partial<OrderingDropdownProps> = {}) => renderWithEvents(
-    <OrderingDropdown items={items} order={{}} onChange={jest.fn()} {...props} />,
+    <OrderingDropdown items={items} order={{}} onChange={vi.fn()} {...props} />,
   );
   const setUpWithDisplayedMenu = async (props: Partial<OrderingDropdownProps> = {}) => {
     const result = setUp(props);
@@ -65,7 +65,7 @@ describe('<OrderingDropdown />', () => {
   ])(
     'triggers change with proper params depending on clicked item and initial state',
     async (initialOrder, expectedNewField, expectedNewDir) => {
-      const onChange = jest.fn();
+      const onChange = vi.fn();
       const { user } = await setUpWithDisplayedMenu({ onChange, order: initialOrder });
 
       await user.click(screen.getAllByRole('menuitem')[0]);
@@ -76,7 +76,7 @@ describe('<OrderingDropdown />', () => {
   );
 
   it('clears selection when last item is clicked', async () => {
-    const onChange = jest.fn();
+    const onChange = vi.fn();
     const { user } = await setUpWithDisplayedMenu({ onChange, order: { field: 'baz', dir: 'ASC' } });
 
     await user.click(screen.getAllByRole('menuitem')[3]);

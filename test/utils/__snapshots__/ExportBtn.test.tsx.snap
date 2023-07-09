@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<ExportBtn /> renders expected icon 1`] = `
+exports[`<ExportBtn /> > renders expected icon 1`] = `
 <svg
   aria-hidden="true"
   class="svg-inline--fa fa-file-csv "

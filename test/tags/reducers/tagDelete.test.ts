@@ -4,11 +4,9 @@ import type { ShlinkState } from '../../../src/container/types';
 import { tagDeleted, tagDeleteReducerCreator } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagDeleteReducer', () => {
-  const deleteTagsCall = jest.fn();
+  const deleteTagsCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ deleteTags: deleteTagsCall });
   const { reducer, deleteTag } = tagDeleteReducerCreator(buildShlinkApiClient);
-
-  beforeEach(jest.clearAllMocks);
 
   describe('reducer', () => {
     it('returns loading on DELETE_TAG_START', () => {
@@ -43,7 +41,7 @@ describe('tagDeleteReducer', () => {
   });
 
   describe('deleteTag', () => {
-    const dispatch = jest.fn();
+    const dispatch = vi.fn();
     const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {

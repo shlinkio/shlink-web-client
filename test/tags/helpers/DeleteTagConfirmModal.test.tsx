@@ -5,20 +5,18 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DeleteTagConfirmModal />', () => {
   const tag = 'nodejs';
-  const deleteTag = jest.fn();
-  const toggle = jest.fn();
+  const deleteTag = vi.fn();
+  const toggle = vi.fn();
   const setUp = (tagDelete: TagDeletion) => renderWithEvents(
     <DeleteTagConfirmModal
       tag={tag}
       toggle={toggle}
       isOpen
       deleteTag={deleteTag}
-      tagDeleted={jest.fn()}
+      tagDeleted={vi.fn()}
       tagDelete={tagDelete}
     />,
   );
-
-  afterEach(jest.resetAllMocks);
 
   it('asks confirmation for provided tag to be deleted', () => {
     setUp({ error: false, deleted: false, deleting: false });

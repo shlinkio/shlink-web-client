@@ -3,11 +3,9 @@ import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
-  const toggle = jest.fn();
-  const forceUpdate = jest.fn();
+  const toggle = vi.fn();
+  const forceUpdate = vi.fn();
   const setUp = () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
-
-  afterEach(jest.clearAllMocks);
 
   it('renders initial state', () => {
     setUp();

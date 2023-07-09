@@ -15,8 +15,6 @@ describe('serversReducer', () => {
     def456: fromPartial({ id: 'def456' }),
   };
 
-  afterEach(jest.clearAllMocks);
-
   describe('reducer', () => {
     it('returns edited server when action is EDIT_SERVER', () =>
       expect(serversReducer(list, editServer('abc123', { name: 'foo' }))).toEqual({

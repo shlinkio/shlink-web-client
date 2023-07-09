@@ -5,15 +5,13 @@ import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSet
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlCreationSettings />', () => {
-  const setShortUrlCreationSettings = jest.fn();
+  const setShortUrlCreationSettings = vi.fn();
   const setUp = (shortUrlCreation?: ShortUrlsSettings) => renderWithEvents(
     <ShortUrlCreationSettings
       settings={fromPartial({ shortUrlCreation })}
       setShortUrlCreationSettings={setShortUrlCreationSettings}
     />,
   );
-
-  afterEach(jest.clearAllMocks);
 
   it.each([
     [{ validateUrls: true }, true],

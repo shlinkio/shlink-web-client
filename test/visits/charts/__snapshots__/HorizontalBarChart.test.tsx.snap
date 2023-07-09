@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
+exports[`<HorizontalBarChart /> > renders chart with expected canvas 1`] = `
 [
   {
     "props": {
@@ -23,7 +23,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -51,7 +51,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -79,7 +79,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -93,7 +93,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -121,7 +121,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -149,7 +149,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -164,7 +164,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 1`] = `
 ]
 `;
 
-exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
+exports[`<HorizontalBarChart /> > renders chart with expected canvas 2`] = `
 [
   {
     "props": {
@@ -187,7 +187,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -215,7 +215,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -243,7 +243,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -257,7 +257,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -285,7 +285,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -313,7 +313,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -328,7 +328,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 2`] = `
 ]
 `;
 
-exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
+exports[`<HorizontalBarChart /> > renders chart with expected canvas 3`] = `
 [
   {
     "props": {
@@ -351,7 +351,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -379,7 +379,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -407,7 +407,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -435,7 +435,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -449,7 +449,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -477,7 +477,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
@@ -505,7 +505,7 @@ exports[`<HorizontalBarChart /> renders chart with expected canvas 3`] = `
   },
   {
     "props": {
-      "value": "12px "Helvetica Neue", 'Helvetica', 'Arial', sans-serif",
+      "value": "12px \\"Helvetica Neue\\", 'Helvetica', 'Arial', sans-serif",
     },
     "transform": [
       1,
