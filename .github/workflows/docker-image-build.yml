@@ -2,8 +2,6 @@ name: Build and publish docker image
 
 on:
   push:
-    branches:
-      - develop
     tags:
       - 'v*'
 
