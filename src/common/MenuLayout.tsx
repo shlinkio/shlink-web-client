@@ -8,7 +8,7 @@ import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { useFeature } from '../utils/helpers/features';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
-import type { AsideMenuProps } from './AsideMenu';
+import { AsideMenu } from './AsideMenu';
 import { NotFound } from './NotFound';
 import './MenuLayout.scss';
 
@@ -20,7 +20,6 @@ interface MenuLayoutProps {
 export const MenuLayout = (
   TagsList: FC,
   ShortUrlsList: FC,
-  AsideMenu: FC<AsideMenuProps>,
   CreateShortUrl: FC,
   ShortUrlVisits: FC,
   TagVisits: FC,

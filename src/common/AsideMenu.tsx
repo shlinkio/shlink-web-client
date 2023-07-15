@@ -3,7 +3,6 @@ import {
   faHome as overviewIcon,
   faLink as createIcon,
   faList as listIcon,
-  faPen as editIcon,
   faTags as tagsIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +12,6 @@ import type { NavLinkProps } from 'react-router-dom';
 import { NavLink, useLocation } from 'react-router-dom';
 import type { SelectedServer } from '../servers/data';
 import { isServerWithId } from '../servers/data';
-import type { DeleteServerButtonProps } from '../servers/DeleteServerButton';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {
@@ -36,9 +34,7 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
   </NavLink>
 );
 
-export const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
-  { selectedServer, showOnMobile = false }: AsideMenuProps,
-) => {
+export const AsideMenu: FC<AsideMenuProps> = ({ selectedServer, showOnMobile = false }) => {
   const hasId = isServerWithId(selectedServer);
   const serverId = hasId ? selectedServer.id : '';
   const { pathname } = useLocation();
@@ -73,17 +69,6 @@ export const AsideMenu = (DeleteServerButton: FC<DeleteServerButtonProps>) => (
           <FontAwesomeIcon fixedWidth icon={domainsIcon} />
           <span className="aside-menu__item-text">Manage domains</span>
         </AsideMenuItem>
-        <AsideMenuItem to={buildPath('/edit')} className="aside-menu__item--push">
-          <FontAwesomeIcon fixedWidth icon={editIcon} />
-          <span className="aside-menu__item-text">Edit this server</span>
-        </AsideMenuItem>
-        {hasId && (
-          <DeleteServerButton
-            className="aside-menu__item aside-menu__item--danger"
-            textClassName="aside-menu__item-text"
-            server={selectedServer}
-          />
-        )}
       </nav>
     </aside>
   );

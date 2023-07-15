@@ -6,13 +6,15 @@ import { MenuLayout as createMenuLayout } from '../../src/common/MenuLayout';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import type { SemVer } from '../../src/utils/helpers/version';
 
-vi.mock('react-router-dom', async () => ({ ...(await vi.importActual<any>('react-router-dom')), useParams: vi.fn() }));
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual<any>('react-router-dom')),
+  useParams: vi.fn(),
+}));
 
 describe('<MenuLayout />', () => {
   const MenuLayout = createMenuLayout(
     () => <>TagsList</>,
     () => <>ShortUrlsList</>,
-    () => <>AsideMenu</>,
     () => <>CreateShortUrl</>,
     () => <>ShortUrlVisits</>,
     () => <>TagVisits</>,
@@ -20,7 +22,7 @@ describe('<MenuLayout />', () => {
     () => <>OrphanVisits</>,
     () => <>NonOrphanVisits</>,
     () => <>ServerError</>,
-    () => <>Overview</>,
+    () => <>OverviewRoute</>,
     () => <>EditShortUrl</>,
     () => <>ManageDomains</>,
   );
@@ -62,7 +64,7 @@ describe('<MenuLayout />', () => {
   });
 
   it.each([
-    ['3.0.0' as SemVer, '/overview', 'Overview'],
+    ['3.0.0' as SemVer, '/overview', 'OverviewRoute'],
     ['3.0.0' as SemVer, '/list-short-urls/1', 'ShortUrlsList'],
     ['3.0.0' as SemVer, '/create-short-url', 'CreateShortUrl'],
     ['3.0.0' as SemVer, '/short-code/abc123/visits/foo', 'ShortUrlVisits'],

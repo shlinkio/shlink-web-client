@@ -12,8 +12,6 @@ export const PRIMARY_DARK_COLOR = '#161b22';
 
 export type Theme = 'dark' | 'light';
 
-export const changeThemeInMarkup = (theme: Theme) =>
-  document.getElementsByTagName('html')?.[0]?.setAttribute('data-theme', theme);
+export const changeThemeInMarkup = (theme: Theme) => document.querySelector('html')?.setAttribute('data-theme', theme);
 
-export const isDarkThemeEnabled = (): boolean =>
-  document.getElementsByTagName('html')?.[0]?.getAttribute('data-theme') === 'dark';
+export const isDarkThemeEnabled = (): boolean => document.querySelector('html')?.getAttribute('data-theme') === 'dark';

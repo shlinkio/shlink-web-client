@@ -58,24 +58,6 @@
   background-color: var(--brand-color);
 }
 
-.aside-menu__item--divider {
-  border-bottom: 1px solid #eeeeee;
-  margin: 20px 0;
-}
-
-.aside-menu__item--danger {
-  color: $dangerColor;
-}
-
-.aside-menu__item--push {
-  margin-top: auto;
-}
-
-.aside-menu__item--danger:hover {
-  color: #ffffff;
-  background-color: $dangerColor;
-}
-
 .aside-menu__item-text {
   margin-left: 8px;
 }

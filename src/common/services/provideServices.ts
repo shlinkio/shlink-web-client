@@ -1,7 +1,6 @@
 import type Bottle from 'bottlejs';
 import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
-import { AsideMenu } from '../AsideMenu';
 import { ErrorHandler } from '../ErrorHandler';
 import { Home } from '../Home';
 import { MainHeader } from '../MainHeader';
@@ -37,7 +36,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     MenuLayout,
     'TagsList',
     'ShortUrlsList',
-    'AsideMenu',
     'CreateShortUrl',
     'ShortUrlVisits',
     'TagVisits',
@@ -50,8 +48,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ManageDomains',
   );
   bottle.decorator('MenuLayout', connect(['selectedServer'], ['selectServer', 'sidebarPresent', 'sidebarNotPresent']));
-
-  bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
   bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer', 'sidebar']));
