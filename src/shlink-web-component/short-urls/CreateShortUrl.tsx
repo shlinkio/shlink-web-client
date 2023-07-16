@@ -1,6 +1,5 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
-import type { SelectedServer } from '../../servers/data';
 import type { Settings, ShortUrlCreationSettings } from '../../settings/reducers/settings';
 import type { ShortUrlData } from './data';
 import type { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
@@ -14,7 +13,6 @@ export interface CreateShortUrlProps {
 interface CreateShortUrlConnectProps extends CreateShortUrlProps {
   settings: Settings;
   shortUrlCreation: ShortUrlCreation;
-  selectedServer: SelectedServer;
   createShortUrl: (data: ShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
 }
@@ -41,7 +39,6 @@ export const CreateShortUrl = (
   createShortUrl,
   shortUrlCreation,
   resetCreateShortUrl,
-  selectedServer,
   basicMode = false,
   settings: { shortUrlCreation: shortUrlCreationSettings },
 }: CreateShortUrlConnectProps) => {
@@ -52,7 +49,6 @@ export const CreateShortUrl = (
       <ShortUrlForm
         initialState={initialState}
         saving={shortUrlCreation.saving}
-        selectedServer={selectedServer}
         mode={basicMode ? 'create-basic' : 'create'}
         onSave={async (data: ShortUrlData) => {
           resetCreateShortUrl();

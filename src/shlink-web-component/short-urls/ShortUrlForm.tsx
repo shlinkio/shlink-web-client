@@ -8,17 +8,16 @@ import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
-import type { SelectedServer } from '../../servers/data';
 import { Checkbox } from '../../utils/Checkbox';
 import type { DateTimeInputProps } from '../../utils/dates/DateTimeInput';
 import { DateTimeInput } from '../../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../../utils/helpers/date';
-import { useFeature } from '../../utils/helpers/features';
 import { IconInput } from '../../utils/IconInput';
 import { SimpleCard } from '../../utils/SimpleCard';
 import { handleEventPreventingDefault, hasValue } from '../../utils/utils';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
+import { useFeature } from '../utils/features';
 import type { DeviceLongUrls, ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
@@ -34,7 +33,6 @@ export interface ShortUrlFormProps {
   saving: boolean;
   initialState: ShortUrlData;
   onSave: (shortUrlData: ShortUrlData) => Promise<unknown>;
-  selectedServer: SelectedServer;
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
@@ -43,10 +41,10 @@ const toDate = (date?: string | Date): Date | undefined => (typeof date === 'str
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState, selectedServer }) => {
+): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState }) => {
   const [shortUrlData, setShortUrlData] = useState(initialState);
   const reset = () => setShortUrlData(initialState);
-  const supportsDeviceLongUrls = useFeature('deviceLongUrls', selectedServer);
+  const supportsDeviceLongUrls = useFeature('deviceLongUrls');
 
   const isEdit = mode === 'edit';
   const isBasicMode = mode === 'create-basic';
@@ -136,7 +134,7 @@ export const ShortUrlForm = (
     </>
   );
 
-  const showForwardQueryControl = useFeature('forwardQuery', selectedServer);
+  const showForwardQueryControl = useFeature('forwardQuery');
 
   return (
     <form name="shortUrlForm" className="short-url-form" onSubmit={submit}>

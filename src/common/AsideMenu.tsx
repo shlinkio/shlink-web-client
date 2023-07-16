@@ -10,12 +10,10 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import type { NavLinkProps } from 'react-router-dom';
 import { NavLink, useLocation } from 'react-router-dom';
-import type { SelectedServer } from '../servers/data';
-import { isServerWithId } from '../servers/data';
 import './AsideMenu.scss';
 
 export interface AsideMenuProps {
-  selectedServer: SelectedServer;
+  routePrefix: string;
   showOnMobile?: boolean;
 }
 
@@ -34,14 +32,12 @@ const AsideMenuItem: FC<AsideMenuItemProps> = ({ children, to, className, ...res
   </NavLink>
 );
 
-export const AsideMenu: FC<AsideMenuProps> = ({ selectedServer, showOnMobile = false }) => {
-  const hasId = isServerWithId(selectedServer);
-  const serverId = hasId ? selectedServer.id : '';
+export const AsideMenu: FC<AsideMenuProps> = ({ routePrefix, showOnMobile = false }) => {
   const { pathname } = useLocation();
   const asideClass = classNames('aside-menu', {
     'aside-menu--hidden': !showOnMobile,
   });
-  const buildPath = (suffix: string) => `/server/${serverId}${suffix}`;
+  const buildPath = (suffix: string) => `${routePrefix}${suffix}`;
 
   return (
     <aside className={asideClass}>

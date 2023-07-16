@@ -9,10 +9,10 @@ import type { SelectedServer } from '../../servers/data';
 import { getServerId } from '../../servers/data';
 import type { Settings } from '../../settings/reducers/settings';
 import { DEFAULT_SHORT_URLS_ORDERING } from '../../settings/reducers/settings';
-import { useFeature } from '../../utils/helpers/features';
 import type { OrderDir } from '../../utils/helpers/ordering';
 import { determineOrderDir } from '../../utils/helpers/ordering';
 import { TableOrderIcon } from '../../utils/table/TableOrderIcon';
+import { useFeature } from '../utils/features';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { Paginator } from './Paginator';
@@ -52,7 +52,7 @@ export const ShortUrlsList = (
   );
   const { pagination } = shortUrlsList?.shortUrls ?? {};
   const doExcludeBots = excludeBots ?? settings.visits?.excludeBots;
-  const supportsExcludingBots = useFeature('excludeBotsOnShortUrls', selectedServer);
+  const supportsExcludingBots = useFeature('excludeBotsOnShortUrls');
   const handleOrderBy = (field?: ShortUrlsOrderableFields, dir?: OrderDir) => {
     toFirstPage({ orderBy: { field, dir } });
     setActualOrderBy({ field, dir });
@@ -101,7 +101,6 @@ export const ShortUrlsList = (
   return (
     <>
       <ShortUrlsFilteringBar
-        selectedServer={selectedServer}
         shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
         order={actualOrderBy}
         handleOrderBy={handleOrderBy}

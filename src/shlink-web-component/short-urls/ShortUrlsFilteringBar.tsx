@@ -4,17 +4,16 @@ import classNames from 'classnames';
 import { isEmpty, pipe } from 'ramda';
 import type { FC } from 'react';
 import { Button, InputGroup, Row, UncontrolledTooltip } from 'reactstrap';
-import type { SelectedServer } from '../../servers/data';
 import type { Settings } from '../../settings/reducers/settings';
 import { DateRangeSelector } from '../../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../../utils/helpers/date';
 import type { DateRange } from '../../utils/helpers/dateIntervals';
 import { datesToDateRange } from '../../utils/helpers/dateIntervals';
-import { useFeature } from '../../utils/helpers/features';
 import type { OrderDir } from '../../utils/helpers/ordering';
 import { OrderingDropdown } from '../../utils/OrderingDropdown';
 import { SearchField } from '../../utils/SearchField';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
+import { useFeature } from '../utils/features';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { SHORT_URLS_ORDERABLE_FIELDS } from './data';
 import type { ExportShortUrlsBtnProps } from './helpers/ExportShortUrlsBtn';
@@ -23,7 +22,6 @@ import { ShortUrlsFilterDropdown } from './helpers/ShortUrlsFilterDropdown';
 import './ShortUrlsFilteringBar.scss';
 
 interface ShortUrlsFilteringProps {
-  selectedServer: SelectedServer;
   order: ShortUrlsOrder;
   settings: Settings;
   handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
@@ -34,7 +32,7 @@ interface ShortUrlsFilteringProps {
 export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
   TagsSelector: FC<TagsSelectorProps>,
-): FC<ShortUrlsFilteringProps> => ({ selectedServer, className, shortUrlsAmount, order, handleOrderBy, settings }) => {
+): FC<ShortUrlsFilteringProps> => ({ className, shortUrlsAmount, order, handleOrderBy, settings }) => {
   const [filter, toFirstPage] = useShortUrlsQuery();
   const {
     search,
@@ -46,7 +44,7 @@ export const ShortUrlsFilteringBar = (
     excludePastValidUntil,
     tagsMode = 'any',
   } = filter;
-  const supportsDisabledFiltering = useFeature('filterDisabledUrls', selectedServer);
+  const supportsDisabledFiltering = useFeature('filterDisabledUrls');
 
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
@@ -60,7 +58,7 @@ export const ShortUrlsFilteringBar = (
     (searchTerm) => toFirstPage({ search: searchTerm }),
   );
   const changeTagSelection = (selectedTags: string[]) => toFirstPage({ tags: selectedTags });
-  const canChangeTagsMode = useFeature('allTagsFiltering', selectedServer);
+  const canChangeTagsMode = useFeature('allTagsFiltering');
   const toggleTagsMode = pipe(
     () => (tagsMode === 'any' ? 'all' : 'any'),
     (mode) => toFirstPage({ tagsMode: mode }),

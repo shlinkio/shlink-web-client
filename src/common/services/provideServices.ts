@@ -31,22 +31,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('Home', withoutSelectedServer);
   bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
-  bottle.serviceFactory(
-    'MenuLayout',
-    MenuLayout,
-    'TagsList',
-    'ShortUrlsList',
-    'CreateShortUrl',
-    'ShortUrlVisits',
-    'TagVisits',
-    'DomainVisits',
-    'OrphanVisits',
-    'NonOrphanVisits',
-    'ServerError',
-    'Overview',
-    'EditShortUrl',
-    'ManageDomains',
-  );
+  bottle.serviceFactory('MenuLayout', MenuLayout, 'ServerError', 'ShlinkWebComponent');
   bottle.decorator('MenuLayout', connect(['selectedServer'], ['selectServer', 'sidebarPresent', 'sidebarNotPresent']));
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);

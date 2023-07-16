@@ -4,9 +4,10 @@ import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClie
 import type { ShlinkTags } from '../../../api/types';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
-import { supportedFeatures } from '../../../utils/helpers/features';
+import { isReachableServer } from '../../../servers/data';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
 import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import { isFeatureEnabledForVersion } from '../../utils/features';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
 import type { CreateVisit } from '../../visits/types';
 import type { TagStats } from '../data';
@@ -94,7 +95,9 @@ export const listTags = (buildShlinkApiClient: ShlinkApiClientBuilder, force = t
 
     const { listTags: shlinkListTags, tagsStats } = buildShlinkApiClient(getState);
     const { tags, stats }: ShlinkTags = await (
-      supportedFeatures.tagsStats(selectedServer) ? tagsStats() : shlinkListTags()
+      isReachableServer(selectedServer) && isFeatureEnabledForVersion('tagsStats', selectedServer.version)
+        ? tagsStats()
+        : shlinkListTags()
     );
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, ...rest }) => {
       acc[tag] = rest;

@@ -6,7 +6,6 @@ import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { Button, Card } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import type { SelectedServer } from '../../servers/data';
 import type { Settings } from '../../settings/reducers/settings';
 import { useGoBack } from '../../utils/helpers/hooks';
 import { parseQuery } from '../../utils/helpers/query';
@@ -20,7 +19,6 @@ import type { ShortUrlFormProps } from './ShortUrlForm';
 
 interface EditShortUrlConnectProps {
   settings: Settings;
-  selectedServer: SelectedServer;
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
   getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
@@ -29,7 +27,6 @@ interface EditShortUrlConnectProps {
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   settings: { shortUrlCreation: shortUrlCreationSettings },
-  selectedServer,
   shortUrlDetail,
   getShortUrlDetail,
   shortUrlEdition,
@@ -80,7 +77,6 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
       <ShortUrlForm
         initialState={initialState}
         saving={saving}
-        selectedServer={selectedServer}
         mode="edit"
         onSave={async (shortUrlData) => {
           if (!shortUrl) {

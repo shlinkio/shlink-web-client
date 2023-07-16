@@ -4,28 +4,23 @@ import { useMemo, useState } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { Button, FormGroup, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import type { ImageDownloader } from '../../../common/services/ImageDownloader';
-import type { SelectedServer } from '../../../servers/data';
 import { CopyToClipboardIcon } from '../../../utils/CopyToClipboardIcon';
-import { useFeature } from '../../../utils/helpers/features';
 import type { QrCodeFormat, QrErrorCorrection } from '../../../utils/helpers/qrCodes';
 import { buildQrCodeUrl } from '../../../utils/helpers/qrCodes';
+import { useFeature } from '../../utils/features';
 import type { ShortUrlModalProps } from '../data';
 import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
 import './QrCodeModal.scss';
 
-interface QrCodeModalConnectProps extends ShortUrlModalProps {
-  selectedServer: SelectedServer;
-}
-
 export const QrCodeModal = (imageDownloader: ImageDownloader) => (
-  { shortUrl: { shortUrl, shortCode }, toggle, isOpen, selectedServer }: QrCodeModalConnectProps,
+  { shortUrl: { shortUrl, shortCode }, toggle, isOpen }: ShortUrlModalProps,
 ) => {
   const [size, setSize] = useState(300);
   const [margin, setMargin] = useState(0);
   const [format, setFormat] = useState<QrCodeFormat>('png');
   const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
-  const displayDownloadBtn = useFeature('nonRestCors', selectedServer);
+  const displayDownloadBtn = useFeature('nonRestCors');
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }),
     [shortUrl, size, format, margin, errorCorrection],
@@ -46,7 +41,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
       </ModalHeader>
       <ModalBody>
         <Row>
-          <FormGroup className="d-grid col-md-4">
+          <FormGroup className="d-grid col-md-6">
             <label>Size: {size}px</label>
             <input
               type="range"
@@ -58,7 +53,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
               onChange={(e) => setSize(Number(e.target.value))}
             />
           </FormGroup>
-          <FormGroup className="d-grid col-md-4">
+          <FormGroup className="d-grid col-md-6">
             <label htmlFor="marginControl">Margin: {margin}px</label>
             <input
               id="marginControl"
@@ -71,7 +66,7 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
               onChange={(e) => setMargin(Number(e.target.value))}
             />
           </FormGroup>
-          <FormGroup className="d-grid col-md-4">
+          <FormGroup className="d-grid col-md-6">
             <QrFormatDropdown format={format} setFormat={setFormat} />
           </FormGroup>
           <FormGroup className="col-md-6">

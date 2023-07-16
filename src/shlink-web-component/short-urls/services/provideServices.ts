@@ -39,12 +39,12 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
-    connect(['shortUrlCreation', 'selectedServer', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
+    connect(['shortUrlCreation', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
   );
 
   bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');
   bottle.decorator('EditShortUrl', connect(
-    ['shortUrlDetail', 'shortUrlEdition', 'selectedServer', 'settings'],
+    ['shortUrlDetail', 'shortUrlEdition', 'settings'],
     ['getShortUrlDetail', 'editShortUrl'],
   ));
 
@@ -55,8 +55,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   ));
 
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
-  bottle.decorator('QrCodeModal', connect(['selectedServer']));
-
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ExportShortUrlsBtn', 'TagsSelector');
 
   bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');

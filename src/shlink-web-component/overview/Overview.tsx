@@ -10,13 +10,13 @@ import { getServerId } from '../../servers/data';
 import { HighlightCard } from '../../servers/helpers/HighlightCard';
 import { VisitsHighlightCard } from '../../servers/helpers/VisitsHighlightCard';
 import type { Settings } from '../../settings/reducers/settings';
-import { useFeature } from '../../utils/helpers/features';
 import { prettify } from '../../utils/helpers/numbers';
 import type { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
 import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers/shortUrlsList';
 import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
+import { useFeature } from '../utils/features';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';
 
 interface OverviewConnectProps {
@@ -47,7 +47,7 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, nonOrphanVisits, orphanVisits } = visitsOverview;
   const serverId = getServerId(selectedServer);
-  const linkToNonOrphanVisits = useFeature('nonOrphanVisits', selectedServer);
+  const linkToNonOrphanVisits = useFeature('nonOrphanVisits');
   const navigate = useNavigate();
 
   useEffect(() => {

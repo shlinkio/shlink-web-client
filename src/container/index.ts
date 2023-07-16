@@ -8,6 +8,7 @@ import { provideServices as provideCommonServices } from '../common/services/pro
 import { provideServices as provideMercureServices } from '../mercure/services/provideServices';
 import { provideServices as provideServersServices } from '../servers/services/provideServices';
 import { provideServices as provideSettingsServices } from '../settings/services/provideServices';
+import { provideServices as provideWebComponentServices } from '../shlink-web-component/container';
 import { provideServices as provideDomainsServices } from '../shlink-web-component/domains/services/provideServices';
 import { provideServices as provideShortUrlsServices } from '../shlink-web-component/short-urls/services/provideServices';
 import { provideServices as provideTagsServices } from '../shlink-web-component/tags/services/provideServices';
@@ -45,3 +46,6 @@ provideUtilsServices(bottle);
 provideMercureServices(bottle);
 provideSettingsServices(bottle, connect);
 provideDomainsServices(bottle, connect);
+
+// TODO This should not be needed.
+provideWebComponentServices(bottle);
