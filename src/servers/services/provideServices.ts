@@ -1,6 +1,7 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import type { ConnectDecorator } from '../../container/types';
+import { Overview } from '../../shlink-web-component/overview/Overview';
 import { CreateServer } from '../CreateServer';
 import { DeleteServerButton } from '../DeleteServerButton';
 import { DeleteServerModal } from '../DeleteServerModal';
@@ -11,7 +12,6 @@ import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import { ManageServers } from '../ManageServers';
 import { ManageServersRow } from '../ManageServersRow';
 import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
-import { Overview } from '../Overview';
 import { fetchServers } from '../reducers/remoteServers';
 import {
   resetSelectedServer,

@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkDomainRedirects } from '../../src/api/types';
-import type { Domain } from '../../src/domains/data';
-import { DomainRow } from '../../src/domains/DomainRow';
+import type { Domain } from '../../src/shlink-web-component/domains/data';
+import { DomainRow } from '../../src/shlink-web-component/domains/DomainRow';
 
 describe('<DomainRow />', () => {
   const redirectsCombinations = [

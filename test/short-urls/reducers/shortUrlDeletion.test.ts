@@ -4,7 +4,7 @@ import type { ProblemDetailsError } from '../../../src/api/types/errors';
 import {
   deleteShortUrl as deleteShortUrlCreator,
   shortUrlDeletionReducerCreator,
-} from '../../../src/short-urls/reducers/shortUrlDeletion';
+} from '../../../src/shlink-web-component/short-urls/reducers/shortUrlDeletion';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = vi.fn();

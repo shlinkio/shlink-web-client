@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { OpenMapModalBtn } from '../../../src/visits/helpers/OpenMapModalBtn';
-import type { CityStats } from '../../../src/visits/types';
+import { OpenMapModalBtn } from '../../../src/shlink-web-component/visits/helpers/OpenMapModalBtn';
+import type { CityStats } from '../../../src/shlink-web-component/visits/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<OpenMapModalBtn />', () => {

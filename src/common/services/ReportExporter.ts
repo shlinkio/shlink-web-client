@@ -1,7 +1,7 @@
-import type { ExportableShortUrl } from '../../short-urls/data';
+import type { ExportableShortUrl } from '../../shlink-web-component/short-urls/data';
+import type { NormalizedVisit } from '../../shlink-web-component/visits/types';
 import type { JsonToCsv } from '../../utils/helpers/csvjson';
 import { saveCsv } from '../../utils/helpers/files';
-import type { NormalizedVisit } from '../../visits/types';
 
 export class ReportExporter {
   public constructor(private readonly window: Window, private readonly jsonToCsv: JsonToCsv) {}

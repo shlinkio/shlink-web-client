@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { EditShortUrl as createEditShortUrl } from '../../src/short-urls/EditShortUrl';
-import type { ShortUrlDetail } from '../../src/short-urls/reducers/shortUrlDetail';
-import type { ShortUrlEdition } from '../../src/short-urls/reducers/shortUrlEdition';
+import { EditShortUrl as createEditShortUrl } from '../../src/shlink-web-component/short-urls/EditShortUrl';
+import type { ShortUrlDetail } from '../../src/shlink-web-component/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlEdition } from '../../src/shlink-web-component/short-urls/reducers/shortUrlEdition';
 
 describe('<EditShortUrl />', () => {
   const shortUrlCreation = { validateUrls: true };

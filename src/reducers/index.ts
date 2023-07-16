@@ -7,8 +7,17 @@ import { serversReducer } from '../servers/reducers/servers';
 import { settingsReducer } from '../settings/reducers/settings';
 
 export const initReducers = (container: IContainer) => combineReducers<ShlinkState>({
+  // Main shlink-web-client reducers
+  appUpdated: appUpdatesReducer,
   servers: serversReducer,
   selectedServer: container.selectedServerReducer,
+  settings: settingsReducer,
+  sidebar: sidebarReducer,
+
+  // TBD
+  mercureInfo: container.mercureInfoReducer,
+
+  // Nested shlink-web-component reducers
   shortUrlsList: container.shortUrlsListReducer,
   shortUrlCreation: container.shortUrlCreationReducer,
   shortUrlDeletion: container.shortUrlDeletionReducer,
@@ -22,10 +31,6 @@ export const initReducers = (container: IContainer) => combineReducers<ShlinkSta
   tagsList: container.tagsListReducer,
   tagDelete: container.tagDeleteReducer,
   tagEdit: container.tagEditReducer,
-  mercureInfo: container.mercureInfoReducer,
-  settings: settingsReducer,
   domainsList: container.domainsListReducer,
   visitsOverview: container.visitsOverviewReducer,
-  appUpdated: appUpdatesReducer,
-  sidebar: sidebarReducer,
 });

@@ -1,11 +1,11 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkState } from '../../../src/container/types';
 import type { SelectedServer } from '../../../src/servers/data';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
 import {
   editShortUrl as editShortUrlCreator,
   shortUrlEditionReducerCreator,
-} from '../../../src/short-urls/reducers/shortUrlEdition';
+} from '../../../src/shlink-web-component/short-urls/reducers/shortUrlEdition';
 
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { MapModal } from '../../../src/visits/helpers/MapModal';
-import type { CityStats } from '../../../src/visits/types';
+import { MapModal } from '../../../src/shlink-web-component/visits/helpers/MapModal';
+import type { CityStats } from '../../../src/shlink-web-component/visits/types';
 
 describe('<MapModal />', () => {
   const toggle = vi.fn();

@@ -5,14 +5,14 @@ import { connect as reduxConnect } from 'react-redux';
 import { provideServices as provideApiServices } from '../api/services/provideServices';
 import { provideServices as provideAppServices } from '../app/services/provideServices';
 import { provideServices as provideCommonServices } from '../common/services/provideServices';
-import { provideServices as provideDomainsServices } from '../domains/services/provideServices';
 import { provideServices as provideMercureServices } from '../mercure/services/provideServices';
 import { provideServices as provideServersServices } from '../servers/services/provideServices';
 import { provideServices as provideSettingsServices } from '../settings/services/provideServices';
-import { provideServices as provideShortUrlsServices } from '../short-urls/services/provideServices';
-import { provideServices as provideTagsServices } from '../tags/services/provideServices';
+import { provideServices as provideDomainsServices } from '../shlink-web-component/domains/services/provideServices';
+import { provideServices as provideShortUrlsServices } from '../shlink-web-component/short-urls/services/provideServices';
+import { provideServices as provideTagsServices } from '../shlink-web-component/tags/services/provideServices';
+import { provideServices as provideVisitsServices } from '../shlink-web-component/visits/services/provideServices';
 import { provideServices as provideUtilsServices } from '../utils/services/provideServices';
-import { provideServices as provideVisitsServices } from '../visits/services/provideServices';
 import type { ConnectDecorator } from './types';
 
 type LazyActionMap = Record<string, Function>;

@@ -1,9 +1,9 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { Domain } from '../../../src/domains/data';
-import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
 import type { SelectedServer } from '../../../src/servers/data';
+import type { Domain } from '../../../src/shlink-web-component/domains/data';
+import { DomainDropdown } from '../../../src/shlink-web-component/domains/helpers/DomainDropdown';
 import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

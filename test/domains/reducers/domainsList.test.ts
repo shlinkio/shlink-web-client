@@ -3,14 +3,14 @@ import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient'
 import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import { parseApiError } from '../../../src/api/utils';
 import type { ShlinkState } from '../../../src/container/types';
-import type { Domain } from '../../../src/domains/data';
-import type { EditDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
-import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
+import type { Domain } from '../../../src/shlink-web-component/domains/data';
+import type { EditDomainRedirects } from '../../../src/shlink-web-component/domains/reducers/domainRedirects';
+import { editDomainRedirects } from '../../../src/shlink-web-component/domains/reducers/domainRedirects';
 import {
   domainsListReducerCreator,
   replaceRedirectsOnDomain,
   replaceStatusOnDomain,
-} from '../../../src/domains/reducers/domainsList';
+} from '../../../src/shlink-web-component/domains/reducers/domainsList';
 
 describe('domainsListReducer', () => {
   const dispatch = vi.fn();

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
+import { TAGS_ORDERABLE_FIELDS } from '../shlink-web-component/tags/data/TagsListChildrenProps';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { SimpleCard } from '../utils/SimpleCard';

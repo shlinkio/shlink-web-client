@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { SHORT_URLS_ORDERABLE_FIELDS } from '../short-urls/data';
+import { SHORT_URLS_ORDERABLE_FIELDS } from '../shlink-web-component/short-urls/data';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 import { OrderingDropdown } from '../utils/OrderingDropdown';
 import { SimpleCard } from '../utils/SimpleCard';

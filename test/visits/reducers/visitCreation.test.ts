@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../src/short-urls/data';
-import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/visits/types';
+import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
+import { createNewVisits } from '../../../src/shlink-web-component/visits/reducers/visitCreation';
+import type { Visit } from '../../../src/shlink-web-component/visits/types';
 
 describe('visitCreationReducer', () => {
   describe('createNewVisits', () => {

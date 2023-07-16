@@ -1,8 +1,8 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
-import type { ShortUrlsOrder } from '../../short-urls/data';
-import type { TagsOrder } from '../../tags/data/TagsListChildrenProps';
+import type { ShortUrlsOrder } from '../../shlink-web-component/short-urls/data';
+import type { TagsOrder } from '../../shlink-web-component/tags/data/TagsListChildrenProps';
 import type { DateInterval } from '../../utils/helpers/dateIntervals';
 import type { Theme } from '../../utils/theme';
 

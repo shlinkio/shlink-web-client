@@ -3,9 +3,9 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
-import type { TagVisitsProps } from '../../src/visits/TagVisits';
-import { TagVisits as createTagVisits } from '../../src/visits/TagVisits';
+import type { TagVisits as TagVisitsStats } from '../../src/shlink-web-component/visits/reducers/tagVisits';
+import type { TagVisitsProps } from '../../src/shlink-web-component/visits/TagVisits';
+import { TagVisits as createTagVisits } from '../../src/shlink-web-component/visits/TagVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({

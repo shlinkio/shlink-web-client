@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { DomainSelector } from '../../src/domains/DomainSelector';
-import type { DomainsList } from '../../src/domains/reducers/domainsList';
+import { DomainSelector } from '../../src/shlink-web-component/domains/DomainSelector';
+import type { DomainsList } from '../../src/shlink-web-component/domains/reducers/domainsList';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DomainSelector />', () => {

@@ -2,9 +2,9 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { InvalidShortUrlDeletion } from '../../../src/api/types/errors';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
-import type { ShortUrl } from '../../../src/short-urls/data';
-import { DeleteShortUrlModal } from '../../../src/short-urls/helpers/DeleteShortUrlModal';
-import type { ShortUrlDeletion } from '../../../src/short-urls/reducers/shortUrlDeletion';
+import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
+import { DeleteShortUrlModal } from '../../../src/shlink-web-component/short-urls/helpers/DeleteShortUrlModal';
+import type { ShortUrlDeletion } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlDeletion';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { TestModalWrapper } from '../../__helpers__/TestModalWrapper';
 

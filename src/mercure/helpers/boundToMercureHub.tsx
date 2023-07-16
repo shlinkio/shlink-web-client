@@ -2,7 +2,7 @@ import { pipe } from 'ramda';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import type { CreateVisit } from '../../visits/types';
+import type { CreateVisit } from '../../shlink-web-component/visits/types';
 import type { MercureInfo } from '../reducers/mercureInfo';
 import { bindToMercureTopic } from './index';
 

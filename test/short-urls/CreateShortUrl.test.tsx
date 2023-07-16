@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { CreateShortUrl as createShortUrlsCreator } from '../../src/short-urls/CreateShortUrl';
-import type { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
+import { CreateShortUrl as createShortUrlsCreator } from '../../src/shlink-web-component/short-urls/CreateShortUrl';
+import type { ShortUrlCreation } from '../../src/shlink-web-component/short-urls/reducers/shortUrlCreation';
 
 describe('<CreateShortUrl />', () => {
   const ShortUrlForm = () => <span>ShortUrlForm</span>;

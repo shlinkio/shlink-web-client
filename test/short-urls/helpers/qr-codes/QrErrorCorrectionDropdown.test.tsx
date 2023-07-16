@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { QrErrorCorrectionDropdown } from '../../../../src/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
+import { QrErrorCorrectionDropdown } from '../../../../src/shlink-web-component/short-urls/helpers/qr-codes/QrErrorCorrectionDropdown';
 import type { QrErrorCorrection } from '../../../../src/utils/helpers/qrCodes';
 import { renderWithEvents } from '../../../__helpers__/setUpTest';
 

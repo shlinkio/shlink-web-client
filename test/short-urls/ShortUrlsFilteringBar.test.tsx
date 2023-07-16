@@ -3,7 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/short-urls/ShortUrlsFilteringBar';
+import { ShortUrlsFilteringBar as filteringBarCreator } from '../../src/shlink-web-component/short-urls/ShortUrlsFilteringBar';
 import { formatDate } from '../../src/utils/helpers/date';
 import type { DateRange } from '../../src/utils/helpers/dateIntervals';
 import { renderWithEvents } from '../__helpers__/setUpTest';

@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
-import { Overview as overviewCreator } from '../../src/servers/Overview';
+import { Overview as overviewCreator } from '../../src/shlink-web-component/overview/Overview';
 import { prettify } from '../../src/utils/helpers/numbers';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

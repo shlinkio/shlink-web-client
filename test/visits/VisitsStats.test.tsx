@@ -2,10 +2,10 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import type { VisitsInfo } from '../../src/shlink-web-component/visits/reducers/types';
+import type { Visit } from '../../src/shlink-web-component/visits/types';
+import { VisitsStats } from '../../src/shlink-web-component/visits/VisitsStats';
 import { rangeOf } from '../../src/utils/utils';
-import type { VisitsInfo } from '../../src/visits/reducers/types';
-import type { Visit } from '../../src/visits/types';
-import { VisitsStats } from '../../src/visits/VisitsStats';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsStats />', () => {

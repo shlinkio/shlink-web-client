@@ -1,6 +1,6 @@
 import { isEmpty, isNil, reject } from 'ramda';
 import type { HttpClient } from '../../common/services/HttpClient';
-import type { ShortUrl, ShortUrlData } from '../../short-urls/data';
+import type { ShortUrl, ShortUrlData } from '../../shlink-web-component/short-urls/data';
 import { orderToString } from '../../utils/helpers/ordering';
 import { stringifyQuery } from '../../utils/helpers/query';
 import type { OptionalString } from '../../utils/utils';

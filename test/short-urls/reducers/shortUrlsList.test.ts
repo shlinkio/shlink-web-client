@@ -1,16 +1,16 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkShortUrlsResponse } from '../../../src/api/types';
-import type { ShortUrl } from '../../../src/short-urls/data';
-import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
-import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
-import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
+import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
+import { createShortUrl as createShortUrlCreator } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlCreation';
+import { shortUrlDeleted } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlDeletion';
+import { editShortUrl as editShortUrlCreator } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlEdition';
 import {
   listShortUrls as listShortUrlsCreator,
   shortUrlsListReducerCreator,
-} from '../../../src/short-urls/reducers/shortUrlsList';
-import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { CreateVisit } from '../../../src/visits/types';
+} from '../../../src/shlink-web-component/short-urls/reducers/shortUrlsList';
+import { createNewVisits } from '../../../src/shlink-web-component/visits/reducers/visitCreation';
+import type { CreateVisit } from '../../../src/shlink-web-component/visits/types';
 
 describe('shortUrlsListReducer', () => {
   const shortCode = 'abc123';

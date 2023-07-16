@@ -1,9 +1,9 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl } from '../../../src/short-urls/data';
-import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
-import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
+import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
+import { shortUrlDetailReducerCreator } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlsList } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlsList';
 
 describe('shortUrlDetailReducer', () => {
   const getShortUrlCall = vi.fn();

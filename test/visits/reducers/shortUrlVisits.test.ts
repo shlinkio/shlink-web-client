@@ -3,17 +3,17 @@ import { addDays, formatISO, subDays } from 'date-fns';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';
-import { formatIsoDate } from '../../../src/utils/helpers/date';
-import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
-import { rangeOf } from '../../../src/utils/utils';
 import type {
-  ShortUrlVisits } from '../../../src/visits/reducers/shortUrlVisits';
+  ShortUrlVisits } from '../../../src/shlink-web-component/visits/reducers/shortUrlVisits';
 import {
   getShortUrlVisits as getShortUrlVisitsCreator,
   shortUrlVisitsReducerCreator,
-} from '../../../src/visits/reducers/shortUrlVisits';
-import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/visits/types';
+} from '../../../src/shlink-web-component/visits/reducers/shortUrlVisits';
+import { createNewVisits } from '../../../src/shlink-web-component/visits/reducers/visitCreation';
+import type { Visit } from '../../../src/shlink-web-component/visits/types';
+import { formatIsoDate } from '../../../src/utils/helpers/date';
+import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
+import { rangeOf } from '../../../src/utils/utils';
 
 describe('shortUrlVisitsReducer', () => {
   const now = new Date();

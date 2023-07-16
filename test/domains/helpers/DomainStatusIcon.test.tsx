@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { DomainStatus } from '../../../src/domains/data';
-import { DomainStatusIcon } from '../../../src/domains/helpers/DomainStatusIcon';
+import type { DomainStatus } from '../../../src/shlink-web-component/domains/data';
+import { DomainStatusIcon } from '../../../src/shlink-web-component/domains/helpers/DomainStatusIcon';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainStatusIcon />', () => {

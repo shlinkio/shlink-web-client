@@ -3,10 +3,10 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import type { Settings } from '../../src/settings/reducers/settings';
-import type { ShortUrlsOrder } from '../../src/short-urls/data';
-import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
-import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
-import type { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
+import type { ShortUrlsOrder } from '../../src/shlink-web-component/short-urls/data';
+import type { ShortUrlsList as ShortUrlsListModel } from '../../src/shlink-web-component/short-urls/reducers/shortUrlsList';
+import { ShortUrlsList as createShortUrlsList } from '../../src/shlink-web-component/short-urls/ShortUrlsList';
+import type { ShortUrlsTableType } from '../../src/shlink-web-component/short-urls/ShortUrlsTable';
 import type { SemVer } from '../../src/utils/helpers/version';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

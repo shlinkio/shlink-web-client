@@ -4,9 +4,9 @@ import { formatISO } from 'date-fns';
 import { identity } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
-import type { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
-import type { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
-import { ShortUrlVisits as createShortUrlVisits } from '../../src/visits/ShortUrlVisits';
+import type { ShortUrlVisits as ShortUrlVisitsState } from '../../src/shlink-web-component/visits/reducers/shortUrlVisits';
+import type { ShortUrlVisitsProps } from '../../src/shlink-web-component/visits/ShortUrlVisits';
+import { ShortUrlVisits as createShortUrlVisits } from '../../src/shlink-web-component/visits/ShortUrlVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {

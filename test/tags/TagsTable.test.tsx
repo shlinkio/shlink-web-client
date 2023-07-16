@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { useLocation } from 'react-router-dom';
-import { TagsTable as createTagsTable } from '../../src/tags/TagsTable';
+import { TagsTable as createTagsTable } from '../../src/shlink-web-component/tags/TagsTable';
 import { rangeOf } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

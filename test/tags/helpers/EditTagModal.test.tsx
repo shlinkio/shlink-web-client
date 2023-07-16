@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { EditTagModal as createEditTagModal } from '../../../src/tags/helpers/EditTagModal';
-import type { TagEdition } from '../../../src/tags/reducers/tagEdit';
+import { EditTagModal as createEditTagModal } from '../../../src/shlink-web-component/tags/helpers/EditTagModal';
+import type { TagEdition } from '../../../src/shlink-web-component/tags/reducers/tagEdit';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<EditTagModal />', () => {

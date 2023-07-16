@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
+import type { TagVisits } from '../../src/shlink-web-component/visits/reducers/tagVisits';
+import { TagVisitsHeader } from '../../src/shlink-web-component/visits/TagVisitsHeader';
 import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
-import type { TagVisits } from '../../src/visits/reducers/tagVisits';
-import { TagVisitsHeader } from '../../src/visits/TagVisitsHeader';
 
 describe('<TagVisitsHeader />', () => {
   const tagVisits = fromPartial<TagVisits>({

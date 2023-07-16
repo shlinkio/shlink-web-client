@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { range } from 'ramda';
 import type { ReactNode } from 'react';
+import { SortableBarChartCard } from '../../../src/shlink-web-component/visits/charts/SortableBarChartCard';
+import type { Stats } from '../../../src/shlink-web-component/visits/types';
 import { rangeOf } from '../../../src/utils/utils';
-import { SortableBarChartCard } from '../../../src/visits/charts/SortableBarChartCard';
-import type { Stats } from '../../../src/visits/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<SortableBarChartCard />', () => {
