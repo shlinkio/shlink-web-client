@@ -8,7 +8,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Button, Progress, Row } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import type { Settings } from '../../settings/reducers/settings';
 import { DateRangeSelector } from '../../utils/dates/DateRangeSelector';
 import { ExportBtn } from '../../utils/ExportBtn';
 import type { DateInterval, DateRange } from '../../utils/helpers/dateIntervals';
@@ -17,6 +16,7 @@ import { prettify } from '../../utils/helpers/numbers';
 import { Message } from '../../utils/Message';
 import { NavPillItem, NavPills } from '../../utils/NavPills';
 import { Result } from '../../utils/Result';
+import { useSetting } from '../utils/settings';
 import { DoughnutChartCard } from './charts/DoughnutChartCard';
 import { LineChartCard } from './charts/LineChartCard';
 import { SortableBarChartCard } from './charts/SortableBarChartCard';
@@ -33,7 +33,6 @@ import { VisitsTable } from './VisitsTable';
 export type VisitsStatsProps = PropsWithChildren<{
   getVisits: (params: VisitsParams, doIntervalFallback?: boolean) => void;
   visitsInfo: VisitsInfo;
-  settings: Settings;
   cancelGetVisits: () => void;
   exportCsv: (visits: NormalizedVisit[]) => void;
   isOrphanVisits?: boolean;
@@ -61,12 +60,12 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   visitsInfo,
   getVisits,
   cancelGetVisits,
-  settings,
   exportCsv,
   isOrphanVisits = false,
 }) => {
   const { visits, loading, loadingLarge, error, errorData, progress, fallbackInterval } = visitsInfo;
   const [{ dateRange, visitsFilter }, updateFiltering] = useVisitsQuery();
+  const visitsSettings = useSetting('visits');
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
       dateRange: {
@@ -77,7 +76,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
     updateFiltering,
   );
   const initialInterval = useRef<DateRange | DateInterval>(
-    dateRange ?? fallbackInterval ?? settings.visits?.defaultInterval ?? 'last30Days',
+    dateRange ?? fallbackInterval ?? visitsSettings?.defaultInterval ?? 'last30Days',
   );
   const [highlightedVisits, setHighlightedVisits] = useState<NormalizedVisit[]>([]);
   const [highlightedLabel, setHighlightedLabel] = useState<string | undefined>();
@@ -92,7 +91,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   );
   const resolvedFilter = useMemo(() => ({
     ...visitsFilter,
-    excludeBots: visitsFilter.excludeBots ?? settings.visits?.excludeBots,
+    excludeBots: visitsFilter.excludeBots ?? visitsSettings?.excludeBots,
   }), [visitsFilter]);
   const mapLocations = values(citiesForMap);
 
@@ -122,7 +121,7 @@ export const VisitsStats: FC<VisitsStatsProps> = ({
   }, [dateRange, visitsFilter]);
   useEffect(() => {
     // As soon as the fallback is loaded, if the initial interval used the settings one, we do fall back
-    if (fallbackInterval && initialInterval.current === (settings.visits?.defaultInterval ?? 'last30Days')) {
+    if (fallbackInterval && initialInterval.current === (visitsSettings?.defaultInterval ?? 'last30Days')) {
       initialInterval.current = fallbackInterval;
     }
   }, [fallbackInterval]);

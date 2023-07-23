@@ -1,7 +1,6 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import type { ConnectDecorator } from '../../container/types';
-import { Overview } from '../../shlink-web-component/overview/Overview';
 import { CreateServer } from '../CreateServer';
 import { DeleteServerButton } from '../DeleteServerButton';
 import { DeleteServerModal } from '../DeleteServerModal';
@@ -62,12 +61,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
   bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
-
-  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
-  bottle.decorator('Overview', connect(
-    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview', 'settings'],
-    ['listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview'],
-  ));
 
   // Services
   bottle.constant('fileReaderFactory', () => new FileReader());

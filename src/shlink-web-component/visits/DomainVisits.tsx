@@ -6,12 +6,11 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import type { DomainVisits as DomainVisitsState, LoadDomainVisits } from './reducers/domainVisits';
 import type { NormalizedVisit } from './types';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
 import { VisitsStats } from './VisitsStats';
 
-export interface DomainVisitsProps extends CommonVisitsProps {
+export interface DomainVisitsProps {
   getDomainVisits: (params: LoadDomainVisits) => void;
   domainVisits: DomainVisitsState;
   cancelGetDomainVisits: () => void;
@@ -21,7 +20,6 @@ export const DomainVisits = ({ exportVisits }: ReportExporter) => boundToMercure
   getDomainVisits,
   domainVisits,
   cancelGetDomainVisits,
-  settings,
 }: DomainVisitsProps) => {
   const goBack = useGoBack();
   const { domain = '' } = useParams();
@@ -35,7 +33,6 @@ export const DomainVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       getVisits={loadVisits}
       cancelGetVisits={cancelGetDomainVisits}
       visitsInfo={domainVisits}
-      settings={settings}
       exportCsv={exportCsv}
     >
       <VisitsHeader goBack={goBack} visits={domainVisits.visits} title={`"${authority}" visits`} />

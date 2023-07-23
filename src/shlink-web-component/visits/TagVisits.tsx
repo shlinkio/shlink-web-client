@@ -8,11 +8,10 @@ import { Topics } from '../mercure/helpers/Topics';
 import type { LoadTagVisits, TagVisits as TagVisitsState } from './reducers/tagVisits';
 import { TagVisitsHeader } from './TagVisitsHeader';
 import type { NormalizedVisit } from './types';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsStats } from './VisitsStats';
 
-export interface TagVisitsProps extends CommonVisitsProps {
+export interface TagVisitsProps {
   getTagVisits: (params: LoadTagVisits) => void;
   tagVisits: TagVisitsState;
   cancelGetTagVisits: () => void;
@@ -22,7 +21,6 @@ export const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: Repo
   getTagVisits,
   tagVisits,
   cancelGetTagVisits,
-  settings,
 }: TagVisitsProps) => {
   const goBack = useGoBack();
   const { tag = '' } = useParams();
@@ -35,7 +33,6 @@ export const TagVisits = (colorGenerator: ColorGenerator, { exportVisits }: Repo
       getVisits={loadVisits}
       cancelGetVisits={cancelGetTagVisits}
       visitsInfo={tagVisits}
-      settings={settings}
       exportCsv={exportCsv}
     >
       <TagVisitsHeader tagVisits={tagVisits} goBack={goBack} colorGenerator={colorGenerator} />

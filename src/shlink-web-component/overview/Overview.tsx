@@ -7,7 +7,6 @@ import type { SelectedServer } from '../../servers/data';
 import { getServerId } from '../../servers/data';
 import { HighlightCard } from '../../servers/helpers/HighlightCard';
 import { VisitsHighlightCard } from '../../servers/helpers/VisitsHighlightCard';
-import type { Settings } from '../../settings/reducers/settings';
 import { prettify } from '../../utils/helpers/numbers';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
@@ -17,6 +16,7 @@ import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
 import { useFeature } from '../utils/features';
+import { useSetting } from '../utils/settings';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';
 
 interface OverviewConnectProps {
@@ -27,7 +27,6 @@ interface OverviewConnectProps {
   selectedServer: SelectedServer;
   visitsOverview: VisitsOverview;
   loadVisitsOverview: Function;
-  settings: Settings;
 }
 
 export const Overview = (
@@ -41,7 +40,6 @@ export const Overview = (
   selectedServer,
   loadVisitsOverview,
   visitsOverview,
-  settings: { visits },
 }: OverviewConnectProps) => {
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
@@ -49,6 +47,7 @@ export const Overview = (
   const serverId = getServerId(selectedServer);
   const linkToNonOrphanVisits = useFeature('nonOrphanVisits');
   const navigate = useNavigate();
+  const visits = useSetting('visits');
 
   useEffect(() => {
     listShortUrls({ itemsPerPage: ITEMS_IN_OVERVIEW_PAGE, orderBy: { field: 'dateCreated', dir: 'DESC' } });

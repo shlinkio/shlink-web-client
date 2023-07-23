@@ -4,12 +4,11 @@ import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import type { LoadVisits, VisitsInfo } from './reducers/types';
 import type { NormalizedVisit, VisitsParams } from './types';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
 import { VisitsStats } from './VisitsStats';
 
-export interface NonOrphanVisitsProps extends CommonVisitsProps {
+export interface NonOrphanVisitsProps {
   getNonOrphanVisits: (params: LoadVisits) => void;
   nonOrphanVisits: VisitsInfo;
   cancelGetNonOrphanVisits: () => void;
@@ -19,7 +18,6 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
   getNonOrphanVisits,
   nonOrphanVisits,
   cancelGetNonOrphanVisits,
-  settings,
 }: NonOrphanVisitsProps) => {
   const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('non_orphan_visits.csv', visits);
@@ -31,7 +29,6 @@ export const NonOrphanVisits = ({ exportVisits }: ReportExporter) => boundToMerc
       getVisits={loadVisits}
       cancelGetVisits={cancelGetNonOrphanVisits}
       visitsInfo={nonOrphanVisits}
-      settings={settings}
       exportCsv={exportCsv}
     >
       <VisitsHeader title="Non-orphan visits" goBack={goBack} visits={nonOrphanVisits.visits} />

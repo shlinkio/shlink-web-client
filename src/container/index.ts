@@ -7,12 +7,6 @@ import { provideServices as provideAppServices } from '../app/services/provideSe
 import { provideServices as provideCommonServices } from '../common/services/provideServices';
 import { provideServices as provideServersServices } from '../servers/services/provideServices';
 import { provideServices as provideSettingsServices } from '../settings/services/provideServices';
-import { provideServices as provideWebComponentServices } from '../shlink-web-component/container/provideServices';
-import { provideServices as provideDomainsServices } from '../shlink-web-component/domains/services/provideServices';
-import { provideServices as provideMercureServices } from '../shlink-web-component/mercure/services/provideServices';
-import { provideServices as provideShortUrlsServices } from '../shlink-web-component/short-urls/services/provideServices';
-import { provideServices as provideTagsServices } from '../shlink-web-component/tags/services/provideServices';
-import { provideServices as provideVisitsServices } from '../shlink-web-component/visits/services/provideServices';
 import { provideServices as provideUtilsServices } from '../utils/services/provideServices';
 import type { ConnectDecorator } from './types';
 
@@ -38,14 +32,6 @@ const connect: ConnectDecorator = (propsFromState: string[] | null, actionServic
 provideAppServices(bottle, connect);
 provideCommonServices(bottle, connect);
 provideApiServices(bottle);
-provideShortUrlsServices(bottle, connect);
 provideServersServices(bottle, connect);
-provideTagsServices(bottle, connect);
-provideVisitsServices(bottle, connect);
 provideUtilsServices(bottle);
-provideMercureServices(bottle);
 provideSettingsServices(bottle, connect);
-provideDomainsServices(bottle, connect);
-
-// TODO This should not be needed.
-provideWebComponentServices(bottle);

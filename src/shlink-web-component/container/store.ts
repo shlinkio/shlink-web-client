@@ -6,10 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 export const setUpStore = (container: IContainer) => configureStore({
   devTools: !isProduction,
   reducer: combineReducers({
-    // TODO Check if this should be here or not
     mercureInfo: container.mercureInfoReducer,
-
-    // Nested shlink-web-component reducers
     shortUrlsList: container.shortUrlsListReducer,
     shortUrlCreation: container.shortUrlCreationReducer,
     shortUrlDeletion: container.shortUrlDeletionReducer,

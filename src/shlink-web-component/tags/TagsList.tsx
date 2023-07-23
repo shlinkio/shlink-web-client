@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
 import type { SelectedServer } from '../../servers/data';
-import type { Settings } from '../../settings/reducers/settings';
 import { determineOrderDir, sortList } from '../../utils/helpers/ordering';
 import { Message } from '../../utils/Message';
 import { OrderingDropdown } from '../../utils/OrderingDropdown';
@@ -12,6 +11,7 @@ import { Result } from '../../utils/Result';
 import { SearchField } from '../../utils/SearchField';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
+import { useSettings } from '../utils/settings';
 import type { SimplifiedTag } from './data';
 import type { TagsOrder, TagsOrderableFields } from './data/TagsListChildrenProps';
 import { TAGS_ORDERABLE_FIELDS } from './data/TagsListChildrenProps';
@@ -23,12 +23,12 @@ export interface TagsListProps {
   forceListTags: Function;
   tagsList: TagsListState;
   selectedServer: SelectedServer;
-  settings: Settings;
 }
 
 export const TagsList = (TagsTable: FC<TagsTableProps>) => boundToMercureHub((
-  { filterTags, forceListTags, tagsList, selectedServer, settings }: TagsListProps,
+  { filterTags, forceListTags, tagsList, selectedServer }: TagsListProps,
 ) => {
+  const settings = useSettings();
   const [order, setOrder] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
   const resolveSortedTags = pipe(
     () => tagsList.filteredTags.map((tag): SimplifiedTag => {

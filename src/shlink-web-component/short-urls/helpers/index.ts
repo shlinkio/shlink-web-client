@@ -1,6 +1,6 @@
 import { isNil } from 'ramda';
-import type { ShortUrlCreationSettings } from '../../../settings/reducers/settings';
 import type { OptionalString } from '../../../utils/utils';
+import type { ShortUrlCreationSettings } from '../../utils/settings';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 import type { ShortUrl, ShortUrlData } from '../data';
 

@@ -1,6 +1,6 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
-import type { ConnectDecorator } from '../../../container/types';
+import type { ConnectDecorator } from '../../container';
 import { CreateShortUrl } from '../CreateShortUrl';
 import { EditShortUrl } from '../EditShortUrl';
 import { CreateShortUrlResult } from '../helpers/CreateShortUrlResult';
@@ -23,15 +23,12 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'ShortUrlsFilteringBar');
   bottle.decorator('ShortUrlsList', connect(
-    ['selectedServer', 'mercureInfo', 'shortUrlsList', 'settings'],
+    ['selectedServer', 'mercureInfo', 'shortUrlsList'],
     ['listShortUrls', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('ShortUrlsTable', ShortUrlsTable, 'ShortUrlsRow');
-
   bottle.serviceFactory('ShortUrlsRow', ShortUrlsRow, 'ShortUrlsRowMenu', 'ColorGenerator', 'useTimeoutToggle');
-  bottle.decorator('ShortUrlsRow', connect(['settings']));
-
   bottle.serviceFactory('ShortUrlsRowMenu', ShortUrlsRowMenu, 'DeleteShortUrlModal', 'QrCodeModal');
   bottle.serviceFactory('CreateShortUrlResult', CreateShortUrlResult, 'useTimeoutToggle');
   bottle.serviceFactory('ShortUrlForm', ShortUrlForm, 'TagsSelector', 'DomainSelector');
@@ -39,12 +36,12 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('CreateShortUrl', CreateShortUrl, 'ShortUrlForm', 'CreateShortUrlResult');
   bottle.decorator(
     'CreateShortUrl',
-    connect(['shortUrlCreation', 'settings'], ['createShortUrl', 'resetCreateShortUrl']),
+    connect(['shortUrlCreation'], ['createShortUrl', 'resetCreateShortUrl']),
   );
 
   bottle.serviceFactory('EditShortUrl', EditShortUrl, 'ShortUrlForm');
   bottle.decorator('EditShortUrl', connect(
-    ['shortUrlDetail', 'shortUrlEdition', 'settings'],
+    ['shortUrlDetail', 'shortUrlEdition'],
     ['getShortUrlDetail', 'editShortUrl'],
   ));
 

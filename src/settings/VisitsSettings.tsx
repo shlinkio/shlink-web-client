@@ -1,12 +1,14 @@
 import type { FC } from 'react';
 import { FormGroup } from 'reactstrap';
+import type { Settings } from '../shlink-web-component/utils/settings';
 import { DateIntervalSelector } from '../utils/dates/DateIntervalSelector';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
 import type { DateInterval } from '../utils/helpers/dateIntervals';
 import { SimpleCard } from '../utils/SimpleCard';
 import { ToggleSwitch } from '../utils/ToggleSwitch';
-import type { Settings, VisitsSettings as VisitsSettingsConfig } from './reducers/settings';
+
+type VisitsSettingsConfig = Settings['visits'];
 
 interface VisitsProps {
   settings: Settings;

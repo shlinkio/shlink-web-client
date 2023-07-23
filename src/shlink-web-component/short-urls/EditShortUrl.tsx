@@ -6,11 +6,11 @@ import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { Button, Card } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import type { Settings } from '../../settings/reducers/settings';
 import { useGoBack } from '../../utils/helpers/hooks';
 import { parseQuery } from '../../utils/helpers/query';
 import { Message } from '../../utils/Message';
 import { Result } from '../../utils/Result';
+import { useSetting } from '../utils/settings';
 import type { ShortUrlIdentifier } from './data';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';
 import type { ShortUrlDetail } from './reducers/shortUrlDetail';
@@ -18,7 +18,6 @@ import type { EditShortUrl as EditShortUrlInfo, ShortUrlEdition } from './reduce
 import type { ShortUrlFormProps } from './ShortUrlForm';
 
 interface EditShortUrlConnectProps {
-  settings: Settings;
   shortUrlDetail: ShortUrlDetail;
   shortUrlEdition: ShortUrlEdition;
   getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
@@ -26,7 +25,6 @@ interface EditShortUrlConnectProps {
 }
 
 export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
-  settings: { shortUrlCreation: shortUrlCreationSettings },
   shortUrlDetail,
   getShortUrlDetail,
   shortUrlEdition,
@@ -38,6 +36,7 @@ export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
   const { loading, error, errorData, shortUrl } = shortUrlDetail;
   const { saving, saved, error: savingError, errorData: savingErrorData } = shortUrlEdition;
   const { domain } = parseQuery<{ domain?: string }>(search);
+  const shortUrlCreationSettings = useSetting('shortUrlCreation');
   const initialState = useMemo(
     () => shortUrlDataFromShortUrl(shortUrl, shortUrlCreationSettings),
     [shortUrl, shortUrlCreationSettings],

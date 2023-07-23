@@ -1,7 +1,7 @@
 import type { IContainer } from 'bottlejs';
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
-import type { ConnectDecorator } from '../../../container/types';
+import type { ConnectDecorator } from '../../container';
 import { DeleteTagConfirmModal } from '../helpers/DeleteTagConfirmModal';
 import { EditTagModal } from '../helpers/EditTagModal';
 import { TagsSelector } from '../helpers/TagsSelector';
@@ -15,7 +15,7 @@ import { TagsTableRow } from '../TagsTableRow';
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('TagsSelector', TagsSelector, 'ColorGenerator');
-  bottle.decorator('TagsSelector', connect(['tagsList', 'settings'], ['listTags']));
+  bottle.decorator('TagsSelector', connect(['tagsList'], ['listTags']));
 
   bottle.serviceFactory('DeleteTagConfirmModal', () => DeleteTagConfirmModal);
   bottle.decorator('DeleteTagConfirmModal', connect(['tagDelete'], ['deleteTag', 'tagDeleted']));
@@ -24,13 +24,11 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('EditTagModal', connect(['tagEdit'], ['editTag', 'tagEdited']));
 
   bottle.serviceFactory('TagsTableRow', TagsTableRow, 'DeleteTagConfirmModal', 'EditTagModal', 'ColorGenerator');
-  bottle.decorator('TagsTableRow', connect(['settings']));
-
   bottle.serviceFactory('TagsTable', TagsTable, 'TagsTableRow');
 
   bottle.serviceFactory('TagsList', TagsList, 'TagsTable');
   bottle.decorator('TagsList', connect(
-    ['tagsList', 'selectedServer', 'mercureInfo', 'settings'],
+    ['tagsList', 'selectedServer', 'mercureInfo'],
     ['forceListTags', 'filterTags', 'createNewVisits', 'loadMercureInfo'],
   ));
 

@@ -5,7 +5,6 @@ import { Card } from 'reactstrap';
 import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../../api/types';
 import type { SelectedServer } from '../../servers/data';
 import { getServerId } from '../../servers/data';
-import type { Settings } from '../../settings/reducers/settings';
 import { DEFAULT_SHORT_URLS_ORDERING } from '../../settings/reducers/settings';
 import type { OrderDir } from '../../utils/helpers/ordering';
 import { determineOrderDir } from '../../utils/helpers/ordering';
@@ -13,6 +12,7 @@ import { TableOrderIcon } from '../../utils/table/TableOrderIcon';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { useFeature } from '../utils/features';
+import { useSettings } from '../utils/settings';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { useShortUrlsQuery } from './helpers/hooks';
 import { Paginator } from './Paginator';
@@ -24,17 +24,17 @@ interface ShortUrlsListProps {
   selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
-  settings: Settings;
 }
 
 export const ShortUrlsList = (
   ShortUrlsTable: ShortUrlsTableType,
   ShortUrlsFilteringBar: ShortUrlsFilteringBarType,
-) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer, settings }: ShortUrlsListProps) => {
+) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer }: ShortUrlsListProps) => {
   const serverId = getServerId(selectedServer);
   const { page } = useParams();
   const location = useLocation();
   const [filter, toFirstPage] = useShortUrlsQuery();
+  const settings = useSettings();
   const {
     tags,
     search,
@@ -104,7 +104,6 @@ export const ShortUrlsList = (
         shortUrlsAmount={shortUrlsList.shortUrls?.pagination.totalItems}
         order={actualOrderBy}
         handleOrderBy={handleOrderBy}
-        settings={settings}
         className="mb-3"
       />
       <Card body className="pb-0">

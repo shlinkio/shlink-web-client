@@ -1,6 +1,6 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
-import type { ConnectDecorator } from '../../../container/types';
+import type { ConnectDecorator } from '../../container';
 import { DomainVisits } from '../DomainVisits';
 import { MapModal } from '../helpers/MapModal';
 import { NonOrphanVisits } from '../NonOrphanVisits';
@@ -22,31 +22,31 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.serviceFactory('ShortUrlVisits', ShortUrlVisits, 'ReportExporter');
   bottle.decorator('ShortUrlVisits', connect(
-    ['shortUrlVisits', 'shortUrlDetail', 'mercureInfo', 'settings'],
+    ['shortUrlVisits', 'shortUrlDetail', 'mercureInfo'],
     ['getShortUrlVisits', 'getShortUrlDetail', 'cancelGetShortUrlVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('TagVisits', TagVisits, 'ColorGenerator', 'ReportExporter');
   bottle.decorator('TagVisits', connect(
-    ['tagVisits', 'mercureInfo', 'settings'],
+    ['tagVisits', 'mercureInfo'],
     ['getTagVisits', 'cancelGetTagVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('DomainVisits', DomainVisits, 'ReportExporter');
   bottle.decorator('DomainVisits', connect(
-    ['domainVisits', 'mercureInfo', 'settings'],
+    ['domainVisits', 'mercureInfo'],
     ['getDomainVisits', 'cancelGetDomainVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('OrphanVisits', OrphanVisits, 'ReportExporter');
   bottle.decorator('OrphanVisits', connect(
-    ['orphanVisits', 'mercureInfo', 'settings'],
+    ['orphanVisits', 'mercureInfo'],
     ['getOrphanVisits', 'cancelGetOrphanVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 
   bottle.serviceFactory('NonOrphanVisits', NonOrphanVisits, 'ReportExporter');
   bottle.decorator('NonOrphanVisits', connect(
-    ['nonOrphanVisits', 'mercureInfo', 'settings'],
+    ['nonOrphanVisits', 'mercureInfo'],
     ['getNonOrphanVisits', 'cancelGetNonOrphanVisits', 'createNewVisits', 'loadMercureInfo'],
   ));
 

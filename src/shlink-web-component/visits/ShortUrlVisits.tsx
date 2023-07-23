@@ -11,11 +11,10 @@ import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import type { LoadShortUrlVisits, ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import { ShortUrlVisitsHeader } from './ShortUrlVisitsHeader';
 import type { NormalizedVisit, VisitsParams } from './types';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsStats } from './VisitsStats';
 
-export interface ShortUrlVisitsProps extends CommonVisitsProps {
+export interface ShortUrlVisitsProps {
   getShortUrlVisits: (params: LoadShortUrlVisits) => void;
   shortUrlVisits: ShortUrlVisitsState;
   getShortUrlDetail: (shortUrl: ShortUrlIdentifier) => void;
@@ -29,7 +28,6 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
   getShortUrlVisits,
   getShortUrlDetail,
   cancelGetShortUrlVisits,
-  settings,
 }: ShortUrlVisitsProps) => {
   const { shortCode = '' } = useParams<{ shortCode: string }>();
   const { search } = useLocation();
@@ -54,7 +52,6 @@ export const ShortUrlVisits = ({ exportVisits }: ReportExporter) => boundToMercu
       getVisits={loadVisits}
       cancelGetVisits={cancelGetShortUrlVisits}
       visitsInfo={shortUrlVisits}
-      settings={settings}
       exportCsv={exportCsv}
     >
       <ShortUrlVisitsHeader shortUrlDetail={shortUrlDetail} shortUrlVisits={shortUrlVisits} goBack={goBack} />

@@ -16,5 +16,6 @@ export const provideServices = (bottle: Bottle) => {
     'Overview',
     'EditShortUrl',
     'ManageDomains',
+    'store',
   );
 };

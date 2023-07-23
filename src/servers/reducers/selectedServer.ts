@@ -66,12 +66,14 @@ export const selectServerListener = (
 ) => {
   const listener = createListenerMiddleware();
 
-  listener.startListening({
-    actionCreator: selectServerThunk.fulfilled,
-    effect: ({ payload }, { dispatch }) => {
-      isReachableServer(payload) && dispatch(loadMercureInfo());
-    },
-  });
+  // TODO Find a way for the mercure info to be re-loaded when server changes, without leaking mercure implementation
+  //      details
+  // listener.startListening({
+  //   actionCreator: selectServerThunk.fulfilled,
+  //   effect: ({ payload }, { dispatch }) => {
+  //     isReachableServer(payload) && dispatch(loadMercureInfo());
+  //   },
+  // });
 
   return listener;
 };

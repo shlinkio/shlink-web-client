@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import type { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
 import ReactTags from 'react-tag-autocomplete';
-import type { Settings } from '../../../settings/reducers/settings';
 import type { ColorGenerator } from '../../../utils/services/ColorGenerator';
+import { useSetting } from '../../utils/settings';
 import type { TagsList } from '../reducers/tagsList';
 import { Tag } from './Tag';
 import { TagBullet } from './TagBullet';
@@ -17,19 +17,19 @@ export interface TagsSelectorProps {
 interface TagsSelectorConnectProps extends TagsSelectorProps {
   listTags: () => void;
   tagsList: TagsList;
-  settings: Settings;
 }
 
 const toComponentTag = (tag: string) => ({ id: tag, name: tag });
 
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
-  { selectedTags, onChange, placeholder, listTags, tagsList, settings, allowNew = true }: TagsSelectorConnectProps,
+  { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
 ) => {
+  const shortUrlCreation = useSetting('shortUrlCreation');
   useEffect(() => {
     listTags();
   }, []);
 
-  const searchMode = settings.shortUrlCreation?.tagFilteringMode ?? 'startsWith';
+  const searchMode = shortUrlCreation?.tagFilteringMode ?? 'startsWith';
   const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
     <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
   const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (

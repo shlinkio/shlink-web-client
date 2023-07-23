@@ -5,12 +5,11 @@ import { Topics } from '../mercure/helpers/Topics';
 import type { LoadOrphanVisits } from './reducers/orphanVisits';
 import type { VisitsInfo } from './reducers/types';
 import type { NormalizedVisit, VisitsParams } from './types';
-import type { CommonVisitsProps } from './types/CommonVisitsProps';
 import { toApiParams } from './types/helpers';
 import { VisitsHeader } from './VisitsHeader';
 import { VisitsStats } from './VisitsStats';
 
-export interface OrphanVisitsProps extends CommonVisitsProps {
+export interface OrphanVisitsProps {
   getOrphanVisits: (params: LoadOrphanVisits) => void;
   orphanVisits: VisitsInfo;
   cancelGetOrphanVisits: () => void;
@@ -20,7 +19,6 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
   getOrphanVisits,
   orphanVisits,
   cancelGetOrphanVisits,
-  settings,
 }: OrphanVisitsProps) => {
   const goBack = useGoBack();
   const exportCsv = (visits: NormalizedVisit[]) => exportVisits('orphan_visits.csv', visits);
@@ -33,7 +31,6 @@ export const OrphanVisits = ({ exportVisits }: ReportExporter) => boundToMercure
       getVisits={loadVisits}
       cancelGetVisits={cancelGetOrphanVisits}
       visitsInfo={orphanVisits}
-      settings={settings}
       exportCsv={exportCsv}
       isOrphanVisits
     >

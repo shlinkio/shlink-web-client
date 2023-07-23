@@ -2,11 +2,11 @@ import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { ExternalLink } from 'react-external-link';
 import type { SelectedServer } from '../../../servers/data';
-import type { Settings } from '../../../settings/reducers/settings';
 import { CopyToClipboardIcon } from '../../../utils/CopyToClipboardIcon';
 import { Time } from '../../../utils/dates/Time';
 import type { TimeoutToggle } from '../../../utils/helpers/hooks';
 import type { ColorGenerator } from '../../../utils/services/ColorGenerator';
+import { useSetting } from '../../utils/settings';
 import type { ShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 import type { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
@@ -21,22 +21,18 @@ interface ShortUrlsRowProps {
   shortUrl: ShortUrl;
 }
 
-interface ShortUrlsRowConnectProps extends ShortUrlsRowProps {
-  settings: Settings;
-}
-
 export type ShortUrlsRowType = FC<ShortUrlsRowProps>;
 
 export const ShortUrlsRow = (
   ShortUrlsRowMenu: ShortUrlsRowMenuType,
   colorGenerator: ColorGenerator,
   useTimeoutToggle: TimeoutToggle,
-) => ({ shortUrl, selectedServer, onTagClick, settings }: ShortUrlsRowConnectProps) => {
+) => ({ shortUrl, selectedServer, onTagClick }: ShortUrlsRowProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useTimeoutToggle();
   const [active, setActive] = useTimeoutToggle(false, 500);
   const isFirstRun = useRef(true);
   const [{ excludeBots }] = useShortUrlsQuery();
-  const { visits } = settings;
+  const visits = useSetting('visits');
   const doExcludeBots = excludeBots ?? visits?.excludeBots;
 
   useEffect(() => {

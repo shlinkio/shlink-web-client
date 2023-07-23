@@ -2,18 +2,19 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
-import type { ShlinkWebComponentType } from '../shlink-web-component';
+import { ShlinkWebComponent } from '../shlink-web-component';
+import type { Settings } from '../shlink-web-component/utils/settings';
 import './MenuLayout.scss';
 
 interface MenuLayoutProps {
   sidebarPresent: Function;
   sidebarNotPresent: Function;
+  settings: Settings;
 }
 
 export const MenuLayout = (
   ServerError: FC,
-  ShlinkWebComponent: ShlinkWebComponentType,
-) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent }) => {
+) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent, settings }) => {
   const showContent = isReachableServer(selectedServer);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export const MenuLayout = (
   return (
     <ShlinkWebComponent
       serverVersion={selectedServer.version}
+      settings={settings}
       routesPrefix={`/server/${selectedServer.id}`}
     />
   );

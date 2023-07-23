@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { isEmpty, pipe } from 'ramda';
 import type { FC } from 'react';
 import { Button, InputGroup, Row, UncontrolledTooltip } from 'reactstrap';
-import type { Settings } from '../../settings/reducers/settings';
 import { DateRangeSelector } from '../../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../../utils/helpers/date';
 import type { DateRange } from '../../utils/helpers/dateIntervals';
@@ -14,6 +13,7 @@ import { OrderingDropdown } from '../../utils/OrderingDropdown';
 import { SearchField } from '../../utils/SearchField';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { useFeature } from '../utils/features';
+import { useSetting } from '../utils/settings';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from './data';
 import { SHORT_URLS_ORDERABLE_FIELDS } from './data';
 import type { ExportShortUrlsBtnProps } from './helpers/ExportShortUrlsBtn';
@@ -23,7 +23,6 @@ import './ShortUrlsFilteringBar.scss';
 
 interface ShortUrlsFilteringProps {
   order: ShortUrlsOrder;
-  settings: Settings;
   handleOrderBy: (orderField?: ShortUrlsOrderableFields, orderDir?: OrderDir) => void;
   className?: string;
   shortUrlsAmount?: number;
@@ -32,7 +31,7 @@ interface ShortUrlsFilteringProps {
 export const ShortUrlsFilteringBar = (
   ExportShortUrlsBtn: FC<ExportShortUrlsBtnProps>,
   TagsSelector: FC<TagsSelectorProps>,
-): FC<ShortUrlsFilteringProps> => ({ className, shortUrlsAmount, order, handleOrderBy, settings }) => {
+): FC<ShortUrlsFilteringProps> => ({ className, shortUrlsAmount, order, handleOrderBy }) => {
   const [filter, toFirstPage] = useShortUrlsQuery();
   const {
     search,
@@ -45,6 +44,7 @@ export const ShortUrlsFilteringBar = (
     tagsMode = 'any',
   } = filter;
   const supportsDisabledFiltering = useFeature('filterDisabledUrls');
+  const visitsSettings = useSetting('visits');
 
   const setDates = pipe(
     ({ startDate: theStartDate, endDate: theEndDate }: DateRange) => ({
@@ -95,7 +95,7 @@ export const ShortUrlsFilteringBar = (
             <ShortUrlsFilterDropdown
               className="ms-0 ms-md-2 mt-3 mt-md-0"
               selected={{
-                excludeBots: excludeBots ?? settings.visits?.excludeBots,
+                excludeBots: excludeBots ?? visitsSettings?.excludeBots,
                 excludeMaxVisitsReached,
                 excludePastValidUntil,
               }}

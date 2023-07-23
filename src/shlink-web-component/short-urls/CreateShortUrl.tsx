@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { useMemo } from 'react';
-import type { Settings, ShortUrlCreationSettings } from '../../settings/reducers/settings';
+import type { ShortUrlCreationSettings } from '../utils/settings';
+import { useSetting } from '../utils/settings';
 import type { ShortUrlData } from './data';
 import type { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
 import type { ShortUrlCreation } from './reducers/shortUrlCreation';
@@ -11,7 +12,6 @@ export interface CreateShortUrlProps {
 }
 
 interface CreateShortUrlConnectProps extends CreateShortUrlProps {
-  settings: Settings;
   shortUrlCreation: ShortUrlCreation;
   createShortUrl: (data: ShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
@@ -40,8 +40,8 @@ export const CreateShortUrl = (
   shortUrlCreation,
   resetCreateShortUrl,
   basicMode = false,
-  settings: { shortUrlCreation: shortUrlCreationSettings },
 }: CreateShortUrlConnectProps) => {
+  const shortUrlCreationSettings = useSetting('shortUrlCreation');
   const initialState = useMemo(() => getInitialState(shortUrlCreationSettings), [shortUrlCreationSettings]);
 
   return (
