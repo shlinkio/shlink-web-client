@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import type { ReportExporter } from '../../common/services/ReportExporter';
-import { boundToMercureHub } from '../../mercure/helpers/boundToMercureHub';
-import { Topics } from '../../mercure/helpers/Topics';
 import { useGoBack } from '../../utils/helpers/hooks';
 import { parseQuery } from '../../utils/helpers/query';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { Topics } from '../mercure/helpers/Topics';
 import type { ShortUrlIdentifier } from '../short-urls/data';
 import { urlDecodeShortCode } from '../short-urls/helpers';
 import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';

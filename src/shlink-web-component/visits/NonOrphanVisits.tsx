@@ -1,7 +1,7 @@
 import type { ReportExporter } from '../../common/services/ReportExporter';
-import { boundToMercureHub } from '../../mercure/helpers/boundToMercureHub';
-import { Topics } from '../../mercure/helpers/Topics';
 import { useGoBack } from '../../utils/helpers/hooks';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { Topics } from '../mercure/helpers/Topics';
 import type { LoadVisits, VisitsInfo } from './reducers/types';
 import type { NormalizedVisit, VisitsParams } from './types';
 import type { CommonVisitsProps } from './types/CommonVisitsProps';

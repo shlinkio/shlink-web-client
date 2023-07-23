@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { identity } from 'ramda';
-import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import type { MercureBoundProps } from '../../src/shlink-web-component/mercure/helpers/boundToMercureHub';
 import type { TagsList } from '../../src/shlink-web-component/tags/reducers/tagsList';
 import type { TagsListProps } from '../../src/shlink-web-component/tags/TagsList';
 import { TagsList as createTagsList } from '../../src/shlink-web-component/tags/TagsList';

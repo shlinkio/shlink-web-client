@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import type { ShlinkVisitsParams } from '../../api/types';
 import type { ReportExporter } from '../../common/services/ReportExporter';
-import { boundToMercureHub } from '../../mercure/helpers/boundToMercureHub';
-import { Topics } from '../../mercure/helpers/Topics';
 import { useGoBack } from '../../utils/helpers/hooks';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { Topics } from '../mercure/helpers/Topics';
 import type { LoadTagVisits, TagVisits as TagVisitsState } from './reducers/tagVisits';
 import { TagVisitsHeader } from './TagVisitsHeader';
 import type { NormalizedVisit } from './types';

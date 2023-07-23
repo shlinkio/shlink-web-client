@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import type { ShlinkVisitsParams } from '../../api/types';
 import type { ReportExporter } from '../../common/services/ReportExporter';
-import { boundToMercureHub } from '../../mercure/helpers/boundToMercureHub';
-import { Topics } from '../../mercure/helpers/Topics';
 import { useGoBack } from '../../utils/helpers/hooks';
+import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
+import { Topics } from '../mercure/helpers/Topics';
 import type { DomainVisits as DomainVisitsState, LoadDomainVisits } from './reducers/domainVisits';
 import type { NormalizedVisit } from './types';
 import type { CommonVisitsProps } from './types/CommonVisitsProps';

@@ -1,8 +1,8 @@
 import type { Sidebar } from '../common/reducers/sidebar';
-import type { MercureInfo } from '../mercure/reducers/mercureInfo';
 import type { SelectedServer, ServersMap } from '../servers/data';
 import type { Settings } from '../settings/reducers/settings';
 import type { DomainsList } from '../shlink-web-component/domains/reducers/domainsList';
+import type { MercureInfo } from '../shlink-web-component/mercure/reducers/mercureInfo';
 import type { ShortUrlCreation } from '../shlink-web-component/short-urls/reducers/shortUrlCreation';
 import type { ShortUrlDeletion } from '../shlink-web-component/short-urls/reducers/shortUrlDeletion';
 import type { ShortUrlDetail } from '../shlink-web-component/short-urls/reducers/shortUrlDetail';
