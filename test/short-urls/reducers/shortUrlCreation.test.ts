@@ -1,11 +1,11 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
+import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
 import {
   createShortUrl as createShortUrlCreator,
   shortUrlCreationReducerCreator,
-} from '../../../src/shlink-web-component/short-urls/reducers/shortUrlCreation';
+} from '../../../shlink-web-component/short-urls/reducers/shortUrlCreation';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkState } from '../../../src/container/types';
 
 describe('shortUrlCreationReducer', () => {
   const shortUrl = fromPartial<ShortUrl>({});

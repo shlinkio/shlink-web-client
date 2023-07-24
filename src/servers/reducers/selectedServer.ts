@@ -60,24 +60,6 @@ export const selectServer = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
 
 type SelectServerThunk = ReturnType<typeof selectServer>;
 
-export const selectServerListener = (
-  selectServerThunk: SelectServerThunk,
-  loadMercureInfo: () => PayloadAction<any>, // TODO Consider setting actual type, if relevant
-) => {
-  const listener = createListenerMiddleware();
-
-  // TODO Find a way for the mercure info to be re-loaded when server changes, without leaking mercure implementation
-  //      details
-  // listener.startListening({
-  //   actionCreator: selectServerThunk.fulfilled,
-  //   effect: ({ payload }, { dispatch }) => {
-  //     isReachableServer(payload) && dispatch(loadMercureInfo());
-  //   },
-  // });
-
-  return listener;
-};
-
 export const selectedServerReducerCreator = (selectServerThunk: SelectServerThunk) => createSlice({
   name: REDUCER_PREFIX,
   initialState,

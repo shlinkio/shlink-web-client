@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { NormalizedVisit } from '../../src/shlink-web-component/visits/types';
-import type { VisitsTableProps } from '../../src/shlink-web-component/visits/VisitsTable';
-import { VisitsTable } from '../../src/shlink-web-component/visits/VisitsTable';
+import type { NormalizedVisit } from '../../shlink-web-component/visits/types';
+import type { VisitsTableProps } from '../../shlink-web-component/visits/VisitsTable';
+import { VisitsTable } from '../../shlink-web-component/visits/VisitsTable';
 import { rangeOf } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

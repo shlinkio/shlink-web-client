@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { CreateShortUrlResult as createResult } from '../../../src/shlink-web-component/short-urls/helpers/CreateShortUrlResult';
-import type { ShortUrlCreation } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlCreation';
+import { CreateShortUrlResult as createResult } from '../../../shlink-web-component/short-urls/helpers/CreateShortUrlResult';
+import type { ShortUrlCreation } from '../../../shlink-web-component/short-urls/reducers/shortUrlCreation';
 import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

@@ -1,8 +1,8 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { identity } from 'ramda';
-import { bindToMercureTopic } from '../../../src/shlink-web-component/mercure/helpers';
-import type { MercureInfo } from '../../../src/shlink-web-component/mercure/reducers/mercureInfo';
+import { bindToMercureTopic } from '../../../shlink-web-component/mercure/helpers';
+import type { MercureInfo } from '../../../shlink-web-component/mercure/reducers/mercureInfo';
 
 vi.mock('event-source-polyfill');
 

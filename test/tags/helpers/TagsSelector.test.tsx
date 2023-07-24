@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { TagsSelector as createTagsSelector } from '../../../src/shlink-web-component/tags/helpers/TagsSelector';
-import type { TagsList } from '../../../src/shlink-web-component/tags/reducers/tagsList';
+import { TagsSelector as createTagsSelector } from '../../../shlink-web-component/tags/helpers/TagsSelector';
+import type { TagsList } from '../../../shlink-web-component/tags/reducers/tagsList';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 

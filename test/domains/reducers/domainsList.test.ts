@@ -1,16 +1,16 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ShlinkDomainRedirects } from '../../../src/api/types';
-import { parseApiError } from '../../../src/api/utils';
-import type { ShlinkState } from '../../../src/container/types';
-import type { Domain } from '../../../src/shlink-web-component/domains/data';
-import type { EditDomainRedirects } from '../../../src/shlink-web-component/domains/reducers/domainRedirects';
-import { editDomainRedirects } from '../../../src/shlink-web-component/domains/reducers/domainRedirects';
+import type { Domain } from '../../../shlink-web-component/domains/data';
+import type { EditDomainRedirects } from '../../../shlink-web-component/domains/reducers/domainRedirects';
+import { editDomainRedirects } from '../../../shlink-web-component/domains/reducers/domainRedirects';
 import {
   domainsListReducerCreator,
   replaceRedirectsOnDomain,
   replaceStatusOnDomain,
-} from '../../../src/shlink-web-component/domains/reducers/domainsList';
+} from '../../../shlink-web-component/domains/reducers/domainsList';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkDomainRedirects } from '../../../src/api/types';
+import { parseApiError } from '../../../src/api/utils';
+import type { ShlinkState } from '../../../src/container/types';
 
 describe('domainsListReducer', () => {
   const dispatch = vi.fn();

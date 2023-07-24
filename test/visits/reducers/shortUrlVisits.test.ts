@@ -1,16 +1,16 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ShlinkVisits } from '../../../src/api/types';
-import type { ShlinkState } from '../../../src/container/types';
 import type {
-  ShortUrlVisits } from '../../../src/shlink-web-component/visits/reducers/shortUrlVisits';
+  ShortUrlVisits } from '../../../shlink-web-component/visits/reducers/shortUrlVisits';
 import {
   getShortUrlVisits as getShortUrlVisitsCreator,
   shortUrlVisitsReducerCreator,
-} from '../../../src/shlink-web-component/visits/reducers/shortUrlVisits';
-import { createNewVisits } from '../../../src/shlink-web-component/visits/reducers/visitCreation';
-import type { Visit } from '../../../src/shlink-web-component/visits/types';
+} from '../../../shlink-web-component/visits/reducers/shortUrlVisits';
+import { createNewVisits } from '../../../shlink-web-component/visits/reducers/visitCreation';
+import type { Visit } from '../../../shlink-web-component/visits/types';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ShlinkVisits } from '../../../src/api/types';
+import type { ShlinkState } from '../../../src/container/types';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { rangeOf } from '../../../src/utils/utils';

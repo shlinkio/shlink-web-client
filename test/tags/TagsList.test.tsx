@@ -1,10 +1,10 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { identity } from 'ramda';
-import type { MercureBoundProps } from '../../src/shlink-web-component/mercure/helpers/boundToMercureHub';
-import type { TagsList } from '../../src/shlink-web-component/tags/reducers/tagsList';
-import type { TagsListProps } from '../../src/shlink-web-component/tags/TagsList';
-import { TagsList as createTagsList } from '../../src/shlink-web-component/tags/TagsList';
+import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
+import type { TagsList } from '../../shlink-web-component/tags/reducers/tagsList';
+import type { TagsListProps } from '../../shlink-web-component/tags/TagsList';
+import { TagsList as createTagsList } from '../../shlink-web-component/tags/TagsList';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Tags } from '../../../src/shlink-web-component/short-urls/helpers/Tags';
+import { Tags } from '../../../shlink-web-component/short-urls/helpers/Tags';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 describe('<Tags />', () => {

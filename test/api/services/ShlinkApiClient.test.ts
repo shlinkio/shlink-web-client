@@ -1,9 +1,9 @@
 import { fromPartial } from '@total-typescript/shoehorn';
+import type { ShortUrl, ShortUrlsOrder } from '../../../shlink-web-component/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '../../../src/api/types';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../../src/api/types/errors';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
-import type { ShortUrl, ShortUrlsOrder } from '../../../src/shlink-web-component/short-urls/data';
 import type { OptionalString } from '../../../src/utils/utils';
 
 describe('ShlinkApiClient', () => {

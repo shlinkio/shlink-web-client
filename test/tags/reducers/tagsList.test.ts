@@ -1,18 +1,18 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkState } from '../../../src/container/types';
-import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
-import { createShortUrl as createShortUrlCreator } from '../../../src/shlink-web-component/short-urls/reducers/shortUrlCreation';
-import { tagDeleted } from '../../../src/shlink-web-component/tags/reducers/tagDelete';
-import { tagEdited } from '../../../src/shlink-web-component/tags/reducers/tagEdit';
+import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
+import { createShortUrl as createShortUrlCreator } from '../../../shlink-web-component/short-urls/reducers/shortUrlCreation';
+import { tagDeleted } from '../../../shlink-web-component/tags/reducers/tagDelete';
+import { tagEdited } from '../../../shlink-web-component/tags/reducers/tagEdit';
 import type {
-  TagsList } from '../../../src/shlink-web-component/tags/reducers/tagsList';
+  TagsList } from '../../../shlink-web-component/tags/reducers/tagsList';
 import {
   filterTags,
   listTags as listTagsCreator,
   tagsListReducerCreator,
-} from '../../../src/shlink-web-component/tags/reducers/tagsList';
-import { createNewVisits } from '../../../src/shlink-web-component/visits/reducers/visitCreation';
-import type { CreateVisit } from '../../../src/shlink-web-component/visits/types';
+} from '../../../shlink-web-component/tags/reducers/tagsList';
+import { createNewVisits } from '../../../shlink-web-component/visits/reducers/visitCreation';
+import type { CreateVisit } from '../../../shlink-web-component/visits/types';
+import type { ShlinkState } from '../../../src/container/types';
 
 describe('tagsListReducer', () => {
   const state = (props: Partial<TagsList>) => fromPartial<TagsList>(props);

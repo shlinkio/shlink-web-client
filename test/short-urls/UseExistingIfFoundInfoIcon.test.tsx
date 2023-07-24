@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { UseExistingIfFoundInfoIcon } from '../../src/shlink-web-component/short-urls/UseExistingIfFoundInfoIcon';
+import { UseExistingIfFoundInfoIcon } from '../../shlink-web-component/short-urls/UseExistingIfFoundInfoIcon';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UseExistingIfFoundInfoIcon />', () => {

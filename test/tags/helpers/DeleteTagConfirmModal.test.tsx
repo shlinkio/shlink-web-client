@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { DeleteTagConfirmModal } from '../../../src/shlink-web-component/tags/helpers/DeleteTagConfirmModal';
-import type { TagDeletion } from '../../../src/shlink-web-component/tags/reducers/tagDelete';
+import { DeleteTagConfirmModal } from '../../../shlink-web-component/tags/helpers/DeleteTagConfirmModal';
+import type { TagDeletion } from '../../../shlink-web-component/tags/reducers/tagDelete';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DeleteTagConfirmModal />', () => {

@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatDistance, parseISO } from 'date-fns';
-import type { ShortUrlDetail } from '../../src/shlink-web-component/short-urls/reducers/shortUrlDetail';
-import type { ShortUrlVisits } from '../../src/shlink-web-component/visits/reducers/shortUrlVisits';
-import { ShortUrlVisitsHeader } from '../../src/shlink-web-component/visits/ShortUrlVisitsHeader';
+import type { ShortUrlDetail } from '../../shlink-web-component/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlVisits } from '../../shlink-web-component/visits/reducers/shortUrlVisits';
+import { ShortUrlVisitsHeader } from '../../shlink-web-component/visits/ShortUrlVisitsHeader';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisitsHeader />', () => {

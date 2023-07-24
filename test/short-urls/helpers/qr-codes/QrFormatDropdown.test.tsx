@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { QrFormatDropdown } from '../../../../src/shlink-web-component/short-urls/helpers/qr-codes/QrFormatDropdown';
+import { QrFormatDropdown } from '../../../../shlink-web-component/short-urls/helpers/qr-codes/QrFormatDropdown';
 import type { QrCodeFormat } from '../../../../src/utils/helpers/qrCodes';
 import { renderWithEvents } from '../../../__helpers__/setUpTest';
 

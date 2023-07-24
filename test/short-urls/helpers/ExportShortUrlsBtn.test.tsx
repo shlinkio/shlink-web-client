@@ -1,10 +1,10 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
+import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
+import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../shlink-web-component/short-urls/helpers/ExportShortUrlsBtn';
 import type { ReportExporter } from '../../../src/common/services/ReportExporter';
 import type { NotFoundServer, SelectedServer } from '../../../src/servers/data';
-import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
-import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/shlink-web-component/short-urls/helpers/ExportShortUrlsBtn';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ExportShortUrlsBtn />', () => {

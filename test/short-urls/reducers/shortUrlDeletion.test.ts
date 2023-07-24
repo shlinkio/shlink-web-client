@@ -1,10 +1,10 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
-import type { ProblemDetailsError } from '../../../src/api/types/errors';
 import {
   deleteShortUrl as deleteShortUrlCreator,
   shortUrlDeletionReducerCreator,
-} from '../../../src/shlink-web-component/short-urls/reducers/shortUrlDeletion';
+} from '../../../shlink-web-component/short-urls/reducers/shortUrlDeletion';
+import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
+import type { ProblemDetailsError } from '../../../src/api/types/errors';
 
 describe('shortUrlDeletionReducer', () => {
   const deleteShortUrlCall = vi.fn();

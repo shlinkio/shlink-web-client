@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { DoughnutChart } from '../../../src/shlink-web-component/visits/charts/DoughnutChart';
+import { DoughnutChart } from '../../../shlink-web-component/visits/charts/DoughnutChart';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
 
 describe('<DoughnutChart />', () => {

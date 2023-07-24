@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
+import { tagDeleted, tagDeleteReducerCreator } from '../../../shlink-web-component/tags/reducers/tagDelete';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import { tagDeleted, tagDeleteReducerCreator } from '../../../src/shlink-web-component/tags/reducers/tagDelete';
 
 describe('tagDeleteReducer', () => {
   const deleteTagsCall = vi.fn();

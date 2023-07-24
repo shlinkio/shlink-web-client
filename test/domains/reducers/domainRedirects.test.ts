@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
+import { editDomainRedirects } from '../../../shlink-web-component/domains/reducers/domainRedirects';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkDomainRedirects } from '../../../src/api/types';
-import { editDomainRedirects } from '../../../src/shlink-web-component/domains/reducers/domainRedirects';
 
 describe('domainRedirectsReducer', () => {
   describe('editDomainRedirects', () => {

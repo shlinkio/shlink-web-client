@@ -16,7 +16,6 @@ import {
   resetSelectedServer,
   selectedServerReducerCreator,
   selectServer,
-  selectServerListener,
 } from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { ServersDropdown } from '../ServersDropdown';
@@ -78,7 +77,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
 
   // Reducers
-  bottle.serviceFactory('selectServerListener', selectServerListener, 'selectServer', 'loadMercureInfo');
   bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
   bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };

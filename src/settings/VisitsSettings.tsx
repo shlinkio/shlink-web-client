@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { FormGroup } from 'reactstrap';
-import type { Settings } from '../shlink-web-component/utils/settings';
+import type { Settings } from '../../shlink-web-component/utils/settings';
 import { DateIntervalSelector } from '../utils/dates/DateIntervalSelector';
 import { FormText } from '../utils/forms/FormText';
 import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';

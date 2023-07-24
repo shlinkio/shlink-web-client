@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import { ShlinkWebComponent } from '../../shlink-web-component';
+import type { Settings } from '../../shlink-web-component/utils/settings';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
-import { ShlinkWebComponent } from '../shlink-web-component';
-import type { Settings } from '../shlink-web-component/utils/settings';
 import './MenuLayout.scss';
 
 interface MenuLayoutProps {

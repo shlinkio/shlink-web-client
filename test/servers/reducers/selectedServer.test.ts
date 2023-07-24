@@ -2,14 +2,13 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { v4 as uuid } from 'uuid';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { NonReachableServer, NotFoundServer, ReachableServer, RegularServer } from '../../../src/servers/data';
+import type { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
 import {
   MAX_FALLBACK_VERSION,
   MIN_FALLBACK_VERSION,
   resetSelectedServer,
   selectedServerReducerCreator,
   selectServer as selectServerCreator,
-  selectServerListener,
 } from '../../../src/servers/reducers/selectedServer';
 
 describe('selectedServerReducer', () => {
@@ -83,36 +82,6 @@ describe('selectedServerReducer', () => {
       expect(getState).toHaveBeenCalled();
       expect(health).not.toHaveBeenCalled();
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({ payload: expectedSelectedServer }));
-    });
-  });
-
-  describe('selectServerListener', () => {
-    const getState = vi.fn(() => ({}));
-    const loadMercureInfo = vi.fn();
-    const { middleware } = selectServerListener(selectServer, loadMercureInfo);
-
-    it.each([
-      [fromPartial<ReachableServer>({ version: '1.2.3' }), 1],
-      [fromPartial<NotFoundServer>({ serverNotFound: true }), 0],
-      [fromPartial<NonReachableServer>({ serverNotReachable: true }), 0],
-    ])('dispatches loadMercureInfo when provided server is reachable', (payload, expectedCalls) => {
-      middleware({ dispatch, getState })(vi.fn())({
-        payload,
-        type: selectServer.fulfilled.toString(),
-      });
-
-      expect(dispatch).toHaveBeenCalledTimes(expectedCalls);
-      expect(loadMercureInfo).toHaveBeenCalledTimes(expectedCalls);
-    });
-
-    it('does not dispatch loadMercureInfo when action is not of the proper type', () => {
-      middleware({ dispatch, getState })(vi.fn())({
-        payload: fromPartial<ReachableServer>({ version: '1.2.3' }),
-        type: 'something_else',
-      });
-
-      expect(dispatch).not.toHaveBeenCalled();
-      expect(loadMercureInfo).not.toHaveBeenCalled();
     });
   });
 });

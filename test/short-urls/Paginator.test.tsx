@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
+import { Paginator } from '../../shlink-web-component/short-urls/Paginator';
 import type { ShlinkPaginator } from '../../src/api/types';
-import { Paginator } from '../../src/shlink-web-component/short-urls/Paginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<Paginator />', () => {

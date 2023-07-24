@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { ShortUrlFormCheckboxGroup } from '../../../src/shlink-web-component/short-urls/helpers/ShortUrlFormCheckboxGroup';
+import { ShortUrlFormCheckboxGroup } from '../../../shlink-web-component/short-urls/helpers/ShortUrlFormCheckboxGroup';
 
 describe('<ShortUrlFormCheckboxGroup />', () => {
   it.each([

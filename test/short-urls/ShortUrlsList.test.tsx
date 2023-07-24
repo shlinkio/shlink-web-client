@@ -1,12 +1,12 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
+import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
+import type { ShortUrlsOrder } from '../../shlink-web-component/short-urls/data';
+import type { ShortUrlsList as ShortUrlsListModel } from '../../shlink-web-component/short-urls/reducers/shortUrlsList';
+import { ShortUrlsList as createShortUrlsList } from '../../shlink-web-component/short-urls/ShortUrlsList';
+import type { ShortUrlsTableType } from '../../shlink-web-component/short-urls/ShortUrlsTable';
 import type { Settings } from '../../src/settings/reducers/settings';
-import type { MercureBoundProps } from '../../src/shlink-web-component/mercure/helpers/boundToMercureHub';
-import type { ShortUrlsOrder } from '../../src/shlink-web-component/short-urls/data';
-import type { ShortUrlsList as ShortUrlsListModel } from '../../src/shlink-web-component/short-urls/reducers/shortUrlsList';
-import { ShortUrlsList as createShortUrlsList } from '../../src/shlink-web-component/short-urls/ShortUrlsList';
-import type { ShortUrlsTableType } from '../../src/shlink-web-component/short-urls/ShortUrlsTable';
 import type { SemVer } from '../../src/utils/helpers/version';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

@@ -1,5 +1,5 @@
-import type { HorizontalBarChartProps } from '../../../src/shlink-web-component/visits/charts/HorizontalBarChart';
-import { HorizontalBarChart } from '../../../src/shlink-web-component/visits/charts/HorizontalBarChart';
+import type { HorizontalBarChartProps } from '../../../shlink-web-component/visits/charts/HorizontalBarChart';
+import { HorizontalBarChart } from '../../../shlink-web-component/visits/charts/HorizontalBarChart';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
 
 describe('<HorizontalBarChart />', () => {

@@ -1,6 +1,6 @@
+import type { ExportableShortUrl } from '../../../shlink-web-component/short-urls/data';
+import type { NormalizedVisit } from '../../../shlink-web-component/visits/types';
 import { ReportExporter } from '../../../src/common/services/ReportExporter';
-import type { ExportableShortUrl } from '../../../src/shlink-web-component/short-urls/data';
-import type { NormalizedVisit } from '../../../src/shlink-web-component/visits/types';
 import { windowMock } from '../../__mocks__/Window.mock';
 
 describe('ReportExporter', () => {

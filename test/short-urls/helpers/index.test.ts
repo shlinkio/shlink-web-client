@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../src/shlink-web-component/short-urls/data';
-import { shortUrlDataFromShortUrl, urlDecodeShortCode, urlEncodeShortCode } from '../../../src/shlink-web-component/short-urls/helpers';
+import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
+import { shortUrlDataFromShortUrl, urlDecodeShortCode, urlEncodeShortCode } from '../../../shlink-web-component/short-urls/helpers';
 
 describe('helpers', () => {
   describe('shortUrlDataFromShortUrl', () => {

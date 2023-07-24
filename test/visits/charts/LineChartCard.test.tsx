@@ -2,8 +2,8 @@ import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO, subDays, subMonths, subYears } from 'date-fns';
-import { LineChartCard } from '../../../src/shlink-web-component/visits/charts/LineChartCard';
-import type { NormalizedVisit } from '../../../src/shlink-web-component/visits/types';
+import { LineChartCard } from '../../../shlink-web-component/visits/charts/LineChartCard';
+import type { NormalizedVisit } from '../../../shlink-web-component/visits/types';
 import { setUpCanvas } from '../../__helpers__/setUpTest';
 
 describe('<LineChartCard />', () => {
