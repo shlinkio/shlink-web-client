@@ -28,7 +28,6 @@ export const Main = (
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   useEffect(() => hideSidebar(), [location]);
 
-  const addNonOrphanVisitsRoute = useFeature('nonOrphanVisits');
   const addDomainVisitsRoute = useFeature('domainVisits');
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
@@ -54,7 +53,7 @@ export const Main = (
                 <Route path="/tag/:tag/visits/*" element={<TagVisits />} />
                 {addDomainVisitsRoute && <Route path="/domain/:domain/visits/*" element={<DomainVisits />} />}
                 <Route path="/orphan-visits/*" element={<OrphanVisits />} />
-                {addNonOrphanVisitsRoute && <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />}
+                <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />
                 <Route path="/manage-tags" element={<TagsList />} />
                 <Route path="/manage-domains" element={<ManageDomains />} />
                 <Route

@@ -8,11 +8,11 @@ import './HighlightCard.scss';
 
 export type HighlightCardProps = PropsWithChildren<{
   title: string;
-  link?: string;
+  link: string;
   tooltip?: ReactNode;
 }>;
 
-const buildExtraProps = (link?: string) => (!link ? {} : { tag: Link, to: link });
+const buildExtraProps = (link: string) => ({ tag: Link, to: link });
 
 export const HighlightCard: FC<HighlightCardProps> = ({ children, title, link, tooltip }) => {
   const ref = useElementRef<HTMLElement>();
@@ -20,7 +20,7 @@ export const HighlightCard: FC<HighlightCardProps> = ({ children, title, link, t
   return (
     <>
       <Card innerRef={ref} className="highlight-card" body {...buildExtraProps(link)}>
-        {link && <FontAwesomeIcon size="3x" className="highlight-card__link-icon" icon={linkIcon} />}
+        <FontAwesomeIcon size="3x" className="highlight-card__link-icon" icon={linkIcon} />
         <CardTitle tag="h5" className="highlight-card__title">{title}</CardTitle>
         <CardText tag="h2">{children}</CardText>
       </Card>

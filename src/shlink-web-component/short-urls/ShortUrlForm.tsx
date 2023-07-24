@@ -134,8 +134,6 @@ export const ShortUrlForm = (
     </>
   );
 
-  const showForwardQueryControl = useFeature('forwardQuery');
-
   return (
     <form name="shortUrlForm" className="short-url-form" onSubmit={submit}>
       {isBasicMode && basicComponents}
@@ -242,15 +240,13 @@ export const ShortUrlForm = (
                 >
                   Make it crawlable
                 </ShortUrlFormCheckboxGroup>
-                {showForwardQueryControl && (
-                  <ShortUrlFormCheckboxGroup
-                    infoTooltip="When this short URL is visited, any query params appended to it will be forwarded to the long URL."
-                    checked={shortUrlData.forwardQuery}
-                    onChange={(forwardQuery) => setShortUrlData({ ...shortUrlData, forwardQuery })}
-                  >
-                    Forward query params on redirect
-                  </ShortUrlFormCheckboxGroup>
-                )}
+                <ShortUrlFormCheckboxGroup
+                  infoTooltip="When this short URL is visited, any query params appended to it will be forwarded to the long URL."
+                  checked={shortUrlData.forwardQuery}
+                  onChange={(forwardQuery) => setShortUrlData({ ...shortUrlData, forwardQuery })}
+                >
+                  Forward query params on redirect
+                </ShortUrlFormCheckboxGroup>
               </SimpleCard>
             </div>
           </Row>

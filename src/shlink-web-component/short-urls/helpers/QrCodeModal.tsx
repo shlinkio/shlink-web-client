@@ -7,7 +7,6 @@ import type { ImageDownloader } from '../../../common/services/ImageDownloader';
 import { CopyToClipboardIcon } from '../../../utils/CopyToClipboardIcon';
 import type { QrCodeFormat, QrErrorCorrection } from '../../../utils/helpers/qrCodes';
 import { buildQrCodeUrl } from '../../../utils/helpers/qrCodes';
-import { useFeature } from '../../utils/features';
 import type { ShortUrlModalProps } from '../data';
 import { QrErrorCorrectionDropdown } from './qr-codes/QrErrorCorrectionDropdown';
 import { QrFormatDropdown } from './qr-codes/QrFormatDropdown';
@@ -20,7 +19,6 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
   const [margin, setMargin] = useState(0);
   const [format, setFormat] = useState<QrCodeFormat>('png');
   const [errorCorrection, setErrorCorrection] = useState<QrErrorCorrection>('L');
-  const displayDownloadBtn = useFeature('nonRestCors');
   const qrCodeUrl = useMemo(
     () => buildQrCodeUrl(shortUrl, { size, format, margin, errorCorrection }),
     [shortUrl, size, format, margin, errorCorrection],
@@ -79,19 +77,17 @@ export const QrCodeModal = (imageDownloader: ImageDownloader) => (
             <CopyToClipboardIcon text={qrCodeUrl} />
           </div>
           <img src={qrCodeUrl} className="qr-code-modal__img" alt="QR code" />
-          {displayDownloadBtn && (
-            <div className="mt-3">
-              <Button
-                block
-                color="primary"
-                onClick={() => {
-                  imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`).catch(() => {});
-                }}
-              >
-                Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
-              </Button>
-            </div>
-          )}
+          <div className="mt-3">
+            <Button
+              block
+              color="primary"
+              onClick={() => {
+                imageDownloader.saveImage(qrCodeUrl, `${shortCode}-qr-code.${format}`).catch(() => {});
+              }}
+            >
+              Download <FontAwesomeIcon icon={downloadIcon} className="ms-1" />
+            </Button>
+          </div>
         </div>
       </ModalBody>
     </Modal>

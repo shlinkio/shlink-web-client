@@ -3,15 +3,6 @@ import type { SemVer } from '../../utils/helpers/version';
 import { versionMatch } from '../../utils/helpers/version';
 
 const supportedFeatures = {
-  // Deprecated
-  forwardQuery: '2.9.0',
-  nonRestCors: '2.9.0',
-  defaultDomainRedirectsEdition: '2.10.0',
-  nonOrphanVisits: '3.0.0',
-  allTagsFiltering: '3.0.0',
-  tagsStats: '3.0.0',
-  // End deprecated
-
   domainVisits: '3.1.0',
   excludeBotsOnShortUrls: '3.4.0',
   filterDisabledUrls: '3.4.0',
@@ -26,15 +17,6 @@ export const isFeatureEnabledForVersion = (feature: Feature, serverVersion: SemV
   versionMatch(serverVersion, { minVersion: supportedFeatures[feature] });
 
 const getFeaturesForVersion = (serverVersion: SemVer): Record<Feature, boolean> => ({
-  // Deprecated
-  forwardQuery: isFeatureEnabledForVersion('forwardQuery', serverVersion),
-  nonRestCors: isFeatureEnabledForVersion('nonRestCors', serverVersion),
-  defaultDomainRedirectsEdition: isFeatureEnabledForVersion('defaultDomainRedirectsEdition', serverVersion),
-  nonOrphanVisits: isFeatureEnabledForVersion('nonOrphanVisits', serverVersion),
-  allTagsFiltering: isFeatureEnabledForVersion('allTagsFiltering', serverVersion),
-  tagsStats: isFeatureEnabledForVersion('tagsStats', serverVersion),
-  // End
-
   domainVisits: isFeatureEnabledForVersion('domainVisits', serverVersion),
   excludeBotsOnShortUrls: isFeatureEnabledForVersion('excludeBotsOnShortUrls', serverVersion),
   filterDisabledUrls: isFeatureEnabledForVersion('filterDisabledUrls', serverVersion),

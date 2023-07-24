@@ -20,7 +20,7 @@ interface DomainDropdownProps {
 export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedirects }) => {
   const [isModalOpen, toggleModal] = useToggle();
   const { isDefault } = domain;
-  const canBeEdited = !isDefault || useFeature('defaultDomainRedirectsEdition');
+  const canBeEdited = !isDefault;
   const withVisits = useFeature('domainVisits');
   const routesPrefix = useRoutesPrefix();
 

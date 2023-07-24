@@ -58,7 +58,6 @@ export const ShortUrlsFilteringBar = (
     (searchTerm) => toFirstPage({ search: searchTerm }),
   );
   const changeTagSelection = (selectedTags: string[]) => toFirstPage({ tags: selectedTags });
-  const canChangeTagsMode = useFeature('allTagsFiltering');
   const toggleTagsMode = pipe(
     () => (tagsMode === 'any' ? 'all' : 'any'),
     (mode) => toFirstPage({ tagsMode: mode }),
@@ -70,7 +69,7 @@ export const ShortUrlsFilteringBar = (
 
       <InputGroup className="mt-3">
         <TagsSelector allowNew={false} placeholder="With tags..." selectedTags={tags} onChange={changeTagSelection} />
-        {canChangeTagsMode && tags.length > 1 && (
+        {tags.length > 1 && (
           <>
             <Button outline color="secondary" onClick={toggleTagsMode} id="tagsModeBtn" aria-label="Change tags mode">
               <FontAwesomeIcon className="short-urls-filtering-bar__tags-icon" icon={tagsMode === 'all' ? faTags : faTag} />

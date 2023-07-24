@@ -11,7 +11,6 @@ import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers
 import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
-import { useFeature } from '../utils/features';
 import { useRoutesPrefix } from '../utils/routesPrefix';
 import { useSetting } from '../utils/settings';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';
@@ -42,7 +41,6 @@ export const Overview = (
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, nonOrphanVisits, orphanVisits } = visitsOverview;
   const routesPrefix = useRoutesPrefix();
-  const linkToNonOrphanVisits = useFeature('nonOrphanVisits');
   const navigate = useNavigate();
   const visits = useSetting('visits');
 
@@ -58,7 +56,7 @@ export const Overview = (
         <div className="col-lg-6 col-xl-3 mb-3">
           <VisitsHighlightCard
             title="Visits"
-            link={linkToNonOrphanVisits ? `${routesPrefix}/non-orphan-visits` : undefined}
+            link={`${routesPrefix}/non-orphan-visits`}
             excludeBots={visits?.excludeBots ?? false}
             loading={loadingVisits}
             visitsSummary={nonOrphanVisits}
