@@ -1,4 +1,4 @@
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkDomainRedirects } from '../../../api/types';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
 
@@ -10,13 +10,11 @@ export interface EditDomainRedirects {
 }
 
 export const editDomainRedirects = (
-  buildShlinkApiClient: ShlinkApiClientBuilder,
+  apiClient: ShlinkApiClient,
 ) => createAsyncThunk(
   EDIT_DOMAIN_REDIRECTS,
-  async ({ domain, redirects: providedRedirects }: EditDomainRedirects, { getState }): Promise<EditDomainRedirects> => {
-    const { editDomainRedirects: shlinkEditDomainRedirects } = buildShlinkApiClient(getState);
-    const redirects = await shlinkEditDomainRedirects({ domain, ...providedRedirects });
-
+  async ({ domain, redirects: providedRedirects }: EditDomainRedirects): Promise<EditDomainRedirects> => {
+    const redirects = await apiClient.editDomainRedirects({ domain, ...providedRedirects });
     return { domain, redirects };
   },
 );

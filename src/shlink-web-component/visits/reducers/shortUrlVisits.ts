@@ -1,4 +1,4 @@
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import { isBetween } from '../../../utils/helpers/date';
 import type { ShortUrlIdentifier } from '../../short-urls/data';
 import { shortUrlMatches } from '../../short-urls/helpers';
@@ -24,10 +24,10 @@ const initialState: ShortUrlVisits = {
   progress: 0,
 };
 
-export const getShortUrlVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+export const getShortUrlVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getShortUrlVisits`,
-  createLoaders: ({ shortCode, query = {}, doIntervalFallback = false }: LoadShortUrlVisits, getState) => {
-    const { getShortUrlVisits: shlinkGetShortUrlVisits } = buildShlinkApiClient(getState);
+  createLoaders: ({ shortCode, query = {}, doIntervalFallback = false }: LoadShortUrlVisits) => {
+    const { getShortUrlVisits: shlinkGetShortUrlVisits } = apiClient;
     const visitsLoader = async (page: number, itemsPerPage: number) => shlinkGetShortUrlVisits(
       shortCode,
       { ...query, page, itemsPerPage },

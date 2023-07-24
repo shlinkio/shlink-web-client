@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { pick } from 'ramda';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
@@ -35,12 +35,12 @@ const initialState: TagEdition = {
 export const tagEdited = createAction<EditTag>(`${REDUCER_PREFIX}/tagEdited`);
 
 export const editTag = (
-  buildShlinkApiClient: ShlinkApiClientBuilder,
+  apiClient: ShlinkApiClient,
   colorGenerator: ColorGenerator,
 ) => createAsyncThunk(
   `${REDUCER_PREFIX}/editTag`,
-  async ({ oldName, newName, color }: EditTag, { getState }): Promise<EditTag> => {
-    await buildShlinkApiClient(getState).editTag(oldName, newName);
+  async ({ oldName, newName, color }: EditTag): Promise<EditTag> => {
+    await apiClient.editTag(oldName, newName);
     colorGenerator.setColorForKey(newName, color);
 
     return { oldName, newName, color };

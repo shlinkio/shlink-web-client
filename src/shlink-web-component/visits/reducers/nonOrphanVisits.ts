@@ -1,3 +1,4 @@
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
 import { isBetween } from '../../../utils/helpers/date';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
@@ -14,10 +15,10 @@ const initialState: VisitsInfo = {
   progress: 0,
 };
 
-export const getNonOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+export const getNonOrphanVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getNonOrphanVisits`,
-  createLoaders: ({ query = {}, doIntervalFallback = false }, getState) => {
-    const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = buildShlinkApiClient(getState);
+  createLoaders: ({ query = {}, doIntervalFallback = false }) => {
+    const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = apiClient;
     const visitsLoader = async (page: number, itemsPerPage: number) =>
       shlinkGetNonOrphanVisits({ ...query, page, itemsPerPage });
     const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, shlinkGetNonOrphanVisits);

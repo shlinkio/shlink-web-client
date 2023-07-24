@@ -54,7 +54,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ExportShortUrlsBtn', 'TagsSelector');
 
-  bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'buildShlinkApiClient', 'ReportExporter');
+  bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'apiClient', 'ReportExporter');
   bottle.decorator('ExportShortUrlsBtn', connect(['selectedServer']));
 
   // Reducers
@@ -76,20 +76,20 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('shortUrlDeletionReducerCreator', shortUrlDeletionReducerCreator, 'deleteShortUrl');
   bottle.serviceFactory('shortUrlDeletionReducer', prop('reducer'), 'shortUrlDeletionReducerCreator');
 
-  bottle.serviceFactory('shortUrlDetailReducerCreator', shortUrlDetailReducerCreator, 'buildShlinkApiClient');
+  bottle.serviceFactory('shortUrlDetailReducerCreator', shortUrlDetailReducerCreator, 'apiClient');
   bottle.serviceFactory('shortUrlDetailReducer', prop('reducer'), 'shortUrlDetailReducerCreator');
 
   // Actions
-  bottle.serviceFactory('listShortUrls', listShortUrls, 'buildShlinkApiClient');
+  bottle.serviceFactory('listShortUrls', listShortUrls, 'apiClient');
 
-  bottle.serviceFactory('createShortUrl', createShortUrl, 'buildShlinkApiClient');
+  bottle.serviceFactory('createShortUrl', createShortUrl, 'apiClient');
   bottle.serviceFactory('resetCreateShortUrl', prop('resetCreateShortUrl'), 'shortUrlCreationReducerCreator');
 
-  bottle.serviceFactory('deleteShortUrl', deleteShortUrl, 'buildShlinkApiClient');
+  bottle.serviceFactory('deleteShortUrl', deleteShortUrl, 'apiClient');
   bottle.serviceFactory('resetDeleteShortUrl', prop('resetDeleteShortUrl'), 'shortUrlDeletionReducerCreator');
   bottle.serviceFactory('shortUrlDeleted', () => shortUrlDeleted);
 
   bottle.serviceFactory('getShortUrlDetail', prop('getShortUrlDetail'), 'shortUrlDetailReducerCreator');
 
-  bottle.serviceFactory('editShortUrl', editShortUrl, 'buildShlinkApiClient');
+  bottle.serviceFactory('editShortUrl', editShortUrl, 'apiClient');
 };

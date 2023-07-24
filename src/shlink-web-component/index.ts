@@ -1,4 +1,4 @@
-import { container } from './container';
-import type { ShlinkWebComponentType } from './ShlinkWebComponent';
+import { bottle } from './container';
+import { createShlinkWebComponent } from './ShlinkWebComponent';
 
-export const ShlinkWebComponent = container.ShlinkWebComponent as ShlinkWebComponentType;
+export const ShlinkWebComponent = createShlinkWebComponent(bottle);

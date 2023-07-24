@@ -1,10 +1,10 @@
 import type Bottle from 'bottlejs';
-import { ShlinkWebComponent } from '../ShlinkWebComponent';
+import { Main } from '../Main';
 
 export const provideServices = (bottle: Bottle) => {
   bottle.serviceFactory(
-    'ShlinkWebComponent',
-    ShlinkWebComponent,
+    'Main',
+    Main,
     'TagsList',
     'ShortUrlsList',
     'CreateShortUrl',
@@ -16,6 +16,5 @@ export const provideServices = (bottle: Bottle) => {
     'Overview',
     'EditShortUrl',
     'ManageDomains',
-    'store',
   );
 };

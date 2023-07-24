@@ -1,3 +1,4 @@
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
 import { isBetween } from '../../../utils/helpers/date';
 import type { OrphanVisit, OrphanVisitType } from '../types';
@@ -23,10 +24,10 @@ const initialState: VisitsInfo = {
 const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
   !orphanVisitsType || orphanVisitsType === visit.type;
 
-export const getOrphanVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+export const getOrphanVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getOrphanVisits`,
-  createLoaders: ({ orphanVisitsType, query = {}, doIntervalFallback = false }: LoadOrphanVisits, getState) => {
-    const { getOrphanVisits: getVisits } = buildShlinkApiClient(getState);
+  createLoaders: ({ orphanVisitsType, query = {}, doIntervalFallback = false }: LoadOrphanVisits) => {
+    const { getOrphanVisits: getVisits } = apiClient;
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits({ ...query, page, itemsPerPage })
       .then((result) => {
         const visits = result.data.filter((visit) => isOrphanVisit(visit) && matchesType(visit, orphanVisitsType));

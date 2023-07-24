@@ -1,4 +1,4 @@
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import { isBetween } from '../../../utils/helpers/date';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
 import type { LoadVisits, VisitsInfo } from './types';
@@ -23,10 +23,10 @@ const initialState: TagVisits = {
   progress: 0,
 };
 
-export const getTagVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+export const getTagVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getTagVisits`,
-  createLoaders: ({ tag, query = {}, doIntervalFallback = false }: LoadTagVisits, getState) => {
-    const { getTagVisits: getVisits } = buildShlinkApiClient(getState);
+  createLoaders: ({ tag, query = {}, doIntervalFallback = false }: LoadTagVisits) => {
+    const { getTagVisits: getVisits } = apiClient;
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
       tag,
       { ...query, page, itemsPerPage },

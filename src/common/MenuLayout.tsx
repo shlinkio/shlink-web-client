@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
+import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { ShlinkWebComponent } from '../shlink-web-component';
@@ -13,6 +14,7 @@ interface MenuLayoutProps {
 }
 
 export const MenuLayout = (
+  buildShlinkApiClient: ShlinkApiClientBuilder,
   ServerError: FC,
 ) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent, settings }) => {
   const showContent = isReachableServer(selectedServer);
@@ -29,6 +31,7 @@ export const MenuLayout = (
   return (
     <ShlinkWebComponent
       serverVersion={selectedServer.version}
+      apiClient={buildShlinkApiClient(selectedServer)}
       settings={settings}
       routesPrefix={`/server/${selectedServer.id}`}
     />

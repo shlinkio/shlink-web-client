@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ReportExporter } from '../../../common/services/ReportExporter';
 import type { SelectedServer } from '../../../servers/data';
 import { isServerWithId } from '../../../servers/data';
@@ -20,7 +20,7 @@ interface ExportShortUrlsBtnConnectProps extends ExportShortUrlsBtnProps {
 const itemsPerPage = 20;
 
 export const ExportShortUrlsBtn = (
-  buildShlinkApiClient: ShlinkApiClientBuilder,
+  apiClient: ShlinkApiClient,
   { exportShortUrls }: ReportExporter,
 ): FC<ExportShortUrlsBtnConnectProps> => ({ amount = 0, selectedServer }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
@@ -31,9 +31,8 @@ export const ExportShortUrlsBtn = (
     }
 
     const totalPages = amount / itemsPerPage;
-    const { listShortUrls } = buildShlinkApiClient(selectedServer);
     const loadAllUrls = async (page = 1): Promise<ShortUrl[]> => {
-      const { data } = await listShortUrls(
+      const { data } = await apiClient.listShortUrls(
         { page: `${page}`, tags, searchTerm: search, startDate, endDate, orderBy, tagsMode, itemsPerPage },
       );
 

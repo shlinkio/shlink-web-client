@@ -1,12 +1,11 @@
 import type { AsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkDomainRedirects } from '../../../api/types';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
 import { hasServerData } from '../../../servers/data';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
-import { replaceAuthorityFromUri } from '../../../utils/helpers/uri';
 import type { Domain, DomainStatus } from '../data';
 import type { EditDomainRedirects } from './domainRedirects';
 
@@ -45,12 +44,11 @@ export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
 
 export const domainsListReducerCreator = (
-  buildShlinkApiClient: ShlinkApiClientBuilder,
+  apiClient: ShlinkApiClient,
   editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
 ) => {
-  const listDomains = createAsyncThunk(`${REDUCER_PREFIX}/listDomains`, async (_: void, { getState }): Promise<ListDomains> => {
-    const { listDomains: shlinkListDomains } = buildShlinkApiClient(getState);
-    const { data, defaultRedirects } = await shlinkListDomains();
+  const listDomains = createAsyncThunk(`${REDUCER_PREFIX}/listDomains`, async (): Promise<ListDomains> => {
+    const { data, defaultRedirects } = await apiClient.listDomains();
 
     return {
       domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
@@ -68,13 +66,13 @@ export const domainsListReducerCreator = (
       }
 
       try {
-        const { url, ...rest } = selectedServer;
-        const { health } = buildShlinkApiClient({
-          ...rest,
-          url: replaceAuthorityFromUri(url, domain),
-        });
-
-        const { status } = await health();
+        // FIXME This should call different domains
+        // const { url, ...rest } = selectedServer;
+        // const { health } = buildShlinkApiClient({
+        //   ...rest,
+        //   url: replaceAuthorityFromUri(url, domain),
+        // });
+        const { status } = await apiClient.health();
 
         return { domain, status: status === 'pass' ? 'valid' : 'invalid' };
       } catch (e) {

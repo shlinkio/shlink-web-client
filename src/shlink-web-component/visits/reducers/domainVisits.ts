@@ -1,4 +1,4 @@
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import { isBetween } from '../../../utils/helpers/date';
 import { domainMatches } from '../../short-urls/helpers';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
@@ -26,10 +26,10 @@ const initialState: DomainVisits = {
   progress: 0,
 };
 
-export const getDomainVisits = (buildShlinkApiClient: ShlinkApiClientBuilder) => createVisitsAsyncThunk({
+export const getDomainVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getDomainVisits`,
-  createLoaders: ({ domain, query = {}, doIntervalFallback = false }: LoadDomainVisits, getState) => {
-    const { getDomainVisits: getVisits } = buildShlinkApiClient(getState);
+  createLoaders: ({ domain, query = {}, doIntervalFallback = false }: LoadDomainVisits) => {
+    const { getDomainVisits: getVisits } = apiClient;
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
       domain,
       { ...query, page, itemsPerPage },

@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
@@ -28,12 +28,11 @@ const initialState: ShortUrlEdition = {
   error: false,
 };
 
-export const editShortUrl = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+export const editShortUrl = (apiClient: ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/editShortUrl`,
-  ({ shortCode, domain, data }: EditShortUrl, { getState }): Promise<ShortUrl> => {
-    const { updateShortUrl } = buildShlinkApiClient(getState);
-    return updateShortUrl(shortCode, domain, data as any); // FIXME parse dates
-  },
+  ({ shortCode, domain, data }: EditShortUrl): Promise<ShortUrl> =>
+    apiClient.updateShortUrl(shortCode, domain, data as any) // FIXME parse dates
+  ,
 );
 
 export const shortUrlEditionReducerCreator = (editShortUrlThunk: ReturnType<typeof editShortUrl>) => createSlice({

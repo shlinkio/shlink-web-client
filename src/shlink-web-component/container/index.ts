@@ -16,13 +16,12 @@ import { provideServices as provideShortUrlsServices } from '../short-urls/servi
 import { provideServices as provideTagsServices } from '../tags/services/provideServices';
 import { provideServices as provideVisitsServices } from '../visits/services/provideServices';
 import { provideServices as provideWebComponentServices } from './provideServices';
-import { setUpStore } from './store';
 
 type LazyActionMap = Record<string, Function>;
 
 export type ConnectDecorator = (props: string[] | null, actions?: string[]) => any;
 
-const bottle = new Bottle();
+export const bottle = new Bottle();
 
 export const { container } = bottle;
 
@@ -66,6 +65,3 @@ bottle.constant('jsonToCsv', jsonToCsv);
 bottle.constant('setTimeout', window.setTimeout);
 bottle.constant('clearTimeout', window.clearTimeout);
 bottle.serviceFactory('useTimeoutToggle', useTimeoutToggle, 'setTimeout', 'clearTimeout');
-
-// FIXME This has to be last. Find a way to delay the creation, perhaps using some kind of runtime factory
-bottle.constant('store', setUpStore(container));

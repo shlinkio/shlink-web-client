@@ -1,6 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
@@ -23,14 +23,14 @@ const initialState: ShortUrlDetail = {
   error: false,
 };
 
-export const shortUrlDetailReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
+export const shortUrlDetailReducerCreator = (apiClient: ShlinkApiClient) => {
   const getShortUrlDetail = createAsyncThunk(
     `${REDUCER_PREFIX}/getShortUrlDetail`,
     async ({ shortCode, domain }: ShortUrlIdentifier, { getState }): Promise<ShortUrl> => {
       const { shortUrlsList } = getState();
       const alreadyLoaded = shortUrlsList?.shortUrls?.data.find((url) => shortUrlMatches(url, shortCode, domain));
 
-      return alreadyLoaded ?? await buildShlinkApiClient(getState).getShortUrl(shortCode, domain);
+      return alreadyLoaded ?? await apiClient.getShortUrl(shortCode, domain);
     },
   );
 

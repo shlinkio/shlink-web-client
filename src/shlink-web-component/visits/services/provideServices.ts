@@ -54,23 +54,23 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('VisitsParser', () => visitsParser);
 
   // Actions
-  bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getShortUrlVisits', getShortUrlVisits, 'apiClient');
   bottle.serviceFactory('cancelGetShortUrlVisits', prop('cancelGetVisits'), 'shortUrlVisitsReducerCreator');
 
-  bottle.serviceFactory('getTagVisits', getTagVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getTagVisits', getTagVisits, 'apiClient');
   bottle.serviceFactory('cancelGetTagVisits', prop('cancelGetVisits'), 'tagVisitsReducerCreator');
 
-  bottle.serviceFactory('getDomainVisits', getDomainVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getDomainVisits', getDomainVisits, 'apiClient');
   bottle.serviceFactory('cancelGetDomainVisits', prop('cancelGetVisits'), 'domainVisitsReducerCreator');
 
-  bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getOrphanVisits', getOrphanVisits, 'apiClient');
   bottle.serviceFactory('cancelGetOrphanVisits', prop('cancelGetVisits'), 'orphanVisitsReducerCreator');
 
-  bottle.serviceFactory('getNonOrphanVisits', getNonOrphanVisits, 'buildShlinkApiClient');
+  bottle.serviceFactory('getNonOrphanVisits', getNonOrphanVisits, 'apiClient');
   bottle.serviceFactory('cancelGetNonOrphanVisits', prop('cancelGetVisits'), 'nonOrphanVisitsReducerCreator');
 
   bottle.serviceFactory('createNewVisits', () => createNewVisits);
-  bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'buildShlinkApiClient');
+  bottle.serviceFactory('loadVisitsOverview', loadVisitsOverview, 'apiClient');
 
   // Reducers
   bottle.serviceFactory('visitsOverviewReducerCreator', visitsOverviewReducerCreator, 'loadVisitsOverview');

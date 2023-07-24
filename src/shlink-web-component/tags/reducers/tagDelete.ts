@@ -1,5 +1,5 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
@@ -21,10 +21,9 @@ const initialState: TagDeletion = {
 
 export const tagDeleted = createAction<string>(`${REDUCER_PREFIX}/tagDeleted`);
 
-export const tagDeleteReducerCreator = (buildShlinkApiClient: ShlinkApiClientBuilder) => {
-  const deleteTag = createAsyncThunk(`${REDUCER_PREFIX}/deleteTag`, async (tag: string, { getState }): Promise<void> => {
-    const { deleteTags } = buildShlinkApiClient(getState);
-    await deleteTags([tag]);
+export const tagDeleteReducerCreator = (apiClient: ShlinkApiClient) => {
+  const deleteTag = createAsyncThunk(`${REDUCER_PREFIX}/deleteTag`, async (tag: string): Promise<void> => {
+    await apiClient.deleteTags([tag]);
   });
 
   const { reducer } = createSlice({

@@ -22,7 +22,7 @@ type LastVisitLoader = (excludeBots?: boolean) => Promise<Visit | undefined>;
 
 interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded> {
   typePrefix: string;
-  createLoaders: (params: T, getState: () => ShlinkState) => [VisitsLoader, LastVisitLoader];
+  createLoaders: (params: T) => [VisitsLoader, LastVisitLoader];
   getExtraFulfilledPayload: (params: T) => Partial<R>;
   shouldCancel: (getState: () => ShlinkState) => boolean;
 }
@@ -35,7 +35,7 @@ export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R exte
   const fallbackToInterval = createAction<DateInterval>(`${typePrefix}/fallbackToInterval`);
 
   const asyncThunk = createAsyncThunk(typePrefix, async (params: T, { getState, dispatch }): Promise<Partial<R>> => {
-    const [visitsLoader, lastVisitLoader] = createLoaders(params, getState);
+    const [visitsLoader, lastVisitLoader] = createLoaders(params);
 
     const loadVisitsInParallel = async (pages: number[]): Promise<Visit[]> =>
       Promise.all(pages.map(async (page) => visitsLoader(page, ITEMS_PER_PAGE).then(prop('data')))).then(flatten);

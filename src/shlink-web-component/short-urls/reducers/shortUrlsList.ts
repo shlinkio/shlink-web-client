@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { assocPath, last, pipe, reject } from 'ramda';
-import type { ShlinkApiClientBuilder } from '../../../api/services/ShlinkApiClientBuilder';
+import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../../api/types';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
@@ -24,11 +24,16 @@ const initialState: ShortUrlsList = {
   error: false,
 };
 
-export const listShortUrls = (buildShlinkApiClient: ShlinkApiClientBuilder) => createAsyncThunk(
+export const listShortUrls = (apiClient: ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/listShortUrls`,
-  (params: ShlinkShortUrlsListParams | void, { getState }): Promise<ShlinkShortUrlsResponse> => {
-    const { listShortUrls: shlinkListShortUrls } = buildShlinkApiClient(getState);
-    return shlinkListShortUrls(params ?? {});
+  (params: ShlinkShortUrlsListParams | void): Promise<ShlinkShortUrlsResponse> => {
+    try {
+      const { listShortUrls: shlinkListShortUrls } = apiClient;
+      return shlinkListShortUrls(params ?? {});
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   },
 );
 
