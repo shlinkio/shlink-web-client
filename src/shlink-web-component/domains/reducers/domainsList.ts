@@ -4,7 +4,6 @@ import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ShlinkDomainRedirects } from '../../../api/types';
 import type { ProblemDetailsError } from '../../../api/types/errors';
 import { parseApiError } from '../../../api/utils';
-import { hasServerData } from '../../../servers/data';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
 import type { Domain, DomainStatus } from '../data';
 import type { EditDomainRedirects } from './domainRedirects';
@@ -58,22 +57,9 @@ export const domainsListReducerCreator = (
 
   const checkDomainHealth = createAsyncThunk(
     `${REDUCER_PREFIX}/checkDomainHealth`,
-    async (domain: string, { getState }): Promise<ValidateDomain> => {
-      const { selectedServer } = getState();
-
-      if (!hasServerData(selectedServer)) {
-        return { domain, status: 'invalid' };
-      }
-
+    async (domain: string): Promise<ValidateDomain> => {
       try {
-        // FIXME This should call different domains
-        // const { url, ...rest } = selectedServer;
-        // const { health } = buildShlinkApiClient({
-        //   ...rest,
-        //   url: replaceAuthorityFromUri(url, domain),
-        // });
-        const { status } = await apiClient.health();
-
+        const { status } = await apiClient.health(domain);
         return { domain, status: status === 'pass' ? 'valid' : 'invalid' };
       } catch (e) {
         return { domain, status: 'invalid' };

@@ -31,7 +31,7 @@ const initialState: ShortUrlEdition = {
 export const editShortUrl = (apiClient: ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/editShortUrl`,
   ({ shortCode, domain, data }: EditShortUrl): Promise<ShortUrl> =>
-    apiClient.updateShortUrl(shortCode, domain, data as any) // FIXME parse dates
+    apiClient.updateShortUrl(shortCode, domain, data as any) // TODO parse dates
   ,
 );
 
