@@ -23,7 +23,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ShortUrlsList', ShortUrlsList, 'ShortUrlsTable', 'ShortUrlsFilteringBar');
   bottle.decorator('ShortUrlsList', connect(
-    ['selectedServer', 'mercureInfo', 'shortUrlsList'],
+    ['mercureInfo', 'shortUrlsList'],
     ['listShortUrls', 'createNewVisits', 'loadMercureInfo'],
   ));
 

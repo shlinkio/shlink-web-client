@@ -1,11 +1,9 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { isEmpty, reject } from 'ramda';
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
-import type { ShlinkTags } from '../../../api/types';
-import type { ProblemDetailsError } from '../../../api/types/errors';
-import { parseApiError } from '../../../api/utils';
 import { isReachableServer } from '../../../servers/data';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
+import type { ProblemDetailsError, ShlinkApiClient, ShlinkTags } from '../../api-contract';
+import { parseApiError } from '../../api-contract/utils';
 import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
 import { isFeatureEnabledForVersion } from '../../utils/features';
 import { createNewVisits } from '../../visits/reducers/visitCreation';

@@ -1,6 +1,5 @@
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
-import type { ShlinkDomainRedirects } from '../../../api/types';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
+import type { ShlinkApiClient, ShlinkDomainRedirects } from '../../api-contract';
 
 const EDIT_DOMAIN_REDIRECTS = 'shlink/domainRedirects/EDIT_DOMAIN_REDIRECTS';
 

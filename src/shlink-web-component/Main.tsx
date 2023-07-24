@@ -8,10 +8,7 @@ import { AsideMenu } from '../common/AsideMenu';
 import { NotFound } from '../common/NotFound';
 import { useSwipeable, useToggle } from '../utils/helpers/hooks';
 import { useFeature } from './utils/features';
-
-type MainProps = {
-  routesPrefix?: string;
-};
+import { useRoutesPrefix } from './utils/routesPrefix';
 
 export const Main = (
   TagsList: FC,
@@ -25,8 +22,9 @@ export const Main = (
   Overview: FC,
   EditShortUrl: FC,
   ManageDomains: FC,
-): FC<MainProps> => ({ routesPrefix = '' }) => {
+): FC => () => {
   const location = useLocation();
+  const routesPrefix = useRoutesPrefix();
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   useEffect(() => hideSidebar(), [location]);
 
@@ -71,5 +69,3 @@ export const Main = (
     </>
   );
 };
-
-export type MainType = ReturnType<typeof Main>;

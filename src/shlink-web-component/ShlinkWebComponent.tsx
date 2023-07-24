@@ -4,8 +4,10 @@ import type { FC, ReactNode } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import type { SemVer } from '../utils/helpers/version';
+import type { ShlinkApiClient } from './api-contract';
 import { setUpStore } from './container/store';
 import { FeaturesProvider, useFeatures } from './utils/features';
+import { RoutesPrefixProvider } from './utils/routesPrefix';
 import type { Settings } from './utils/settings';
 import { SettingsProvider } from './utils/settings';
 
@@ -13,7 +15,7 @@ type ShlinkWebComponentProps = {
   routesPrefix?: string;
   settings?: Settings;
   serverVersion: SemVer;
-  apiClient: any;
+  apiClient: ShlinkApiClient;
 };
 
 export const createShlinkWebComponent = (
@@ -30,7 +32,7 @@ export const createShlinkWebComponent = (
     // depend on it
     const { container } = bottle;
     const { Main } = container;
-    mainContent.current = <Main routesPrefix={routesPrefix} />;
+    mainContent.current = <Main />;
     setStore(setUpStore(container));
   }, []);
 
@@ -38,7 +40,9 @@ export const createShlinkWebComponent = (
     <Provider store={theStore}>
       <SettingsProvider value={settings}>
         <FeaturesProvider value={features}>
-          {mainContent.current}
+          <RoutesPrefixProvider value={routesPrefix}>
+            {mainContent.current}
+          </RoutesPrefixProvider>
         </FeaturesProvider>
       </SettingsProvider>
     </Provider>

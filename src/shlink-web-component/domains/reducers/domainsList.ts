@@ -1,10 +1,8 @@
 import type { AsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
-import type { ShlinkDomainRedirects } from '../../../api/types';
-import type { ProblemDetailsError } from '../../../api/types/errors';
-import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
+import type { ProblemDetailsError, ShlinkApiClient, ShlinkDomainRedirects } from '../../api-contract';
+import { parseApiError } from '../../api-contract/utils';
 import type { Domain, DomainStatus } from '../data';
 import type { EditDomainRedirects } from './domainRedirects';
 

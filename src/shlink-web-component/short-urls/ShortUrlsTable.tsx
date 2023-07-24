@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { isEmpty } from 'ramda';
 import type { ReactNode } from 'react';
-import type { SelectedServer } from '../../servers/data';
 import type { ShortUrlsOrderableFields } from './data';
 import type { ShortUrlsRowType } from './helpers/ShortUrlsRow';
 import type { ShortUrlsList as ShortUrlsListState } from './reducers/shortUrlsList';
@@ -11,7 +10,6 @@ interface ShortUrlsTableProps {
   orderByColumn?: (column: ShortUrlsOrderableFields) => () => void;
   renderOrderIcon?: (column: ShortUrlsOrderableFields) => ReactNode;
   shortUrlsList: ShortUrlsListState;
-  selectedServer: SelectedServer;
   onTagClick?: (tag: string) => void;
   className?: string;
 }
@@ -21,7 +19,6 @@ export const ShortUrlsTable = (ShortUrlsRow: ShortUrlsRowType) => ({
   renderOrderIcon,
   shortUrlsList,
   onTagClick,
-  selectedServer,
   className,
 }: ShortUrlsTableProps) => {
   const { error, loading, shortUrls } = shortUrlsList;
@@ -52,7 +49,6 @@ export const ShortUrlsTable = (ShortUrlsRow: ShortUrlsRowType) => ({
       <ShortUrlsRow
         key={shortUrl.shortUrl}
         shortUrl={shortUrl}
-        selectedServer={selectedServer}
         onTagClick={onTagClick}
       />
     ));

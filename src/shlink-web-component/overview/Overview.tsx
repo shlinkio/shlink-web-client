@@ -107,7 +107,6 @@ export const Overview = (
         <CardBody>
           <ShortUrlsTable
             shortUrlsList={shortUrlsList}
-            selectedServer={selectedServer}
             className="mb-0"
             onTagClick={(tag) => navigate(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
           />

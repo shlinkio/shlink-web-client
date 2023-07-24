@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import type { SelectedServer, ServerWithId } from '../../../servers/data';
-import { isServerWithId } from '../../../servers/data';
+import { useRoutesPrefix } from '../../utils/routesPrefix';
 import type { ShortUrl } from '../data';
 import { urlEncodeShortCode } from './index';
 
@@ -9,21 +8,22 @@ export type LinkSuffix = 'visits' | 'edit';
 
 export interface ShortUrlDetailLinkProps {
   shortUrl?: ShortUrl | null;
-  selectedServer?: SelectedServer;
   suffix: LinkSuffix;
+  asLink?: boolean;
 }
 
-const buildUrl = ({ id }: ServerWithId, { shortCode, domain }: ShortUrl, suffix: LinkSuffix) => {
+const buildUrl = (routePrefix: string, { shortCode, domain }: ShortUrl, suffix: LinkSuffix) => {
   const query = domain ? `?domain=${domain}` : '';
-  return `/server/${id}/short-code/${urlEncodeShortCode(shortCode)}/${suffix}${query}`;
+  return `${routePrefix}/short-code/${urlEncodeShortCode(shortCode)}/${suffix}${query}`;
 };
 
 export const ShortUrlDetailLink: FC<ShortUrlDetailLinkProps & Record<string | number, any>> = (
-  { selectedServer, shortUrl, suffix, children, ...rest },
+  { shortUrl, suffix, asLink, children, ...rest },
 ) => {
-  if (!selectedServer || !isServerWithId(selectedServer) || !shortUrl) {
+  const routePrefix = useRoutesPrefix();
+  if (!asLink || !shortUrl) {
     return <span {...rest}>{children}</span>;
   }
 
-  return <Link to={buildUrl(selectedServer, shortUrl, suffix)} {...rest}>{children}</Link>;
+  return <Link to={buildUrl(routePrefix, shortUrl, suffix)} {...rest}>{children}</Link>;
 };

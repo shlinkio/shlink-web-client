@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { ExternalLink } from 'react-external-link';
-import type { SelectedServer } from '../../../servers/data';
 import { CopyToClipboardIcon } from '../../../utils/CopyToClipboardIcon';
 import { Time } from '../../../utils/dates/Time';
 import type { TimeoutToggle } from '../../../utils/helpers/hooks';
@@ -17,7 +16,6 @@ import './ShortUrlsRow.scss';
 
 interface ShortUrlsRowProps {
   onTagClick?: (tag: string) => void;
-  selectedServer: SelectedServer;
   shortUrl: ShortUrl;
 }
 
@@ -27,7 +25,7 @@ export const ShortUrlsRow = (
   ShortUrlsRowMenu: ShortUrlsRowMenuType,
   colorGenerator: ColorGenerator,
   useTimeoutToggle: TimeoutToggle,
-) => ({ shortUrl, selectedServer, onTagClick }: ShortUrlsRowProps) => {
+) => ({ shortUrl, onTagClick }: ShortUrlsRowProps) => {
   const [copiedToClipboard, setCopiedToClipboard] = useTimeoutToggle();
   const [active, setActive] = useTimeoutToggle(false, 500);
   const isFirstRun = useRef(true);
@@ -76,15 +74,15 @@ export const ShortUrlsRow = (
             doExcludeBots ? shortUrl.visitsSummary?.nonBots : shortUrl.visitsSummary?.total
           ) ?? shortUrl.visitsCount}
           shortUrl={shortUrl}
-          selectedServer={selectedServer}
           active={active}
+          asLink
         />
       </td>
       <td className="responsive-table__cell short-urls-row__cell" data-th="Status">
         <ShortUrlStatus shortUrl={shortUrl} />
       </td>
       <td className="responsive-table__cell short-urls-row__cell text-end">
-        <ShortUrlsRowMenu selectedServer={selectedServer} shortUrl={shortUrl} />
+        <ShortUrlsRowMenu shortUrl={shortUrl} />
       </td>
     </tr>
   );

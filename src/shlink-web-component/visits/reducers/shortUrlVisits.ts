@@ -1,5 +1,5 @@
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import { isBetween } from '../../../utils/helpers/date';
+import type { ShlinkApiClient } from '../../api-contract';
 import type { ShortUrlIdentifier } from '../../short-urls/data';
 import { shortUrlMatches } from '../../short-urls/helpers';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';

@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
 import type { ReportExporter } from '../../../common/services/ReportExporter';
 import type { SelectedServer } from '../../../servers/data';
 import { isServerWithId } from '../../../servers/data';
 import { ExportBtn } from '../../../utils/ExportBtn';
 import { useToggle } from '../../../utils/helpers/hooks';
+import type { ShlinkApiClient } from '../../api-contract';
 import type { ShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 

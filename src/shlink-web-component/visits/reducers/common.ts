@@ -1,11 +1,11 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { flatten, prop, range, splitEvery } from 'ramda';
-import type { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../../api/types';
-import { parseApiError } from '../../../api/utils';
 import type { ShlinkState } from '../../../container/types';
 import type { DateInterval } from '../../../utils/helpers/dateIntervals';
 import { dateToMatchingInterval } from '../../../utils/helpers/dateIntervals';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
+import type { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api-contract';
+import { parseApiError } from '../../api-contract/utils';
 import type { CreateVisit, Visit } from '../types';
 import type { LoadVisits, VisitsInfo, VisitsLoaded } from './types';
 import { createNewVisits } from './visitCreation';

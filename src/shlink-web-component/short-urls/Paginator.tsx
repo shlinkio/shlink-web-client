@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
-import type { ShlinkPaginator } from '../../api/types';
 import type {
   NumberOrEllipsis } from '../../utils/helpers/pagination';
 import {
@@ -9,17 +8,19 @@ import {
   prettifyPageNumber,
   progressivePagination,
 } from '../../utils/helpers/pagination';
+import type { ShlinkPaginator } from '../api-contract';
+import { useRoutesPrefix } from '../utils/routesPrefix';
 
 interface PaginatorProps {
   paginator?: ShlinkPaginator;
-  serverId: string;
   currentQueryString?: string;
 }
 
-export const Paginator = ({ paginator, serverId, currentQueryString = '' }: PaginatorProps) => {
+export const Paginator = ({ paginator, currentQueryString = '' }: PaginatorProps) => {
   const { currentPage = 0, pagesCount = 0 } = paginator ?? {};
+  const routesPrefix = useRoutesPrefix();
   const urlForPage = (pageNumber: NumberOrEllipsis) =>
-    `/server/${serverId}/list-short-urls/${pageNumber}${currentQueryString}`;
+    `${routesPrefix}/list-short-urls/${pageNumber}${currentQueryString}`;
 
   if (pagesCount <= 1) {
     return <div className="pb-3" />; // Return some space

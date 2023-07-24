@@ -13,6 +13,7 @@ interface MenuLayoutProps {
   settings: Settings;
 }
 
+// FIXME Rename this to something else
 export const MenuLayout = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
   ServerError: FC,

@@ -1,11 +1,7 @@
 import { isEmpty, isNil, reject } from 'ramda';
 import type { HttpClient } from '../../common/services/HttpClient';
-import type { ShortUrl, ShortUrlData } from '../../shlink-web-component/short-urls/data';
-import { orderToString } from '../../utils/helpers/ordering';
-import { stringifyQuery } from '../../utils/helpers/query';
-import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
-import type { OptionalString } from '../../utils/utils';
 import type {
+  ShlinkApiClient as BaseShlinkApiClient,
   ShlinkDomainRedirects,
   ShlinkDomainsResponse,
   ShlinkEditDomainRedirects,
@@ -20,9 +16,13 @@ import type {
   ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
-  ShlinkVisitsParams,
-} from '../types';
-import { isRegularNotFound, parseApiError } from '../utils';
+  ShlinkVisitsParams } from '../../shlink-web-component/api-contract';
+import { isRegularNotFound, parseApiError } from '../../shlink-web-component/api-contract/utils';
+import type { ShortUrl, ShortUrlData } from '../../shlink-web-component/short-urls/data';
+import { orderToString } from '../../utils/helpers/ordering';
+import { stringifyQuery } from '../../utils/helpers/query';
+import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
+import type { OptionalString } from '../../utils/utils';
 
 type ApiVersion = 2 | 3;
 
@@ -45,7 +45,7 @@ const normalizeListParams = (
   orderBy: orderToString(orderBy),
 });
 
-export class ShlinkApiClient {
+export class ShlinkApiClient implements BaseShlinkApiClient {
   private apiVersion: ApiVersion;
 
   public constructor(

@@ -2,13 +2,11 @@ import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Card } from 'reactstrap';
-import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../../api/types';
-import type { SelectedServer } from '../../servers/data';
-import { getServerId } from '../../servers/data';
 import { DEFAULT_SHORT_URLS_ORDERING } from '../../settings/reducers/settings';
 import type { OrderDir } from '../../utils/helpers/ordering';
 import { determineOrderDir } from '../../utils/helpers/ordering';
 import { TableOrderIcon } from '../../utils/table/TableOrderIcon';
+import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import { useFeature } from '../utils/features';
@@ -21,7 +19,6 @@ import type { ShortUrlsFilteringBarType } from './ShortUrlsFilteringBar';
 import type { ShortUrlsTableType } from './ShortUrlsTable';
 
 interface ShortUrlsListProps {
-  selectedServer: SelectedServer;
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
 }
@@ -29,8 +26,7 @@ interface ShortUrlsListProps {
 export const ShortUrlsList = (
   ShortUrlsTable: ShortUrlsTableType,
   ShortUrlsFilteringBar: ShortUrlsFilteringBarType,
-) => boundToMercureHub(({ listShortUrls, shortUrlsList, selectedServer }: ShortUrlsListProps) => {
-  const serverId = getServerId(selectedServer);
+) => boundToMercureHub(({ listShortUrls, shortUrlsList }: ShortUrlsListProps) => {
   const { page } = useParams();
   const location = useLocation();
   const [filter, toFirstPage] = useShortUrlsQuery();
@@ -108,13 +104,12 @@ export const ShortUrlsList = (
       />
       <Card body className="pb-0">
         <ShortUrlsTable
-          selectedServer={selectedServer}
           shortUrlsList={shortUrlsList}
           orderByColumn={orderByColumn}
           renderOrderIcon={renderOrderIcon}
           onTagClick={addTag}
         />
-        <Paginator paginator={pagination} serverId={serverId} currentQueryString={location.search} />
+        <Paginator paginator={pagination} currentQueryString={location.search} />
       </Card>
     </>
   );

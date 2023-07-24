@@ -7,14 +7,12 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import type { SelectedServer } from '../../../servers/data';
 import { useToggle } from '../../../utils/helpers/hooks';
 import { RowDropdownBtn } from '../../../utils/RowDropdownBtn';
 import type { ShortUrl, ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 
 interface ShortUrlsRowMenuProps {
-  selectedServer: SelectedServer;
   shortUrl: ShortUrl;
 }
 type ShortUrlModal = FC<ShortUrlModalProps>;
@@ -22,17 +20,17 @@ type ShortUrlModal = FC<ShortUrlModalProps>;
 export const ShortUrlsRowMenu = (
   DeleteShortUrlModal: ShortUrlModal,
   QrCodeModal: ShortUrlModal,
-) => ({ shortUrl, selectedServer }: ShortUrlsRowMenuProps) => {
+) => ({ shortUrl }: ShortUrlsRowMenuProps) => {
   const [isQrModalOpen,, openQrCodeModal, closeQrCodeModal] = useToggle();
   const [isDeleteModalOpen,, openDeleteModal, closeDeleteModal] = useToggle();
 
   return (
     <RowDropdownBtn minWidth={190}>
-      <DropdownItem tag={ShortUrlDetailLink} selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
+      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="visits">
         <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
       </DropdownItem>
 
-      <DropdownItem tag={ShortUrlDetailLink} selectedServer={selectedServer} shortUrl={shortUrl} suffix="edit">
+      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="edit">
         <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit short URL
       </DropdownItem>
 

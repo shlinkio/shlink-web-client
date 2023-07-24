@@ -1,8 +1,7 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import type { ShlinkApiClient } from '../../../api/services/ShlinkApiClient';
-import type { ProblemDetailsError } from '../../../api/types/errors';
-import { parseApiError } from '../../../api/utils';
 import { createAsyncThunk } from '../../../utils/helpers/redux';
+import type { ProblemDetailsError, ShlinkApiClient } from '../../api-contract';
+import { parseApiError } from '../../api-contract/utils';
 
 const REDUCER_PREFIX = 'shlink/tagDelete';
 

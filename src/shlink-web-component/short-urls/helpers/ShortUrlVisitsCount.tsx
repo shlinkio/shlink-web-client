@@ -2,7 +2,6 @@ import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
-import type { SelectedServer } from '../../../servers/data';
 import { formatHumanFriendly, parseISO } from '../../../utils/helpers/date';
 import { useElementRef } from '../../../utils/helpers/hooks';
 import { prettify } from '../../../utils/helpers/numbers';
@@ -12,18 +11,18 @@ import './ShortUrlVisitsCount.scss';
 
 interface ShortUrlVisitsCountProps {
   shortUrl?: ShortUrl | null;
-  selectedServer?: SelectedServer;
   visitsCount: number;
   active?: boolean;
+  asLink?: boolean;
 }
 
 export const ShortUrlVisitsCount = (
-  { visitsCount, shortUrl, selectedServer, active = false }: ShortUrlVisitsCountProps,
+  { visitsCount, shortUrl, active = false, asLink = false }: ShortUrlVisitsCountProps,
 ) => {
   const { maxVisits, validSince, validUntil } = shortUrl?.meta ?? {};
   const hasLimit = !!maxVisits || !!validSince || !!validUntil;
   const visitsLink = (
-    <ShortUrlDetailLink selectedServer={selectedServer} shortUrl={shortUrl} suffix="visits">
+    <ShortUrlDetailLink shortUrl={shortUrl} suffix="visits" asLink={asLink}>
       <strong
         className={classNames('short-url-visits-count__amount', { 'short-url-visits-count__amount--big': active })}
       >
