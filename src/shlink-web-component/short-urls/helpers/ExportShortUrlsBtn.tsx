@@ -1,8 +1,6 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
 import type { ReportExporter } from '../../../common/services/ReportExporter';
-import type { SelectedServer } from '../../../servers/data';
-import { isServerWithId } from '../../../servers/data';
 import { ExportBtn } from '../../../utils/ExportBtn';
 import { useToggle } from '../../../utils/helpers/hooks';
 import type { ShlinkApiClient } from '../../api-contract';
@@ -13,23 +11,15 @@ export interface ExportShortUrlsBtnProps {
   amount?: number;
 }
 
-interface ExportShortUrlsBtnConnectProps extends ExportShortUrlsBtnProps {
-  selectedServer: SelectedServer;
-}
-
 const itemsPerPage = 20;
 
 export const ExportShortUrlsBtn = (
   apiClient: ShlinkApiClient,
   { exportShortUrls }: ReportExporter,
-): FC<ExportShortUrlsBtnConnectProps> => ({ amount = 0, selectedServer }) => {
+): FC<ExportShortUrlsBtnProps> => ({ amount = 0 }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
   const [loading,, startLoading, stopLoading] = useToggle();
   const exportAllUrls = useCallback(async () => {
-    if (!isServerWithId(selectedServer)) {
-      return;
-    }
-
     const totalPages = amount / itemsPerPage;
     const loadAllUrls = async (page = 1): Promise<ShortUrl[]> => {
       const { data } = await apiClient.listShortUrls(
@@ -63,7 +53,7 @@ export const ExportShortUrlsBtn = (
       };
     }));
     stopLoading();
-  }, [selectedServer]);
+  }, []);
 
   return <ExportBtn loading={loading} className="btn-md-block" amount={amount} onClick={exportAllUrls} />;
 };

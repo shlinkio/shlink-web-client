@@ -1,11 +1,12 @@
 import { isEmpty, pipe } from 'ramda';
 import { useMemo } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { TagsFilteringMode } from '../../../api/types';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { orderToString, stringToOrder } from '../../../utils/helpers/ordering';
 import { parseQuery, stringifyQuery } from '../../../utils/helpers/query';
 import type { BooleanString } from '../../../utils/utils';
 import { parseOptionalBooleanToString } from '../../../utils/utils';
+import type { TagsFilteringMode } from '../../api-contract';
+import { useRoutesPrefix } from '../../utils/routesPrefix';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 
 interface ShortUrlsQueryCommon {
@@ -36,7 +37,7 @@ type ToFirstPage = (extra: Partial<ShortUrlsFiltering>) => void;
 export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
   const navigate = useNavigate();
   const { search } = useLocation();
-  const { serverId = '' } = useParams<{ serverId: string }>();
+  const routesPrefix = useRoutesPrefix();
 
   const filtering = useMemo(
     pipe(
@@ -70,7 +71,7 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
     const stringifiedQuery = stringifyQuery(query);
     const queryString = isEmpty(stringifiedQuery) ? '' : `?${stringifiedQuery}`;
 
-    navigate(`/server/${serverId}/list-short-urls/1${queryString}`);
+    navigate(`${routesPrefix}/list-short-urls/1${queryString}`);
   };
 
   return [filtering, toFirstPageWithExtra];

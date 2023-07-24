@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardText, CardTitle, UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../../utils/helpers/hooks';
+import { useElementRef } from '../../../utils/helpers/hooks';
 import './HighlightCard.scss';
 
 export type HighlightCardProps = PropsWithChildren<{

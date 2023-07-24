@@ -1,4 +1,3 @@
-import type { SelectedServer } from '../../../servers/data';
 import type { Order } from '../../../utils/helpers/ordering';
 import type { SimplifiedTag } from './index';
 
@@ -14,5 +13,4 @@ export type TagsOrder = Order<TagsOrderableFields>;
 
 export interface TagsListChildrenProps {
   sortedTags: SimplifiedTag[];
-  selectedServer: SelectedServer;
 }

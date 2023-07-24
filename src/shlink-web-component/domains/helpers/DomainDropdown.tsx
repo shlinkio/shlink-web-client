@@ -3,11 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import type { SelectedServer } from '../../../servers/data';
-import { getServerId } from '../../../servers/data';
 import { useToggle } from '../../../utils/helpers/hooks';
 import { RowDropdownBtn } from '../../../utils/RowDropdownBtn';
 import { useFeature } from '../../utils/features';
+import { useRoutesPrefix } from '../../utils/routesPrefix';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
 import type { Domain } from '../data';
 import type { EditDomainRedirects } from '../reducers/domainRedirects';
@@ -16,22 +15,21 @@ import { EditDomainRedirectsModal } from './EditDomainRedirectsModal';
 interface DomainDropdownProps {
   domain: Domain;
   editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
-  selectedServer: SelectedServer;
 }
 
-export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedirects, selectedServer }) => {
+export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedirects }) => {
   const [isModalOpen, toggleModal] = useToggle();
   const { isDefault } = domain;
   const canBeEdited = !isDefault || useFeature('defaultDomainRedirectsEdition');
   const withVisits = useFeature('domainVisits');
-  const serverId = getServerId(selectedServer);
+  const routesPrefix = useRoutesPrefix();
 
   return (
     <RowDropdownBtn>
       {withVisits && (
         <DropdownItem
           tag={Link}
-          to={`/server/${serverId}/domain/${domain.domain}${domain.isDefault ? `_${DEFAULT_DOMAIN}` : ''}/visits`}
+          to={`${routesPrefix}/domain/${domain.domain}${domain.isDefault ? `_${DEFAULT_DOMAIN}` : ''}/visits`}
         >
           <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
         </DropdownItem>

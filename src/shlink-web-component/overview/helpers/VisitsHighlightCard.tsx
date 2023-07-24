@@ -1,6 +1,6 @@
 import type { FC } from 'react';
-import type { PartialVisitsSummary } from '../../shlink-web-component/visits/reducers/visitsOverview';
-import { prettify } from '../../utils/helpers/numbers';
+import { prettify } from '../../../utils/helpers/numbers';
+import type { PartialVisitsSummary } from '../../visits/reducers/visitsOverview';
 import type { HighlightCardProps } from './HighlightCard';
 import { HighlightCard } from './HighlightCard';
 

@@ -19,7 +19,7 @@ export interface TagsTableProps extends TagsListChildrenProps {
 const TAGS_PER_PAGE = 20; // TODO Allow customizing this value in settings
 
 export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
-  { sortedTags, selectedServer, orderByColumn, currentOrder }: TagsTableProps,
+  { sortedTags, orderByColumn, currentOrder }: TagsTableProps,
 ) => {
   const isFirstLoad = useRef(true);
   const { search } = useLocation();
@@ -57,7 +57,7 @@ export const TagsTable = (TagsTableRow: FC<TagsTableRowProps>) => (
         </thead>
         <tbody>
           {currentPage.length === 0 && <tr><td colSpan={4} className="text-center">No results found</td></tr>}
-          {currentPage.map((tag) => <TagsTableRow key={tag.tag} tag={tag} selectedServer={selectedServer} />)}
+          {currentPage.map((tag) => <TagsTableRow key={tag.tag} tag={tag} />)}
         </tbody>
       </table>
 

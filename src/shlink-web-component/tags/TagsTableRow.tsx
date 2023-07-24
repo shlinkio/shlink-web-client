@@ -3,28 +3,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import type { SelectedServer } from '../../servers/data';
-import { getServerId } from '../../servers/data';
 import { useToggle } from '../../utils/helpers/hooks';
 import { prettify } from '../../utils/helpers/numbers';
 import { RowDropdownBtn } from '../../utils/RowDropdownBtn';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
+import { useRoutesPrefix } from '../utils/routesPrefix';
 import type { SimplifiedTag, TagModalProps } from './data';
 import { TagBullet } from './helpers/TagBullet';
 
 export interface TagsTableRowProps {
   tag: SimplifiedTag;
-  selectedServer: SelectedServer;
 }
 
 export const TagsTableRow = (
   DeleteTagConfirmModal: FC<TagModalProps>,
   EditTagModal: FC<TagModalProps>,
   colorGenerator: ColorGenerator,
-) => ({ tag, selectedServer }: TagsTableRowProps) => {
+) => ({ tag }: TagsTableRowProps) => {
   const [isDeleteModalOpen, toggleDelete] = useToggle();
   const [isEditModalOpen, toggleEdit] = useToggle();
-  const serverId = getServerId(selectedServer);
+  const routesPrefix = useRoutesPrefix();
 
   return (
     <tr className="responsive-table__row">
@@ -32,12 +30,12 @@ export const TagsTableRow = (
         <TagBullet tag={tag.tag} colorGenerator={colorGenerator} /> {tag.tag}
       </th>
       <td className="responsive-table__cell text-lg-end" data-th="Short URLs">
-        <Link to={`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}>
+        <Link to={`${routesPrefix}/list-short-urls/1?tags=${encodeURIComponent(tag.tag)}`}>
           {prettify(tag.shortUrls)}
         </Link>
       </td>
       <td className="responsive-table__cell text-lg-end" data-th="Visits">
-        <Link to={`/server/${serverId}/tag/${tag.tag}/visits`}>
+        <Link to={`${routesPrefix}/tag/${tag.tag}/visits`}>
           {prettify(tag.visits)}
         </Link>
       </td>

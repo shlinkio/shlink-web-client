@@ -2,12 +2,8 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
-import type { ShlinkShortUrlsListParams } from '../../api/types';
-import type { SelectedServer } from '../../servers/data';
-import { getServerId } from '../../servers/data';
-import { HighlightCard } from '../../servers/helpers/HighlightCard';
-import { VisitsHighlightCard } from '../../servers/helpers/VisitsHighlightCard';
 import { prettify } from '../../utils/helpers/numbers';
+import type { ShlinkShortUrlsListParams } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
 import type { CreateShortUrlProps } from '../short-urls/CreateShortUrl';
@@ -16,15 +12,17 @@ import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
 import { useFeature } from '../utils/features';
+import { useRoutesPrefix } from '../utils/routesPrefix';
 import { useSetting } from '../utils/settings';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';
+import { HighlightCard } from './helpers/HighlightCard';
+import { VisitsHighlightCard } from './helpers/VisitsHighlightCard';
 
 interface OverviewConnectProps {
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
   listTags: Function;
   tagsList: TagsList;
-  selectedServer: SelectedServer;
   visitsOverview: VisitsOverview;
   loadVisitsOverview: Function;
 }
@@ -37,14 +35,13 @@ export const Overview = (
   listShortUrls,
   listTags,
   tagsList,
-  selectedServer,
   loadVisitsOverview,
   visitsOverview,
 }: OverviewConnectProps) => {
   const { loading, shortUrls } = shortUrlsList;
   const { loading: loadingTags } = tagsList;
   const { loading: loadingVisits, nonOrphanVisits, orphanVisits } = visitsOverview;
-  const serverId = getServerId(selectedServer);
+  const routesPrefix = useRoutesPrefix();
   const linkToNonOrphanVisits = useFeature('nonOrphanVisits');
   const navigate = useNavigate();
   const visits = useSetting('visits');
@@ -61,7 +58,7 @@ export const Overview = (
         <div className="col-lg-6 col-xl-3 mb-3">
           <VisitsHighlightCard
             title="Visits"
-            link={linkToNonOrphanVisits ? `/server/${serverId}/non-orphan-visits` : undefined}
+            link={linkToNonOrphanVisits ? `${routesPrefix}/non-orphan-visits` : undefined}
             excludeBots={visits?.excludeBots ?? false}
             loading={loadingVisits}
             visitsSummary={nonOrphanVisits}
@@ -70,19 +67,19 @@ export const Overview = (
         <div className="col-lg-6 col-xl-3 mb-3">
           <VisitsHighlightCard
             title="Orphan visits"
-            link={`/server/${serverId}/orphan-visits`}
+            link={`${routesPrefix}/orphan-visits`}
             excludeBots={visits?.excludeBots ?? false}
             loading={loadingVisits}
             visitsSummary={orphanVisits}
           />
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Short URLs" link={`/server/${serverId}/list-short-urls/1`}>
+          <HighlightCard title="Short URLs" link={`${routesPrefix}/list-short-urls/1`}>
             {loading ? 'Loading...' : prettify(shortUrls?.pagination.totalItems ?? 0)}
           </HighlightCard>
         </div>
         <div className="col-lg-6 col-xl-3 mb-3">
-          <HighlightCard title="Tags" link={`/server/${serverId}/manage-tags`}>
+          <HighlightCard title="Tags" link={`${routesPrefix}/manage-tags`}>
             {loadingTags ? 'Loading...' : prettify(tagsList.tags.length)}
           </HighlightCard>
         </div>
@@ -92,7 +89,7 @@ export const Overview = (
         <CardHeader>
           <span className="d-sm-none">Create a short URL</span>
           <h5 className="d-none d-sm-inline">Create a short URL</h5>
-          <Link className="float-end" to={`/server/${serverId}/create-short-url`}>Advanced options &raquo;</Link>
+          <Link className="float-end" to={`${routesPrefix}/create-short-url`}>Advanced options &raquo;</Link>
         </CardHeader>
         <CardBody>
           <CreateShortUrl basicMode />
@@ -102,13 +99,13 @@ export const Overview = (
         <CardHeader>
           <span className="d-sm-none">Recently created URLs</span>
           <h5 className="d-none d-sm-inline">Recently created URLs</h5>
-          <Link className="float-end" to={`/server/${serverId}/list-short-urls/1`}>See all &raquo;</Link>
+          <Link className="float-end" to={`${routesPrefix}/list-short-urls/1`}>See all &raquo;</Link>
         </CardHeader>
         <CardBody>
           <ShortUrlsTable
             shortUrlsList={shortUrlsList}
             className="mb-0"
-            onTagClick={(tag) => navigate(`/server/${serverId}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
+            onTagClick={(tag) => navigate(`${routesPrefix}/list-short-urls/1?tags=${encodeURIComponent(tag)}`)}
           />
         </CardBody>
       </Card>

@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import type { SelectedServer } from '../../servers/data';
 import { Message } from '../../utils/Message';
 import { Result } from '../../utils/Result';
 import { SearchField } from '../../utils/SearchField';
@@ -16,13 +15,12 @@ interface ManageDomainsProps {
   editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
   checkDomainHealth: (domain: string) => void;
   domainsList: DomainsList;
-  selectedServer: SelectedServer;
 }
 
 const headers = ['', 'Domain', 'Base path redirect', 'Regular 404 redirect', 'Invalid short URL redirect', '', ''];
 
 export const ManageDomains: FC<ManageDomainsProps> = (
-  { listDomains, domainsList, filterDomains, editDomainRedirects, checkDomainHealth, selectedServer },
+  { listDomains, domainsList, filterDomains, editDomainRedirects, checkDomainHealth },
 ) => {
   const { filteredDomains: domains, defaultRedirects, loading, error, errorData } = domainsList;
   const resolvedDefaultRedirects = defaultRedirects ?? domains.find(({ isDefault }) => isDefault)?.redirects;
@@ -59,7 +57,6 @@ export const ManageDomains: FC<ManageDomainsProps> = (
                 editDomainRedirects={editDomainRedirects}
                 checkDomainHealth={checkDomainHealth}
                 defaultRedirects={resolvedDefaultRedirects}
-                selectedServer={selectedServer}
               />
             ))}
           </tbody>

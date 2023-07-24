@@ -3,9 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import type { ShlinkDomainRedirects } from '../../api/types';
-import type { SelectedServer } from '../../servers/data';
 import type { OptionalString } from '../../utils/utils';
+import type { ShlinkDomainRedirects } from '../api-contract';
 import type { Domain } from './data';
 import { DomainDropdown } from './helpers/DomainDropdown';
 import { DomainStatusIcon } from './helpers/DomainStatusIcon';
@@ -16,7 +15,6 @@ interface DomainRowProps {
   defaultRedirects?: ShlinkDomainRedirects;
   editDomainRedirects: (redirects: EditDomainRedirects) => Promise<void>;
   checkDomainHealth: (domain: string) => void;
-  selectedServer: SelectedServer;
 }
 
 const Nr: FC<{ fallback: OptionalString }> = ({ fallback }) => (
@@ -33,7 +31,7 @@ const DefaultDomain: FC = () => (
 );
 
 export const DomainRow: FC<DomainRowProps> = (
-  { domain, editDomainRedirects, checkDomainHealth, defaultRedirects, selectedServer },
+  { domain, editDomainRedirects, checkDomainHealth, defaultRedirects },
 ) => {
   const { domain: authority, isDefault, redirects, status } = domain;
 
@@ -58,7 +56,7 @@ export const DomainRow: FC<DomainRowProps> = (
         <DomainStatusIcon status={status} />
       </td>
       <td className="responsive-table__cell text-end">
-        <DomainDropdown domain={domain} editDomainRedirects={editDomainRedirects} selectedServer={selectedServer} />
+        <DomainDropdown domain={domain} editDomainRedirects={editDomainRedirects} />
       </td>
     </tr>
   );

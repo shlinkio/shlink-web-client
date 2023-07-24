@@ -3,7 +3,6 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
 import { ShlinkApiError } from '../../api/ShlinkApiError';
-import type { SelectedServer } from '../../servers/data';
 import { determineOrderDir, sortList } from '../../utils/helpers/ordering';
 import { Message } from '../../utils/Message';
 import { OrderingDropdown } from '../../utils/OrderingDropdown';
@@ -22,11 +21,10 @@ export interface TagsListProps {
   filterTags: (searchTerm: string) => void;
   forceListTags: Function;
   tagsList: TagsListState;
-  selectedServer: SelectedServer;
 }
 
 export const TagsList = (TagsTable: FC<TagsTableProps>) => boundToMercureHub((
-  { filterTags, forceListTags, tagsList, selectedServer }: TagsListProps,
+  { filterTags, forceListTags, tagsList }: TagsListProps,
 ) => {
   const settings = useSettings();
   const [order, setOrder] = useState<TagsOrder>(settings.tags?.defaultOrdering ?? {});
@@ -78,7 +76,6 @@ export const TagsList = (TagsTable: FC<TagsTableProps>) => boundToMercureHub((
     return (
       <TagsTable
         sortedTags={sortedTags}
-        selectedServer={selectedServer}
         currentOrder={order}
         orderByColumn={orderByColumn}
       />
