@@ -1,4 +1,4 @@
-name: 'Q&A'
+name: 'Bug'
 description: Something on shlink is broken or not working as documented?
 labels: ['bug']
 body:
