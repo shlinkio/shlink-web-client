@@ -14,10 +14,10 @@ const initialState: VisitsInfo = {
   progress: 0,
 };
 
-export const getNonOrphanVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
+export const getNonOrphanVisits = (apiClientFactory: () => ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getNonOrphanVisits`,
   createLoaders: ({ query = {}, doIntervalFallback = false }) => {
-    const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = apiClient;
+    const { getNonOrphanVisits: shlinkGetNonOrphanVisits } = apiClientFactory();
     const visitsLoader = async (page: number, itemsPerPage: number) =>
       shlinkGetNonOrphanVisits({ ...query, page, itemsPerPage });
     const lastVisitLoader = lastVisitLoaderForLoader(doIntervalFallback, shlinkGetNonOrphanVisits);

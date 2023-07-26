@@ -1,9 +1,9 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { isEmpty, reject } from 'ramda';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ProblemDetailsError, ShlinkApiClient, ShlinkTags } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
 import type { createShortUrl } from '../../short-urls/reducers/shortUrlCreation';
+import { createAsyncThunk } from '../../utils/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
 import type { CreateVisit } from '../../visits/types';
 import type { TagStats } from '../data';
@@ -80,7 +80,7 @@ const calculateVisitsPerTag = (createdVisits: CreateVisit[]): TagIncrease[] => O
   }, {}),
 );
 
-export const listTags = (apiClient: ShlinkApiClient, force = true) => createAsyncThunk(
+export const listTags = (apiClientFactory: () => ShlinkApiClient, force = true) => createAsyncThunk(
   `${REDUCER_PREFIX}/listTags`,
   async (_: void, { getState }): Promise<ListTags> => {
     const { tagsList } = getState();
@@ -89,7 +89,7 @@ export const listTags = (apiClient: ShlinkApiClient, force = true) => createAsyn
       return tagsList;
     }
 
-    const { tags, stats }: ShlinkTags = await apiClient.tagsStats();
+    const { tags, stats }: ShlinkTags = await apiClientFactory().tagsStats();
     const processedStats = stats.reduce<TagsStatsMap>((acc, { tag, ...rest }) => {
       acc[tag] = rest;
       return acc;

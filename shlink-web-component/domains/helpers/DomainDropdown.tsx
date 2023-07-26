@@ -19,8 +19,6 @@ interface DomainDropdownProps {
 
 export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedirects }) => {
   const [isModalOpen, toggleModal] = useToggle();
-  const { isDefault } = domain;
-  const canBeEdited = !isDefault;
   const withVisits = useFeature('domainVisits');
   const routesPrefix = useRoutesPrefix();
 
@@ -34,7 +32,7 @@ export const DomainDropdown: FC<DomainDropdownProps> = ({ domain, editDomainRedi
           <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
         </DropdownItem>
       )}
-      <DropdownItem disabled={!canBeEdited} onClick={!canBeEdited ? undefined : toggleModal}>
+      <DropdownItem onClick={toggleModal}>
         <FontAwesomeIcon fixedWidth icon={editIcon} /> Edit redirects
       </DropdownItem>
 

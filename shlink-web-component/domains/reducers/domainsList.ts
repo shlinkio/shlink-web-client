@@ -1,8 +1,8 @@
 import type { AsyncThunk, SliceCaseReducers } from '@reduxjs/toolkit';
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ProblemDetailsError, ShlinkApiClient, ShlinkDomainRedirects } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
+import { createAsyncThunk } from '../../utils/redux';
 import type { Domain, DomainStatus } from '../data';
 import type { EditDomainRedirects } from './domainRedirects';
 
@@ -41,11 +41,11 @@ export const replaceStatusOnDomain = (domain: string, status: DomainStatus) =>
   (d: Domain): Domain => (d.domain !== domain ? d : { ...d, status });
 
 export const domainsListReducerCreator = (
-  apiClient: ShlinkApiClient,
+  apiClientFactory: () => ShlinkApiClient,
   editDomainRedirects: AsyncThunk<EditDomainRedirects, any, any>,
 ) => {
   const listDomains = createAsyncThunk(`${REDUCER_PREFIX}/listDomains`, async (): Promise<ListDomains> => {
-    const { data, defaultRedirects } = await apiClient.listDomains();
+    const { data, defaultRedirects } = await apiClientFactory().listDomains();
 
     return {
       domains: data.map((domain): Domain => ({ ...domain, status: 'validating' })),
@@ -57,7 +57,7 @@ export const domainsListReducerCreator = (
     `${REDUCER_PREFIX}/checkDomainHealth`,
     async (domain: string): Promise<ValidateDomain> => {
       try {
-        const { status } = await apiClient.health(domain);
+        const { status } = await apiClientFactory().health(domain);
         return { domain, status: status === 'pass' ? 'valid' : 'invalid' };
       } catch (e) {
         return { domain, status: 'invalid' };

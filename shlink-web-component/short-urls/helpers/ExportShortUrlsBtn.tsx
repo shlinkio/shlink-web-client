@@ -14,7 +14,7 @@ export interface ExportShortUrlsBtnProps {
 const itemsPerPage = 20;
 
 export const ExportShortUrlsBtn = (
-  apiClient: ShlinkApiClient,
+  apiClientFactory: () => ShlinkApiClient,
   { exportShortUrls }: ReportExporter,
 ): FC<ExportShortUrlsBtnProps> => ({ amount = 0 }) => {
   const [{ tags, search, startDate, endDate, orderBy, tagsMode }] = useShortUrlsQuery();
@@ -22,7 +22,7 @@ export const ExportShortUrlsBtn = (
   const exportAllUrls = useCallback(async () => {
     const totalPages = amount / itemsPerPage;
     const loadAllUrls = async (page = 1): Promise<ShortUrl[]> => {
-      const { data } = await apiClient.listShortUrls(
+      const { data } = await apiClientFactory().listShortUrls(
         { page: `${page}`, tags, searchTerm: search, startDate, endDate, orderBy, tagsMode, itemsPerPage },
       );
 

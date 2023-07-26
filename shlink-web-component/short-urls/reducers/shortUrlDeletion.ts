@@ -1,7 +1,7 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ProblemDetailsError, ShlinkApiClient } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
+import { createAsyncThunk } from '../../utils/redux';
 import type { ShortUrl, ShortUrlIdentifier } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlDeletion';
@@ -21,10 +21,10 @@ const initialState: ShortUrlDeletion = {
   error: false,
 };
 
-export const deleteShortUrl = (apiClient: ShlinkApiClient) => createAsyncThunk(
+export const deleteShortUrl = (apiClientFactory: () => ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/deleteShortUrl`,
   async ({ shortCode, domain }: ShortUrlIdentifier): Promise<ShortUrlIdentifier> => {
-    await apiClient.deleteShortUrl(shortCode, domain);
+    await apiClientFactory().deleteShortUrl(shortCode, domain);
     return { shortCode, domain };
   },
 );

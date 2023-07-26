@@ -54,7 +54,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('QrCodeModal', QrCodeModal, 'ImageDownloader');
   bottle.serviceFactory('ShortUrlsFilteringBar', ShortUrlsFilteringBar, 'ExportShortUrlsBtn', 'TagsSelector');
 
-  bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'apiClient', 'ReportExporter');
+  bottle.serviceFactory('ExportShortUrlsBtn', ExportShortUrlsBtn, 'apiClientFactory', 'ReportExporter');
 
   // Reducers
   bottle.serviceFactory(
@@ -75,20 +75,20 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('shortUrlDeletionReducerCreator', shortUrlDeletionReducerCreator, 'deleteShortUrl');
   bottle.serviceFactory('shortUrlDeletionReducer', prop('reducer'), 'shortUrlDeletionReducerCreator');
 
-  bottle.serviceFactory('shortUrlDetailReducerCreator', shortUrlDetailReducerCreator, 'apiClient');
+  bottle.serviceFactory('shortUrlDetailReducerCreator', shortUrlDetailReducerCreator, 'apiClientFactory');
   bottle.serviceFactory('shortUrlDetailReducer', prop('reducer'), 'shortUrlDetailReducerCreator');
 
   // Actions
-  bottle.serviceFactory('listShortUrls', listShortUrls, 'apiClient');
+  bottle.serviceFactory('listShortUrls', listShortUrls, 'apiClientFactory');
 
-  bottle.serviceFactory('createShortUrl', createShortUrl, 'apiClient');
+  bottle.serviceFactory('createShortUrl', createShortUrl, 'apiClientFactory');
   bottle.serviceFactory('resetCreateShortUrl', prop('resetCreateShortUrl'), 'shortUrlCreationReducerCreator');
 
-  bottle.serviceFactory('deleteShortUrl', deleteShortUrl, 'apiClient');
+  bottle.serviceFactory('deleteShortUrl', deleteShortUrl, 'apiClientFactory');
   bottle.serviceFactory('resetDeleteShortUrl', prop('resetDeleteShortUrl'), 'shortUrlDeletionReducerCreator');
   bottle.serviceFactory('shortUrlDeleted', () => shortUrlDeleted);
 
   bottle.serviceFactory('getShortUrlDetail', prop('getShortUrlDetail'), 'shortUrlDetailReducerCreator');
 
-  bottle.serviceFactory('editShortUrl', editShortUrl, 'apiClient');
+  bottle.serviceFactory('editShortUrl', editShortUrl, 'apiClientFactory');
 };

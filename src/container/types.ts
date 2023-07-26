@@ -1,6 +1,6 @@
+import type { Settings } from '../../shlink-web-component';
 import type { Sidebar } from '../common/reducers/sidebar';
 import type { SelectedServer, ServersMap } from '../servers/data';
-import type { Settings } from '../settings/reducers/settings';
 
 export interface ShlinkState {
   servers: ServersMap;

@@ -35,6 +35,7 @@ export default defineConfig({
       reporter: ['text', 'text-summary', 'html', 'clover'],
       include: [
         'src/**/*.{ts,tsx}',
+        'shlink-web-component/**/*.{ts,tsx}',
         '!src/*.{ts,tsx}',
         '!src/reducers/index.ts',
         '!src/**/provideServices.ts',

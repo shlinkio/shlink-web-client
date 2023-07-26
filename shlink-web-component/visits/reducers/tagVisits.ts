@@ -23,10 +23,10 @@ const initialState: TagVisits = {
   progress: 0,
 };
 
-export const getTagVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
+export const getTagVisits = (apiClientFactory: () => ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getTagVisits`,
   createLoaders: ({ tag, query = {}, doIntervalFallback = false }: LoadTagVisits) => {
-    const { getTagVisits: getVisits } = apiClient;
+    const { getTagVisits: getVisits } = apiClientFactory();
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
       tag,
       { ...query, page, itemsPerPage },

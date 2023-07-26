@@ -36,14 +36,17 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('tagEditReducerCreator', tagEditReducerCreator, 'editTag');
   bottle.serviceFactory('tagEditReducer', prop('reducer'), 'tagEditReducerCreator');
 
-  bottle.serviceFactory('tagDeleteReducerCreator', tagDeleteReducerCreator, 'apiClient');
+  bottle.serviceFactory('tagDeleteReducerCreator', tagDeleteReducerCreator, 'apiClientFactory');
   bottle.serviceFactory('tagDeleteReducer', prop('reducer'), 'tagDeleteReducerCreator');
 
   bottle.serviceFactory('tagsListReducerCreator', tagsListReducerCreator, 'listTags', 'createShortUrl');
   bottle.serviceFactory('tagsListReducer', prop('reducer'), 'tagsListReducerCreator');
 
   // Actions
-  const listTagsActionFactory = (force: boolean) => ({ apiClient }: IContainer) => listTags(apiClient, force);
+  const listTagsActionFactory = (force: boolean) => ({ apiClientFactory }: IContainer) => listTags(
+    apiClientFactory,
+    force,
+  );
 
   bottle.factory('listTags', listTagsActionFactory(false));
   bottle.factory('forceListTags', listTagsActionFactory(true));
@@ -52,6 +55,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('deleteTag', prop('deleteTag'), 'tagDeleteReducerCreator');
   bottle.serviceFactory('tagDeleted', () => tagDeleted);
 
-  bottle.serviceFactory('editTag', editTag, 'apiClient', 'ColorGenerator');
+  bottle.serviceFactory('editTag', editTag, 'apiClientFactory', 'ColorGenerator');
   bottle.serviceFactory('tagEdited', () => tagEdited);
 };

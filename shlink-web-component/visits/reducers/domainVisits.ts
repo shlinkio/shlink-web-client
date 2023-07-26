@@ -26,10 +26,10 @@ const initialState: DomainVisits = {
   progress: 0,
 };
 
-export const getDomainVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
+export const getDomainVisits = (apiClientFactory: () => ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getDomainVisits`,
   createLoaders: ({ domain, query = {}, doIntervalFallback = false }: LoadDomainVisits) => {
-    const { getDomainVisits: getVisits } = apiClient;
+    const { getDomainVisits: getVisits } = apiClientFactory();
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits(
       domain,
       { ...query, page, itemsPerPage },

@@ -1,11 +1,11 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { flatten, prop, range, splitEvery } from 'ramda';
-import type { ShlinkState } from '../../../src/container/types';
 import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
 import { dateToMatchingInterval } from '../../../src/utils/helpers/dateIntervals';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
+import type { RootState } from '../../container/store';
+import { createAsyncThunk } from '../../utils/redux';
 import type { CreateVisit, Visit } from '../types';
 import type { LoadVisits, VisitsInfo, VisitsLoaded } from './types';
 import { createNewVisits } from './visitCreation';
@@ -24,7 +24,7 @@ interface VisitsAsyncThunkOptions<T extends LoadVisits = LoadVisits, R extends V
   typePrefix: string;
   createLoaders: (params: T) => [VisitsLoader, LastVisitLoader];
   getExtraFulfilledPayload: (params: T) => Partial<R>;
-  shouldCancel: (getState: () => ShlinkState) => boolean;
+  shouldCancel: (getState: () => RootState) => boolean;
 }
 
 export const createVisitsAsyncThunk = <T extends LoadVisits = LoadVisits, R extends VisitsLoaded = VisitsLoaded>(

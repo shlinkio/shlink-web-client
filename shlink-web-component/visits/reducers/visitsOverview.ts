@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ShlinkApiClient, ShlinkVisitsOverview } from '../../api-contract';
+import { createAsyncThunk } from '../../utils/redux';
 import type { CreateVisit } from '../types';
 import { groupNewVisitsByType } from '../types/helpers';
 import { createNewVisits } from './visitCreation';
@@ -39,9 +39,9 @@ const initialState: VisitsOverview = {
 
 const countBots = (visits: CreateVisit[]) => visits.filter(({ visit }) => visit.potentialBot).length;
 
-export const loadVisitsOverview = (apiClient: ShlinkApiClient) => createAsyncThunk(
+export const loadVisitsOverview = (apiClientFactory: () => ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/loadVisitsOverview`,
-  (): Promise<ParsedVisitsOverview> => apiClient.getVisitsOverview().then(
+  (): Promise<ParsedVisitsOverview> => apiClientFactory().getVisitsOverview().then(
     ({ nonOrphanVisits, visitsCount, orphanVisits, orphanVisitsCount }) => ({
       nonOrphanVisits: {
         total: nonOrphanVisits?.total ?? visitsCount,

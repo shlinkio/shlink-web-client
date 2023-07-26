@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ShlinkApiClient, ShlinkMercureInfo } from '../../api-contract';
+import { createAsyncThunk } from '../../utils/redux';
 
 const REDUCER_PREFIX = 'shlink/mercure';
 
@@ -15,7 +15,7 @@ const initialState: MercureInfo = {
   error: false,
 };
 
-export const mercureInfoReducerCreator = (apiClient: ShlinkApiClient) => {
+export const mercureInfoReducerCreator = (apiClientFactory: () => ShlinkApiClient) => {
   const loadMercureInfo = createAsyncThunk(
     `${REDUCER_PREFIX}/loadMercureInfo`,
     (): Promise<ShlinkMercureInfo> =>
@@ -25,7 +25,7 @@ export const mercureInfoReducerCreator = (apiClient: ShlinkApiClient) => {
     //   throw new Error('Real time updates not enabled');
     // }
 
-      apiClient.mercureInfo()
+      apiClientFactory().mercureInfo()
     ,
   );
 

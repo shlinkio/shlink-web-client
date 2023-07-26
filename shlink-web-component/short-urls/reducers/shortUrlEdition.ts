@@ -1,8 +1,8 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { createAsyncThunk } from '../../../src/utils/helpers/redux';
 import type { ProblemDetailsError, ShlinkApiClient } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
+import { createAsyncThunk } from '../../utils/redux';
 import type { EditShortUrlData, ShortUrl, ShortUrlIdentifier } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlEdition';
@@ -27,10 +27,10 @@ const initialState: ShortUrlEdition = {
   error: false,
 };
 
-export const editShortUrl = (apiClient: ShlinkApiClient) => createAsyncThunk(
+export const editShortUrl = (apiClientFactory: () => ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/editShortUrl`,
   ({ shortCode, domain, data }: EditShortUrl): Promise<ShortUrl> =>
-    apiClient.updateShortUrl(shortCode, domain, data as any) // TODO parse dates
+    apiClientFactory().updateShortUrl(shortCode, domain, data as any) // TODO parse dates
   ,
 );
 

@@ -21,7 +21,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory(
     'domainsListReducerCreator',
     domainsListReducerCreator,
-    'apiClient',
+    'apiClientFactory',
     'editDomainRedirects',
   );
   bottle.serviceFactory('domainsListReducer', prop('reducer'), 'domainsListReducerCreator');
@@ -29,6 +29,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Actions
   bottle.serviceFactory('listDomains', prop('listDomains'), 'domainsListReducerCreator');
   bottle.serviceFactory('filterDomains', prop('filterDomains'), 'domainsListReducerCreator');
-  bottle.serviceFactory('editDomainRedirects', editDomainRedirects, 'apiClient');
+  bottle.serviceFactory('editDomainRedirects', editDomainRedirects, 'apiClientFactory');
   bottle.serviceFactory('checkDomainHealth', prop('checkDomainHealth'), 'domainsListReducerCreator');
 };

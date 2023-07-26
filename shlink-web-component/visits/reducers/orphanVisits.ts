@@ -23,10 +23,10 @@ const initialState: VisitsInfo = {
 const matchesType = (visit: OrphanVisit, orphanVisitsType?: OrphanVisitType) =>
   !orphanVisitsType || orphanVisitsType === visit.type;
 
-export const getOrphanVisits = (apiClient: ShlinkApiClient) => createVisitsAsyncThunk({
+export const getOrphanVisits = (apiClientFactory: () => ShlinkApiClient) => createVisitsAsyncThunk({
   typePrefix: `${REDUCER_PREFIX}/getOrphanVisits`,
   createLoaders: ({ orphanVisitsType, query = {}, doIntervalFallback = false }: LoadOrphanVisits) => {
-    const { getOrphanVisits: getVisits } = apiClient;
+    const { getOrphanVisits: getVisits } = apiClientFactory();
     const visitsLoader = async (page: number, itemsPerPage: number) => getVisits({ ...query, page, itemsPerPage })
       .then((result) => {
         const visits = result.data.filter((visit) => isOrphanVisit(visit) && matchesType(visit, orphanVisitsType));
