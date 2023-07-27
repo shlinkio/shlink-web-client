@@ -24,15 +24,13 @@ let apiClientRef: ShlinkApiClient;
 
 export const createShlinkWebComponent = (
   bottle: Bottle,
-): FC<ShlinkWebComponentProps> => ({ routesPrefix = '', serverVersion, settings, apiClient }) => {
+): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '' }) => {
   const features = useFeatures(serverVersion);
   const mainContent = useRef<ReactNode>();
   const [theStore, setStore] = useState<Store | undefined>();
 
-  // Set client on every re-render
-  apiClientRef = apiClient;
-
   useEffect(() => {
+    apiClientRef = apiClient;
     bottle.value('apiClientFactory', () => apiClientRef);
 
     // It's important to not try to resolve services before the API client has been registered, as many other services
@@ -43,8 +41,8 @@ export const createShlinkWebComponent = (
     setStore(store);
 
     // Load mercure info
-    store.dispatch(loadMercureInfo());
-  }, []);
+    store.dispatch(loadMercureInfo(settings));
+  }, [apiClient]);
 
   return !theStore ? <></> : (
     <Provider store={theStore}>

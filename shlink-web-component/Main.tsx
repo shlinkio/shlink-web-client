@@ -10,10 +10,6 @@ import { useSwipeable, useToggle } from '../src/utils/helpers/hooks';
 import { useFeature } from './utils/features';
 import { useRoutesPrefix } from './utils/routesPrefix';
 
-type MainProps = {
-  loadMercureInfo: () => void;
-};
-
 export const Main = (
   TagsList: FC,
   ShortUrlsList: FC,
@@ -26,22 +22,17 @@ export const Main = (
   Overview: FC,
   EditShortUrl: FC,
   ManageDomains: FC,
-): FC<MainProps> => ({ loadMercureInfo }) => {
+): FC => () => {
   const location = useLocation();
   const routesPrefix = useRoutesPrefix();
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   useEffect(() => hideSidebar(), [location]);
 
-  // FIXME Re-load mercure info every time server changes
-  // useEffect(() => {
-  //   loadMercureInfo();
-  // }, []);
-
   const addDomainVisitsRoute = useFeature('domainVisits');
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 
-  // TODO Check if this is already wrapped by a router, and wrap otherwise
+  // FIXME Check if this is already wrapped by a router, and wrap otherwise
 
   return (
     <>
