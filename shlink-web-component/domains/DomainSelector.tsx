@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip } from 'reactstrap';
 import { DropdownBtn } from '../../src/utils/DropdownBtn';
-import { useToggle } from '../../src/utils/helpers/hooks';
+import { useToggle } from '../utils/helpers/hooks';
 import type { DomainsList } from './reducers/domainsList';
 import './DomainSelector.scss';
 

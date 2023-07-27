@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import type { ShlinkVisitsParams } from '../../api/types';
-import type { ReportExporter } from '../../src/common/services/ReportExporter';
 import { useGoBack } from '../../src/utils/helpers/hooks';
-import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
+import type { ShlinkVisitsParams } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
+import type { ReportExporter } from '../utils/services/ReportExporter';
 import type { LoadTagVisits, TagVisits as TagVisitsState } from './reducers/tagVisits';
 import { TagVisitsHeader } from './TagVisitsHeader';
 import type { NormalizedVisit } from './types';

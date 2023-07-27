@@ -1,5 +1,5 @@
-@import '../utils/base';
-@import '../utils/mixins/vertical-align';
+@import '../../src/utils/base';
+@import '../../src/utils/mixins/vertical-align';
 
 .aside-menu {
   width: $asideMenuWidth;

@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { useToggle } from '../../src/utils/helpers/hooks';
 import { prettify } from '../../src/utils/helpers/numbers';
 import { RowDropdownBtn } from '../../src/utils/RowDropdownBtn';
-import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
+import { useToggle } from '../utils/helpers/hooks';
 import { useRoutesPrefix } from '../utils/routesPrefix';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import type { SimplifiedTag, TagModalProps } from './data';
 import { TagBullet } from './helpers/TagBullet';
 

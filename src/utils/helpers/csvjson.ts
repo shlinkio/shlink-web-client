@@ -7,7 +7,7 @@ export const csvToJson = <T>(csvContent: string) => new Promise<T[]>((resolve) =
 
 export type CsvToJson = typeof csvToJson;
 
-const jsonParser = new Parser(); // TODO This accepts options if needed
+const jsonParser = new Parser(); // This accepts options if needed
 
 export const jsonToCsv = <T>(data: T[]): string => jsonParser.parse(data);
 

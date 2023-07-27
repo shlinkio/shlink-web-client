@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import { ColorGenerator } from '../../../shlink-web-component/utils/services/ColorGenerator';
 import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 

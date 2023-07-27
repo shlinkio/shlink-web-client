@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
 import { Tag } from '../../../shlink-web-component/tags/helpers/Tag';
-import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../../shlink-web-component/utils/services/ColorGenerator';
 import { MAIN_COLOR } from '../../../src/utils/theme';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

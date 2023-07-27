@@ -7,8 +7,8 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { useToggle } from '../../../src/utils/helpers/hooks';
 import { RowDropdownBtn } from '../../../src/utils/RowDropdownBtn';
+import { useToggle } from '../../utils/helpers/hooks';
 import type { ShortUrl, ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 

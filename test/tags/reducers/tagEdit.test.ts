@@ -1,8 +1,8 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../shlink-web-component/tags/reducers/tagEdit';
+import type { ColorGenerator } from '../../../shlink-web-component/utils/services/ColorGenerator';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
-import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 
 describe('tagEditReducer', () => {
   const oldName = 'foo';

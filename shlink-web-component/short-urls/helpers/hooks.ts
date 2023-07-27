@@ -2,10 +2,10 @@ import { isEmpty, pipe } from 'ramda';
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
-import { parseQuery, stringifyQuery } from '../../../src/utils/helpers/query';
 import type { BooleanString } from '../../../src/utils/utils';
 import { parseOptionalBooleanToString } from '../../../src/utils/utils';
 import type { TagsFilteringMode } from '../../api-contract';
+import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { useRoutesPrefix } from '../../utils/routesPrefix';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 

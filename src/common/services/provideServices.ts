@@ -10,7 +10,6 @@ import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
 import { HttpClient } from './HttpClient';
 import { ImageDownloader } from './ImageDownloader';
-import { ReportExporter } from './ReportExporter';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
@@ -20,7 +19,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   bottle.service('HttpClient', HttpClient, 'fetch');
   bottle.service('ImageDownloader', ImageDownloader, 'HttpClient', 'window');
-  bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
 
   // Components
   bottle.serviceFactory('ScrollToTop', () => ScrollToTop);

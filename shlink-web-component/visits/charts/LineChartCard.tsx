@@ -25,11 +25,11 @@ import {
 } from 'reactstrap';
 import { pointerOnHover, renderChartLabel } from '../../../src/utils/helpers/charts';
 import { STANDARD_DATE_FORMAT } from '../../../src/utils/helpers/date';
-import { useToggle } from '../../../src/utils/helpers/hooks';
 import { prettify } from '../../../src/utils/helpers/numbers';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../../src/utils/theme';
 import { ToggleSwitch } from '../../../src/utils/ToggleSwitch';
 import { rangeOf } from '../../../src/utils/utils';
+import { useToggle } from '../../utils/helpers/hooks';
 import type { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../utils';
 import './LineChartCard.scss';

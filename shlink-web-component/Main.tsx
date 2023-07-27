@@ -4,10 +4,10 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { AsideMenu } from '../src/common/AsideMenu';
 import { NotFound } from '../src/common/NotFound';
-import { useSwipeable, useToggle } from '../src/utils/helpers/hooks';
+import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
+import { useSwipeable, useToggle } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
 
 export const Main = (

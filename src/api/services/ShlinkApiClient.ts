@@ -18,9 +18,9 @@ import type {
   ShlinkVisitsParams } from '../../../shlink-web-component/api-contract';
 import { isRegularNotFound, parseApiError } from '../../../shlink-web-component/api-contract/utils';
 import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/short-urls/data';
+import { stringifyQuery } from '../../../shlink-web-component/utils/helpers/query';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { orderToString } from '../../utils/helpers/ordering';
-import { stringifyQuery } from '../../utils/helpers/query';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';
 

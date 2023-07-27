@@ -1,5 +1,5 @@
-import type { ColorGenerator } from '../../src/utils/services/ColorGenerator';
 import { Tag } from '../tags/helpers/Tag';
+import type { ColorGenerator } from '../utils/services/ColorGenerator';
 import type { TagVisits } from './reducers/tagVisits';
 import { VisitsHeader } from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';

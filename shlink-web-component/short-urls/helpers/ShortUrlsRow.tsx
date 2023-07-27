@@ -4,7 +4,7 @@ import { ExternalLink } from 'react-external-link';
 import { CopyToClipboardIcon } from '../../../src/utils/CopyToClipboardIcon';
 import { Time } from '../../../src/utils/dates/Time';
 import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
-import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
 import type { ShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';

@@ -1,6 +1,6 @@
 import { isNil } from 'ramda';
-import { rangeOf } from '../utils';
-import type { LocalStorage } from './LocalStorage';
+import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
+import { rangeOf } from '../../../src/utils/utils';
 
 const HEX_COLOR_LENGTH = 6;
 const HEX_DIGITS = '0123456789ABCDEF';
