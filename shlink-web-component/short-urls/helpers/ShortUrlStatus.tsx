@@ -5,7 +5,7 @@ import { isBefore } from 'date-fns';
 import type { FC, ReactNode } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { formatHumanFriendly, now, parseISO } from '../../../src/utils/helpers/date';
-import { useElementRef } from '../../../src/utils/helpers/hooks';
+import { useElementRef } from '../../utils/helpers/hooks';
 import type { ShortUrl } from '../data';
 
 interface ShortUrlStatusProps {

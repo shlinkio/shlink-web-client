@@ -1,4 +1,4 @@
-import { CopyToClipboardIcon } from '../../src/utils/CopyToClipboardIcon';
+import { CopyToClipboardIcon } from '../../shlink-web-component/utils/components/CopyToClipboardIcon';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<CopyToClipboardIcon />', () => {

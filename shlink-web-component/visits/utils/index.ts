@@ -1,7 +1,7 @@
 import bowser from 'bowser';
 import { zipObj } from 'ramda';
-import type { Empty } from '../../../src/utils/utils';
-import { hasValue } from '../../../src/utils/utils';
+import type { Empty } from '../../utils/helpers';
+import { hasValue } from '../../utils/helpers';
 import type { Stats, UserAgent } from '../types';
 
 const DEFAULT = 'Others';

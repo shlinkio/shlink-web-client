@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
+import { TableOrderIcon } from '../../../shlink-web-component/utils/table/TableOrderIcon';
 import type { OrderDir } from '../../../src/utils/helpers/ordering';
-import { TableOrderIcon } from '../../../src/utils/table/TableOrderIcon';
 
 describe('<TableOrderIcon />', () => {
   const setUp = (field: string, currentDir?: OrderDir, className?: string) => render(

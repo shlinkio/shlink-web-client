@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../../../../src/utils/DropdownBtn';
-import type { QrErrorCorrection } from '../../../../src/utils/helpers/qrCodes';
+import type { QrErrorCorrection } from '../../../utils/helpers/qrCodes';
 
 interface QrErrorCorrectionDropdownProps {
   errorCorrection: QrErrorCorrection;

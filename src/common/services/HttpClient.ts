@@ -1,4 +1,4 @@
-import type { Fetch } from '../../utils/types';
+type Fetch = typeof window.fetch;
 
 const applicationJsonHeader = { 'Content-Type': 'application/json' };
 const withJsonContentType = (options?: RequestInit): RequestInit | undefined => {
@@ -37,6 +37,4 @@ export class HttpClient {
         throw await resp.json();
       }
     });
-
-  public readonly fetchBlob = (url: string): Promise<Blob> => this.fetch(url).then((resp) => resp.blob());
 }

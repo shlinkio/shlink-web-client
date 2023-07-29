@@ -1,6 +1,6 @@
-import { useGoBack } from '../../src/utils/helpers/hooks';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
+import { useGoBack } from '../utils/helpers/hooks';
 import type { ReportExporter } from '../utils/services/ReportExporter';
 import type { LoadVisits, VisitsInfo } from './reducers/types';
 import type { NormalizedVisit, VisitsParams } from './types';

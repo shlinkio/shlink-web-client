@@ -1,5 +1,5 @@
-import type { ProblemDetailsError } from '../../shlink-web-component/api-contract';
-import { isInvalidArgumentError } from '../../shlink-web-component/api-contract/utils';
+import type { ProblemDetailsError } from '../api-contract';
+import { isInvalidArgumentError } from '../api-contract/utils';
 
 export interface ShlinkApiErrorProps {
   errorData?: ProblemDetailsError;

@@ -1,5 +1,5 @@
 import { isNil, map } from 'ramda';
-import { hasValue } from '../../../src/utils/utils';
+import { hasValue } from '../../utils/helpers';
 import type { CityStats, NormalizedVisit, Stats, Visit, VisitsStats } from '../types';
 import { isNormalizedOrphanVisit, isOrphanVisit } from '../types/helpers';
 import { extractDomain, parseUserAgent } from '../utils';

@@ -1,10 +1,10 @@
 import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { ShlinkApiError } from '../../../src/api/ShlinkApiError';
 import { Result } from '../../../src/utils/Result';
-import { handleEventPreventingDefault } from '../../../src/utils/utils';
 import { isInvalidDeletionError } from '../../api-contract/utils';
+import { ShlinkApiError } from '../../common/ShlinkApiError';
+import { handleEventPreventingDefault } from '../../utils/helpers';
 import type { ShortUrlIdentifier, ShortUrlModalProps } from '../data';
 import type { ShortUrlDeletion } from '../reducers/shortUrlDeletion';
 

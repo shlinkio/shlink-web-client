@@ -3,9 +3,9 @@ import { keys, values } from 'ramda';
 import type { FC, MutableRefObject } from 'react';
 import { useRef } from 'react';
 import { Bar, getElementAtEvent } from 'react-chartjs-2';
-import { pointerOnHover, renderChartLabel } from '../../../src/utils/helpers/charts';
-import { prettify } from '../../../src/utils/helpers/numbers';
 import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../../src/utils/theme';
+import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
+import { prettify } from '../../utils/helpers/numbers';
 import type { Stats } from '../types';
 import { fillTheGaps } from '../utils';
 

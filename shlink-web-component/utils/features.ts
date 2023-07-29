@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from 'react';
-import type { SemVer } from '../../src/utils/helpers/version';
-import { versionMatch } from '../../src/utils/helpers/version';
+import type { SemVer } from './helpers/version';
+import { versionMatch } from './helpers/version';
 
 const supportedFeatures = {
   domainVisits: '3.1.0',

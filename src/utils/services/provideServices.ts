@@ -1,5 +1,4 @@
 import type Bottle from 'bottlejs';
-import { ColorGenerator } from '../../../shlink-web-component/utils/services/ColorGenerator';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
 import { useTimeoutToggle } from '../helpers/hooks';
 import { LocalStorage } from './LocalStorage';
@@ -7,7 +6,6 @@ import { LocalStorage } from './LocalStorage';
 export const provideServices = (bottle: Bottle) => {
   bottle.constant('localStorage', window.localStorage);
   bottle.service('Storage', LocalStorage, 'localStorage');
-  bottle.service('ColorGenerator', ColorGenerator, 'Storage');
 
   bottle.constant('csvToJson', csvToJson);
   bottle.constant('jsonToCsv', jsonToCsv);

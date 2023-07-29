@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import { SimplePaginator } from '../../src/common/SimplePaginator';
-import { ELLIPSIS } from '../../src/utils/helpers/pagination';
+import { SimplePaginator } from '../../shlink-web-component/utils/components/SimplePaginator';
+import { ELLIPSIS } from '../../shlink-web-component/utils/helpers/pagination';
 
 describe('<SimplePaginator />', () => {
   const setUp = (pagesCount: number, currentPage = 1) => render(

@@ -1,7 +1,7 @@
-import type { JsonToCsv } from '../../../src/utils/helpers/csvjson';
-import { saveCsv } from '../../../src/utils/helpers/files';
 import type { ExportableShortUrl } from '../../short-urls/data';
 import type { NormalizedVisit } from '../../visits/types';
+import { saveCsv } from '../helpers/files';
+import type { JsonToCsv } from '../helpers/json';
 
 export class ReportExporter {
   public constructor(private readonly window: Window, private readonly jsonToCsv: JsonToCsv) {

@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardBody, CardHeader, Row } from 'reactstrap';
-import { prettify } from '../../src/utils/helpers/numbers';
 import type { ShlinkShortUrlsListParams } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
@@ -11,6 +10,7 @@ import type { ShortUrlsList as ShortUrlsListState } from '../short-urls/reducers
 import { ITEMS_IN_OVERVIEW_PAGE } from '../short-urls/reducers/shortUrlsList';
 import type { ShortUrlsTableType } from '../short-urls/ShortUrlsTable';
 import type { TagsList } from '../tags/reducers/tagsList';
+import { prettify } from '../utils/helpers/numbers';
 import { useRoutesPrefix } from '../utils/routesPrefix';
 import { useSetting } from '../utils/settings';
 import type { VisitsOverview } from '../visits/reducers/visitsOverview';

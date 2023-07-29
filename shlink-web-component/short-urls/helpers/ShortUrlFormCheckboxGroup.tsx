@@ -1,6 +1,6 @@
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { Checkbox } from '../../../src/utils/Checkbox';
-import { InfoTooltip } from '../../../src/utils/InfoTooltip';
+import { InfoTooltip } from '../../utils/components/InfoTooltip';
 
 type ShortUrlFormCheckboxGroupProps = PropsWithChildren<{
   checked?: boolean;

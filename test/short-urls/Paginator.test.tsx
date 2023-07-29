@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import { Paginator } from '../../shlink-web-component/short-urls/Paginator';
+import { ELLIPSIS } from '../../shlink-web-component/utils/helpers/pagination';
 import type { ShlinkPaginator } from '../../src/api/types';
-import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
 describe('<Paginator />', () => {
   const buildPaginator = (pagesCount?: number) => fromPartial<ShlinkPaginator>({ pagesCount, currentPage: 1 });

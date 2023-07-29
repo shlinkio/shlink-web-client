@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { ShlinkApiError } from '../../src/api/ShlinkApiError';
 import { Message } from '../../src/utils/Message';
 import { Result } from '../../src/utils/Result';
 import { SearchField } from '../../src/utils/SearchField';
 import { SimpleCard } from '../../src/utils/SimpleCard';
+import { ShlinkApiError } from '../common/ShlinkApiError';
 import { DomainRow } from './DomainRow';
 import type { EditDomainRedirects } from './reducers/domainRedirects';
 import type { DomainsList } from './reducers/domainsList';

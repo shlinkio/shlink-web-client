@@ -1,6 +1,6 @@
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { ShlinkApiError } from '../../../src/api/ShlinkApiError';
 import { Result } from '../../../src/utils/Result';
+import { ShlinkApiError } from '../../common/ShlinkApiError';
 import type { TagModalProps } from '../data';
 import type { TagDeletion } from '../reducers/tagDelete';
 

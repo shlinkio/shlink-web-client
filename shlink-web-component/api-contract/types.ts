@@ -1,5 +1,4 @@
 import type { Order } from '../../src/utils/helpers/ordering';
-import type { OptionalString } from '../../src/utils/utils';
 import type { ShortUrl, ShortUrlMeta } from '../short-urls/data';
 import type { Visit } from '../visits/types';
 
@@ -70,7 +69,7 @@ export interface ShlinkVisitsOverview {
 }
 
 export interface ShlinkVisitsParams {
-  domain?: OptionalString;
+  domain?: string | null;
   page?: number;
   itemsPerPage?: number;
   startDate?: string;
@@ -98,12 +97,12 @@ export interface ShlinkEditDomainRedirects extends Partial<ShlinkDomainRedirects
 export interface ShlinkDomain {
   domain: string;
   isDefault: boolean;
-  redirects?: ShlinkDomainRedirects; // Optional only for Shlink older than 2.8
+  redirects: ShlinkDomainRedirects;
 }
 
 export interface ShlinkDomainsResponse {
   data: ShlinkDomain[];
-  defaultRedirects?: ShlinkDomainRedirects; // Optional only for Shlink older than 2.10
+  defaultRedirects: ShlinkDomainRedirects;
 }
 
 export type TagsFilteringMode = 'all' | 'any';

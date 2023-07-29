@@ -1,5 +1,4 @@
 import {
-  capitalize,
   nonEmptyValueOrNull,
   parseBooleanToString,
   parseOptionalBooleanToString,
@@ -42,17 +41,6 @@ describe('utils', () => {
       [{ foo: 'bar' }, { foo: 'bar' }],
     ])('returns expected value based on input', (value, expected) => {
       expect(nonEmptyValueOrNull(value)).toEqual(expected);
-    });
-  });
-
-  describe('capitalize', () => {
-    it.each([
-      ['foo', 'Foo'],
-      ['BAR', 'BAR'],
-      ['bAZ', 'BAZ'],
-      ['with spaces', 'With spaces'],
-    ])('sets first letter in uppercase', (value, expectedResult) => {
-      expect(capitalize(value)).toEqual(expectedResult);
     });
   });
 

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import type { ButtonProps } from 'reactstrap';
 import { Button } from 'reactstrap';
-import { prettify } from './helpers/numbers';
+import { prettify } from '../helpers/numbers';
 
 type ExportBtnProps = Omit<ButtonProps, 'outline' | 'color' | 'disabled'> & {
   amount?: number;

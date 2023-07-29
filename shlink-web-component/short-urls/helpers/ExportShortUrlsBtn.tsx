@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import { ExportBtn } from '../../../src/utils/ExportBtn';
 import type { ShlinkApiClient } from '../../api-contract';
+import { ExportBtn } from '../../utils/components/ExportBtn';
 import { useToggle } from '../../utils/helpers/hooks';
 import type { ReportExporter } from '../../utils/services/ReportExporter';
 import type { ShortUrl } from '../data';

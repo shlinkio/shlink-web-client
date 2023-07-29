@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import type { ShlinkPaginator } from '../api-contract';
 import type {
-  NumberOrEllipsis } from '../../src/utils/helpers/pagination';
+  NumberOrEllipsis } from '../utils/helpers/pagination';
 import {
   keyForPage,
   pageIsEllipsis,
   prettifyPageNumber,
   progressivePagination,
-} from '../../src/utils/helpers/pagination';
-import type { ShlinkPaginator } from '../api-contract';
+} from '../utils/helpers/pagination';
 import { useRoutesPrefix } from '../utils/routesPrefix';
 
 interface PaginatorProps {

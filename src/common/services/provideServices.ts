@@ -9,16 +9,13 @@ import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
 import { HttpClient } from './HttpClient';
-import { ImageDownloader } from './ImageDownloader';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', window);
   bottle.constant('console', console);
   bottle.constant('fetch', window.fetch.bind(window));
-
   bottle.service('HttpClient', HttpClient, 'fetch');
-  bottle.service('ImageDownloader', ImageDownloader, 'HttpClient', 'window');
 
   // Components
   bottle.serviceFactory('ScrollToTop', () => ScrollToTop);

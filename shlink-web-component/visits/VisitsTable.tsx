@@ -4,14 +4,14 @@ import classNames from 'classnames';
 import { min, splitEvery } from 'ramda';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { SimplePaginator } from '../../src/common/SimplePaginator';
 import { Time } from '../../src/utils/dates/Time';
-import { prettify } from '../../src/utils/helpers/numbers';
 import type { Order } from '../../src/utils/helpers/ordering';
 import { determineOrderDir, sortList } from '../../src/utils/helpers/ordering';
 import { SearchField } from '../../src/utils/SearchField';
-import { TableOrderIcon } from '../../src/utils/table/TableOrderIcon';
-import type { MediaMatcher } from '../../src/utils/types';
+import { SimplePaginator } from '../utils/components/SimplePaginator';
+import { prettify } from '../utils/helpers/numbers';
+import { TableOrderIcon } from '../utils/table/TableOrderIcon';
+import type { MediaMatcher } from '../utils/types';
 import type { NormalizedOrphanVisit, NormalizedVisit } from './types';
 import './VisitsTable.scss';
 

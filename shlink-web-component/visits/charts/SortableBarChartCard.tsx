@@ -1,12 +1,12 @@
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
-import { SimplePaginator } from '../../../src/common/SimplePaginator';
-import { roundTen } from '../../../src/utils/helpers/numbers';
 import type { Order } from '../../../src/utils/helpers/ordering';
 import { OrderingDropdown } from '../../../src/utils/OrderingDropdown';
-import { PaginationDropdown } from '../../../src/utils/PaginationDropdown';
-import { rangeOf } from '../../../src/utils/utils';
+import { PaginationDropdown } from '../../utils/components/PaginationDropdown';
+import { SimplePaginator } from '../../utils/components/SimplePaginator';
+import { rangeOf } from '../../utils/helpers';
+import { roundTen } from '../../utils/helpers/numbers';
 import type { Stats, StatsRow } from '../types';
 import { ChartCard } from './ChartCard';
 import type { HorizontalBarChartProps } from './HorizontalBarChart';

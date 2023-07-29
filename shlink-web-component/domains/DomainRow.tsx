@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import type { OptionalString } from '../../src/utils/utils';
 import type { ShlinkDomainRedirects } from '../api-contract';
 import type { Domain } from './data';
 import { DomainDropdown } from './helpers/DomainDropdown';
@@ -17,7 +16,7 @@ interface DomainRowProps {
   checkDomainHealth: (domain: string) => void;
 }
 
-const Nr: FC<{ fallback: OptionalString }> = ({ fallback }) => (
+const Nr: FC<{ fallback?: string | null }> = ({ fallback }) => (
   <span className="text-muted">
     {!fallback && <small>No redirect</small>}
     {fallback && <>{fallback} <small>(as fallback)</small></>}

@@ -1,4 +1,4 @@
-import { roundTen } from '../../../src/utils/helpers/numbers';
+import { roundTen } from '../../../shlink-web-component/utils/helpers/numbers';
 
 describe('numbers', () => {
   describe('roundTen', () => {

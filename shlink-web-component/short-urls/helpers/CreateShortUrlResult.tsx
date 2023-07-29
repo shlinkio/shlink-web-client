@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { Tooltip } from 'reactstrap';
-import { ShlinkApiError } from '../../../src/api/ShlinkApiError';
-import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { Result } from '../../../src/utils/Result';
+import { ShlinkApiError } from '../../common/ShlinkApiError';
+import type { TimeoutToggle } from '../../utils/helpers/hooks';
 import type { ShortUrlCreation } from '../reducers/shortUrlCreation';
 import './CreateShortUrlResult.scss';
 

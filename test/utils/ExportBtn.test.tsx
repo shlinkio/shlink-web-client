@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { ExportBtn } from '../../src/utils/ExportBtn';
+import { ExportBtn } from '../../shlink-web-component/utils/components/ExportBtn';
 
 describe('<ExportBtn />', () => {
   const setUp = (amount?: number, loading = false) => render(<ExportBtn amount={amount} loading={loading} />);

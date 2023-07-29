@@ -1,6 +1,6 @@
-import type { ShlinkVisitsSummary } from '../../../api/types';
 import type { Order } from '../../../src/utils/helpers/ordering';
-import type { Nullable, OptionalString } from '../../../src/utils/utils';
+import type { ShlinkVisitsSummary } from '../../api-contract';
+import type { Nullable, OptionalString } from '../../utils/helpers';
 
 export interface DeviceLongUrls {
   android?: OptionalString;

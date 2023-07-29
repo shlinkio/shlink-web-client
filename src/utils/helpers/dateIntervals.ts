@@ -1,6 +1,5 @@
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
-import { equals } from '../utils';
 import type { DateOrString } from './date';
 import { dateOrNull, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
 
@@ -68,6 +67,7 @@ export const rangeOrIntervalToString = (range?: DateRange | DateInterval): strin
 
 const startOfDaysAgo = (daysAgo: number) => startOfDay(subDays(now(), daysAgo));
 const endingToday = (startDate: Date): DateRange => ({ startDate, endDate: endOfDay(now()) });
+const equals = (value: any) => (otherValue: any) => value === otherValue;
 
 export const intervalToDateRange = cond<[DateInterval | undefined], DateRange>([
   [equals('today'), () => endingToday(startOfDay(now()))],

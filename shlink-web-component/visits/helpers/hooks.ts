@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { formatIsoDate } from '../../../src/utils/helpers/date';
 import type { DateRange } from '../../../src/utils/helpers/dateIntervals';
 import { datesToDateRange } from '../../../src/utils/helpers/dateIntervals';
-import type { BooleanString } from '../../../src/utils/utils';
-import { parseBooleanToString } from '../../../src/utils/utils';
+import type { BooleanString } from '../../utils/helpers';
+import { parseBooleanToString } from '../../utils/helpers';
 import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import type { OrphanVisitType, VisitsFilter } from '../types';
 
