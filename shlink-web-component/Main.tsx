@@ -1,14 +1,17 @@
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { NotFound } from '../src/common/NotFound';
 import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
 import { useSwipeable, useToggle } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
+
+type MainProps = {
+  createNotFound?: (nonPrefixedHomePath: string) => ReactNode;
+};
 
 export const Main = (
   TagsList: FC,
@@ -22,7 +25,7 @@ export const Main = (
   Overview: FC,
   EditShortUrl: FC,
   ManageDomains: FC,
-): FC => () => {
+): FC<MainProps> => ({ createNotFound }) => {
   const location = useLocation();
   const routesPrefix = useRoutesPrefix();
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
@@ -56,10 +59,7 @@ export const Main = (
                 <Route path="/non-orphan-visits/*" element={<NonOrphanVisits />} />
                 <Route path="/manage-tags" element={<TagsList />} />
                 <Route path="/manage-domains" element={<ManageDomains />} />
-                <Route
-                  path="*"
-                  element={<NotFound to={`${routesPrefix}/list-short-urls/1`}>List short URLs</NotFound>}
-                />
+                {createNotFound && <Route path="*" element={createNotFound('/list-short-urls/1')} />}
               </Routes>
             </div>
           </div>

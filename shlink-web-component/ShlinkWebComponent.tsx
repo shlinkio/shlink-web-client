@@ -11,10 +11,11 @@ import type { Settings } from './utils/settings';
 import { SettingsProvider } from './utils/settings';
 
 type ShlinkWebComponentProps = {
-  routesPrefix?: string;
-  settings?: Settings;
   serverVersion: SemVer;
   apiClient: ShlinkApiClient;
+  routesPrefix?: string;
+  settings?: Settings;
+  createNotFound?: (nonPrefixedHomePath: string) => ReactNode;
 };
 
 // FIXME
@@ -24,7 +25,7 @@ let apiClientRef: ShlinkApiClient;
 
 export const createShlinkWebComponent = (
   bottle: Bottle,
-): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '' }) => {
+): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '', createNotFound }) => {
   const features = useFeatures(serverVersion);
   const mainContent = useRef<ReactNode>();
   const [theStore, setStore] = useState<Store | undefined>();
@@ -37,7 +38,7 @@ export const createShlinkWebComponent = (
     // depend on it
     const { container } = bottle;
     const { Main, store, loadMercureInfo } = container;
-    mainContent.current = <Main />;
+    mainContent.current = <Main createNotFound={createNotFound} />;
     setStore(store);
 
     // Load mercure info

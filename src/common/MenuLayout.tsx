@@ -5,6 +5,7 @@ import { ShlinkWebComponent } from '../../shlink-web-component';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
+import { NotFound } from './NotFound';
 import './MenuLayout.scss';
 
 interface MenuLayoutProps {
@@ -19,6 +20,7 @@ export const MenuLayout = (
   ServerError: FC,
 ) => withSelectedServer<MenuLayoutProps>(({ selectedServer, sidebarNotPresent, sidebarPresent, settings }) => {
   const showContent = isReachableServer(selectedServer);
+  const routesPrefix = showContent ? `/server/${selectedServer.id}` : '';
 
   useEffect(() => {
     showContent && sidebarPresent();
@@ -34,7 +36,10 @@ export const MenuLayout = (
       serverVersion={selectedServer.version}
       apiClient={buildShlinkApiClient(selectedServer)}
       settings={settings}
-      routesPrefix={`/server/${selectedServer.id}`}
+      routesPrefix={routesPrefix}
+      createNotFound={(nonPrefixedHomePath) => (
+        <NotFound to={`${routesPrefix}${nonPrefixedHomePath}`}>List short URLs</NotFound>
+      )}
     />
   );
 }, ServerError);
