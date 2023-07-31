@@ -22,7 +22,7 @@ export const determineOrderDir = <T extends string = string>(
   return currentOrderDir ? newOrderMap[currentOrderDir] : 'ASC';
 };
 
-export const sortList = <List>(list: List[], { field, dir }: Order<Partial<keyof List>>) => (
+export const sortList = <List>(list: List[], { field, dir }: Order<keyof List>) => (
   !field || !dir ? list : list.sort((a, b) => {
     const greaterThan = dir === 'ASC' ? 1 : -1;
     const smallerThan = dir === 'ASC' ? -1 : 1;

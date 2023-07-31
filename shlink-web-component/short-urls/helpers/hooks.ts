@@ -1,5 +1,5 @@
 import { isEmpty, pipe } from 'ramda';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
 import type { TagsFilteringMode } from '../../api-contract';
@@ -57,7 +57,7 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
     ),
     [search],
   );
-  const toFirstPageWithExtra = (extra: Partial<ShortUrlsFiltering>) => {
+  const toFirstPageWithExtra = useCallback((extra: Partial<ShortUrlsFiltering>) => {
     const merged = { ...filtering, ...extra };
     const { orderBy, tags, excludeBots, excludeMaxVisitsReached, excludePastValidUntil, ...mergedFiltering } = merged;
     const query: ShortUrlsQuery = {
@@ -72,7 +72,7 @@ export const useShortUrlsQuery = (): [ShortUrlsFiltering, ToFirstPage] => {
     const queryString = isEmpty(stringifiedQuery) ? '' : `?${stringifiedQuery}`;
 
     navigate(`${routesPrefix}/list-short-urls/1${queryString}`);
-  };
+  }, [filtering, navigate, routesPrefix]);
 
   return [filtering, toFirstPageWithExtra];
 };

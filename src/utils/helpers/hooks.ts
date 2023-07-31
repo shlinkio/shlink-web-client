@@ -1,5 +1,4 @@
-import type { DependencyList, EffectCallback } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 import { parseQuery } from '../../../shlink-web-component/utils/helpers/query';
@@ -27,22 +26,6 @@ export const useTimeoutToggle = (
   return [flag, callback];
 };
 
-type ToggleResult = [boolean, () => void, () => void, () => void];
-
-export const useToggle = (initialValue = false): ToggleResult => {
-  const [flag, setFlag] = useState<boolean>(initialValue);
-  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
-};
-
-export const useEffectExceptFirstTime = (callback: EffectCallback, deps: DependencyList): void => {
-  const isFirstLoad = useRef(true);
-
-  useEffect(() => {
-    !isFirstLoad.current && callback();
-    isFirstLoad.current = false;
-  }, deps);
-};
-
 export const useGoBack = () => {
   const navigate = useNavigate();
   return () => navigate(-1);
@@ -51,6 +34,13 @@ export const useGoBack = () => {
 export const useParsedQuery = <T>(): T => {
   const { search } = useLocation();
   return parseQuery<T>(search);
+};
+
+type ToggleResult = [boolean, () => void, () => void, () => void];
+
+export const useToggle = (initialValue = false): ToggleResult => {
+  const [flag, setFlag] = useState<boolean>(initialValue);
+  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
 };
 
 export const useDomId = (): string => {

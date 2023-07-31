@@ -1,5 +1,5 @@
-@import './mixins/vertical-align';
-@import './base';
+@import '../../../src/utils/mixins/vertical-align';
+@import '../../../src/utils/base';
 
 .icon-input-container {
   position: relative;

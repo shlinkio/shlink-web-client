@@ -1,5 +1,4 @@
 import { format, formatISO, isBefore, isEqual, isWithinInterval, parse, parseISO as stdParseISO } from 'date-fns';
-import type { OptionalString } from '../../../../src/utils/utils';
 
 export const STANDARD_DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -13,7 +12,7 @@ export const now = () => new Date();
 
 export const isDateObject = (date: DateOrString): date is Date => typeof date !== 'string';
 
-const formatDateFromFormat = (date?: NullableDate, theFormat?: string): OptionalString => {
+const formatDateFromFormat = (date?: NullableDate, theFormat?: string): string | null | undefined => {
   if (!date || !isDateObject(date)) {
     return date;
   }

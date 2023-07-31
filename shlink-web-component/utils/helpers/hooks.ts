@@ -1,6 +1,6 @@
 import type { DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
 import { v4 as uuid } from 'uuid';
 import { parseQuery, stringifyQuery } from './query';
@@ -26,13 +26,6 @@ export const useTimeoutToggle = (
   };
 
   return [flag, callback];
-};
-
-type ToggleResult = [boolean, () => void, () => void, () => void];
-
-export const useToggle = (initialValue = false): ToggleResult => {
-  const [flag, setFlag] = useState<boolean>(initialValue);
-  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
 };
 
 export const useSwipeable = (showSidebar: () => void, hideSidebar: () => void) => {
@@ -83,9 +76,11 @@ export const useGoBack = () => {
   return () => navigate(-1);
 };
 
-export const useParsedQuery = <T>(): T => {
-  const { search } = useLocation();
-  return parseQuery<T>(search);
+type ToggleResult = [boolean, () => void, () => void, () => void];
+
+export const useToggle = (initialValue = false): ToggleResult => {
+  const [flag, setFlag] = useState<boolean>(initialValue);
+  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
 };
 
 export const useDomId = (): string => {
