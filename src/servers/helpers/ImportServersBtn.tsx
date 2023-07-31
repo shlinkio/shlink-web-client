@@ -4,7 +4,7 @@ import { complement, pipe } from 'ramda';
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
-import { useElementRef, useToggle } from '../../utils/helpers/hooks';
+import { useElementRef, useToggle } from '../../../shlink-frontend-kit/src';
 import type { ServerData, ServersMap } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
 import { DuplicatedServersModal } from './DuplicatedServersModal';

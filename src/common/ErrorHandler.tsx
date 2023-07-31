@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Component } from 'react';
 import { Button } from 'reactstrap';
-import { SimpleCard } from '../utils/SimpleCard';
+import { SimpleCard } from '../../shlink-frontend-kit/src';
 
 interface ErrorHandlerState {
   hasError: boolean;

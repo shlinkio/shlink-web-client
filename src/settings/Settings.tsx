@@ -1,7 +1,7 @@
 import type { FC, ReactNode } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { NavPillItem, NavPills } from '../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import { NavPillItem, NavPills } from '../utils/NavPills';
 
 const SettingsSections: FC<{ items: ReactNode[] }> = ({ items }) => (
   <>

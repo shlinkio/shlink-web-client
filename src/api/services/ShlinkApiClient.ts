@@ -1,4 +1,5 @@
 import { isEmpty, isNil, reject } from 'ramda';
+import { orderToString } from '../../../shlink-frontend-kit/src';
 import type {
   ShlinkApiClient as BaseShlinkApiClient,
   ShlinkDomainRedirects,
@@ -20,7 +21,6 @@ import { isRegularNotFound, parseApiError } from '../../../shlink-web-component/
 import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/short-urls/data';
 import { stringifyQuery } from '../../../shlink-web-component/utils/helpers/query';
 import type { HttpClient } from '../../common/services/HttpClient';
-import { orderToString } from '../../utils/helpers/ordering';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';
 

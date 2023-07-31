@@ -23,12 +23,11 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
+import { ToggleSwitch, useToggle } from '../../../shlink-frontend-kit/src';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../../src/utils/theme';
-import { ToggleSwitch } from '../../../src/utils/ToggleSwitch';
 import { formatInternational } from '../../utils/dates/helpers/date';
 import { rangeOf } from '../../utils/helpers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
-import { useToggle } from '../../utils/helpers/hooks';
 import { prettify } from '../../utils/helpers/numbers';
 import type { NormalizedVisit, Stats } from '../types';
 import { fillTheGaps } from '../utils';

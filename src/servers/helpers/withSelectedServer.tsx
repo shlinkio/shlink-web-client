@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Message } from '../../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
-import { Message } from '../../utils/Message';
 import type { SelectedServer } from '../data';
 import { isNotFoundServer } from '../data';
 

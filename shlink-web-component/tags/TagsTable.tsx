@@ -2,7 +2,7 @@ import { splitEvery } from 'ramda';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-import { SimpleCard } from '../../src/utils/SimpleCard';
+import { SimpleCard } from '../../shlink-frontend-kit/src';
 import { SimplePaginator } from '../utils/components/SimplePaginator';
 import { useQueryState } from '../utils/helpers/hooks';
 import { parseQuery } from '../utils/helpers/query';

@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { values } from 'ramda';
-import type { OrderDir } from '../../src/utils/helpers/ordering';
-import type { OrderingDropdownProps } from '../../src/utils/OrderingDropdown';
-import { OrderingDropdown } from '../../src/utils/OrderingDropdown';
+import type { OrderDir } from '../../shlink-frontend-kit/src/ordering/ordering';
+import type { OrderingDropdownProps } from '../../shlink-frontend-kit/src/ordering/OrderingDropdown';
+import { OrderingDropdown } from '../../shlink-frontend-kit/src/ordering/OrderingDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<OrderingDropdown />', () => {

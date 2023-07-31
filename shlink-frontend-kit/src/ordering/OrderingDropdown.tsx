@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { toPairs } from 'ramda';
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
-import type { Order, OrderDir } from './helpers/ordering';
-import { determineOrderDir } from './helpers/ordering';
+import type { Order, OrderDir } from './ordering';
+import { determineOrderDir } from './ordering';
 import './OrderingDropdown.scss';
 
 export interface OrderingDropdownProps<T extends string = string> {

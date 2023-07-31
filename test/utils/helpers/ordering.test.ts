@@ -1,5 +1,5 @@
-import type { OrderDir } from '../../../src/utils/helpers/ordering';
-import { determineOrderDir, orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
+import type { OrderDir } from '../../../shlink-frontend-kit/src/ordering/ordering';
+import { determineOrderDir, orderToString, stringToOrder } from '../../../shlink-frontend-kit/src/ordering/ordering';
 
 describe('ordering', () => {
   describe('determineOrderDir', () => {

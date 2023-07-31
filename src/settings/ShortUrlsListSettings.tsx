@@ -1,10 +1,11 @@
 import type { FC } from 'react';
+import { LabeledFormGroup, OrderingDropdown, SimpleCard } from '../../shlink-frontend-kit/src';
+import type { Settings } from '../../shlink-web-component';
 import { SHORT_URLS_ORDERABLE_FIELDS } from '../../shlink-web-component/short-urls/data';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
-import { SimpleCard } from '../utils/SimpleCard';
-import type { Settings, ShortUrlsListSettings as ShortUrlsSettings } from './reducers/settings';
+import type { Defined } from '../utils/types';
 import { DEFAULT_SHORT_URLS_ORDERING } from './reducers/settings';
+
+type ShortUrlsSettings = Defined<Settings['shortUrlsList']>;
 
 interface ShortUrlsListSettingsProps {
   settings: Settings;

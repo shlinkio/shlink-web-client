@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import type { DropdownToggleProps } from 'reactstrap/types/lib/DropdownToggle';
-import { useToggle } from './helpers/hooks';
+import { useToggle } from '../hooks';
 import './DropdownBtn.scss';
 
 export type DropdownBtnProps = PropsWithChildren<Omit<DropdownToggleProps, 'caret' | 'size' | 'outline'> & {

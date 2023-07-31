@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { DropdownBtn } from '../../../shlink-frontend-kit/src';
 import { useEffectExceptFirstTime } from '../helpers/hooks';
 import { DateIntervalDropdownItems } from './DateIntervalDropdownItems';
 import { DateRangeRow } from './DateRangeRow';

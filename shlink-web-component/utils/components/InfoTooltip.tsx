@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { Placement } from '@popperjs/core';
 import type { FC, PropsWithChildren } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../helpers/hooks';
+import { useElementRef } from '../../../shlink-frontend-kit/src';
 
 export type InfoTooltipProps = PropsWithChildren<{
   className?: string;

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { identity } from 'ramda';
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
-import { useDomId } from './helpers/hooks';
+import { useDomId } from '../hooks';
 
 export type BooleanControlProps = PropsWithChildren<{
   checked?: boolean;

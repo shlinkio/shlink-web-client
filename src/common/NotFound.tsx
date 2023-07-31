@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
-import { SimpleCard } from '../utils/SimpleCard';
+import { SimpleCard } from '../../shlink-frontend-kit/src';
 
 type NotFoundProps = PropsWithChildren<{ to?: string }>;
 

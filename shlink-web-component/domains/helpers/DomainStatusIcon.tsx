@@ -8,7 +8,7 @@ import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../../utils/helpers/hooks';
+import { useElementRef } from '../../../shlink-frontend-kit/src';
 import type { MediaMatcher } from '../../utils/types';
 import type { DomainStatus } from '../data';
 

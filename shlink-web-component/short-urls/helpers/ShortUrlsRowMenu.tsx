@@ -7,8 +7,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { RowDropdownBtn } from '../../../src/utils/RowDropdownBtn';
-import { useToggle } from '../../utils/helpers/hooks';
+import { RowDropdownBtn, useToggle } from '../../../shlink-frontend-kit/src';
 import type { ShortUrl, ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 

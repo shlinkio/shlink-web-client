@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
-import type { DropdownBtnProps } from '../../src/utils/DropdownBtn';
-import { DropdownBtn } from '../../src/utils/DropdownBtn';
+import type { DropdownBtnProps } from '../../shlink-frontend-kit/src/navigation/DropdownBtn';
+import { DropdownBtn } from '../../shlink-frontend-kit/src/navigation/DropdownBtn';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DropdownBtn />', () => {

@@ -9,8 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { useToggle } from '../utils/helpers/hooks';
-import { RowDropdownBtn } from '../utils/RowDropdownBtn';
+import { RowDropdownBtn, useToggle } from '../../shlink-frontend-kit/src';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 

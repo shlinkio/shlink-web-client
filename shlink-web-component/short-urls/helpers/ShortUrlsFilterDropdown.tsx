@@ -1,5 +1,5 @@
 import { DropdownItem } from 'reactstrap';
-import { DropdownBtn } from '../../../src/utils/DropdownBtn';
+import { DropdownBtn } from '../../../shlink-frontend-kit/src';
 import { hasValue } from '../../utils/helpers';
 import type { ShortUrlsFilter } from '../data';
 

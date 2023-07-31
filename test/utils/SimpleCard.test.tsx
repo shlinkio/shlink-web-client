@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { SimpleCard } from '../../src/utils/SimpleCard';
+import { SimpleCard } from '../../shlink-frontend-kit/src/block/SimpleCard';
 
 describe('<SimpleCard />', () => {
   it('does not render title if not provided', () => {

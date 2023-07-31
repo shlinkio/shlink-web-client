@@ -1,4 +1,4 @@
-import type { Order } from '../../src/utils/helpers/ordering';
+import type { Order } from '../../shlink-frontend-kit/src';
 import type { ShortUrl, ShortUrlMeta } from '../short-urls/data';
 import type { Visit } from '../visits/types';
 

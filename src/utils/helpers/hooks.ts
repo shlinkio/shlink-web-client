@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { v4 as uuid } from 'uuid';
 import { parseQuery } from '../../../shlink-web-component/utils/helpers/query';
 
 const DEFAULT_DELAY = 2000;
@@ -35,17 +34,3 @@ export const useParsedQuery = <T>(): T => {
   const { search } = useLocation();
   return parseQuery<T>(search);
 };
-
-type ToggleResult = [boolean, () => void, () => void, () => void];
-
-export const useToggle = (initialValue = false): ToggleResult => {
-  const [flag, setFlag] = useState<boolean>(initialValue);
-  return [flag, () => setFlag(!flag), () => setFlag(true), () => setFlag(false)];
-};
-
-export const useDomId = (): string => {
-  const { current: id } = useRef(`dom-${uuid()}`);
-  return id;
-};
-
-export const useElementRef = <T>() => useRef<T | null>(null);

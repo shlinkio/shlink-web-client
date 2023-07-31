@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import type { FC } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Input } from 'reactstrap';
-import { useElementRef } from '../../../src/utils/helpers/hooks';
+import { useElementRef } from '../../../shlink-frontend-kit/src';
 import './IconInput.scss';
 
 type IconInputProps = InputProps & {

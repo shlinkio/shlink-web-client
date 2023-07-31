@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { Checkbox } from '../../src/utils/Checkbox';
+import { Checkbox } from '../../shlink-frontend-kit/src/form/Checkbox';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<Checkbox />', () => {

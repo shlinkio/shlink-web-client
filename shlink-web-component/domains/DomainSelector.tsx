@@ -4,8 +4,7 @@ import { isEmpty, pipe } from 'ramda';
 import { useEffect } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip } from 'reactstrap';
-import { DropdownBtn } from '../../src/utils/DropdownBtn';
-import { useToggle } from '../utils/helpers/hooks';
+import { DropdownBtn, useToggle } from '../../shlink-frontend-kit/src';
 import type { DomainsList } from './reducers/domainsList';
 import './DomainSelector.scss';
 

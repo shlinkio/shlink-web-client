@@ -5,7 +5,7 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { useToggle } from '../utils/helpers/hooks';
+import { useToggle } from '../../shlink-frontend-kit/src';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 

@@ -1,10 +1,11 @@
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
+import { DropdownBtn } from '../../../shlink-frontend-kit/src';
 import type { Settings } from '../../../shlink-web-component';
 import { rangeOrIntervalToString } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
-import { DropdownBtn } from '../DropdownBtn';
+import type { Defined } from '../types';
 
-type DateInterval = Exclude<Settings['visits'], undefined>['defaultInterval'];
+type DateInterval = Defined<Settings['visits']>['defaultInterval'];
 
 export interface DateIntervalSelectorProps {
   active?: DateInterval;

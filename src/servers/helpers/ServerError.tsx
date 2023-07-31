@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
+import { Message } from '../../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
-import { Message } from '../../utils/Message';
 import type { SelectedServer, ServersMap } from '../data';
 import { isServerWithId } from '../data';
 import type { DeleteServerButtonProps } from '../DeleteServerButton';

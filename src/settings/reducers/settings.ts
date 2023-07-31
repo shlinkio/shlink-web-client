@@ -2,8 +2,9 @@ import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
 import type { Settings } from '../../../shlink-web-component';
+import type { Defined } from '../../utils/types';
 
-type ShortUrlsOrder = Exclude<Exclude<Settings['shortUrlsList'], undefined>['defaultOrdering'], undefined>;
+type ShortUrlsOrder = Defined<Defined<Settings['shortUrlsList']>['defaultOrdering']>;
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',

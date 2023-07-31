@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { DropdownBtnMenuProps } from '../../src/utils/RowDropdownBtn';
-import { RowDropdownBtn } from '../../src/utils/RowDropdownBtn';
+import type { DropdownBtnMenuProps } from '../../shlink-frontend-kit/src/navigation/RowDropdownBtn';
+import { RowDropdownBtn } from '../../shlink-frontend-kit/src/navigation/RowDropdownBtn';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RowDropdownBtn />', () => {

@@ -1,11 +1,8 @@
 import classNames from 'classnames';
 import { FormGroup, Input } from 'reactstrap';
+import { LabeledFormGroup, SimpleCard, ToggleSwitch, useDomId } from '../../shlink-frontend-kit/src';
 import type { Settings } from '../../shlink-web-component';
 import { FormText } from '../utils/forms/FormText';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { useDomId } from '../utils/helpers/hooks';
-import { SimpleCard } from '../utils/SimpleCard';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
 
 type RealTimeUpdatesProps = {
   settings: Settings;

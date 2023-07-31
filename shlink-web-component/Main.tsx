@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useToggle } from '../shlink-frontend-kit/src';
 import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
-import { useSwipeable, useToggle } from './utils/helpers/hooks';
+import { useSwipeable } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
 
 type MainProps = {

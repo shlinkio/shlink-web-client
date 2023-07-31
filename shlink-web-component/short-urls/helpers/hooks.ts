@@ -1,7 +1,7 @@
 import { isEmpty, pipe } from 'ramda';
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { orderToString, stringToOrder } from '../../../src/utils/helpers/ordering';
+import { orderToString, stringToOrder } from '../../../shlink-frontend-kit/src';
 import type { TagsFilteringMode } from '../../api-contract';
 import type { BooleanString } from '../../utils/helpers';
 import { parseOptionalBooleanToString } from '../../utils/helpers';
