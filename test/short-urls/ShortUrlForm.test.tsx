@@ -4,8 +4,8 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import type { Mode } from '../../shlink-web-component/short-urls/ShortUrlForm';
 import { ShortUrlForm as createShortUrlForm } from '../../shlink-web-component/short-urls/ShortUrlForm';
+import { parseDate } from '../../shlink-web-component/utils/dates/helpers/date';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { parseDate } from '../../src/utils/helpers/date';
 import type { OptionalString } from '../../src/utils/utils';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

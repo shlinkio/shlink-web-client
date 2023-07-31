@@ -1,10 +1,10 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import { flatten, prop, range, splitEvery } from 'ramda';
-import type { DateInterval } from '../../../src/utils/helpers/dateIntervals';
-import { dateToMatchingInterval } from '../../../src/utils/helpers/dateIntervals';
 import type { ShlinkPaginator, ShlinkVisits, ShlinkVisitsParams } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
 import type { RootState } from '../../container/store';
+import type { DateInterval } from '../../utils/dates/helpers/dateIntervals';
+import { dateToMatchingInterval } from '../../utils/dates/helpers/dateIntervals';
 import { createAsyncThunk } from '../../utils/redux';
 import type { CreateVisit, Visit } from '../types';
 import type { LoadVisits, VisitsInfo, VisitsLoaded } from './types';

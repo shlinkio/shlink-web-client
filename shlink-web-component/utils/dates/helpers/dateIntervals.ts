@@ -1,7 +1,7 @@
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { cond, filter, isEmpty, T } from 'ramda';
 import type { DateOrString } from './date';
-import { dateOrNull, formatInternational, isBeforeOrEqual, now, parseISO } from './date';
+import { formatInternational, isBeforeOrEqual, now, parseISO } from './date';
 
 export interface DateRange {
   startDate?: Date | null;
@@ -30,7 +30,9 @@ export const dateRangeIsEmpty = (dateRange?: DateRange): boolean => dateRange ==
 export const rangeIsInterval = (range?: DateRange | DateInterval): range is DateInterval =>
   typeof range === 'string' && INTERVALS.includes(range);
 
-export const DATE_INTERVALS = INTERVALS.filter((value) => value !== ALL) as DateInterval[];
+export const DATE_INTERVALS = INTERVALS.filter((value) => value !== ALL) as Exclude<DateInterval, typeof ALL>[];
+
+const dateOrNull = (date?: string): Date | null => (date ? parseISO(date) : null);
 
 export const datesToDateRange = (startDate?: string, endDate?: string): DateRange => ({
   startDate: dateOrNull(startDate),

@@ -1,5 +1,5 @@
-import { isBetween } from '../../../src/utils/helpers/date';
 import type { ShlinkApiClient } from '../../api-contract';
+import { isBetween } from '../../utils/dates/helpers/date';
 import { createVisitsAsyncThunk, createVisitsReducer, lastVisitLoaderForLoader } from './common';
 import type { LoadVisits, VisitsInfo } from './types';
 

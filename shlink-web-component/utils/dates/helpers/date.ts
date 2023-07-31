@@ -1,5 +1,5 @@
 import { format, formatISO, isBefore, isEqual, isWithinInterval, parse, parseISO as stdParseISO } from 'date-fns';
-import type { OptionalString } from '../utils';
+import type { OptionalString } from '../../../../src/utils/utils';
 
 export const STANDARD_DATE_FORMAT = 'yyyy-MM-dd';
 
@@ -21,22 +21,15 @@ const formatDateFromFormat = (date?: NullableDate, theFormat?: string): Optional
   return theFormat ? format(date, theFormat) : formatISO(date);
 };
 
-export const formatDate = (theFormat = STANDARD_DATE_FORMAT) => (date?: NullableDate) => formatDateFromFormat(
-  date,
-  theFormat,
-);
-
 export const formatIsoDate = (date?: NullableDate) => formatDateFromFormat(date, undefined);
 
-export const formatInternational = formatDate();
+export const formatInternational = (date?: NullableDate) => formatDateFromFormat(date, STANDARD_DATE_FORMAT);
 
-export const formatHumanFriendly = formatDate(STANDARD_DATE_AND_TIME_FORMAT);
+export const formatHumanFriendly = (date?: NullableDate) => formatDateFromFormat(date, STANDARD_DATE_AND_TIME_FORMAT);
 
 export const parseDate = (date: string, theFormat: string) => parse(date, theFormat, now());
 
 export const parseISO = (date: DateOrString): Date => (isDateObject(date) ? date : stdParseISO(date));
-
-export const dateOrNull = (date?: string): Date | null => (date ? parseISO(date) : null);
 
 export const isBetween = (date: DateOrString, start?: DateOrString, end?: DateOrString): boolean => {
   try {

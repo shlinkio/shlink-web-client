@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isBefore } from 'date-fns';
 import type { FC, ReactNode } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { formatHumanFriendly, now, parseISO } from '../../../src/utils/helpers/date';
+import { formatHumanFriendly, now, parseISO } from '../../utils/dates/helpers/date';
 import { useElementRef } from '../../utils/helpers/hooks';
 import type { ShortUrl } from '../data';
 

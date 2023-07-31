@@ -1,6 +1,6 @@
 import { endOfDay } from 'date-fns';
-import type { DateRange } from '../helpers/dateIntervals';
 import { DateInput } from './DateInput';
+import type { DateRange } from './helpers/dateIntervals';
 
 interface DateRangeRowProps extends DateRange {
   onStartDateChange: (date: Date | null) => void;

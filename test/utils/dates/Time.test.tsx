@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
-import type { TimeProps } from '../../../src/utils/dates/Time';
-import { Time } from '../../../src/utils/dates/Time';
-import { parseDate } from '../../../src/utils/helpers/date';
+import { parseDate } from '../../../shlink-web-component/utils/dates/helpers/date';
+import type { TimeProps } from '../../../shlink-web-component/utils/dates/Time';
+import { Time } from '../../../shlink-web-component/utils/dates/Time';
 
 describe('<Time />', () => {
   const setUp = (props: TimeProps) => render(<Time {...props} />);

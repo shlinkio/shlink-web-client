@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { DateRangeRow } from '../../../src/utils/dates/DateRangeRow';
+import { DateRangeRow } from '../../../shlink-web-component/utils/dates/DateRangeRow';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateRangeRow />', () => {

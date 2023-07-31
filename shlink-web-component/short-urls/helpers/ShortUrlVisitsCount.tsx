@@ -2,7 +2,7 @@ import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
-import { formatHumanFriendly, parseISO } from '../../../src/utils/helpers/date';
+import { formatHumanFriendly, parseISO } from '../../utils/dates/helpers/date';
 import { useElementRef } from '../../utils/helpers/hooks';
 import { prettify } from '../../utils/helpers/numbers';
 import type { ShortUrl } from '../data';

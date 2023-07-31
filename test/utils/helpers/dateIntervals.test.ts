@@ -1,7 +1,7 @@
 import { endOfDay, format, formatISO, startOfDay, subDays } from 'date-fns';
-import { now, parseDate } from '../../../src/utils/helpers/date';
+import { now, parseDate } from '../../../shlink-web-component/utils/dates/helpers/date';
 import type {
-  DateInterval } from '../../../src/utils/helpers/dateIntervals';
+  DateInterval } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
 import {
   dateRangeIsEmpty,
   dateToMatchingInterval,
@@ -9,7 +9,7 @@ import {
   rangeIsInterval,
   rangeOrIntervalToString,
   toDateRange,
-} from '../../../src/utils/helpers/dateIntervals';
+} from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
 
 describe('date-types', () => {
   const daysBack = (days: number) => subDays(now(), days);

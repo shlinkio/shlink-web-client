@@ -5,7 +5,7 @@ import { isNil } from 'ramda';
 import { useRef } from 'react';
 import type { ReactDatePickerProps } from 'react-datepicker';
 import DatePicker from 'react-datepicker';
-import { STANDARD_DATE_FORMAT } from '../helpers/date';
+import { STANDARD_DATE_FORMAT } from './helpers/date';
 import './DateInput.scss';
 
 export type DateInputProps = ReactDatePickerProps;

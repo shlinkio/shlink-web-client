@@ -1,8 +1,8 @@
 import { createContext, useContext } from 'react';
-import type { DateInterval } from '../../src/utils/helpers/dateIntervals';
 import type { Theme } from '../../src/utils/theme';
 import type { ShortUrlsOrder } from '../short-urls/data';
 import type { TagsOrder } from '../tags/data/TagsListChildrenProps';
+import type { DateInterval } from './dates/helpers/dateIntervals';
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',

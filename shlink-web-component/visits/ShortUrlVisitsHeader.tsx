@@ -1,7 +1,7 @@
 import { ExternalLink } from 'react-external-link';
 import { UncontrolledTooltip } from 'reactstrap';
-import { Time } from '../../src/utils/dates/Time';
 import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
+import { Time } from '../utils/dates/Time';
 import type { ShortUrlVisits } from './reducers/shortUrlVisits';
 import { VisitsHeader } from './VisitsHeader';
 import './ShortUrlVisitsHeader.scss';

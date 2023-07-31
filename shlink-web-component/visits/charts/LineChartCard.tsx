@@ -23,9 +23,9 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
-import { STANDARD_DATE_FORMAT } from '../../../src/utils/helpers/date';
 import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../../src/utils/theme';
 import { ToggleSwitch } from '../../../src/utils/ToggleSwitch';
+import { formatInternational } from '../../utils/dates/helpers/date';
 import { rangeOf } from '../../utils/helpers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { useToggle } from '../../utils/helpers/hooks';
@@ -67,10 +67,16 @@ const STEP_TO_DIFF_FUNC_MAP: Record<Step, (dateLeft: Date, dateRight: Date) => n
 
 const STEP_TO_DATE_FORMAT: Record<Step, (date: Date) => string> = {
   hourly: (date) => format(date, 'yyyy-MM-dd HH:00'),
-  daily: (date) => format(date, STANDARD_DATE_FORMAT),
+  // TODO Fix formatInternational return type
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  daily: (date) => formatInternational(date)!,
   weekly(date) {
-    const firstWeekDay = format(startOfISOWeek(date), STANDARD_DATE_FORMAT);
-    const lastWeekDay = format(endOfISOWeek(date), STANDARD_DATE_FORMAT);
+    // TODO Fix formatInternational return type
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const firstWeekDay = formatInternational(startOfISOWeek(date))!;
+    // TODO Fix formatInternational return type
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const lastWeekDay = formatInternational(endOfISOWeek(date))!;
 
     return `${firstWeekDay} - ${lastWeekDay}`;
   },

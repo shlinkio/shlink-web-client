@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import type { DateInterval } from '../helpers/dateIntervals';
-import { DATE_INTERVALS, rangeOrIntervalToString } from '../helpers/dateIntervals';
+import type { DateInterval } from './helpers/dateIntervals';
+import { DATE_INTERVALS, rangeOrIntervalToString } from './helpers/dateIntervals';
 
 export interface DateIntervalDropdownProps {
   active?: DateInterval;

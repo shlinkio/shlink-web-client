@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { parseISO } from 'date-fns';
-import type { DateInputProps } from '../../../src/utils/dates/DateInput';
-import { DateInput } from '../../../src/utils/dates/DateInput';
+import type { DateInputProps } from '../../../shlink-web-component/utils/dates/DateInput';
+import { DateInput } from '../../../shlink-web-component/utils/dates/DateInput';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateInput />', () => {

@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { ExternalLink } from 'react-external-link';
-import { Time } from '../../../src/utils/dates/Time';
 import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { CopyToClipboardIcon } from '../../utils/components/CopyToClipboardIcon';
+import { Time } from '../../utils/dates/Time';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
 import type { ShortUrl } from '../data';

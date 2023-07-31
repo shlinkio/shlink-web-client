@@ -1,5 +1,5 @@
 import { format as formatDate, formatDistance, getUnixTime, parseISO } from 'date-fns';
-import { isDateObject, now, STANDARD_DATE_AND_TIME_FORMAT } from '../helpers/date';
+import { isDateObject, now, STANDARD_DATE_AND_TIME_FORMAT } from './helpers/date';
 
 export interface TimeProps {
   date: Date | string;
