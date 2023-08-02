@@ -5,7 +5,7 @@ import type { Settings } from '../../../shlink-web-component/src';
 import { rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import type { Defined } from '../types';
 
-type DateInterval = Defined<Settings['visits']>['defaultInterval'];
+export type DateInterval = Defined<Settings['visits']>['defaultInterval'];
 
 export interface DateIntervalSelectorProps {
   active?: DateInterval;
@@ -13,7 +13,7 @@ export interface DateIntervalSelectorProps {
   onChange: (interval: DateInterval) => void;
 }
 
-const INTERVAL_TO_STRING_MAP: Record<Exclude<DateInterval, 'all'>, string> = {
+export const INTERVAL_TO_STRING_MAP: Record<Exclude<DateInterval, 'all'>, string> = {
   today: 'Today',
   yesterday: 'Yesterday',
   last7Days: 'Last 7 days',

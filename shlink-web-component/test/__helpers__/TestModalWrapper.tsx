@@ -1,5 +1,5 @@
 import type { FC, ReactElement } from 'react';
-import { useToggle } from '../../shlink-frontend-kit/src';
+import { useToggle } from '../../src/utils/helpers/hooks';
 
 interface RenderModalArgs {
   isOpen: boolean;

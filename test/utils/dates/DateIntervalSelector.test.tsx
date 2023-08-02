@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
-import type { DateInterval } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
-import { rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
-import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
+import type { DateInterval } from '../../../src/utils/dates/DateIntervalSelector';
+import { DateIntervalSelector, INTERVAL_TO_STRING_MAP } from '../../../src/utils/dates/DateIntervalSelector';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalSelector />', () => {
@@ -20,7 +19,7 @@ describe('<DateIntervalSelector />', () => {
 
     const items = screen.getAllByRole('menuitem');
 
-    expect(btn).toHaveTextContent(rangeOrIntervalToString(activeInterval) ?? '');
+    expect(btn).toHaveTextContent(INTERVAL_TO_STRING_MAP[activeInterval] ?? '');
     expect(items).toHaveLength(8);
   });
 });
