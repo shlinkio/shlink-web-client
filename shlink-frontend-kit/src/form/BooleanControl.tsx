@@ -10,9 +10,9 @@ export type BooleanControlProps = PropsWithChildren<{
   inline?: boolean;
 }>;
 
-interface BooleanControlWithTypeProps extends BooleanControlProps {
+type BooleanControlWithTypeProps = BooleanControlProps & {
   type: 'switch' | 'checkbox';
-}
+};
 
 export const BooleanControl: FC<BooleanControlWithTypeProps> = (
   { checked = false, onChange = identity, className, children, type, inline = false },

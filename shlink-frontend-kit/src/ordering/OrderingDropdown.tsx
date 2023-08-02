@@ -7,14 +7,14 @@ import type { Order, OrderDir } from './ordering';
 import { determineOrderDir } from './ordering';
 import './OrderingDropdown.scss';
 
-export interface OrderingDropdownProps<T extends string = string> {
+export type OrderingDropdownProps<T extends string = string> = {
   items: Record<T, string>;
   order: Order<T>;
   onChange: (orderField?: T, orderDir?: OrderDir) => void;
   isButton?: boolean;
   right?: boolean;
   prefixed?: boolean;
-}
+};
 
 export function OrderingDropdown<T extends string = string>(
   { items, order, onChange, isButton = true, right = false, prefixed = true }: OrderingDropdownProps<T>,

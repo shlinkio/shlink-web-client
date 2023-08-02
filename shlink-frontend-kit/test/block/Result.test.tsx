@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
-import type { ResultProps, ResultType } from '../../shlink-frontend-kit/src/block/Result';
-import { Result } from '../../shlink-frontend-kit/src/block/Result';
+import type { ResultProps, ResultType } from '../../src';
+import { Result } from '../../src';
 
 describe('<Result />', () => {
   const setUp = (props: ResultProps) => render(<Result {...props} />);

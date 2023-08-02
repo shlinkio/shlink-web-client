@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { NavPillItem, NavPills } from '../../shlink-frontend-kit/src/navigation/NavPills';
+import { NavPillItem, NavPills } from '../../src';
 
 describe('<NavPills />', () => {
   let originalError: typeof console.error;

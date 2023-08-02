@@ -36,6 +36,7 @@ export default defineConfig({
       include: [
         'src/**/*.{ts,tsx}',
         'shlink-web-component/**/*.{ts,tsx}',
+        'shlink-frontend-kit/**/*.{ts,tsx}',
         '!src/*.{ts,tsx}',
         '!src/reducers/index.ts',
         '!src/**/provideServices.ts',

@@ -1,9 +1,9 @@
 export type OrderDir = 'ASC' | 'DESC' | undefined;
 
-export interface Order<Fields> {
+export type Order<Fields> = {
   field?: Fields;
   dir?: OrderDir;
-}
+};
 
 export const determineOrderDir = <T extends string = string>(
   currentField: T,

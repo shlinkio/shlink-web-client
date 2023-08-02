@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import type { PropsWithChildren } from 'react';
-import type { MessageProps } from '../../shlink-frontend-kit/src/block/Message';
-import { Message } from '../../shlink-frontend-kit/src/block/Message';
+import type { MessageProps } from '../../src';
+import { Message } from '../../src';
 
 describe('<Message />', () => {
   const setUp = (props: PropsWithChildren<MessageProps> = {}) => render(<Message {...props} />);
