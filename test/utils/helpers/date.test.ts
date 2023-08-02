@@ -1,5 +1,5 @@
 import { addDays, formatISO, subDays } from 'date-fns';
-import { formatDate, formatIsoDate, isBeforeOrEqual, isBetween, parseDate } from '../../../shlink-web-component/utils/dates/helpers/date';
+import { formatDate, formatIsoDate, isBeforeOrEqual, isBetween, parseDate } from '../../../shlink-web-component/src/utils/dates/helpers/date';
 
 describe('date', () => {
   const now = new Date();

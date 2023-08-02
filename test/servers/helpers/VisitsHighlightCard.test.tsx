@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
-import type { VisitsHighlightCardProps } from '../../../shlink-web-component/overview/helpers/VisitsHighlightCard';
-import { VisitsHighlightCard } from '../../../shlink-web-component/overview/helpers/VisitsHighlightCard';
+import type { VisitsHighlightCardProps } from '../../../shlink-web-component/src/overview/helpers/VisitsHighlightCard';
+import { VisitsHighlightCard } from '../../../shlink-web-component/src/overview/helpers/VisitsHighlightCard';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsHighlightCard />', () => {

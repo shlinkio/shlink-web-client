@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
-import { shortUrlDetailReducerCreator } from '../../../shlink-web-component/short-urls/reducers/shortUrlDetail';
-import type { ShortUrlsList } from '../../../shlink-web-component/short-urls/reducers/shortUrlsList';
+import type { ShortUrl } from '../../../shlink-web-component/src/short-urls/data';
+import { shortUrlDetailReducerCreator } from '../../../shlink-web-component/src/short-urls/reducers/shortUrlDetail';
+import type { ShortUrlsList } from '../../../shlink-web-component/src/short-urls/reducers/shortUrlsList';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 

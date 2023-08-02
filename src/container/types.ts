@@ -1,4 +1,4 @@
-import type { Settings } from '../../shlink-web-component';
+import type { Settings } from '../../shlink-web-component/src';
 import type { Sidebar } from '../common/reducers/sidebar';
 import type { SelectedServer, ServersMap } from '../servers/data';
 

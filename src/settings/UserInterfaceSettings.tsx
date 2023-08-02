@@ -2,7 +2,7 @@ import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { FC } from 'react';
 import { SimpleCard, ToggleSwitch } from '../../shlink-frontend-kit/src';
-import type { Settings } from '../../shlink-web-component';
+import type { Settings } from '../../shlink-web-component/src';
 import type { Theme } from '../utils/theme';
 import { changeThemeInMarkup } from '../utils/theme';
 import type { Defined } from '../utils/types';

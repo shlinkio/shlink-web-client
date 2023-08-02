@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import { TagsTableRow as createTagsTableRow } from '../../shlink-web-component/tags/TagsTableRow';
+import { TagsTableRow as createTagsTableRow } from '../../shlink-web-component/src/tags/TagsTableRow';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
 

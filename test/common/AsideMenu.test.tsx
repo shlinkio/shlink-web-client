@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { AsideMenu } from '../../shlink-web-component/common/AsideMenu';
+import { AsideMenu } from '../../shlink-web-component/src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {
   const setUp = () => render(

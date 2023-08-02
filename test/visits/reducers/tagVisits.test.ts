@@ -1,15 +1,15 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import { formatIsoDate } from '../../../shlink-web-component/utils/dates/helpers/date';
-import type { DateInterval } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
+import { formatIsoDate } from '../../../shlink-web-component/src/utils/dates/helpers/date';
+import type { DateInterval } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import type {
-  TagVisits } from '../../../shlink-web-component/visits/reducers/tagVisits';
+  TagVisits } from '../../../shlink-web-component/src/visits/reducers/tagVisits';
 import {
   getTagVisits as getTagVisitsCreator,
   tagVisitsReducerCreator,
-} from '../../../shlink-web-component/visits/reducers/tagVisits';
-import { createNewVisits } from '../../../shlink-web-component/visits/reducers/visitCreation';
-import type { Visit } from '../../../shlink-web-component/visits/types';
+} from '../../../shlink-web-component/src/visits/reducers/tagVisits';
+import { createNewVisits } from '../../../shlink-web-component/src/visits/reducers/visitCreation';
+import type { Visit } from '../../../shlink-web-component/src/visits/types';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisits } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';

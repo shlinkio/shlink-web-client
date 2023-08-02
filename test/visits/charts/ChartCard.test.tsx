@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
-import { ChartCard } from '../../../shlink-web-component/visits/charts/ChartCard';
+import { ChartCard } from '../../../shlink-web-component/src/visits/charts/ChartCard';
 
 describe('<ChartCard />', () => {
   const setUp = (title: Function | string = '', footer?: ReactNode) => render(

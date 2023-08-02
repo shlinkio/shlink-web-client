@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { MercureInfo } from '../../shlink-web-component/mercure/reducers/mercureInfo';
-import { Overview as overviewCreator } from '../../shlink-web-component/overview/Overview';
-import { prettify } from '../../shlink-web-component/utils/helpers/numbers';
+import type { MercureInfo } from '../../shlink-web-component/src/mercure/reducers/mercureInfo';
+import { Overview as overviewCreator } from '../../shlink-web-component/src/overview/Overview';
+import { prettify } from '../../shlink-web-component/src/utils/helpers/numbers';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<Overview />', () => {

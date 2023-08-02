@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { parseQuery } from '../../../shlink-web-component/utils/helpers/query';
+import { parseQuery } from '../../../shlink-web-component/src/utils/helpers/query';
 
 const DEFAULT_DELAY = 2000;
 

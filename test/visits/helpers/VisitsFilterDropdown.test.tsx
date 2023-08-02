@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
-import { VisitsFilterDropdown } from '../../../shlink-web-component/visits/helpers/VisitsFilterDropdown';
-import type { OrphanVisitType, VisitsFilter } from '../../../shlink-web-component/visits/types';
+import { VisitsFilterDropdown } from '../../../shlink-web-component/src/visits/helpers/VisitsFilterDropdown';
+import type { OrphanVisitType, VisitsFilter } from '../../../shlink-web-component/src/visits/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsFilterDropdown />', () => {

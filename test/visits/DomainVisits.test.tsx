@@ -2,9 +2,9 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
-import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
-import { DomainVisits as createDomainVisits } from '../../shlink-web-component/visits/DomainVisits';
-import type { DomainVisits } from '../../shlink-web-component/visits/reducers/domainVisits';
+import type { MercureBoundProps } from '../../shlink-web-component/src/mercure/helpers/boundToMercureHub';
+import { DomainVisits as createDomainVisits } from '../../shlink-web-component/src/visits/DomainVisits';
+import type { DomainVisits } from '../../shlink-web-component/src/visits/reducers/domainVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({

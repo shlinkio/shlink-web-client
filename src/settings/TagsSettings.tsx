@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { LabeledFormGroup, OrderingDropdown, SimpleCard } from '../../shlink-frontend-kit/src';
-import type { Settings } from '../../shlink-web-component';
-import { TAGS_ORDERABLE_FIELDS } from '../../shlink-web-component/tags/data/TagsListChildrenProps';
+import type { Settings } from '../../shlink-web-component/src';
+import { TAGS_ORDERABLE_FIELDS } from '../../shlink-web-component/src/tags/data/TagsListChildrenProps';
 import type { Defined } from '../utils/types';
 
 type TagsSettingsOptions = Defined<Settings['tags']>;

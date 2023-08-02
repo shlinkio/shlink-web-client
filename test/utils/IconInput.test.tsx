@@ -1,7 +1,7 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faAppleAlt, faCalendar, faTable } from '@fortawesome/free-solid-svg-icons';
 import { screen } from '@testing-library/react';
-import { IconInput } from '../../shlink-web-component/utils/components/IconInput';
+import { IconInput } from '../../shlink-web-component/src/utils/components/IconInput';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<IconInput />', () => {

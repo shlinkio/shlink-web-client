@@ -1,12 +1,12 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { Domain } from '../../../shlink-web-component/domains/data';
-import type { EditDomainRedirects } from '../../../shlink-web-component/domains/reducers/domainRedirects';
-import { editDomainRedirects } from '../../../shlink-web-component/domains/reducers/domainRedirects';
+import type { Domain } from '../../../shlink-web-component/src/domains/data';
+import type { EditDomainRedirects } from '../../../shlink-web-component/src/domains/reducers/domainRedirects';
+import { editDomainRedirects } from '../../../shlink-web-component/src/domains/reducers/domainRedirects';
 import {
   domainsListReducerCreator,
   replaceRedirectsOnDomain,
   replaceStatusOnDomain,
-} from '../../../shlink-web-component/domains/reducers/domainsList';
+} from '../../../shlink-web-component/src/domains/reducers/domainsList';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkDomainRedirects } from '../../../src/api/types';
 import { parseApiError } from '../../../src/api/utils';

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { Chart, ChartDataset } from 'chart.js';
-import { DoughnutChartLegend } from '../../../shlink-web-component/visits/charts/DoughnutChartLegend';
+import { DoughnutChartLegend } from '../../../shlink-web-component/src/visits/charts/DoughnutChartLegend';
 
 describe('<DoughnutChartLegend />', () => {
   const labels = ['foo', 'bar', 'baz', 'foo2', 'bar2'];

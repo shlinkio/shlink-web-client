@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { ManageDomains } from '../../shlink-web-component/domains/ManageDomains';
-import type { DomainsList } from '../../shlink-web-component/domains/reducers/domainsList';
+import { ManageDomains } from '../../shlink-web-component/src/domains/ManageDomains';
+import type { DomainsList } from '../../shlink-web-component/src/domains/reducers/domainsList';
 import type { ShlinkDomain } from '../../src/api/types';
 import type { ProblemDetailsError } from '../../src/api/types/errors';
 import { renderWithEvents } from '../__helpers__/setUpTest';

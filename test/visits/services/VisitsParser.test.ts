@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { normalizeVisits, processStatsFromVisits } from '../../../shlink-web-component/visits/services/VisitsParser';
-import type { OrphanVisit, Visit, VisitsStats } from '../../../shlink-web-component/visits/types';
+import { normalizeVisits, processStatsFromVisits } from '../../../shlink-web-component/src/visits/services/VisitsParser';
+import type { OrphanVisit, Visit, VisitsStats } from '../../../shlink-web-component/src/visits/types';
 
 describe('VisitsParser', () => {
   const visits: Visit[] = [

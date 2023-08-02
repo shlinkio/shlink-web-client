@@ -1,7 +1,7 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
-import type { Settings } from '../../../shlink-web-component';
+import type { Settings } from '../../../shlink-web-component/src';
 import type { Defined } from '../../utils/types';
 
 type ShortUrlsOrder = Defined<Defined<Settings['shortUrlsList']>['defaultOrdering']>;

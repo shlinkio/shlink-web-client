@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
-import { ShortUrlsRowMenu as createShortUrlsRowMenu } from '../../../shlink-web-component/short-urls/helpers/ShortUrlsRowMenu';
+import type { ShortUrl } from '../../../shlink-web-component/src/short-urls/data';
+import { ShortUrlsRowMenu as createShortUrlsRowMenu } from '../../../shlink-web-component/src/short-urls/helpers/ShortUrlsRowMenu';
 import type { ReachableServer } from '../../../src/servers/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

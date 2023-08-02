@@ -1,14 +1,14 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
-import { createShortUrl as createShortUrlCreator } from '../../../shlink-web-component/short-urls/reducers/shortUrlCreation';
-import { shortUrlDeleted } from '../../../shlink-web-component/short-urls/reducers/shortUrlDeletion';
-import { editShortUrl as editShortUrlCreator } from '../../../shlink-web-component/short-urls/reducers/shortUrlEdition';
+import type { ShortUrl } from '../../../shlink-web-component/src/short-urls/data';
+import { createShortUrl as createShortUrlCreator } from '../../../shlink-web-component/src/short-urls/reducers/shortUrlCreation';
+import { shortUrlDeleted } from '../../../shlink-web-component/src/short-urls/reducers/shortUrlDeletion';
+import { editShortUrl as editShortUrlCreator } from '../../../shlink-web-component/src/short-urls/reducers/shortUrlEdition';
 import {
   listShortUrls as listShortUrlsCreator,
   shortUrlsListReducerCreator,
-} from '../../../shlink-web-component/short-urls/reducers/shortUrlsList';
-import { createNewVisits } from '../../../shlink-web-component/visits/reducers/visitCreation';
-import type { CreateVisit } from '../../../shlink-web-component/visits/types';
+} from '../../../shlink-web-component/src/short-urls/reducers/shortUrlsList';
+import { createNewVisits } from '../../../shlink-web-component/src/visits/reducers/visitCreation';
+import type { CreateVisit } from '../../../shlink-web-component/src/visits/types';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkShortUrlsResponse } from '../../../src/api/types';
 

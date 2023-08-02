@@ -1,5 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
-import { ShortUrlsFilterDropdown } from '../../../shlink-web-component/short-urls/helpers/ShortUrlsFilterDropdown';
+import { ShortUrlsFilterDropdown } from '../../../shlink-web-component/src/short-urls/helpers/ShortUrlsFilterDropdown';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ShortUrlsFilterDropdown />', () => {

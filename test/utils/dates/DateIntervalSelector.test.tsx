@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
-import type { DateInterval } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
-import { rangeOrIntervalToString } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
+import type { DateInterval } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
+import { rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import { DateIntervalSelector } from '../../../src/utils/dates/DateIntervalSelector';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

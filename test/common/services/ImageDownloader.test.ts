@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { ImageDownloader } from '../../../shlink-web-component/utils/services/ImageDownloader';
+import { ImageDownloader } from '../../../shlink-web-component/src/utils/services/ImageDownloader';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { windowMock } from '../../__mocks__/Window.mock';
 

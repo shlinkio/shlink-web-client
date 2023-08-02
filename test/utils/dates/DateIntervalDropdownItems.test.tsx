@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import { DropdownBtn } from '../../../shlink-frontend-kit/src/navigation/DropdownBtn';
-import type { DateInterval } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
-import { DATE_INTERVALS, rangeOrIntervalToString } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
+import type { DateInterval } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
+import { DATE_INTERVALS, rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

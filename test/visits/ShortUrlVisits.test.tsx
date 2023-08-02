@@ -3,10 +3,10 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { identity } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
-import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
-import type { ShortUrlVisits as ShortUrlVisitsState } from '../../shlink-web-component/visits/reducers/shortUrlVisits';
-import type { ShortUrlVisitsProps } from '../../shlink-web-component/visits/ShortUrlVisits';
-import { ShortUrlVisits as createShortUrlVisits } from '../../shlink-web-component/visits/ShortUrlVisits';
+import type { MercureBoundProps } from '../../shlink-web-component/src/mercure/helpers/boundToMercureHub';
+import type { ShortUrlVisits as ShortUrlVisitsState } from '../../shlink-web-component/src/visits/reducers/shortUrlVisits';
+import type { ShortUrlVisitsProps } from '../../shlink-web-component/src/visits/ShortUrlVisits';
+import { ShortUrlVisits as createShortUrlVisits } from '../../shlink-web-component/src/visits/ShortUrlVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlVisits />', () => {

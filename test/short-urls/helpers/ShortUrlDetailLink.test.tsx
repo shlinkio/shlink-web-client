@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
-import type { LinkSuffix } from '../../../shlink-web-component/short-urls/helpers/ShortUrlDetailLink';
-import { ShortUrlDetailLink } from '../../../shlink-web-component/short-urls/helpers/ShortUrlDetailLink';
+import type { ShortUrl } from '../../../shlink-web-component/src/short-urls/data';
+import type { LinkSuffix } from '../../../shlink-web-component/src/short-urls/helpers/ShortUrlDetailLink';
+import { ShortUrlDetailLink } from '../../../shlink-web-component/src/short-urls/helpers/ShortUrlDetailLink';
 import type { NotFoundServer, ReachableServer } from '../../../src/servers/data';
 
 describe('<ShortUrlDetailLink />', () => {

@@ -16,10 +16,10 @@ import type {
   ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
-  ShlinkVisitsParams } from '../../../shlink-web-component/api-contract';
-import { isRegularNotFound, parseApiError } from '../../../shlink-web-component/api-contract/utils';
-import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/short-urls/data';
-import { stringifyQuery } from '../../../shlink-web-component/utils/helpers/query';
+  ShlinkVisitsParams } from '../../../shlink-web-component/src/api-contract';
+import { isRegularNotFound, parseApiError } from '../../../shlink-web-component/src/api-contract/utils';
+import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
+import { stringifyQuery } from '../../../shlink-web-component/src/utils/helpers/query';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';

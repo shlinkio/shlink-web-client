@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 import { DropdownBtn } from '../../../shlink-frontend-kit/src';
-import type { Settings } from '../../../shlink-web-component';
-import { rangeOrIntervalToString } from '../../../shlink-web-component/utils/dates/helpers/dateIntervals';
+import type { Settings } from '../../../shlink-web-component/src';
+import { rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import type { Defined } from '../types';
 
 type DateInterval = Defined<Settings['visits']>['defaultInterval'];

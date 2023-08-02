@@ -1,4 +1,4 @@
-import { parseQuery, stringifyQuery } from '../../../shlink-web-component/utils/helpers/query';
+import { parseQuery, stringifyQuery } from '../../../shlink-web-component/src/utils/helpers/query';
 
 describe('query', () => {
   describe('parseQuery', () => {

@@ -1,9 +1,9 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlsOrderableFields } from '../../shlink-web-component/short-urls/data';
-import { SHORT_URLS_ORDERABLE_FIELDS } from '../../shlink-web-component/short-urls/data';
-import type { ShortUrlsList } from '../../shlink-web-component/short-urls/reducers/shortUrlsList';
-import { ShortUrlsTable as shortUrlsTableCreator } from '../../shlink-web-component/short-urls/ShortUrlsTable';
+import type { ShortUrlsOrderableFields } from '../../shlink-web-component/src/short-urls/data';
+import { SHORT_URLS_ORDERABLE_FIELDS } from '../../shlink-web-component/src/short-urls/data';
+import type { ShortUrlsList } from '../../shlink-web-component/src/short-urls/reducers/shortUrlsList';
+import { ShortUrlsTable as shortUrlsTableCreator } from '../../shlink-web-component/src/short-urls/ShortUrlsTable';
 import type { SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

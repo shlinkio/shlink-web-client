@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShortUrl } from '../../../shlink-web-component/short-urls/data';
-import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../shlink-web-component/short-urls/helpers/ExportShortUrlsBtn';
-import type { ReportExporter } from '../../../shlink-web-component/utils/services/ReportExporter';
+import type { ShortUrl } from '../../../shlink-web-component/src/short-urls/data';
+import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../shlink-web-component/src/short-urls/helpers/ExportShortUrlsBtn';
+import type { ReportExporter } from '../../../shlink-web-component/src/utils/services/ReportExporter';
 import type { NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

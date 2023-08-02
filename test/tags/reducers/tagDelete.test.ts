@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { tagDeleted, tagDeleteReducerCreator } from '../../../shlink-web-component/tags/reducers/tagDelete';
+import { tagDeleted, tagDeleteReducerCreator } from '../../../shlink-web-component/src/tags/reducers/tagDelete';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 

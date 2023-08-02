@@ -1,5 +1,5 @@
-import type { QrCodeFormat, QrErrorCorrection } from '../../../shlink-web-component/utils/helpers/qrCodes';
-import { buildQrCodeUrl } from '../../../shlink-web-component/utils/helpers/qrCodes';
+import type { QrCodeFormat, QrErrorCorrection } from '../../../shlink-web-component/src/utils/helpers/qrCodes';
+import { buildQrCodeUrl } from '../../../shlink-web-component/src/utils/helpers/qrCodes';
 
 describe('qrCodes', () => {
   describe('buildQrCodeUrl', () => {

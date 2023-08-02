@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../shlink-web-component/tags/reducers/tagEdit';
-import type { ColorGenerator } from '../../../shlink-web-component/utils/services/ColorGenerator';
+import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../shlink-web-component/src/tags/reducers/tagEdit';
+import type { ColorGenerator } from '../../../shlink-web-component/src/utils/services/ColorGenerator';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 

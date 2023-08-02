@@ -2,9 +2,9 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
-import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
-import { NonOrphanVisits as createNonOrphanVisits } from '../../shlink-web-component/visits/NonOrphanVisits';
-import type { VisitsInfo } from '../../shlink-web-component/visits/reducers/types';
+import type { MercureBoundProps } from '../../shlink-web-component/src/mercure/helpers/boundToMercureHub';
+import { NonOrphanVisits as createNonOrphanVisits } from '../../shlink-web-component/src/visits/NonOrphanVisits';
+import type { VisitsInfo } from '../../shlink-web-component/src/visits/reducers/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<NonOrphanVisits />', () => {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { Domain } from '../../shlink-web-component/domains/data';
-import { DomainRow } from '../../shlink-web-component/domains/DomainRow';
+import type { Domain } from '../../shlink-web-component/src/domains/data';
+import { DomainRow } from '../../shlink-web-component/src/domains/DomainRow';
 import type { ShlinkDomainRedirects } from '../../src/api/types';
 
 describe('<DomainRow />', () => {

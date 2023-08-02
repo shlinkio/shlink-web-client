@@ -1,14 +1,14 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { createNewVisits } from '../../../shlink-web-component/visits/reducers/visitCreation';
+import { createNewVisits } from '../../../shlink-web-component/src/visits/reducers/visitCreation';
 import type {
   PartialVisitsSummary,
   VisitsOverview,
-} from '../../../shlink-web-component/visits/reducers/visitsOverview';
+} from '../../../shlink-web-component/src/visits/reducers/visitsOverview';
 import {
   loadVisitsOverview as loadVisitsOverviewCreator,
   visitsOverviewReducerCreator,
-} from '../../../shlink-web-component/visits/reducers/visitsOverview';
-import type { OrphanVisit } from '../../../shlink-web-component/visits/types';
+} from '../../../shlink-web-component/src/visits/reducers/visitsOverview';
+import type { OrphanVisit } from '../../../shlink-web-component/src/visits/types';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkVisitsOverview } from '../../../src/api/types';
 import type { ShlinkState } from '../../../src/container/types';

@@ -1,6 +1,6 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { EditDomainRedirectsModal } from '../../../shlink-web-component/domains/helpers/EditDomainRedirectsModal';
+import { EditDomainRedirectsModal } from '../../../shlink-web-component/src/domains/helpers/EditDomainRedirectsModal';
 import type { ShlinkDomain } from '../../../src/api/types';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

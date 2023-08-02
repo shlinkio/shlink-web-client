@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { mercureInfoReducerCreator } from '../../../shlink-web-component/mercure/reducers/mercureInfo';
+import { mercureInfoReducerCreator } from '../../../shlink-web-component/src/mercure/reducers/mercureInfo';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { GetState } from '../../../src/container/types';
 

@@ -2,10 +2,10 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router';
-import type { MercureBoundProps } from '../../shlink-web-component/mercure/helpers/boundToMercureHub';
-import type { TagVisits as TagVisitsStats } from '../../shlink-web-component/visits/reducers/tagVisits';
-import type { TagVisitsProps } from '../../shlink-web-component/visits/TagVisits';
-import { TagVisits as createTagVisits } from '../../shlink-web-component/visits/TagVisits';
+import type { MercureBoundProps } from '../../shlink-web-component/src/mercure/helpers/boundToMercureHub';
+import type { TagVisits as TagVisitsStats } from '../../shlink-web-component/src/visits/reducers/tagVisits';
+import type { TagVisitsProps } from '../../shlink-web-component/src/visits/TagVisits';
+import { TagVisits as createTagVisits } from '../../shlink-web-component/src/visits/TagVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({

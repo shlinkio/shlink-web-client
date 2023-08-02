@@ -2,7 +2,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import {
   deleteShortUrl as deleteShortUrlCreator,
   shortUrlDeletionReducerCreator,
-} from '../../../shlink-web-component/short-urls/reducers/shortUrlDeletion';
+} from '../../../shlink-web-component/src/short-urls/reducers/shortUrlDeletion';
 import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ProblemDetailsError } from '../../../src/api/types/errors';
 

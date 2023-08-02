@@ -2,9 +2,9 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { endOfDay, formatISO, startOfDay } from 'date-fns';
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom';
-import { ShortUrlsFilteringBar as filteringBarCreator } from '../../shlink-web-component/short-urls/ShortUrlsFilteringBar';
-import { formatDate } from '../../shlink-web-component/utils/dates/helpers/date';
-import type { DateRange } from '../../shlink-web-component/utils/dates/helpers/dateIntervals';
+import { ShortUrlsFilteringBar as filteringBarCreator } from '../../shlink-web-component/src/short-urls/ShortUrlsFilteringBar';
+import { formatDate } from '../../shlink-web-component/src/utils/dates/helpers/date';
+import type { DateRange } from '../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

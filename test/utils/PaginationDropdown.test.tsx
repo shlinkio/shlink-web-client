@@ -1,5 +1,5 @@
 import { screen } from '@testing-library/react';
-import { PaginationDropdown } from '../../shlink-web-component/utils/components/PaginationDropdown';
+import { PaginationDropdown } from '../../shlink-web-component/src/utils/components/PaginationDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<PaginationDropdown />', () => {

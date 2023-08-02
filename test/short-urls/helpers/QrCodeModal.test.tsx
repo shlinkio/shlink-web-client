@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { QrCodeModal as createQrCodeModal } from '../../../shlink-web-component/short-urls/helpers/QrCodeModal';
+import { QrCodeModal as createQrCodeModal } from '../../../shlink-web-component/src/short-urls/helpers/QrCodeModal';
 import type { SemVer } from '../../../src/utils/helpers/version';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 

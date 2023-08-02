@@ -1,8 +1,8 @@
 import { screen, waitFor } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
-import type { HighlightCardProps } from '../../../shlink-web-component/overview/helpers/HighlightCard';
-import { HighlightCard } from '../../../shlink-web-component/overview/helpers/HighlightCard';
+import type { HighlightCardProps } from '../../../shlink-web-component/src/overview/helpers/HighlightCard';
+import { HighlightCard } from '../../../shlink-web-component/src/overview/helpers/HighlightCard';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<HighlightCard />', () => {

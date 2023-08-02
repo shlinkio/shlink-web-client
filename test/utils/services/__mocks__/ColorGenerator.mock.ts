@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ColorGenerator } from '../../../../shlink-web-component/utils/services/ColorGenerator';
+import type { ColorGenerator } from '../../../../shlink-web-component/src/utils/services/ColorGenerator';
 
 export const colorGeneratorMock = fromPartial<ColorGenerator>({
   getColorForKey: vi.fn(() => 'red'),

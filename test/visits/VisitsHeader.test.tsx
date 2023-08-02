@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { Visit } from '../../shlink-web-component/visits/types';
-import { VisitsHeader } from '../../shlink-web-component/visits/VisitsHeader';
+import type { Visit } from '../../shlink-web-component/src/visits/types';
+import { VisitsHeader } from '../../shlink-web-component/src/visits/VisitsHeader';
 
 describe('<VisitsHeader />', () => {
   const visits: Visit[] = [fromPartial({}), fromPartial({}), fromPartial({})];

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiErrorProps } from '../../shlink-web-component/common/ShlinkApiError';
-import { ShlinkApiError } from '../../shlink-web-component/common/ShlinkApiError';
+import type { ShlinkApiErrorProps } from '../../shlink-web-component/src/common/ShlinkApiError';
+import { ShlinkApiError } from '../../shlink-web-component/src/common/ShlinkApiError';
 import type { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types/errors';
 import { ErrorTypeV2, ErrorTypeV3 } from '../../src/api/types/errors';
 
