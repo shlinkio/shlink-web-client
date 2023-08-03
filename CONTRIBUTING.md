@@ -6,7 +6,7 @@ You will also see how to ensure the code fulfills the expected code checks, and 
 
 ## System dependencies
 
-The project can be run inside a docker container through provided docker-compose configuration.
+The project can be run inside a docker container through provided `docker compose` configuration.
 
 Because of this, the only actual dependencies are [docker](https://docs.docker.com/get-docker/) and [docker-compose](https://docs.docker.com/compose/install/).
 
@@ -17,7 +17,7 @@ The first thing you need to do is fork the repository, and clone it in your loca
 Then you will have to follow these steps:
 
 * Copy the file `docker-compose.override.yml.dist` by also removing the `dist` extension.
-* Start-up the project by running `docker-compose up`.
+* Start-up the project by running `docker compose up`.
 
 Once this is finished, you will have the project exposed in port `3000` (http://localhost:3000).
 
