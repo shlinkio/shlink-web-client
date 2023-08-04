@@ -1,12 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import { AsideMenu } from '../../src/common/AsideMenu';
 
 describe('<AsideMenu />', () => {
   const setUp = () => render(
     <MemoryRouter>
-      <AsideMenu selectedServer={fromPartial({ id: 'abc123', version: '2.8.0' })} />
+      <AsideMenu routePrefix="/abc123" />
     </MemoryRouter>,
   );
 

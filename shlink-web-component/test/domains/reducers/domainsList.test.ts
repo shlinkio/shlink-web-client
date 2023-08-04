@@ -1,8 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
-import type { ShlinkDomainRedirects } from '../../../src/api/types';
-import { parseApiError } from '../../../src/api/utils';
+import type { ShlinkApiClient, ShlinkDomainRedirects } from '../../../src/api-contract';
+import { parseApiError } from '../../../src/api-contract/utils';
 import type { Domain } from '../../../src/domains/data';
 import type { EditDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
@@ -17,35 +15,35 @@ describe('domainsListReducer', () => {
   const getState = vi.fn();
   const listDomains = vi.fn();
   const health = vi.fn();
-  const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ listDomains, health });
+  const apiClientFactory = () => fromPartial<ShlinkApiClient>({ listDomains, health });
   const filteredDomains: Domain[] = [
     fromPartial({ domain: 'foo', status: 'validating' }),
     fromPartial({ domain: 'Boo', status: 'validating' }),
   ];
   const domains: Domain[] = [...filteredDomains, fromPartial({ domain: 'bar', status: 'validating' })];
   const error = { type: 'NOT_FOUND', status: 404 } as unknown as Error;
-  const editDomainRedirectsThunk = editDomainRedirects(buildShlinkApiClient);
+  const editDomainRedirectsThunk = editDomainRedirects(apiClientFactory);
   const { reducer, listDomains: listDomainsAction, checkDomainHealth, filterDomains } = domainsListReducerCreator(
-    buildShlinkApiClient,
+    apiClientFactory,
     editDomainRedirectsThunk,
   );
 
   describe('reducer', () => {
     it('returns loading on LIST_DOMAINS_START', () => {
-      expect(reducer(undefined, listDomainsAction.pending(''))).toEqual(
+      expect(reducer(undefined, listDomainsAction.pending('', {}))).toEqual(
         { domains: [], filteredDomains: [], loading: true, error: false },
       );
     });
 
     it('returns error on LIST_DOMAINS_ERROR', () => {
-      expect(reducer(undefined, listDomainsAction.rejected(error, ''))).toEqual(
+      expect(reducer(undefined, listDomainsAction.rejected(error, '', {}))).toEqual(
         { domains: [], filteredDomains: [], loading: false, error: true, errorData: parseApiError(error) },
       );
     });
 
     it('returns domains on LIST_DOMAINS', () => {
       expect(
-        reducer(undefined, listDomainsAction.fulfilled({ domains }, '')),
+        reducer(undefined, listDomainsAction.fulfilled({ domains }, '', {})),
       ).toEqual({ domains, filteredDomains: domains, loading: false, error: false });
     });
 
@@ -93,7 +91,7 @@ describe('domainsListReducer', () => {
     it('dispatches domains once loaded', async () => {
       listDomains.mockResolvedValue({ data: domains });
 
-      await listDomainsAction()(dispatch, getState, {});
+      await listDomainsAction({})(dispatch, getState, {});
 
       expect(dispatch).toHaveBeenCalledTimes(2);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
@@ -116,33 +114,13 @@ describe('domainsListReducer', () => {
   describe('checkDomainHealth', () => {
     const domain = 'example.com';
 
-    it('dispatches invalid status when selected server does not have all required data', async () => {
-      getState.mockReturnValue(fromPartial<ShlinkState>({
-        selectedServer: {},
-      }));
-
-      await checkDomainHealth(domain)(dispatch, getState, {});
-
-      expect(getState).toHaveBeenCalledTimes(1);
-      expect(health).not.toHaveBeenCalled();
-      expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
-        payload: { domain, status: 'invalid' },
-      }));
-    });
-
     it('dispatches invalid status when health endpoint returns an error', async () => {
-      getState.mockReturnValue(fromPartial<ShlinkState>({
-        selectedServer: {
-          url: 'https://myerver.com',
-          apiKey: '123',
-        },
-      }));
       health.mockRejectedValue({});
 
       await checkDomainHealth(domain)(dispatch, getState, {});
 
-      expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
+      expect(health).toHaveBeenCalledWith(domain);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { domain, status: 'invalid' },
       }));
@@ -155,18 +133,12 @@ describe('domainsListReducer', () => {
       healthStatus,
       expectedStatus,
     ) => {
-      getState.mockReturnValue(fromPartial<ShlinkState>({
-        selectedServer: {
-          url: 'https://myerver.com',
-          apiKey: '123',
-        },
-      }));
       health.mockResolvedValue({ status: healthStatus });
 
       await checkDomainHealth(domain)(dispatch, getState, {});
 
-      expect(getState).toHaveBeenCalledTimes(1);
       expect(health).toHaveBeenCalledTimes(1);
+      expect(health).toHaveBeenCalledWith(domain);
       expect(dispatch).toHaveBeenLastCalledWith(expect.objectContaining({
         payload: { domain, status: expectedStatus },
       }));

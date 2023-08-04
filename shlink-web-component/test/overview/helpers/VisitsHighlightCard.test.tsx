@@ -1,18 +1,21 @@
 import { screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router';
 import type { VisitsHighlightCardProps } from '../../../src/overview/helpers/VisitsHighlightCard';
 import { VisitsHighlightCard } from '../../../src/overview/helpers/VisitsHighlightCard';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<VisitsHighlightCard />', () => {
   const setUp = (props: Partial<VisitsHighlightCardProps> = {}) => renderWithEvents(
-    <VisitsHighlightCard
-      loading={false}
-      visitsSummary={{ total: 0 }}
-      excludeBots={false}
-      title=""
-      link=""
-      {...props}
-    />,
+    <MemoryRouter>
+      <VisitsHighlightCard
+        loading={false}
+        visitsSummary={{ total: 0 }}
+        excludeBots={false}
+        title=""
+        link=""
+        {...props}
+      />
+    </MemoryRouter>,
   );
 
   it.each([

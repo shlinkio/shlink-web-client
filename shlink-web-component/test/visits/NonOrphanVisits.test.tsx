@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { SettingsProvider } from '../../src/utils/settings';
 import { NonOrphanVisits as createNonOrphanVisits } from '../../src/visits/NonOrphanVisits';
 import type { VisitsInfo } from '../../src/visits/reducers/types';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -15,13 +16,14 @@ describe('<NonOrphanVisits />', () => {
   const NonOrphanVisits = createNonOrphanVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
     <MemoryRouter>
-      <NonOrphanVisits
-        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
-        getNonOrphanVisits={getNonOrphanVisits}
-        cancelGetNonOrphanVisits={cancelGetNonOrphanVisits}
-        nonOrphanVisits={nonOrphanVisits}
-        settings={fromPartial({})}
-      />
+      <SettingsProvider value={fromPartial({})}>
+        <NonOrphanVisits
+          {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
+          getNonOrphanVisits={getNonOrphanVisits}
+          cancelGetNonOrphanVisits={cancelGetNonOrphanVisits}
+          nonOrphanVisits={nonOrphanVisits}
+        />
+      </SettingsProvider>
     </MemoryRouter>,
   );
 

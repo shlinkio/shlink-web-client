@@ -19,7 +19,6 @@ describe('<TagsTable />', () => {
     return renderWithEvents(
       <TagsTable
         sortedTags={sortedTags.map((tag) => fromPartial({ tag }))}
-        selectedServer={fromPartial({})}
         currentOrder={{}}
         orderByColumn={() => orderByColumn}
       />,

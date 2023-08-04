@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
+import type { ShlinkApiClient } from '../../../src/api-contract';
 import { editTag as editTagCreator, tagEdited, tagEditReducerCreator } from '../../../src/tags/reducers/tagEdit';
 import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 
@@ -51,12 +50,11 @@ describe('tagEditReducer', () => {
 
   describe('editTag', () => {
     const dispatch = vi.fn();
-    const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {
       editTagCall.mockResolvedValue(undefined);
 
-      await editTag({ oldName, newName, color })(dispatch, getState, {});
+      await editTag({ oldName, newName, color })(dispatch, vi.fn(), {});
 
       expect(editTagCall).toHaveBeenCalledTimes(1);
       expect(editTagCall).toHaveBeenCalledWith(oldName, newName);

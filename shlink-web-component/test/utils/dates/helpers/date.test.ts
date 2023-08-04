@@ -1,22 +1,8 @@
 import { addDays, formatISO, subDays } from 'date-fns';
-import { formatDate, formatIsoDate, isBeforeOrEqual, isBetween, parseDate } from '../../../../src/utils/dates/helpers/date';
+import { formatIsoDate, isBeforeOrEqual, isBetween, parseDate } from '../../../../src/utils/dates/helpers/date';
 
 describe('date', () => {
   const now = new Date();
-
-  describe('formatDate', () => {
-    it.each([
-      [parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), 'dd/MM/yyyy', '05/03/2020'],
-      [parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), 'yyyy-MM', '2020-03'],
-      [parseDate('2020-03-05 10:00:10', 'yyyy-MM-dd HH:mm:ss'), undefined, '2020-03-05'],
-      ['2020-03-05 10:00:10', 'dd-MM-yyyy', '2020-03-05 10:00:10'],
-      ['2020-03-05 10:00:10', undefined, '2020-03-05 10:00:10'],
-      [undefined, undefined, undefined],
-      [null, undefined, null],
-    ])('formats date as expected', (date, format, expected) => {
-      expect(formatDate(format)(date)).toEqual(expected);
-    });
-  });
 
   describe('formatIsoDate', () => {
     it.each([

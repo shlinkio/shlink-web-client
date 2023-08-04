@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShlinkPaginator } from '../../src/api/types';
+import type { ShlinkPaginator } from '../../src/api-contract';
 import { Paginator } from '../../src/short-urls/Paginator';
 import { ELLIPSIS } from '../../src/utils/helpers/pagination';
 
@@ -9,7 +9,7 @@ describe('<Paginator />', () => {
   const buildPaginator = (pagesCount?: number) => fromPartial<ShlinkPaginator>({ pagesCount, currentPage: 1 });
   const setUp = (paginator?: ShlinkPaginator, currentQueryString?: string) => render(
     <MemoryRouter>
-      <Paginator serverId="abc123" paginator={paginator} currentQueryString={currentQueryString} />
+      <Paginator paginator={paginator} currentQueryString={currentQueryString} />
     </MemoryRouter>,
   );
 

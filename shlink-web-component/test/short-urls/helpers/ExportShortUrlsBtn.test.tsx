@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { NotFoundServer, SelectedServer } from '../../../../src/servers/data';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import type { ReportExporter } from '../../../src/utils/services/ReportExporter';
@@ -13,9 +12,9 @@ describe('<ExportShortUrlsBtn />', () => {
   const exportShortUrls = vi.fn();
   const reportExporter = fromPartial<ReportExporter>({ exportShortUrls });
   const ExportShortUrlsBtn = createExportShortUrlsBtn(buildShlinkApiClient, reportExporter);
-  const setUp = (amount?: number, selectedServer?: SelectedServer) => renderWithEvents(
+  const setUp = (amount?: number) => renderWithEvents(
     <MemoryRouter>
-      <ExportShortUrlsBtn selectedServer={selectedServer ?? fromPartial({})} amount={amount} />
+      <ExportShortUrlsBtn amount={amount} />
     </MemoryRouter>,
   );
 
@@ -29,17 +28,6 @@ describe('<ExportShortUrlsBtn />', () => {
   });
 
   it.each([
-    [null],
-    [fromPartial<NotFoundServer>({})],
-  ])('does nothing on click if selected server is not reachable', async (selectedServer) => {
-    const { user } = setUp(0, selectedServer);
-
-    await user.click(screen.getByRole('button'));
-    expect(listShortUrls).not.toHaveBeenCalled();
-    expect(exportShortUrls).not.toHaveBeenCalled();
-  });
-
-  it.each([
     [10, 1],
     [30, 2],
     [39, 2],
@@ -48,7 +36,7 @@ describe('<ExportShortUrlsBtn />', () => {
     [385, 20],
   ])('loads proper amount of pages based on the amount of results', async (amount, expectedPageLoads) => {
     listShortUrls.mockResolvedValue({ data: [] });
-    const { user } = setUp(amount, fromPartial({ id: '123' }));
+    const { user } = setUp(amount);
 
     await user.click(screen.getByRole('button'));
 
@@ -63,7 +51,7 @@ describe('<ExportShortUrlsBtn />', () => {
         tags: [],
       })],
     });
-    const { user } = setUp(undefined, fromPartial({ id: '123' }));
+    const { user } = setUp();
 
     await user.click(screen.getByRole('button'));
 

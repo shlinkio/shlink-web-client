@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkDomainRedirects } from '../../src/api/types';
+import type { ShlinkDomainRedirects } from '../../src/api-contract';
 import type { Domain } from '../../src/domains/data';
 import { DomainRow } from '../../src/domains/DomainRow';
 
@@ -21,7 +21,6 @@ describe('<DomainRow />', () => {
         <DomainRow
           domain={domain}
           defaultRedirects={defaultRedirects}
-          selectedServer={fromPartial({})}
           editDomainRedirects={vi.fn()}
           checkDomainHealth={vi.fn()}
         />

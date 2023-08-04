@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
+import type { ShlinkApiClient } from '../../../src/api-contract';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import {
   createShortUrl as createShortUrlCreator,
@@ -51,11 +50,10 @@ describe('shortUrlCreationReducer', () => {
 
   describe('createShortUrl', () => {
     const dispatch = vi.fn();
-    const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {
       createShortUrlCall.mockResolvedValue(shortUrl);
-      await createShortUrl({ longUrl: 'foo' })(dispatch, getState, {});
+      await createShortUrl({ longUrl: 'foo' })(dispatch, vi.fn(), {});
 
       expect(createShortUrlCall).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenCalledTimes(2);

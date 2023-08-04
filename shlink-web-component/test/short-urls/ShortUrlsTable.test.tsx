@@ -1,6 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { SelectedServer } from '../../../src/servers/data';
 import type { ShortUrlsOrderableFields } from '../../src/short-urls/data';
 import { SHORT_URLS_ORDERABLE_FIELDS } from '../../src/short-urls/data';
 import type { ShortUrlsList } from '../../src/short-urls/reducers/shortUrlsList';
@@ -11,8 +10,8 @@ describe('<ShortUrlsTable />', () => {
   const shortUrlsList = fromPartial<ShortUrlsList>({});
   const orderByColumn = vi.fn();
   const ShortUrlsTable = shortUrlsTableCreator(() => <span>ShortUrlsRow</span>);
-  const setUp = (server: SelectedServer = null) => renderWithEvents(
-    <ShortUrlsTable shortUrlsList={shortUrlsList} selectedServer={server} orderByColumn={() => orderByColumn} />,
+  const setUp = () => renderWithEvents(
+    <ShortUrlsTable shortUrlsList={shortUrlsList} orderByColumn={() => orderByColumn} />,
   );
 
   it('should render inner table by default', () => {
@@ -54,7 +53,7 @@ describe('<ShortUrlsTable />', () => {
   });
 
   it('should render composed title column', () => {
-    setUp(fromPartial({ version: '2.0.0' }));
+    setUp();
 
     const { innerHTML } = screen.getAllByRole('columnheader')[2];
 

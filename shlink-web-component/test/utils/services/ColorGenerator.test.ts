@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { LocalStorage } from '../../../../src/utils/services/LocalStorage';
 import { MAIN_COLOR } from '../../../../src/utils/theme';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
+import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
 
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;

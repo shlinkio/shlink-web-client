@@ -1,6 +1,4 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkState } from '../../../../src/container/types';
-import type { SelectedServer } from '../../../../src/servers/data';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import {
   editShortUrl as editShortUrlCreator,
@@ -45,12 +43,9 @@ describe('shortUrlEditionReducer', () => {
 
   describe('editShortUrl', () => {
     const dispatch = vi.fn();
-    const createGetState = (selectedServer: SelectedServer = null) => () => fromPartial<ShlinkState>({
-      selectedServer,
-    });
 
     it.each([[undefined], [null], ['example.com']])('dispatches short URL on success', async (domain) => {
-      await editShortUrl({ shortCode, domain, data: { longUrl } })(dispatch, createGetState(), {});
+      await editShortUrl({ shortCode, domain, data: { longUrl } })(dispatch, vi.fn(), {});
 
       expect(buildShlinkApiClient).toHaveBeenCalledTimes(1);
       expect(updateShortUrl).toHaveBeenCalledTimes(1);

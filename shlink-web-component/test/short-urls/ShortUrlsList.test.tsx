@@ -1,13 +1,14 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
-import type { SemVer } from '../../../src/utils/helpers/version';
 import type { Settings } from '../../src';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
 import type { ShortUrlsOrder } from '../../src/short-urls/data';
 import type { ShortUrlsList as ShortUrlsListModel } from '../../src/short-urls/reducers/shortUrlsList';
 import { ShortUrlsList as createShortUrlsList } from '../../src/short-urls/ShortUrlsList';
 import type { ShortUrlsTableType } from '../../src/short-urls/ShortUrlsTable';
+import { FeaturesProvider } from '../../src/utils/features';
+import { SettingsProvider } from '../../src/utils/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({
@@ -35,15 +36,17 @@ describe('<ShortUrlsList />', () => {
     },
   });
   const ShortUrlsList = createShortUrlsList(ShortUrlsTable, ShortUrlsFilteringBar);
-  const setUp = (settings: Partial<Settings> = {}, version: SemVer = '3.0.0') => renderWithEvents(
+  const setUp = (settings: Partial<Settings> = {}, excludeBotsOnShortUrls = true) => renderWithEvents(
     <MemoryRouter>
-      <ShortUrlsList
-        {...fromPartial<MercureBoundProps>({ mercureInfo: { loading: true } })}
-        listShortUrls={listShortUrlsMock}
-        shortUrlsList={shortUrlsList}
-        selectedServer={fromPartial({ id: '1', version })}
-        settings={fromPartial(settings)}
-      />
+      <SettingsProvider value={fromPartial(settings)}>
+        <FeaturesProvider value={fromPartial({ excludeBotsOnShortUrls })}>
+          <ShortUrlsList
+            {...fromPartial<MercureBoundProps>({ mercureInfo: { loading: true } })}
+            listShortUrls={listShortUrlsMock}
+            shortUrlsList={shortUrlsList}
+          />
+        </FeaturesProvider>
+      </SettingsProvider>
     </MemoryRouter>,
   );
 
@@ -93,26 +96,26 @@ describe('<ShortUrlsList />', () => {
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
-    }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    }), false, { field: 'visits', dir: 'ASC' }],
     [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
       visits: { excludeBots: true },
-    }), '3.3.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    }), false, { field: 'visits', dir: 'ASC' }],
     [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
-    }), '3.4.0' as SemVer, { field: 'visits', dir: 'ASC' }],
+    }), true, { field: 'visits', dir: 'ASC' }],
     [fromPartial<Settings>({
       shortUrlsList: {
         defaultOrdering: { field: 'visits', dir: 'ASC' },
       },
       visits: { excludeBots: true },
-    }), '3.4.0' as SemVer, { field: 'nonBotVisits', dir: 'ASC' }],
-  ])('parses order by based on server version and config', (settings, serverVersion, expectedOrderBy) => {
-    setUp(settings, serverVersion);
+    }), true, { field: 'nonBotVisits', dir: 'ASC' }],
+  ])('parses order by based on supported features version and config', (settings, excludeBotsOnShortUrls, expectedOrderBy) => {
+    setUp(settings, excludeBotsOnShortUrls);
     expect(listShortUrlsMock).toHaveBeenCalledWith(expect.objectContaining({ orderBy: expectedOrderBy }));
   });
 });

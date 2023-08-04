@@ -5,20 +5,22 @@ import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercure
 import type { TagsList } from '../../src/tags/reducers/tagsList';
 import type { TagsListProps } from '../../src/tags/TagsList';
 import { TagsList as createTagsList } from '../../src/tags/TagsList';
+import { SettingsProvider } from '../../src/utils/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsList />', () => {
   const filterTags = vi.fn();
   const TagsListComp = createTagsList(({ sortedTags }) => <>TagsTable ({sortedTags.map((t) => t.visits).join(',')})</>);
   const setUp = (tagsList: Partial<TagsList>, excludeBots = false) => renderWithEvents(
-    <TagsListComp
-      {...fromPartial<TagsListProps>({})}
-      {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
-      forceListTags={identity}
-      filterTags={filterTags}
-      tagsList={fromPartial(tagsList)}
-      settings={fromPartial({ visits: { excludeBots } })}
-    />,
+    <SettingsProvider value={fromPartial({ visits: { excludeBots } })}>
+      <TagsListComp
+        {...fromPartial<TagsListProps>({})}
+        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
+        forceListTags={identity}
+        filterTags={filterTags}
+        tagsList={fromPartial(tagsList)}
+      />
+    </SettingsProvider>,
   );
 
   it('shows a loading message when tags are being loaded', () => {

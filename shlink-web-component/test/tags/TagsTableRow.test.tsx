@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
-import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import { TagsTableRow as createTagsTableRow } from '../../src/tags/TagsTableRow';
+import { RoutesPrefixProvider } from '../../src/utils/routesPrefix';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../utils/services/__mocks__/ColorGenerator.mock';
 
@@ -13,14 +13,15 @@ describe('<TagsTableRow />', () => {
   );
   const setUp = (tagStats?: { visits?: number; shortUrls?: number }) => renderWithEvents(
     <MemoryRouter>
-      <table>
-        <tbody>
-          <TagsTableRow
-            tag={{ tag: 'foo&bar', visits: tagStats?.visits ?? 0, shortUrls: tagStats?.shortUrls ?? 0 }}
-            selectedServer={fromPartial({ id: 'abc123' })}
-          />
-        </tbody>
-      </table>
+      <RoutesPrefixProvider value="/server/abc123">
+        <table>
+          <tbody>
+            <TagsTableRow
+              tag={{ tag: 'foo&bar', visits: tagStats?.visits ?? 0, shortUrls: tagStats?.shortUrls ?? 0 }}
+            />
+          </tbody>
+        </table>
+      </RoutesPrefixProvider>
     </MemoryRouter>,
   );
 

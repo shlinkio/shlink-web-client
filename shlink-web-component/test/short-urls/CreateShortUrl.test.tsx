@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { CreateShortUrl as createShortUrlsCreator } from '../../src/short-urls/CreateShortUrl';
 import type { ShortUrlCreation } from '../../src/short-urls/reducers/shortUrlCreation';
+import { SettingsProvider } from '../../src/utils/settings';
 
 describe('<CreateShortUrl />', () => {
   const ShortUrlForm = () => <span>ShortUrlForm</span>;
@@ -11,13 +12,13 @@ describe('<CreateShortUrl />', () => {
   const createShortUrl = vi.fn(async () => Promise.resolve());
   const CreateShortUrl = createShortUrlsCreator(ShortUrlForm, CreateShortUrlResult);
   const setUp = () => render(
-    <CreateShortUrl
-      shortUrlCreation={shortUrlCreationResult}
-      createShortUrl={createShortUrl}
-      selectedServer={null}
-      resetCreateShortUrl={() => {}}
-      settings={fromPartial({ shortUrlCreation })}
-    />,
+    <SettingsProvider value={fromPartial({ shortUrlCreation })}>
+      <CreateShortUrl
+        shortUrlCreation={shortUrlCreationResult}
+        createShortUrl={createShortUrl}
+        resetCreateShortUrl={() => {}}
+      />
+    </SettingsProvider>,
   );
 
   it('renders computed initial state', () => {

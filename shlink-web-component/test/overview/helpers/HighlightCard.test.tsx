@@ -1,26 +1,16 @@
 import { screen, waitFor } from '@testing-library/react';
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import type { HighlightCardProps } from '../../../src/overview/helpers/HighlightCard';
 import { HighlightCard } from '../../../src/overview/helpers/HighlightCard';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<HighlightCard />', () => {
-  const setUp = (props: HighlightCardProps & { children?: ReactNode }) => renderWithEvents(
+  const setUp = (props: PropsWithChildren<Partial<HighlightCardProps>>) => renderWithEvents(
     <MemoryRouter>
-      <HighlightCard {...props} />
+      <HighlightCard link="" title="" {...props} />
     </MemoryRouter>,
   );
-
-  it.each([
-    [undefined],
-    [''],
-  ])('does not render icon when there is no link', (link) => {
-    setUp({ title: 'foo', link });
-
-    expect(screen.queryByRole('img', { hidden: true })).not.toBeInTheDocument();
-    expect(screen.queryByRole('link')).not.toBeInTheDocument();
-  });
 
   it.each([
     ['foo'],

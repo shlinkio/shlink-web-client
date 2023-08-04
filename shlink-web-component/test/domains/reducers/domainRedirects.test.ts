@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkDomainRedirects } from '../../../src/api/types';
+import type { ShlinkDomainRedirects } from '../../../src/api-contract';
 import { editDomainRedirects } from '../../../src/domains/reducers/domainRedirects';
 
 describe('domainRedirectsReducer', () => {

@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { rangeOf } from '../../src/utils/helpers';
+import { SettingsProvider } from '../../src/utils/settings';
 import type { VisitsInfo } from '../../src/visits/reducers/types';
 import type { Visit } from '../../src/visits/types';
 import { VisitsStats } from '../../src/visits/VisitsStats';
@@ -20,13 +21,14 @@ describe('<VisitsStats />', () => {
       history,
       ...renderWithEvents(
         <Router location={history.location} navigator={history}>
-          <VisitsStats
-            getVisits={getVisitsMock}
-            visitsInfo={fromPartial(visitsInfo)}
-            cancelGetVisits={() => {}}
-            settings={fromPartial({})}
-            exportCsv={exportCsv}
-          />
+          <SettingsProvider value={fromPartial({})}>
+            <VisitsStats
+              getVisits={getVisitsMock}
+              visitsInfo={fromPartial(visitsInfo)}
+              cancelGetVisits={() => {}}
+              exportCsv={exportCsv}
+            />
+          </SettingsProvider>
         </Router>,
       ),
     };

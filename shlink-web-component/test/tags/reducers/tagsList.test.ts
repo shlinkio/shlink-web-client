@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkState } from '../../../../src/container/types';
+import type { RootState } from '../../../src/container/store';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
@@ -195,11 +195,11 @@ describe('tagsListReducer', () => {
 
   describe('listTags', () => {
     const dispatch = vi.fn();
-    const getState = vi.fn(() => fromPartial<ShlinkState>({}));
+    const getState = vi.fn(() => fromPartial<RootState>({}));
     const listTagsMock = vi.fn();
 
     const assertNoAction = async (tagsList: TagsList) => {
-      getState.mockReturnValue(fromPartial<ShlinkState>({ tagsList }));
+      getState.mockReturnValue(fromPartial<RootState>({ tagsList }));
 
       await listTagsCreator(buildShlinkApiClient, false)()(dispatch, getState, {});
 
@@ -218,7 +218,7 @@ describe('tagsListReducer', () => {
       const tags = ['foo', 'bar', 'baz'];
 
       listTagsMock.mockResolvedValue({ tags, stats: [] });
-      buildShlinkApiClient.mockReturnValue({ listTags: listTagsMock });
+      buildShlinkApiClient.mockReturnValue({ tagsStats: listTagsMock });
 
       await listTags()(dispatch, getState, {});
 

@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkVisitsParams } from '../../../src/api/types';
+import type { ShlinkVisitsParams } from '../../../src/api-contract';
 import { formatIsoDate, parseDate } from '../../../src/utils/dates/helpers/date';
 import type { CreateVisit, OrphanVisit, VisitsParams } from '../../../src/visits/types';
 import type { GroupedNewVisits } from '../../../src/visits/types/helpers';

@@ -1,9 +1,8 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
 import { rangeOf } from '../../../../src/utils/utils';
-import type { ShlinkVisits } from '../../../src/api/types';
+import type { ShlinkApiClient, ShlinkVisits } from '../../../src/api-contract';
+import type { RootState } from '../../../src/container/store';
 import { formatIsoDate } from '../../../src/utils/dates/helpers/date';
 import type { DateInterval } from '../../../src/utils/dates/helpers/dateIntervals';
 import {
@@ -118,7 +117,7 @@ describe('orphanVisitsReducer', () => {
 
   describe('getOrphanVisits', () => {
     const dispatchMock = vi.fn();
-    const getState = () => fromPartial<ShlinkState>({
+    const getState = () => fromPartial<RootState>({
       orphanVisits: { cancelLoad: false },
     });
 

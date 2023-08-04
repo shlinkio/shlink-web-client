@@ -4,6 +4,8 @@ import { MemoryRouter } from 'react-router-dom';
 import type { MercureInfo } from '../../src/mercure/reducers/mercureInfo';
 import { Overview as overviewCreator } from '../../src/overview/Overview';
 import { prettify } from '../../src/utils/helpers/numbers';
+import { RoutesPrefixProvider } from '../../src/utils/routesPrefix';
+import { SettingsProvider } from '../../src/utils/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<Overview />', () => {
@@ -16,26 +18,28 @@ describe('<Overview />', () => {
   const shortUrls = {
     pagination: { totalItems: 83710 },
   };
-  const serverId = '123';
+  const routesPrefix = '/server/123';
   const setUp = (loading = false, excludeBots = false) => renderWithEvents(
     <MemoryRouter>
-      <Overview
-        listShortUrls={listShortUrls}
-        listTags={listTags}
-        loadVisitsOverview={loadVisitsOverview}
-        shortUrlsList={fromPartial({ loading, shortUrls })}
-        tagsList={fromPartial({ loading, tags: ['foo', 'bar', 'baz'] })}
-        visitsOverview={fromPartial({
-          loading,
-          nonOrphanVisits: { total: 3456, bots: 1000, nonBots: 2456 },
-          orphanVisits: { total: 28, bots: 15, nonBots: 13 },
-        })}
-        selectedServer={fromPartial({ id: serverId })}
-        createNewVisits={vi.fn()}
-        loadMercureInfo={vi.fn()}
-        mercureInfo={fromPartial<MercureInfo>({})}
-        settings={fromPartial({ visits: { excludeBots } })}
-      />
+      <SettingsProvider value={fromPartial({ visits: { excludeBots } })}>
+        <RoutesPrefixProvider value={routesPrefix}>
+          <Overview
+            listShortUrls={listShortUrls}
+            listTags={listTags}
+            loadVisitsOverview={loadVisitsOverview}
+            shortUrlsList={fromPartial({ loading, shortUrls })}
+            tagsList={fromPartial({ loading, tags: ['foo', 'bar', 'baz'] })}
+            visitsOverview={fromPartial({
+              loading,
+              nonOrphanVisits: { total: 3456, bots: 1000, nonBots: 2456 },
+              orphanVisits: { total: 28, bots: 15, nonBots: 13 },
+            })}
+            createNewVisits={vi.fn()}
+            loadMercureInfo={vi.fn()}
+            mercureInfo={fromPartial<MercureInfo>({})}
+          />
+        </RoutesPrefixProvider>
+      </SettingsProvider>
     </MemoryRouter>,
   );
 
@@ -75,12 +79,13 @@ describe('<Overview />', () => {
 
     const links = screen.getAllByRole('link');
 
-    expect(links).toHaveLength(5);
-    expect(links[0]).toHaveAttribute('href', `/server/${serverId}/orphan-visits`);
-    expect(links[1]).toHaveAttribute('href', `/server/${serverId}/list-short-urls/1`);
-    expect(links[2]).toHaveAttribute('href', `/server/${serverId}/manage-tags`);
-    expect(links[3]).toHaveAttribute('href', `/server/${serverId}/create-short-url`);
-    expect(links[4]).toHaveAttribute('href', `/server/${serverId}/list-short-urls/1`);
+    expect(links).toHaveLength(6);
+    expect(links[0]).toHaveAttribute('href', `${routesPrefix}/non-orphan-visits`);
+    expect(links[1]).toHaveAttribute('href', `${routesPrefix}/orphan-visits`);
+    expect(links[2]).toHaveAttribute('href', `${routesPrefix}/list-short-urls/1`);
+    expect(links[3]).toHaveAttribute('href', `${routesPrefix}/manage-tags`);
+    expect(links[4]).toHaveAttribute('href', `${routesPrefix}/create-short-url`);
+    expect(links[5]).toHaveAttribute('href', `${routesPrefix}/list-short-urls/1`);
   });
 
   it.each([

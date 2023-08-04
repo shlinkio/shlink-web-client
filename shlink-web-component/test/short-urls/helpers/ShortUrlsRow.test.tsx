@@ -3,18 +3,17 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
 import { last } from 'ramda';
 import { MemoryRouter, useLocation } from 'react-router-dom';
-import type { ReachableServer } from '../../../../src/servers/data';
-import type { TimeoutToggle } from '../../../../src/utils/helpers/hooks';
-import type { OptionalString } from '../../../../src/utils/utils';
 import type { Settings } from '../../../src';
 import type { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
 import { now, parseDate } from '../../../src/utils/dates/helpers/date';
+import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
+import { SettingsProvider } from '../../../src/utils/settings';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
 interface SetUpOptions {
-  title?: OptionalString;
+  title?: string | null;
   tags?: string[];
   meta?: ShortUrlMeta;
   settings?: Partial<Settings>;
@@ -28,7 +27,6 @@ vi.mock('react-router-dom', async () => ({
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = vi.fn(() => true);
   const useTimeoutToggle = vi.fn(() => [false, timeoutToggle]) as TimeoutToggle;
-  const server = fromPartial<ReachableServer>({ url: 'https://s.test' });
   const shortUrl: ShortUrl = {
     shortCode: 'abc123',
     shortUrl: 'https://s.test/abc123',
@@ -54,16 +52,16 @@ describe('<ShortUrlsRow />', () => {
     (useLocation as any).mockReturnValue({ search });
     return renderWithEvents(
       <MemoryRouter>
-        <table>
-          <tbody>
-            <ShortUrlsRow
-              selectedServer={server}
-              shortUrl={{ ...shortUrl, title, tags, meta: { ...shortUrl.meta, ...meta } }}
-              onTagClick={() => null}
-              settings={fromPartial(settings)}
-            />
-          </tbody>
-        </table>
+        <SettingsProvider value={fromPartial(settings)}>
+          <table>
+            <tbody>
+              <ShortUrlsRow
+                shortUrl={{ ...shortUrl, title, tags, meta: { ...shortUrl.meta, ...meta } }}
+                onTagClick={() => null}
+              />
+            </tbody>
+          </table>
+        </SettingsProvider>
       </MemoryRouter>,
     );
   };

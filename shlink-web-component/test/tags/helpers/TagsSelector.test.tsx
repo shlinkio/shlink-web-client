@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { TagsSelector as createTagsSelector } from '../../../src/tags/helpers/TagsSelector';
 import type { TagsList } from '../../../src/tags/reducers/tagsList';
+import { SettingsProvider } from '../../../src/utils/settings';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerator.mock';
 
@@ -11,13 +12,14 @@ describe('<TagsSelector />', () => {
   const tags = ['foo', 'bar'];
   const tagsList = fromPartial<TagsList>({ tags: [...tags, 'baz'] });
   const setUp = () => renderWithEvents(
-    <TagsSelector
-      selectedTags={tags}
-      tagsList={tagsList}
-      settings={fromPartial({})}
-      listTags={vi.fn()}
-      onChange={onChange}
-    />,
+    <SettingsProvider value={fromPartial({})}>
+      <TagsSelector
+        selectedTags={tags}
+        tagsList={tagsList}
+        listTags={vi.fn()}
+        onChange={onChange}
+      />
+    </SettingsProvider>,
   );
 
   it('has an input for tags', () => {

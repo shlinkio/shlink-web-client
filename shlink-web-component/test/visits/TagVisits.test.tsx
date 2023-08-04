@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { SettingsProvider } from '../../src/utils/settings';
 import type { TagVisits as TagVisitsStats } from '../../src/visits/reducers/tagVisits';
 import type { TagVisitsProps } from '../../src/visits/TagVisits';
 import { TagVisits as createTagVisits } from '../../src/visits/TagVisits';
@@ -23,14 +24,15 @@ describe('<TagVisits />', () => {
   );
   const setUp = () => renderWithEvents(
     <MemoryRouter>
-      <TagVisits
-        {...fromPartial<TagVisitsProps>({})}
-        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
-        getTagVisits={getTagVisitsMock}
-        tagVisits={tagVisits}
-        settings={fromPartial({})}
-        cancelGetTagVisits={() => {}}
-      />
+      <SettingsProvider value={fromPartial({})}>
+        <TagVisits
+          {...fromPartial<TagVisitsProps>({})}
+          {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
+          getTagVisits={getTagVisitsMock}
+          tagVisits={tagVisits}
+          cancelGetTagVisits={() => {}}
+        />
+      </SettingsProvider>
     </MemoryRouter>,
   );
 

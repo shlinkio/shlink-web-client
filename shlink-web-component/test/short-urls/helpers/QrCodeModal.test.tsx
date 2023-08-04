@@ -1,6 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { SemVer } from '../../../../src/utils/helpers/version';
 import { QrCodeModal as createQrCodeModal } from '../../../src/short-urls/helpers/QrCodeModal';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
@@ -8,11 +7,10 @@ describe('<QrCodeModal />', () => {
   const saveImage = vi.fn().mockReturnValue(Promise.resolve());
   const QrCodeModal = createQrCodeModal(fromPartial({ saveImage }));
   const shortUrl = 'https://s.test/abc123';
-  const setUp = (version: SemVer = '2.8.0') => renderWithEvents(
+  const setUp = () => renderWithEvents(
     <QrCodeModal
       isOpen
       shortUrl={fromPartial({ shortUrl })}
-      selectedServer={fromPartial({ version })}
       toggle={() => {}}
     />,
   );
@@ -63,16 +61,14 @@ describe('<QrCodeModal />', () => {
   });
 
   it('shows expected components based on server version', () => {
-    const { container } = setUp();
+    setUp();
     const dropdowns = screen.getAllByRole('button');
-    const firstCol = container.parentNode?.querySelectorAll('.d-grid').item(0);
 
-    expect(dropdowns).toHaveLength(2 + 1); // Add one because of the close button
-    expect(firstCol).toHaveClass('col-md-4');
+    expect(dropdowns).toHaveLength(2 + 2); // Add two because of the close and download buttons
   });
 
   it('saves the QR code image when clicking the Download button', async () => {
-    const { user } = setUp('2.9.0');
+    const { user } = setUp();
 
     expect(saveImage).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: /^Download/ }));

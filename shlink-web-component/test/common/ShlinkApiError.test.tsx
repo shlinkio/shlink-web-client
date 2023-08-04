@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { InvalidArgumentError, ProblemDetailsError } from '../../src/api/types/errors';
-import { ErrorTypeV2, ErrorTypeV3 } from '../../src/api/types/errors';
+import type { InvalidArgumentError, ProblemDetailsError } from '../../src/api-contract';
+import { ErrorTypeV2, ErrorTypeV3 } from '../../src/api-contract';
 import type { ShlinkApiErrorProps } from '../../src/common/ShlinkApiError';
 import { ShlinkApiError } from '../../src/common/ShlinkApiError';
 

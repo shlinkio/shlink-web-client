@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkShortUrlsResponse } from '../../../src/api/types';
+import type { ShlinkApiClient, ShlinkShortUrlsResponse } from '../../../src/api-contract';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
@@ -187,7 +186,7 @@ describe('shortUrlsListReducer', () => {
 
   describe('listShortUrls', () => {
     const dispatch = vi.fn();
-    const getState = vi.fn().mockReturnValue({ selectedServer: {} });
+    const getState = vi.fn();
 
     it('dispatches proper actions if API client request succeeds', async () => {
       listShortUrlsMock.mockResolvedValue({});

@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
+import type { ShlinkApiClient } from '../../../src/api-contract';
 import { tagDeleted, tagDeleteReducerCreator } from '../../../src/tags/reducers/tagDelete';
 
 describe('tagDeleteReducer', () => {
@@ -42,13 +41,12 @@ describe('tagDeleteReducer', () => {
 
   describe('deleteTag', () => {
     const dispatch = vi.fn();
-    const getState = () => fromPartial<ShlinkState>({});
 
     it('calls API on success', async () => {
       const tag = 'foo';
       deleteTagsCall.mockResolvedValue(undefined);
 
-      await deleteTag(tag)(dispatch, getState, {});
+      await deleteTag(tag)(dispatch, vi.fn(), {});
 
       expect(deleteTagsCall).toHaveBeenCalledTimes(1);
       expect(deleteTagsCall).toHaveBeenNthCalledWith(1, [tag]);

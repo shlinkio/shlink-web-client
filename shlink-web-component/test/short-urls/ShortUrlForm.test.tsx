@@ -2,25 +2,26 @@ import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event/setup/setup';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
-import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
 import type { OptionalString } from '../../../src/utils/utils';
 import type { Mode } from '../../src/short-urls/ShortUrlForm';
 import { ShortUrlForm as createShortUrlForm } from '../../src/short-urls/ShortUrlForm';
 import { parseDate } from '../../src/utils/dates/helpers/date';
+import { FeaturesProvider } from '../../src/utils/features';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlForm />', () => {
   const createShortUrl = vi.fn(async () => Promise.resolve());
   const ShortUrlForm = createShortUrlForm(() => <span>TagsSelector</span>, () => <span>DomainSelector</span>);
-  const setUp = (selectedServer: SelectedServer = null, mode: Mode = 'create', title?: OptionalString) =>
+  const setUp = (withDeviceLongUrls = false, mode: Mode = 'create', title?: OptionalString) =>
     renderWithEvents(
-      <ShortUrlForm
-        selectedServer={selectedServer}
-        mode={mode}
-        saving={false}
-        initialState={{ validateUrl: true, findIfExists: false, title, longUrl: '' }}
-        onSave={createShortUrl}
-      />,
+      <FeaturesProvider value={fromPartial({ deviceLongUrls: withDeviceLongUrls })}>
+        <ShortUrlForm
+          mode={mode}
+          saving={false}
+          initialState={{ validateUrl: true, findIfExists: false, title, longUrl: '' }}
+          onSave={createShortUrl}
+        />
+      </FeaturesProvider>,
     );
 
   it.each([
@@ -29,14 +30,14 @@ describe('<ShortUrlForm />', () => {
         await user.type(screen.getByPlaceholderText('Custom slug'), 'my-slug');
       },
       { customSlug: 'my-slug' },
-      null,
+      false,
     ],
     [
       async (user: UserEvent) => {
         await user.type(screen.getByPlaceholderText('Short code length'), '15');
       },
       { shortCodeLength: '15' },
-      null,
+      false,
     ],
     [
       async (user: UserEvent) => {
@@ -49,10 +50,10 @@ describe('<ShortUrlForm />', () => {
           ios: 'https://ios.com',
         },
       },
-      fromPartial<ReachableServer>({ version: '3.5.0' }),
+      true,
     ],
-  ])('saves short URL with data set in form controls', async (extraFields, extraExpectedValues, selectedServer) => {
-    const { user } = setUp(selectedServer);
+  ])('saves short URL with data set in form controls', async (extraFields, extraExpectedValues, withDeviceLongUrls) => {
+    const { user } = setUp(withDeviceLongUrls);
     const validSince = parseDate('2017-01-01', 'yyyy-MM-dd');
     const validUntil = parseDate('2017-01-06', 'yyyy-MM-dd');
 
@@ -83,7 +84,7 @@ describe('<ShortUrlForm />', () => {
   ])(
     'renders expected amount of cards based on server capabilities and mode',
     (mode, expectedAmountOfCards) => {
-      setUp(null, mode);
+      setUp(false, mode);
       const cards = screen.queryAllByRole('heading');
 
       expect(cards).toHaveLength(expectedAmountOfCards);
@@ -100,7 +101,7 @@ describe('<ShortUrlForm />', () => {
     [undefined, false, undefined],
     ['old title', false, null],
   ])('sends expected title based on original and new values', async (originalTitle, withNewTitle, expectedSentTitle) => {
-    const { user } = setUp(fromPartial({ version: '2.6.0' }), 'create', originalTitle);
+    const { user } = setUp(false, 'create', originalTitle);
 
     await user.type(screen.getByPlaceholderText('URL to be shortened'), 'https://long-domain.com/foo/bar');
     await user.clear(screen.getByPlaceholderText('Title'));
@@ -114,19 +115,10 @@ describe('<ShortUrlForm />', () => {
     }));
   });
 
-  it.each([
-    [fromPartial<ReachableServer>({ version: '3.0.0' }), false],
-    [fromPartial<ReachableServer>({ version: '3.4.0' }), false],
-    [fromPartial<ReachableServer>({ version: '3.5.0' }), true],
-    [fromPartial<ReachableServer>({ version: '3.6.0' }), true],
-  ])('shows device-specific long URLs only for servers supporting it', (selectedServer, fieldsExist) => {
-    setUp(selectedServer);
-    const placeholders = ['Android-specific redirection', 'iOS-specific redirection', 'Desktop-specific redirection'];
+  it('shows device-specific long URLs only when supported', () => {
+    setUp(true);
 
-    if (fieldsExist) {
-      placeholders.forEach((placeholder) => expect(screen.getByPlaceholderText(placeholder)).toBeInTheDocument());
-    } else {
-      placeholders.forEach((placeholder) => expect(screen.queryByPlaceholderText(placeholder)).not.toBeInTheDocument());
-    }
+    const placeholders = ['Android-specific redirection', 'iOS-specific redirection', 'Desktop-specific redirection'];
+    placeholders.forEach((placeholder) => expect(screen.getByPlaceholderText(placeholder)).toBeInTheDocument());
   });
 });

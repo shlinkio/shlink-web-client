@@ -1,26 +1,29 @@
 import { screen, waitForElementToBeRemoved } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { SelectedServer } from '../../../../src/servers/data';
-import type { SemVer } from '../../../../src/utils/helpers/version';
 import type { Domain } from '../../../src/domains/data';
 import { DomainDropdown } from '../../../src/domains/helpers/DomainDropdown';
+import { FeaturesProvider } from '../../../src/utils/features';
+import { RoutesPrefixProvider } from '../../../src/utils/routesPrefix';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DomainDropdown />', () => {
   const editDomainRedirects = vi.fn().mockResolvedValue(undefined);
-  const setUp = (domain?: Domain, selectedServer?: SelectedServer) => renderWithEvents(
+  const setUp = ({ domain, withVisits = true }: { domain?: Domain; withVisits?: boolean } = {}) => renderWithEvents(
     <MemoryRouter>
-      <DomainDropdown
-        domain={domain ?? fromPartial({})}
-        selectedServer={selectedServer ?? fromPartial({})}
-        editDomainRedirects={editDomainRedirects}
-      />
+      <RoutesPrefixProvider value="/server/123">
+        <FeaturesProvider value={fromPartial({ domainVisits: withVisits })}>
+          <DomainDropdown
+            domain={domain ?? fromPartial({})}
+            editDomainRedirects={editDomainRedirects}
+          />
+        </FeaturesProvider>
+      </RoutesPrefixProvider>
     </MemoryRouter>,
   );
 
   it('renders expected menu items', () => {
-    setUp();
+    setUp({ withVisits: false });
 
     expect(screen.queryByText('Visit stats')).not.toBeInTheDocument();
     expect(screen.getByText('Edit redirects')).toBeInTheDocument();
@@ -30,29 +33,9 @@ describe('<DomainDropdown />', () => {
     [true, '_DEFAULT'],
     [false, ''],
   ])('points first link to the proper section', (isDefault, expectedLink) => {
-    setUp(
-      fromPartial({ domain: 'foo.com', isDefault }),
-      fromPartial({ version: '3.1.0', id: '123' }),
-    );
+    setUp({ domain: fromPartial({ domain: 'foo.com', isDefault }) });
 
     expect(screen.getByText('Visit stats')).toHaveAttribute('href', `/server/123/domain/foo.com${expectedLink}/visits`);
-  });
-
-  it.each([
-    [true, '2.9.0' as SemVer, false],
-    [true, '2.10.0' as SemVer, true],
-    [false, '2.9.0' as SemVer, true],
-  ])('allows editing certain the domains', (isDefault, serverVersion, canBeEdited) => {
-    setUp(
-      fromPartial({ domain: 'foo.com', isDefault }),
-      fromPartial({ version: serverVersion, id: '123' }),
-    );
-
-    if (canBeEdited) {
-      expect(screen.getByText('Edit redirects')).not.toHaveAttribute('disabled');
-    } else {
-      expect(screen.getByText('Edit redirects')).toHaveAttribute('disabled');
-    }
   });
 
   it.each([
@@ -60,7 +43,7 @@ describe('<DomainDropdown />', () => {
     ['bar.org'],
     ['baz.net'],
   ])('displays modal when editing redirects', async (domain) => {
-    const { user } = setUp(fromPartial({ domain, isDefault: false }));
+    const { user } = setUp({ domain: fromPartial({ domain, isDefault: false }) });
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(screen.queryByRole('form')).not.toBeInTheDocument();

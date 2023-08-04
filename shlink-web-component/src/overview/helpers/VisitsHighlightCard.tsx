@@ -14,7 +14,7 @@ export const VisitsHighlightCard: FC<VisitsHighlightCardProps> = ({ loading, exc
   <HighlightCard
     tooltip={
       visitsSummary.bots !== undefined
-        ? <>{excludeBots ? 'Plus' : 'Including'} <b>{prettify(visitsSummary.bots)}</b> potential bot visits</>
+        ? <>{excludeBots ? 'Plus' : 'Including'} <strong>{prettify(visitsSummary.bots)}</strong> potential bot visits</>
         : undefined
     }
     {...rest}

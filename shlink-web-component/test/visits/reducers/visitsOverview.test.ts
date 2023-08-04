@@ -1,7 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
-import type { ShlinkVisitsOverview } from '../../../src/api/types';
+import type { ShlinkApiClient, ShlinkVisitsOverview } from '../../../src/api-contract';
+import type { RootState } from '../../../src/container/store';
 import { createNewVisits } from '../../../src/visits/reducers/visitCreation';
 import type {
   PartialVisitsSummary,
@@ -25,7 +24,7 @@ describe('visitsOverviewReducer', () => {
     it('returns loading on GET_OVERVIEW_START', () => {
       const { loading } = reducer(
         state({ loading: false, error: false }),
-        loadVisitsOverview.pending(''),
+        loadVisitsOverview.pending('', {}),
       );
 
       expect(loading).toEqual(true);
@@ -34,7 +33,7 @@ describe('visitsOverviewReducer', () => {
     it('stops loading and returns error on GET_OVERVIEW_ERROR', () => {
       const { loading, error } = reducer(
         state({ loading: true, error: false }),
-        loadVisitsOverview.rejected(null, ''),
+        loadVisitsOverview.rejected(null, '', {}),
       );
 
       expect(loading).toEqual(false);
@@ -44,7 +43,7 @@ describe('visitsOverviewReducer', () => {
     it('return visits overview on GET_OVERVIEW', () => {
       const action = loadVisitsOverview.fulfilled(fromPartial({
         nonOrphanVisits: { total: 100 },
-      }), 'requestId');
+      }), 'requestId', {});
       const { loading, error, nonOrphanVisits } = reducer(state({ loading: true, error: false }), action);
 
       expect(loading).toEqual(false);
@@ -127,7 +126,7 @@ describe('visitsOverviewReducer', () => {
 
   describe('loadVisitsOverview', () => {
     const dispatchMock = vi.fn();
-    const getState = () => fromPartial<ShlinkState>({});
+    const getState = () => fromPartial<RootState>({});
 
     it.each([
       [
@@ -155,7 +154,7 @@ describe('visitsOverviewReducer', () => {
       const resolvedOverview = fromPartial<ShlinkVisitsOverview>(serverResult);
       getVisitsOverview.mockResolvedValue(resolvedOverview);
 
-      await loadVisitsOverview()(dispatchMock, getState, {});
+      await loadVisitsOverview(buildApiClientMock)(dispatchMock, getState, {});
 
       expect(dispatchMock).toHaveBeenCalledTimes(2);
       expect(dispatchMock).toHaveBeenNthCalledWith(2, expect.objectContaining({ payload: dispatchedPayload }));

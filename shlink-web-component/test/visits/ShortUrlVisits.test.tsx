@@ -4,6 +4,7 @@ import { formatISO } from 'date-fns';
 import { identity } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { SettingsProvider } from '../../src/utils/settings';
 import type { ShortUrlVisits as ShortUrlVisitsState } from '../../src/visits/reducers/shortUrlVisits';
 import type { ShortUrlVisitsProps } from '../../src/visits/ShortUrlVisits';
 import { ShortUrlVisits as createShortUrlVisits } from '../../src/visits/ShortUrlVisits';
@@ -16,16 +17,17 @@ describe('<ShortUrlVisits />', () => {
   const ShortUrlVisits = createShortUrlVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
     <MemoryRouter>
-      <ShortUrlVisits
-        {...fromPartial<ShortUrlVisitsProps>({})}
-        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
-        getShortUrlDetail={identity}
-        getShortUrlVisits={getShortUrlVisitsMock}
-        shortUrlVisits={shortUrlVisits}
-        shortUrlDetail={fromPartial({})}
-        settings={fromPartial({})}
-        cancelGetShortUrlVisits={() => {}}
-      />
+      <SettingsProvider value={fromPartial({})}>
+        <ShortUrlVisits
+          {...fromPartial<ShortUrlVisitsProps>({})}
+          {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
+          getShortUrlDetail={identity}
+          getShortUrlVisits={getShortUrlVisitsMock}
+          shortUrlVisits={shortUrlVisits}
+          shortUrlDetail={fromPartial({})}
+          cancelGetShortUrlVisits={() => {}}
+        />
+      </SettingsProvider>
     </MemoryRouter>,
   );
 

@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
 import { MemoryRouter } from 'react-router-dom';
 import type { MercureBoundProps } from '../../src/mercure/helpers/boundToMercureHub';
+import { SettingsProvider } from '../../src/utils/settings';
 import { DomainVisits as createDomainVisits } from '../../src/visits/DomainVisits';
 import type { DomainVisits } from '../../src/visits/reducers/domainVisits';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -20,13 +21,14 @@ describe('<DomainVisits />', () => {
   const DomainVisits = createDomainVisits(fromPartial({ exportVisits }));
   const setUp = () => renderWithEvents(
     <MemoryRouter>
-      <DomainVisits
-        {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
-        getDomainVisits={getDomainVisits}
-        cancelGetDomainVisits={cancelGetDomainVisits}
-        domainVisits={domainVisits}
-        settings={fromPartial({})}
-      />
+      <SettingsProvider value={fromPartial({})}>
+        <DomainVisits
+          {...fromPartial<MercureBoundProps>({ mercureInfo: {} })}
+          getDomainVisits={getDomainVisits}
+          cancelGetDomainVisits={cancelGetDomainVisits}
+          domainVisits={domainVisits}
+        />
+      </SettingsProvider>
     </MemoryRouter>,
   );
 

@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ShlinkState } from '../../../../src/container/types';
+import type { ShlinkApiClient } from '../../../src/api-contract';
+import type { RootState } from '../../../src/container/store';
 import type { ShortUrl } from '../../../src/short-urls/data';
 import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
 import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
@@ -40,7 +40,7 @@ describe('shortUrlDetailReducer', () => {
 
   describe('getShortUrlDetail', () => {
     const dispatchMock = vi.fn();
-    const buildGetState = (shortUrlsList?: ShortUrlsList) => () => fromPartial<ShlinkState>({ shortUrlsList });
+    const buildGetState = (shortUrlsList?: ShortUrlsList) => () => fromPartial<RootState>({ shortUrlsList });
 
     it.each([
       [undefined],
