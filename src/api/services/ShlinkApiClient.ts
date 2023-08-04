@@ -109,7 +109,7 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
       .then(({ data }) => ({ tags: data.map(({ tag }) => tag), stats: data }));
 
   public readonly deleteTags = async (tags: string[]): Promise<{ tags: string[] }> =>
-    this.performEmptyRequest({ url: '/tags', method: 'DELETE', body: { tags } }).then(() => ({ tags }));
+    this.performEmptyRequest({ url: '/tags', method: 'DELETE', query: { tags } }).then(() => ({ tags }));
 
   public readonly editTag = async (oldName: string, newName: string): Promise<{ oldName: string; newName: string }> =>
     this.performEmptyRequest({

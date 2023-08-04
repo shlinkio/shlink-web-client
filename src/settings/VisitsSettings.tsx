@@ -1,12 +1,10 @@
 import type { FC } from 'react';
 import { FormGroup } from 'reactstrap';
 import { LabeledFormGroup, SimpleCard, ToggleSwitch } from '../../shlink-frontend-kit/src';
-import type { Settings } from '../../shlink-web-component/src';
+import type { Settings, VisitsSettings as VisitsSettingsConfig } from '../../shlink-web-component/src';
 import type { DateInterval } from '../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 import { DateIntervalSelector } from '../utils/dates/DateIntervalSelector';
 import { FormText } from '../utils/forms/FormText';
-
-type VisitsSettingsConfig = Settings['visits'];
 
 interface VisitsProps {
   settings: Settings;

@@ -1,13 +1,14 @@
 import type Bottle from 'bottlejs';
+import { ShlinkWebComponent } from '../../../shlink-web-component/src';
 import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { ErrorHandler } from '../ErrorHandler';
 import { Home } from '../Home';
 import { MainHeader } from '../MainHeader';
-import { MenuLayout } from '../MenuLayout';
 import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
+import { ShlinkWebComponentContainer } from '../ShlinkWebComponentContainer';
 import { HttpClient } from './HttpClient';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
@@ -26,8 +27,15 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('Home', withoutSelectedServer);
   bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
-  bottle.serviceFactory('MenuLayout', MenuLayout, 'buildShlinkApiClient', 'ServerError');
-  bottle.decorator('MenuLayout', connect(
+  bottle.serviceFactory('ShlinkWebComponent', () => ShlinkWebComponent);
+  bottle.serviceFactory(
+    'ShlinkWebComponentContainer',
+    ShlinkWebComponentContainer,
+    'buildShlinkApiClient',
+    'ShlinkWebComponent',
+    'ServerError',
+  );
+  bottle.decorator('ShlinkWebComponentContainer', connect(
     ['selectedServer', 'settings'],
     ['selectServer', 'sidebarPresent', 'sidebarNotPresent'],
   ));

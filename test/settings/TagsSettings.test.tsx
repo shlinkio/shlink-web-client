@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
+import type { TagsSettings as TagsSettingsOptions } from '../../shlink-web-component/src';
 import type { TagsOrder } from '../../shlink-web-component/src/tags/data/TagsListChildrenProps';
-import type { TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

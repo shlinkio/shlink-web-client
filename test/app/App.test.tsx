@@ -8,7 +8,7 @@ describe('<App />', () => {
   const App = createApp(
     () => <>MainHeader</>,
     () => <>Home</>,
-    () => <>MenuLayout</>,
+    () => <>ShlinkWebComponentContainer</>,
     () => <>CreateServer</>,
     () => <>EditServer</>,
     () => <>SettingsComp</>,
@@ -47,8 +47,8 @@ describe('<App />', () => {
     ['/server/create', 'CreateServer'],
     ['/server/abc123/edit', 'EditServer'],
     ['/server/def456/edit', 'EditServer'],
-    ['/server/abc123/foo', 'MenuLayout'],
-    ['/server/def456/bar', 'MenuLayout'],
+    ['/server/abc123/foo', 'ShlinkWebComponentContainer'],
+    ['/server/def456/bar', 'ShlinkWebComponentContainer'],
     ['/other', 'Oops! We could not find requested route.'],
   ])('renders expected route', async (activeRoute, expectedComponent) => {
     setUp(activeRoute);

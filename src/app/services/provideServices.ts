@@ -10,7 +10,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     App,
     'MainHeader',
     'Home',
-    'MenuLayout',
+    'ShlinkWebComponentContainer',
     'CreateServer',
     'EditServer',
     'Settings',

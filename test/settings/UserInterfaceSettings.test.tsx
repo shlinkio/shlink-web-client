@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { UiSettings } from '../../src/settings/reducers/settings';
+import type { UiSettings } from '../../shlink-web-component/src';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
 import type { Theme } from '../../src/utils/theme';
 import { renderWithEvents } from '../__helpers__/setUpTest';

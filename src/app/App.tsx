@@ -21,7 +21,7 @@ interface AppProps {
 export const App = (
   MainHeader: FC,
   Home: FC,
-  MenuLayout: FC,
+  ShlinkWebComponentContainer: FC,
   CreateServer: FC,
   EditServer: FC,
   SettingsComp: FC,
@@ -52,7 +52,7 @@ export const App = (
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />
-            <Route path="/server/:serverId/*" element={<MenuLayout />} />
+            <Route path="/server/:serverId/*" element={<ShlinkWebComponentContainer />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

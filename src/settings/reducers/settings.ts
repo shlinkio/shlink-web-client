@@ -1,10 +1,15 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from 'ramda';
-import type { Settings } from '../../../shlink-web-component/src';
+import type {
+  Settings,
+  ShortUrlCreationSettings,
+  ShortUrlsListSettings,
+  TagsSettings,
+  UiSettings, VisitsSettings } from '../../../shlink-web-component/src';
 import type { Defined } from '../../utils/types';
 
-type ShortUrlsOrder = Defined<Defined<Settings['shortUrlsList']>['defaultOrdering']>;
+type ShortUrlsOrder = Defined<ShortUrlsListSettings['defaultOrdering']>;
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',
@@ -43,14 +48,14 @@ const { reducer, actions } = createSlice({
     toggleRealTimeUpdates: toReducer((enabled: boolean) => toPreparedAction({ realTimeUpdates: { enabled } })),
     setRealTimeUpdatesInterval: toReducer((interval: number) => toPreparedAction({ realTimeUpdates: { interval } })),
     setShortUrlCreationSettings: toReducer(
-      (shortUrlCreation: Settings['shortUrlCreation']) => toPreparedAction({ shortUrlCreation }),
+      (shortUrlCreation: ShortUrlCreationSettings) => toPreparedAction({ shortUrlCreation }),
     ),
     setShortUrlsListSettings: toReducer(
-      (shortUrlsList: Settings['shortUrlsList']) => toPreparedAction({ shortUrlsList }),
+      (shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList }),
     ),
-    setUiSettings: toReducer((ui: Settings['ui']) => toPreparedAction({ ui })),
-    setVisitsSettings: toReducer((visits: Settings['visits']) => toPreparedAction({ visits })),
-    setTagsSettings: toReducer((tags: Settings['tags']) => toPreparedAction({ tags })),
+    setUiSettings: toReducer((ui: UiSettings) => toPreparedAction({ ui })),
+    setVisitsSettings: toReducer((visits: VisitsSettings) => toPreparedAction({ visits })),
+    setTagsSettings: toReducer((tags: TagsSettings) => toPreparedAction({ tags })),
   },
 });
 

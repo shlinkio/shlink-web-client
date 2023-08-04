@@ -1,6 +1,6 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlCreationSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
+import type { ShortUrlCreationSettings as ShortUrlsSettings } from '../../shlink-web-component/src';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

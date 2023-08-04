@@ -1,7 +1,7 @@
 import { compare } from 'compare-versions';
 import { identity, isEmpty, isNil, memoizeWith } from 'ramda';
 
-type Empty = null | undefined | '' | never[];
+export type Empty = null | undefined | '' | never[];
 
 const hasValue = <T>(value: T | Empty): value is T => !isNil(value) && !isEmpty(value);
 
@@ -11,7 +11,7 @@ type SemVerPattern = SemVerPatternFragment
 | `${SemVerPatternFragment}.${SemVerPatternFragment}`
 | `${SemVerPatternFragment}.${SemVerPatternFragment}.${SemVerPatternFragment}`;
 
-type Versions = {
+export type Versions = {
   maxVersion?: SemVerPattern;
   minVersion?: SemVerPattern;
 };
