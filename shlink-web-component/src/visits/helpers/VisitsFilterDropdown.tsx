@@ -1,6 +1,6 @@
+import { DropdownBtn } from '@shlinkio/shlink-frontend-kit';
 import type { DropdownItemProps } from 'reactstrap';
 import { DropdownItem } from 'reactstrap';
-import { DropdownBtn } from '../../../../shlink-frontend-kit/src';
 import { hasValue } from '../../utils/helpers';
 import type { OrphanVisitType, VisitsFilter } from '../types';
 

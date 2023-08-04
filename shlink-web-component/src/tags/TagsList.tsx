@@ -1,8 +1,8 @@
+import { determineOrderDir, Message, OrderingDropdown, Result, SearchField, sortList } from '@shlinkio/shlink-frontend-kit';
 import { pipe } from 'ramda';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Row } from 'reactstrap';
-import { determineOrderDir, Message, OrderingDropdown, Result, SearchField, sortList } from '../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../common/ShlinkApiError';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';

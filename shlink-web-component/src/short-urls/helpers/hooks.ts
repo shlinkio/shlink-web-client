@@ -1,11 +1,10 @@
+import { orderToString, parseQuery, stringifyQuery, stringToOrder } from '@shlinkio/shlink-frontend-kit';
 import { isEmpty, pipe } from 'ramda';
 import { useCallback, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { orderToString, stringToOrder } from '../../../../shlink-frontend-kit/src';
 import type { TagsFilteringMode } from '../../api-contract';
 import type { BooleanString } from '../../utils/helpers';
 import { parseOptionalBooleanToString } from '../../utils/helpers';
-import { parseQuery, stringifyQuery } from '../../utils/helpers/query';
 import { useRoutesPrefix } from '../../utils/routesPrefix';
 import type { ShortUrlsOrder, ShortUrlsOrderableFields } from '../data';
 

@@ -1,7 +1,7 @@
+import { DropdownBtn, LabeledFormGroup, SimpleCard, ToggleSwitch } from '@shlinkio/shlink-frontend-kit';
+import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import type { FC, ReactNode } from 'react';
 import { DropdownItem, FormGroup } from 'reactstrap';
-import { DropdownBtn, LabeledFormGroup, SimpleCard, ToggleSwitch } from '../../shlink-frontend-kit/src';
-import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings } from '../../shlink-web-component/src';
 import { FormText } from '../utils/forms/FormText';
 import type { Defined } from '../utils/types';
 

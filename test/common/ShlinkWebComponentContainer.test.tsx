@@ -55,28 +55,4 @@ describe('<ShlinkWebComponentContainer />', () => {
     expect(screen.queryByText('ServerError')).not.toBeInTheDocument();
     expect(screen.getByText('ShlinkWebComponent')).toBeInTheDocument();
   });
-
-  // FIXME Move this case to ShlinkWebComponent test
-  // it.each([
-  //   ['3.0.0' as SemVer, '/overview', 'OverviewRoute'],
-  //   ['3.0.0' as SemVer, '/list-short-urls/1', 'ShortUrlsList'],
-  //   ['3.0.0' as SemVer, '/create-short-url', 'CreateShortUrl'],
-  //   ['3.0.0' as SemVer, '/short-code/abc123/visits/foo', 'ShortUrlVisits'],
-  //   ['3.0.0' as SemVer, '/short-code/abc123/edit', 'EditShortUrl'],
-  //   ['3.0.0' as SemVer, '/tag/foo/visits/foo', 'TagVisits'],
-  //   ['3.0.0' as SemVer, '/orphan-visits/foo', 'OrphanVisits'],
-  //   ['3.0.0' as SemVer, '/manage-tags', 'TagsList'],
-  //   ['3.0.0' as SemVer, '/not-found', 'Oops! We could not find requested route.'],
-  //   ['3.0.0' as SemVer, '/domain/domain.com/visits/foo', 'Oops! We could not find requested route.'],
-  //   ['3.1.0' as SemVer, '/domain/domain.com/visits/foo', 'DomainVisits'],
-  //   ['2.10.0' as SemVer, '/non-orphan-visits/foo', 'Oops! We could not find requested route.'],
-  //   ['3.0.0' as SemVer, '/non-orphan-visits/foo', 'NonOrphanVisits'],
-  //   ['2.8.0' as SemVer, '/manage-domains', 'ManageDomains'],
-  // ])(
-  //   'renders expected component based on location and server version',
-  //   (version, currentPath, expectedContent) => {
-  //     setUp(fromPartial({ version }), currentPath);
-  //     expect(screen.getByText(expectedContent)).toBeInTheDocument();
-  //   },
-  // );
 });

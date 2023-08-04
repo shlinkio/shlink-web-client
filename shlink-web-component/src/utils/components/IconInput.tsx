@@ -1,10 +1,10 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Input } from 'reactstrap';
-import { useElementRef } from '../../../../shlink-frontend-kit/src';
 import './IconInput.scss';
 
 type IconInputProps = InputProps & {

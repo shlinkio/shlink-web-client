@@ -1,6 +1,6 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
+import type { ShlinkHealth } from '@shlinkio/shlink-web-component/api-contract';
 import { memoizeWith, pipe } from 'ramda';
-import type { ShlinkHealth } from '../../../shlink-web-component/src/api-contract';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';

@@ -1,8 +1,8 @@
 import { faSyncAlt as reloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SimpleCard, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC, MouseEventHandler } from 'react';
 import { Alert, Button } from 'reactstrap';
-import { SimpleCard, useToggle } from '../../shlink-frontend-kit/src';
 import './AppUpdateBanner.scss';
 
 interface AppUpdateBannerProps {

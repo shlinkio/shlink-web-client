@@ -1,5 +1,5 @@
+import { Checkbox } from '@shlinkio/shlink-frontend-kit';
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
-import { Checkbox } from '../../../../shlink-frontend-kit/src';
 import { InfoTooltip } from '../../utils/components/InfoTooltip';
 
 type ShortUrlFormCheckboxGroupProps = PropsWithChildren<{

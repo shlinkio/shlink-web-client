@@ -1,10 +1,10 @@
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row } from 'reactstrap';
-import { Result, SearchField, SimpleCard } from '../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
 import type { ServersMap } from './data';

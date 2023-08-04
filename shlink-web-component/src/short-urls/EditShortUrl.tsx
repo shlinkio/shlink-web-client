@@ -1,14 +1,13 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Message, parseQuery, Result } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useMemo } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { useLocation, useParams } from 'react-router-dom';
 import { Button, Card } from 'reactstrap';
-import { Message, Result } from '../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../common/ShlinkApiError';
 import { useGoBack } from '../utils/helpers/hooks';
-import { parseQuery } from '../utils/helpers/query';
 import { useSetting } from '../utils/settings';
 import type { ShortUrlIdentifier } from './data';
 import { shortUrlDataFromShortUrl, urlDecodeShortCode } from './helpers';

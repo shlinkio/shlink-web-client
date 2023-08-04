@@ -1,16 +1,16 @@
 import { faBars as burgerIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import { useToggle } from '../../shlink-frontend-kit/src';
 import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
 import { useSwipeable } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
 
-type MainProps = {
+export type MainProps = {
   createNotFound?: (nonPrefixedHomePath: string) => ReactNode;
 };
 

@@ -1,9 +1,9 @@
+import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { v4 as uuid } from 'uuid';
-import { Result, useToggle } from '../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
 import { useGoBack } from '../utils/helpers/hooks';

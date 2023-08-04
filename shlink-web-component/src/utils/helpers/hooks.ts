@@ -1,8 +1,8 @@
+import { parseQuery, stringifyQuery } from '@shlinkio/shlink-frontend-kit';
 import type { DependencyList, EffectCallback } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable as useReactSwipeable } from 'react-swipeable';
-import { parseQuery, stringifyQuery } from './query';
 
 const DEFAULT_DELAY = 2000;
 

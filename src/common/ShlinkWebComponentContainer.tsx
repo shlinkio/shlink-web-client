@@ -1,6 +1,6 @@
+import type { Settings, ShlinkWebComponentType } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import type { Settings, ShlinkWebComponentType } from '../../shlink-web-component/src';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';

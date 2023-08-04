@@ -1,8 +1,8 @@
 import { faMapMarkedAlt as mapIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useDomId, useToggle } from '@shlinkio/shlink-frontend-kit';
 import { useState } from 'react';
 import { Button, Dropdown, DropdownItem, DropdownMenu, UncontrolledTooltip } from 'reactstrap';
-import { useDomId, useToggle } from '../../../../shlink-frontend-kit/src';
 import type { CityStats } from '../types';
 import { MapModal } from './MapModal';
 import './OpenMapModalBtn.scss';

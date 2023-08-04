@@ -1,6 +1,6 @@
+import { InputFormGroup, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { useEffect, useState } from 'react';
-import { InputFormGroup, SimpleCard } from '../../../shlink-frontend-kit/src';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import type { ServerData } from '../data';
 

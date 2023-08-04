@@ -1,6 +1,6 @@
+import { Message } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
-import { Message } from '../../../shlink-frontend-kit/src';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
 import type { SelectedServer, ServersMap } from '../data';
 import { isServerWithId } from '../data';

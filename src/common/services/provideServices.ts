@@ -1,5 +1,5 @@
+import { ShlinkWebComponent } from '@shlinkio/shlink-web-component';
 import type Bottle from 'bottlejs';
-import { ShlinkWebComponent } from '../../../shlink-web-component/src';
 import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { ErrorHandler } from '../ErrorHandler';

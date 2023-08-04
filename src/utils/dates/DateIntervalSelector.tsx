@@ -1,8 +1,7 @@
+import { DropdownBtn } from '@shlinkio/shlink-frontend-kit';
+import type { VisitsSettings } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { DropdownBtn } from '../../../shlink-frontend-kit/src';
-import type { VisitsSettings } from '../../../shlink-web-component/src';
-import { rangeOrIntervalToString } from '../../../shlink-web-component/src/utils/dates/helpers/dateIntervals';
 
 export type DateInterval = VisitsSettings['defaultInterval'];
 
@@ -22,8 +21,16 @@ export const INTERVAL_TO_STRING_MAP: Record<Exclude<DateInterval, 'all'>, string
   last365Days: 'Last 365 days',
 };
 
+const intervalToString = (interval: DateInterval | undefined, fallback: string): string => {
+  if (!interval || interval === 'all') {
+    return fallback;
+  }
+
+  return INTERVAL_TO_STRING_MAP[interval];
+};
+
 export const DateIntervalSelector: FC<DateIntervalSelectorProps> = ({ onChange, active, allText }) => (
-  <DropdownBtn text={rangeOrIntervalToString(active) ?? allText}>
+  <DropdownBtn text={intervalToString(active, allText)}>
     <DropdownItem active={active === 'all'} onClick={() => onChange('all')}>
       {allText}
     </DropdownItem>

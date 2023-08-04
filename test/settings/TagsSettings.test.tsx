@@ -1,7 +1,7 @@
+import type { TagsSettings as TagsSettingsOptions } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { TagsSettings as TagsSettingsOptions } from '../../shlink-web-component/src';
-import type { TagsOrder } from '../../shlink-web-component/src/tags/data/TagsListChildrenProps';
+import type { TagsOrder } from '../../src/settings/TagsSettings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 

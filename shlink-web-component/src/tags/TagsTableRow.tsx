@@ -1,9 +1,9 @@
 import { faPencilAlt as editIcon, faTrash as deleteIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { RowDropdownBtn, useToggle } from '../../../shlink-frontend-kit/src';
 import { prettify } from '../utils/helpers/numbers';
 import { useRoutesPrefix } from '../utils/routesPrefix';
 import type { ColorGenerator } from '../utils/services/ColorGenerator';

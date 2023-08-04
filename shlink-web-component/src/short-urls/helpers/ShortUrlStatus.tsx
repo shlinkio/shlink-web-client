@@ -1,10 +1,10 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faCalendarXmark, faCheck, faLinkSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import { isBefore } from 'date-fns';
 import type { FC, ReactNode } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../../../../shlink-frontend-kit/src';
 import { formatHumanFriendly, now, parseISO } from '../../utils/dates/helpers/date';
 import type { ShortUrl } from '../data';
 

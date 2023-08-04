@@ -1,8 +1,8 @@
 import { faInfoCircle as infoIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../../../../shlink-frontend-kit/src';
 import { formatHumanFriendly, parseISO } from '../../utils/dates/helpers/date';
 import { prettify } from '../../utils/helpers/numbers';
 import type { ShortUrl } from '../data';

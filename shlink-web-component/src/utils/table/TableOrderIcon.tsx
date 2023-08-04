@@ -1,6 +1,6 @@
 import { faCaretDown as caretDownIcon, faCaretUp as caretUpIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { Order } from '../../../../shlink-frontend-kit/src';
+import type { Order } from '@shlinkio/shlink-frontend-kit';
 
 interface TableOrderIconProps<T> {
   currentOrder: Order<T>;

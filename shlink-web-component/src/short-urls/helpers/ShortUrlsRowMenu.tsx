@@ -5,9 +5,9 @@ import {
   faQrcode as qrIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import { RowDropdownBtn, useToggle } from '../../../../shlink-frontend-kit/src';
 import type { ShortUrl, ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 

@@ -1,8 +1,8 @@
+import type { Order } from '@shlinkio/shlink-frontend-kit';
+import { OrderingDropdown } from '@shlinkio/shlink-frontend-kit';
 import { fromPairs, pipe, reverse, sortBy, splitEvery, toLower, toPairs, type, zipObj } from 'ramda';
 import type { FC, ReactNode } from 'react';
 import { useState } from 'react';
-import type { Order } from '../../../../shlink-frontend-kit/src';
-import { OrderingDropdown } from '../../../../shlink-frontend-kit/src';
 import { PaginationDropdown } from '../../utils/components/PaginationDropdown';
 import { SimplePaginator } from '../../utils/components/SimplePaginator';
 import { rangeOf } from '../../utils/helpers';

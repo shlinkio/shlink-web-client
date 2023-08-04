@@ -1,13 +1,13 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { faCalendarAlt, faChartPie, faList, faMapMarkedAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Message, NavPillItem, NavPills, Result } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { isEmpty, pipe, propEq, values } from 'ramda';
 import type { FC, PropsWithChildren } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { Button, Progress, Row } from 'reactstrap';
-import { Message, NavPillItem, NavPills, Result } from '../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../common/ShlinkApiError';
 import { ExportBtn } from '../utils/components/ExportBtn';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';

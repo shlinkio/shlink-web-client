@@ -1,5 +1,5 @@
+import { Result } from '@shlinkio/shlink-frontend-kit';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Result } from '../../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../../common/ShlinkApiError';
 import type { TagModalProps } from '../data';
 import type { TagDeletion } from '../reducers/tagDelete';

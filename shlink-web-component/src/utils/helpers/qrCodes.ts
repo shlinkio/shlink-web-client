@@ -1,5 +1,5 @@
+import { stringifyQuery } from '@shlinkio/shlink-frontend-kit';
 import { isEmpty } from 'ramda';
-import { stringifyQuery } from './query';
 
 export type QrCodeFormat = 'svg' | 'png';
 

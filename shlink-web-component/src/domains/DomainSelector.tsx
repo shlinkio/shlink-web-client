@@ -1,10 +1,10 @@
 import { faUndo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { DropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import { isEmpty, pipe } from 'ramda';
 import { useEffect } from 'react';
 import type { InputProps } from 'reactstrap';
 import { Button, DropdownItem, Input, InputGroup, UncontrolledTooltip } from 'reactstrap';
-import { DropdownBtn, useToggle } from '../../../shlink-frontend-kit/src';
 import type { DomainsList } from './reducers/domainsList';
 import './DomainSelector.scss';
 

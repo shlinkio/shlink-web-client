@@ -1,7 +1,7 @@
+import { Result } from '@shlinkio/shlink-frontend-kit';
 import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import { Result } from '../../../../shlink-frontend-kit/src';
 import { isInvalidDeletionError } from '../../api-contract/utils';
 import { ShlinkApiError } from '../../common/ShlinkApiError';
 import { handleEventPreventingDefault } from '../../utils/helpers';

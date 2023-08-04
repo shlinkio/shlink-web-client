@@ -1,10 +1,10 @@
 import { faPalette as colorIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import { pipe } from 'ramda';
 import { useState } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { Button, Input, InputGroup, Modal, ModalBody, ModalFooter, ModalHeader, Popover } from 'reactstrap';
-import { Result, useToggle } from '../../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../../common/ShlinkApiError';
 import { handleEventPreventingDefault } from '../../utils/helpers';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';

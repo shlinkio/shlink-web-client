@@ -1,11 +1,11 @@
 import { faTag, faTags } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { OrderDir } from '@shlinkio/shlink-frontend-kit';
+import { OrderingDropdown, SearchField } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { isEmpty, pipe } from 'ramda';
 import type { FC } from 'react';
 import { Button, InputGroup, Row, UncontrolledTooltip } from 'reactstrap';
-import type { OrderDir } from '../../../shlink-frontend-kit/src';
-import { OrderingDropdown, SearchField } from '../../../shlink-frontend-kit/src';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { DateRangeSelector } from '../utils/dates/DateRangeSelector';
 import { formatIsoDate } from '../utils/dates/helpers/date';

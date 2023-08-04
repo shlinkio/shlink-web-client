@@ -1,9 +1,9 @@
+import type { OrderDir } from '@shlinkio/shlink-frontend-kit';
+import { determineOrderDir } from '@shlinkio/shlink-frontend-kit';
 import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Card } from 'reactstrap';
-import type { OrderDir } from '../../../shlink-frontend-kit/src';
-import { determineOrderDir } from '../../../shlink-frontend-kit/src';
 import { DEFAULT_SHORT_URLS_ORDERING } from '../../../src/settings/reducers/settings';
 import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';

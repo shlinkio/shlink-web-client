@@ -1,5 +1,5 @@
+import type { OrderDir } from '@shlinkio/shlink-frontend-kit';
 import { render } from '@testing-library/react';
-import type { OrderDir } from '../../../../shlink-frontend-kit/src';
 import { TableOrderIcon } from '../../../src/utils/table/TableOrderIcon';
 
 describe('<TableOrderIcon />', () => {

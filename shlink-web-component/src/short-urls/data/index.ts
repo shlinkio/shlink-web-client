@@ -1,4 +1,4 @@
-import type { Order } from '../../../../shlink-frontend-kit/src';
+import type { Order } from '@shlinkio/shlink-frontend-kit';
 import type { ShlinkVisitsSummary } from '../../api-contract';
 import type { Nullable, OptionalString } from '../../utils/helpers';
 

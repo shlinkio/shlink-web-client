@@ -4,11 +4,11 @@ import {
   faTimes as invalidIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { UncontrolledTooltip } from 'reactstrap';
-import { useElementRef } from '../../../../shlink-frontend-kit/src';
 import type { MediaMatcher } from '../../utils/types';
 import type { DomainStatus } from '../data';
 

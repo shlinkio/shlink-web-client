@@ -1,8 +1,8 @@
+import type { Settings } from '@shlinkio/shlink-web-component';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
-import type { Settings } from '../../shlink-web-component/src';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { ServersMap } from '../servers/data';

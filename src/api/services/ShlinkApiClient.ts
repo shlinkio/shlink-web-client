@@ -1,5 +1,4 @@
-import { isEmpty, isNil, reject } from 'ramda';
-import { orderToString } from '../../../shlink-frontend-kit/src';
+import { orderToString, stringifyQuery } from '@shlinkio/shlink-frontend-kit';
 import type {
   ShlinkApiClient as BaseShlinkApiClient,
   ShlinkDomainRedirects,
@@ -16,10 +15,11 @@ import type {
   ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
-  ShlinkVisitsParams } from '../../../shlink-web-component/src/api-contract';
-import { isRegularNotFound, parseApiError } from '../../../shlink-web-component/src/api-contract/utils';
+  ShlinkVisitsParams,
+} from '@shlinkio/shlink-web-component/api-contract';
+import { isRegularNotFound, parseApiError } from '@shlinkio/shlink-web-component/api-contract/utils';
+import { isEmpty, isNil, reject } from 'ramda';
 import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
-import { stringifyQuery } from '../../../shlink-web-component/src/utils/helpers/query';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';

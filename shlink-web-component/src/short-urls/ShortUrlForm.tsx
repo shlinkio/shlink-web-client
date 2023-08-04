@@ -1,6 +1,7 @@
 import type { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faAndroid, faApple } from '@fortawesome/free-brands-svg-icons';
 import { faDesktop } from '@fortawesome/free-solid-svg-icons';
+import { Checkbox, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
 import { isEmpty, pipe, replace, trim } from 'ramda';
@@ -8,7 +9,6 @@ import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
-import { Checkbox, SimpleCard } from '../../../shlink-frontend-kit/src';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { IconInput } from '../utils/components/IconInput';

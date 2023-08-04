@@ -1,6 +1,6 @@
+import { Message, Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect } from 'react';
-import { Message, Result, SearchField, SimpleCard } from '../../../shlink-frontend-kit/src';
 import { ShlinkApiError } from '../common/ShlinkApiError';
 import { DomainRow } from './DomainRow';
 import type { EditDomainRedirects } from './reducers/domainRedirects';

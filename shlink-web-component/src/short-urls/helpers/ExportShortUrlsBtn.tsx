@@ -1,6 +1,6 @@
+import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import { useToggle } from '../../../../shlink-frontend-kit/src';
 import type { ShlinkApiClient } from '../../api-contract';
 import { ExportBtn } from '../../utils/components/ExportBtn';
 import type { ReportExporter } from '../../utils/services/ReportExporter';

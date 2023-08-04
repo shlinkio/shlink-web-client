@@ -1,9 +1,9 @@
 import { faChartPie as pieChartIcon, faEdit as editIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { RowDropdownBtn, useToggle } from '../../../../shlink-frontend-kit/src';
 import { useFeature } from '../../utils/features';
 import { useRoutesPrefix } from '../../utils/routesPrefix';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';

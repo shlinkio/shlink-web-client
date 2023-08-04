@@ -1,3 +1,4 @@
+import { parseQuery } from '@shlinkio/shlink-frontend-kit';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
@@ -6,7 +7,6 @@ import type { ShortUrlIdentifier } from '../short-urls/data';
 import { urlDecodeShortCode } from '../short-urls/helpers';
 import type { ShortUrlDetail } from '../short-urls/reducers/shortUrlDetail';
 import { useGoBack } from '../utils/helpers/hooks';
-import { parseQuery } from '../utils/helpers/query';
 import type { ReportExporter } from '../utils/services/ReportExporter';
 import type { LoadShortUrlVisits, ShortUrlVisits as ShortUrlVisitsState } from './reducers/shortUrlVisits';
 import { ShortUrlVisitsHeader } from './ShortUrlVisitsHeader';

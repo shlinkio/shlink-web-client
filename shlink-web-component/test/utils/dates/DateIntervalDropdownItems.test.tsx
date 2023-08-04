@@ -1,5 +1,5 @@
+import { DropdownBtn } from '@shlinkio/shlink-frontend-kit';
 import { screen, waitFor } from '@testing-library/react';
-import { DropdownBtn } from '../../../../shlink-frontend-kit/src';
 import { DateIntervalDropdownItems } from '../../../src/utils/dates/DateIntervalDropdownItems';
 import type { DateInterval } from '../../../src/utils/dates/helpers/dateIntervals';
 import { DATE_INTERVALS, rangeOrIntervalToString } from '../../../src/utils/dates/helpers/dateIntervals';
