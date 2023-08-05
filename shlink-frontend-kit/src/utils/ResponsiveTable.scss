@@ -1,4 +1,4 @@
-@import '../../utils/base';
+@import '../base';
 
 .responsive-table__header {
   @media (max-width: $responsiveTableBreakpoint) {

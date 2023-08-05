@@ -1,6 +1,11 @@
-@import '../../../../src/utils/base';
-@import '../../../../src/utils/mixins/text-ellipsis';
-@import '../../../../src/utils/mixins/vertical-align';
+@import '@shlinkio/shlink-frontend-kit/base';
+@import '../../utils/mixins/vertical-align';
+
+@mixin text-ellipsis() {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
 .short-urls-row__cell.short-urls-row__cell {
   vertical-align: middle !important;

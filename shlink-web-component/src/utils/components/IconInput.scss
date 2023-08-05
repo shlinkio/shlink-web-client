@@ -1,5 +1,5 @@
-@import '../../../../src/utils/mixins/vertical-align';
-@import '../../../../src/utils/base';
+@import '../mixins/vertical-align';
+@import '@shlinkio/shlink-frontend-kit/base';
 
 .icon-input-container {
   position: relative;

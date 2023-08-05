@@ -1,4 +1,4 @@
-import { ToggleSwitch, useToggle } from '@shlinkio/shlink-frontend-kit';
+import { HIGHLIGHTED_COLOR, MAIN_COLOR, ToggleSwitch, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import {
   add,
@@ -24,7 +24,6 @@ import {
   DropdownToggle,
   UncontrolledDropdown,
 } from 'reactstrap';
-import { HIGHLIGHTED_COLOR, MAIN_COLOR } from '../../../../src/utils/theme';
 import { formatInternational } from '../../utils/dates/helpers/date';
 import { rangeOf } from '../../utils/helpers';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';

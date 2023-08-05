@@ -1,5 +1,5 @@
-@import '../../../src/utils/base';
-@import '../../../src/utils/mixins/sticky-cell';
+@import '@shlinkio/shlink-frontend-kit/base';
+@import '../utils/mixins/sticky-cell';
 
 .tags-table__header-cell.tags-table__header-cell {
   @include sticky-cell(false);

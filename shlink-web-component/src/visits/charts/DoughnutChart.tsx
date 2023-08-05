@@ -1,9 +1,9 @@
+import { isDarkThemeEnabled, PRIMARY_DARK_COLOR, PRIMARY_LIGHT_COLOR } from '@shlinkio/shlink-frontend-kit';
 import type { Chart, ChartData, ChartDataset, ChartOptions } from 'chart.js';
 import { keys, values } from 'ramda';
 import type { FC } from 'react';
 import { memo, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { isDarkThemeEnabled, PRIMARY_DARK_COLOR, PRIMARY_LIGHT_COLOR } from '../../../../src/utils/theme';
 import { renderPieChartLabel } from '../../utils/helpers/charts';
 import type { Stats } from '../types';
 import { DoughnutChartLegend } from './DoughnutChartLegend';

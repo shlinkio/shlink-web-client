@@ -9,6 +9,7 @@ import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
 import { useSwipeable } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
+import './utils/StickyCardPaginator.scss';
 
 export type MainProps = {
   createNotFound?: (nonPrefixedHomePath: string) => ReactNode;

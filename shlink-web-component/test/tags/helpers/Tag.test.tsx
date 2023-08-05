@@ -1,7 +1,7 @@
+import { MAIN_COLOR } from '@shlinkio/shlink-frontend-kit';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
-import { MAIN_COLOR } from '../../../../src/utils/theme';
 import { Tag } from '../../../src/tags/helpers/Tag';
 import type { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
 import { renderWithEvents } from '../../__helpers__/setUpTest';

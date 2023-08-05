@@ -1,4 +1,4 @@
-@import '../base';
+@import '@shlinkio/shlink-frontend-kit/base';
 
 @mixin sticky-cell($with-separators: true) {
   z-index: 1;

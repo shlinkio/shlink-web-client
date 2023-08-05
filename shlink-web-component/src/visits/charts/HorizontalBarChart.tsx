@@ -1,9 +1,9 @@
+import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '@shlinkio/shlink-frontend-kit';
 import type { ChartData, ChartDataset, ChartOptions, InteractionItem } from 'chart.js';
 import { keys, values } from 'ramda';
 import type { FC, MutableRefObject } from 'react';
 import { useRef } from 'react';
 import { Bar, getElementAtEvent } from 'react-chartjs-2';
-import { HIGHLIGHTED_COLOR, HIGHLIGHTED_COLOR_ALPHA, MAIN_COLOR, MAIN_COLOR_ALPHA } from '../../../../src/utils/theme';
 import { pointerOnHover, renderChartLabel } from '../../utils/helpers/charts';
 import { prettify } from '../../utils/helpers/numbers';
 import type { Stats } from '../types';
