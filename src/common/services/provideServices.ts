@@ -5,7 +5,6 @@ import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServ
 import { ErrorHandler } from '../ErrorHandler';
 import { Home } from '../Home';
 import { MainHeader } from '../MainHeader';
-import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
 import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
 import { ShlinkWebComponentContainer } from '../ShlinkWebComponentContainer';
@@ -36,17 +35,10 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ShlinkWebComponent',
     'ServerError',
   );
-  bottle.decorator('ShlinkWebComponentContainer', connect(
-    ['selectedServer', 'settings'],
-    ['selectServer', 'sidebarPresent', 'sidebarNotPresent'],
-  ));
+  bottle.decorator('ShlinkWebComponentContainer', connect(['selectedServer', 'settings'], ['selectServer']));
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
-  bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer', 'sidebar']));
+  bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer']));
 
   bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
-
-  // Actions
-  bottle.serviceFactory('sidebarPresent', () => sidebarPresent);
-  bottle.serviceFactory('sidebarNotPresent', () => sidebarNotPresent);
 };

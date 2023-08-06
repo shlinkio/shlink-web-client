@@ -17,13 +17,7 @@ describe('<ShlinkWebComponentContainer />', () => {
     () => <>ServerError</>,
   );
   const setUp = (selectedServer: SelectedServer) => render(
-    <ShlinkWebComponentContainer
-      sidebarNotPresent={vi.fn()}
-      sidebarPresent={vi.fn()}
-      selectServer={vi.fn()}
-      selectedServer={selectedServer}
-      settings={{}}
-    />,
+    <ShlinkWebComponentContainer selectServer={vi.fn()} selectedServer={selectedServer} settings={{}} />,
   );
 
   beforeEach(() => {

@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import type { FC, ReactNode } from 'react';
-import { useEffect } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { Fragment, useEffect, useMemo } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useInRouterContext, useLocation } from 'react-router-dom';
 import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
 import { useSwipeable } from './utils/helpers/hooks';
@@ -30,6 +30,9 @@ export const Main = (
 ): FC<MainProps> => ({ createNotFound }) => {
   const location = useLocation();
   const routesPrefix = useRoutesPrefix();
+  const inRouterContext = useInRouterContext();
+  const Wrapper = useMemo(() => (inRouterContext ? Fragment : BrowserRouter), [inRouterContext]);
+
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   useEffect(() => hideSidebar(), [location]);
 
@@ -37,10 +40,10 @@ export const Main = (
   const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 
-  // FIXME Check if this is already wrapped by a router, and wrap otherwise
+  // FIXME Check if this works when not currently wrapped in a router
 
   return (
-    <>
+    <Wrapper basename={routesPrefix}>
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
       <div {...swipeableProps} className="menu-layout__swipeable">
@@ -67,6 +70,6 @@ export const Main = (
           </div>
         </div>
       </div>
-    </>
+    </Wrapper>
   );
 };
