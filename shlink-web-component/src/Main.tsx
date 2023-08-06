@@ -31,7 +31,11 @@ export const Main = (
   const location = useLocation();
   const routesPrefix = useRoutesPrefix();
   const inRouterContext = useInRouterContext();
-  const Wrapper = useMemo(() => (inRouterContext ? Fragment : BrowserRouter), [inRouterContext]);
+  const [Wrapper, props] = useMemo(() => (
+    inRouterContext
+      ? [Fragment, {}]
+      : [BrowserRouter, { basename: routesPrefix }]
+  ), [inRouterContext]);
 
   const [sidebarVisible, toggleSidebar, showSidebar, hideSidebar] = useToggle();
   useEffect(() => hideSidebar(), [location]);
@@ -43,7 +47,7 @@ export const Main = (
   // FIXME Check if this works when not currently wrapped in a router
 
   return (
-    <Wrapper basename={routesPrefix}>
+    <Wrapper {...props}>
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
       <div {...swipeableProps} className="menu-layout__swipeable">
