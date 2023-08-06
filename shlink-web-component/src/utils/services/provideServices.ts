@@ -3,7 +3,6 @@ import { useTimeoutToggle } from '../helpers/hooks';
 import { jsonToCsv } from '../helpers/json';
 import { ColorGenerator } from './ColorGenerator';
 import { ImageDownloader } from './ImageDownloader';
-import { LocalStorage } from './LocalStorage';
 import { ReportExporter } from './ReportExporter';
 
 export function provideServices(bottle: Bottle) {
@@ -11,9 +10,7 @@ export function provideServices(bottle: Bottle) {
   bottle.constant('fetch', window.fetch.bind(window));
   bottle.service('ImageDownloader', ImageDownloader, 'fetch', 'window');
 
-  bottle.constant('localStorage', window.localStorage);
-  bottle.service('Storage', LocalStorage, 'localStorage');
-  bottle.service('ColorGenerator', ColorGenerator, 'Storage');
+  bottle.service('ColorGenerator', ColorGenerator, 'TagColorsStorage');
 
   bottle.constant('jsonToCsv', jsonToCsv);
   bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');

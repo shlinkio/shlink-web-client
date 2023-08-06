@@ -14,3 +14,5 @@ export type {
   TagsSettings,
   Settings,
 } from './utils/settings';
+
+export type { TagColorsStorage } from './utils/services/TagColorsStorage';

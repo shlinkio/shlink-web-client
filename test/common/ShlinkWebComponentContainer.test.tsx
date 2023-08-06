@@ -12,6 +12,7 @@ vi.mock('react-router-dom', async () => ({
 describe('<ShlinkWebComponentContainer />', () => {
   const ShlinkWebComponentContainer = createContainer(
     vi.fn().mockReturnValue(fromPartial({})),
+    fromPartial({}),
     () => <>ShlinkWebComponent</>,
     () => <>ServerError</>,
   );

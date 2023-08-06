@@ -1,4 +1,4 @@
-import type { Settings, ShlinkWebComponentType } from '@shlinkio/shlink-web-component';
+import type { Settings, ShlinkWebComponentType, TagColorsStorage } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
@@ -15,6 +15,7 @@ interface ShlinkWebComponentContainerProps {
 
 export const ShlinkWebComponentContainer = (
   buildShlinkApiClient: ShlinkApiClientBuilder,
+  tagColorsStorage: TagColorsStorage,
   ShlinkWebComponent: ShlinkWebComponentType,
   ServerError: FC,
 ) => withSelectedServer<ShlinkWebComponentContainerProps>((
@@ -38,6 +39,7 @@ export const ShlinkWebComponentContainer = (
       apiClient={buildShlinkApiClient(selectedServer)}
       settings={settings}
       routesPrefix={routesPrefix}
+      tagColorsStorage={tagColorsStorage}
       createNotFound={(nonPrefixedHomePath) => (
         <NotFound to={`${routesPrefix}${nonPrefixedHomePath}`}>List short URLs</NotFound>
       )}

@@ -7,12 +7,14 @@ import type { ShlinkApiClient } from './api-contract';
 import { FeaturesProvider, useFeatures } from './utils/features';
 import type { SemVer } from './utils/helpers/version';
 import { RoutesPrefixProvider } from './utils/routesPrefix';
+import type { TagColorsStorage } from './utils/services/TagColorsStorage';
 import type { Settings } from './utils/settings';
 import { SettingsProvider } from './utils/settings';
 
 type ShlinkWebComponentProps = {
-  serverVersion: SemVer;
+  serverVersion: SemVer; // FIXME Consider making this optional and trying to resolve it if not set
   apiClient: ShlinkApiClient;
+  tagColorsStorage?: TagColorsStorage;
   routesPrefix?: string;
   settings?: Settings;
   createNotFound?: (nonPrefixedHomePath: string) => ReactNode;
@@ -24,7 +26,7 @@ let apiClientRef: ShlinkApiClient;
 
 export const createShlinkWebComponent = (
   bottle: Bottle,
-): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '', createNotFound }) => {
+): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '', createNotFound, tagColorsStorage }) => {
   const features = useFeatures(serverVersion);
   const mainContent = useRef<ReactNode>();
   const [theStore, setStore] = useState<Store | undefined>();
@@ -32,6 +34,10 @@ export const createShlinkWebComponent = (
   useEffect(() => {
     apiClientRef = apiClient;
     bottle.value('apiClientFactory', () => apiClientRef);
+
+    if (tagColorsStorage) {
+      bottle.value('TagColorsStorage', tagColorsStorage);
+    }
 
     // It's important to not try to resolve services before the API client has been registered, as many other services
     // depend on it
@@ -42,7 +48,7 @@ export const createShlinkWebComponent = (
 
     // Load mercure info
     store.dispatch(loadMercureInfo(settings));
-  }, [apiClient]);
+  }, [apiClient, tagColorsStorage]);
 
   return !theStore ? <></> : (
     <ReduxStoreProvider store={theStore}>

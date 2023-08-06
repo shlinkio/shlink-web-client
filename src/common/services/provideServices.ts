@@ -32,6 +32,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
     'ShlinkWebComponentContainer',
     ShlinkWebComponentContainer,
     'buildShlinkApiClient',
+    'TagColorsStorage',
     'ShlinkWebComponent',
     'ServerError',
   );

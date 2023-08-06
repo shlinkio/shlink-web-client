@@ -1,6 +1,6 @@
 import { isNil } from 'ramda';
 import { rangeOf } from '../helpers';
-import type { LocalStorage } from './LocalStorage';
+import type { TagColorsStorage } from './TagColorsStorage';
 
 const HEX_COLOR_LENGTH = 6;
 const HEX_DIGITS = '0123456789ABCDEF';
@@ -19,8 +19,8 @@ export class ColorGenerator {
   private readonly colors: Record<string, string>;
   private readonly lights: Record<string, boolean>;
 
-  public constructor(private readonly storage: LocalStorage) {
-    this.colors = this.storage.get<Record<string, string>>('colors') ?? {};
+  public constructor(private readonly storage?: TagColorsStorage) {
+    this.colors = this.storage?.getTagColors() ?? {};
     this.lights = {};
   }
 
@@ -40,7 +40,7 @@ export class ColorGenerator {
     const normalizedKey = normalizeKey(key);
 
     this.colors[normalizedKey] = color;
-    this.storage.set('colors', this.colors);
+    this.storage?.storeTagColors(this.colors);
 
     return color;
   };

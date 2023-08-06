@@ -1,13 +1,13 @@
 import { MAIN_COLOR } from '@shlinkio/shlink-frontend-kit';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { ColorGenerator } from '../../../src/utils/services/ColorGenerator';
-import type { LocalStorage } from '../../../src/utils/services/LocalStorage';
+import type { TagColorsStorage } from '../../../src/utils/services/TagColorsStorage';
 
 describe('ColorGenerator', () => {
   let colorGenerator: ColorGenerator;
-  const storageMock = fromPartial<LocalStorage>({
-    set: vi.fn(),
-    get: vi.fn().mockImplementation(() => undefined),
+  const storageMock = fromPartial<TagColorsStorage>({
+    storeTagColors: vi.fn(),
+    getTagColors: vi.fn().mockImplementation(() => ({})),
   });
 
   beforeEach(() => {
@@ -20,14 +20,14 @@ describe('ColorGenerator', () => {
     colorGenerator.setColorForKey('foo', color);
 
     expect(colorGenerator.getColorForKey('foo')).toEqual(color);
-    expect(storageMock.set).toHaveBeenCalledTimes(1);
-    expect(storageMock.get).toHaveBeenCalledTimes(1);
+    expect(storageMock.storeTagColors).toHaveBeenCalledTimes(1);
+    expect(storageMock.getTagColors).toHaveBeenCalledTimes(1);
   });
 
   it('generates a random color when none is available for requested key', () => {
     expect(colorGenerator.getColorForKey('bar')).toEqual(expect.stringMatching(/^#(?:[0-9a-fA-F]{6})$/));
-    expect(storageMock.set).toHaveBeenCalledTimes(1);
-    expect(storageMock.get).toHaveBeenCalledTimes(1);
+    expect(storageMock.storeTagColors).toHaveBeenCalledTimes(1);
+    expect(storageMock.getTagColors).toHaveBeenCalledTimes(1);
   });
 
   it('trims and lower cases keys before trying to match', () => {
@@ -41,8 +41,8 @@ describe('ColorGenerator', () => {
     expect(colorGenerator.getColorForKey('FOO')).toEqual(color);
     expect(colorGenerator.getColorForKey('FOO  ')).toEqual(color);
     expect(colorGenerator.getColorForKey(' FoO  ')).toEqual(color);
-    expect(storageMock.set).toHaveBeenCalledTimes(1);
-    expect(storageMock.get).toHaveBeenCalledTimes(1);
+    expect(storageMock.storeTagColors).toHaveBeenCalledTimes(1);
+    expect(storageMock.getTagColors).toHaveBeenCalledTimes(1);
   });
 
   describe('isColorLightForKey', () => {

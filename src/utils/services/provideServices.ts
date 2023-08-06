@@ -2,10 +2,12 @@ import type Bottle from 'bottlejs';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
 import { useTimeoutToggle } from '../helpers/hooks';
 import { LocalStorage } from './LocalStorage';
+import { TagColorsStorage } from './TagColorsStorage';
 
 export const provideServices = (bottle: Bottle) => {
   bottle.constant('localStorage', window.localStorage);
   bottle.service('Storage', LocalStorage, 'localStorage');
+  bottle.service('TagColorsStorage', TagColorsStorage, 'Storage');
 
   bottle.constant('csvToJson', csvToJson);
   bottle.constant('jsonToCsv', jsonToCsv);
