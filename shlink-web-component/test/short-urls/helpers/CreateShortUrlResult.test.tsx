@@ -1,8 +1,8 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { TimeoutToggle } from '../../../../src/utils/helpers/hooks';
 import { CreateShortUrlResult as createResult } from '../../../src/short-urls/helpers/CreateShortUrlResult';
 import type { ShortUrlCreation } from '../../../src/short-urls/reducers/shortUrlCreation';
+import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<CreateShortUrlResult />', () => {

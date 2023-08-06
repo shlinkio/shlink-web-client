@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event/setup/setup';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { formatISO } from 'date-fns';
-import type { OptionalString } from '../../../src/utils/utils';
 import type { Mode } from '../../src/short-urls/ShortUrlForm';
 import { ShortUrlForm as createShortUrlForm } from '../../src/short-urls/ShortUrlForm';
 import { parseDate } from '../../src/utils/dates/helpers/date';
@@ -12,7 +11,7 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 describe('<ShortUrlForm />', () => {
   const createShortUrl = vi.fn(async () => Promise.resolve());
   const ShortUrlForm = createShortUrlForm(() => <span>TagsSelector</span>, () => <span>DomainSelector</span>);
-  const setUp = (withDeviceLongUrls = false, mode: Mode = 'create', title?: OptionalString) =>
+  const setUp = (withDeviceLongUrls = false, mode: Mode = 'create', title?: string | null) =>
     renderWithEvents(
       <FeaturesProvider value={fromPartial({ deviceLongUrls: withDeviceLongUrls })}>
         <ShortUrlForm

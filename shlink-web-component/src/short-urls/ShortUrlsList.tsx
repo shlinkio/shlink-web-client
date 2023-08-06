@@ -4,7 +4,6 @@ import { pipe } from 'ramda';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { Card } from 'reactstrap';
-import { DEFAULT_SHORT_URLS_ORDERING } from '../../../src/settings/reducers/settings';
 import type { ShlinkShortUrlsListParams, ShlinkShortUrlsOrder } from '../api-contract';
 import { boundToMercureHub } from '../mercure/helpers/boundToMercureHub';
 import { Topics } from '../mercure/helpers/Topics';
@@ -22,6 +21,11 @@ interface ShortUrlsListProps {
   shortUrlsList: ShortUrlsListState;
   listShortUrls: (params: ShlinkShortUrlsListParams) => void;
 }
+
+const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
+  field: 'dateCreated',
+  dir: 'DESC',
+};
 
 export const ShortUrlsList = (
   ShortUrlsTable: ShortUrlsTableType,

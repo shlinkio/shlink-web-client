@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../../src/api/services/ShlinkApiClient';
-import type { ProblemDetailsError } from '../../../src/api-contract';
+import type { ProblemDetailsError, ShlinkApiClient } from '../../../src/api-contract';
 import {
   deleteShortUrl as deleteShortUrlCreator,
   shortUrlDeletionReducerCreator,
