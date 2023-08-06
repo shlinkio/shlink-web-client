@@ -10,13 +10,13 @@ describe('csvjson', () => {
   ];
 
   describe('csvToJson', () => {
-    test('parses CSVs as expected', async () => {
+    it('parses CSVs as expected', async () => {
       expect(await csvToJson(csv)).toEqual(json);
     });
   });
 
   describe('jsonToCsv', () => {
-    test('parses JSON as expected', () => {
+    it('parses JSON as expected', () => {
       expect(jsonToCsv(json)).toEqual(csv);
     });
   });
