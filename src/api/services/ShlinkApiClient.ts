@@ -1,5 +1,6 @@
 import { orderToString, stringifyQuery } from '@shlinkio/shlink-frontend-kit';
 import type {
+  RegularNotFound,
   ShlinkApiClient as BaseShlinkApiClient,
   ShlinkDomainRedirects,
   ShlinkDomainsResponse,
@@ -15,9 +16,11 @@ import type {
   ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
-  ShlinkVisitsParams,
+  ShlinkVisitsParams } from '@shlinkio/shlink-web-component/api-contract';
+import {
+  ErrorTypeV2,
+  ErrorTypeV3,
 } from '@shlinkio/shlink-web-component/api-contract';
-import { isRegularNotFound, parseApiError } from '@shlinkio/shlink-web-component/api-contract/utils';
 import { isEmpty, isNil, reject } from 'ramda';
 import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
 import type { HttpClient } from '../../common/services/HttpClient';
@@ -44,6 +47,13 @@ const normalizeListParams = (
   excludePastValidUntil: excludePastValidUntil === true ? 'true' : undefined,
   orderBy: orderToString(orderBy),
 });
+const isRegularNotFound = (error: unknown): error is RegularNotFound => {
+  if (error === null || !(typeof error === 'object' && 'type' in error && 'status' in error)) {
+    return false;
+  }
+
+  return (error.type === ErrorTypeV2.NOT_FOUND || error.type === ErrorTypeV3.NOT_FOUND) && error.status === 404;
+};
 
 export class ShlinkApiClient implements BaseShlinkApiClient {
   private apiVersion: ApiVersion;
@@ -162,7 +172,7 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
   };
 
   private readonly handleFetchError = (retryFetch: Function) => (e: unknown) => {
-    if (!isRegularNotFound(parseApiError(e))) {
+    if (!isRegularNotFound(e)) {
       throw e;
     }
 

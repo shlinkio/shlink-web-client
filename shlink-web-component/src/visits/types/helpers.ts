@@ -1,5 +1,5 @@
+import type { ShlinkVisitsParams } from '@shlinkio/shlink-web-component/api-contract';
 import { countBy, groupBy, pipe, prop } from 'ramda';
-import type { ShlinkVisitsParams } from '../../../api/types';
 import { formatIsoDate } from '../../utils/dates/helpers/date';
 import type { CreateVisit, NormalizedOrphanVisit, NormalizedVisit, OrphanVisit, Stats, Visit, VisitsParams } from './index';
 

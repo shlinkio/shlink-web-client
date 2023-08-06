@@ -1,4 +1,4 @@
-import type { ShlinkTagsStats } from '../../../api/types';
+import type { ShlinkTagsStats } from '@shlinkio/shlink-web-component/api-contract';
 
 export type TagStats = Omit<ShlinkTagsStats, 'tag'>;
 
