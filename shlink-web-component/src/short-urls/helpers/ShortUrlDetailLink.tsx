@@ -1,18 +1,18 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useRoutesPrefix } from '../../utils/routesPrefix';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 import { urlEncodeShortCode } from './index';
 
 export type LinkSuffix = 'visits' | 'edit';
 
 export interface ShortUrlDetailLinkProps {
-  shortUrl?: ShortUrl | null;
+  shortUrl?: ShlinkShortUrl | null;
   suffix: LinkSuffix;
   asLink?: boolean;
 }
 
-const buildUrl = (routePrefix: string, { shortCode, domain }: ShortUrl, suffix: LinkSuffix) => {
+const buildUrl = (routePrefix: string, { shortCode, domain }: ShlinkShortUrl, suffix: LinkSuffix) => {
   const query = domain ? `?domain=${domain}` : '';
   return `${routePrefix}/short-code/${urlEncodeShortCode(shortCode)}/${suffix}${query}`;
 };

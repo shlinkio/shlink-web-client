@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import type { ShlinkApiClient } from '../../api-contract';
 import { ExportBtn } from '../../utils/components/ExportBtn';
 import type { ReportExporter } from '../../utils/services/ReportExporter';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 
 export interface ExportShortUrlsBtnProps {
@@ -21,7 +21,7 @@ export const ExportShortUrlsBtn = (
   const [loading,, startLoading, stopLoading] = useToggle();
   const exportAllUrls = useCallback(async () => {
     const totalPages = amount / itemsPerPage;
-    const loadAllUrls = async (page = 1): Promise<ShortUrl[]> => {
+    const loadAllUrls = async (page = 1): Promise<ShlinkShortUrl[]> => {
       const { data } = await apiClientFactory().listShortUrls(
         { page: `${page}`, tags, searchTerm: search, startDate, endDate, orderBy, tagsMode, itemsPerPage },
       );

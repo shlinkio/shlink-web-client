@@ -6,7 +6,7 @@ import { Time } from '../../utils/dates/Time';
 import type { TimeoutToggle } from '../../utils/helpers/hooks';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 import type { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
 import { ShortUrlStatus } from './ShortUrlStatus';
@@ -16,7 +16,7 @@ import './ShortUrlsRow.scss';
 
 interface ShortUrlsRowProps {
   onTagClick?: (tag: string) => void;
-  shortUrl: ShortUrl;
+  shortUrl: ShlinkShortUrl;
 }
 
 export type ShortUrlsRowType = FC<ShortUrlsRowProps>;

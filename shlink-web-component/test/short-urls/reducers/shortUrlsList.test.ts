@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient, ShlinkShortUrlsResponse } from '../../../src/api-contract';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { shortUrlDeleted } from '../../../src/short-urls/reducers/shortUrlDeletion';
 import { editShortUrl as editShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlEdition';
@@ -102,36 +102,36 @@ describe('shortUrlsListReducer', () => {
     it.each([
       [
         [
-          fromPartial<ShortUrl>({ shortCode }),
-          fromPartial<ShortUrl>({ shortCode, domain: 'example.com' }),
-          fromPartial<ShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShlinkShortUrl>({ shortCode }),
+          fromPartial<ShlinkShortUrl>({ shortCode, domain: 'example.com' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'foo' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode, domain: 'example.com' }, { shortCode: 'foo' }],
       ],
       [
         [
-          fromPartial<ShortUrl>({ shortCode }),
-          fromPartial<ShortUrl>({ shortCode: 'code' }),
-          fromPartial<ShortUrl>({ shortCode: 'foo' }),
-          fromPartial<ShortUrl>({ shortCode: 'bar' }),
-          fromPartial<ShortUrl>({ shortCode: 'baz' }),
+          fromPartial<ShlinkShortUrl>({ shortCode }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'code' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'bar' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'baz' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
       ],
       [
         [
-          fromPartial<ShortUrl>({ shortCode }),
-          fromPartial<ShortUrl>({ shortCode: 'code' }),
-          fromPartial<ShortUrl>({ shortCode: 'foo' }),
-          fromPartial<ShortUrl>({ shortCode: 'bar' }),
-          fromPartial<ShortUrl>({ shortCode: 'baz1' }),
-          fromPartial<ShortUrl>({ shortCode: 'baz2' }),
-          fromPartial<ShortUrl>({ shortCode: 'baz3' }),
+          fromPartial<ShlinkShortUrl>({ shortCode }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'code' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'foo' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'bar' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'baz1' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'baz2' }),
+          fromPartial<ShlinkShortUrl>({ shortCode: 'baz3' }),
         ],
         [{ shortCode: 'newOne' }, { shortCode }, { shortCode: 'code' }, { shortCode: 'foo' }, { shortCode: 'bar' }],
       ],
     ])('prepends new short URL and increases total on CREATE_SHORT_URL', (data, expectedData) => {
-      const newShortUrl = fromPartial<ShortUrl>({ shortCode: 'newOne' });
+      const newShortUrl = fromPartial<ShlinkShortUrl>({ shortCode: 'newOne' });
       const state = {
         shortUrls: fromPartial<ShlinkShortUrlsResponse>({
           data,
@@ -152,15 +152,15 @@ describe('shortUrlsListReducer', () => {
     });
 
     it.each([
-      ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
-        const editedShortUrl = fromPartial<ShortUrl>({ shortCode: 'notMatching' });
-        const list: ShortUrl[] = [fromPartial({ shortCode: 'foo' }), fromPartial({ shortCode: 'bar' })];
+      ((): [ShlinkShortUrl, ShlinkShortUrl[], ShlinkShortUrl[]] => {
+        const editedShortUrl = fromPartial<ShlinkShortUrl>({ shortCode: 'notMatching' });
+        const list: ShlinkShortUrl[] = [fromPartial({ shortCode: 'foo' }), fromPartial({ shortCode: 'bar' })];
 
         return [editedShortUrl, list, list];
       })(),
-      ((): [ShortUrl, ShortUrl[], ShortUrl[]] => {
-        const editedShortUrl = fromPartial<ShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
-        const list: ShortUrl[] = [
+      ((): [ShlinkShortUrl, ShlinkShortUrl[], ShlinkShortUrl[]] => {
+        const editedShortUrl = fromPartial<ShlinkShortUrl>({ shortCode: 'matching', longUrl: 'new_one' });
+        const list: ShlinkShortUrl[] = [
           fromPartial({ shortCode: 'matching', longUrl: 'old_one' }),
           fromPartial({ shortCode: 'bar' }),
         ];

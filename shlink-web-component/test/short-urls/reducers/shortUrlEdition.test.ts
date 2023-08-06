@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import {
   editShortUrl as editShortUrlCreator,
   shortUrlEditionReducerCreator,
@@ -8,7 +8,7 @@ import {
 describe('shortUrlEditionReducer', () => {
   const longUrl = 'https://shlink.io';
   const shortCode = 'abc123';
-  const shortUrl = fromPartial<ShortUrl>({ longUrl, shortCode });
+  const shortUrl = fromPartial<ShlinkShortUrl>({ longUrl, shortCode });
   const updateShortUrl = vi.fn().mockResolvedValue(shortUrl);
   const buildShlinkApiClient = vi.fn().mockReturnValue({ updateShortUrl });
   const editShortUrl = editShortUrlCreator(buildShlinkApiClient);

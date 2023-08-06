@@ -17,7 +17,7 @@ import { DateTimeInput } from '../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../utils/dates/helpers/date';
 import { useFeature } from '../utils/features';
 import { handleEventPreventingDefault, hasValue } from '../utils/helpers';
-import type { DeviceLongUrls, ShortUrlData } from './data';
+import type { ShlinkDeviceLongUrls, ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
 import './ShortUrlForm.scss';
@@ -87,7 +87,7 @@ export const ShortUrlForm = (
       />
     </FormGroup>
   );
-  const renderDeviceLongUrlInput = (id: keyof DeviceLongUrls, placeholder: string, icon: IconProp) => (
+  const renderDeviceLongUrlInput = (id: keyof ShlinkDeviceLongUrls, placeholder: string, icon: IconProp) => (
     <IconInput
       icon={icon}
       id={id}

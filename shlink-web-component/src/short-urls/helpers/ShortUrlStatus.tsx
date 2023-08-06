@@ -6,10 +6,10 @@ import { isBefore } from 'date-fns';
 import type { FC, ReactNode } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import { formatHumanFriendly, now, parseISO } from '../../utils/dates/helpers/date';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 
 interface ShortUrlStatusProps {
-  shortUrl: ShortUrl;
+  shortUrl: ShlinkShortUrl;
 }
 
 interface StatusResult {
@@ -18,7 +18,7 @@ interface StatusResult {
   description: ReactNode;
 }
 
-const resolveShortUrlStatus = (shortUrl: ShortUrl): StatusResult => {
+const resolveShortUrlStatus = (shortUrl: ShlinkShortUrl): StatusResult => {
   const { meta, visitsCount, visitsSummary } = shortUrl;
   const { maxVisits, validSince, validUntil } = meta;
   const totalVisits = visitsSummary?.total ?? visitsCount;

@@ -1,13 +1,13 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlsRowMenu as createShortUrlsRowMenu } from '../../../src/short-urls/helpers/ShortUrlsRowMenu';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ShortUrlsRowMenu />', () => {
   const ShortUrlsRowMenu = createShortUrlsRowMenu(() => <i>DeleteShortUrlModal</i>, () => <i>QrCodeModal</i>);
-  const shortUrl = fromPartial<ShortUrl>({
+  const shortUrl = fromPartial<ShlinkShortUrl>({
     shortCode: 'abc123',
     shortUrl: 'https://s.test/abc123',
   });

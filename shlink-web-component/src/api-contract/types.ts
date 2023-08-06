@@ -1,9 +1,9 @@
 import type { Order } from '@shlinkio/shlink-frontend-kit';
-import type { ShortUrl, ShortUrlMeta } from '../short-urls/data';
+import type { ShlinkDeviceLongUrls, ShlinkShortUrl } from '../short-urls/data';
 import type { Visit } from '../visits/types';
 
 export interface ShlinkShortUrlsResponse {
-  data: ShortUrl[];
+  data: ShlinkShortUrl[];
   pagination: ShlinkPaginator;
 }
 
@@ -77,11 +77,18 @@ export interface ShlinkVisitsParams {
   excludeBots?: boolean;
 }
 
-export interface ShlinkShortUrlData extends ShortUrlMeta {
+export interface ShlinkShortUrlData {
   longUrl?: string;
-  title?: string;
+  title?: string | null;
+  /** @deprecated */
   validateUrl?: boolean;
   tags?: string[];
+  deviceLongUrls?: ShlinkDeviceLongUrls;
+  crawlable?: boolean;
+  forwardQuery?: boolean;
+  validSince?: string | null;
+  validUntil?: string | null;
+  maxVisits?: number | null;
 }
 
 export interface ShlinkDomainRedirects {

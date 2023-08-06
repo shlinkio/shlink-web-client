@@ -1,4 +1,4 @@
-import type { ShortUrl } from '../../short-urls/data';
+import type { ShlinkShortUrl } from '../../short-urls/data';
 import type { DateRange } from '../../utils/dates/helpers/dateIntervals';
 
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';
@@ -52,7 +52,7 @@ export interface NormalizedOrphanVisit extends NormalizedRegularVisit {
 export type NormalizedVisit = NormalizedRegularVisit | NormalizedOrphanVisit;
 
 export interface CreateVisit {
-  shortUrl?: ShortUrl;
+  shortUrl?: ShlinkShortUrl;
   visit: Visit;
 }
 

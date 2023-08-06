@@ -1,7 +1,7 @@
 import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '@shlinkio/shlink-web-component/api-contract';
 import { ErrorTypeV2, ErrorTypeV3 } from '@shlinkio/shlink-web-component/api-contract';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl, ShortUrlsOrder } from '../../../shlink-web-component/src/short-urls/data';
+import type { ShlinkShortUrl, ShortUrlsOrder } from '../../../shlink-web-component/src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import type { OptionalString } from '../../../src/utils/utils';
@@ -175,7 +175,7 @@ describe('ShlinkApiClient', () => {
         maxVisits: 50,
         validSince: '2025-01-01T10:00:00+01:00',
       };
-      const expectedResp = fromPartial<ShortUrl>({});
+      const expectedResp = fromPartial<ShlinkShortUrl>({});
       fetchJson.mockResolvedValue(expectedResp);
       const { updateShortUrl } = buildApiClient();
       const expectedQuery = domain ? `?domain=${domain}` : '';

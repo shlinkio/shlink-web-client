@@ -2,7 +2,7 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import type { ProblemDetailsError, ShlinkApiClient } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
 import { createAsyncThunk } from '../../utils/redux';
-import type { ShortUrl, ShortUrlIdentifier } from '../data';
+import type { ShlinkShortUrl, ShortUrlIdentifier } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlDeletion';
 
@@ -29,7 +29,7 @@ export const deleteShortUrl = (apiClientFactory: () => ShlinkApiClient) => creat
   },
 );
 
-export const shortUrlDeleted = createAction<ShortUrl>(`${REDUCER_PREFIX}/shortUrlDeleted`);
+export const shortUrlDeleted = createAction<ShlinkShortUrl>(`${REDUCER_PREFIX}/shortUrlDeleted`);
 
 export const shortUrlDeletionReducerCreator = (deleteShortUrlThunk: ReturnType<typeof deleteShortUrl>) => {
   const { actions, reducer } = createSlice({

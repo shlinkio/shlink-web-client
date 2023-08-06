@@ -1,13 +1,13 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api-contract';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import {
   createShortUrl as createShortUrlCreator,
   shortUrlCreationReducerCreator,
 } from '../../../src/short-urls/reducers/shortUrlCreation';
 
 describe('shortUrlCreationReducer', () => {
-  const shortUrl = fromPartial<ShortUrl>({});
+  const shortUrl = fromPartial<ShlinkShortUrl>({});
   const createShortUrlCall = vi.fn();
   const buildShlinkApiClient = () => fromPartial<ShlinkApiClient>({ createShortUrl: createShortUrlCall });
   const createShortUrl = createShortUrlCreator(buildShlinkApiClient);

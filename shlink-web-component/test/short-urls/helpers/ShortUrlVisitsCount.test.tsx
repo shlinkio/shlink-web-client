@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlVisitsCount } from '../../../src/short-urls/helpers/ShortUrlVisitsCount';
 
 describe('<ShortUrlVisitsCount />', () => {
-  const setUp = (visitsCount: number, shortUrl: ShortUrl) => ({
+  const setUp = (visitsCount: number, shortUrl: ShlinkShortUrl) => ({
     user: userEvent.setup(),
     ...render(
       <ShortUrlVisitsCount visitsCount={visitsCount} shortUrl={shortUrl} />,

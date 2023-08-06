@@ -16,13 +16,14 @@ import type {
   ShlinkTagsStatsResponse,
   ShlinkVisits,
   ShlinkVisitsOverview,
-  ShlinkVisitsParams } from '@shlinkio/shlink-web-component/api-contract';
+  ShlinkVisitsParams,
+} from '@shlinkio/shlink-web-component/api-contract';
 import {
   ErrorTypeV2,
   ErrorTypeV3,
 } from '@shlinkio/shlink-web-component/api-contract';
 import { isEmpty, isNil, reject } from 'ramda';
-import type { ShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
+import type { ShlinkShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';
@@ -71,9 +72,9 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
       { url: '/short-urls', query: normalizeListParams(params) },
     ).then(({ shortUrls }) => shortUrls);
 
-  public readonly createShortUrl = async (options: ShortUrlData): Promise<ShortUrl> => {
+  public readonly createShortUrl = async (options: ShortUrlData): Promise<ShlinkShortUrl> => {
     const body = reject((value) => isEmpty(value) || isNil(value), options as any);
-    return this.performRequest<ShortUrl>({ url: '/short-urls', method: 'POST', body });
+    return this.performRequest<ShlinkShortUrl>({ url: '/short-urls', method: 'POST', body });
   };
 
   public readonly getShortUrlVisits = async (shortCode: string, query?: ShlinkVisitsParams): Promise<ShlinkVisits> =>
@@ -95,8 +96,8 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
   public readonly getVisitsOverview = async (): Promise<ShlinkVisitsOverview> =>
     this.performRequest<{ visits: ShlinkVisitsOverview }>({ url: '/visits' }).then(({ visits }) => visits);
 
-  public readonly getShortUrl = async (shortCode: string, domain?: OptionalString): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>({ url: `/short-urls/${shortCode}`, query: { domain } });
+  public readonly getShortUrl = async (shortCode: string, domain?: OptionalString): Promise<ShlinkShortUrl> =>
+    this.performRequest<ShlinkShortUrl>({ url: `/short-urls/${shortCode}`, query: { domain } });
 
   public readonly deleteShortUrl = async (shortCode: string, domain?: OptionalString): Promise<void> =>
     this.performEmptyRequest({ url: `/short-urls/${shortCode}`, method: 'DELETE', query: { domain } });
@@ -105,8 +106,8 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
     shortCode: string,
     domain: OptionalString,
     body: ShlinkShortUrlData,
-  ): Promise<ShortUrl> =>
-    this.performRequest<ShortUrl>({ url: `/short-urls/${shortCode}`, method: 'PATCH', query: { domain }, body });
+  ): Promise<ShlinkShortUrl> =>
+    this.performRequest<ShlinkShortUrl>({ url: `/short-urls/${shortCode}`, method: 'PATCH', query: { domain }, body });
 
   public readonly listTags = async (): Promise<ShlinkTags> =>
     this.performRequest<{ tags: ShlinkTagsResponse }>({ url: '/tags', query: { withStats: 'true' } })

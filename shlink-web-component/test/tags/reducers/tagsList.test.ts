@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { RootState } from '../../../src/container/store';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';
@@ -112,7 +112,7 @@ describe('tagsListReducer', () => {
       [['new', 'tag'], ['foo', 'bar', 'baz', 'foo2', 'fo', 'new', 'tag']],
     ])('appends new short URL\'s tags to the list of tags on CREATE_SHORT_URL', (shortUrlTags, expectedTags) => {
       const tags = ['foo', 'bar', 'baz', 'foo2', 'fo'];
-      const payload = fromPartial<ShortUrl>({ tags: shortUrlTags });
+      const payload = fromPartial<ShlinkShortUrl>({ tags: shortUrlTags });
 
       expect(reducer(state({ tags }), createShortUrl.fulfilled(payload, '', fromPartial({})))).toEqual({
         tags: expectedTags,

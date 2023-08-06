@@ -2,7 +2,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
 import type { ShlinkApiClient, ShlinkVisits } from '../../../src/api-contract';
 import type { RootState } from '../../../src/container/store';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { formatIsoDate } from '../../../src/utils/dates/helpers/date';
 import type { DateInterval } from '../../../src/utils/dates/helpers/dateIntervals';
 import { rangeOf } from '../../../src/utils/helpers';
@@ -124,7 +124,7 @@ describe('domainVisitsReducer', () => {
         visitsMocks.length,
       ],
     ])('prepends new visits on CREATE_VISIT', (state, shortUrlDomain, expectedVisits) => {
-      const shortUrl = fromPartial<ShortUrl>({ domain: shortUrlDomain });
+      const shortUrl = fromPartial<ShlinkShortUrl>({ domain: shortUrlDomain });
       const { visits } = reducer(buildState({ ...state, visits: visitsMocks }), createNewVisits([
         fromPartial({ shortUrl, visit: { date: formatIsoDate(now) ?? undefined } }),
       ]));

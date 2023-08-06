@@ -3,7 +3,7 @@ import { assocPath, last, pipe, reject } from 'ramda';
 import type { ShlinkApiClient, ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api-contract';
 import { createAsyncThunk } from '../../utils/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 import { shortUrlMatches } from '../helpers';
 import type { createShortUrl } from './shortUrlCreation';
 import { shortUrlDeleted } from './shortUrlDeletion';
@@ -82,7 +82,7 @@ export const shortUrlsListReducerCreator = (
       pipe(
         (state, { payload }) => (!state.shortUrls ? state : assocPath(
           ['shortUrls', 'data'],
-          reject<ShortUrl, ShortUrl[]>((shortUrl) =>
+          reject<ShlinkShortUrl, ShlinkShortUrl[]>((shortUrl) =>
             shortUrlMatches(shortUrl, payload.shortCode, payload.domain), state.shortUrls.data),
           state,
         )),

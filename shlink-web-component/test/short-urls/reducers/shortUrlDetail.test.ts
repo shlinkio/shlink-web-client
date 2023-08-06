@@ -1,7 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkApiClient } from '../../../src/api-contract';
 import type { RootState } from '../../../src/container/store';
-import type { ShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { shortUrlDetailReducerCreator } from '../../../src/short-urls/reducers/shortUrlDetail';
 import type { ShortUrlsList } from '../../../src/short-urls/reducers/shortUrlsList';
 
@@ -25,7 +25,7 @@ describe('shortUrlDetailReducer', () => {
     });
 
     it('return short URL on GET_SHORT_URL_DETAIL', () => {
-      const actionShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
+      const actionShortUrl = fromPartial<ShlinkShortUrl>({ longUrl: 'foo', shortCode: 'bar' });
       const state = reducer(
         { loading: true, error: false },
         getShortUrlDetail.fulfilled(actionShortUrl, '', { shortCode: '' }),
@@ -58,7 +58,7 @@ describe('shortUrlDetailReducer', () => {
         }),
       ],
     ])('performs API call when short URL is not found in local state', async (shortUrlsList?: ShortUrlsList) => {
-      const resolvedShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
+      const resolvedShortUrl = fromPartial<ShlinkShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
       getShortUrlCall.mockResolvedValue(resolvedShortUrl);
 
       await getShortUrlDetail({ shortCode: 'abc123', domain: '' })(dispatchMock, buildGetState(shortUrlsList), {});
@@ -69,8 +69,8 @@ describe('shortUrlDetailReducer', () => {
     });
 
     it('avoids API calls when short URL is found in local state', async () => {
-      const foundShortUrl = fromPartial<ShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
-      getShortUrlCall.mockResolvedValue(fromPartial<ShortUrl>({}));
+      const foundShortUrl = fromPartial<ShlinkShortUrl>({ longUrl: 'foo', shortCode: 'abc123' });
+      getShortUrlCall.mockResolvedValue(fromPartial<ShlinkShortUrl>({}));
 
       await getShortUrlDetail(foundShortUrl)(
         dispatchMock,

@@ -1,49 +1,36 @@
 import type { Order } from '@shlinkio/shlink-frontend-kit';
-import type { ShlinkVisitsSummary } from '../../api-contract';
+import type { ShlinkShortUrlData, ShlinkVisitsSummary } from '../../api-contract';
 import type { Nullable, OptionalString } from '../../utils/helpers';
 
-export interface DeviceLongUrls {
-  android?: OptionalString;
-  ios?: OptionalString;
-  desktop?: OptionalString;
-}
-
-export interface EditShortUrlData {
-  longUrl?: string;
-  deviceLongUrls?: DeviceLongUrls;
-  tags?: string[];
-  title?: string | null;
-  validSince?: Date | string | null;
-  validUntil?: Date | string | null;
-  maxVisits?: number | null;
-  validateUrl?: boolean;
-  crawlable?: boolean;
-  forwardQuery?: boolean;
-}
-
-export interface ShortUrlData extends EditShortUrlData {
+export interface ShortUrlData extends Omit<ShlinkShortUrlData, 'deviceLongUrls'> {
   longUrl: string;
   customSlug?: string;
   shortCodeLength?: number;
   domain?: string;
   findIfExists?: boolean;
+  deviceLongUrls?: {
+    android?: string;
+    ios?: string;
+    desktop?: string;
+  }
 }
 
-export interface ShortUrlIdentifier {
-  shortCode: string;
-  domain?: OptionalString;
+export interface ShlinkDeviceLongUrls {
+  android?: OptionalString;
+  ios?: OptionalString;
+  desktop?: OptionalString;
 }
 
-export interface ShortUrl {
+export interface ShlinkShortUrl {
   shortCode: string;
   shortUrl: string;
   longUrl: string;
-  deviceLongUrls?: Required<DeviceLongUrls>, // Optional only before Shlink 3.5.0
+  deviceLongUrls?: Required<ShlinkDeviceLongUrls>, // Optional only before Shlink 3.5.0
   dateCreated: string;
   /** @deprecated */
   visitsCount: number; // Deprecated since Shlink 3.4.0
   visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.4.0
-  meta: Required<Nullable<ShortUrlMeta>>;
+  meta: Required<Nullable<ShlinkShortUrlMeta>>;
   tags: string[];
   domain: string | null;
   title?: string | null;
@@ -51,14 +38,19 @@ export interface ShortUrl {
   forwardQuery?: boolean;
 }
 
-export interface ShortUrlMeta {
+export interface ShlinkShortUrlMeta {
   validSince?: string;
   validUntil?: string;
   maxVisits?: number;
 }
 
+export interface ShortUrlIdentifier {
+  shortCode: string;
+  domain?: OptionalString;
+}
+
 export interface ShortUrlModalProps {
-  shortUrl: ShortUrl;
+  shortUrl: ShlinkShortUrl;
   isOpen: boolean;
   toggle: () => void;
 }

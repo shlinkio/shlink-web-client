@@ -2,9 +2,9 @@ import { isNil } from 'ramda';
 import type { OptionalString } from '../../utils/helpers';
 import type { ShortUrlCreationSettings } from '../../utils/settings';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
-import type { ShortUrl, ShortUrlData } from '../data';
+import type { ShlinkShortUrl, ShortUrlData } from '../data';
 
-export const shortUrlMatches = (shortUrl: ShortUrl, shortCode: string, domain: OptionalString): boolean => {
+export const shortUrlMatches = (shortUrl: ShlinkShortUrl, shortCode: string, domain: OptionalString): boolean => {
   if (isNil(domain)) {
     return shortUrl.shortCode === shortCode && !shortUrl.domain;
   }
@@ -12,7 +12,7 @@ export const shortUrlMatches = (shortUrl: ShortUrl, shortCode: string, domain: O
   return shortUrl.shortCode === shortCode && shortUrl.domain === domain;
 };
 
-export const domainMatches = (shortUrl: ShortUrl, domain: string): boolean => {
+export const domainMatches = (shortUrl: ShlinkShortUrl, domain: string): boolean => {
   if (!shortUrl.domain && domain === DEFAULT_DOMAIN) {
     return true;
   }
@@ -20,7 +20,7 @@ export const domainMatches = (shortUrl: ShortUrl, domain: string): boolean => {
   return shortUrl.domain === domain;
 };
 
-export const shortUrlDataFromShortUrl = (shortUrl?: ShortUrl, settings?: ShortUrlCreationSettings): ShortUrlData => {
+export const shortUrlDataFromShortUrl = (shortUrl?: ShlinkShortUrl, settings?: ShortUrlCreationSettings): ShortUrlData => {
   const validateUrl = settings?.validateUrls ?? false;
 
   if (!shortUrl) {
@@ -37,7 +37,11 @@ export const shortUrlDataFromShortUrl = (shortUrl?: ShortUrl, settings?: ShortUr
     maxVisits: shortUrl.meta.maxVisits ?? undefined,
     crawlable: shortUrl.crawlable,
     forwardQuery: shortUrl.forwardQuery,
-    deviceLongUrls: shortUrl.deviceLongUrls,
+    deviceLongUrls: shortUrl.deviceLongUrls && {
+      android: shortUrl.deviceLongUrls.android ?? undefined,
+      ios: shortUrl.deviceLongUrls.ios ?? undefined,
+      desktop: shortUrl.deviceLongUrls.desktop ?? undefined,
+    },
     validateUrl,
   };
 };

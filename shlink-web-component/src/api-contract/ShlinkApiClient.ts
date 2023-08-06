@@ -1,4 +1,4 @@
-import type { ShortUrl, ShortUrlData } from '../short-urls/data';
+import type { ShlinkShortUrl, ShortUrlData } from '../short-urls/data';
 import type {
   ShlinkDomainRedirects,
   ShlinkDomainsResponse,
@@ -20,7 +20,7 @@ export type ShlinkApiClient = {
 
   listShortUrls(params?: ShlinkShortUrlsListParams): Promise<ShlinkShortUrlsResponse>;
 
-  createShortUrl(options: ShortUrlData): Promise<ShortUrl>;
+  createShortUrl(options: ShortUrlData): Promise<ShlinkShortUrl>;
 
   getShortUrlVisits(shortCode: string, query?: ShlinkVisitsParams): Promise<ShlinkVisits>;
 
@@ -34,7 +34,7 @@ export type ShlinkApiClient = {
 
   getVisitsOverview(): Promise<ShlinkVisitsOverview>;
 
-  getShortUrl(shortCode: string, domain?: string | null): Promise<ShortUrl>;
+  getShortUrl(shortCode: string, domain?: string | null): Promise<ShlinkShortUrl>;
 
   deleteShortUrl(shortCode: string, domain?: string | null): Promise<void>;
 
@@ -42,7 +42,7 @@ export type ShlinkApiClient = {
     shortCode: string,
     domain: string | null | undefined,
     body: ShlinkShortUrlData,
-  ): Promise<ShortUrl>;
+  ): Promise<ShlinkShortUrl>;
 
   listTags(): Promise<ShlinkTags>;
 

@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
 import { formatHumanFriendly, parseISO } from '../../utils/dates/helpers/date';
 import { prettify } from '../../utils/helpers/numbers';
-import type { ShortUrl } from '../data';
+import type { ShlinkShortUrl } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
 
 interface ShortUrlVisitsCountProps {
-  shortUrl?: ShortUrl | null;
+  shortUrl?: ShlinkShortUrl | null;
   visitsCount: number;
   active?: boolean;
   asLink?: boolean;

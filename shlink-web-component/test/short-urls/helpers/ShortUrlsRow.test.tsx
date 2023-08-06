@@ -4,7 +4,7 @@ import { addDays, formatISO, subDays } from 'date-fns';
 import { last } from 'ramda';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import type { Settings } from '../../../src';
-import type { ShortUrl, ShortUrlMeta } from '../../../src/short-urls/data';
+import type { ShlinkShortUrlMeta, ShlinkShortUrl } from '../../../src/short-urls/data';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
 import { now, parseDate } from '../../../src/utils/dates/helpers/date';
 import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';
@@ -15,7 +15,7 @@ import { colorGeneratorMock } from '../../utils/services/__mocks__/ColorGenerato
 interface SetUpOptions {
   title?: string | null;
   tags?: string[];
-  meta?: ShortUrlMeta;
+  meta?: ShlinkShortUrlMeta;
   settings?: Partial<Settings>;
 }
 
@@ -27,7 +27,7 @@ vi.mock('react-router-dom', async () => ({
 describe('<ShortUrlsRow />', () => {
   const timeoutToggle = vi.fn(() => true);
   const useTimeoutToggle = vi.fn(() => [false, timeoutToggle]) as TimeoutToggle;
-  const shortUrl: ShortUrl = {
+  const shortUrl: ShlinkShortUrl = {
     shortCode: 'abc123',
     shortUrl: 'https://s.test/abc123',
     longUrl: 'https://foo.com/bar',
