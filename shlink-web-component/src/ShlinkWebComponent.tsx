@@ -21,12 +21,15 @@ type ShlinkWebComponentProps = {
 };
 
 // FIXME This allows to track the reference to be resolved by the container, but it's hacky and relies on not more than
-//       one ShlinkWebComponent rendered at the same time
+//       one ShlinkWebComponent rendered at the same time.
+//       Works for now, but should be addressed.
 let apiClientRef: ShlinkApiClient;
 
 export const createShlinkWebComponent = (
   bottle: Bottle,
-): FC<ShlinkWebComponentProps> => ({ serverVersion, apiClient, settings, routesPrefix = '', createNotFound, tagColorsStorage }) => {
+): FC<ShlinkWebComponentProps> => (
+  { serverVersion, apiClient, settings, routesPrefix = '', createNotFound, tagColorsStorage },
+) => {
   const features = useFeatures(serverVersion);
   const mainContent = useRef<ReactNode>();
   const [theStore, setStore] = useState<Store | undefined>();
