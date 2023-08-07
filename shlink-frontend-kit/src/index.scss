@@ -1,6 +1,8 @@
 @import './utils/ResponsiveTable';
 @import './theme/theme';
 
+/* stylelint-disable no-descending-specificity */
+
 a,
 .btn-link {
   text-decoration: none;
