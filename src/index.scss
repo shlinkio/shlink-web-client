@@ -2,9 +2,8 @@
 
 @import '@shlinkio/shlink-frontend-kit/base';
 @import '@shlinkio/shlink-frontend-kit/index';
+@import '@shlinkio/shlink-web-component/index';
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import './common/react-tag-autocomplete.scss';
-@import './utils/mixins/text-ellipsis';
 
 * {
   outline: none !important;
@@ -218,10 +217,6 @@ hr {
 
 .pointer {
   cursor: pointer;
-}
-
-.text-ellipsis {
-  @include text-ellipsis();
 }
 
 .progress-bar {

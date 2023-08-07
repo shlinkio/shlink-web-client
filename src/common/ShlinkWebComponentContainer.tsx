@@ -4,7 +4,6 @@ import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuil
 import { isReachableServer } from '../servers/data';
 import { withSelectedServer } from '../servers/helpers/withSelectedServer';
 import { NotFound } from './NotFound';
-import './ShlinkWebComponentContainer.scss';
 
 interface ShlinkWebComponentContainerProps {
   settings: Settings;

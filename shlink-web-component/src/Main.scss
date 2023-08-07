@@ -1,14 +1,14 @@
 @import '@shlinkio/shlink-frontend-kit/base';
 
-.menu-layout__swipeable {
+.shlink-layout__swipeable {
   height: 100%;
 }
 
-.menu-layout__swipeable-inner {
+.shlink-layout__swipeable-inner {
   height: 100%;
 }
 
-.menu-layout__burger-icon {
+.shlink-layout__burger-icon {
   display: none;
   transition: color 300ms;
   position: fixed;
@@ -23,11 +23,11 @@
   }
 }
 
-.menu-layout__burger-icon--active {
+.shlink-layout__burger-icon--active {
   color: white;
 }
 
-.menu-layout__container.menu-layout__container {
+.shlink-layout__container.shlink-layout__container {
   padding: 20px 0 0;
   min-height: 100%;
 

@@ -9,7 +9,7 @@ import { AsideMenu } from './common/AsideMenu';
 import { useFeature } from './utils/features';
 import { useSwipeable } from './utils/helpers/hooks';
 import { useRoutesPrefix } from './utils/routesPrefix';
-import './utils/StickyCardPaginator.scss';
+import './Main.scss';
 
 export type MainProps = {
   createNotFound?: (nonPrefixedHomePath: string) => ReactNode;
@@ -41,7 +41,7 @@ export const Main = (
   useEffect(() => hideSidebar(), [location]);
 
   const addDomainVisitsRoute = useFeature('domainVisits');
-  const burgerClasses = classNames('menu-layout__burger-icon', { 'menu-layout__burger-icon--active': sidebarVisible });
+  const burgerClasses = classNames('shlink-layout__burger-icon', { 'shlink-layout__burger-icon--active': sidebarVisible });
   const swipeableProps = useSwipeable(showSidebar, hideSidebar);
 
   // FIXME Check if this works when not currently wrapped in a router
@@ -50,10 +50,10 @@ export const Main = (
     <Wrapper {...props}>
       <FontAwesomeIcon icon={burgerIcon} className={burgerClasses} onClick={toggleSidebar} />
 
-      <div {...swipeableProps} className="menu-layout__swipeable">
-        <div className="menu-layout__swipeable-inner">
+      <div {...swipeableProps} className="shlink-layout__swipeable">
+        <div className="shlink-layout__swipeable-inner">
           <AsideMenu routePrefix={routesPrefix} showOnMobile={sidebarVisible} />
-          <div className="menu-layout__container" onClick={() => hideSidebar()}>
+          <div className="shlink-layout__container" onClick={() => hideSidebar()}>
             <div className="container-xl">
               <Routes>
                 <Route index element={<Navigate replace to="overview" />} />
