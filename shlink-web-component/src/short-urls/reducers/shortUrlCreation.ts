@@ -1,9 +1,7 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { ProblemDetailsError, ShlinkApiClient, ShlinkShortUrl } from '../../api-contract';
+import type { ProblemDetailsError, ShlinkApiClient, ShlinkCreateShortUrlData, ShlinkShortUrl } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
 import { createAsyncThunk } from '../../utils/redux';
-import type { ShortUrlData } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlCreation';
 
@@ -27,8 +25,6 @@ export type ShortUrlCreation = {
   error: false;
 };
 
-export type CreateShortUrlAction = PayloadAction<ShlinkShortUrl>;
-
 const initialState: ShortUrlCreation = {
   saving: false,
   saved: false,
@@ -37,7 +33,7 @@ const initialState: ShortUrlCreation = {
 
 export const createShortUrl = (apiClientFactory: () => ShlinkApiClient) => createAsyncThunk(
   `${REDUCER_PREFIX}/createShortUrl`,
-  (data: ShortUrlData): Promise<ShlinkShortUrl> => apiClientFactory().createShortUrl(data),
+  (data: ShlinkCreateShortUrlData): Promise<ShlinkShortUrl> => apiClientFactory().createShortUrl(data),
 );
 
 export const shortUrlCreationReducerCreator = (createShortUrlThunk: ReturnType<typeof createShortUrl>) => {

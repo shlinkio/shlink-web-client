@@ -1,8 +1,8 @@
+import type { ShlinkCreateShortUrlData } from '@shlinkio/shlink-web-component/api-contract';
 import type { FC } from 'react';
 import { useMemo } from 'react';
 import type { ShortUrlCreationSettings } from '../utils/settings';
 import { useSetting } from '../utils/settings';
-import type { ShortUrlData } from './data';
 import type { CreateShortUrlResultProps } from './helpers/CreateShortUrlResult';
 import type { ShortUrlCreation } from './reducers/shortUrlCreation';
 import type { ShortUrlFormProps } from './ShortUrlForm';
@@ -13,11 +13,11 @@ export interface CreateShortUrlProps {
 
 interface CreateShortUrlConnectProps extends CreateShortUrlProps {
   shortUrlCreation: ShortUrlCreation;
-  createShortUrl: (data: ShortUrlData) => Promise<void>;
+  createShortUrl: (data: ShlinkCreateShortUrlData) => Promise<void>;
   resetCreateShortUrl: () => void;
 }
 
-const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => ({
+const getInitialState = (settings?: ShortUrlCreationSettings): ShlinkCreateShortUrlData => ({
   longUrl: '',
   tags: [],
   customSlug: '',
@@ -33,7 +33,7 @@ const getInitialState = (settings?: ShortUrlCreationSettings): ShortUrlData => (
 });
 
 export const CreateShortUrl = (
-  ShortUrlForm: FC<ShortUrlFormProps>,
+  ShortUrlForm: FC<ShortUrlFormProps<ShlinkCreateShortUrlData>>,
   CreateShortUrlResult: FC<CreateShortUrlResultProps>,
 ) => ({
   createShortUrl,
@@ -50,7 +50,7 @@ export const CreateShortUrl = (
         initialState={initialState}
         saving={shortUrlCreation.saving}
         mode={basicMode ? 'create-basic' : 'create'}
-        onSave={async (data: ShortUrlData) => {
+        onSave={async (data) => {
           resetCreateShortUrl();
           return createShortUrl(data);
         }}

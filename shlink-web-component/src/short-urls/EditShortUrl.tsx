@@ -1,6 +1,7 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Message, parseQuery, Result } from '@shlinkio/shlink-frontend-kit';
+import type { ShlinkEditShortUrlData } from '@shlinkio/shlink-web-component/api-contract';
 import type { FC } from 'react';
 import { useEffect, useMemo } from 'react';
 import { ExternalLink } from 'react-external-link';
@@ -22,7 +23,7 @@ interface EditShortUrlConnectProps {
   editShortUrl: (editShortUrl: EditShortUrlInfo) => void;
 }
 
-export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps>) => ({
+export const EditShortUrl = (ShortUrlForm: FC<ShortUrlFormProps<ShlinkEditShortUrlData>>) => ({
   shortUrlDetail,
   getShortUrlDetail,
   shortUrlEdition,

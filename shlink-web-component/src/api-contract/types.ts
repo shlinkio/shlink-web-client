@@ -31,6 +31,34 @@ export interface ShlinkShortUrl {
   forwardQuery?: boolean;
 }
 
+export interface ShlinkEditShortUrlData {
+  longUrl?: string;
+  title?: string | null;
+  tags?: string[];
+  deviceLongUrls?: ShlinkDeviceLongUrls;
+  crawlable?: boolean;
+  forwardQuery?: boolean;
+  validSince?: string | null;
+  validUntil?: string | null;
+  maxVisits?: number | null;
+
+  /** @deprecated */
+  validateUrl?: boolean;
+}
+
+export interface ShlinkCreateShortUrlData extends Omit<ShlinkEditShortUrlData, 'deviceLongUrls'> {
+  longUrl: string;
+  customSlug?: string;
+  shortCodeLength?: number;
+  domain?: string;
+  findIfExists?: boolean;
+  deviceLongUrls?: {
+    android?: string;
+    ios?: string;
+    desktop?: string;
+  }
+}
+
 export interface ShlinkShortUrlsResponse {
   data: ShlinkShortUrl[];
   pagination: ShlinkPaginator;
@@ -104,20 +132,6 @@ export interface ShlinkVisitsParams {
   startDate?: string;
   endDate?: string;
   excludeBots?: boolean;
-}
-
-export interface ShlinkShortUrlData {
-  longUrl?: string;
-  title?: string | null;
-  /** @deprecated */
-  validateUrl?: boolean;
-  tags?: string[];
-  deviceLongUrls?: ShlinkDeviceLongUrls;
-  crawlable?: boolean;
-  forwardQuery?: boolean;
-  validSince?: string | null;
-  validUntil?: string | null;
-  maxVisits?: number | null;
 }
 
 export interface ShlinkDomainRedirects {

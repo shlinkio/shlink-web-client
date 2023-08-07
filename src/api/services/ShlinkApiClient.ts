@@ -2,13 +2,14 @@ import { orderToString, stringifyQuery } from '@shlinkio/shlink-frontend-kit';
 import type {
   RegularNotFound,
   ShlinkApiClient as BaseShlinkApiClient,
+  ShlinkCreateShortUrlData,
   ShlinkDomainRedirects,
   ShlinkDomainsResponse,
   ShlinkEditDomainRedirects,
+  ShlinkEditShortUrlData,
   ShlinkHealth,
   ShlinkMercureInfo,
   ShlinkShortUrl,
-  ShlinkShortUrlData,
   ShlinkShortUrlsListNormalizedParams,
   ShlinkShortUrlsListParams,
   ShlinkShortUrlsResponse,
@@ -24,7 +25,6 @@ import {
   ErrorTypeV3,
 } from '@shlinkio/shlink-web-component/api-contract';
 import { isEmpty, isNil, reject } from 'ramda';
-import type { ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';
@@ -73,7 +73,7 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
       { url: '/short-urls', query: normalizeListParams(params) },
     ).then(({ shortUrls }) => shortUrls);
 
-  public readonly createShortUrl = async (options: ShortUrlData): Promise<ShlinkShortUrl> => {
+  public readonly createShortUrl = async (options: ShlinkCreateShortUrlData): Promise<ShlinkShortUrl> => {
     const body = reject((value) => isEmpty(value) || isNil(value), options as any);
     return this.performRequest<ShlinkShortUrl>({ url: '/short-urls', method: 'POST', body });
   };
@@ -106,7 +106,7 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
   public readonly updateShortUrl = async (
     shortCode: string,
     domain: OptionalString,
-    body: ShlinkShortUrlData,
+    body: ShlinkEditShortUrlData,
   ): Promise<ShlinkShortUrl> =>
     this.performRequest<ShlinkShortUrl>({ url: `/short-urls/${shortCode}`, method: 'PATCH', query: { domain }, body });
 

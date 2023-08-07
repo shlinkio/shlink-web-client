@@ -9,7 +9,7 @@ import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
-import type { ShlinkDeviceLongUrls } from '../api-contract';
+import type { ShlinkCreateShortUrlData, ShlinkDeviceLongUrls, ShlinkEditShortUrlData } from '../api-contract';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { IconInput } from '../utils/components/IconInput';
@@ -18,7 +18,6 @@ import { DateTimeInput } from '../utils/dates/DateTimeInput';
 import { formatIsoDate } from '../utils/dates/helpers/date';
 import { useFeature } from '../utils/features';
 import { handleEventPreventingDefault, hasValue } from '../utils/helpers';
-import type { ShortUrlData } from './data';
 import { ShortUrlFormCheckboxGroup } from './helpers/ShortUrlFormCheckboxGroup';
 import { UseExistingIfFoundInfoIcon } from './UseExistingIfFoundInfoIcon';
 import './ShortUrlForm.scss';
@@ -28,25 +27,32 @@ export type Mode = 'create' | 'create-basic' | 'edit';
 type DateFields = 'validSince' | 'validUntil';
 type NonDateFields = 'longUrl' | 'customSlug' | 'shortCodeLength' | 'domain' | 'maxVisits' | 'title';
 
-export interface ShortUrlFormProps {
+export interface ShortUrlFormProps<T extends ShlinkCreateShortUrlData | ShlinkEditShortUrlData> {
+  // FIXME Try to get rid of the mode param, and infer creation or edition from initialState if possible
   mode: Mode;
   saving: boolean;
-  initialState: ShortUrlData;
-  onSave: (shortUrlData: ShortUrlData) => Promise<unknown>;
+  initialState: T;
+  onSave: (shortUrlData: T) => Promise<unknown>;
 }
 
 const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
 
+const isCreationData = (data: ShlinkCreateShortUrlData | ShlinkEditShortUrlData): data is ShlinkCreateShortUrlData =>
+  'shortCodeLength' in data && 'customSlug' in data && 'domain' in data;
+
 export const ShortUrlForm = (
   TagsSelector: FC<TagsSelectorProps>,
   DomainSelector: FC<DomainSelectorProps>,
-): FC<ShortUrlFormProps> => ({ mode, saving, onSave, initialState }) => {
+) => function ShortUrlFormComp<T extends ShlinkCreateShortUrlData | ShlinkEditShortUrlData>(
+  { mode, saving, onSave, initialState }: ShortUrlFormProps<T>,
+) {
   const [shortUrlData, setShortUrlData] = useState(initialState);
   const reset = () => setShortUrlData(initialState);
   const supportsDeviceLongUrls = useFeature('deviceLongUrls');
 
   const isEdit = mode === 'edit';
+  const isCreation = isCreationData(shortUrlData);
   const isBasicMode = mode === 'create-basic';
   const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
   const setResettableValue = (value: string, initialValue?: any) => {
@@ -82,6 +88,7 @@ export const ShortUrlForm = (
         id={id}
         type={type}
         placeholder={placeholder}
+        // @ts-expect-error FIXME Make sure id is a key from T
         value={shortUrlData[id] ?? ''}
         onChange={props.onChange ?? ((e) => setShortUrlData({ ...shortUrlData, [id]: e.target.value }))}
         {...props}
@@ -171,7 +178,7 @@ export const ShortUrlForm = (
                     title: setResettableValue(target.value, initialState.title),
                   }),
                 })}
-                {!isEdit && (
+                {!isEdit && isCreation && (
                   <>
                     <Row>
                       <div className="col-lg-6">
@@ -216,7 +223,7 @@ export const ShortUrlForm = (
                 >
                   Validate URL
                 </ShortUrlFormCheckboxGroup>
-                {!isEdit && (
+                {!isEdit && isCreation && (
                   <p>
                     <Checkbox
                       inline
