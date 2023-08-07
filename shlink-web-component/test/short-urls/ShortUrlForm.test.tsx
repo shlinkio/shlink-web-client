@@ -17,7 +17,15 @@ describe('<ShortUrlForm />', () => {
         <ShortUrlForm
           mode={mode}
           saving={false}
-          initialState={{ validateUrl: true, findIfExists: false, title, longUrl: '' }}
+          initialState={{
+            validateUrl: true,
+            findIfExists: false,
+            title,
+            longUrl: '',
+            customSlug: undefined,
+            shortCodeLength: undefined,
+            domain: undefined,
+          }}
           onSave={createShortUrl}
         />
       </FeaturesProvider>,
@@ -73,6 +81,9 @@ describe('<ShortUrlForm />', () => {
       maxVisits: 20,
       findIfExists: false,
       validateUrl: true,
+      domain: undefined,
+      shortCodeLength: undefined,
+      customSlug: undefined,
       ...extraExpectedValues,
     });
   });
