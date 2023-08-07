@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShlinkShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/api-contract';
 import type { LinkSuffix } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
 import { ShortUrlDetailLink } from '../../../src/short-urls/helpers/ShortUrlDetailLink';
 import { RoutesPrefixProvider } from '../../../src/utils/routesPrefix';

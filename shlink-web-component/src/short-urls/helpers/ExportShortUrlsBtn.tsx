@@ -1,10 +1,9 @@
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useCallback } from 'react';
-import type { ShlinkApiClient } from '../../api-contract';
+import type { ShlinkApiClient, ShlinkShortUrl } from '../../api-contract';
 import { ExportBtn } from '../../utils/components/ExportBtn';
 import type { ReportExporter } from '../../utils/services/ReportExporter';
-import type { ShlinkShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 
 export interface ExportShortUrlsBtnProps {

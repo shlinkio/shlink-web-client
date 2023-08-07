@@ -4,7 +4,7 @@ import { addDays, formatISO, subDays } from 'date-fns';
 import { last } from 'ramda';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import type { Settings } from '../../../src';
-import type { ShlinkShortUrlMeta, ShlinkShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl, ShlinkShortUrlMeta } from '../../../src/api-contract';
 import { ShortUrlsRow as createShortUrlsRow } from '../../../src/short-urls/helpers/ShortUrlsRow';
 import { now, parseDate } from '../../../src/utils/dates/helpers/date';
 import type { TimeoutToggle } from '../../../src/utils/helpers/hooks';

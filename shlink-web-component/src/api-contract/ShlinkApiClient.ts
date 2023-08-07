@@ -1,10 +1,11 @@
-import type { ShlinkShortUrl, ShortUrlData } from '../short-urls/data';
+import type { ShortUrlData } from '../short-urls/data';
 import type {
   ShlinkDomainRedirects,
   ShlinkDomainsResponse,
   ShlinkEditDomainRedirects,
   ShlinkHealth,
   ShlinkMercureInfo,
+  ShlinkShortUrl,
   ShlinkShortUrlData,
   ShlinkShortUrlsListParams,
   ShlinkShortUrlsResponse,

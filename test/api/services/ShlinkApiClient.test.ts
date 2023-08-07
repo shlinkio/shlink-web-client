@@ -1,7 +1,7 @@
-import type { ShlinkDomain, ShlinkVisits, ShlinkVisitsOverview } from '@shlinkio/shlink-web-component/api-contract';
+import type { ShlinkDomain, ShlinkShortUrl, ShlinkVisits, ShlinkVisitsOverview } from '@shlinkio/shlink-web-component/api-contract';
 import { ErrorTypeV2, ErrorTypeV3 } from '@shlinkio/shlink-web-component/api-contract';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkShortUrl, ShortUrlsOrder } from '../../../shlink-web-component/src/short-urls/data';
+import type { ShortUrlsOrder } from '../../../shlink-web-component/src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import type { OptionalString } from '../../../src/utils/utils';

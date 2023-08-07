@@ -1,9 +1,9 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import type { ProblemDetailsError, ShlinkApiClient } from '../../api-contract';
+import type { ProblemDetailsError, ShlinkApiClient, ShlinkShortUrl } from '../../api-contract';
 import { parseApiError } from '../../api-contract/utils';
 import { createAsyncThunk } from '../../utils/redux';
-import type { ShlinkShortUrl, ShortUrlData } from '../data';
+import type { ShortUrlData } from '../data';
 
 const REDUCER_PREFIX = 'shlink/shortUrlCreation';
 

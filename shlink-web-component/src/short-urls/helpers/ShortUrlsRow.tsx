@@ -1,12 +1,12 @@
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { ExternalLink } from 'react-external-link';
+import type { ShlinkShortUrl } from '../../api-contract';
 import { CopyToClipboardIcon } from '../../utils/components/CopyToClipboardIcon';
 import { Time } from '../../utils/dates/Time';
 import type { TimeoutToggle } from '../../utils/helpers/hooks';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
-import type { ShlinkShortUrl } from '../data';
 import { useShortUrlsQuery } from './hooks';
 import type { ShortUrlsRowMenuType } from './ShortUrlsRowMenu';
 import { ShortUrlStatus } from './ShortUrlStatus';

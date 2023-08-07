@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { ShlinkShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl } from '../../../src/api-contract';
 import { ExportShortUrlsBtn as createExportShortUrlsBtn } from '../../../src/short-urls/helpers/ExportShortUrlsBtn';
 import type { ReportExporter } from '../../../src/utils/services/ReportExporter';
 import { renderWithEvents } from '../../__helpers__/setUpTest';

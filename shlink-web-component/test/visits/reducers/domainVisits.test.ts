@@ -1,8 +1,7 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { addDays, formatISO, subDays } from 'date-fns';
-import type { ShlinkApiClient, ShlinkVisits } from '../../../src/api-contract';
+import type { ShlinkApiClient, ShlinkShortUrl, ShlinkVisits } from '../../../src/api-contract';
 import type { RootState } from '../../../src/container/store';
-import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { formatIsoDate } from '../../../src/utils/dates/helpers/date';
 import type { DateInterval } from '../../../src/utils/dates/helpers/dateIntervals';
 import { rangeOf } from '../../../src/utils/helpers';

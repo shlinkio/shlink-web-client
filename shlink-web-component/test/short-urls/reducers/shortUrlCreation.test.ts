@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkApiClient } from '../../../src/api-contract';
-import type { ShlinkShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkApiClient, ShlinkShortUrl } from '../../../src/api-contract';
 import {
   createShortUrl as createShortUrlCreator,
   shortUrlCreationReducerCreator,

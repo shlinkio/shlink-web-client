@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
-import type { ShlinkShortUrl, ShortUrlModalProps } from '../data';
+import type { ShlinkShortUrl } from '../../api-contract';
+import type { ShortUrlModalProps } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 
 interface ShortUrlsRowMenuProps {

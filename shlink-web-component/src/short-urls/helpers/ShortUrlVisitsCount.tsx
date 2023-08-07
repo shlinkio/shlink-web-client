@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { UncontrolledTooltip } from 'reactstrap';
+import type { ShlinkShortUrl } from '../../api-contract';
 import { formatHumanFriendly, parseISO } from '../../utils/dates/helpers/date';
 import { prettify } from '../../utils/helpers/numbers';
-import type { ShlinkShortUrl } from '../data';
 import { ShortUrlDetailLink } from './ShortUrlDetailLink';
 import './ShortUrlVisitsCount.scss';
 

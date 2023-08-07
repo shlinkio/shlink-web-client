@@ -1,6 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
+import type { ShlinkShortUrl } from '../../../src/api-contract';
 import type { RootState } from '../../../src/container/store';
-import type { ShlinkShortUrl } from '../../../src/short-urls/data';
 import { createShortUrl as createShortUrlCreator } from '../../../src/short-urls/reducers/shortUrlCreation';
 import { tagDeleted } from '../../../src/tags/reducers/tagDelete';
 import { tagEdited } from '../../../src/tags/reducers/tagEdit';

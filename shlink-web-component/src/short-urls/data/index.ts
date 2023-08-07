@@ -1,6 +1,6 @@
 import type { Order } from '@shlinkio/shlink-frontend-kit';
-import type { ShlinkShortUrlData, ShlinkVisitsSummary } from '../../api-contract';
-import type { Nullable, OptionalString } from '../../utils/helpers';
+import type { ShlinkShortUrl, ShlinkShortUrlData } from '../../api-contract';
+import type { OptionalString } from '../../utils/helpers';
 
 export interface ShortUrlData extends Omit<ShlinkShortUrlData, 'deviceLongUrls'> {
   longUrl: string;
@@ -13,35 +13,6 @@ export interface ShortUrlData extends Omit<ShlinkShortUrlData, 'deviceLongUrls'>
     ios?: string;
     desktop?: string;
   }
-}
-
-export interface ShlinkDeviceLongUrls {
-  android?: OptionalString;
-  ios?: OptionalString;
-  desktop?: OptionalString;
-}
-
-export interface ShlinkShortUrl {
-  shortCode: string;
-  shortUrl: string;
-  longUrl: string;
-  deviceLongUrls?: Required<ShlinkDeviceLongUrls>, // Optional only before Shlink 3.5.0
-  dateCreated: string;
-  /** @deprecated */
-  visitsCount: number; // Deprecated since Shlink 3.4.0
-  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.4.0
-  meta: Required<Nullable<ShlinkShortUrlMeta>>;
-  tags: string[];
-  domain: string | null;
-  title?: string | null;
-  crawlable?: boolean;
-  forwardQuery?: boolean;
-}
-
-export interface ShlinkShortUrlMeta {
-  validSince?: string;
-  validUntil?: string;
-  maxVisits?: number;
 }
 
 export interface ShortUrlIdentifier {

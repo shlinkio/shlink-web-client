@@ -1,6 +1,35 @@
 import type { Order } from '@shlinkio/shlink-frontend-kit';
-import type { ShlinkDeviceLongUrls, ShlinkShortUrl } from '../short-urls/data';
+import type { Nullable, OptionalString } from '../utils/helpers';
 import type { Visit } from '../visits/types';
+
+export interface ShlinkDeviceLongUrls {
+  android?: OptionalString;
+  ios?: OptionalString;
+  desktop?: OptionalString;
+}
+
+export interface ShlinkShortUrlMeta {
+  validSince?: string;
+  validUntil?: string;
+  maxVisits?: number;
+}
+
+export interface ShlinkShortUrl {
+  shortCode: string;
+  shortUrl: string;
+  longUrl: string;
+  deviceLongUrls?: Required<ShlinkDeviceLongUrls>, // Optional only before Shlink 3.5.0
+  dateCreated: string;
+  /** @deprecated */
+  visitsCount: number; // Deprecated since Shlink 3.4.0
+  visitsSummary?: ShlinkVisitsSummary; // Optional only before Shlink 3.4.0
+  meta: Required<Nullable<ShlinkShortUrlMeta>>;
+  tags: string[];
+  domain: string | null;
+  title?: string | null;
+  crawlable?: boolean;
+  forwardQuery?: boolean;
+}
 
 export interface ShlinkShortUrlsResponse {
   data: ShlinkShortUrl[];

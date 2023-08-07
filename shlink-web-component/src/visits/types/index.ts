@@ -1,4 +1,4 @@
-import type { ShlinkShortUrl } from '../../short-urls/data';
+import type { ShlinkShortUrl } from '../../api-contract';
 import type { DateRange } from '../../utils/dates/helpers/dateIntervals';
 
 export type OrphanVisitType = 'base_url' | 'invalid_short_url' | 'regular_404';

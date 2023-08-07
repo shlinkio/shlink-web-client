@@ -1,8 +1,9 @@
 import { isNil } from 'ramda';
+import type { ShlinkShortUrl } from '../../api-contract';
 import type { OptionalString } from '../../utils/helpers';
 import type { ShortUrlCreationSettings } from '../../utils/settings';
 import { DEFAULT_DOMAIN } from '../../visits/reducers/domainVisits';
-import type { ShlinkShortUrl, ShortUrlData } from '../data';
+import type { ShortUrlData } from '../data';
 
 export const shortUrlMatches = (shortUrl: ShlinkShortUrl, shortCode: string, domain: OptionalString): boolean => {
   if (isNil(domain)) {
@@ -20,7 +21,10 @@ export const domainMatches = (shortUrl: ShlinkShortUrl, domain: string): boolean
   return shortUrl.domain === domain;
 };
 
-export const shortUrlDataFromShortUrl = (shortUrl?: ShlinkShortUrl, settings?: ShortUrlCreationSettings): ShortUrlData => {
+export const shortUrlDataFromShortUrl = (
+  shortUrl?: ShlinkShortUrl,
+  settings?: ShortUrlCreationSettings,
+): ShortUrlData => {
   const validateUrl = settings?.validateUrls ?? false;
 
   if (!shortUrl) {

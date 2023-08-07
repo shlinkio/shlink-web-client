@@ -1,8 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShlinkVisitsSummary } from '../../../src/api-contract';
-import type { ShlinkShortUrlMeta, ShlinkShortUrl } from '../../../src/short-urls/data';
+import type { ShlinkShortUrl, ShlinkShortUrlMeta, ShlinkVisitsSummary } from '../../../src/api-contract';
 import { ShortUrlStatus } from '../../../src/short-urls/helpers/ShortUrlStatus';
 
 describe('<ShortUrlStatus />', () => {

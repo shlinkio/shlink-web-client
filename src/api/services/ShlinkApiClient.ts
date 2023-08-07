@@ -7,6 +7,7 @@ import type {
   ShlinkEditDomainRedirects,
   ShlinkHealth,
   ShlinkMercureInfo,
+  ShlinkShortUrl,
   ShlinkShortUrlData,
   ShlinkShortUrlsListNormalizedParams,
   ShlinkShortUrlsListParams,
@@ -23,7 +24,7 @@ import {
   ErrorTypeV3,
 } from '@shlinkio/shlink-web-component/api-contract';
 import { isEmpty, isNil, reject } from 'ramda';
-import type { ShlinkShortUrl, ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
+import type { ShortUrlData } from '../../../shlink-web-component/src/short-urls/data';
 import type { HttpClient } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
+import type { ShlinkShortUrl } from '../../api-contract';
 import { useRoutesPrefix } from '../../utils/routesPrefix';
-import type { ShlinkShortUrl } from '../data';
 import { urlEncodeShortCode } from './index';
 
 export type LinkSuffix = 'visits' | 'edit';

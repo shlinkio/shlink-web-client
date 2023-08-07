@@ -5,8 +5,8 @@ import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import { isBefore } from 'date-fns';
 import type { FC, ReactNode } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
+import type { ShlinkShortUrl } from '../../api-contract';
 import { formatHumanFriendly, now, parseISO } from '../../utils/dates/helpers/date';
-import type { ShlinkShortUrl } from '../data';
 
 interface ShortUrlStatusProps {
   shortUrl: ShlinkShortUrl;

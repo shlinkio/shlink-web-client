@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { assocPath, last, pipe, reject } from 'ramda';
-import type { ShlinkApiClient, ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api-contract';
+import type { ShlinkApiClient, ShlinkShortUrl, ShlinkShortUrlsListParams, ShlinkShortUrlsResponse } from '../../api-contract';
 import { createAsyncThunk } from '../../utils/redux';
 import { createNewVisits } from '../../visits/reducers/visitCreation';
-import type { ShlinkShortUrl } from '../data';
 import { shortUrlMatches } from '../helpers';
 import type { createShortUrl } from './shortUrlCreation';
 import { shortUrlDeleted } from './shortUrlDeletion';
