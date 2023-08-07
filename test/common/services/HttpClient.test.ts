@@ -61,7 +61,7 @@ describe('HttpClient', () => {
       const theError = { error: true, foo: 'bar' };
       fetch.mockResolvedValue({ json: () => theError, ok: false });
 
-      await expect(httpClient.fetchJson('')).rejects.toEqual(theError);
+      await expect(httpClient.fetchEmpty('')).rejects.toEqual(theError);
     });
   });
 });

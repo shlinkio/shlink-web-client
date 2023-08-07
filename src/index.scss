@@ -1,7 +1,7 @@
-@import '@shlinkio/shlink-frontend-kit/base';
-@import '@shlinkio/shlink-frontend-kit/index';
-@import '@shlinkio/shlink-web-component/index';
+@import '@shlinkio/shlink-frontend-kit/base'; // Before bootstrap stylesheet. Includes SASS var overrides
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import '@shlinkio/shlink-frontend-kit/index'; // After bootstrap. Includes CSS overwrites
+@import '@shlinkio/shlink-web-component/index';
 
 * {
   outline: none !important;

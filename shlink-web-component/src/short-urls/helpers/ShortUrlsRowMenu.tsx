@@ -26,11 +26,11 @@ export const ShortUrlsRowMenu = (
 
   return (
     <RowDropdownBtn minWidth={190}>
-      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="visits">
+      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="visits" asLink>
         <FontAwesomeIcon icon={pieChartIcon} fixedWidth /> Visit stats
       </DropdownItem>
 
-      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="edit">
+      <DropdownItem tag={ShortUrlDetailLink} shortUrl={shortUrl} suffix="edit" asLink>
         <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit short URL
       </DropdownItem>
 
