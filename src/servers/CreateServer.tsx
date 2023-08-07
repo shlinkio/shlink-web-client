@@ -1,3 +1,4 @@
+import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -5,8 +6,7 @@ import { Button } from 'reactstrap';
 import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
-import { useGoBack, useToggle } from '../utils/helpers/hooks';
-import { Result } from '../utils/Result';
+import { useGoBack } from '../utils/helpers/hooks';
 import type { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';

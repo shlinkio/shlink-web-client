@@ -11,13 +11,11 @@ import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
 import { ManageServers } from '../ManageServers';
 import { ManageServersRow } from '../ManageServersRow';
 import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
-import { Overview } from '../Overview';
 import { fetchServers } from '../reducers/remoteServers';
 import {
   resetSelectedServer,
   selectedServerReducerCreator,
   selectServer,
-  selectServerListener,
 } from '../reducers/selectedServer';
 import { createServers, deleteServer, editServer, setAutoConnect } from '../reducers/servers';
 import { ServersDropdown } from '../ServersDropdown';
@@ -63,12 +61,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
   bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
 
-  bottle.serviceFactory('Overview', Overview, 'ShortUrlsTable', 'CreateShortUrl');
-  bottle.decorator('Overview', connect(
-    ['shortUrlsList', 'tagsList', 'selectedServer', 'mercureInfo', 'visitsOverview', 'settings'],
-    ['listShortUrls', 'listTags', 'createNewVisits', 'loadMercureInfo', 'loadVisitsOverview'],
-  ));
-
   // Services
   bottle.constant('fileReaderFactory', () => new FileReader());
   bottle.service('ServersImporter', ServersImporter, 'csvToJson', 'fileReaderFactory');
@@ -85,7 +77,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('resetSelectedServer', () => resetSelectedServer);
 
   // Reducers
-  bottle.serviceFactory('selectServerListener', selectServerListener, 'selectServer', 'loadMercureInfo');
   bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
   bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
 };

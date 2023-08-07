@@ -1,3 +1,5 @@
+import { changeThemeInMarkup } from '@shlinkio/shlink-frontend-kit';
+import type { Settings } from '@shlinkio/shlink-web-component';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -5,9 +7,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { ServersMap } from '../servers/data';
-import type { Settings } from '../settings/reducers/settings';
 import { forceUpdate } from '../utils/helpers/sw';
-import { changeThemeInMarkup } from '../utils/theme';
 import './App.scss';
 
 interface AppProps {
@@ -21,7 +21,7 @@ interface AppProps {
 export const App = (
   MainHeader: FC,
   Home: FC,
-  MenuLayout: FC,
+  ShlinkWebComponentContainer: FC,
   CreateServer: FC,
   EditServer: FC,
   SettingsComp: FC,
@@ -52,7 +52,7 @@ export const App = (
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />
-            <Route path="/server/:serverId/*" element={<MenuLayout />} />
+            <Route path="/server/:serverId/*" element={<ShlinkWebComponentContainer />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

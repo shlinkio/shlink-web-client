@@ -1,11 +1,9 @@
 import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { Theme } from '@shlinkio/shlink-frontend-kit';
+import { changeThemeInMarkup, SimpleCard, ToggleSwitch } from '@shlinkio/shlink-frontend-kit';
+import type { Settings, UiSettings } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
-import { SimpleCard } from '../utils/SimpleCard';
-import type { Theme } from '../utils/theme';
-import { changeThemeInMarkup } from '../utils/theme';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
-import type { Settings, UiSettings } from './reducers/settings';
 import './UserInterfaceSettings.scss';
 
 interface UserInterfaceProps {

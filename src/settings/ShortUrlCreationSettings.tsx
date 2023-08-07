@@ -1,11 +1,11 @@
+import { DropdownBtn, LabeledFormGroup, SimpleCard, ToggleSwitch } from '@shlinkio/shlink-frontend-kit';
+import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import type { FC, ReactNode } from 'react';
 import { DropdownItem, FormGroup } from 'reactstrap';
-import { DropdownBtn } from '../utils/DropdownBtn';
 import { FormText } from '../utils/forms/FormText';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { SimpleCard } from '../utils/SimpleCard';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
-import type { Settings, ShortUrlCreationSettings as ShortUrlsSettings, TagFilteringMode } from './reducers/settings';
+import type { Defined } from '../utils/types';
+
+type TagFilteringMode = Defined<ShortUrlsSettings['tagFilteringMode']>;
 
 interface ShortUrlCreationProps {
   settings: Settings;

@@ -1,3 +1,1 @@
-export type MediaMatcher = (query: string) => MediaQueryList;
-
-export type Fetch = typeof window.fetch;
+export type Defined<T> = Exclude<T, undefined>;

@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react';
+import * as path from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 import { manifest } from './manifest';
@@ -24,6 +25,12 @@ export default defineConfig({
     port: 3000,
   },
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
+  resolve: {
+    alias: {
+      '@shlinkio/shlink-frontend-kit': path.resolve(__dirname, './shlink-frontend-kit/src'),
+      '@shlinkio/shlink-web-component': path.resolve(__dirname, './shlink-web-component/src'),
+    },
+  },
 
   // Vitest config
   test: {
@@ -35,6 +42,8 @@ export default defineConfig({
       reporter: ['text', 'text-summary', 'html', 'clover'],
       include: [
         'src/**/*.{ts,tsx}',
+        'shlink-web-component/**/*.{ts,tsx}',
+        'shlink-frontend-kit/**/*.{ts,tsx}',
         '!src/*.{ts,tsx}',
         '!src/reducers/index.ts',
         '!src/**/provideServices.ts',

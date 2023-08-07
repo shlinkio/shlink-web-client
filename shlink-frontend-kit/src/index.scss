@@ -1,0 +1,219 @@
+@import './utils/ResponsiveTable';
+@import './theme/theme';
+
+/* stylelint-disable no-descending-specificity */
+
+a,
+.btn-link {
+  text-decoration: none;
+}
+
+/* stylelint-disable-next-line selector-max-pseudo-class */
+a:not(.nav-link):not(.navbar-brand):not(.page-link):not(.highlight-card):not(.btn):not(.dropdown-item):hover,
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+.bg-main {
+  background-color: $mainColor !important;
+}
+
+.bg-warning {
+  color: $lightTextColor;
+}
+
+.card-body,
+.card-header,
+.list-group-item {
+  background-color: transparent;
+}
+
+.card-footer {
+  background-color: var(--primary-color-alfa);
+}
+
+.card {
+  box-shadow: 0 .125rem .25rem rgb(0 0 0 / .075);
+  background-color: var(--primary-color);
+  border-color: var(--border-color);
+}
+
+.list-group {
+  background-color: var(--primary-color);
+}
+
+.modal-content,
+.page-link,
+.page-item.disabled .page-link,
+.dropdown-menu {
+  background-color: var(--primary-color);
+}
+
+.modal-header,
+.modal-footer,
+.card-header,
+.card-footer,
+.table thead th,
+.table th,
+.table td,
+.page-link,
+.page-link:hover,
+.page-item.disabled .page-link,
+.dropdown-divider,
+.dropdown-menu,
+.list-group-item,
+.modal-content,
+hr {
+  border-color: var(--border-color);
+}
+
+.table-bordered,
+.table-bordered thead th,
+.table-bordered thead td {
+  border-color: var(--table-border-color);
+}
+
+.page-link:hover,
+.page-link:focus {
+  background-color: var(--secondary-color);
+}
+
+.page-item.active .page-link {
+  background-color: var(--brand-color);
+  border-color: var(--brand-color);
+}
+
+.pagination .page-link {
+  cursor: pointer;
+}
+
+.container-xl {
+  @media (min-width: $xlgMin) {
+    max-width: 1320px;
+  }
+
+  @media (max-width: $smMax) {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+/* Deprecated. Brought from bootstrap 4 */
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary.active,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary.active, {
+  color: #ffffff;
+}
+
+.dropdown-item,
+.dropdown-item-text {
+  color: var(--text-color);
+}
+
+.dropdown-item:not(:disabled) {
+  cursor: pointer;
+}
+
+.dropdown-item:focus:not(:disabled),
+.dropdown-item:hover:not(:disabled),
+.dropdown-item.active:not(:disabled),
+.dropdown-item:active:not(:disabled) {
+  background-color: var(--active-color) !important;
+  color: var(--text-color) !important;
+}
+
+.dropdown-item--danger.dropdown-item--danger {
+  color: $dangerColor;
+
+  &:hover,
+  &:active,
+  &.active {
+    color: $dangerColor !important;
+  }
+}
+
+.badge-main {
+  color: #ffffff;
+  background-color: var(--brand-color);
+}
+
+.close,
+.close:hover,
+.table,
+.table-hover > tbody > tr:hover > *,
+.table-hover > tbody > tr > * {
+  color: var(--text-color);
+}
+
+.btn-close {
+  filter: var(--btn-close-filter);
+}
+
+.table-hover tbody tr:hover {
+  background-color: var(--secondary-color);
+}
+
+.form-control,
+.form-control:focus {
+  background-color: var(--primary-color);
+  border-color: var(--input-border-color);
+  color: var(--input-text-color);
+}
+
+.form-control.disabled,
+.form-control:disabled {
+  background-color: var(--input-disabled-color);
+  cursor: not-allowed;
+}
+
+.card .form-control:not(:disabled),
+.card .form-control:not(:disabled):hover {
+  background-color: var(--input-color);
+}
+
+.table-active,
+.table-active > th,
+.table-active > td {
+  background-color: var(--table-highlight-color) !important;
+}
+
+.navbar-brand {
+  @media (max-width: $smMax) {
+    margin: 0 auto !important;
+  }
+}
+
+.indivisible {
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.progress-bar {
+  background-color: $mainColor;
+}
+
+.btn-xs-block {
+  @media (max-width: $xsMax) {
+    width: 100%;
+    display: block;
+  }
+}
+
+.btn-md-block {
+  @media (max-width: $mdMax) {
+    width: 100%;
+    display: block;
+  }
+}

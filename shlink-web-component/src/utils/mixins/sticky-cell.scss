@@ -1,0 +1,30 @@
+@import '@shlinkio/shlink-frontend-kit/base';
+
+@mixin sticky-cell($with-separators: true) {
+  z-index: 1;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset: -1px if($with-separators, -1px, 0) -1px 0;
+    background: var(--table-border-color);
+    z-index: -2;
+  }
+
+  &:first-child:before {
+    left: if($with-separators, -1px, 0);
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    inset: 0 0 0 if($with-separators, 1px, 0);
+    background: var(--primary-color);
+    z-index: -1;
+  }
+
+  &:first-child:after {
+    left: 0;
+  }
+}

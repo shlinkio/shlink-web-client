@@ -1,9 +1,7 @@
+import type { RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
-import type {
-  RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions,
-} from '../../src/settings/reducers/settings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {

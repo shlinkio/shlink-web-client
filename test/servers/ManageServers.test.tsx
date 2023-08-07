@@ -58,11 +58,11 @@ describe('<ManageServers />', () => {
 
     expect(screen.getAllByRole('columnheader')).toHaveLength(expectedCols);
     if (server.autoConnect) {
-      expect(screen.getByText(/\[YES\]/)).toBeInTheDocument();
-      expect(screen.queryByText(/\[NO\]/)).not.toBeInTheDocument();
+      expect(screen.getByText(/\[YES]/)).toBeInTheDocument();
+      expect(screen.queryByText(/\[NO]/)).not.toBeInTheDocument();
     } else {
-      expect(screen.queryByText(/\[YES\]/)).not.toBeInTheDocument();
-      expect(screen.getByText(/\[NO\]/)).toBeInTheDocument();
+      expect(screen.queryByText(/\[YES]/)).not.toBeInTheDocument();
+      expect(screen.getByText(/\[NO]/)).toBeInTheDocument();
     }
   });
 

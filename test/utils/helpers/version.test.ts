@@ -1,7 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { SemVer, Versions } from '../../../src/utils/helpers/version';
+import type { Empty, SemVer, Versions } from '../../../src/utils/helpers/version';
 import { versionMatch } from '../../../src/utils/helpers/version';
-import type { Empty } from '../../../src/utils/utils';
 
 describe('version', () => {
   describe('versionMatch', () => {

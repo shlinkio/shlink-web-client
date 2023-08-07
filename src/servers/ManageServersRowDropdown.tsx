@@ -6,11 +6,10 @@ import {
   faPlug as connectIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
-import { useToggle } from '../utils/helpers/hooks';
-import { RowDropdownBtn } from '../utils/RowDropdownBtn';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 

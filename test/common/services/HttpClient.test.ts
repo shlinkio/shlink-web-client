@@ -61,18 +61,7 @@ describe('HttpClient', () => {
       const theError = { error: true, foo: 'bar' };
       fetch.mockResolvedValue({ json: () => theError, ok: false });
 
-      await expect(httpClient.fetchJson('')).rejects.toEqual(theError);
-    });
-  });
-
-  describe('fetchBlob', () => {
-    it('returns response as blob', async () => {
-      const theBlob = new Blob();
-      fetch.mockResolvedValue({ blob: () => theBlob });
-
-      const result = await httpClient.fetchBlob('');
-
-      expect(result).toEqual(theBlob);
+      await expect(httpClient.fetchEmpty('')).rejects.toEqual(theError);
     });
   });
 });

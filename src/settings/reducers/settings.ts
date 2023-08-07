@@ -1,59 +1,22 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import type {
+  Settings,
+  ShortUrlCreationSettings,
+  ShortUrlsListSettings,
+  TagsSettings,
+  UiSettings,
+  VisitsSettings,
+} from '@shlinkio/shlink-web-component';
 import { mergeDeepRight } from 'ramda';
-import type { ShortUrlsOrder } from '../../short-urls/data';
-import type { TagsOrder } from '../../tags/data/TagsListChildrenProps';
-import type { DateInterval } from '../../utils/helpers/dateIntervals';
-import type { Theme } from '../../utils/theme';
+import type { Defined } from '../../utils/types';
+
+type ShortUrlsOrder = Defined<ShortUrlsListSettings['defaultOrdering']>;
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',
   dir: 'DESC',
 };
-
-/**
- * Important! When adding new props in the main Settings interface or any of the nested props, they have to be set as
- * optional, as old instances of the app will load partial objects from local storage until it is saved again.
- */
-
-export interface RealTimeUpdatesSettings {
-  enabled: boolean;
-  interval?: number;
-}
-
-export type TagFilteringMode = 'startsWith' | 'includes';
-
-export interface ShortUrlCreationSettings {
-  validateUrls: boolean;
-  tagFilteringMode?: TagFilteringMode;
-  forwardQuery?: boolean;
-}
-
-export interface UiSettings {
-  theme: Theme;
-}
-
-export interface VisitsSettings {
-  defaultInterval: DateInterval;
-  excludeBots?: boolean;
-}
-
-export interface TagsSettings {
-  defaultOrdering?: TagsOrder;
-}
-
-export interface ShortUrlsListSettings {
-  defaultOrdering?: ShortUrlsOrder;
-}
-
-export interface Settings {
-  realTimeUpdates: RealTimeUpdatesSettings;
-  shortUrlCreation?: ShortUrlCreationSettings;
-  shortUrlsList?: ShortUrlsListSettings;
-  ui?: UiSettings;
-  visits?: VisitsSettings;
-  tags?: TagsSettings;
-}
 
 const initialState: Settings = {
   realTimeUpdates: {
@@ -89,7 +52,9 @@ const { reducer, actions } = createSlice({
     setShortUrlCreationSettings: toReducer(
       (shortUrlCreation: ShortUrlCreationSettings) => toPreparedAction({ shortUrlCreation }),
     ),
-    setShortUrlsListSettings: toReducer((shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList })),
+    setShortUrlsListSettings: toReducer(
+      (shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList }),
+    ),
     setUiSettings: toReducer((ui: UiSettings) => toPreparedAction({ ui })),
     setVisitsSettings: toReducer((visits: VisitsSettings) => toPreparedAction({ visits })),
     setTagsSettings: toReducer((tags: TagsSettings) => toPreparedAction({ tags })),

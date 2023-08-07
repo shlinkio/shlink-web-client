@@ -1,12 +1,10 @@
-import type { PayloadAction } from '@reduxjs/toolkit';
-import { createAction, createListenerMiddleware, createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
+import type { ShlinkHealth } from '@shlinkio/shlink-web-component/api-contract';
 import { memoizeWith, pipe } from 'ramda';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
-import type { ShlinkHealth } from '../../api/types';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
 import type { SelectedServer, ServerWithId } from '../data';
-import { isReachableServer } from '../data';
 
 const REDUCER_PREFIX = 'shlink/selectedServer';
 
@@ -59,22 +57,6 @@ export const selectServer = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
 );
 
 type SelectServerThunk = ReturnType<typeof selectServer>;
-
-export const selectServerListener = (
-  selectServerThunk: SelectServerThunk,
-  loadMercureInfo: () => PayloadAction<any>, // TODO Consider setting actual type, if relevant
-) => {
-  const listener = createListenerMiddleware();
-
-  listener.startListening({
-    actionCreator: selectServerThunk.fulfilled,
-    effect: ({ payload }, { dispatch }) => {
-      isReachableServer(payload) && dispatch(loadMercureInfo());
-    },
-  });
-
-  return listener;
-};
 
 export const selectedServerReducerCreator = (selectServerThunk: SelectServerThunk) => createSlice({
   name: REDUCER_PREFIX,

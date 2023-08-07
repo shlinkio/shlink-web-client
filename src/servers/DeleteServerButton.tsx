@@ -1,7 +1,7 @@
 import { faMinusCircle as deleteIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC, PropsWithChildren } from 'react';
-import { useToggle } from '../utils/helpers/hooks';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 

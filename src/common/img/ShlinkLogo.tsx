@@ -1,4 +1,4 @@
-import { MAIN_COLOR } from '../../utils/theme';
+import { MAIN_COLOR } from '@shlinkio/shlink-frontend-kit';
 
 export interface ShlinkLogoProps {
   color?: string;

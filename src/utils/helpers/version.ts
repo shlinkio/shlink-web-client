@@ -1,18 +1,20 @@
 import { compare } from 'compare-versions';
-import { identity, memoizeWith } from 'ramda';
-import type { Empty } from '../utils';
-import { hasValue } from '../utils';
+import { identity, isEmpty, isNil, memoizeWith } from 'ramda';
+
+export type Empty = null | undefined | '' | never[];
+
+const hasValue = <T>(value: T | Empty): value is T => !isNil(value) && !isEmpty(value);
 
 type SemVerPatternFragment = `${bigint | '*'}`;
 
-export type SemVerPattern = SemVerPatternFragment
+type SemVerPattern = SemVerPatternFragment
 | `${SemVerPatternFragment}.${SemVerPatternFragment}`
 | `${SemVerPatternFragment}.${SemVerPatternFragment}.${SemVerPatternFragment}`;
 
-export interface Versions {
+export type Versions = {
   maxVersion?: SemVerPattern;
   minVersion?: SemVerPattern;
-}
+};
 
 export type SemVer = `${bigint}.${bigint}.${bigint}` | 'latest';
 

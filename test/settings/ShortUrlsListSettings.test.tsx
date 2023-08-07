@@ -1,8 +1,8 @@
+import type { ShortUrlsListSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlsListSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
+import type { ShortUrlsOrder } from '../../shlink-web-component/src/short-urls/data';
 import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
-import type { ShortUrlsOrder } from '../../src/short-urls/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsListSettings />', () => {
