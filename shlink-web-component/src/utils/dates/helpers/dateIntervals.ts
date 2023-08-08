@@ -85,7 +85,7 @@ export const intervalToDateRange = cond<[DateInterval | undefined], DateRange>([
 export const dateToMatchingInterval = (date: DateOrString): DateInterval => {
   const theDate = parseISO(date);
 
-  return cond<never, DateInterval>([
+  return cond<never[], DateInterval>([
     [() => isBeforeOrEqual(startOfDay(now()), theDate), () => 'today'],
     [() => isBeforeOrEqual(startOfDaysAgo(1), theDate), () => 'yesterday'],
     [() => isBeforeOrEqual(startOfDaysAgo(7), theDate), () => 'last7Days'],
