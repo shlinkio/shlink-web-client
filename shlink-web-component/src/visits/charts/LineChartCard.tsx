@@ -84,7 +84,7 @@ const STEP_TO_DATE_FORMAT: Record<Step, (date: Date) => string> = {
 const determineInitialStep = (oldestVisitDate: string): Step => {
   const now = new Date();
   const oldestDate = parseISO(oldestVisitDate);
-  const matcher = cond<never, Step | undefined>([
+  const matcher = cond([
     [() => differenceInDays(now, oldestDate) <= 2, always<Step>('hourly')], // Less than 2 days
     [() => differenceInMonths(now, oldestDate) <= 1, always<Step>('daily')], // Between 2 days and 1 month
     [() => differenceInMonths(now, oldestDate) <= 6, always<Step>('weekly')], // Between 1 and 6 months
