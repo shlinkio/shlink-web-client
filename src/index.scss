@@ -1,6 +1,6 @@
-@import '@shlinkio/shlink-frontend-kit/base'; // Before bootstrap stylesheet. Includes SASS var overrides
+@import 'node_modules/@shlinkio/shlink-frontend-kit/dist/base'; // Before bootstrap stylesheet. Includes SASS var overrides
 @import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import '@shlinkio/shlink-frontend-kit/index'; // After bootstrap. Includes CSS overwrites
+@import 'node_modules/@shlinkio/shlink-frontend-kit/dist/index'; // After bootstrap. Includes CSS overwrites
 @import '@shlinkio/shlink-web-component/index';
 
 * {

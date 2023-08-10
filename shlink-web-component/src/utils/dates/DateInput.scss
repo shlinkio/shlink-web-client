@@ -1,5 +1,5 @@
 @import '../mixins/vertical-align';
-@import '@shlinkio/shlink-frontend-kit/base';
+@import 'node_modules/@shlinkio/shlink-frontend-kit/dist/base';
 
 .react-datepicker__close-icon.react-datepicker__close-icon {
   @include vertical-align();
