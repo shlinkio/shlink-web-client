@@ -27,7 +27,6 @@ export default defineConfig({
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
   resolve: {
     alias: {
-      '@shlinkio/shlink-frontend-kit': path.resolve(__dirname, './shlink-frontend-kit/src'),
       '@shlinkio/shlink-web-component': path.resolve(__dirname, './shlink-web-component/src'),
     },
   },

@@ -22,7 +22,6 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@shlinkio/shlink-frontend-kit": ["shlink-frontend-kit/src"],
       "@shlinkio/shlink-web-component": ["shlink-web-component/src"],
       "@shlinkio/shlink-web-component/api-contract": ["shlink-web-component/src/api-contract"]
     }
