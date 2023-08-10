@@ -58,7 +58,11 @@ export default defineConfig({
       lines: 95,
     },
     deps: {
-      inline: ['vitest-canvas-mock'],
+      optimizer: {
+        web: {
+          include: ['vitest-canvas-mock'],
+        },
+      },
     },
   },
 });
