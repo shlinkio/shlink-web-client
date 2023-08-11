@@ -6,16 +6,3 @@
 * {
   outline: none !important;
 }
-
-:root {
-  scroll-behavior: auto;
-  color-scheme: var(--color-scheme);
-}
-
-html,
-body,
-#root {
-  height: 100%;
-  background: var(--secondary-color);
-  color: var(--text-color);
-}

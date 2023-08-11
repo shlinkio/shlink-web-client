@@ -31,7 +31,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@json2csv/plainjs": "^7.0.1",
     "@reduxjs/toolkit": "^1.9.5",
-    "@shlinkio/shlink-frontend-kit": "^0.1.2",
+    "@shlinkio/shlink-frontend-kit": "^0.2.0",
     "bootstrap": "5.2.3",
     "bottlejs": "^2.0.1",
     "bowser": "^2.11.0",
