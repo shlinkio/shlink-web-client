@@ -55,7 +55,7 @@
     "react-redux": "^8.1.2",
     "react-router-dom": "^6.14.2",
     "react-swipeable": "^7.0.1",
-    "react-tag-autocomplete": "^6.3.0",
+    "react-tag-autocomplete": "^7.0.0",
     "reactstrap": "^9.2.0",
     "redux-localstorage-simple": "^2.5.1",
     "uuid": "^9.0.0",

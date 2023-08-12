@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import type { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
-import ReactTags from 'react-tag-autocomplete';
+import type { OptionRendererProps, TagRendererProps, TagSuggestion } from 'react-tag-autocomplete';
+import { ReactTags } from 'react-tag-autocomplete';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
 import type { TagsList } from '../reducers/tagsList';
@@ -19,7 +19,7 @@ interface TagsSelectorConnectProps extends TagsSelectorProps {
   tagsList: TagsList;
 }
 
-const toComponentTag = (tag: string) => ({ id: tag, name: tag });
+const toTagSuggestion = (tag: string): TagSuggestion => ({ label: tag, value: tag });
 
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
   { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
@@ -30,29 +30,30 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
   }, []);
 
   const searchMode = shortUrlCreation?.tagFilteringMode ?? 'startsWith';
-  const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
-    <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
-  const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (
+  const ReactTagsTag = ({ tag, onClick: deleteTag }: TagRendererProps) => (
+    <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
+  );
+  const ReactTagsSuggestion = ({ option }: OptionRendererProps) => (
     <>
-      <TagBullet tag={`${item.name}`} colorGenerator={colorGenerator} />
-      {item.name}
+      <TagBullet tag={`${option.label}`} colorGenerator={colorGenerator} />
+      {option.label}
     </>
   );
 
   return (
     <ReactTags
-      tags={selectedTags.map(toComponentTag)}
-      tagComponent={ReactTagsTag}
-      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
-      suggestionComponent={ReactTagsSuggestion}
+      selected={selectedTags.map(toTagSuggestion)}
+      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toTagSuggestion)}
+      renderTag={ReactTagsTag}
+      renderOption={ReactTagsSuggestion}
       allowNew={allowNew}
-      addOnBlur
+      // addOnBlur TODO Implement manually
       placeholderText={placeholder ?? 'Add tags to the URL'}
-      minQueryLength={1}
-      delimiters={['Enter', 'Tab', ',']}
+      onShouldExpand={(value) => value.length > 1}
+      delimiterKeys={['Enter', 'Tab', ',']}
       suggestionsTransform={
         searchMode === 'includes'
-          ? (query, suggestions) => suggestions.filter(({ name }) => name.includes(query))
+          ? (query, suggestions) => suggestions.filter(({ label }) => label.includes(query))
           : undefined
       }
       onDelete={(removedTagIndex) => {
@@ -61,7 +62,7 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
       }}
-      onAddition={({ name: newTag }) => onChange(
+      onAdd={({ label: newTag }) => onChange(
         // * Avoid duplicated tags (thanks to the Set),
         // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
         [...new Set([...selectedTags, ...newTag.toLowerCase().split(',')])],
