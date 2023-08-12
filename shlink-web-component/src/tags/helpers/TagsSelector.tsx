@@ -1,4 +1,4 @@
-import resolveClasses from 'classnames';
+import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import type { OptionRendererProps, ReactTagsAPI, TagRendererProps, TagSuggestion } from 'react-tag-autocomplete';
 import { ReactTags } from 'react-tag-autocomplete';
@@ -25,7 +25,7 @@ const NOT_FOUND_TAG = 'Tag not found';
 const NEW_TAG = 'Add tag';
 const isSelectableOption = (tag: string) => tag !== NOT_FOUND_TAG;
 const isNewOption = (tag: string) => tag === NEW_TAG;
-const toTagSuggestion = (tag: string): TagSuggestion => ({ label: tag, value: tag });
+const toTagObject = (tag: string): TagSuggestion => ({ label: tag, value: tag });
 
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
   { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
@@ -41,16 +41,17 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
   const ReactTagsTag = ({ tag, onClick: deleteTag }: TagRendererProps) => (
     <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
   );
-  const ReactTagsSuggestion = ({ option, classNames }: OptionRendererProps) => {
+  const ReactTagsSuggestion = ({ option, classNames: classes, ...rest }: OptionRendererProps) => {
     const isSelectable = isSelectableOption(option.label);
     const isNew = isNewOption(option.label);
 
     return (
       <div
-        className={resolveClasses(classNames.option, {
-          [classNames.optionIsActive]: isSelectable && option.active,
+        className={classNames(classes.option, {
+          [classes.optionIsActive]: isSelectable && option.active,
           'react-tags__listbox-option--not-selectable': !isSelectable,
         })}
+        {...rest}
       >
         {!isSelectable ? <i>{option.label}</i> : (
           <>
@@ -65,8 +66,8 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
   return (
     <ReactTags
       ref={apiRef}
-      selected={selectedTags.map(toTagSuggestion)}
-      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toTagSuggestion)}
+      selected={selectedTags.map(toTagObject)}
+      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toTagObject)}
       renderTag={ReactTagsTag}
       renderOption={ReactTagsSuggestion}
       activateFirstOption

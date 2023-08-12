@@ -42,7 +42,7 @@ describe('<TagsSelector />', () => {
 
     await user.type(screen.getByPlaceholderText('Add tags to the URL'), 'ba');
 
-    expect(container.querySelector('.react-tags__suggestions')).toBeInTheDocument();
+    expect(container.querySelector('.react-tags__combobox')).toBeInTheDocument();
     expect(screen.getByText('baz')).toBeInTheDocument();
   });
 
