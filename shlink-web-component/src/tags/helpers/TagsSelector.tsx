@@ -24,12 +24,13 @@ const toTagSuggestion = (tag: string): TagSuggestion => ({ label: tag, value: ta
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
   { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
 ) => {
-  const shortUrlCreation = useSetting('shortUrlCreation');
   useEffect(() => {
     listTags();
   }, []);
 
+  const shortUrlCreation = useSetting('shortUrlCreation');
   const searchMode = shortUrlCreation?.tagFilteringMode ?? 'startsWith';
+
   const ReactTagsTag = ({ tag, onClick: deleteTag }: TagRendererProps) => (
     <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
   );
@@ -49,16 +50,17 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
       allowNew={allowNew}
       // addOnBlur TODO Implement manually
       placeholderText={placeholder ?? 'Add tags to the URL'}
-      onShouldExpand={(value) => value.length > 1}
       delimiterKeys={['Enter', 'Tab', ',']}
       suggestionsTransform={
-        searchMode === 'includes'
-          ? (query, suggestions) => suggestions.filter(({ label }) => label.includes(query))
-          : undefined
+        (query, suggestions) => {
+          const searchTerm = query.toLowerCase().trim();
+          return searchTerm.length < 1 ? [] : suggestions.filter(
+            ({ label }) => (searchMode === 'includes' ? label.includes(searchTerm) : label.startsWith(searchTerm)),
+          );
+        }
       }
       onDelete={(removedTagIndex) => {
         const tagsCopy = [...selectedTags];
-
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
       }}
