@@ -4,13 +4,14 @@ import { faDesktop } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
-import { isEmpty, pipe, replace, trim } from 'ramda';
+import { isEmpty } from 'ramda';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
 import type { ShlinkCreateShortUrlData, ShlinkDeviceLongUrls, ShlinkEditShortUrlData } from '../api-contract';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
+import { normalizeTag } from '../tags/helpers';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { IconInput } from '../utils/components/IconInput';
 import type { DateTimeInputProps } from '../utils/dates/DateTimeInput';
@@ -35,7 +36,6 @@ export interface ShortUrlFormProps<T extends ShlinkCreateShortUrlData | ShlinkEd
   onSave: (shortUrlData: T) => Promise<unknown>;
 }
 
-const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
 
 const isCreationData = (data: ShlinkCreateShortUrlData | ShlinkEditShortUrlData): data is ShlinkCreateShortUrlData =>

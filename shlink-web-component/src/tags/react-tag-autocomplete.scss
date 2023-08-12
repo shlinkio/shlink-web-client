@@ -1,5 +1,6 @@
 @import '../../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
 
+// Main wrapper
 .react-tags {
   position: relative;
   padding: 5px 0 0 6px;
@@ -26,45 +27,35 @@
   background-color: var(--input-color);
 }
 
-.react-tags.is-focused {
+// Mimic bootstrap input focus ring
+.react-tags.is-active {
   box-shadow: 0 0 0 .2rem rgb(70 150 229 / 25%);
+}
+
+.react-tags__label {
+  display: none;
 }
 
 .react-tags__tag {
   font-size: 100%;
 }
 
-.react-tags__selected {
+.react-tags__list {
   display: inline;
   vertical-align: 2px;
+  padding: 0;
+  list-style-type: none;
 }
 
-.react-tags__selected-tag {
+.react-tags__list-item {
   display: inline-block;
-  box-sizing: border-box;
-  margin: 0 6px 6px 0;
-  padding: 6px 8px;
-  border: 1px solid var(--input-border-color);
-  border-radius: .25rem;
-  background: #f1f1f1;
-
-  /* match the font styles */
-  font-size: inherit;
-  line-height: inherit;
+}
+.react-tags__list-item:not(:last-child) {
+  margin-right: 3px;
 }
 
-.react-tags__selected-tag:after {
-  content: '\2715';
-  color: #aaaaaa;
-  margin-left: 8px;
-}
-
-.react-tags__selected-tag:hover,
-.react-tags__selected-tag:focus {
-  border-color: var(--input-border-color);
-}
-
-.react-tags__search {
+// The block to search
+.react-tags__combobox {
   display: inline-block;
 
   /* match tag layout */
@@ -76,13 +67,13 @@
 }
 
 @media screen and (min-width: $smMin) {
-  .react-tags__search {
+  .react-tags__combobox {
     /* this will become the offsetParent for suggestions */
     position: relative;
   }
 }
 
-.react-tags__search-input {
+.react-tags__combobox-input {
   font-size: 1.25rem;
   line-height: inherit;
   color: var(--input-text-color);
@@ -98,62 +89,52 @@
   outline: none;
 }
 
-.react-tags__search-input::placeholder {
+.react-tags__combobox-input::placeholder {
   color: #6c757d;
 }
 
-.react-tags__search-input::-ms-clear {
+.react-tags__combobox-input::-ms-clear {
   display: none;
 }
 
-.react-tags__suggestions {
+.react-tags__listbox {
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
   z-index: 10;
-}
-
-@media screen and (min-width: $smMin) {
-  .react-tags__suggestions {
-    width: 240px;
-  }
-}
-
-.react-tags__suggestions ul {
   margin: 4px -1px;
   padding: 0;
-  list-style: none;
   background: var(--primary-color);
   border: 1px solid var(--border-color);
   border-radius: .25rem;
   box-shadow: 0 2px 6px rgb(0 0 0 / .2);
 }
 
-.react-tags__suggestions li {
+@media screen and (min-width: $smMin) {
+  .react-tags__listbox {
+    width: 240px;
+  }
+}
+
+.react-tags__listbox .react-tags__listbox-option {
   padding: 8px 10px;
 }
 
-.react-tags__suggestions li:not(:last-child) {
+.react-tags__listbox .react-tags__listbox-option:not(:last-child) {
   border-bottom: 1px solid var(--border-color);
 }
 
-.react-tags__suggestions li mark {
-  text-decoration: underline;
-  background: none;
-  font-weight: 600;
-}
-
-.react-tags__suggestions li:hover {
+.react-tags__listbox .react-tags__listbox-option:hover:not(.react-tags__listbox-option--not-selectable) {
   cursor: pointer;
   background-color: var(--active-color);
 }
 
-.react-tags__suggestions li.is-active {
+.react-tags__listbox .react-tags__listbox-option.is-active {
   background-color: var(--active-color);
 }
 
-.react-tags__suggestions li.is-disabled {
+.react-tags__listbox .react-tags__listbox-option.is-disabled {
   opacity: .5;
   cursor: auto;
 }
