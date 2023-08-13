@@ -7,16 +7,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Use node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.2
+          node-version: 20.5
       - name: Generate release assets
-        run: npm ci --force && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
+        run: npm ci && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
       - name: Publish release with assets
         uses: docker://antonyurchenko/git-release:latest
         env:

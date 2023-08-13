@@ -1,70 +1,100 @@
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
+import classNames from 'classnames';
 import { useEffect } from 'react';
-import type { SuggestionComponentProps, TagComponentProps } from 'react-tag-autocomplete';
-import ReactTags from 'react-tag-autocomplete';
+import type { OptionRendererProps, ReactTagsAPI, TagRendererProps, TagSuggestion } from 'react-tag-autocomplete';
+import { ReactTags } from 'react-tag-autocomplete';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
 import { useSetting } from '../../utils/settings';
 import type { TagsList } from '../reducers/tagsList';
+import { normalizeTag } from './index';
 import { Tag } from './Tag';
 import { TagBullet } from './TagBullet';
 
-export interface TagsSelectorProps {
+export type TagsSelectorProps = {
   selectedTags: string[];
   onChange: (tags: string[]) => void;
   placeholder?: string;
   allowNew?: boolean;
-}
+};
 
-interface TagsSelectorConnectProps extends TagsSelectorProps {
+type TagsSelectorConnectProps = TagsSelectorProps & {
   listTags: () => void;
   tagsList: TagsList;
-}
+};
 
-const toComponentTag = (tag: string) => ({ id: tag, name: tag });
+const NOT_FOUND_TAG = 'Tag not found';
+const NEW_TAG = 'Add tag';
+const isSelectableOption = (tag: string) => tag !== NOT_FOUND_TAG;
+const isNewOption = (tag: string) => tag === NEW_TAG;
+const toTagObject = (tag: string): TagSuggestion => ({ label: tag, value: tag });
+
+const buildTagRenderer = (colorGenerator: ColorGenerator) => ({ tag, onClick: deleteTag }: TagRendererProps) => (
+  <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
+);
+const buildOptionRenderer = (colorGenerator: ColorGenerator, api: ReactTagsAPI | null) => (
+  { option, classNames: classes, ...rest }: OptionRendererProps,
+) => {
+  const isSelectable = isSelectableOption(option.label);
+  const isNew = isNewOption(option.label);
+
+  return (
+    <div
+      className={classNames(classes.option, {
+        [classes.optionIsActive]: isSelectable && option.active,
+        'react-tags__listbox-option--not-selectable': !isSelectable,
+      })}
+      {...rest}
+    >
+      {!isSelectable ? <i>{option.label}</i> : (
+        <>
+          {!isNew && <TagBullet tag={`${option.label}`} colorGenerator={colorGenerator} />}
+          {!isNew ? option.label : <i>Add &quot;{normalizeTag(api?.input.value ?? '')}&quot;</i>}
+        </>
+      )}
+    </div>
+  );
+};
 
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
   { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
 ) => {
-  const shortUrlCreation = useSetting('shortUrlCreation');
   useEffect(() => {
     listTags();
   }, []);
 
+  const shortUrlCreation = useSetting('shortUrlCreation');
   const searchMode = shortUrlCreation?.tagFilteringMode ?? 'startsWith';
-  const ReactTagsTag = ({ tag, onDelete }: TagComponentProps) =>
-    <Tag colorGenerator={colorGenerator} text={tag.name} clearable className="react-tags__tag" onClose={onDelete} />;
-  const ReactTagsSuggestion = ({ item }: SuggestionComponentProps) => (
-    <>
-      <TagBullet tag={`${item.name}`} colorGenerator={colorGenerator} />
-      {item.name}
-    </>
-  );
+  const apiRef = useElementRef<ReactTagsAPI>();
 
   return (
     <ReactTags
-      tags={selectedTags.map(toComponentTag)}
-      tagComponent={ReactTagsTag}
-      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toComponentTag)}
-      suggestionComponent={ReactTagsSuggestion}
+      ref={apiRef}
+      selected={selectedTags.map(toTagObject)}
+      suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toTagObject)}
+      renderTag={buildTagRenderer(colorGenerator)}
+      renderOption={buildOptionRenderer(colorGenerator, apiRef.current)}
+      activateFirstOption
       allowNew={allowNew}
-      addOnBlur
+      newOptionText={NEW_TAG}
+      noOptionsText={NOT_FOUND_TAG}
       placeholderText={placeholder ?? 'Add tags to the URL'}
-      minQueryLength={1}
-      delimiters={['Enter', 'Tab', ',']}
+      delimiterKeys={['Enter', 'Tab', ',']}
       suggestionsTransform={
-        searchMode === 'includes'
-          ? (query, suggestions) => suggestions.filter(({ name }) => name.includes(query))
-          : undefined
+        (query, suggestions) => {
+          const searchTerm = query.toLowerCase().trim();
+          return searchTerm.length < 1 ? [] : [...suggestions.filter(
+            ({ label }) => (searchMode === 'includes' ? label.includes(searchTerm) : label.startsWith(searchTerm)),
+          )].slice(0, 5);
+        }
       }
       onDelete={(removedTagIndex) => {
         const tagsCopy = [...selectedTags];
-
         tagsCopy.splice(removedTagIndex, 1);
         onChange(tagsCopy);
       }}
-      onAddition={({ name: newTag }) => onChange(
-        // * Avoid duplicated tags (thanks to the Set),
-        // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
-        [...new Set([...selectedTags, ...newTag.toLowerCase().split(',')])],
+      onAdd={({ label: newTag }) => onChange(
+        // Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
+        [...selectedTags, ...newTag.split(',').map(normalizeTag)],
       )}
     />
   );

@@ -4,7 +4,7 @@ import { faDesktop } from '@fortawesome/free-solid-svg-icons';
 import { Checkbox, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import { parseISO } from 'date-fns';
-import { isEmpty, pipe, replace, trim } from 'ramda';
+import { isEmpty } from 'ramda';
 import type { ChangeEvent, FC } from 'react';
 import { useEffect, useState } from 'react';
 import { Button, FormGroup, Input, Row } from 'reactstrap';
@@ -35,7 +35,6 @@ export interface ShortUrlFormProps<T extends ShlinkCreateShortUrlData | ShlinkEd
   onSave: (shortUrlData: T) => Promise<unknown>;
 }
 
-const normalizeTag = pipe(trim, replace(/ /g, '-'));
 const toDate = (date?: string | Date): Date | undefined => (typeof date === 'string' ? parseISO(date) : date);
 
 const isCreationData = (data: ShlinkCreateShortUrlData | ShlinkEditShortUrlData): data is ShlinkCreateShortUrlData =>
@@ -54,7 +53,7 @@ export const ShortUrlForm = (
   const isEdit = mode === 'edit';
   const isCreation = isCreationData(shortUrlData);
   const isBasicMode = mode === 'create-basic';
-  const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
+  const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags });
   const setResettableValue = (value: string, initialValue?: any) => {
     if (hasValue(value)) {
       return value;
