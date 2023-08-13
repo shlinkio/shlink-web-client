@@ -25,3 +25,4 @@ afterEach(() => {
 (global as any).scrollTo = () => {};
 (global as any).prompt = () => {};
 (global as any).matchMedia = (media: string) => ({ matches: false, media });
+(global as any).HTMLElement.prototype.scrollIntoView = () => {};

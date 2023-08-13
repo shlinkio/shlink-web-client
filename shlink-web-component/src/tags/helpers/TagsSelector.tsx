@@ -1,5 +1,6 @@
+import { useElementRef } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import type { OptionRendererProps, ReactTagsAPI, TagRendererProps, TagSuggestion } from 'react-tag-autocomplete';
 import { ReactTags } from 'react-tag-autocomplete';
 import type { ColorGenerator } from '../../utils/services/ColorGenerator';
@@ -9,23 +10,50 @@ import { normalizeTag } from './index';
 import { Tag } from './Tag';
 import { TagBullet } from './TagBullet';
 
-export interface TagsSelectorProps {
+export type TagsSelectorProps = {
   selectedTags: string[];
   onChange: (tags: string[]) => void;
   placeholder?: string;
   allowNew?: boolean;
-}
+};
 
-interface TagsSelectorConnectProps extends TagsSelectorProps {
+type TagsSelectorConnectProps = TagsSelectorProps & {
   listTags: () => void;
   tagsList: TagsList;
-}
+};
 
 const NOT_FOUND_TAG = 'Tag not found';
 const NEW_TAG = 'Add tag';
 const isSelectableOption = (tag: string) => tag !== NOT_FOUND_TAG;
 const isNewOption = (tag: string) => tag === NEW_TAG;
 const toTagObject = (tag: string): TagSuggestion => ({ label: tag, value: tag });
+
+const buildTagRenderer = (colorGenerator: ColorGenerator) => ({ tag, onClick: deleteTag }: TagRendererProps) => (
+  <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
+);
+const buildOptionRenderer = (colorGenerator: ColorGenerator, api: ReactTagsAPI | null) => (
+  { option, classNames: classes, ...rest }: OptionRendererProps,
+) => {
+  const isSelectable = isSelectableOption(option.label);
+  const isNew = isNewOption(option.label);
+
+  return (
+    <div
+      className={classNames(classes.option, {
+        [classes.optionIsActive]: isSelectable && option.active,
+        'react-tags__listbox-option--not-selectable': !isSelectable,
+      })}
+      {...rest}
+    >
+      {!isSelectable ? <i>{option.label}</i> : (
+        <>
+          {!isNew && <TagBullet tag={`${option.label}`} colorGenerator={colorGenerator} />}
+          {!isNew ? option.label : <i>Add &quot;{normalizeTag(api?.input.value ?? '')}&quot;</i>}
+        </>
+      )}
+    </div>
+  );
+};
 
 export const TagsSelector = (colorGenerator: ColorGenerator) => (
   { selectedTags, onChange, placeholder, listTags, tagsList, allowNew = true }: TagsSelectorConnectProps,
@@ -36,40 +64,15 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
 
   const shortUrlCreation = useSetting('shortUrlCreation');
   const searchMode = shortUrlCreation?.tagFilteringMode ?? 'startsWith';
-  const apiRef = useRef<ReactTagsAPI>(null);
-
-  const ReactTagsTag = ({ tag, onClick: deleteTag }: TagRendererProps) => (
-    <Tag colorGenerator={colorGenerator} text={tag.label} clearable className="react-tags__tag" onClose={deleteTag} />
-  );
-  const ReactTagsSuggestion = ({ option, classNames: classes, ...rest }: OptionRendererProps) => {
-    const isSelectable = isSelectableOption(option.label);
-    const isNew = isNewOption(option.label);
-
-    return (
-      <div
-        className={classNames(classes.option, {
-          [classes.optionIsActive]: isSelectable && option.active,
-          'react-tags__listbox-option--not-selectable': !isSelectable,
-        })}
-        {...rest}
-      >
-        {!isSelectable ? <i>{option.label}</i> : (
-          <>
-            {!isNew && <TagBullet tag={`${option.label}`} colorGenerator={colorGenerator} />}
-            {!isNew ? option.label : <i>Add &quot;{normalizeTag(apiRef.current?.input.value ?? '')}&quot;</i>}
-          </>
-        )}
-      </div>
-    );
-  };
+  const apiRef = useElementRef<ReactTagsAPI>();
 
   return (
     <ReactTags
       ref={apiRef}
       selected={selectedTags.map(toTagObject)}
       suggestions={tagsList.tags.filter((tag) => !selectedTags.includes(tag)).map(toTagObject)}
-      renderTag={ReactTagsTag}
-      renderOption={ReactTagsSuggestion}
+      renderTag={buildTagRenderer(colorGenerator)}
+      renderOption={buildOptionRenderer(colorGenerator, apiRef.current)}
       activateFirstOption
       allowNew={allowNew}
       newOptionText={NEW_TAG}
@@ -90,9 +93,8 @@ export const TagsSelector = (colorGenerator: ColorGenerator) => (
         onChange(tagsCopy);
       }}
       onAdd={({ label: newTag }) => onChange(
-        // * Avoid duplicated tags (thanks to the Set),
-        // * Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
-        [...new Set([...selectedTags, ...newTag.split(',')])],
+        // Split any of the new tags by comma, allowing to paste multiple comma-separated tags at once.
+        [...selectedTags, ...newTag.split(',').map(normalizeTag)],
       )}
     />
   );

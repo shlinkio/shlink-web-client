@@ -11,7 +11,6 @@ import { Button, FormGroup, Input, Row } from 'reactstrap';
 import type { InputType } from 'reactstrap/types/lib/Input';
 import type { ShlinkCreateShortUrlData, ShlinkDeviceLongUrls, ShlinkEditShortUrlData } from '../api-contract';
 import type { DomainSelectorProps } from '../domains/DomainSelector';
-import { normalizeTag } from '../tags/helpers';
 import type { TagsSelectorProps } from '../tags/helpers/TagsSelector';
 import { IconInput } from '../utils/components/IconInput';
 import type { DateTimeInputProps } from '../utils/dates/DateTimeInput';
@@ -54,7 +53,7 @@ export const ShortUrlForm = (
   const isEdit = mode === 'edit';
   const isCreation = isCreationData(shortUrlData);
   const isBasicMode = mode === 'create-basic';
-  const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags: tags.map(normalizeTag) });
+  const changeTags = (tags: string[]) => setShortUrlData({ ...shortUrlData, tags });
   const setResettableValue = (value: string, initialValue?: any) => {
     if (hasValue(value)) {
       return value;
