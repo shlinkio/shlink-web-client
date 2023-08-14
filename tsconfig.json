@@ -6,7 +6,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["vite/client", "vitest/globals"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -19,12 +19,7 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "baseUrl": ".",
-    "paths": {
-      "@shlinkio/shlink-web-component": ["shlink-web-component/src"],
-      "@shlinkio/shlink-web-component/api-contract": ["shlink-web-component/src/api-contract"]
-    }
+    "isolatedModules": true
   },
   "exclude": [
     "node_modules"

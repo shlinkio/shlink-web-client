@@ -1,7 +1,6 @@
 import type { ShortUrlsListSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlsOrder } from '../../shlink-web-component/src/short-urls/data';
 import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -13,10 +12,10 @@ describe('<ShortUrlsListSettings />', () => {
 
   it.each([
     [undefined, 'Order by: Created at - DESC'],
-    [{}, 'Order by: Created at - DESC'],
-    [{ defaultOrdering: {} }, 'Order by...'],
-    [{ defaultOrdering: { field: 'longUrl', dir: 'DESC' } as ShortUrlsOrder }, 'Order by: Long URL - DESC'],
-    [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as ShortUrlsOrder }, 'Order by: Visits - ASC'],
+    [fromPartial<ShortUrlsSettings>({}), 'Order by: Created at - DESC'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: {} }), 'Order by...'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: { field: 'longUrl', dir: 'DESC' } }), 'Order by: Long URL - DESC'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: { field: 'visits', dir: 'ASC' } }), 'Order by: Visits - ASC'],
   ])('shows expected ordering', (shortUrlsList, expectedOrder) => {
     setUp(shortUrlsList);
     expect(screen.getByRole('button')).toHaveTextContent(expectedOrder);
