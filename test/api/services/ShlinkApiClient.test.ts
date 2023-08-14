@@ -1,7 +1,12 @@
-import type { ShlinkDomain, ShlinkShortUrl, ShlinkVisits, ShlinkVisitsOverview } from '@shlinkio/shlink-web-component/api-contract';
+import type {
+  ShlinkDomain,
+  ShlinkShortUrl,
+  ShlinkShortUrlsOrder,
+  ShlinkVisits,
+  ShlinkVisitsOverview,
+} from '@shlinkio/shlink-web-component/api-contract';
 import { ErrorTypeV2, ErrorTypeV3 } from '@shlinkio/shlink-web-component/api-contract';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlsOrder } from '../../../shlink-web-component/src/short-urls/data';
 import { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { HttpClient } from '../../../src/common/services/HttpClient';
 import type { OptionalString } from '../../../src/utils/utils';
@@ -30,9 +35,9 @@ describe('ShlinkApiClient', () => {
     });
 
     it.each([
-      [{ field: 'visits', dir: 'DESC' } as ShortUrlsOrder, '?orderBy=visits-DESC'],
-      [{ field: 'longUrl', dir: 'ASC' } as ShortUrlsOrder, '?orderBy=longUrl-ASC'],
-      [{ field: 'longUrl', dir: undefined } as ShortUrlsOrder, ''],
+      [{ field: 'visits', dir: 'DESC' } as ShlinkShortUrlsOrder, '?orderBy=visits-DESC'],
+      [{ field: 'longUrl', dir: 'ASC' } as ShlinkShortUrlsOrder, '?orderBy=longUrl-ASC'],
+      [{ field: 'longUrl', dir: undefined } as ShlinkShortUrlsOrder, ''],
     ])('parses orderBy in params', async (orderBy, expectedOrderBy) => {
       fetchJson.mockResolvedValue({ data: expectedList });
       const { listShortUrls } = buildApiClient();

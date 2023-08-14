@@ -1,8 +1,0 @@
-@mixin fit-with-margin($margin) {
-  $offset: $margin * 2;
-
-  width: calc(100% - #{$offset});
-  max-width: calc(100% - #{$offset});
-  height: calc(100% - #{$offset});
-  margin: $margin;
-}
