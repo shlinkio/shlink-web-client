@@ -12,5 +12,6 @@ updates:
     directory: '/'
     schedule:
       interval: weekly
+      day: saturday
       time: '9:00'
       timezone: 'Europe/Madrid'
