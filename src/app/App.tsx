@@ -1,5 +1,4 @@
 import { changeThemeInMarkup } from '@shlinkio/shlink-frontend-kit';
-import type { Settings } from '@shlinkio/shlink-web-component';
 import classNames from 'classnames';
 import type { FC } from 'react';
 import { useEffect } from 'react';
@@ -7,13 +6,14 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { ServersMap } from '../servers/data';
+import type { AppSettings } from '../settings/reducers/settings';
 import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
 interface AppProps {
   fetchServers: () => void;
   servers: ServersMap;
-  settings: Settings;
+  settings: AppSettings;
   resetAppUpdate: () => void;
   appUpdated: boolean;
 }

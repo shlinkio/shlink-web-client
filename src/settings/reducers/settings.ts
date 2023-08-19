@@ -1,11 +1,11 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import type { Theme } from '@shlinkio/shlink-frontend-kit';
 import type {
   Settings,
   ShortUrlCreationSettings,
   ShortUrlsListSettings,
   TagsSettings,
-  UiSettings,
   VisitsSettings,
 } from '@shlinkio/shlink-web-component';
 import { mergeDeepRight } from 'ramda';
@@ -18,7 +18,15 @@ export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   dir: 'DESC',
 };
 
-const initialState: Settings = {
+export type UiSettings = {
+  theme: Theme;
+};
+
+export type AppSettings = Settings & {
+  ui?: UiSettings;
+};
+
+const initialState: AppSettings = {
   realTimeUpdates: {
     enabled: true,
   },
@@ -36,12 +44,12 @@ const initialState: Settings = {
   },
 };
 
-type SettingsAction = PayloadAction<Settings>;
-type SettingsPrepareAction = PrepareAction<Settings>;
+type SettingsAction = PayloadAction<AppSettings>;
+type SettingsPrepareAction = PrepareAction<AppSettings>;
 
-const commonReducer = (state: Settings, { payload }: SettingsAction) => mergeDeepRight(state, payload);
+const commonReducer = (state: AppSettings, { payload }: SettingsAction) => mergeDeepRight(state, payload);
 const toReducer = (prepare: SettingsPrepareAction) => ({ reducer: commonReducer, prepare });
-const toPreparedAction: SettingsPrepareAction = (payload: Settings) => ({ payload });
+const toPreparedAction: SettingsPrepareAction = (payload: AppSettings) => ({ payload });
 
 const { reducer, actions } = createSlice({
   name: 'shlink/settings',
