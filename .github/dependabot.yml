@@ -13,5 +13,5 @@ updates:
     schedule:
       interval: weekly
       day: saturday
-      time: '9:00'
+      time: '9:01'
       timezone: 'Europe/Madrid'
