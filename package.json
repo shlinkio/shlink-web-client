@@ -49,7 +49,7 @@
     "redux-localstorage-simple": "^2.5.1",
     "uuid": "^9.0.0",
     "workbox-core": "^6.5.4",
-    "workbox-expiration": "^6.5.4",
+    "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^6.5.4",
     "workbox-routing": "^6.5.4",
     "workbox-strategies": "^6.5.4"
