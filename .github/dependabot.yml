@@ -5,13 +5,17 @@ updates:
     schedule:
       interval: weekly
       day: saturday
-      time: '9:00'
+      time: '09:00'
       timezone: 'Europe/Madrid'
     open-pull-requests-limit: 10
+    ignore:
+      # Bootstrap can introduce visual breaking changes on styles
+      # Ignore it, since the plan is to remove it anyway
+      - dependency-name: 'bootstrap'
   - package-ecosystem: docker
     directory: '/'
     schedule:
       interval: weekly
       day: saturday
-      time: '9:01'
+      time: '09:00'
       timezone: 'Europe/Madrid'
