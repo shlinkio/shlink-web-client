@@ -4,7 +4,7 @@ ARG VERSION="latest"
 ENV VERSION ${VERSION}
 RUN cd /shlink-web-client && npm ci && npm run build
 
-FROM nginx:1.23-alpine
+FROM nginx:1.25-alpine
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 RUN rm -r /usr/share/nginx/html && rm /etc/nginx/conf.d/default.conf
 COPY config/docker/nginx.conf /etc/nginx/conf.d/default.conf
