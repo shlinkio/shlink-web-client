@@ -1,8 +1,13 @@
+import type { RequestOptions } from '../../../src/common/services/HttpClient';
 import { HttpClient } from '../../../src/common/services/HttpClient';
 
 describe('HttpClient', () => {
   const fetch = vi.fn();
   const httpClient = new HttpClient(fetch);
+  const requestOptions = (options: Omit<RequestOptions, 'method'>): RequestOptions => ({
+    method: 'GET',
+    ...options,
+  });
 
   describe('fetchJson', () => {
     it('throws json on success', async () => {
@@ -14,9 +19,9 @@ describe('HttpClient', () => {
 
     it.each([
       [undefined],
-      [{}],
-      [{ body: undefined }],
-      [{ body: '' }],
+      [requestOptions({})],
+      [requestOptions({ body: undefined })],
+      [requestOptions({ body: '' })],
     ])('return json on failure', async (options) => {
       const theJson = { foo: 'bar' };
       fetch.mockResolvedValue({ json: () => theJson, ok: true });
@@ -28,13 +33,13 @@ describe('HttpClient', () => {
     });
 
     it.each([
-      [{ body: 'the_body' }],
-      [{
+      [requestOptions({ body: 'the_body' })],
+      [requestOptions({
         body: 'the_body',
         headers: {
           'Content-Type': 'text/plain',
         },
-      }],
+      })],
     ])('forwards JSON content-type when appropriate', async (options) => {
       const theJson = { foo: 'bar' };
       fetch.mockResolvedValue({ json: () => theJson, ok: true });

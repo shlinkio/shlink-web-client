@@ -25,13 +25,13 @@ import {
   ErrorTypeV3,
 } from '@shlinkio/shlink-web-component/api-contract';
 import { isEmpty, isNil, reject } from 'ramda';
-import type { HttpClient } from '../../common/services/HttpClient';
+import type { HttpClient, RequestOptions } from '../../common/services/HttpClient';
 import { replaceAuthorityFromUri } from '../../utils/helpers/uri';
 import type { OptionalString } from '../../utils/utils';
 
 type ApiVersion = 2 | 3;
 
-type RequestOptions = {
+type ShlinkRequestOptions = {
   url: string;
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   query?: object;
@@ -145,12 +145,12 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
   ): Promise<ShlinkDomainRedirects> =>
     this.performRequest<ShlinkDomainRedirects>({ url: '/domains/redirects', method: 'PATCH', body: domainRedirects });
 
-  private readonly performRequest = async <T>(requestOptions: RequestOptions): Promise<T> =>
+  private readonly performRequest = async <T>(requestOptions: ShlinkRequestOptions): Promise<T> =>
     this.httpClient.fetchJson<T>(...this.toFetchParams(requestOptions)).catch(
       this.handleFetchError(() => this.httpClient.fetchJson<T>(...this.toFetchParams(requestOptions))),
     );
 
-  private readonly performEmptyRequest = async (requestOptions: RequestOptions): Promise<void> =>
+  private readonly performEmptyRequest = async (requestOptions: ShlinkRequestOptions): Promise<void> =>
     this.httpClient.fetchEmpty(...this.toFetchParams(requestOptions)).catch(
       this.handleFetchError(() => this.httpClient.fetchEmpty(...this.toFetchParams(requestOptions))),
     );
@@ -161,7 +161,7 @@ export class ShlinkApiClient implements BaseShlinkApiClient {
     query = {},
     body,
     domain,
-  }: RequestOptions): [string, RequestInit] => {
+  }: ShlinkRequestOptions): [string, RequestOptions] => {
     const normalizedQuery = stringifyQuery(rejectNilProps(query));
     const stringifiedQuery = isEmpty(normalizedQuery) ? '' : `?${normalizedQuery}`;
     const baseUrl = domain ? replaceAuthorityFromUri(this.baseUrl, domain) : this.baseUrl;
