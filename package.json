@@ -48,7 +48,7 @@
     "reactstrap": "^9.2.0",
     "redux-localstorage-simple": "^2.5.1",
     "uuid": "^9.0.0",
-    "workbox-core": "^6.5.4",
+    "workbox-core": "^7.0.0",
     "workbox-expiration": "^7.0.0",
     "workbox-precaching": "^7.0.0",
     "workbox-routing": "^7.0.0",
