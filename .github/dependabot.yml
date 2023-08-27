@@ -8,6 +8,10 @@ updates:
       time: '09:00'
       timezone: 'Europe/Madrid'
     open-pull-requests-limit: 10
+    groups:
+      fontawesome:
+        patterns:
+          - '@fortawesome*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since the plan is to remove it anyway
