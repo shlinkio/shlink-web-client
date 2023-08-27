@@ -6,8 +6,6 @@ import { container } from './container';
 import { setUpStore } from './container/store';
 import { register as registerServiceWorker } from './serviceWorkerRegistration';
 import './index.scss';
-import 'leaflet/dist/leaflet.css';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const store = setUpStore(container);
 const { App, ScrollToTop, ErrorHandler, appUpdateAvailable } = container;
