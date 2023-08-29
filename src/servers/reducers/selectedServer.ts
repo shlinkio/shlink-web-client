@@ -42,8 +42,8 @@ export const selectServer = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
     }
 
     try {
-      const { health } = buildShlinkApiClient(selectedServer);
-      const { version, printableVersion } = await getServerVersion(selectedServer, health);
+      const apiClient = buildShlinkApiClient(selectedServer);
+      const { version, printableVersion } = await getServerVersion(selectedServer, () => apiClient.health());
 
       return {
         ...selectedServer,

@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#338](https://github.com/shlinkio/shlink-web-client/issues/338) Extract `@shlinkio/shlink-web-component` and `@shlinkio/shlink-frontend-kit` as external libs.
+* Use API client from `@shlinkio/shlink-js-sdk` to consume Shlink servers.
 
 ### Deprecated
 * *Nothing*

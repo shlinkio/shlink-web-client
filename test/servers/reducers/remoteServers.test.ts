@@ -1,12 +1,12 @@
+import type { HttpClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { HttpClient } from '../../../src/common/services/HttpClient';
 import { fetchServers } from '../../../src/servers/reducers/remoteServers';
 
 describe('remoteServersReducer', () => {
   describe('fetchServers', () => {
     const dispatch = vi.fn();
-    const fetchJson = vi.fn();
-    const httpClient = fromPartial<HttpClient>({ fetchJson });
+    const jsonRequest = vi.fn();
+    const httpClient = fromPartial<HttpClient>({ jsonRequest });
 
     it.each([
       [
@@ -76,7 +76,7 @@ describe('remoteServersReducer', () => {
       ['<html></html>', {}],
       [{}, {}],
     ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
-      fetchJson.mockResolvedValue(mockedValue);
+      jsonRequest.mockResolvedValue(mockedValue);
       const doFetchServers = fetchServers(httpClient);
 
       await doFetchServers()(dispatch, vi.fn(), {});
@@ -84,7 +84,7 @@ describe('remoteServersReducer', () => {
       expect(dispatch).toHaveBeenCalledTimes(3);
       expect(dispatch).toHaveBeenNthCalledWith(2, expect.objectContaining({ payload: expectedNewServers }));
       expect(dispatch).toHaveBeenNthCalledWith(3, expect.objectContaining({ payload: undefined }));
-      expect(fetchJson).toHaveBeenCalledTimes(1);
+      expect(jsonRequest).toHaveBeenCalledTimes(1);
     });
   });
 });
