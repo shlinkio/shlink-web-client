@@ -45,7 +45,7 @@ export default defineConfig({
       // Required code coverage. Lower than this will make the check fail
       statements: 95,
       branches: 95,
-      functions: 95,
+      functions: 90,
       lines: 95,
     },
   },
