@@ -1,6 +1,6 @@
+import type { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { v4 as uuid } from 'uuid';
-import type { ShlinkApiClient } from '../../../src/api/services/ShlinkApiClient';
 import type { ShlinkState } from '../../../src/container/types';
 import type { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
 import {
