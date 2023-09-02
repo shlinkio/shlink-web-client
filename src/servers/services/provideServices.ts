@@ -62,8 +62,7 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
 
   // Services
-  bottle.constant('fileReaderFactory', () => new FileReader());
-  bottle.service('ServersImporter', ServersImporter, 'csvToJson', 'fileReaderFactory');
+  bottle.service('ServersImporter', ServersImporter, 'csvToJson');
   bottle.service('ServersExporter', ServersExporter, 'Storage', 'window', 'jsonToCsv');
 
   // Actions
