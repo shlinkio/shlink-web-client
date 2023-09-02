@@ -10,14 +10,15 @@ import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 
 export const MainHeader = (ServersDropdown: FC) => () => {
-  const [isOpen, toggleOpen, , close] = useToggle();
+  const [isNotCollapsed, toggleCollapse, , collapse] = useToggle();
   const location = useLocation();
   const { pathname } = location;
 
-  useEffect(close, [location]);
+  // In mobile devices, collapse the navbar when location changes
+  useEffect(collapse, [location, collapse]);
 
   const settingsPath = '/settings';
-  const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isOpen });
+  const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isNotCollapsed });
 
   return (
     <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
@@ -25,11 +26,11 @@ export const MainHeader = (ServersDropdown: FC) => () => {
         <ShlinkLogo className="main-header__brand-logo" color="white" /> Shlink
       </NavbarBrand>
 
-      <NavbarToggler onClick={toggleOpen}>
+      <NavbarToggler onClick={toggleCollapse}>
         <FontAwesomeIcon icon={arrowIcon} className={toggleClass} />
       </NavbarToggler>
 
-      <Collapse navbar isOpen={isOpen}>
+      <Collapse navbar isOpen={isNotCollapsed}>
         <Nav navbar className="ms-auto">
           <NavItem>
             <NavLink tag={Link} to={settingsPath} active={pathname.startsWith(settingsPath)}>

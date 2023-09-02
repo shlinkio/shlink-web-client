@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
 import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
-import type { ServerWithId } from '../../src/servers/data';
+import type { ServersMap } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({
@@ -10,11 +10,19 @@ vi.mock('react-router-dom', async () => ({
   useNavigate: vi.fn(),
 }));
 
+type SetUpOptions = {
+  serversImported?: boolean;
+  importFailed?: boolean;
+  servers?: ServersMap;
+};
+
 describe('<CreateServer />', () => {
   const createServersMock = vi.fn();
   const navigate = vi.fn();
-  const servers = { foo: fromPartial<ServerWithId>({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }) };
-  const setUp = (serversImported = false, importFailed = false) => {
+  const defaultServers: ServersMap = {
+    foo: fromPartial({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }),
+  };
+  const setUp = ({ serversImported = false, importFailed = false, servers = defaultServers }: SetUpOptions = {}) => {
     (useNavigate as any).mockReturnValue(navigate);
 
     let callCount = 0;
@@ -29,21 +37,27 @@ describe('<CreateServer />', () => {
   };
 
   it('shows success message when imported is true', () => {
-    setUp(true);
+    setUp({ serversImported: true });
 
     expect(screen.getByText('Servers properly imported. You can now select one from the list :)')).toBeInTheDocument();
     expect(
       screen.queryByText('The servers could not be imported. Make sure the format is correct.'),
     ).not.toBeInTheDocument();
+    expect(screen.queryByText('ImportServersBtn')).not.toBeInTheDocument();
   });
 
   it('shows error message when import failed', () => {
-    setUp(false, true);
+    setUp({ importFailed: true });
 
     expect(
       screen.queryByText('Servers properly imported. You can now select one from the list :)'),
     ).not.toBeInTheDocument();
     expect(screen.getByText('The servers could not be imported. Make sure the format is correct.')).toBeInTheDocument();
+  });
+
+  it('shows import button when no servers exist yet', () => {
+    setUp({ servers: {} });
+    expect(screen.queryByText('ImportServersBtn')).toBeInTheDocument();
   });
 
   it('creates server data when form is submitted', async () => {
