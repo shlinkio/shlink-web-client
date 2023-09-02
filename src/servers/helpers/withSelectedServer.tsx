@@ -18,7 +18,7 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
 
     useEffect(() => {
       params.serverId && selectServer(params.serverId);
-    }, [params.serverId]);
+    }, [params.serverId, selectServer]);
 
     if (!selectedServer) {
       return (
