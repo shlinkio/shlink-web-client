@@ -18,7 +18,7 @@ export const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>
 
   return (
     <>
-      <span className={className} onClick={showModal}>
+      <span className={className} onPointerDown={showModal}>
         {!children && <FontAwesomeIcon fixedWidth icon={deleteIcon} />}
         <span className={textClassName}>{children ?? 'Remove this server'}</span>
       </span>
