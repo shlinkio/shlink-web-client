@@ -1,37 +1,49 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<DeleteServerButton /> > renders expected content 1`] = `
-<span>
+<button
+  class="p-0 bg-transparent border-0"
+  type="button"
+>
   <span
     class="button"
   >
     Foo bar
   </span>
-</span>
+</button>
 `;
 
 exports[`<DeleteServerButton /> > renders expected content 2`] = `
-<span>
+<button
+  class="p-0 bg-transparent border-0"
+  type="button"
+>
   <span
     class="button"
   >
     baz
   </span>
-</span>
+</button>
 `;
 
 exports[`<DeleteServerButton /> > renders expected content 3`] = `
-<span>
+<button
+  class="p-0 bg-transparent border-0"
+  type="button"
+>
   <span
     class="button"
   >
     something
   </span>
-</span>
+</button>
 `;
 
 exports[`<DeleteServerButton /> > renders expected content 4`] = `
-<span>
+<button
+  class="p-0 bg-transparent border-0"
+  type="button"
+>
   <svg
     aria-hidden="true"
     class="svg-inline--fa fa-circle-minus fa-fw "
@@ -52,5 +64,5 @@ exports[`<DeleteServerButton /> > renders expected content 4`] = `
   >
     Remove this server
   </span>
-</span>
+</button>
 `;
