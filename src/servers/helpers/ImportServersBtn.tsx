@@ -67,10 +67,10 @@ export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportSer
     create(serversToCreate.current);
     hideModal();
   }, [create, hideModal, serversToCreate]);
-  const createNonDuplicatedServers = () => {
+  const createNonDuplicatedServers = useCallback(() => {
     create(serversToCreate.current.filter(complement(serversFiltering(duplicatedServers))));
     hideModal();
-  };
+  }, [create, duplicatedServers, hideModal]);
 
   return (
     <>
