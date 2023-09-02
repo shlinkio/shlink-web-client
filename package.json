@@ -62,7 +62,7 @@
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
     "@total-typescript/shoehorn": "^0.1.1",
-    "@types/leaflet": "^1.9.3",
+    "@types/leaflet": "^1.9.4",
     "@types/ramda": "^0.27.66",
     "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
