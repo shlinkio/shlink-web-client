@@ -39,7 +39,7 @@ describe('<DuplicatedServersModal />', () => {
         header: 'Duplicated servers',
         firstParagraph: 'The next servers already exist:',
         lastParagraph: 'Do you want to ignore duplicated servers?',
-        discardBtn: 'Ignore duplicated',
+        discardBtn: 'Ignore duplicates',
       },
     ],
   ])('renders expected texts based on amount of servers', (duplicatedServers, assertions) => {

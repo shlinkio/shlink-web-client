@@ -33,7 +33,7 @@ export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
         </span>
       </ModalBody>
       <ModalFooter>
-        <Button color="link" onClick={onDiscard}>{hasMultipleServers ? 'Ignore duplicated' : 'Discard'}</Button>
+        <Button color="link" onClick={onDiscard}>{hasMultipleServers ? 'Ignore duplicates' : 'Discard'}</Button>
         <Button color="primary" onClick={onSave}>Save anyway</Button>
       </ModalFooter>
     </Modal>
