@@ -8,32 +8,20 @@ const validateServers = (servers: any): servers is ServerData[] =>
   Array.isArray(servers) && servers.every(validateServer);
 
 export class ServersImporter {
-  public constructor(private readonly csvToJson: CsvToJson, private readonly fileReaderFactory: () => FileReader) {}
+  public constructor(private readonly csvToJson: CsvToJson) {}
 
-  public readonly importServersFromFile = async (file?: File | null): Promise<ServerData[]> => {
+  public async importServersFromFile(file: File | null | undefined): Promise<ServerData[]> {
     if (!file) {
       throw new Error('No file provided');
     }
 
-    const reader = this.fileReaderFactory();
+    const content = await file.text();
+    const servers = await this.csvToJson(content);
 
-    return new Promise((resolve, reject) => {
-      reader.addEventListener('loadend', async (e: ProgressEvent<FileReader>) => {
-        try {
-          // TODO Read as stream, otherwise, if the file is too big, this will block the browser tab
-          const content = e.target?.result?.toString() ?? '';
-          const servers = await this.csvToJson(content);
+    if (!validateServers(servers)) {
+      throw new Error('Provided file does not have the right format.');
+    }
 
-          if (!validateServers(servers)) {
-            throw new Error('Provided file does not have the right format.');
-          }
-
-          resolve(servers);
-        } catch (error) {
-          reject(error);
-        }
-      });
-      reader.readAsText(file);
-    });
-  };
+    return servers;
+  }
 }

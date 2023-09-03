@@ -23,7 +23,7 @@ export const Home = ({ servers }: HomeProps) => {
     // Try to redirect to the first server marked as auto-connect
     const autoConnectServer = serversList.find(({ autoConnect }) => autoConnect);
     autoConnectServer && navigate(`/server/${autoConnectServer.id}`);
-  }, []);
+  }, [serversList, navigate]);
 
   return (
     <div className="home">

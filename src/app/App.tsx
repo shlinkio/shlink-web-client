@@ -1,7 +1,7 @@
 import { changeThemeInMarkup } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import type { FC } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
@@ -29,16 +29,20 @@ export const App = (
   ShlinkVersionsContainer: FC,
 ) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
   const location = useLocation();
+  const initialServers = useRef(servers);
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    // On first load, try to fetch the remote servers if the list is empty
-    if (Object.keys(servers).length === 0) {
+    // Try to fetch the remote servers if the list is empty at first
+    // We use a ref because we don't care if the servers list becomes empty later
+    if (Object.keys(initialServers.current).length === 0) {
       fetchServers();
     }
+  }, [fetchServers]);
 
+  useEffect(() => {
     changeThemeInMarkup(settings.ui?.theme ?? 'light');
-  }, []);
+  }, [settings.ui?.theme]);
 
   return (
     <div className="container-fluid app-container">

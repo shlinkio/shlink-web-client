@@ -1,14 +1,13 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
-import { complement, pipe } from 'ramda';
+import { complement } from 'ramda';
 import type { ChangeEvent, FC, PropsWithChildren } from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import type { ServerData, ServersMap } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
-import './ImportServersBtn.scss';
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
@@ -25,7 +24,7 @@ interface ImportServersBtnConnectProps extends ImportServersBtnProps {
 const serversFiltering = (servers: ServerData[]) =>
   ({ url, apiKey }: ServerData) => servers.some((server) => server.url === url && server.apiKey === apiKey);
 
-export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC<ImportServersBtnConnectProps> => ({
+export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportServersBtnConnectProps> => ({
   createServers,
   servers,
   children,
@@ -35,36 +34,43 @@ export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC
   className = '',
 }) => {
   const ref = useElementRef<HTMLInputElement>();
-  const [serversToCreate, setServersToCreate] = useState<ServerData[] | undefined>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
-  const create = pipe(createServers, onImport);
-  const createAllServers = pipe(() => create(serversToCreate ?? []), hideModal);
-  const createNonDuplicatedServers = pipe(
-    () => create((serversToCreate ?? []).filter(complement(serversFiltering(duplicatedServers)))),
-    hideModal,
+
+  const serversToCreate = useRef<ServerData[]>([]);
+  const create = useCallback((serversData: ServerData[]) => {
+    createServers(serversData);
+    onImport();
+  }, [createServers, onImport]);
+  const onFile = useCallback(
+    async ({ target }: ChangeEvent<HTMLInputElement>) =>
+      serversImporter.importServersFromFile(target.files?.[0])
+        .then((newServers) => {
+          serversToCreate.current = newServers;
+
+          const existingServers = Object.values(servers);
+          const dupServers = newServers.filter(serversFiltering(existingServers));
+          const hasDuplicatedServers = !!dupServers.length;
+
+          !hasDuplicatedServers ? create(newServers) : setDuplicatedServers(dupServers);
+          hasDuplicatedServers && showModal();
+        })
+        .then(() => {
+          // Reset input after processing file
+          (target as { value: string | null }).value = null; // eslint-disable-line no-param-reassign
+        })
+        .catch(onImportError),
+    [create, onImportError, servers, showModal],
   );
-  const onFile = async ({ target }: ChangeEvent<HTMLInputElement>) =>
-    importServersFromFile(target.files?.[0])
-      .then(setServersToCreate)
-      .then(() => {
-        // Reset input after processing file
-        (target as { value: string | null }).value = null; // eslint-disable-line no-param-reassign
-      })
-      .catch(onImportError);
 
-  useEffect(() => {
-    if (!serversToCreate) {
-      return;
-    }
-
-    const existingServers = Object.values(servers);
-    const dupServers = serversToCreate.filter(serversFiltering(existingServers));
-    const hasDuplicatedServers = !!dupServers.length;
-
-    !hasDuplicatedServers ? create(serversToCreate) : setDuplicatedServers(dupServers);
-    hasDuplicatedServers && showModal();
-  }, [serversToCreate]);
+  const createAllServers = useCallback(() => {
+    create(serversToCreate.current);
+    hideModal();
+  }, [create, hideModal, serversToCreate]);
+  const createNonDuplicatedServers = useCallback(() => {
+    create(serversToCreate.current.filter(complement(serversFiltering(duplicatedServers))));
+    hideModal();
+  }, [create, duplicatedServers, hideModal]);
 
   return (
     <>
@@ -72,16 +78,10 @@ export const ImportServersBtn = ({ importServersFromFile }: ServersImporter): FC
         <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
-        You can create servers by importing a CSV file with columns <b>name</b>, <b>apiKey</b> and <b>url</b>.
+        You can create servers by importing a CSV file with <b>name</b>, <b>apiKey</b> and <b>url</b> columns.
       </UncontrolledTooltip>
 
-      <input
-        type="file"
-        accept="text/csv"
-        className="import-servers-btn__csv-select"
-        ref={ref}
-        onChange={onFile}
-      />
+      <input type="file" accept="text/csv" className="d-none" ref={ref} onChange={onFile} />
 
       <DuplicatedServersModal
         isOpen={isModalOpen}
