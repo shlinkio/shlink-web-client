@@ -5,29 +5,46 @@ import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import type { ServersMap } from '../servers/data';
 import type { AppSettings } from '../settings/reducers/settings';
 import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
-interface AppProps {
+type AppProps = {
   fetchServers: () => void;
   servers: ServersMap;
   settings: AppSettings;
   resetAppUpdate: () => void;
   appUpdated: boolean;
-}
+};
 
-export const App = (
-  MainHeader: FC,
-  Home: FC,
-  ShlinkWebComponentContainer: FC,
-  CreateServer: FC,
-  EditServer: FC,
-  SettingsComp: FC,
-  ManageServers: FC,
-  ShlinkVersionsContainer: FC,
-) => ({ fetchServers, servers, settings, appUpdated, resetAppUpdate }: AppProps) => {
+type AppDependencies = {
+  MainHeader: FC;
+  Home: FC;
+  ShlinkWebComponentContainer: FC;
+  CreateServer: FC;
+  EditServer: FC;
+  Settings: FC;
+  ManageServers: FC;
+  ShlinkVersionsContainer: FC;
+};
+
+const App: FCWithDeps<AppProps, AppDependencies> = (
+  { fetchServers, servers, settings, appUpdated, resetAppUpdate },
+) => {
+  const {
+    MainHeader,
+    Home,
+    ShlinkWebComponentContainer,
+    CreateServer,
+    EditServer,
+    Settings,
+    ManageServers,
+    ShlinkVersionsContainer,
+  } = useDependencies(App);
+
   const location = useLocation();
   const initialServers = useRef(servers);
   const isHome = location.pathname === '/';
@@ -52,7 +69,7 @@ export const App = (
         <div className={classNames('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
           <Routes>
             <Route index element={<Home />} />
-            <Route path="/settings/*" element={<SettingsComp />} />
+            <Route path="/settings/*" element={<Settings />} />
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />
@@ -70,3 +87,14 @@ export const App = (
     </div>
   );
 };
+
+export const AppFactory = componentFactory(App, [
+  'MainHeader',
+  'Home',
+  'ShlinkWebComponentContainer',
+  'CreateServer',
+  'EditServer',
+  'Settings',
+  'ManageServers',
+  'ShlinkVersionsContainer',
+]);

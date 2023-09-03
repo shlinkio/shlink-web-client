@@ -2,18 +2,20 @@ import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { App as createApp } from '../../src/app/App';
+import { AppFactory } from '../../src/app/App';
 
 describe('<App />', () => {
-  const App = createApp(
-    () => <>MainHeader</>,
-    () => <>Home</>,
-    () => <>ShlinkWebComponentContainer</>,
-    () => <>CreateServer</>,
-    () => <>EditServer</>,
-    () => <>SettingsComp</>,
-    () => <>ManageServers</>,
-    () => <>ShlinkVersions</>,
+  const App = AppFactory(
+    fromPartial({
+      MainHeader: () => <>MainHeader</>,
+      Home: () => <>Home</>,
+      ShlinkWebComponentContainer: () => <>ShlinkWebComponentContainer</>,
+      CreateServer: () => <>CreateServer</>,
+      EditServer: () => <>EditServer</>,
+      Settings: () => <>SettingsComp</>,
+      ManageServers: () => <>ManageServers</>,
+      ShlinkVersionsContainer: () => <>ShlinkVersions</>,
+    }),
   );
   const setUp = (activeRoute = '/') => {
     const history = createMemoryHistory();
