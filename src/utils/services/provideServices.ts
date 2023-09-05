@@ -12,7 +12,5 @@ export const provideServices = (bottle: Bottle) => {
   bottle.constant('csvToJson', csvToJson);
   bottle.constant('jsonToCsv', jsonToCsv);
 
-  bottle.constant('setTimeout', window.setTimeout);
-  bottle.constant('clearTimeout', window.clearTimeout);
-  bottle.serviceFactory('useTimeoutToggle', useTimeoutToggle, 'setTimeout', 'clearTimeout');
+  bottle.serviceFactory('useTimeoutToggle', () => useTimeoutToggle);
 };
