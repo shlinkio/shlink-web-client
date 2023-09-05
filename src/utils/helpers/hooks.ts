@@ -15,16 +15,17 @@ export const useTimeoutToggle = (
   clearTimeout = window.clearTimeout,
 ): [boolean, () => void] => {
   const [flag, setFlag] = useState<boolean>(initialValue);
+  const initialValueRef = useRef(initialValue);
   const timeout = useRef<number | undefined>(undefined);
   const callback = useCallback(() => {
-    setFlag(!initialValue);
+    setFlag(!initialValueRef.current);
 
     if (timeout.current) {
       clearTimeout(timeout.current);
     }
 
-    timeout.current = setTimeout(() => setFlag(initialValue), delay);
-  }, [clearTimeout, delay, initialValue, setTimeout]);
+    timeout.current = setTimeout(() => setFlag(initialValueRef.current), delay);
+  }, [clearTimeout, delay, setTimeout]);
 
   return [flag, callback];
 };
