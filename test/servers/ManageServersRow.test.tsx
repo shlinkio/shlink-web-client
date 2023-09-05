@@ -1,10 +1,13 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServerWithId } from '../../src/servers/data';
-import { ManageServersRow as createManageServersRow } from '../../src/servers/ManageServersRow';
+import { ManageServersRowFactory } from '../../src/servers/ManageServersRow';
 
 describe('<ManageServersRow />', () => {
-  const ManageServersRow = createManageServersRow(() => <span>ManageServersRowDropdown</span>);
+  const ManageServersRow = ManageServersRowFactory(fromPartial({
+    ManageServersRowDropdown: () => <span>ManageServersRowDropdown</span>,
+  }));
   const server: ServerWithId = {
     name: 'My server',
     url: 'https://example.com',

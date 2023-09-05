@@ -20,7 +20,7 @@ type AppProps = {
   appUpdated: boolean;
 };
 
-type AppDependencies = {
+type AppDeps = {
   MainHeader: FC;
   Home: FC;
   ShlinkWebComponentContainer: FC;
@@ -31,7 +31,7 @@ type AppDependencies = {
   ShlinkVersionsContainer: FC;
 };
 
-const App: FCWithDeps<AppProps, AppDependencies> = (
+const App: FCWithDeps<AppProps, AppDeps> = (
   { fetchServers, servers, settings, appUpdated, resetAppUpdate },
 ) => {
   const {

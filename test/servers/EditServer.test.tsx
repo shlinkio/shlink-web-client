@@ -2,7 +2,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
-import { EditServer as editServerConstruct } from '../../src/servers/EditServer';
+import { EditServerFactory } from '../../src/servers/EditServer';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({
@@ -20,7 +20,7 @@ describe('<EditServer />', () => {
     url: 'the_url',
     apiKey: 'the_api_key',
   });
-  const EditServer = editServerConstruct(ServerError);
+  const EditServer = EditServerFactory(fromPartial({ ServerError }));
   const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => renderWithEvents(
     <MemoryRouter>
       <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />

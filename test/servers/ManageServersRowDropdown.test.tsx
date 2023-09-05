@@ -2,13 +2,15 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServerWithId } from '../../src/servers/data';
-import { ManageServersRowDropdown as createManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
+import { ManageServersRowDropdownFactory } from '../../src/servers/ManageServersRowDropdown';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServersRowDropdown />', () => {
-  const ManageServersRowDropdown = createManageServersRowDropdown(
-    ({ isOpen }) => <span>DeleteServerModal {isOpen ? '[OPEN]' : '[CLOSED]'}</span>,
-  );
+  const ManageServersRowDropdown = ManageServersRowDropdownFactory(fromPartial({
+    DeleteServerModal: ({ isOpen }: { isOpen: boolean }) => (
+      <span>DeleteServerModal {isOpen ? '[OPEN]' : '[CLOSED]'}</span>
+    ),
+  }));
   const setAutoConnect = vi.fn();
   const setUp = (autoConnect = false) => {
     const server = fromPartial<ServerWithId>({ id: 'abc123', autoConnect });

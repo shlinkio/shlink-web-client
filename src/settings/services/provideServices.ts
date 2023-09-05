@@ -11,7 +11,7 @@ import {
   setVisitsSettings,
   toggleRealTimeUpdates,
 } from '../reducers/settings';
-import { Settings } from '../Settings';
+import { SettingsFactory } from '../Settings';
 import { ShortUrlCreationSettings } from '../ShortUrlCreationSettings';
 import { ShortUrlsListSettings } from '../ShortUrlsListSettings';
 import { TagsSettings } from '../TagsSettings';
@@ -20,16 +20,7 @@ import { VisitsSettings } from '../VisitsSettings';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
-  bottle.serviceFactory(
-    'Settings',
-    Settings,
-    'RealTimeUpdatesSettings',
-    'ShortUrlCreationSettings',
-    'ShortUrlsListSettings',
-    'UserInterfaceSettings',
-    'VisitsSettings',
-    'TagsSettings',
-  );
+  bottle.factory('Settings', SettingsFactory);
   bottle.decorator('Settings', withoutSelectedServer);
   bottle.decorator('Settings', connect(null, ['resetSelectedServer']));
 

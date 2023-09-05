@@ -10,20 +10,27 @@ import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { DropdownItem } from 'reactstrap';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 
-export interface ManageServersRowDropdownProps {
+export type ManageServersRowDropdownProps = {
   server: ServerWithId;
-}
+};
 
-interface ManageServersRowDropdownConnectProps extends ManageServersRowDropdownProps {
+type ManageServersRowDropdownConnectProps = ManageServersRowDropdownProps & {
   setAutoConnect: (server: ServerWithId, autoConnect: boolean) => void;
-}
+};
 
-export const ManageServersRowDropdown = (
-  DeleteServerModal: FC<DeleteServerModalProps>,
-): FC<ManageServersRowDropdownConnectProps> => ({ server, setAutoConnect }) => {
+type ManageServersRowDropdownDeps = {
+  DeleteServerModal: FC<DeleteServerModalProps>
+};
+
+const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps, ManageServersRowDropdownDeps> = (
+  { server, setAutoConnect },
+) => {
+  const { DeleteServerModal } = useDependencies(ManageServersRowDropdown);
   const [isModalOpen,, showModal, hideModal] = useToggle();
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
@@ -49,3 +56,5 @@ export const ManageServersRowDropdown = (
     </RowDropdownBtn>
   );
 };
+
+export const ManageServersRowDropdownFactory = componentFactory(ManageServersRowDropdown, ['DeleteServerModal']);

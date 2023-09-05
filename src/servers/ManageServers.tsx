@@ -6,24 +6,34 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
 import type { ServersMap } from './data';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import type { ManageServersRowProps } from './ManageServersRow';
 import type { ServersExporter } from './services/ServersExporter';
 
-interface ManageServersProps {
+type ManageServersProps = {
   servers: ServersMap;
-}
+};
+
+type ManageServersDeps = {
+  ServersExporter: ServersExporter;
+  ImportServersBtn: FC<ImportServersBtnProps>;
+  useTimeoutToggle: TimeoutToggle;
+  ManageServersRow: FC<ManageServersRowProps>;
+};
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-export const ManageServers = (
-  serversExporter: ServersExporter,
-  ImportServersBtn: FC<ImportServersBtnProps>,
-  useTimeoutToggle: TimeoutToggle,
-  ManageServersRow: FC<ManageServersRowProps>,
-): FC<ManageServersProps> => ({ servers }) => {
+const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ servers }) => {
+  const {
+    ServersExporter: serversExporter,
+    ImportServersBtn,
+    useTimeoutToggle,
+    ManageServersRow,
+  } = useDependencies(ManageServers);
   const allServers = Object.values(servers);
   const [serversList, setServersList] = useState(allServers);
   const filterServers = (searchTerm: string) => setServersList(
@@ -83,3 +93,10 @@ export const ManageServers = (
     </NoMenuLayout>
   );
 };
+
+export const ManageServersFactory = componentFactory(ManageServers, [
+  'ServersExporter',
+  'ImportServersBtn',
+  'useTimeoutToggle',
+  'ManageServersRow',
+]);

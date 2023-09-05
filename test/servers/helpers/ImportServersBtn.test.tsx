@@ -3,9 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
-import {
-  ImportServersBtn as createImportServersBtn,
-} from '../../../src/servers/helpers/ImportServersBtn';
+import { ImportServersBtnFactory } from '../../../src/servers/helpers/ImportServersBtn';
 import type { ServersImporter } from '../../../src/servers/services/ServersImporter';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
@@ -14,7 +12,7 @@ describe('<ImportServersBtn />', () => {
   const createServersMock = vi.fn();
   const importServersFromFile = vi.fn().mockResolvedValue([]);
   const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
-  const ImportServersBtn = createImportServersBtn(serversImporterMock);
+  const ImportServersBtn = ImportServersBtnFactory(fromPartial({ ServersImporter: serversImporterMock }));
   const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithEvents(
     <ImportServersBtn
       servers={servers}

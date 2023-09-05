@@ -2,10 +2,10 @@ import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
-import { ServerError as createServerError } from '../../../src/servers/helpers/ServerError';
+import { ServerErrorFactory } from '../../../src/servers/helpers/ServerError';
 
 describe('<ServerError />', () => {
-  const ServerError = createServerError(() => null);
+  const ServerError = ServerErrorFactory(fromPartial({ DeleteServerButton: () => null }));
 
   it.each([
     [

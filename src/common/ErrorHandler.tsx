@@ -1,17 +1,19 @@
 import { SimpleCard } from '@shlinkio/shlink-frontend-kit';
-import type { ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import { Component } from 'react';
 import { Button } from 'reactstrap';
 
-interface ErrorHandlerState {
-  hasError: boolean;
-}
+type ErrorHandlerProps = PropsWithChildren<{
+  location?: typeof window.location;
+  console?: typeof window.console;
+}>;
 
-export const ErrorHandler = (
-  { location }: Window,
-  { error }: Console,
-) => class extends Component<any, ErrorHandlerState> {
-  public constructor(props: object) {
+type ErrorHandlerState = {
+  hasError: boolean;
+};
+
+export class ErrorHandler extends Component<ErrorHandlerProps, ErrorHandlerState> {
+  public constructor(props: ErrorHandlerProps) {
     super(props);
     this.state = { hasError: false };
   }
@@ -21,13 +23,14 @@ export const ErrorHandler = (
   }
 
   public componentDidCatch(e: Error): void {
-    if (process.env.NODE_ENV !== 'development') {
-      error(e);
-    }
+    const { console = globalThis.console } = this.props;
+    console.error(e);
   }
 
   public render(): ReactNode {
     const { hasError } = this.state;
+    const { location = globalThis.location } = this.props;
+
     if (hasError) {
       return (
         <div className="home">
@@ -44,4 +47,4 @@ export const ErrorHandler = (
     const { children } = this.props;
     return children;
   }
-};
+}
