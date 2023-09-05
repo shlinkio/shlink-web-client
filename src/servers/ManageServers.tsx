@@ -1,5 +1,6 @@
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import { Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect, useState } from 'react';
@@ -8,7 +9,6 @@ import { Button, Row } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
-import type { TimeoutToggle } from '../utils/helpers/hooks';
 import type { ServersMap } from './data';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import type { ManageServersRowProps } from './ManageServersRow';
