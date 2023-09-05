@@ -3,16 +3,25 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
+import type { FCWithDeps } from '../../container/utils';
+import { useDependencies } from '../../container/utils';
 import type { SelectedServer } from '../data';
 import { isNotFoundServer } from '../data';
 
-interface WithSelectedServerProps {
+export type WithSelectedServerProps = {
   selectServer: (serverId: string) => void;
   selectedServer: SelectedServer;
-}
+};
 
-export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServerProps & T>, ServerError: FC) {
-  return (props: WithSelectedServerProps & T) => {
+type WithSelectedServerPropsDeps = {
+  ServerError: FC;
+};
+
+export function withSelectedServer<T = {}>(
+  WrappedComponent: FCWithDeps<WithSelectedServerProps & T, WithSelectedServerPropsDeps>,
+) {
+  const ComponentWrapper: FCWithDeps<WithSelectedServerProps & T, WithSelectedServerPropsDeps> = (props) => {
+    const { ServerError } = useDependencies(ComponentWrapper);
     const params = useParams<{ serverId: string }>();
     const { selectServer, selectedServer } = props;
 
@@ -34,4 +43,5 @@ export function withSelectedServer<T = {}>(WrappedComponent: FC<WithSelectedServ
 
     return <WrappedComponent {...props} />;
   };
+  return ComponentWrapper;
 }

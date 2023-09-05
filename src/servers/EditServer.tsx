@@ -1,17 +1,24 @@
 import type { FC } from 'react';
 import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory } from '../container/utils';
 import { useGoBack, useParsedQuery } from '../utils/helpers/hooks';
 import type { ServerData } from './data';
 import { isServerWithId } from './data';
 import { ServerForm } from './helpers/ServerForm';
+import type { WithSelectedServerProps } from './helpers/withSelectedServer';
 import { withSelectedServer } from './helpers/withSelectedServer';
 
-interface EditServerProps {
+type EditServerProps = WithSelectedServerProps & {
   editServer: (serverId: string, serverData: ServerData) => void;
-}
+};
 
-export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProps>((
+type EditServerDeps = {
+  ServerError: FC;
+};
+
+const EditServer: FCWithDeps<EditServerProps, EditServerDeps> = withSelectedServer((
   { editServer, selectedServer, selectServer },
 ) => {
   const goBack = useGoBack();
@@ -39,4 +46,6 @@ export const EditServer = (ServerError: FC) => withSelectedServer<EditServerProp
       </ServerForm>
     </NoMenuLayout>
   );
-}, ServerError);
+});
+
+export const EditServerFactory = componentFactory(EditServer, ['ServerError']);

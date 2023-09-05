@@ -1,26 +1,31 @@
 import { parseQuery } from '@shlinkio/shlink-frontend-kit';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const DEFAULT_DELAY = 2000;
 
-export type TimeoutToggle = (initialValue?: boolean, delay?: number) => [boolean, () => void];
+export type TimeoutToggle = typeof useTimeoutToggle;
 
 export const useTimeoutToggle = (
-  setTimeout: (callback: Function, timeout: number) => number,
-  clearTimeout: (timer: number) => void,
-): TimeoutToggle => (initialValue = false, delay = DEFAULT_DELAY) => {
+  initialValue = false,
+  delay = DEFAULT_DELAY,
+
+  // Test seams
+  setTimeout = window.setTimeout,
+  clearTimeout = window.clearTimeout,
+): [boolean, () => void] => {
   const [flag, setFlag] = useState<boolean>(initialValue);
+  const initialValueRef = useRef(initialValue);
   const timeout = useRef<number | undefined>(undefined);
-  const callback = () => {
-    setFlag(!initialValue);
+  const callback = useCallback(() => {
+    setFlag(!initialValueRef.current);
 
     if (timeout.current) {
       clearTimeout(timeout.current);
     }
 
-    timeout.current = setTimeout(() => setFlag(initialValue), delay);
-  };
+    timeout.current = setTimeout(() => setFlag(initialValueRef.current), delay);
+  }, [clearTimeout, delay, setTimeout]);
 
   return [flag, callback];
 };

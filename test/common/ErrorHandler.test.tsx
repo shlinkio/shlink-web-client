@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { ErrorHandler as createErrorHandler } from '../../src/common/ErrorHandler';
+import type { PropsWithChildren } from 'react';
+import { ErrorHandler as BaseErrorHandler } from '../../src/common/ErrorHandler';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 const ComponentWithError = () => {
@@ -9,18 +10,16 @@ const ComponentWithError = () => {
 
 describe('<ErrorHandler />', () => {
   const reload = vi.fn();
-  const window = fromPartial<Window>({
-    location: { reload },
-  });
+  const location = fromPartial<Window['location']>({ reload });
   const cons = fromPartial<Console>({ error: vi.fn() });
-  const ErrorHandler = createErrorHandler(window, cons);
+  const ErrorHandler = (props: PropsWithChildren) => <BaseErrorHandler console={cons} location={location} {...props} />;
 
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {}); // Silence react errors
   });
 
   it('renders children when no error has occurred', () => {
-    render(<ErrorHandler children={<span>Foo</span>} />);
+    render(<ErrorHandler><span>Foo</span></ErrorHandler>);
 
     expect(screen.getByText('Foo')).toBeInTheDocument();
     expect(screen.queryByText('Oops! This is awkward :S')).not.toBeInTheDocument();
@@ -28,14 +27,14 @@ describe('<ErrorHandler />', () => {
   });
 
   it('renders error page when error has occurred', () => {
-    render(<ErrorHandler children={<ComponentWithError />} />);
+    render(<ErrorHandler><ComponentWithError /></ErrorHandler>);
 
     expect(screen.getByText('Oops! This is awkward :S')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
   it('reloads page on button click', async () => {
-    const { user } = renderWithEvents(<ErrorHandler children={<ComponentWithError />} />);
+    const { user } = renderWithEvents(<ErrorHandler><ComponentWithError /></ErrorHandler>);
 
     expect(reload).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button'));

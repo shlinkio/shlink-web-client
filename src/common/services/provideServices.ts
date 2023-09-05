@@ -5,10 +5,10 @@ import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
 import { ErrorHandler } from '../ErrorHandler';
 import { Home } from '../Home';
-import { MainHeader } from '../MainHeader';
+import { MainHeaderFactory } from '../MainHeader';
 import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
-import { ShlinkWebComponentContainer } from '../ShlinkWebComponentContainer';
+import { ShlinkWebComponentContainerFactory } from '../ShlinkWebComponentContainer';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
@@ -20,25 +20,18 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
   bottle.serviceFactory('ScrollToTop', () => ScrollToTop);
 
-  bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');
+  bottle.factory('MainHeader', MainHeaderFactory);
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
   bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
   bottle.serviceFactory('ShlinkWebComponent', () => ShlinkWebComponent);
-  bottle.serviceFactory(
-    'ShlinkWebComponentContainer',
-    ShlinkWebComponentContainer,
-    'buildShlinkApiClient',
-    'TagColorsStorage',
-    'ShlinkWebComponent',
-    'ServerError',
-  );
+  bottle.factory('ShlinkWebComponentContainer', ShlinkWebComponentContainerFactory);
   bottle.decorator('ShlinkWebComponentContainer', connect(['selectedServer', 'settings'], ['selectServer']));
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
   bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer']));
 
-  bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
+  bottle.serviceFactory('ErrorHandler', () => ErrorHandler);
 };

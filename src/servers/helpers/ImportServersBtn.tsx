@@ -2,9 +2,11 @@ import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
 import { complement } from 'ramda';
-import type { ChangeEvent, FC, PropsWithChildren } from 'react';
+import type { ChangeEvent, PropsWithChildren } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
+import type { FCWithDeps } from '../../container/utils';
+import { componentFactory, useDependencies } from '../../container/utils';
 import type { ServerData, ServersMap } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
@@ -16,15 +18,19 @@ export type ImportServersBtnProps = PropsWithChildren<{
   className?: string;
 }>;
 
-interface ImportServersBtnConnectProps extends ImportServersBtnProps {
+type ImportServersBtnConnectProps = ImportServersBtnProps & {
   createServers: (servers: ServerData[]) => void;
   servers: ServersMap;
-}
+};
+
+type ImportServersBtnDeps = {
+  ServersImporter: ServersImporter
+};
 
 const serversFiltering = (servers: ServerData[]) =>
   ({ url, apiKey }: ServerData) => servers.some((server) => server.url === url && server.apiKey === apiKey);
 
-export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportServersBtnConnectProps> => ({
+const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBtnDeps> = ({
   createServers,
   servers,
   children,
@@ -33,6 +39,7 @@ export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportSer
   tooltipPlacement = 'bottom',
   className = '',
 }) => {
+  const { ServersImporter: serversImporter } = useDependencies(ImportServersBtn);
   const ref = useElementRef<HTMLInputElement>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
@@ -60,7 +67,7 @@ export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportSer
           (target as { value: string | null }).value = null; // eslint-disable-line no-param-reassign
         })
         .catch(onImportError),
-    [create, onImportError, servers, showModal],
+    [create, onImportError, servers, serversImporter, showModal],
   );
 
   const createAllServers = useCallback(() => {
@@ -92,3 +99,5 @@ export const ImportServersBtn = (serversImporter: ServersImporter): FC<ImportSer
     </>
   );
 };
+
+export const ImportServersBtnFactory = componentFactory(ImportServersBtn, ['ServersImporter']);

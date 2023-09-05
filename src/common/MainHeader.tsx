@@ -6,10 +6,17 @@ import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import { ShlinkLogo } from './img/ShlinkLogo';
 import './MainHeader.scss';
 
-export const MainHeader = (ServersDropdown: FC) => () => {
+type MainHeaderDeps = {
+  ServersDropdown: FC;
+};
+
+const MainHeader: FCWithDeps<{}, MainHeaderDeps> = () => {
+  const { ServersDropdown } = useDependencies(MainHeader);
   const [isNotCollapsed, toggleCollapse, , collapse] = useToggle();
   const location = useLocation();
   const { pathname } = location;
@@ -43,3 +50,5 @@ export const MainHeader = (ServersDropdown: FC) => () => {
     </Navbar>
   );
 };
+
+export const MainHeaderFactory = componentFactory(MainHeader, ['ServersDropdown']);

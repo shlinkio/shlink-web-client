@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
-import { ManageServers as createManageServers } from '../../src/servers/ManageServers';
+import { ManageServersFactory } from '../../src/servers/ManageServers';
 import type { ServersExporter } from '../../src/servers/services/ServersExporter';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -10,12 +10,14 @@ describe('<ManageServers />', () => {
   const exportServers = vi.fn();
   const serversExporter = fromPartial<ServersExporter>({ exportServers });
   const useTimeoutToggle = vi.fn().mockReturnValue([false, vi.fn()]);
-  const ManageServers = createManageServers(
-    serversExporter,
-    () => <span>ImportServersBtn</span>,
+  const ManageServers = ManageServersFactory(fromPartial({
+    ServersExporter: serversExporter,
+    ImportServersBtn: () => <span>ImportServersBtn</span>,
     useTimeoutToggle,
-    ({ hasAutoConnect }) => <tr><td>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</td></tr>,
-  );
+    ManageServersRow: ({ hasAutoConnect }: { hasAutoConnect: boolean }) => (
+      <tr><td>ManageServersRow {hasAutoConnect ? '[YES]' : '[NO]'}</td></tr>
+    ),
+  }));
   const createServerMock = (value: string, autoConnect = false) => fromPartial<ServerWithId>(
     { id: value, name: value, url: value, autoConnect },
   );

@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
-import { CreateServer as createCreateServer } from '../../src/servers/CreateServer';
+import { CreateServerFactory } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
@@ -31,7 +31,10 @@ describe('<CreateServer />', () => {
       callCount += 1;
       return result;
     });
-    const CreateServer = createCreateServer(() => <>ImportServersBtn</>, useTimeoutToggle);
+    const CreateServer = CreateServerFactory(fromPartial({
+      ImportServersBtn: () => <>ImportServersBtn</>,
+      useTimeoutToggle,
+    }));
 
     return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
   };

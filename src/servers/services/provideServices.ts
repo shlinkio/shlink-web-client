@@ -1,16 +1,16 @@
 import type Bottle from 'bottlejs';
 import { prop } from 'ramda';
 import type { ConnectDecorator } from '../../container/types';
-import { CreateServer } from '../CreateServer';
-import { DeleteServerButton } from '../DeleteServerButton';
+import { CreateServerFactory } from '../CreateServer';
+import { DeleteServerButtonFactory } from '../DeleteServerButton';
 import { DeleteServerModal } from '../DeleteServerModal';
-import { EditServer } from '../EditServer';
-import { ImportServersBtn } from '../helpers/ImportServersBtn';
-import { ServerError } from '../helpers/ServerError';
+import { EditServerFactory } from '../EditServer';
+import { ImportServersBtnFactory } from '../helpers/ImportServersBtn';
+import { ServerErrorFactory } from '../helpers/ServerError';
 import { withoutSelectedServer } from '../helpers/withoutSelectedServer';
-import { ManageServers } from '../ManageServers';
-import { ManageServersRow } from '../ManageServersRow';
-import { ManageServersRowDropdown } from '../ManageServersRowDropdown';
+import { ManageServersFactory } from '../ManageServers';
+import { ManageServersRowFactory } from '../ManageServersRow';
+import { ManageServersRowDropdownFactory } from '../ManageServersRowDropdown';
 import { fetchServers } from '../reducers/remoteServers';
 import {
   resetSelectedServer,
@@ -24,27 +24,20 @@ import { ServersImporter } from './ServersImporter';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Components
-  bottle.serviceFactory(
-    'ManageServers',
-    ManageServers,
-    'ServersExporter',
-    'ImportServersBtn',
-    'useTimeoutToggle',
-    'ManageServersRow',
-  );
+  bottle.factory('ManageServers', ManageServersFactory);
   bottle.decorator('ManageServers', withoutSelectedServer);
   bottle.decorator('ManageServers', connect(['selectedServer', 'servers'], ['resetSelectedServer']));
 
-  bottle.serviceFactory('ManageServersRow', ManageServersRow, 'ManageServersRowDropdown');
+  bottle.factory('ManageServersRow', ManageServersRowFactory);
 
-  bottle.serviceFactory('ManageServersRowDropdown', ManageServersRowDropdown, 'DeleteServerModal');
+  bottle.factory('ManageServersRowDropdown', ManageServersRowDropdownFactory);
   bottle.decorator('ManageServersRowDropdown', connect(null, ['setAutoConnect']));
 
-  bottle.serviceFactory('CreateServer', CreateServer, 'ImportServersBtn', 'useTimeoutToggle');
+  bottle.factory('CreateServer', CreateServerFactory);
   bottle.decorator('CreateServer', withoutSelectedServer);
   bottle.decorator('CreateServer', connect(['selectedServer', 'servers'], ['createServers', 'resetSelectedServer']));
 
-  bottle.serviceFactory('EditServer', EditServer, 'ServerError');
+  bottle.factory('EditServer', EditServerFactory);
   bottle.decorator('EditServer', connect(['selectedServer'], ['editServer', 'selectServer', 'resetSelectedServer']));
 
   bottle.serviceFactory('ServersDropdown', () => ServersDropdown);
@@ -53,12 +46,12 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.serviceFactory('DeleteServerModal', () => DeleteServerModal);
   bottle.decorator('DeleteServerModal', connect(null, ['deleteServer']));
 
-  bottle.serviceFactory('DeleteServerButton', DeleteServerButton, 'DeleteServerModal');
+  bottle.factory('DeleteServerButton', DeleteServerButtonFactory);
 
-  bottle.serviceFactory('ImportServersBtn', ImportServersBtn, 'ServersImporter');
+  bottle.factory('ImportServersBtn', ImportServersBtnFactory);
   bottle.decorator('ImportServersBtn', connect(['servers'], ['createServers']));
 
-  bottle.serviceFactory('ServerError', ServerError, 'DeleteServerButton');
+  bottle.factory('ServerError', ServerErrorFactory);
   bottle.decorator('ServerError', connect(['servers', 'selectedServer']));
 
   // Services

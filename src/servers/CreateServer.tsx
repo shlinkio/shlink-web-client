@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import type { TimeoutToggle } from '../utils/helpers/hooks';
 import { useGoBack } from '../utils/helpers/hooks';
 import type { ServerData, ServersMap, ServerWithId } from './data';
@@ -14,10 +16,15 @@ import { ServerForm } from './helpers/ServerForm';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-interface CreateServerProps {
+type CreateServerProps = {
   createServers: (servers: ServerWithId[]) => void;
   servers: ServersMap;
-}
+};
+
+type CreateServerDeps = {
+  ImportServersBtn: FC<ImportServersBtnProps>;
+  useTimeoutToggle: TimeoutToggle;
+};
 
 const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   <div className="mt-3">
@@ -28,9 +35,8 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   </div>
 );
 
-export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTimeoutToggle: TimeoutToggle) => (
-  { servers, createServers }: CreateServerProps,
-) => {
+const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers, createServers }) => {
+  const { ImportServersBtn, useTimeoutToggle } = useDependencies(CreateServer);
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
@@ -79,3 +85,5 @@ export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTim
     </NoMenuLayout>
   );
 };
+
+export const CreateServerFactory = componentFactory(CreateServer, ['ImportServersBtn', 'useTimeoutToggle']);

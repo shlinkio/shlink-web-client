@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import classNames from 'classnames';
 import type { FC, PropsWithChildren } from 'react';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
 import type { ServerWithId } from './data';
 import type { DeleteServerModalProps } from './DeleteServerModal';
 
@@ -12,9 +14,14 @@ export type DeleteServerButtonProps = PropsWithChildren<{
   textClassName?: string;
 }>;
 
-export const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>): FC<DeleteServerButtonProps> => (
+type DeleteServerButtonDeps = {
+  DeleteServerModal: FC<DeleteServerModalProps>;
+};
+
+const DeleteServerButton: FCWithDeps<DeleteServerButtonProps, DeleteServerButtonDeps> = (
   { server, className, children, textClassName },
 ) => {
+  const { DeleteServerModal } = useDependencies(DeleteServerButton);
   const [isModalOpen, , showModal, hideModal] = useToggle();
 
   return (
@@ -28,3 +35,5 @@ export const DeleteServerButton = (DeleteServerModal: FC<DeleteServerModalProps>
     </>
   );
 };
+
+export const DeleteServerButtonFactory = componentFactory(DeleteServerButton, ['DeleteServerModal']);

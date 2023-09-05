@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { useParams } from 'react-router-dom';
-import { ShlinkWebComponentContainer as createContainer } from '../../src/common/ShlinkWebComponentContainer';
+import { ShlinkWebComponentContainerFactory } from '../../src/common/ShlinkWebComponentContainer';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 
 vi.mock('react-router-dom', async () => ({
@@ -10,12 +10,12 @@ vi.mock('react-router-dom', async () => ({
 }));
 
 describe('<ShlinkWebComponentContainer />', () => {
-  const ShlinkWebComponentContainer = createContainer(
-    vi.fn().mockReturnValue(fromPartial({})),
-    fromPartial({}),
-    () => <>ShlinkWebComponent</>,
-    () => <>ServerError</>,
-  );
+  const ShlinkWebComponentContainer = ShlinkWebComponentContainerFactory(fromPartial({
+    buildShlinkApiClient: vi.fn().mockReturnValue(fromPartial({})),
+    TagColorsStorage: fromPartial({}),
+    ShlinkWebComponent: () => <>ShlinkWebComponent</>,
+    ServerError: () => <>ServerError</>,
+  }));
   const setUp = (selectedServer: SelectedServer) => render(
     <ShlinkWebComponentContainer selectServer={vi.fn()} selectedServer={selectedServer} settings={{}} />,
   );
