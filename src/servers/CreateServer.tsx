@@ -1,3 +1,4 @@
+import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
@@ -7,7 +8,6 @@ import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
-import type { TimeoutToggle } from '../utils/helpers/hooks';
 import { useGoBack } from '../utils/helpers/hooks';
 import type { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';

@@ -1,6 +1,6 @@
+import { useTimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import type Bottle from 'bottlejs';
 import { csvToJson, jsonToCsv } from '../helpers/csvjson';
-import { useTimeoutToggle } from '../helpers/hooks';
 import { LocalStorage } from './LocalStorage';
 import { TagColorsStorage } from './TagColorsStorage';
 
