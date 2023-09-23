@@ -78,7 +78,7 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vite-plugin-pwa": "^0.16.5",
-    "vitest": "^0.34.4"
+    "vitest": "^0.34.5"
   },
   "browserslist": [
     ">0.2%",
