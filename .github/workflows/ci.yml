@@ -11,5 +11,5 @@ jobs:
   ci:
     uses: shlinkio/github-actions/.github/workflows/web-app-ci.yml@main
     with:
-      node-version: 20.5
+      node-version: 20.7
       publish-coverage: true

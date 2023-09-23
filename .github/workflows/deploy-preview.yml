@@ -16,7 +16,7 @@ jobs:
       - name: Use node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.5
+          node-version: 20.7
       - name: Build
         run: |
           npm ci && \
