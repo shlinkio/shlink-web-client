@@ -69,7 +69,7 @@ Those servers can be exported and imported in other browsers, but if for some re
 
 If you are using the shlink-web-client docker image, you can mount the `servers.json` file in a volume inside `/usr/share/nginx/html`, which is the app's document root inside the container.
 
-    docker run --name shlink-web-client -p 8000:80 -v ${PWD}/servers.json:/usr/share/nginx/html/servers.json shlinkio/shlink-web-client
+    docker run --name shlink-web-client -p 8000:8080 -v ${PWD}/servers.json:/usr/share/nginx/html/servers.json shlinkio/shlink-web-client
     
 Alternatively, you can mount a `conf.d` directory, which in turn contains the `servers.json` file, in a volume inside `/usr/share/nginx/html`. *(since shlink-web-client 3.2.0)*.
 
