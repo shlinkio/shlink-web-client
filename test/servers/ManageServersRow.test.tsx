@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowFactory } from '../../src/servers/ManageServersRow';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<ManageServersRow />', () => {
   const ManageServersRow = ManageServersRowFactory(fromPartial({
@@ -23,6 +24,8 @@ describe('<ManageServersRow />', () => {
       </table>
     </MemoryRouter>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [true, 4],

@@ -1,6 +1,7 @@
 import { screen, waitFor } from '@testing-library/react';
 import type { DateInterval } from '../../../src/utils/dates/DateIntervalSelector';
 import { DateIntervalSelector, INTERVAL_TO_STRING_MAP } from '../../../src/utils/dates/DateIntervalSelector';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DateIntervalSelector />', () => {
@@ -9,6 +10,8 @@ describe('<DateIntervalSelector />', () => {
   const setUp = () => renderWithEvents(
     <DateIntervalSelector allText="All text" active={activeInterval} onChange={onChange} />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('passes props down to nested DateIntervalDropdownItems', async () => {
     const { user } = setUp();

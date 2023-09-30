@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {
@@ -11,6 +12,8 @@ describe('<DuplicatedServersModal />', () => {
     <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
   );
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [[], 0],

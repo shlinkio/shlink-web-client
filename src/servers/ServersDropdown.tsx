@@ -30,7 +30,7 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
             {name}
           </DropdownItem>
         ))}
-        <DropdownItem divider />
+        <DropdownItem divider tag="hr" />
         <DropdownItem tag={Link} to="/manage-servers">
           <FontAwesomeIcon icon={serverIcon} /> <span className="ms-1">Manage servers</span>
         </DropdownItem>

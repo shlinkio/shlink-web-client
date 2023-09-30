@@ -1,11 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
-import type { NonReachableServer, NotFoundServer } from '../../../src/servers/data';
+import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { ServerErrorFactory } from '../../../src/servers/helpers/ServerError';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 
 describe('<ServerError />', () => {
   const ServerError = ServerErrorFactory(fromPartial({ DeleteServerButton: () => null }));
+  const setUp = (selectedServer: SelectedServer) => render(
+    <MemoryRouter>
+      <ServerError servers={{}} selectedServer={selectedServer} />
+    </MemoryRouter>,
+  );
+
+  it.each([
+    [fromPartial<NotFoundServer>({})],
+    [fromPartial<NonReachableServer>({ id: 'abc123' })],
+  ])('passes a11y checks', (selectedServer) => checkAccessibility(setUp(selectedServer)));
 
   it.each([
     [
@@ -31,11 +42,7 @@ describe('<ServerError />', () => {
       },
     ],
   ])('renders expected information based on provided server type', (selectedServer, { found, notFound }) => {
-    render(
-      <MemoryRouter>
-        <ServerError servers={{}} selectedServer={selectedServer} />
-      </MemoryRouter>,
-    );
+    setUp(selectedServer);
 
     found.forEach((text) => expect(screen.getByText(text)).toBeInTheDocument());
     notFound.forEach((text) => expect(screen.queryByText(text)).not.toBeInTheDocument());

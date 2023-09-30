@@ -2,6 +2,7 @@ import type { Settings } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { VisitsSettings } from '../../src/settings/VisitsSettings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<VisitsSettings />', () => {
@@ -9,6 +10,8 @@ describe('<VisitsSettings />', () => {
   const setUp = (settings: Partial<Settings> = {}) => renderWithEvents(
     <VisitsSettings settings={fromPartial(settings)} setVisitsSettings={setVisitsSettings} />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders expected components', () => {
     setUp();

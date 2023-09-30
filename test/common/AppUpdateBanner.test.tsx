@@ -1,11 +1,14 @@
 import { screen } from '@testing-library/react';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
   const toggle = vi.fn();
   const forceUpdate = vi.fn();
   const setUp = () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders initial state', () => {
     setUp();

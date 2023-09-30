@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { SettingsFactory } from '../../src/settings/Settings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<Settings />', () => {
   const Settings = SettingsFactory(fromPartial({
@@ -18,6 +19,8 @@ describe('<Settings />', () => {
     history.push(activeRoute);
     return render(<Router location={history.location} navigator={history}><Settings /></Router>);
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     ['/general', {

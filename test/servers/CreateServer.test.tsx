@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
 import { CreateServerFactory } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({
@@ -38,6 +39,8 @@ describe('<CreateServer />', () => {
 
     return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('shows success message when imported is true', () => {
     setUp({ serversImported: true });

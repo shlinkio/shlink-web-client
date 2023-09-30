@@ -5,6 +5,7 @@ import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
 import { ImportServersBtnFactory } from '../../../src/servers/helpers/ImportServersBtn';
 import type { ServersImporter } from '../../../src/servers/services/ServersImporter';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
@@ -21,6 +22,8 @@ describe('<ImportServersBtn />', () => {
       onImport={onImportMock}
     />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('shows tooltip on button hover', async () => {
     const { user } = setUp();

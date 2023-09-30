@@ -47,7 +47,7 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
       <DropdownItem onClick={() => setAutoConnect(server, !isAutoConnect)}>
         <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
       </DropdownItem>
-      <DropdownItem divider />
+      <DropdownItem divider tag="hr" />
       <DropdownItem className="dropdown-item--danger" onClick={showModal}>
         <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Remove server
       </DropdownItem>

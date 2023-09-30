@@ -88,7 +88,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
         You can create servers by importing a CSV file with <b>name</b>, <b>apiKey</b> and <b>url</b> columns.
       </UncontrolledTooltip>
 
-      <input type="file" accept="text/csv" className="d-none" ref={ref} onChange={onFile} />
+      <input type="file" accept="text/csv" className="d-none" ref={ref} onChange={onFile} aria-hidden />
 
       <DuplicatedServersModal
         isOpen={isModalOpen}

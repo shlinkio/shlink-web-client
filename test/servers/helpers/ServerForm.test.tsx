@@ -1,9 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 
 describe('<ServerForm />', () => {
   const onSubmit = vi.fn();
   const setUp = () => render(<ServerForm onSubmit={onSubmit}>Something</ServerForm>);
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders components', () => {
     setUp();
