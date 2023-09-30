@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter, useNavigate } from 'react-router-dom';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { EditServerFactory } from '../../src/servers/EditServer';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 vi.mock('react-router-dom', async () => ({
@@ -30,6 +31,8 @@ describe('<EditServer />', () => {
   beforeEach(() => {
     (useNavigate as any).mockReturnValue(navigate);
   });
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders nothing if selected server is not reachable', () => {
     setUp(fromPartial<SelectedServer>({}));

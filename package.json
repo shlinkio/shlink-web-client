@@ -31,7 +31,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@json2csv/plainjs": "^7.0.3",
     "@reduxjs/toolkit": "^1.9.5",
-    "@shlinkio/shlink-frontend-kit": "^0.3.0",
+    "@shlinkio/shlink-frontend-kit": "^0.4.0",
     "@shlinkio/shlink-js-sdk": "^0.1.0",
     "@shlinkio/shlink-web-component": "^0.3.4",
     "bootstrap": "5.2.3",

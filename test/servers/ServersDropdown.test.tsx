@@ -4,6 +4,7 @@ import { values } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {
@@ -13,8 +14,14 @@ describe('<ServersDropdown />', () => {
     '3c': fromPartial({ name: 'baz', id: '3c' }),
   };
   const setUp = (servers: ServersMap = fallbackServers) => renderWithEvents(
-    <MemoryRouter><ServersDropdown servers={servers} selectedServer={null} /></MemoryRouter>,
+    <MemoryRouter>
+      <ul>
+        <ServersDropdown servers={servers} selectedServer={null} />
+      </ul>
+    </MemoryRouter>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('contains the list of servers and the "mange servers" button', async () => {
     const { user } = setUp();

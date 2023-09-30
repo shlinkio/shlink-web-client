@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { ManageServersFactory } from '../../src/servers/ManageServers';
 import type { ServersExporter } from '../../src/servers/services/ServersExporter';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServers />', () => {
@@ -24,6 +25,12 @@ describe('<ManageServers />', () => {
   const setUp = (servers: ServersMap = {}) => renderWithEvents(
     <MemoryRouter><ManageServers servers={servers} /></MemoryRouter>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp({
+    foo: createServerMock('foo'),
+    bar: createServerMock('bar'),
+    baz: createServerMock('baz'),
+  })));
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
     const { user } = setUp({

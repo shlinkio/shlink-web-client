@@ -3,6 +3,7 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { UiSettings } from '../../src/settings/reducers/settings';
 import { UserInterfaceSettings } from '../../src/settings/UserInterfaceSettings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {
@@ -10,6 +11,8 @@ describe('<UserInterfaceSettings />', () => {
   const setUp = (ui?: UiSettings) => renderWithEvents(
     <UserInterfaceSettings settings={fromPartial({ ui })} setUiSettings={setUiSettings} />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [{ theme: 'dark' as Theme }, true],

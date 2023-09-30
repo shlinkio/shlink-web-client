@@ -2,6 +2,7 @@ import type { ShortUrlsListSettings as ShortUrlsSettings } from '@shlinkio/shlin
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsListSettings />', () => {
@@ -9,6 +10,8 @@ describe('<ShortUrlsListSettings />', () => {
   const setUp = (shortUrlsList?: ShortUrlsSettings) => renderWithEvents(
     <ShortUrlsListSettings settings={fromPartial({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [undefined, 'Order by: Created at - DESC'],

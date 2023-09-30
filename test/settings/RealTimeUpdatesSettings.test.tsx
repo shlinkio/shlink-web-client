@@ -2,6 +2,7 @@ import type { RealTimeUpdatesSettings as RealTimeUpdatesSettingsOptions } from '
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { RealTimeUpdatesSettings } from '../../src/settings/RealTimeUpdatesSettings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<RealTimeUpdatesSettings />', () => {
@@ -14,6 +15,8 @@ describe('<RealTimeUpdatesSettings />', () => {
       setRealTimeUpdatesInterval={setRealTimeUpdatesInterval}
     />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders enabled real time updates as expected', () => {
     setUp({ enabled: true });

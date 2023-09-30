@@ -70,10 +70,10 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
         <table className="table table-hover responsive-table mb-0">
           <thead className="responsive-table__header">
             <tr>
-              {hasAutoConnect && <th aria-label="Auto-connect" style={{ width: '50px' }} />}
+              {hasAutoConnect && <th style={{ width: '50px' }}><span className="sr-only">Auto-connect</span></th>}
               <th>Name</th>
               <th>Base URL</th>
-              <th aria-label="Options" />
+              <th><span className="sr-only">Options</span></th>
             </tr>
           </thead>
           <tbody>

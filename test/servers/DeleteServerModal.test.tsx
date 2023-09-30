@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { useNavigate } from 'react-router-dom';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 
@@ -29,6 +30,8 @@ describe('<DeleteServerModal />', () => {
       />,
     );
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders a modal window', () => {
     setUp();
