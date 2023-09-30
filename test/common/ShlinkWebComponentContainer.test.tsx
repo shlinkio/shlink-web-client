@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { useParams } from 'react-router-dom';
 import { ShlinkWebComponentContainerFactory } from '../../src/common/ShlinkWebComponentContainer';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 vi.mock('react-router-dom', async () => ({
   ...(await vi.importActual<any>('react-router-dom')),
@@ -23,6 +24,8 @@ describe('<ShlinkWebComponentContainer />', () => {
   beforeEach(() => {
     (useParams as any).mockReturnValue({ serverId: 'abc123' });
   });
+
+  it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 
   it('shows loading indicator while loading server', () => {
     setUp(null);

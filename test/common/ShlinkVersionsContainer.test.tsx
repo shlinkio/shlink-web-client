@@ -3,9 +3,10 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { ShlinkVersionsContainer } from '../../src/common/ShlinkVersionsContainer';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<ShlinkVersionsContainer />', () => {
-  const setUp = (activeRoute: string) => {
+  const setUp = (activeRoute: string = '') => {
     const history = createMemoryHistory();
     history.push(activeRoute);
 
@@ -15,6 +16,8 @@ describe('<ShlinkVersionsContainer />', () => {
       </Router>,
     );
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     ['/something', 'text-center'],

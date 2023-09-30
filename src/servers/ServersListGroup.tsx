@@ -21,9 +21,10 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
 
 export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, embedded = false }) => (
   <>
-    {children && <h5 className="mb-md-3">{children}</h5>}
+    {children && <div className="mb-0 fs-5 fw-normal lh-sm">{children}</div>}
     {servers.length > 0 && (
       <ListGroup
+        tag="div"
         className={classNames('servers-list__list-group', { 'servers-list__list-group--embedded': embedded })}
       >
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}

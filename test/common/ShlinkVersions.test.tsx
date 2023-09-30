@@ -3,9 +3,14 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import type { ShlinkVersionsProps } from '../../src/common/ShlinkVersions';
 import { ShlinkVersions } from '../../src/common/ShlinkVersions';
 import type { NonReachableServer, NotFoundServer, ReachableServer } from '../../src/servers/data';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<ShlinkVersions />', () => {
   const setUp = (props: ShlinkVersionsProps) => render(<ShlinkVersions {...props} />);
+
+  it('passes a11y checks', () => checkAccessibility(
+    setUp({ selectedServer: fromPartial({ version: '1.0.0', printableVersion: '1.0.0' }) }),
+  ));
 
   it.each([
     ['1.2.3', fromPartial<ReachableServer>({ version: '1.0.0', printableVersion: 'foo' }), 'v1.2.3', 'foo'],

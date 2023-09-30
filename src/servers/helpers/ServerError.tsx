@@ -36,17 +36,19 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
         </Message>
 
         <ServersListGroup servers={Object.values(servers)}>
-          These are the Shlink servers currently configured. Choose one of
-          them or <Link to="/server/create">add a new one</Link>.
+          <p className="mb-md-3">
+            These are the Shlink servers currently configured. Choose one of
+            them or <Link to="/server/create">add a new one</Link>.
+          </p>
         </ServersListGroup>
 
         {isServerWithId(selectedServer) && (
           <div className="container mt-3 mt-md-5">
-            <h5>
+            <p className="fs-5 fw-normal lh-sm">
               Alternatively, if you think you may have miss-configured this server, you
               can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove it</DeleteServerButton> or&nbsp;
               <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
-            </h5>
+            </p>
           </div>
         )}
       </div>

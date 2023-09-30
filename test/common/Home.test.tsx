@@ -3,6 +3,7 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import { Home } from '../../src/common/Home';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<Home />', () => {
   const setUp = (servers: ServersMap = {}) => render(
@@ -10,6 +11,10 @@ describe('<Home />', () => {
       <Home servers={servers} />
     </MemoryRouter>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(
+    setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) }),
+  ));
 
   it('renders title', () => {
     setUp();
