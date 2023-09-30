@@ -64,7 +64,7 @@
     "@total-typescript/shoehorn": "^0.1.1",
     "@types/ramda": "^0.27.66",
     "@types/react": "^18.2.23",
-    "@types/react-dom": "^18.2.7",
+    "@types/react-dom": "^18.2.8",
     "@types/uuid": "^9.0.4",
     "@vitejs/plugin-react": "^4.1.0",
     "@vitest/coverage-v8": "^0.34.5",
