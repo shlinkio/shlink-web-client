@@ -63,7 +63,7 @@
     "@testing-library/user-event": "^14.5.1",
     "@total-typescript/shoehorn": "^0.1.1",
     "@types/ramda": "^0.27.66",
-    "@types/react": "^18.2.22",
+    "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
     "@types/uuid": "^9.0.4",
     "@vitejs/plugin-react": "^4.0.4",
