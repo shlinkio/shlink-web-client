@@ -1,6 +1,5 @@
 import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isEmpty, values } from 'ramda';
 import { useEffect } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,8 +15,8 @@ interface HomeProps {
 
 export const Home = ({ servers }: HomeProps) => {
   const navigate = useNavigate();
-  const serversList = values(servers);
-  const hasServers = !isEmpty(serversList);
+  const serversList = Object.values(servers);
+  const hasServers = serversList.length > 0;
 
   useEffect(() => {
     // Try to redirect to the first server marked as auto-connect

@@ -1,7 +1,6 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
-import { complement } from 'ramda';
 import type { ChangeEvent, PropsWithChildren } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
@@ -27,8 +26,8 @@ type ImportServersBtnDeps = {
   ServersImporter: ServersImporter
 };
 
-const serversFiltering = (servers: ServerData[]) =>
-  ({ url, apiKey }: ServerData) => servers.some((server) => server.url === url && server.apiKey === apiKey);
+const serversInclude = (servers: ServerData[], { url, apiKey }: ServerData) =>
+  servers.some((server) => server.url === url && server.apiKey === apiKey);
 
 const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBtnDeps> = ({
   createServers,
@@ -56,7 +55,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
           serversToCreate.current = newServers;
 
           const existingServers = Object.values(servers);
-          const dupServers = newServers.filter(serversFiltering(existingServers));
+          const dupServers = newServers.filter((server) => serversInclude(existingServers, server));
           const hasDuplicatedServers = !!dupServers.length;
 
           !hasDuplicatedServers ? create(newServers) : setDuplicatedServers(dupServers);
@@ -75,7 +74,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
     hideModal();
   }, [create, hideModal, serversToCreate]);
   const createNonDuplicatedServers = useCallback(() => {
-    create(serversToCreate.current.filter(complement(serversFiltering(duplicatedServers))));
+    create(serversToCreate.current.filter((server) => !serversInclude(duplicatedServers, server)));
     hideModal();
   }, [create, duplicatedServers, hideModal]);
 

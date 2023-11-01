@@ -1,6 +1,5 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { values } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
@@ -28,7 +27,7 @@ describe('<ServersDropdown />', () => {
 
     await user.click(screen.getByText('Servers'));
     const items = screen.getAllByRole('menuitem');
-    expect(items).toHaveLength(values(fallbackServers).length + 1);
+    expect(items).toHaveLength(Object.values(fallbackServers).length + 1);
     expect(items[0]).toHaveTextContent('foo');
     expect(items[1]).toHaveTextContent('bar');
     expect(items[2]).toHaveTextContent('baz');

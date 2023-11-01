@@ -12,6 +12,9 @@ updates:
       fontawesome:
         patterns:
           - '@fortawesome*'
+      shlink:
+        patterns:
+          - '@shlinkio*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since the plan is to remove it anyway

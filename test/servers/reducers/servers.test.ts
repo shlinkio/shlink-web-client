@@ -1,5 +1,4 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { dissoc, values } from 'ramda';
 import type { RegularServer, ServersMap, ServerWithId } from '../../../src/servers/data';
 import {
   createServers,
@@ -101,17 +100,17 @@ describe('serversReducer', () => {
 
     describe('createServers', () => {
       it('returns expected action', () => {
-        const newServers = values(list);
+        const newServers = Object.values(list);
         const { payload } = createServers(newServers);
 
         expect(payload).toEqual(list);
       });
 
       it('generates an id for every provided server if they do not have it', () => {
-        const servers = values(list).map(dissoc('id'));
+        const servers = Object.values(list).map(({ id, ...rest }) => rest);
         const { payload } = createServers(servers);
 
-        expect(values(payload).every(({ id }) => !!id)).toEqual(true);
+        expect(Object.values(payload).every(({ id }) => !!id)).toEqual(true);
       });
     });
 
