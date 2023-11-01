@@ -1,5 +1,4 @@
 import type Bottle from 'bottlejs';
-import { prop } from 'ramda';
 import type { ConnectDecorator } from '../../container/types';
 import { CreateServerFactory } from '../CreateServer';
 import { DeleteServerButtonFactory } from '../DeleteServerButton';
@@ -70,5 +69,5 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
 
   // Reducers
   bottle.serviceFactory('selectedServerReducerCreator', selectedServerReducerCreator, 'selectServer');
-  bottle.serviceFactory('selectedServerReducer', prop('reducer'), 'selectedServerReducerCreator');
+  bottle.serviceFactory('selectedServerReducer', (obj) => obj.reducer, 'selectedServerReducerCreator');
 };

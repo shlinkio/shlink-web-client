@@ -1,9 +1,15 @@
 import { compare } from 'compare-versions';
-import { identity, isEmpty, isNil, memoizeWith } from 'ramda';
+import { memoizeWith } from 'ramda';
 
 export type Empty = null | undefined | '' | never[];
 
-const hasValue = <T>(value: T | Empty): value is T => !isNil(value) && !isEmpty(value);
+const isEmpty = (value: Exclude<any, undefined | null>): boolean => (
+  (Array.isArray(value) && value.length === 0)
+  || (typeof value === 'string' && value === '')
+  || (typeof value === 'object' && Object.keys(value).length === 0)
+);
+
+export const hasValue = <T>(value: T | Empty): value is T => value !== undefined && value !== null && !isEmpty(value);
 
 type SemVerPatternFragment = `${bigint | '*'}`;
 
@@ -29,7 +35,7 @@ export const versionMatch = (versionToMatch: SemVer | Empty, { maxVersion, minVe
   return matchesMaxVersion && matchesMinVersion;
 };
 
-const versionIsValidSemVer = memoizeWith(identity, (version: string): version is SemVer => {
+const versionIsValidSemVer = memoizeWith((v) => v, (version: string): version is SemVer => {
   try {
     return compare(version, version, '=');
   } catch (e) {
