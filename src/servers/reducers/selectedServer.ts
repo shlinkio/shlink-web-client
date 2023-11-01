@@ -1,6 +1,6 @@
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import type { ShlinkHealth } from '@shlinkio/shlink-web-component/api-contract';
-import { memoizeWith, pipe } from 'ramda';
+import { memoizeWith } from 'ramda';
 import type { ShlinkApiClientBuilder } from '../../api/services/ShlinkApiClientBuilder';
 import { createAsyncThunk } from '../../utils/helpers/redux';
 import { versionToPrintable, versionToSemVer as toSemVer } from '../../utils/helpers/version';
@@ -12,9 +12,9 @@ export const MIN_FALLBACK_VERSION = '1.0.0';
 export const MAX_FALLBACK_VERSION = '999.999.999';
 export const LATEST_VERSION_CONSTRAINT = 'latest';
 
-const versionToSemVer = pipe(
-  (version: string) => (version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version),
-  toSemVer(MIN_FALLBACK_VERSION),
+const versionToSemVer = (version: string) => toSemVer(
+  version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
+  MIN_FALLBACK_VERSION,
 );
 
 const getServerVersion = memoizeWith(

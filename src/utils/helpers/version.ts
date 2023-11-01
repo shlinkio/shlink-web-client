@@ -39,5 +39,6 @@ const versionIsValidSemVer = memoizeWith(identity, (version: string): version is
 
 export const versionToPrintable = (version: string) => (!versionIsValidSemVer(version) ? version : `v${version}`);
 
-export const versionToSemVer = (defaultValue: SemVer = 'latest') =>
-  (version: string): SemVer => (versionIsValidSemVer(version) ? version : defaultValue);
+export const versionToSemVer = (version: string, fallback: SemVer = 'latest'): SemVer => (
+  versionIsValidSemVer(version) ? version : fallback
+);
