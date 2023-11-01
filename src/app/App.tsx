@@ -1,5 +1,5 @@
 import { changeThemeInMarkup } from '@shlinkio/shlink-frontend-kit';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
@@ -66,7 +66,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
       <MainHeader />
 
       <div className="app">
-        <div className={classNames('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
+        <div className={clsx('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
           <Routes>
             <Route index element={<Home />} />
             <Route path="/settings/*" element={<Settings />} />

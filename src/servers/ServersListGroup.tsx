@@ -1,6 +1,6 @@
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroup, ListGroupItem } from 'reactstrap';
@@ -26,7 +26,7 @@ export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children,
       <ListGroup
         data-testid="list"
         tag="div"
-        className={classNames('servers-list__list-group', { 'servers-list__list-group--embedded': embedded })}
+        className={clsx('servers-list__list-group', { 'servers-list__list-group--embedded': embedded })}
       >
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
       </ListGroup>

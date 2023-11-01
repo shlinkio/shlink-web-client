@@ -1,4 +1,4 @@
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import type { SelectedServer } from '../servers/data';
@@ -15,7 +15,7 @@ export const ShlinkVersionsContainer = ({ selectedServer }: ShlinkVersionsContai
   const { pathname } = useLocation();
   const withPadding = useMemo(() => SHLINK_CONTAINER_PATH_PATTERN.test(pathname), [pathname]);
 
-  const classes = classNames('text-center', {
+  const classes = clsx('text-center', {
     'shlink-versions-container--with-sidebar': withPadding,
   });
 

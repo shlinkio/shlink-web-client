@@ -1,7 +1,7 @@
 import { faChevronDown as arrowIcon, faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
-import classNames from 'classnames';
+import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
@@ -25,7 +25,7 @@ const MainHeader: FCWithDeps<{}, MainHeaderDeps> = () => {
   useEffect(collapse, [location, collapse]);
 
   const settingsPath = '/settings';
-  const toggleClass = classNames('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isNotCollapsed });
+  const toggleClass = clsx('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isNotCollapsed });
 
   return (
     <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
