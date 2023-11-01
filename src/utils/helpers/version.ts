@@ -1,5 +1,5 @@
+import { memoizeWith } from '@shlinkio/data-manipulation';
 import { compare } from 'compare-versions';
-import { memoizeWith } from 'ramda';
 
 export type Empty = null | undefined | '' | never[];
 
