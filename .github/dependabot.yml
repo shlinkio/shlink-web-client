@@ -11,10 +11,25 @@ updates:
     groups:
       fontawesome:
         patterns:
-          - '@fortawesome*'
+          - '@fortawesome/*'
       shlink:
         patterns:
-          - '@shlinkio*'
+          - '@shlinkio/*'
+      types:
+        patterns:
+          - '@types/*'
+      testing:
+        patterns:
+          - '@testing-library/*'
+      vite:
+        patterns:
+          - 'vite'
+          - '@vitejs/*'
+      vitest:
+        patterns:
+          - 'vitest'
+          - 'vitest-canvas-mock'
+          - '@vitest/*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since the plan is to remove it anyway
