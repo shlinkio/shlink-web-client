@@ -1,4 +1,3 @@
-import 'vitest-canvas-mock';
 import '@testing-library/jest-dom/vitest';
 import { cleanup } from '@testing-library/react';
 import axe from 'axe-core';
@@ -20,4 +19,5 @@ afterEach(() => {
   cleanup();
 });
 
+HTMLCanvasElement.prototype.getContext = (() => {}) as any;
 (global as any).scrollTo = () => {};
