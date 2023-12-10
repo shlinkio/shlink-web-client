@@ -1729,11 +1729,11 @@ const Se = "shlink-web-client", We = "A React-based progressive web application 
   "@fortawesome/free-solid-svg-icons": "^6.5.1",
   "@fortawesome/react-fontawesome": "^0.2.0",
   "@json2csv/plainjs": "^7.0.3",
-  "@reduxjs/toolkit": "^1.9.7",
+  "@reduxjs/toolkit": "^2.0.1",
   "@shlinkio/data-manipulation": "^1.0.2",
   "@shlinkio/shlink-frontend-kit": "^0.4.0",
   "@shlinkio/shlink-js-sdk": "^0.2.0",
-  "@shlinkio/shlink-web-component": "^0.4.0",
+  "@shlinkio/shlink-web-component": "^0.4.1",
   bootstrap: "5.2.3",
   bottlejs: "^2.0.1",
   clsx: "^2.0.0",
@@ -1743,8 +1743,8 @@ const Se = "shlink-web-client", We = "A React-based progressive web application 
   react: "^18.2.0",
   "react-dom": "^18.2.0",
   "react-external-link": "^2.2.0",
-  "react-redux": "^8.1.3",
-  "react-router-dom": "^6.20.0",
+  "react-redux": "^9.0.2",
+  "react-router-dom": "^6.20.1",
   reactstrap: "^9.2.1",
   "redux-localstorage-simple": "^2.5.1",
   uuid: "^9.0.1",
@@ -1764,20 +1764,19 @@ const Se = "shlink-web-client", We = "A React-based progressive web application 
   "@types/react-dom": "^18.2.17",
   "@types/uuid": "^9.0.7",
   "@vitejs/plugin-react": "^4.2.0",
-  "@vitest/coverage-v8": "^0.34.6",
+  "@vitest/coverage-v8": "^1.0.4",
   "adm-zip": "^0.5.10",
   "axe-core": "^4.8.2",
   chalk: "^5.3.0",
   eslint: "^8.54.0",
   history: "^5.3.0",
-  jsdom: "^22.1.0",
+  jsdom: "^23.0.1",
   sass: "^1.69.5",
   stylelint: "^15.11.0",
-  typescript: "^5.3.2",
+  typescript: "^5.3.3",
   vite: "^5.0.5",
   "vite-plugin-pwa": "^0.17.4",
-  vitest: "^0.34.6",
-  "vitest-canvas-mock": "^0.3.3"
+  vitest: "^1.0.4"
 }, Ge = [
   ">0.2%",
   "not dead",
@@ -1796,7 +1795,7 @@ const Se = "shlink-web-client", We = "A React-based progressive web application 
   browserslist: Ge
 };
 ae();
-Ae([{"revision":null,"url":"assets/index-7lg-zxJa.css"},{"revision":null,"url":"assets/index-WLFqMXAS.js"},{"revision":"6fe949329f496376a4952e19b6adaf77","url":"index.html"},{"revision":"3e8169a112865ef0d76bba4e2dfd3a89","url":"./icons/icon-16x16.png"},{"revision":"20f0b51945ae3c973420e31d6b4d43c1","url":"./icons/icon-24x24.png"},{"revision":"4c9695cfb4cea403c1b66bbb7b4f7420","url":"./icons/icon-32x32.png"},{"revision":"f74edb9cc54ac938c1589876f8da9f21","url":"./icons/icon-40x40.png"},{"revision":"52933970fac8498311687de13549b014","url":"./icons/icon-48x48.png"},{"revision":"40209a194f29b21882571c77bd2bd906","url":"./icons/icon-60x60.png"},{"revision":"c8ba5a8c1da76d74c7bb21827fcf975c","url":"./icons/icon-64x64.png"},{"revision":"ae3435baceb494f9c966e2c2c736ea35","url":"./icons/icon-72x72.png"},{"revision":"850aa5b026fd1452af6c1ddd9d71850f","url":"./icons/icon-76x76.png"},{"revision":"8c62535e6b7a498ece1f6c6ae62ede59","url":"./icons/icon-96x96.png"},{"revision":"2dff586aaefa4c8d17f4c0bcbdef8b53","url":"./icons/icon-114x114.png"},{"revision":"8e28257a68ef1c55bc68bfff80e1a310","url":"./icons/icon-120x120.png"},{"revision":"0059b6f0c97fa871a5c29643b2857585","url":"./icons/icon-128x128.png"},{"revision":"41478c2456281f61e54d714718743ecc","url":"./icons/icon-144x144.png"},{"revision":"625251910295f33a578ae6d8117711c9","url":"./icons/icon-150x150.png"},{"revision":"19b71508b1d05defe32cf16a7d453001","url":"./icons/icon-152x152.png"},{"revision":"9d029a32a54ba3084c67acd5d74f8ac4","url":"./icons/icon-160x160.png"},{"revision":"6ec104aeaf745f003ecdaef2edddce97","url":"./icons/icon-167x167.png"},{"revision":"871d67907434ed0ddf5d2a6c220e09af","url":"./icons/icon-180x180.png"},{"revision":"cee2529402074d73b2135e2ddee25f6b","url":"./icons/icon-192x192.png"},{"revision":"85055b452284c0193142936dee7d2cd1","url":"./icons/icon-196x196.png"},{"revision":"f471155dd70b99924422dd9dd87ea94d","url":"./icons/icon-228x228.png"},{"revision":"4d896c5c7025582605de31fb74f0316b","url":"./icons/icon-256x256.png"},{"revision":"d99b49e5bcad41968313c3e132e7c661","url":"./icons/icon-310x310.png"},{"revision":"f9597636bef677327c3abc0fd1a743c4","url":"./icons/icon-384x384.png"},{"revision":"de22c0eb9e08d3576df5cedb568ca56b","url":"./icons/icon-512x512.png"},{"revision":"583b223ad8e20f05aaa64923d7db2e46","url":"./icons/icon-1024x1024.png"},{"revision":"3b59bde722ca304fb1fd76129ece0be8","url":"manifest.json"}]);
+Ae([{"revision":null,"url":"assets/index-n4jr-iLJ.js"},{"revision":null,"url":"assets/index-oITpymb_.css"},{"revision":"e006191d0d144a627f4c1c9351174d20","url":"index.html"},{"revision":"3e8169a112865ef0d76bba4e2dfd3a89","url":"./icons/icon-16x16.png"},{"revision":"20f0b51945ae3c973420e31d6b4d43c1","url":"./icons/icon-24x24.png"},{"revision":"4c9695cfb4cea403c1b66bbb7b4f7420","url":"./icons/icon-32x32.png"},{"revision":"f74edb9cc54ac938c1589876f8da9f21","url":"./icons/icon-40x40.png"},{"revision":"52933970fac8498311687de13549b014","url":"./icons/icon-48x48.png"},{"revision":"40209a194f29b21882571c77bd2bd906","url":"./icons/icon-60x60.png"},{"revision":"c8ba5a8c1da76d74c7bb21827fcf975c","url":"./icons/icon-64x64.png"},{"revision":"ae3435baceb494f9c966e2c2c736ea35","url":"./icons/icon-72x72.png"},{"revision":"850aa5b026fd1452af6c1ddd9d71850f","url":"./icons/icon-76x76.png"},{"revision":"8c62535e6b7a498ece1f6c6ae62ede59","url":"./icons/icon-96x96.png"},{"revision":"2dff586aaefa4c8d17f4c0bcbdef8b53","url":"./icons/icon-114x114.png"},{"revision":"8e28257a68ef1c55bc68bfff80e1a310","url":"./icons/icon-120x120.png"},{"revision":"0059b6f0c97fa871a5c29643b2857585","url":"./icons/icon-128x128.png"},{"revision":"41478c2456281f61e54d714718743ecc","url":"./icons/icon-144x144.png"},{"revision":"625251910295f33a578ae6d8117711c9","url":"./icons/icon-150x150.png"},{"revision":"19b71508b1d05defe32cf16a7d453001","url":"./icons/icon-152x152.png"},{"revision":"9d029a32a54ba3084c67acd5d74f8ac4","url":"./icons/icon-160x160.png"},{"revision":"6ec104aeaf745f003ecdaef2edddce97","url":"./icons/icon-167x167.png"},{"revision":"871d67907434ed0ddf5d2a6c220e09af","url":"./icons/icon-180x180.png"},{"revision":"cee2529402074d73b2135e2ddee25f6b","url":"./icons/icon-192x192.png"},{"revision":"85055b452284c0193142936dee7d2cd1","url":"./icons/icon-196x196.png"},{"revision":"f471155dd70b99924422dd9dd87ea94d","url":"./icons/icon-228x228.png"},{"revision":"4d896c5c7025582605de31fb74f0316b","url":"./icons/icon-256x256.png"},{"revision":"d99b49e5bcad41968313c3e132e7c661","url":"./icons/icon-310x310.png"},{"revision":"f9597636bef677327c3abc0fd1a743c4","url":"./icons/icon-384x384.png"},{"revision":"de22c0eb9e08d3576df5cedb568ca56b","url":"./icons/icon-512x512.png"},{"revision":"583b223ad8e20f05aaa64923d7db2e46","url":"./icons/icon-1024x1024.png"},{"revision":"3b59bde722ca304fb1fd76129ece0be8","url":"manifest.json"}]);
 const ze = new RegExp("/[^/?]+\\.[^/]+$");
 M(
   // Return false to exempt requests from being fulfilled by index.html.
