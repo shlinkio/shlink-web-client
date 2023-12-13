@@ -29,13 +29,12 @@ ShlinkWebComponentContainerDeps
     ShlinkWebComponent,
     ServerError,
   } = useDependencies(ShlinkWebComponentContainer);
-  const selectedServerIsReachable = isReachableServer(selectedServer);
-  const routesPrefix = selectedServerIsReachable ? `/server/${selectedServer.id}` : '';
 
-  if (!selectedServerIsReachable) {
+  if (!isReachableServer(selectedServer)) {
     return <ServerError />;
   }
 
+  const routesPrefix = `/server/${selectedServer.id}`;
   return (
     <ShlinkWebComponent
       serverVersion={selectedServer.version}
