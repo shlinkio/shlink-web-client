@@ -1,20 +1,15 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { EditServerFactory } from '../../src/servers/EditServer';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual<any>('react-router-dom')),
-  useNavigate: vi.fn(),
-}));
-
 describe('<EditServer />', () => {
   const ServerError = vi.fn();
   const editServerMock = vi.fn();
-  const navigate = vi.fn();
   const defaultSelectedServer = fromPartial<ReachableServer>({
     id: 'abc123',
     name: 'the_name',
@@ -22,15 +17,17 @@ describe('<EditServer />', () => {
     apiKey: 'the_api_key',
   });
   const EditServer = EditServerFactory(fromPartial({ ServerError }));
-  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => renderWithEvents(
-    <MemoryRouter>
-      <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />
-    </MemoryRouter>,
-  );
-
-  beforeEach(() => {
-    (useNavigate as any).mockReturnValue(navigate);
-  });
+  const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => {
+    const history = createMemoryHistory({ initialEntries: ['/foo', '/bar'] });
+    return {
+      history,
+      ...renderWithEvents(
+        <Router location={history.location} navigator={history}>
+          <EditServer editServer={editServerMock} selectedServer={selectedServer} selectServer={vi.fn()} />
+        </Router>,
+      ),
+    };
+  };
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
@@ -56,7 +53,7 @@ describe('<EditServer />', () => {
   });
 
   it('edits server and redirects to it when form is submitted', async () => {
-    const { user } = setUp();
+    const { user, history } = setUp();
 
     await user.type(screen.getByDisplayValue('the_name'), ' edited');
     await user.type(screen.getByDisplayValue('the_url'), ' edited');
@@ -69,6 +66,8 @@ describe('<EditServer />', () => {
       url: 'the_url edited',
       apiKey: 'the_api_key',
     });
-    expect(navigate).toHaveBeenCalledWith(-1);
+
+    // After saving we go back, to the first route from history's initialEntries
+    expect(history.location.pathname).toEqual('/foo');
   });
 });

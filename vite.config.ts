@@ -28,6 +28,7 @@ export default defineConfig({
   // Vitest config
   test: {
     globals: true,
+    allowOnly: true,
     environment: 'jsdom',
     setupFiles: './config/test/setupTests.ts',
     coverage: {

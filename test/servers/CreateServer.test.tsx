@@ -1,15 +1,11 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { useNavigate } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import { CreateServerFactory } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
-
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual<any>('react-router-dom')),
-  useNavigate: vi.fn(),
-}));
 
 type SetUpOptions = {
   serversImported?: boolean;
@@ -19,13 +15,10 @@ type SetUpOptions = {
 
 describe('<CreateServer />', () => {
   const createServersMock = vi.fn();
-  const navigate = vi.fn();
   const defaultServers: ServersMap = {
     foo: fromPartial({ url: 'https://existing_url.com', apiKey: 'existing_api_key' }),
   };
   const setUp = ({ serversImported = false, importFailed = false, servers = defaultServers }: SetUpOptions = {}) => {
-    (useNavigate as any).mockReturnValue(navigate);
-
     let callCount = 0;
     const useTimeoutToggle = vi.fn().mockImplementation(() => {
       const result = [callCount % 2 === 0 ? serversImported : importFailed, () => null];
@@ -36,8 +29,16 @@ describe('<CreateServer />', () => {
       ImportServersBtn: () => <>ImportServersBtn</>,
       useTimeoutToggle,
     }));
+    const history = createMemoryHistory({ initialEntries: ['/foo', '/bar'] });
 
-    return renderWithEvents(<CreateServer createServers={createServersMock} servers={servers} />);
+    return {
+      history,
+      ...renderWithEvents(
+        <Router location={history.location} navigator={history}>
+          <CreateServer createServers={createServersMock} servers={servers} />
+        </Router>,
+      ),
+    };
   };
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
@@ -67,7 +68,7 @@ describe('<CreateServer />', () => {
   });
 
   it('creates server data when form is submitted', async () => {
-    const { user } = setUp();
+    const { user, history } = setUp();
 
     expect(createServersMock).not.toHaveBeenCalled();
 
@@ -81,12 +82,12 @@ describe('<CreateServer />', () => {
       url: 'https://the_url.com',
       apiKey: 'the_api_key',
     })]);
-    expect(navigate).toHaveBeenCalledWith(expect.stringMatching(/^\/server\//));
+    expect(history.location.pathname).toEqual(expect.stringMatching(/^\/server\//));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('displays dialog when trying to create a duplicated server', async () => {
-    const { user } = setUp();
+    const { user, history } = setUp();
 
     await user.type(screen.getByLabelText(/^Name/), 'the_name');
     await user.type(screen.getByLabelText(/^URL/), 'https://existing_url.com');
@@ -97,6 +98,6 @@ describe('<CreateServer />', () => {
     await user.click(screen.getByRole('button', { name: 'Discard' }));
 
     expect(createServersMock).not.toHaveBeenCalled();
-    expect(navigate).toHaveBeenCalledWith(-1);
+    expect(history.location.pathname).toEqual('/foo'); // Goes back to first route from history's initialEntries
   });
 });
