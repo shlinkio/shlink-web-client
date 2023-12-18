@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * [#338](https://github.com/shlinkio/shlink-web-client/issues/338) Extract `@shlinkio/shlink-web-component` and `@shlinkio/shlink-frontend-kit` as external libs.
+* [#978](https://github.com/shlinkio/shlink-web-client/issues/978) Use system preferred theme as default theme.
 * Use API client from `@shlinkio/shlink-js-sdk` to consume Shlink servers.
 * [#902](https://github.com/shlinkio/shlink-web-client/pull/902) Docker image is no longer running as root. As a side effect, exposed port is `8080`, not `80` anymore.
 

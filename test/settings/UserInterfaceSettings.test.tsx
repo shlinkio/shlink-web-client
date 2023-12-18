@@ -1,4 +1,3 @@
-import type { Theme } from '@shlinkio/shlink-frontend-kit';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { UiSettings } from '../../src/settings/reducers/settings';
@@ -8,18 +7,25 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<UserInterfaceSettings />', () => {
   const setUiSettings = vi.fn();
-  const setUp = (ui?: UiSettings) => renderWithEvents(
-    <UserInterfaceSettings settings={fromPartial({ ui })} setUiSettings={setUiSettings} />,
+  const setUp = (ui?: UiSettings, defaultDarkTheme = false) => renderWithEvents(
+    <UserInterfaceSettings
+      settings={fromPartial({ ui })}
+      setUiSettings={setUiSettings}
+      _matchMedia={vi.fn().mockReturnValue({ matches: defaultDarkTheme })}
+    />,
   );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
-    [{ theme: 'dark' as Theme }, true],
-    [{ theme: 'light' as Theme }, false],
-    [undefined, false],
-  ])('toggles switch if theme is dark', (ui, expectedChecked) => {
-    setUp(ui);
+    [{ theme: 'dark' as const }, true, true],
+    [{ theme: 'dark' as const }, false, true],
+    [{ theme: 'light' as const }, true, false],
+    [{ theme: 'light' as const }, false, false],
+    [undefined, false, false],
+    [undefined, true, true],
+  ])('toggles switch if theme is dark', (ui, defaultDarkTheme, expectedChecked) => {
+    setUp(ui, defaultDarkTheme);
 
     if (expectedChecked) {
       expect(screen.getByLabelText('Use dark theme.')).toBeChecked();
@@ -29,8 +35,8 @@ describe('<UserInterfaceSettings />', () => {
   });
 
   it.each([
-    [{ theme: 'dark' as Theme }],
-    [{ theme: 'light' as Theme }],
+    [{ theme: 'dark' as const }],
+    [{ theme: 'light' as const }],
     [undefined],
   ])('shows different icons based on theme', (ui) => {
     setUp(ui);
@@ -38,8 +44,8 @@ describe('<UserInterfaceSettings />', () => {
   });
 
   it.each([
-    ['light' as Theme, 'dark' as Theme],
-    ['dark' as Theme, 'light' as Theme],
+    ['light' as const, 'dark' as const],
+    ['dark' as const, 'light' as const],
   ])('invokes setUiSettings when theme toggle value changes', async (initialTheme, expectedTheme) => {
     const { user } = setUp({ theme: initialTheme });
 

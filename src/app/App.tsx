@@ -1,4 +1,4 @@
-import { changeThemeInMarkup } from '@shlinkio/shlink-frontend-kit';
+import { changeThemeInMarkup, getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
@@ -58,7 +58,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
   }, [fetchServers]);
 
   useEffect(() => {
-    changeThemeInMarkup(settings.ui?.theme ?? 'light');
+    changeThemeInMarkup(settings.ui?.theme ?? getSystemPreferredTheme());
   }, [settings.ui?.theme]);
 
   return (

@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { AppFactory } from '../../src/app/App';
 import { checkAccessibility } from '../__helpers__/accessibility';
 
@@ -18,22 +17,17 @@ describe('<App />', () => {
       ShlinkVersionsContainer: () => <>ShlinkVersions</>,
     }),
   );
-  const setUp = (activeRoute = '/') => {
-    const history = createMemoryHistory();
-    history.push(activeRoute);
-
-    return render(
-      <Router location={history.location} navigator={history}>
-        <App
-          fetchServers={() => {}}
-          servers={{}}
-          settings={fromPartial({})}
-          appUpdated
-          resetAppUpdate={() => {}}
-        />
-      </Router>,
-    );
-  };
+  const setUp = (activeRoute = '/') => render(
+    <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
+      <App
+        fetchServers={() => {}}
+        servers={{}}
+        settings={fromPartial({})}
+        appUpdated
+        resetAppUpdate={() => {}}
+      />
+    </MemoryRouter>,
+  );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
