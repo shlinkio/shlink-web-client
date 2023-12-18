@@ -20,7 +20,7 @@ jobs:
       - name: Build
         run: |
           npm ci && \
-          node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
+          node ./scripts/set-homepage.cjs /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
           npm run build
       - name: Deploy preview
         uses: shlinkio/deploy-preview-action@v1.0.1

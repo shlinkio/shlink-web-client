@@ -21,3 +21,4 @@ afterEach(() => {
 
 HTMLCanvasElement.prototype.getContext = (() => {}) as any;
 (global as any).scrollTo = () => {};
+(global as any).matchMedia = () => ({ matches: false });

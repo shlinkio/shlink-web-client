@@ -2,6 +2,7 @@ import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { mergeDeepRight } from '@shlinkio/data-manipulation';
 import type { Theme } from '@shlinkio/shlink-frontend-kit';
+import { getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
 import type {
   Settings,
   ShortUrlCreationSettings,
@@ -34,7 +35,7 @@ const initialState: AppSettings = {
     validateUrls: false,
   },
   ui: {
-    theme: 'light',
+    theme: getSystemPreferredTheme(),
   },
   visits: {
     defaultInterval: 'last30Days',
