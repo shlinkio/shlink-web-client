@@ -1,14 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { useParams } from 'react-router-dom';
 import { ShlinkWebComponentContainerFactory } from '../../src/common/ShlinkWebComponentContainer';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
-
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual<any>('react-router-dom')),
-  useParams: vi.fn(),
-}));
+import { MemoryRouterWithParams } from '../__helpers__/MemoryRouterWithParams';
 
 describe('<ShlinkWebComponentContainer />', () => {
   const ShlinkWebComponentContainer = ShlinkWebComponentContainerFactory(fromPartial({
@@ -18,12 +13,10 @@ describe('<ShlinkWebComponentContainer />', () => {
     ServerError: () => <>ServerError</>,
   }));
   const setUp = (selectedServer: SelectedServer) => render(
-    <ShlinkWebComponentContainer selectServer={vi.fn()} selectedServer={selectedServer} settings={{}} />,
+    <MemoryRouterWithParams params={{ serverId: 'abc123' }}>
+      <ShlinkWebComponentContainer selectServer={vi.fn()} selectedServer={selectedServer} settings={{}} />
+    </MemoryRouterWithParams>,
   );
-
-  beforeEach(() => {
-    (useParams as any).mockReturnValue({ serverId: 'abc123' });
-  });
 
   it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 
