@@ -1,5 +1,6 @@
 import type { Settings, ShlinkWebComponentType, TagColorsStorage } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
+import { memo } from 'react';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -22,7 +23,11 @@ type ShlinkWebComponentContainerDeps = {
 const ShlinkWebComponentContainer: FCWithDeps<
 ShlinkWebComponentContainerProps,
 ShlinkWebComponentContainerDeps
-> = withSelectedServer(({ selectedServer, settings }) => {
+// FIXME Using `memo` here to solve a flickering effect in charts.
+//       memo is probably not the right solution. The root cause is the withSelectedServer HOC, but I couldn't fix the
+//       extra rendering there.
+//       This should be revisited at some point.
+> = withSelectedServer(memo(({ selectedServer, settings }) => {
   const {
     buildShlinkApiClient,
     TagColorsStorage: tagColorsStorage,
@@ -47,7 +52,7 @@ ShlinkWebComponentContainerDeps
       )}
     />
   );
-});
+}));
 
 export const ShlinkWebComponentContainerFactory = componentFactory(ShlinkWebComponentContainer, [
   'buildShlinkApiClient',
