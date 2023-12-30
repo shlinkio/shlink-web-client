@@ -38,7 +38,7 @@
     "@shlinkio/shlink-web-component": "^0.4.1",
     "bootstrap": "5.2.3",
     "bottlejs": "^2.0.1",
-    "clsx": "^2.0.0",
+    "clsx": "^2.1.0",
     "compare-versions": "^6.1.0",
     "csvtojson": "^2.0.10",
     "date-fns": "^3.0.6",
