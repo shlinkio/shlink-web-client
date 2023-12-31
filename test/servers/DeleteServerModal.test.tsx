@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
@@ -10,37 +10,36 @@ import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 describe('<DeleteServerModal />', () => {
   const deleteServerMock = vi.fn();
   const serverName = 'the_server_name';
-  const setUp = () => {
+  const setUp = async () => {
     const history = createMemoryHistory({ initialEntries: ['/foo'] });
-    return {
-      history,
-      ...renderWithEvents(
-        <Router location={history.location} navigator={history}>
-          <TestModalWrapper
-            renderModal={(args) => (
-              <DeleteServerModal
-                {...args}
-                server={fromPartial({ name: serverName })}
-                deleteServer={deleteServerMock}
-              />
-            )}
-          />
-        </Router>,
-      ),
-    };
+    const result = await act(() => renderWithEvents(
+      <Router location={history.location} navigator={history}>
+        <TestModalWrapper
+          renderModal={(args) => (
+            <DeleteServerModal
+              {...args}
+              server={fromPartial({ name: serverName })}
+              deleteServer={deleteServerMock}
+            />
+          )}
+        />
+      </Router>,
+    ));
+
+    return { history, ...result };
   };
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders a modal window', () => {
-    setUp();
+  it('renders a modal window', async () => {
+    await setUp();
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByRole('heading')).toHaveTextContent('Remove server');
   });
 
-  it('displays the name of the server as part of the content', () => {
-    setUp();
+  it('displays the name of the server as part of the content', async () => {
+    await setUp();
 
     expect(screen.getByText(/^Are you sure you want to remove/)).toBeInTheDocument();
     expect(screen.getByText(serverName)).toBeInTheDocument();
@@ -50,7 +49,7 @@ describe('<DeleteServerModal />', () => {
     [() => screen.getByRole('button', { name: 'Cancel' })],
     [() => screen.getByLabelText('Close')],
   ])('toggles when clicking cancel button', async (getButton) => {
-    const { user, history } = setUp();
+    const { user, history } = await setUp();
 
     expect(history.location.pathname).toEqual('/foo');
     await user.click(getButton());
@@ -60,7 +59,7 @@ describe('<DeleteServerModal />', () => {
   });
 
   it('deletes server when clicking accept button', async () => {
-    const { user, history } = setUp();
+    const { user, history } = await setUp();
 
     expect(deleteServerMock).not.toHaveBeenCalled();
     expect(history.location.pathname).toEqual('/foo');
