@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import { AppFactory } from '../../src/app/App';
@@ -17,26 +17,25 @@ describe('<App />', () => {
       ShlinkVersionsContainer: () => <>ShlinkVersions</>,
     }),
   );
-  const setUp = (activeRoute = '/') => render(
+  const setUp = async (activeRoute = '/') => act(() => render(
     <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
       <App
         fetchServers={() => {}}
         servers={{}}
         settings={fromPartial({})}
-        appUpdated
+        appUpdated={false}
         resetAppUpdate={() => {}}
       />
     </MemoryRouter>,
-  );
+  ));
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders children components', () => {
-    setUp();
+  it('renders children components', async () => {
+    await setUp();
 
     expect(screen.getByText('MainHeader')).toBeInTheDocument();
     expect(screen.getByText('ShlinkVersions')).toBeInTheDocument();
-    expect(screen.getByText('This app has just been updated!')).toBeInTheDocument();
   });
 
   it.each([
@@ -50,16 +49,16 @@ describe('<App />', () => {
     ['/server/def456/bar', 'ShlinkWebComponentContainer'],
     ['/other', 'Oops! We could not find requested route.'],
   ])('renders expected route', async (activeRoute, expectedComponent) => {
-    setUp(activeRoute);
-    expect(await screen.findByText(expectedComponent)).toBeInTheDocument();
+    await setUp(activeRoute);
+    expect(screen.getByText(expectedComponent)).toBeInTheDocument();
   });
 
   it.each([
     ['/foo', 'shlink-wrapper'],
     ['/bar', 'shlink-wrapper'],
     ['/', 'shlink-wrapper d-flex d-md-block align-items-center'],
-  ])('renders expected classes on shlink-wrapper based on current pathname', (pathname, expectedClasses) => {
-    const { container } = setUp(pathname);
+  ])('renders expected classes on shlink-wrapper based on current pathname', async (pathname, expectedClasses) => {
+    const { container } = await setUp(pathname);
     const shlinkWrapper = container.querySelector('.shlink-wrapper');
 
     expect(shlinkWrapper).toHaveAttribute('class', expectedClasses);
