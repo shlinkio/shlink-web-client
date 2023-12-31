@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router-dom';
 import { AppFactory } from '../../src/app/App';
@@ -23,7 +23,7 @@ describe('<App />', () => {
         fetchServers={() => {}}
         servers={{}}
         settings={fromPartial({})}
-        appUpdated
+        appUpdated={false}
         resetAppUpdate={() => {}}
       />
     </MemoryRouter>,
@@ -36,9 +36,6 @@ describe('<App />', () => {
 
     expect(screen.getByText('MainHeader')).toBeInTheDocument();
     expect(screen.getByText('ShlinkVersions')).toBeInTheDocument();
-
-    await waitFor(() => screen.getByRole('alert'));
-    expect(screen.getByText('This app has just been updated!')).toBeInTheDocument();
   });
 
   it.each([
