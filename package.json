@@ -47,7 +47,7 @@
     "react-external-link": "^2.2.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.21.2",
-    "reactstrap": "^9.2.1",
+    "reactstrap": "^9.2.2",
     "redux-localstorage-simple": "^2.5.1",
     "uuid": "^9.0.1",
     "workbox-core": "^7.0.0",
