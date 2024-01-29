@@ -1,16 +1,19 @@
-import { screen } from '@testing-library/react';
+import { act, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {
   const onDiscard = vi.fn();
   const onSave = vi.fn();
-  const setUp = (duplicatedServers: ServerData[] = []) => renderWithEvents(
+  const setUp = (duplicatedServers: ServerData[] = []) => act(() => renderWithEvents(
     <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
-  );
+  ));
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [[], 0],
@@ -18,8 +21,8 @@ describe('<DuplicatedServersModal />', () => {
     [[mockServer(), mockServer()], 2],
     [[mockServer(), mockServer(), mockServer()], 3],
     [[mockServer(), mockServer(), mockServer(), mockServer()], 4],
-  ])('renders expected amount of items', (duplicatedServers, expectedItems) => {
-    setUp(duplicatedServers);
+  ])('renders expected amount of items', async (duplicatedServers, expectedItems) => {
+    await setUp(duplicatedServers);
     expect(screen.queryAllByRole('listitem')).toHaveLength(expectedItems);
   });
 
@@ -39,11 +42,11 @@ describe('<DuplicatedServersModal />', () => {
         header: 'Duplicated servers',
         firstParagraph: 'The next servers already exist:',
         lastParagraph: 'Do you want to ignore duplicated servers?',
-        discardBtn: 'Ignore duplicated',
+        discardBtn: 'Ignore duplicates',
       },
     ],
-  ])('renders expected texts based on amount of servers', (duplicatedServers, assertions) => {
-    setUp(duplicatedServers);
+  ])('renders expected texts based on amount of servers', async (duplicatedServers, assertions) => {
+    await setUp(duplicatedServers);
 
     expect(screen.getByRole('heading')).toHaveTextContent(assertions.header);
     expect(screen.getByText(assertions.firstParagraph)).toBeInTheDocument();
@@ -58,8 +61,8 @@ describe('<DuplicatedServersModal />', () => {
       mockServer({ url: 'url_1', apiKey: 'apiKey_1' }),
       mockServer({ url: 'url_2', apiKey: 'apiKey_2' }),
     ]],
-  ])('displays provided server data', (duplicatedServers) => {
-    setUp(duplicatedServers);
+  ])('displays provided server data', async (duplicatedServers) => {
+    await setUp(duplicatedServers);
 
     if (duplicatedServers.length === 0) {
       expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
@@ -78,7 +81,7 @@ describe('<DuplicatedServersModal />', () => {
   });
 
   it('invokes onDiscard when appropriate button is clicked', async () => {
-    const { user } = setUp();
+    const { user } = await setUp();
 
     expect(onDiscard).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Discard' }));
@@ -86,7 +89,7 @@ describe('<DuplicatedServersModal />', () => {
   });
 
   it('invokes onSave when appropriate button is clicked', async () => {
-    const { user } = setUp();
+    const { user } = await setUp();
 
     expect(onSave).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Save anyway' }));

@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { values } from 'ramda';
 import { MemoryRouter } from 'react-router-dom';
 import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ServersDropdown />', () => {
@@ -13,15 +13,21 @@ describe('<ServersDropdown />', () => {
     '3c': fromPartial({ name: 'baz', id: '3c' }),
   };
   const setUp = (servers: ServersMap = fallbackServers) => renderWithEvents(
-    <MemoryRouter><ServersDropdown servers={servers} selectedServer={null} /></MemoryRouter>,
+    <MemoryRouter>
+      <ul>
+        <ServersDropdown servers={servers} selectedServer={null} />
+      </ul>
+    </MemoryRouter>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('contains the list of servers and the "mange servers" button', async () => {
     const { user } = setUp();
 
     await user.click(screen.getByText('Servers'));
     const items = screen.getAllByRole('menuitem');
-    expect(items).toHaveLength(values(fallbackServers).length + 1);
+    expect(items).toHaveLength(Object.values(fallbackServers).length + 1);
     expect(items[0]).toHaveTextContent('foo');
     expect(items[1]).toHaveTextContent('bar');
     expect(items[2]).toHaveTextContent('baz');

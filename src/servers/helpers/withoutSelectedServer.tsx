@@ -10,7 +10,7 @@ export function withoutSelectedServer<T = {}>(WrappedComponent: FC<WithoutSelect
     const { resetSelectedServer } = props;
     useEffect(() => {
       resetSelectedServer();
-    }, []);
+    }, [resetSelectedServer]);
 
     return <WrappedComponent {...props} />;
   };

@@ -3,10 +3,9 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
-import {
-  ImportServersBtn as createImportServersBtn,
-} from '../../../src/servers/helpers/ImportServersBtn';
+import { ImportServersBtnFactory } from '../../../src/servers/helpers/ImportServersBtn';
 import type { ServersImporter } from '../../../src/servers/services/ServersImporter';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
@@ -14,7 +13,7 @@ describe('<ImportServersBtn />', () => {
   const createServersMock = vi.fn();
   const importServersFromFile = vi.fn().mockResolvedValue([]);
   const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
-  const ImportServersBtn = createImportServersBtn(serversImporterMock);
+  const ImportServersBtn = ImportServersBtnFactory(fromPartial({ ServersImporter: serversImporterMock }));
   const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithEvents(
     <ImportServersBtn
       servers={servers}
@@ -23,6 +22,8 @@ describe('<ImportServersBtn />', () => {
       onImport={onImportMock}
     />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('shows tooltip on button hover', async () => {
     const { user } = setUp();

@@ -5,7 +5,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     continue-on-error: true
     steps:
       - name: Checkout code
@@ -16,11 +16,11 @@ jobs:
       - name: Use node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20.2
+          node-version: 20.7
       - name: Build
         run: |
-          npm ci --force && \
-          node ./scripts/set-homepage.js /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
+          npm ci && \
+          node ./scripts/set-homepage.cjs /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
           npm run build
       - name: Deploy preview
         uses: shlinkio/deploy-preview-action@v1.0.1

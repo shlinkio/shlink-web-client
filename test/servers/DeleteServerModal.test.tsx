@@ -1,44 +1,45 @@
-import { screen, waitFor } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { useNavigate } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 import { TestModalWrapper } from '../__helpers__/TestModalWrapper';
 
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual<any>('react-router-dom')),
-  useNavigate: vi.fn(),
-}));
-
 describe('<DeleteServerModal />', () => {
   const deleteServerMock = vi.fn();
-  const navigate = vi.fn();
   const serverName = 'the_server_name';
-  const setUp = () => {
-    (useNavigate as any).mockReturnValue(navigate);
+  const setUp = async () => {
+    const history = createMemoryHistory({ initialEntries: ['/foo'] });
+    const result = await act(() => renderWithEvents(
+      <Router location={history.location} navigator={history}>
+        <TestModalWrapper
+          renderModal={(args) => (
+            <DeleteServerModal
+              {...args}
+              server={fromPartial({ name: serverName })}
+              deleteServer={deleteServerMock}
+            />
+          )}
+        />
+      </Router>,
+    ));
 
-    return renderWithEvents(
-      <TestModalWrapper
-        renderModal={(args) => (
-          <DeleteServerModal
-            {...args}
-            server={fromPartial({ name: serverName })}
-            deleteServer={deleteServerMock}
-          />
-        )}
-      />,
-    );
+    return { history, ...result };
   };
 
-  it('renders a modal window', () => {
-    setUp();
+  it('passes a11y checks', () => checkAccessibility(setUp()));
+
+  it('renders a modal window', async () => {
+    await setUp();
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     expect(screen.getByRole('heading')).toHaveTextContent('Remove server');
   });
 
-  it('displays the name of the server as part of the content', () => {
-    setUp();
+  it('displays the name of the server as part of the content', async () => {
+    await setUp();
 
     expect(screen.getByText(/^Are you sure you want to remove/)).toBeInTheDocument();
     expect(screen.getByText(serverName)).toBeInTheDocument();
@@ -48,22 +49,23 @@ describe('<DeleteServerModal />', () => {
     [() => screen.getByRole('button', { name: 'Cancel' })],
     [() => screen.getByLabelText('Close')],
   ])('toggles when clicking cancel button', async (getButton) => {
-    const { user } = setUp();
+    const { user, history } = await setUp();
 
+    expect(history.location.pathname).toEqual('/foo');
     await user.click(getButton());
 
     expect(deleteServerMock).not.toHaveBeenCalled();
-    expect(navigate).not.toHaveBeenCalled();
+    expect(history.location.pathname).toEqual('/foo'); // No navigation happens, keeping initial pathname
   });
 
   it('deletes server when clicking accept button', async () => {
-    const { user } = setUp();
+    const { user, history } = await setUp();
 
     expect(deleteServerMock).not.toHaveBeenCalled();
-    expect(navigate).not.toHaveBeenCalled();
+    expect(history.location.pathname).toEqual('/foo');
     await user.click(screen.getByRole('button', { name: 'Delete' }));
 
     await waitFor(() => expect(deleteServerMock).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(navigate).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(history.location.pathname).toEqual('/'));
   });
 });

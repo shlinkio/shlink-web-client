@@ -1,8 +1,9 @@
+import type { TagsSettings as TagsSettingsOptions } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { TagsSettings as TagsSettingsOptions } from '../../src/settings/reducers/settings';
+import type { TagsOrder } from '../../src/settings/TagsSettings';
 import { TagsSettings } from '../../src/settings/TagsSettings';
-import type { TagsOrder } from '../../src/tags/data/TagsListChildrenProps';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<TagsSettings />', () => {
@@ -10,6 +11,8 @@ describe('<TagsSettings />', () => {
   const setUp = (tags?: TagsSettingsOptions) => renderWithEvents(
     <TagsSettings settings={fromPartial({ tags })} setTagsSettings={setTagsSettings} />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders expected amount of groups', () => {
     setUp();

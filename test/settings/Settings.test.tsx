@@ -1,22 +1,26 @@
 import { render, screen } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { Settings as createSettings } from '../../src/settings/Settings';
+import { SettingsFactory } from '../../src/settings/Settings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<Settings />', () => {
-  const Settings = createSettings(
-    () => <span>RealTimeUpdates</span>,
-    () => <span>ShortUrlCreation</span>,
-    () => <span>ShortUrlsList</span>,
-    () => <span>UserInterface</span>,
-    () => <span>Visits</span>,
-    () => <span>Tags</span>,
-  );
+  const Settings = SettingsFactory(fromPartial({
+    RealTimeUpdatesSettings: () => <span>RealTimeUpdates</span>,
+    ShortUrlCreationSettings: () => <span>ShortUrlCreation</span>,
+    ShortUrlsListSettings: () => <span>ShortUrlsList</span>,
+    UserInterfaceSettings: () => <span>UserInterface</span>,
+    VisitsSettings: () => <span>Visits</span>,
+    TagsSettings: () => <span>Tags</span>,
+  }));
   const setUp = (activeRoute = '/') => {
     const history = createMemoryHistory();
     history.push(activeRoute);
     return render(<Router location={history.location} navigator={history}><Settings /></Router>);
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     ['/general', {

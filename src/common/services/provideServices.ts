@@ -1,64 +1,37 @@
+import { FetchHttpClient } from '@shlinkio/shlink-js-sdk/browser';
+import { ShlinkWebComponent } from '@shlinkio/shlink-web-component';
 import type Bottle from 'bottlejs';
 import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
-import { AsideMenu } from '../AsideMenu';
 import { ErrorHandler } from '../ErrorHandler';
 import { Home } from '../Home';
-import { MainHeader } from '../MainHeader';
-import { MenuLayout } from '../MenuLayout';
-import { sidebarNotPresent, sidebarPresent } from '../reducers/sidebar';
+import { MainHeaderFactory } from '../MainHeader';
 import { ScrollToTop } from '../ScrollToTop';
 import { ShlinkVersionsContainer } from '../ShlinkVersionsContainer';
-import { HttpClient } from './HttpClient';
-import { ImageDownloader } from './ImageDownloader';
-import { ReportExporter } from './ReportExporter';
+import { ShlinkWebComponentContainerFactory } from '../ShlinkWebComponentContainer';
 
 export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   // Services
   bottle.constant('window', window);
   bottle.constant('console', console);
   bottle.constant('fetch', window.fetch.bind(window));
-
-  bottle.service('HttpClient', HttpClient, 'fetch');
-  bottle.service('ImageDownloader', ImageDownloader, 'HttpClient', 'window');
-  bottle.service('ReportExporter', ReportExporter, 'window', 'jsonToCsv');
+  bottle.service('HttpClient', FetchHttpClient, 'fetch');
 
   // Components
   bottle.serviceFactory('ScrollToTop', () => ScrollToTop);
 
-  bottle.serviceFactory('MainHeader', MainHeader, 'ServersDropdown');
+  bottle.factory('MainHeader', MainHeaderFactory);
 
   bottle.serviceFactory('Home', () => Home);
   bottle.decorator('Home', withoutSelectedServer);
   bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
-  bottle.serviceFactory(
-    'MenuLayout',
-    MenuLayout,
-    'TagsList',
-    'ShortUrlsList',
-    'AsideMenu',
-    'CreateShortUrl',
-    'ShortUrlVisits',
-    'TagVisits',
-    'DomainVisits',
-    'OrphanVisits',
-    'NonOrphanVisits',
-    'ServerError',
-    'Overview',
-    'EditShortUrl',
-    'ManageDomains',
-  );
-  bottle.decorator('MenuLayout', connect(['selectedServer'], ['selectServer', 'sidebarPresent', 'sidebarNotPresent']));
-
-  bottle.serviceFactory('AsideMenu', AsideMenu, 'DeleteServerButton');
+  bottle.serviceFactory('ShlinkWebComponent', () => ShlinkWebComponent);
+  bottle.factory('ShlinkWebComponentContainer', ShlinkWebComponentContainerFactory);
+  bottle.decorator('ShlinkWebComponentContainer', connect(['selectedServer', 'settings'], ['selectServer']));
 
   bottle.serviceFactory('ShlinkVersionsContainer', () => ShlinkVersionsContainer);
-  bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer', 'sidebar']));
+  bottle.decorator('ShlinkVersionsContainer', connect(['selectedServer']));
 
-  bottle.serviceFactory('ErrorHandler', ErrorHandler, 'window', 'console');
-
-  // Actions
-  bottle.serviceFactory('sidebarPresent', () => sidebarPresent);
-  bottle.serviceFactory('sidebarNotPresent', () => sidebarNotPresent);
+  bottle.serviceFactory('ErrorHandler', () => ErrorHandler);
 };

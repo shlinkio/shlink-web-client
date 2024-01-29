@@ -1,4 +1,6 @@
-export const manifest = {
+import type { ManifestOptions } from 'vite-plugin-pwa';
+
+export const manifest: Partial<ManifestOptions> = {
   short_name: 'Shlink',
   name: 'Shlink',
   start_url: '/',

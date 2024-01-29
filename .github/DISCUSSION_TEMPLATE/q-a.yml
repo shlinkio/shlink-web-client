@@ -1,0 +1,24 @@
+title: 'Q&A'
+body:
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: shlink-web-client version
+      placeholder: x.y.z
+  - type: dropdown
+    validations:
+      required: true
+    attributes:
+      label: How do you use shlink-web-client
+      options:
+        - https://app.shlink.io
+        - Docker image
+        - Self-hosted
+        - Other (explain in summary)
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Summary
+      value: '<!-- Describe your issue, question or request here. -->'

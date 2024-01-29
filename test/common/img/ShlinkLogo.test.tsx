@@ -1,10 +1,13 @@
+import { MAIN_COLOR } from '@shlinkio/shlink-frontend-kit';
 import { render } from '@testing-library/react';
 import type { ShlinkLogoProps } from '../../../src/common/img/ShlinkLogo';
 import { ShlinkLogo } from '../../../src/common/img/ShlinkLogo';
-import { MAIN_COLOR } from '../../../src/utils/theme';
+import { checkAccessibility } from '../../__helpers__/accessibility';
 
 describe('<ShlinkLogo />', () => {
-  const setUp = (props: ShlinkLogoProps) => render(<ShlinkLogo {...props} />);
+  const setUp = (props: ShlinkLogoProps = {}) => render(<ShlinkLogo {...props} />);
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [undefined, MAIN_COLOR],

@@ -1,4 +1,3 @@
-import { omit } from 'ramda';
 import type { SemVer } from '../../utils/helpers/version';
 
 export interface ServerData {
@@ -45,5 +44,4 @@ export const isNotFoundServer = (server: SelectedServer): server is NotFoundServ
 
 export const getServerId = (server: SelectedServer) => (isServerWithId(server) ? server.id : '');
 
-export const serverWithIdToServerData = (server: ServerWithId): ServerData =>
-  omit<ServerWithId, 'id' | 'autoConnect'>(['id', 'autoConnect'], server);
+export const serverWithIdToServerData = ({ id, autoConnect, ...server }: ServerWithId): ServerData => server;

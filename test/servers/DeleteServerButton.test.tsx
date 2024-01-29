@@ -1,16 +1,20 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
-import { DeleteServerButton as createDeleteServerButton } from '../../src/servers/DeleteServerButton';
+import { DeleteServerButtonFactory } from '../../src/servers/DeleteServerButton';
+import type { DeleteServerModalProps } from '../../src/servers/DeleteServerModal';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<DeleteServerButton />', () => {
-  const DeleteServerButton = createDeleteServerButton(
-    ({ isOpen }) => <>DeleteServerModal {isOpen ? '[Open]' : '[Closed]'}</>,
-  );
+  const DeleteServerButton = DeleteServerButtonFactory(fromPartial({
+    DeleteServerModal: ({ isOpen }: DeleteServerModalProps) => <>DeleteServerModal {isOpen ? '[Open]' : '[Closed]'}</>,
+  }));
   const setUp = (children?: ReactNode) => renderWithEvents(
     <DeleteServerButton server={fromPartial({})} textClassName="button">{children}</DeleteServerButton>,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp('Delete me')));
 
   it.each([
     ['Foo bar'],

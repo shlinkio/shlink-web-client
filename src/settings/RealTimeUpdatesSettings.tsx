@@ -1,23 +1,21 @@
-import classNames from 'classnames';
+import { LabeledFormGroup, SimpleCard, ToggleSwitch, useDomId } from '@shlinkio/shlink-frontend-kit';
+import type { Settings } from '@shlinkio/shlink-web-component';
+import { clsx } from 'clsx';
 import { FormGroup, Input } from 'reactstrap';
 import { FormText } from '../utils/forms/FormText';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { useDomId } from '../utils/helpers/hooks';
-import { SimpleCard } from '../utils/SimpleCard';
-import { ToggleSwitch } from '../utils/ToggleSwitch';
-import type { Settings } from './reducers/settings';
 
-interface RealTimeUpdatesProps {
+type RealTimeUpdatesProps = {
   settings: Settings;
   toggleRealTimeUpdates: (enabled: boolean) => void;
   setRealTimeUpdatesInterval: (interval: number) => void;
-}
+};
 
 const intervalValue = (interval?: number) => (!interval ? '' : `${interval}`);
 
 export const RealTimeUpdatesSettings = (
-  { settings: { realTimeUpdates }, toggleRealTimeUpdates, setRealTimeUpdatesInterval }: RealTimeUpdatesProps,
+  { settings, toggleRealTimeUpdates, setRealTimeUpdatesInterval }: RealTimeUpdatesProps,
 ) => {
+  const { realTimeUpdates = { enabled: true } } = settings;
   const inputId = useDomId();
 
   return (
@@ -33,7 +31,7 @@ export const RealTimeUpdatesSettings = (
       <LabeledFormGroup
         noMargin
         label="Real-time updates frequency (in minutes):"
-        labelClassName={classNames('form-label', { 'text-muted': !realTimeUpdates.enabled })}
+        labelClassName={clsx('form-label', { 'text-muted': !realTimeUpdates.enabled })}
         id={inputId}
       >
         <Input

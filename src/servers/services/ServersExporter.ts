@@ -1,4 +1,3 @@
-import { values } from 'ramda';
 import type { JsonToCsv } from '../../utils/helpers/csvjson';
 import { saveCsv } from '../../utils/helpers/files';
 import type { LocalStorage } from '../../utils/services/LocalStorage';
@@ -15,7 +14,7 @@ export class ServersExporter {
   ) {}
 
   public readonly exportServers = async () => {
-    const servers = values(this.storage.get<ServersMap>('servers') ?? {}).map(serverWithIdToServerData);
+    const servers = Object.values(this.storage.get<ServersMap>('servers') ?? {}).map(serverWithIdToServerData);
 
     try {
       const csv = this.jsonToCsv(servers);

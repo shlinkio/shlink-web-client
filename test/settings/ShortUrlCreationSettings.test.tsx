@@ -1,7 +1,8 @@
+import type { ShortUrlCreationSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlCreationSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlCreationSettings } from '../../src/settings/ShortUrlCreationSettings';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlCreationSettings />', () => {
@@ -12,6 +13,8 @@ describe('<ShortUrlCreationSettings />', () => {
       setShortUrlCreationSettings={setShortUrlCreationSettings}
     />,
   );
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
     [{ validateUrls: true }, true],

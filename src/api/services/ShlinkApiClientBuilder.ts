@@ -1,8 +1,8 @@
-import type { HttpClient } from '../../common/services/HttpClient';
+import type { HttpClient } from '@shlinkio/shlink-js-sdk';
+import { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
 import type { GetState } from '../../container/types';
 import type { ServerWithId } from '../../servers/data';
 import { hasServerData } from '../../servers/data';
-import { ShlinkApiClient } from './ShlinkApiClient';
 
 const apiClients: Record<string, ShlinkApiClient> = {};
 
@@ -18,16 +18,15 @@ const getSelectedServerFromState = (getState: GetState): ServerWithId => {
 };
 
 export const buildShlinkApiClient = (httpClient: HttpClient) => (getStateOrSelectedServer: GetState | ServerWithId) => {
-  const { url, apiKey } = isGetState(getStateOrSelectedServer)
+  const { url: baseUrl, apiKey } = isGetState(getStateOrSelectedServer)
     ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;
-  const clientKey = `${url}_${apiKey}`;
+  const serverKey = `${apiKey}_${baseUrl}`;
 
-  if (!apiClients[clientKey]) {
-    apiClients[clientKey] = new ShlinkApiClient(httpClient, url, apiKey);
-  }
+  const apiClient = apiClients[serverKey] ?? new ShlinkApiClient(httpClient, { apiKey, baseUrl });
+  apiClients[serverKey] = apiClient;
 
-  return apiClients[clientKey];
+  return apiClient;
 };
 
 export type ShlinkApiClientBuilder = ReturnType<typeof buildShlinkApiClient>;

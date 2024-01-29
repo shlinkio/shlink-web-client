@@ -1,12 +1,14 @@
+import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
+import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import type { TimeoutToggle } from '../utils/helpers/hooks';
-import { useGoBack, useToggle } from '../utils/helpers/hooks';
-import { Result } from '../utils/Result';
+import type { FCWithDeps } from '../container/utils';
+import { componentFactory, useDependencies } from '../container/utils';
+import { useGoBack } from '../utils/helpers/hooks';
 import type { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
@@ -14,10 +16,15 @@ import { ServerForm } from './helpers/ServerForm';
 
 const SHOW_IMPORT_MSG_TIME = 4000;
 
-interface CreateServerProps {
+type CreateServerProps = {
   createServers: (servers: ServerWithId[]) => void;
   servers: ServersMap;
-}
+};
+
+type CreateServerDeps = {
+  ImportServersBtn: FC<ImportServersBtnProps>;
+  useTimeoutToggle: TimeoutToggle;
+};
 
 const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   <div className="mt-3">
@@ -28,34 +35,33 @@ const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
   </div>
 );
 
-export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTimeoutToggle: TimeoutToggle) => (
-  { servers, createServers }: CreateServerProps,
-) => {
+const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers, createServers }) => {
+  const { ImportServersBtn, useTimeoutToggle } = useDependencies(CreateServer);
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
   const [serversImported, setServersImported] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
-  const [serverData, setServerData] = useState<ServerData | undefined>();
-  const save = () => {
+  const [serverData, setServerData] = useState<ServerData>();
+  const saveNewServer = useCallback((theServerData: ServerData) => {
+    const id = uuid();
+
+    createServers([{ ...theServerData, id }]);
+    navigate(`/server/${id}`);
+  }, [createServers, navigate]);
+
+  useEffect(() => {
     if (!serverData) {
       return;
     }
 
-    const id = uuid();
-
-    createServers([{ ...serverData, id }]);
-    navigate(`/server/${id}`);
-  };
-
-  useEffect(() => {
     const serverExists = Object.values(servers).some(
       ({ url, apiKey }) => serverData?.url === url && serverData?.apiKey === apiKey,
     );
 
-    serverExists ? toggleConfirmModal() : save();
-  }, [serverData]);
+    serverExists ? toggleConfirmModal() : saveNewServer(serverData);
+  }, [saveNewServer, serverData, servers, toggleConfirmModal]);
 
   return (
     <NoMenuLayout>
@@ -74,8 +80,10 @@ export const CreateServer = (ImportServersBtn: FC<ImportServersBtnProps>, useTim
         isOpen={isConfirmModalOpen}
         duplicatedServers={serverData ? [serverData] : []}
         onDiscard={goBack}
-        onSave={save}
+        onSave={() => serverData && saveNewServer(serverData)}
       />
     </NoMenuLayout>
   );
 };
+
+export const CreateServerFactory = componentFactory(CreateServer, ['ImportServersBtn', 'useTimeoutToggle']);

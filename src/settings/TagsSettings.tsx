@@ -1,14 +1,20 @@
+import { LabeledFormGroup, OrderingDropdown, SimpleCard } from '@shlinkio/shlink-frontend-kit';
+import type { Settings, TagsSettings as TagsSettingsOptions } from '@shlinkio/shlink-web-component';
 import type { FC } from 'react';
-import { TAGS_ORDERABLE_FIELDS } from '../tags/data/TagsListChildrenProps';
-import { LabeledFormGroup } from '../utils/forms/LabeledFormGroup';
-import { OrderingDropdown } from '../utils/OrderingDropdown';
-import { SimpleCard } from '../utils/SimpleCard';
-import type { Settings, TagsSettings as TagsSettingsOptions } from './reducers/settings';
+import type { Defined } from '../utils/types';
+
+export type TagsOrder = Defined<TagsSettingsOptions['defaultOrdering']>;
 
 interface TagsProps {
   settings: Settings;
   setTagsSettings: (settings: TagsSettingsOptions) => void;
 }
+
+const TAGS_ORDERABLE_FIELDS = {
+  tag: 'Tag',
+  shortUrls: 'Short URLs',
+  visits: 'Visits',
+};
 
 export const TagsSettings: FC<TagsProps> = ({ settings: { tags }, setTagsSettings }) => (
   <SimpleCard title="Tags" className="h-100">

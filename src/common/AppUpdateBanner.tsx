@@ -1,9 +1,9 @@
 import { faSyncAlt as reloadIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { FC, MouseEventHandler } from 'react';
+import { SimpleCard, useToggle } from '@shlinkio/shlink-frontend-kit';
+import type { MouseEventHandler } from 'react';
+import { forwardRef, useCallback } from 'react';
 import { Alert, Button } from 'reactstrap';
-import { useToggle } from '../utils/helpers/hooks';
-import { SimpleCard } from '../utils/SimpleCard';
 import './AppUpdateBanner.scss';
 
 interface AppUpdateBannerProps {
@@ -12,15 +12,15 @@ interface AppUpdateBannerProps {
   forceUpdate: Function;
 }
 
-export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, toggle, forceUpdate }) => {
+export const AppUpdateBanner = forwardRef<HTMLElement, AppUpdateBannerProps>(({ isOpen, toggle, forceUpdate }, ref) => {
   const [isUpdating,, setUpdating] = useToggle();
-  const update = () => {
+  const update = useCallback(() => {
     setUpdating();
     forceUpdate();
-  };
+  }, [forceUpdate, setUpdating]);
 
   return (
-    <Alert className="app-update-banner" isOpen={isOpen} toggle={toggle} tag={SimpleCard} color="secondary">
+    <Alert className="app-update-banner" isOpen={isOpen} toggle={toggle} tag={SimpleCard} color="secondary" innerRef={ref}>
       <h4 className="mb-4">This app has just been updated!</h4>
       <p className="mb-0">
         Restart it to enjoy the new features.
@@ -31,4 +31,4 @@ export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, toggle, forc
       </p>
     </Alert>
   );
-};
+});

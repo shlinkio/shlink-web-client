@@ -1,61 +1,33 @@
 import type { PayloadAction, PrepareAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { mergeDeepRight } from 'ramda';
-import type { ShortUrlsOrder } from '../../short-urls/data';
-import type { TagsOrder } from '../../tags/data/TagsListChildrenProps';
-import type { DateInterval } from '../../utils/helpers/dateIntervals';
-import type { Theme } from '../../utils/theme';
+import { mergeDeepRight } from '@shlinkio/data-manipulation';
+import type { Theme } from '@shlinkio/shlink-frontend-kit';
+import { getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
+import type {
+  Settings,
+  ShortUrlCreationSettings,
+  ShortUrlsListSettings,
+  TagsSettings,
+  VisitsSettings,
+} from '@shlinkio/shlink-web-component';
+import type { Defined } from '../../utils/types';
+
+type ShortUrlsOrder = Defined<ShortUrlsListSettings['defaultOrdering']>;
 
 export const DEFAULT_SHORT_URLS_ORDERING: ShortUrlsOrder = {
   field: 'dateCreated',
   dir: 'DESC',
 };
 
-/**
- * Important! When adding new props in the main Settings interface or any of the nested props, they have to be set as
- * optional, as old instances of the app will load partial objects from local storage until it is saved again.
- */
-
-export interface RealTimeUpdatesSettings {
-  enabled: boolean;
-  interval?: number;
-}
-
-export type TagFilteringMode = 'startsWith' | 'includes';
-
-export interface ShortUrlCreationSettings {
-  validateUrls: boolean;
-  tagFilteringMode?: TagFilteringMode;
-  forwardQuery?: boolean;
-}
-
-export interface UiSettings {
+export type UiSettings = {
   theme: Theme;
-}
+};
 
-export interface VisitsSettings {
-  defaultInterval: DateInterval;
-  excludeBots?: boolean;
-}
-
-export interface TagsSettings {
-  defaultOrdering?: TagsOrder;
-}
-
-export interface ShortUrlsListSettings {
-  defaultOrdering?: ShortUrlsOrder;
-}
-
-export interface Settings {
-  realTimeUpdates: RealTimeUpdatesSettings;
-  shortUrlCreation?: ShortUrlCreationSettings;
-  shortUrlsList?: ShortUrlsListSettings;
+export type AppSettings = Settings & {
   ui?: UiSettings;
-  visits?: VisitsSettings;
-  tags?: TagsSettings;
-}
+};
 
-const initialState: Settings = {
+const initialState: AppSettings = {
   realTimeUpdates: {
     enabled: true,
   },
@@ -63,7 +35,7 @@ const initialState: Settings = {
     validateUrls: false,
   },
   ui: {
-    theme: 'light',
+    theme: getSystemPreferredTheme(),
   },
   visits: {
     defaultInterval: 'last30Days',
@@ -73,12 +45,12 @@ const initialState: Settings = {
   },
 };
 
-type SettingsAction = PayloadAction<Settings>;
-type SettingsPrepareAction = PrepareAction<Settings>;
+type SettingsAction = PayloadAction<AppSettings>;
+type SettingsPrepareAction = PrepareAction<AppSettings>;
 
-const commonReducer = (state: Settings, { payload }: SettingsAction) => mergeDeepRight(state, payload);
+const commonReducer = (state: AppSettings, { payload }: SettingsAction) => mergeDeepRight(state, payload);
 const toReducer = (prepare: SettingsPrepareAction) => ({ reducer: commonReducer, prepare });
-const toPreparedAction: SettingsPrepareAction = (payload: Settings) => ({ payload });
+const toPreparedAction: SettingsPrepareAction = (payload: AppSettings) => ({ payload });
 
 const { reducer, actions } = createSlice({
   name: 'shlink/settings',
@@ -89,7 +61,9 @@ const { reducer, actions } = createSlice({
     setShortUrlCreationSettings: toReducer(
       (shortUrlCreation: ShortUrlCreationSettings) => toPreparedAction({ shortUrlCreation }),
     ),
-    setShortUrlsListSettings: toReducer((shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList })),
+    setShortUrlsListSettings: toReducer(
+      (shortUrlsList: ShortUrlsListSettings) => toPreparedAction({ shortUrlsList }),
+    ),
     setUiSettings: toReducer((ui: UiSettings) => toPreparedAction({ ui })),
     setVisitsSettings: toReducer((visits: VisitsSettings) => toPreparedAction({ visits })),
     setTagsSettings: toReducer((tags: TagsSettings) => toPreparedAction({ tags })),

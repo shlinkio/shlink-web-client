@@ -1,11 +1,16 @@
 import { screen, waitFor } from '@testing-library/react';
+import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { MainHeader as createMainHeader } from '../../src/common/MainHeader';
+import { MainHeaderFactory } from '../../src/common/MainHeader';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<MainHeader />', () => {
-  const MainHeader = createMainHeader(() => <>ServersDropdown</>);
+  const MainHeader = MainHeaderFactory(fromPartial({
+    // Fake this component as a li, as it gets rendered inside a ul
+    ServersDropdown: () => <li>ServersDropdown</li>,
+  }));
   const setUp = (pathname = '') => {
     const history = createMemoryHistory();
     history.push(pathname);
@@ -16,6 +21,8 @@ describe('<MainHeader />', () => {
       </Router>,
     );
   };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders ServersDropdown', () => {
     setUp();

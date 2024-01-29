@@ -1,14 +1,24 @@
-import { screen } from '@testing-library/react';
+import { act, screen, waitFor } from '@testing-library/react';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
   const toggle = vi.fn();
   const forceUpdate = vi.fn();
-  const setUp = () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />);
+  const setUp = async () => {
+    const result = await act(
+      () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />),
+    );
+    await waitFor(() => screen.getByRole('alert'));
 
-  it('renders initial state', () => {
-    setUp();
+    return result;
+  };
+
+  it('passes a11y checks', () => checkAccessibility(setUp()));
+
+  it('renders initial state', async () => {
+    await setUp();
 
     expect(screen.getByRole('heading')).toHaveTextContent('This app has just been updated!');
     expect(screen.queryByText('Restarting...')).not.toBeInTheDocument();
@@ -16,7 +26,7 @@ describe('<AppUpdateBanner />', () => {
   });
 
   it('invokes toggle when alert is closed', async () => {
-    const { user } = setUp();
+    const { user } = await setUp();
 
     expect(toggle).not.toHaveBeenCalled();
     await user.click(screen.getByLabelText('Close'));
@@ -24,7 +34,7 @@ describe('<AppUpdateBanner />', () => {
   });
 
   it('triggers the update when clicking the button', async () => {
-    const { user } = setUp();
+    const { user } = await setUp();
 
     expect(forceUpdate).not.toHaveBeenCalled();
     await user.click(screen.getByText(/^Restart now/));

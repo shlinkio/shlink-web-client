@@ -1,8 +1,8 @@
+import type { ShortUrlsListSettings as ShortUrlsSettings } from '@shlinkio/shlink-web-component';
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ShortUrlsListSettings as ShortUrlsSettings } from '../../src/settings/reducers/settings';
 import { ShortUrlsListSettings } from '../../src/settings/ShortUrlsListSettings';
-import type { ShortUrlsOrder } from '../../src/short-urls/data';
+import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ShortUrlsListSettings />', () => {
@@ -11,12 +11,14 @@ describe('<ShortUrlsListSettings />', () => {
     <ShortUrlsListSettings settings={fromPartial({ shortUrlsList })} setShortUrlsListSettings={setSettings} />,
   );
 
+  it('passes a11y checks', () => checkAccessibility(setUp()));
+
   it.each([
     [undefined, 'Order by: Created at - DESC'],
-    [{}, 'Order by: Created at - DESC'],
-    [{ defaultOrdering: {} }, 'Order by...'],
-    [{ defaultOrdering: { field: 'longUrl', dir: 'DESC' } as ShortUrlsOrder }, 'Order by: Long URL - DESC'],
-    [{ defaultOrdering: { field: 'visits', dir: 'ASC' } as ShortUrlsOrder }, 'Order by: Visits - ASC'],
+    [fromPartial<ShortUrlsSettings>({}), 'Order by: Created at - DESC'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: {} }), 'Order by...'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: { field: 'longUrl', dir: 'DESC' } }), 'Order by: Long URL - DESC'],
+    [fromPartial<ShortUrlsSettings>({ defaultOrdering: { field: 'visits', dir: 'ASC' } }), 'Order by: Visits - ASC'],
   ])('shows expected ordering', (shortUrlsList, expectedOrder) => {
     setUp(shortUrlsList);
     expect(screen.getByRole('button')).toHaveTextContent(expectedOrder);

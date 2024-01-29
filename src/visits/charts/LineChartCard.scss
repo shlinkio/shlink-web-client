@@ -1,9 +1,0 @@
-@import '../../utils/base';
-
-.line-chart-card__body canvas {
-  height: 300px !important;
-
-  @media (min-width: $mdMin) {
-    height: 400px !important;
-  }
-}

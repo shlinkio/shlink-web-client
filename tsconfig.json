@@ -6,7 +6,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "types": ["vite/client", "vitest/globals"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
