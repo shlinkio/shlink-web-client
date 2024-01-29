@@ -4,24 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.0.0] - 2024-01-29
 ### Added
-* *Nothing*
+* [shlink-web-component #7](https://github.com/shlinkio/shlink-web-component/issues/7) Allow comparing visits for multiple short URLs, tags or domains.
+
+  When in the tags, domains or short URLs tables, you can now pick up to 5 items to compare their visits. Once selected, you are taken to a section displaying a comparative line chart, which supports all regular visits filtering capabilities.
+
+* [shlink-web-component #9](https://github.com/shlinkio/shlink-web-component/issues/9) Allow comparing visits with the previous period.
+* [shlink-web-component #12](https://github.com/shlinkio/shlink-web-component/issues/12) and [#13](https://github.com/shlinkio/shlink-web-component/issues/13) Add new "Visits options" section for arbitrary visit stats options. Add section to delete short URL and orphan visits there.
+
+  This section is only visible if short URL visits deletion or orphan visits deletion are supported by connected Shlink server.
+
+* [shlink-web-component #10](https://github.com/shlinkio/shlink-web-component/issues/10) Improve general accessibility: Add accessibility tests, fix accessibility issues and enable accessibility linting rules.
 
 ### Changed
 * [#338](https://github.com/shlinkio/shlink-web-client/issues/338) Extract `@shlinkio/shlink-web-component` and `@shlinkio/shlink-frontend-kit` as external libs.
 * [#978](https://github.com/shlinkio/shlink-web-client/issues/978) Use system preferred theme as default theme.
 * Use API client from `@shlinkio/shlink-js-sdk` to consume Shlink servers.
 * [#902](https://github.com/shlinkio/shlink-web-client/pull/902) Docker image is no longer running as root. As a side effect, exposed port is `8080`, not `80` anymore.
+* [shlink-web-component #117](https://github.com/shlinkio/shlink-web-component/issues/117) Migrate charts from Chart.JS to Recharts.
 
 ### Deprecated
 * *Nothing*
 
 ### Removed
-* *Nothing*
+* Drop support for Shlink older than v3.0.0
 
 ### Fixed
-* [#910](https://github.com/shlinkio/shlink-web-client/issues/910) Fix warnings related with missing `act`in tests and refs in `AppUpdateBanner`.
+* [#910](https://github.com/shlinkio/shlink-web-client/issues/910) Fix warnings related with missing `act` in tests and refs in `AppUpdateBanner`.
 
 
 ## [3.10.2] - 2023-07-09
