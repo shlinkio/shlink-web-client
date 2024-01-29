@@ -35,7 +35,7 @@
     "@shlinkio/data-manipulation": "^1.0.3",
     "@shlinkio/shlink-frontend-kit": "^0.4.2",
     "@shlinkio/shlink-js-sdk": "^0.2.2",
-    "@shlinkio/shlink-web-component": "^0.4.1",
+    "@shlinkio/shlink-web-component": "^0.5.0",
     "bootstrap": "5.2.3",
     "bottlejs": "^2.0.1",
     "clsx": "^2.1.0",
