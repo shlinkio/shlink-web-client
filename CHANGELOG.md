@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#1046](https://github.com/shlinkio/shlink-web-client/issues/1046) Fix running docker image when server env vars are provided.
+
+
 ## [4.0.0] - 2024-01-29
 ### Added
 * [shlink-web-component #7](https://github.com/shlinkio/shlink-web-component/issues/7) Allow comparing visits for multiple short URLs, tags or domains.
