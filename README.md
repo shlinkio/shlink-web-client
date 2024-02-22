@@ -86,7 +86,7 @@ If you want to pre-configure a single server, you can provide its config via env
     ```shell
     docker run \
         --name shlink-web-client \
-        -p 8000:80 \
+        -p 8000:8080 \
         -e SHLINK_SERVER_URL=https://s.test \
         -e SHLINK_SERVER_API_KEY=6aeb82c6-e275-4538-a747-31f9abfba63c \
         shlinkio/shlink-web-client
