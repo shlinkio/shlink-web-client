@@ -68,7 +68,7 @@
     "@types/uuid": "^9.0.8",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.4.0",
-    "adm-zip": "^0.5.10",
+    "adm-zip": "^0.5.12",
     "axe-core": "^4.8.4",
     "chalk": "^5.3.0",
     "eslint": "^8.57.0",
