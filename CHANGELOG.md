@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.1.0] - 2024-03-17
 ### Added
 * [#1079](https://github.com/shlinkio/shlink-web-client/issues/1079) Add support Shlink 4.0.0.
 * [shlink-web-component#271](https://github.com/shlinkio/shlink-web-component/issues/271) Add support for redirect rules when consuming Shlink 4.0.0.
@@ -22,7 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [shlink-web-component#276](https://github.com/shlinkio/shlink-web-component/issues/276) Drop support for Shlink older than 3.3.0
 
 ### Fixed
-* *Nothing*
+* [#1084](https://github.com/shlinkio/shlink-web-client/issues/1084) Fix broken server dropdown menu when auto-connect is enabled.
 
 
 ## [4.0.1] - 2024-02-01
