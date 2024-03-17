@@ -37,7 +37,7 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;
 
   return (
-    <RowDropdownBtn minWidth={170}>
+    <RowDropdownBtn minWidth={isAutoConnect ? 210 : 170}>
       <DropdownItem tag={Link} to={serverUrl}>
         <FontAwesomeIcon icon={connectIcon} fixedWidth /> Connect
       </DropdownItem>

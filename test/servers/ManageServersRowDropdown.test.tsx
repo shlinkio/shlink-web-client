@@ -67,4 +67,9 @@ describe('<ManageServersRowDropdown />', () => {
     expect(screen.getByText('DeleteServerModal [OPEN]')).toBeInTheDocument();
     expect(screen.queryByText('DeleteServerModal [CLOSED]')).not.toBeInTheDocument();
   });
+
+  it.each([[true], [false]])('renders expected size and icon', (autoConnect) => {
+    const { container } = setUp(autoConnect);
+    expect(container).toMatchSnapshot();
+  });
 });
