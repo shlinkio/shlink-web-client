@@ -76,7 +76,7 @@
     "jsdom": "^24.0.0",
     "sass": "^1.72.0",
     "stylelint": "^15.11.0",
-    "typescript": "^5.4.3",
+    "typescript": "^5.4.4",
     "vite": "^5.2.7",
     "vite-plugin-pwa": "^0.19.7",
     "vitest": "^1.2.2"
