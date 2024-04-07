@@ -57,7 +57,7 @@
     "workbox-strategies": "^7.0.0"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~2.3.0",
+    "@shlinkio/eslint-config-js-coding-standard": "~2.4.1",
     "@shlinkio/stylelint-config-css-coding-standard": "~1.1.1",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^14.2.2",
@@ -66,6 +66,8 @@
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.24",
     "@types/uuid": "^9.0.8",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/coverage-v8": "^1.4.0",
     "adm-zip": "^0.5.12",
