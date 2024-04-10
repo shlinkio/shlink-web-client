@@ -6,10 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [shlink-web-component#293](https://github.com/shlinkio/shlink-web-component/issues/293) Allow ordering redirect rules via drag'n'drop.
 
 ### Changed
 * Update JS coding standard
+* [#1132](https://github.com/shlinkio/shlink-web-client/issues/1132) Add warning message in "validate URLs" setting, indicating it is ignored when consuming Shlink >=4.0.0.
 
 ### Deprecated
 * *Nothing*
@@ -18,7 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [shlink-web-component#294](https://github.com/shlinkio/shlink-web-component/issues/294) Make sure "validate URL" control is not displayed in short URL creation/edition, when consuming Shlink >=4.0.0.
 
 
 ## [4.1.0] - 2024-03-17

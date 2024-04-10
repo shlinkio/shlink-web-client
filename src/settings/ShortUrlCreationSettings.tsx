@@ -33,7 +33,8 @@ export const ShortUrlCreationSettings: FC<ShortUrlCreationProps> = ({ settings, 
           checked={shortUrlCreation.validateUrls ?? false}
           onChange={(validateUrls) => setShortUrlCreationSettings({ ...shortUrlCreation, validateUrls })}
         >
-          Request validation on long URLs when creating new short URLs.
+          Request validation on long URLs when creating new short URLs.{' '}
+          <b>This option is ignored by Shlink {'>='}4.0.0</b>
           <FormText>
             The initial state of the <b>Validate URL</b> checkbox will
             be <b>{shortUrlCreation.validateUrls ? 'checked' : 'unchecked'}</b>.
