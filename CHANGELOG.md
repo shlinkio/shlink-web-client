@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.1] - 2024-04-11
+### Added
+* [shlink-web-component#293](https://github.com/shlinkio/shlink-web-component/issues/293) Allow ordering redirect rules via drag'n'drop.
+
+### Changed
+* Update JS coding standard
+* [#1132](https://github.com/shlinkio/shlink-web-client/issues/1132) Add warning message in "validate URLs" setting, indicating it is ignored when consuming Shlink >=4.0.0.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [shlink-web-component#294](https://github.com/shlinkio/shlink-web-component/issues/294) Make sure "validate URL" control is not displayed in short URL creation/edition, when consuming Shlink >=4.0.0.
+* [#1130](https://github.com/shlinkio/shlink-web-client/issues/1130) Fix importing servers in Firefox for Android when the CSV file contains spaces.
+* [#1133](https://github.com/shlinkio/shlink-web-client/issues/1133) Fix Shlink versions alignment in server error pages.
+
+
 ## [4.1.0] - 2024-03-17
 ### Added
 * [#1079](https://github.com/shlinkio/shlink-web-client/issues/1079) Add support Shlink 4.0.0.
