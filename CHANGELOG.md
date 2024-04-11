@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [shlink-web-component#294](https://github.com/shlinkio/shlink-web-component/issues/294) Make sure "validate URL" control is not displayed in short URL creation/edition, when consuming Shlink >=4.0.0.
+* [#1130](https://github.com/shlinkio/shlink-web-client/issues/1130) Fix importing servers in Firefox for Android when the CSV file contains spaces.
 
 
 ## [4.1.0] - 2024-03-17
