@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.1.2] - 2024-04-17
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [shlink-web-component#244](https://github.com/shlinkio/shlink-web-component/issues/244) Display `visitedUrl` in visits table if the visit object has it, regardless of it being an orphan visit or not.
+* [shlink-web-component#327](https://github.com/shlinkio/shlink-web-component/issues/327) Ensure orphan visits type is sent to the server, to enable server-side filtering when consumed Shlink supports it.
+
+
 ## [4.1.1] - 2024-04-11
 ### Added
 * [shlink-web-component#293](https://github.com/shlinkio/shlink-web-component/issues/293) Allow ordering redirect rules via drag'n'drop.
