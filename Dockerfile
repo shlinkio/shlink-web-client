@@ -7,6 +7,7 @@ RUN cd /shlink-web-client && npm ci && npm run build
 FROM nginxinc/nginx-unprivileged:1.25-alpine
 ARG UID=101
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
+LABEL org.opencontainers.image.source=https://github.com/shlinkio/shlink-web-client
 
 USER root
 RUN rm -r /usr/share/nginx/html && rm /etc/nginx/conf.d/default.conf
