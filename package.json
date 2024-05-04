@@ -79,7 +79,7 @@
     "sass": "^1.76.0",
     "stylelint": "^15.11.0",
     "typescript": "^5.4.5",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vite-plugin-pwa": "^0.20.0",
     "vitest": "^1.2.2"
   },
