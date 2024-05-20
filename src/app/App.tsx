@@ -1,4 +1,5 @@
 import { changeThemeInMarkup, getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
+import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
@@ -8,14 +9,13 @@ import { NotFound } from '../common/NotFound';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import type { ServersMap } from '../servers/data';
-import type { AppSettings } from '../settings/reducers/settings';
 import { forceUpdate } from '../utils/helpers/sw';
 import './App.scss';
 
 type AppProps = {
   fetchServers: () => void;
   servers: ServersMap;
-  settings: AppSettings;
+  settings: Settings;
   resetAppUpdate: () => void;
   appUpdated: boolean;
 };

@@ -1,4 +1,5 @@
-import type { Settings, ShlinkWebComponentType, TagColorsStorage } from '@shlinkio/shlink-web-component';
+import type { ShlinkWebComponentType, TagColorsStorage } from '@shlinkio/shlink-web-component';
+import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import type { FC } from 'react';
 import { memo } from 'react';
 import type { ShlinkApiClientBuilder } from '../api/services/ShlinkApiClientBuilder';

@@ -1,58 +1,20 @@
-import { NavPillItem, NavPills } from '@shlinkio/shlink-frontend-kit';
-import type { FC, ReactNode } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import type { Settings as AppSettings } from '@shlinkio/shlink-web-component/settings';
+import { ShlinkWebSettings } from '@shlinkio/shlink-web-component/settings';
+import type { FC } from 'react';
 import { NoMenuLayout } from '../common/NoMenuLayout';
-import type { FCWithDeps } from '../container/utils';
-import { componentFactory, useDependencies } from '../container/utils';
+import { DEFAULT_SHORT_URLS_ORDERING } from './reducers/settings';
 
-type SettingsDeps = {
-  RealTimeUpdatesSettings: FC;
-  ShortUrlCreationSettings: FC;
-  ShortUrlsListSettings: FC;
-  UserInterfaceSettings: FC;
-  VisitsSettings: FC;
-  TagsSettings: FC;
+export type SettingsProps = {
+  settings: AppSettings;
+  setSettings: (newSettings: AppSettings) => void;
 };
 
-const SettingsSections: FC<{ items: ReactNode[] }> = ({ items }) => (
-  <>
-    {items.map((child, index) => <div key={index} className="mb-3">{child}</div>)}
-  </>
+export const Settings: FC<SettingsProps> = ({ settings, setSettings }) => (
+  <NoMenuLayout>
+    <ShlinkWebSettings
+      settings={settings}
+      updateSettings={setSettings}
+      defaultShortUrlsListOrdering={DEFAULT_SHORT_URLS_ORDERING}
+    />
+  </NoMenuLayout>
 );
-
-const Settings: FCWithDeps<{}, SettingsDeps> = () => {
-  const {
-    RealTimeUpdatesSettings: RealTimeUpdates,
-    ShortUrlCreationSettings: ShortUrlCreation,
-    ShortUrlsListSettings: ShortUrlsList,
-    UserInterfaceSettings: UserInterface,
-    VisitsSettings: Visits,
-    TagsSettings: Tags,
-  } = useDependencies(Settings);
-
-  return (
-    <NoMenuLayout>
-      <NavPills className="mb-3">
-        <NavPillItem to="general">General</NavPillItem>
-        <NavPillItem to="short-urls">Short URLs</NavPillItem>
-        <NavPillItem to="other-items">Other items</NavPillItem>
-      </NavPills>
-
-      <Routes>
-        <Route path="general" element={<SettingsSections items={[<UserInterface />, <RealTimeUpdates />]} />} />
-        <Route path="short-urls" element={<SettingsSections items={[<ShortUrlCreation />, <ShortUrlsList />]} />} />
-        <Route path="other-items" element={<SettingsSections items={[<Tags />, <Visits />]} />} />
-        <Route path="*" element={<Navigate replace to="general" />} />
-      </Routes>
-    </NoMenuLayout>
-  );
-};
-
-export const SettingsFactory = componentFactory(Settings, [
-  'RealTimeUpdatesSettings',
-  'ShortUrlCreationSettings',
-  'ShortUrlsListSettings',
-  'UserInterfaceSettings',
-  'VisitsSettings',
-  'TagsSettings',
-]);
