@@ -1,4 +1,4 @@
-import type { Settings } from '@shlinkio/shlink-web-component';
+import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import type { SelectedServer, ServersMap } from '../servers/data';
 
 export interface ShlinkState {
