@@ -70,7 +70,7 @@
     "@typescript-eslint/parser": "^7.5.0",
     "@vitejs/plugin-react": "^4.3.0",
     "@vitest/coverage-v8": "^1.6.0",
-    "adm-zip": "^0.5.12",
+    "adm-zip": "^0.5.14",
     "axe-core": "^4.9.1",
     "chalk": "^5.3.0",
     "eslint": "^8.57.0",
