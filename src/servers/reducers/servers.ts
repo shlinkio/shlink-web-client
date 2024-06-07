@@ -44,8 +44,8 @@ export const { actions, reducer } = createSlice({
       },
     },
     deleteServer: (state, { payload }) => {
-      const { [payload.id]: deletedServer, ...rest } = state;
-      return rest;
+      delete state[payload.id];
+      return state;
     },
     setAutoConnect: {
       prepare: ({ id: serverId }: ServerWithId, autoConnect: boolean) => ({
