@@ -49,7 +49,7 @@
     "react-router-dom": "^6.23.1",
     "reactstrap": "^9.2.2",
     "redux-localstorage-simple": "^2.5.1",
-    "uuid": "^9.0.1",
+    "uuid": "^10.0.0",
     "workbox-core": "^7.1.0",
     "workbox-expiration": "^7.1.0",
     "workbox-precaching": "^7.1.0",
