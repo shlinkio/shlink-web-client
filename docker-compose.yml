@@ -1,7 +1,7 @@
 services:
   shlink_web_client_node:
     container_name: shlink_web_client_node
-    image: node:20.7-alpine
+    image: node:22.3-alpine
     command: /bin/sh -c "cd /home/shlink/www && npm install && npm run start"
     volumes:
       - ./:/home/shlink/www
