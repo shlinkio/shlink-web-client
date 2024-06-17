@@ -22,8 +22,8 @@ type ShlinkWebComponentContainerDeps = {
 };
 
 const ShlinkWebComponentContainer: FCWithDeps<
-ShlinkWebComponentContainerProps,
-ShlinkWebComponentContainerDeps
+  ShlinkWebComponentContainerProps,
+  ShlinkWebComponentContainerDeps
 // FIXME Using `memo` here to solve a flickering effect in charts.
 //       memo is probably not the right solution. The root cause is the withSelectedServer HOC, but I couldn't fix the
 //       extra rendering there.
