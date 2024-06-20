@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "npm run lint:css && npm run lint:js",
     "lint:css": "stylelint src/*.scss src/**/*.scss",
-    "lint:js": "eslint --ext .js,.ts,.tsx src test",
+    "lint:js": "eslint src test config/test",
     "lint:fix": "npm run lint:css:fix && npm run lint:js:fix",
     "lint:css:fix": "npm run lint:css -- --fix",
     "lint:js:fix": "npm run lint:js -- --fix",
@@ -57,7 +57,7 @@
     "workbox-strategies": "^7.1.0"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~2.5.1",
+    "@shlinkio/eslint-config-js-coding-standard": "~3.0.0",
     "@shlinkio/stylelint-config-css-coding-standard": "~1.1.1",
     "@stylistic/eslint-plugin": "^2.2.0",
     "@testing-library/jest-dom": "^6.4.6",
@@ -67,8 +67,6 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^9.0.8",
-    "@typescript-eslint/eslint-plugin": "^7.13.0",
-    "@typescript-eslint/parser": "^7.13.0",
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^1.6.0",
     "adm-zip": "^0.5.14",
@@ -84,6 +82,7 @@
     "sass": "^1.77.5",
     "stylelint": "^15.11.0",
     "typescript": "^5.4.5",
+    "typescript-eslint": "^7.13.1",
     "vite": "^5.3.1",
     "vite-plugin-pwa": "^0.20.0",
     "vitest": "^1.2.2"

@@ -15,7 +15,7 @@ updates:
       eslint-plugins: # TODO Add eslint back once updated to v9
         patterns:
           - '@shlinkio/eslint-config-js-coding-standard'
-          - '@typescript-eslint/*'
+          - 'typescript-eslint'
           - '*eslint-plugin*'
       shlink:
         patterns:
