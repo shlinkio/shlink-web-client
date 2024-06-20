@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * Update to `@shlinkio/shlink-web-component` 0.7 and use `ShlinkWebSettings` to replace local settings UI.
+* Update to `@shlinkio/eslint-config-js-coding-standard` 3.0, and migrate to ESLint flat config.
 
 ### Deprecated
 * *Nothing*
