@@ -1,9 +1,10 @@
+import { useParsedQuery } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory } from '../container/utils';
-import { useGoBack, useParsedQuery } from '../utils/helpers/hooks';
+import { useGoBack } from '../utils/helpers/hooks';
 import type { ServerData } from './data';
 import { isServerWithId } from './data';
 import { ServerForm } from './helpers/ServerForm';

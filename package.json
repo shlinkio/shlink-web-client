@@ -33,7 +33,7 @@
     "@json2csv/plainjs": "^7.0.6",
     "@reduxjs/toolkit": "^2.2.6",
     "@shlinkio/data-manipulation": "^1.0.3",
-    "@shlinkio/shlink-frontend-kit": "^0.5.1",
+    "@shlinkio/shlink-frontend-kit": "^0.5.2",
     "@shlinkio/shlink-js-sdk": "^1.1.0",
     "@shlinkio/shlink-web-component": "^0.7.0",
     "bootstrap": "5.2.3",
