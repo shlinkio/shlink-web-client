@@ -68,7 +68,7 @@
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.1",
-    "@vitest/coverage-v8": "^2.0.3",
+    "@vitest/coverage-v8": "^2.0.4",
     "adm-zip": "^0.5.14",
     "axe-core": "^4.9.1",
     "chalk": "^5.3.0",
