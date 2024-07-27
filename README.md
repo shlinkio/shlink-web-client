@@ -31,7 +31,7 @@ The application runs 100% in the browser, so you can safely access any shlink in
 
 If you want to deploy shlink-web-client in a container-based cluster (kubernetes, docker swarm, etc), just pick the [shlinkio/shlink-web-client](https://hub.docker.com/r/shlinkio/shlink-web-client/) image and do it.
 
-It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the static app on port 80.
+It's a lightweight [nginx:alpine](https://hub.docker.com/r/library/nginx/) image serving the static app on port 8080.
 
 ### Self-hosted
 
