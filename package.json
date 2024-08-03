@@ -70,7 +70,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "@vitest/coverage-v8": "^2.0.4",
     "adm-zip": "^0.5.14",
-    "axe-core": "^4.9.1",
+    "axe-core": "^4.10.0",
     "chalk": "^5.3.0",
     "eslint": "^8.57.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
