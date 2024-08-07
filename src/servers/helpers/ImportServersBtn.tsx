@@ -58,8 +58,12 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
           const dupServers = newServers.filter((server) => serversInclude(existingServers, server));
           const hasDuplicatedServers = !!dupServers.length;
 
-          !hasDuplicatedServers ? create(newServers) : setDuplicatedServers(dupServers);
-          hasDuplicatedServers && showModal();
+          if (!hasDuplicatedServers) {
+            create(newServers);
+          } else {
+            setDuplicatedServers(dupServers);
+            showModal();
+          }
         })
         .then(() => {
           // Reset input after processing file

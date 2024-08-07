@@ -15,7 +15,7 @@ type MainHeaderDeps = {
   ServersDropdown: FC;
 };
 
-const MainHeader: FCWithDeps<{}, MainHeaderDeps> = () => {
+const MainHeader: FCWithDeps<unknown, MainHeaderDeps> = () => {
   const { ServersDropdown } = useDependencies(MainHeader);
   const [isNotCollapsed, toggleCollapse, , collapse] = useToggle();
   const location = useLocation();

@@ -38,7 +38,7 @@ export const versionMatch = (versionToMatch: SemVer | Empty, { maxVersion, minVe
 const versionIsValidSemVer = memoizeWith((v) => v, (version: string): version is SemVer => {
   try {
     return compare(version, version, '=');
-  } catch (e) {
+  } catch {
     return false;
   }
 });

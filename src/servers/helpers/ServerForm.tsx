@@ -17,9 +17,11 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
   const handleSubmit = handleEventPreventingDefault(() => onSubmit({ name, url, apiKey }));
 
   useEffect(() => {
-    initialValues && setName(initialValues.name);
-    initialValues && setUrl(initialValues.url);
-    initialValues && setApiKey(initialValues.apiKey);
+    if (initialValues) {
+      setName(initialValues.name);
+      setUrl(initialValues.url);
+      setApiKey(initialValues.apiKey);
+    }
   }, [initialValues]);
 
   return (

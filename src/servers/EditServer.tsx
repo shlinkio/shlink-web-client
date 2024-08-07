@@ -31,7 +31,9 @@ const EditServer: FCWithDeps<EditServerProps, EditServerDeps> = withSelectedServ
 
   const handleSubmit = (serverData: ServerData) => {
     editServer(selectedServer.id, serverData);
-    reconnect === 'true' && selectServer(selectedServer.id);
+    if (reconnect === 'true') {
+      selectServer(selectedServer.id);
+    }
     goBack();
   };
 

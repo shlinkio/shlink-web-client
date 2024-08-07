@@ -30,7 +30,9 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
     }
 
     deleteServer(server);
-    redirectHome && navigate('/');
+    if (redirectHome) {
+      navigate('/');
+    }
   };
 
   return (
