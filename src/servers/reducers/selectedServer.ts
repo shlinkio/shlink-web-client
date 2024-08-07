@@ -50,7 +50,7 @@ export const selectServer = (buildShlinkApiClient: ShlinkApiClientBuilder) => cr
         version,
         printableVersion,
       };
-    } catch (e) {
+    } catch {
       return { ...selectedServer, serverNotReachable: true };
     }
   },

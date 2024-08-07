@@ -60,7 +60,11 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
       ({ url, apiKey }) => serverData?.url === url && serverData?.apiKey === apiKey,
     );
 
-    serverExists ? toggleConfirmModal() : saveNewServer(serverData);
+    if (serverExists) {
+      toggleConfirmModal();
+    } else {
+      saveNewServer(serverData);
+    }
   }, [saveNewServer, serverData, servers, toggleConfirmModal]);
 
   return (

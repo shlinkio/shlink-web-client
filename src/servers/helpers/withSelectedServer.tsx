@@ -17,7 +17,7 @@ type WithSelectedServerPropsDeps = {
   ServerError: FC;
 };
 
-export function withSelectedServer<T = {}>(
+export function withSelectedServer<T extends object>(
   WrappedComponent: FCWithDeps<WithSelectedServerProps & T, WithSelectedServerPropsDeps>,
 ) {
   const ComponentWrapper: FCWithDeps<WithSelectedServerProps & T, WithSelectedServerPropsDeps> = (props) => {
@@ -26,7 +26,9 @@ export function withSelectedServer<T = {}>(
     const { selectServer, selectedServer } = props;
 
     useEffect(() => {
-      params.serverId && selectServer(params.serverId);
+      if (params.serverId) {
+        selectServer(params.serverId);
+      }
     }, [params.serverId, selectServer]);
 
     if (!selectedServer) {

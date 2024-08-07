@@ -9,13 +9,13 @@ import { provideServices as provideSettingsServices } from '../settings/services
 import { provideServices as provideUtilsServices } from '../utils/services/provideServices';
 import type { ConnectDecorator } from './types';
 
-type LazyActionMap = Record<string, Function>;
+type LazyActionMap = Record<string, (...args: unknown[]) => unknown>;
 
 const bottle = new Bottle();
 
 export const { container } = bottle;
 
-const lazyService = <T extends Function, K>(cont: IContainer, serviceName: string) =>
+const lazyService = <T extends (...args: unknown[]) => unknown, K>(cont: IContainer, serviceName: string) =>
   (...args: any[]) => (cont[serviceName] as T)(...args) as K;
 
 const mapActionService = (map: LazyActionMap, actionName: string): LazyActionMap => ({

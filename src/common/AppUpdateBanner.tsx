@@ -9,7 +9,7 @@ import './AppUpdateBanner.scss';
 interface AppUpdateBannerProps {
   isOpen: boolean;
   toggle: MouseEventHandler<any>;
-  forceUpdate: Function;
+  forceUpdate: () => void;
 }
 
 export const AppUpdateBanner = forwardRef<HTMLElement, AppUpdateBannerProps>(({ isOpen, toggle, forceUpdate }, ref) => {
