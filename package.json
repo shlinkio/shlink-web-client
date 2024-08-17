@@ -34,7 +34,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "@shlinkio/data-manipulation": "^1.0.3",
     "@shlinkio/shlink-frontend-kit": "^0.5.2",
-    "@shlinkio/shlink-js-sdk": "^1.1.0",
+    "@shlinkio/shlink-js-sdk": "^1.2.0",
     "@shlinkio/shlink-web-component": "^0.7.0",
     "bootstrap": "5.2.3",
     "bottlejs": "^2.0.1",
