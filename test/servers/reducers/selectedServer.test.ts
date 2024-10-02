@@ -1,6 +1,5 @@
 import type { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { v4 as uuid } from 'uuid';
 import type { ShlinkState } from '../../../src/container/types';
 import type { NonReachableServer, NotFoundServer, RegularServer } from '../../../src/servers/data';
 import {
@@ -41,7 +40,7 @@ describe('selectedServerReducer', () => {
       ['latest', MAX_FALLBACK_VERSION, 'latest'],
       ['%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%'],
     ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
-      const id = uuid();
+      const id = crypto.randomUUID();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = {
         id,
@@ -60,7 +59,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when health endpoint fails', async () => {
-      const id = uuid();
+      const id = crypto.randomUUID();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = fromPartial<NonReachableServer>({ id, serverNotReachable: true });
 
@@ -73,7 +72,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when server is not found', async () => {
-      const id = uuid();
+      const id = crypto.randomUUID();
       const getState = vi.fn(() => fromPartial<ShlinkState>({ servers: {} }));
       const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 
