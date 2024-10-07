@@ -4,12 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.2.0] - 2024-10-07
 ### Added
-* *Nothing*
+* [shlink-web-component#411](https://github.com/shlinkio/shlink-web-component/issues/411) Add support for `ip-address` redirect conditions when Shlink server is >=4.2
+* [shlink-web-component#196](https://github.com/shlinkio/shlink-web-component/issues/196) Allow active date range to be changed by selecting a range in visits and visits-comparison line charts.
+* [shlink-web-component#307](https://github.com/shlinkio/shlink-web-component/issues/307) Add new setting to disable short URL deletions confirmation.
+* [shlink-web-component#435](https://github.com/shlinkio/shlink-web-component/issues/435) Allow toggling between displaying raw user agent and parsed browser/OS in visits table.
+* [shlink-web-component#197](https://github.com/shlinkio/shlink-web-component/issues/197) Allow line charts to be expanded to the full size of the viewport, both in individual visits views, and when comparing visits.
+* [shlink-web-component#382](https://github.com/shlinkio/shlink-web-component/issues/382) Initialize QR code modal with all params unset, so that they fall back to the server defaults. Additionally, allow them to be unset if desired.
 
 ### Changed
-* Update to `@shlinkio/shlink-web-component` 0.7 and use `ShlinkWebSettings` to replace local settings UI.
+* Use `ShlinkWebSettings` from `@shlinkio/shlink-web-component` to replace local settings UI.
 * Update to `@shlinkio/eslint-config-js-coding-standard` 3.0, and migrate to ESLint flat config.
 * Remove dependency on `uuid` package, and use `crypto.randomUUID()` instead.
 
