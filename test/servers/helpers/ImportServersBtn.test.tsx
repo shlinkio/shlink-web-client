@@ -57,7 +57,9 @@ describe('<ImportServersBtn />', () => {
     const { container } = setUp();
     const input = container.querySelector('[type=file]');
 
-    input && fireEvent.change(input, { target: { files: [''] } });
+    if (input) {
+      fireEvent.change(input, { target: { files: [''] } });
+    }
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(createServersMock).toHaveBeenCalledTimes(1));
   });
@@ -73,7 +75,9 @@ describe('<ImportServersBtn />', () => {
     importServersFromFile.mockResolvedValue([existingServer, newServer]);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    input && fireEvent.change(input, { target: { files: [''] } });
+    if (input) {
+      fireEvent.change(input, { target: { files: [''] } });
+    }
     await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
     await user.click(screen.getByRole('button', { name: btnName }));
 

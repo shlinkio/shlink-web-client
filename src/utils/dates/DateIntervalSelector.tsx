@@ -1,5 +1,5 @@
 import { DropdownBtn } from '@shlinkio/shlink-frontend-kit';
-import type { VisitsSettings } from '@shlinkio/shlink-web-component';
+import type { VisitsSettings } from '@shlinkio/shlink-web-component/settings';
 import type { FC } from 'react';
 import { DropdownItem } from 'reactstrap';
 

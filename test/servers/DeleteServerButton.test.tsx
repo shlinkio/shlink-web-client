@@ -32,7 +32,9 @@ describe('<DeleteServerButton />', () => {
 
     expect(screen.getByText(/DeleteServerModal/)).toHaveTextContent(/Closed/);
     expect(screen.getByText(/DeleteServerModal/)).not.toHaveTextContent(/Open/);
-    container.firstElementChild && await user.click(container.firstElementChild);
+    if (container.firstElementChild) {
+      await user.click(container.firstElementChild);
+    }
 
     await waitFor(() => expect(screen.getByText(/DeleteServerModal/)).toHaveTextContent(/Open/));
   });

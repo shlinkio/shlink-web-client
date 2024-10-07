@@ -1,6 +1,5 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { v4 as uuid } from 'uuid';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
 
 interface EditServer {
@@ -20,7 +19,7 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
     return server;
   }
 
-  return { ...server, id: uuid() };
+  return { ...server, id: crypto.randomUUID() };
 };
 
 const serversListToMap = (servers: ServerWithId[]): ServersMap => servers.reduce<ServersMap>(
@@ -44,8 +43,8 @@ export const { actions, reducer } = createSlice({
       },
     },
     deleteServer: (state, { payload }) => {
-      const { [payload.id]: deletedServer, ...rest } = state;
-      return rest;
+      delete state[payload.id];
+      return state;
     },
     setAutoConnect: {
       prepare: ({ id: serverId }: ServerWithId, autoConnect: boolean) => ({

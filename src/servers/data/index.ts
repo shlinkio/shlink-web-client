@@ -44,4 +44,4 @@ export const isNotFoundServer = (server: SelectedServer): server is NotFoundServ
 
 export const getServerId = (server: SelectedServer) => (isServerWithId(server) ? server.id : '');
 
-export const serverWithIdToServerData = ({ id, autoConnect, ...server }: ServerWithId): ServerData => server;
+export const serverWithIdToServerData = ({ name, url, apiKey }: ServerWithId): ServerData => ({ name, url, apiKey });

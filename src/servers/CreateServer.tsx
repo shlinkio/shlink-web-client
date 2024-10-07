@@ -4,7 +4,6 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import { v4 as uuid } from 'uuid';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -45,7 +44,7 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
   const saveNewServer = useCallback((theServerData: ServerData) => {
-    const id = uuid();
+    const id = crypto.randomUUID();
 
     createServers([{ ...theServerData, id }]);
     navigate(`/server/${id}`);
@@ -60,7 +59,11 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
       ({ url, apiKey }) => serverData?.url === url && serverData?.apiKey === apiKey,
     );
 
-    serverExists ? toggleConfirmModal() : saveNewServer(serverData);
+    if (serverExists) {
+      toggleConfirmModal();
+    } else {
+      saveNewServer(serverData);
+    }
   }, [saveNewServer, serverData, servers, toggleConfirmModal]);
 
   return (

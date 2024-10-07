@@ -1,10 +1,10 @@
-FROM node:21.7-alpine as node
+FROM node:22.9-alpine as node
 COPY . /shlink-web-client
 ARG VERSION="latest"
 ENV VERSION ${VERSION}
 RUN cd /shlink-web-client && npm ci && npm run build
 
-FROM nginxinc/nginx-unprivileged:1.25-alpine
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 ARG UID=101
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 

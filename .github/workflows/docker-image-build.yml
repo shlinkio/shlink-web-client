@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    uses: shlinkio/github-actions/.github/workflows/docker-build-and-publish.yml@main
+    uses: shlinkio/github-actions/.github/workflows/docker-publish-image.yml@main
     secrets: inherit
     with:
       image-name: shlinkio/shlink-web-client
