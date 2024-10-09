@@ -8,6 +8,7 @@ import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import { useGoBack } from '../utils/helpers/hooks';
+import { randomUUID } from '../utils/utils';
 import type { ServerData, ServersMap, ServerWithId } from './data';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
@@ -44,7 +45,7 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
   const saveNewServer = useCallback((theServerData: ServerData) => {
-    const id = crypto.randomUUID();
+    const id = randomUUID();
 
     createServers([{ ...theServerData, id }]);
     navigate(`/server/${id}`);
