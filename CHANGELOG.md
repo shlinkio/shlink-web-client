@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#1325](https://github.com/shlinkio/shlink-web-client/issues/1325) Get dependency on `uuid` package back, as `crypto.randomUUID()` can only be used in [secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts).
+
+
 ## [4.2.0] - 2024-10-07
 ### Added
 * [shlink-web-component#411](https://github.com/shlinkio/shlink-web-component/issues/411) Add support for `ip-address` redirect conditions when Shlink server is >=4.2
