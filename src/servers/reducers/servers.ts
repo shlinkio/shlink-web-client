@@ -1,5 +1,6 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import { randomUUID } from '../../utils/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
 
 interface EditServer {
@@ -19,7 +20,7 @@ const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
     return server;
   }
 
-  return { ...server, id: crypto.randomUUID() };
+  return { ...server, id: randomUUID() };
 };
 
 const serversListToMap = (servers: ServerWithId[]): ServersMap => servers.reduce<ServersMap>(
