@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.2.1] - 2024-10-09
 ### Added
 * *Nothing*
 
@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [#1325](https://github.com/shlinkio/shlink-web-client/issues/1325) Get dependency on `uuid` package back, as `crypto.randomUUID()` can only be used in [secure contexts](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts).
+* [shlink-web-component#461](https://github.com/shlinkio/shlink-web-component/issues/461) Ensure `shortUrlsList.confirmDeletion` setting is `true` in any case, except when explicitly set to `false`.
+* [shlink-web-component#237](https://github.com/shlinkio/shlink-web-component/issues/237) Set darker color for previous period in charts, when light theme is enabled.
+* [shlink-web-component#246](https://github.com/shlinkio/shlink-web-component/issues/246) Fix selected date range not reflected in visits comparison date range selector, when selecting it in the line chart via drag'n'drop.
+
 
 
 ## [4.2.0] - 2024-10-07
