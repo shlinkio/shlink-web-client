@@ -24,7 +24,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [shlink-web-component#246](https://github.com/shlinkio/shlink-web-component/issues/246) Fix selected date range not reflected in visits comparison date range selector, when selecting it in the line chart via drag'n'drop.
 
 
-
 ## [4.2.0] - 2024-10-07
 ### Added
 * [shlink-web-component#411](https://github.com/shlinkio/shlink-web-component/issues/411) Add support for `ip-address` redirect conditions when Shlink server is >=4.2
