@@ -57,7 +57,7 @@
     "workbox-strategies": "^7.1.0"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~3.1.0",
+    "@shlinkio/eslint-config-js-coding-standard": "~3.2.0",
     "@shlinkio/stylelint-config-css-coding-standard": "~1.1.1",
     "@stylistic/eslint-plugin": "^2.9.0",
     "@testing-library/jest-dom": "^6.5.0",
@@ -72,10 +72,10 @@
     "adm-zip": "^0.5.16",
     "axe-core": "^4.10.0",
     "chalk": "^5.3.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.12.0",
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "eslint-plugin-react": "^7.37.1",
-    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "history": "^5.3.0",
     "jsdom": "^25.0.1",

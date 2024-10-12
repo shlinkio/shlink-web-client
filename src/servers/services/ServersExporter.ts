@@ -22,7 +22,7 @@ export class ServersExporter {
       saveCsv(this.window, csv, SERVERS_FILENAME);
     } catch (e) {
       // FIXME Handle error
-      console.error(e); // eslint-disable-line no-console
+      console.error(e);
     }
   };
 }
