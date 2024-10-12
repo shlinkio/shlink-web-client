@@ -20,7 +20,6 @@ export function componentFactory<Deps, CompType = Omit<Partial<Deps>, keyof FC>>
         console.error(`[Debug] Could not find "${dep as string}" dependency in container`);
       }
 
-      // eslint-disable-next-line no-param-reassign
       Component[dep] = resolvedDependency;
     });
 

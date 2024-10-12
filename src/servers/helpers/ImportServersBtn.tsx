@@ -67,7 +67,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
         })
         .then(() => {
           // Reset input after processing file
-          (target as { value: string | null }).value = null; // eslint-disable-line no-param-reassign
+          (target as { value: string | null }).value = null;
         })
         .catch(onImportError),
     [create, onImportError, servers, serversImporter, showModal],
