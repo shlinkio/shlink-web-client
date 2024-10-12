@@ -31,7 +31,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@json2csv/plainjs": "^7.0.6",
-    "@reduxjs/toolkit": "^2.2.7",
+    "@reduxjs/toolkit": "^2.2.8",
     "@shlinkio/data-manipulation": "^1.0.3",
     "@shlinkio/shlink-frontend-kit": "^0.5.2",
     "@shlinkio/shlink-js-sdk": "^1.2.0",
