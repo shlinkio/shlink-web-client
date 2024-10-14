@@ -1,7 +1,7 @@
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
@@ -50,26 +50,23 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
     createServers([{ ...theServerData, id }]);
     navigate(`/server/${id}`);
   }, [createServers, navigate]);
-
-  useEffect(() => {
-    if (!serverData) {
-      return;
-    }
+  const onSubmit = useCallback((newServerData: ServerData) => {
+    setServerData(newServerData);
 
     const serverExists = Object.values(servers).some(
-      ({ url, apiKey }) => serverData?.url === url && serverData?.apiKey === apiKey,
+      ({ url, apiKey }) => newServerData.url === url && newServerData.apiKey === apiKey,
     );
 
     if (serverExists) {
       toggleConfirmModal();
     } else {
-      saveNewServer(serverData);
+      saveNewServer(newServerData);
     }
-  }, [saveNewServer, serverData, servers, toggleConfirmModal]);
+  }, [saveNewServer, servers, toggleConfirmModal]);
 
   return (
     <NoMenuLayout>
-      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={setServerData}>
+      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={onSubmit}>
         {!hasServers && (
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />
         )}
