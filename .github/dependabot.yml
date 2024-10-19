@@ -12,11 +12,12 @@ updates:
       fontawesome:
         patterns:
           - '@fortawesome/*'
-      eslint-plugins: # TODO Add eslint back once updated to v9
+      eslint:
         patterns:
           - '@shlinkio/eslint-config-js-coding-standard'
           - 'typescript-eslint'
           - '*eslint-plugin*'
+          - 'eslint'
       shlink:
         patterns:
           - '@shlinkio/*'
