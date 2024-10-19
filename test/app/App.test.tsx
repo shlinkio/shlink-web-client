@@ -56,7 +56,7 @@ describe('<App />', () => {
   it.each([
     ['/foo', 'shlink-wrapper'],
     ['/bar', 'shlink-wrapper'],
-    ['/', 'shlink-wrapper d-flex d-md-block align-items-center'],
+    ['/', 'shlink-wrapper d-flex align-items-center pt-3'],
   ])('renders expected classes on shlink-wrapper based on current pathname', async (pathname, expectedClasses) => {
     const { container } = await setUp(pathname);
     const shlinkWrapper = container.querySelector('.shlink-wrapper');

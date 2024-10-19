@@ -66,7 +66,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
       <MainHeader />
 
       <div className="app">
-        <div className={clsx('shlink-wrapper', { 'd-flex d-md-block align-items-center': isHome })}>
+        <div className={clsx('shlink-wrapper', { 'd-flex align-items-center pt-3': isHome })}>
           <Routes>
             <Route index element={<Home />} />
             <Route path="/settings/*" element={<Settings />} />
