@@ -1,6 +1,11 @@
+import { clsx } from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
 import './NoMenuLayout.scss';
 
-export const NoMenuLayout: FC<PropsWithChildren> = ({ children }) => (
-  <div className="no-menu-wrapper container-xl">{children}</div>
+export type NoMenuLayoutProps = PropsWithChildren & {
+  className?: string;
+};
+
+export const NoMenuLayout: FC<NoMenuLayoutProps> = ({ children, className }) => (
+  <div className={clsx('no-menu-wrapper container-xl', className)}>{children}</div>
 );

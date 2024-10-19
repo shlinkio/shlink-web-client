@@ -5,7 +5,7 @@ import { Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Row } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -44,24 +44,22 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
 
   return (
-    <NoMenuLayout>
-      <SearchField className="mb-3" onChange={setSearchTerm} />
+    <NoMenuLayout className="d-flex flex-column gap-3">
+      <SearchField onChange={setSearchTerm} />
 
-      <Row className="mb-3">
-        <div className="col-md-6 d-flex d-md-block mb-2 mb-md-0">
+      <div className="d-flex flex-column flex-md-row gap-2">
+        <div className="d-flex gap-2">
           <ImportServersBtn className="flex-fill" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
           {filteredServers.length > 0 && (
-            <Button outline className="ms-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
+            <Button outline className="flex-fill" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
             </Button>
           )}
         </div>
-        <div className="col-md-6 text-md-end d-flex d-md-block">
-          <Button outline color="primary" className="flex-fill" tag={Link} to="/server/create">
-            <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
-          </Button>
-        </div>
-      </Row>
+        <Button outline color="primary" className="ms-md-auto" tag={Link} to="/server/create">
+          <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
+        </Button>
+      </div>
 
       <SimpleCard>
         <table className="table table-hover responsive-table mb-0">
@@ -83,7 +81,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
       </SimpleCard>
 
       {errorImporting && (
-        <div className="mt-3">
+        <div>
           <Result type="error">The servers could not be imported. Make sure the format is correct.</Result>
         </div>
       )}
