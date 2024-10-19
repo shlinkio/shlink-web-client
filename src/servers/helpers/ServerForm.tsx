@@ -1,6 +1,6 @@
 import { InputFormGroup, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { handleEventPreventingDefault } from '../../utils/utils';
 import type { ServerData } from '../data';
 
@@ -11,18 +11,10 @@ type ServerFormProps = PropsWithChildren<{
 }>;
 
 export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, children, title }) => {
-  const [name, setName] = useState('');
-  const [url, setUrl] = useState('');
-  const [apiKey, setApiKey] = useState('');
+  const [name, setName] = useState(initialValues?.name ?? '');
+  const [url, setUrl] = useState(initialValues?.url ?? '');
+  const [apiKey, setApiKey] = useState(initialValues?.apiKey ?? '');
   const handleSubmit = handleEventPreventingDefault(() => onSubmit({ name, url, apiKey }));
-
-  useEffect(() => {
-    if (initialValues) {
-      setName(initialValues.name);
-      setUrl(initialValues.url);
-      setApiKey(initialValues.apiKey);
-    }
-  }, [initialValues]);
 
   return (
     <form className="server-form" name="serverForm" onSubmit={handleSubmit}>

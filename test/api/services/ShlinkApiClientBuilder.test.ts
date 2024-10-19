@@ -39,7 +39,7 @@ describe('ShlinkApiClientBuilder', () => {
     const apiKey = 'apiKey';
     const apiClient = buildShlinkApiClient(fromPartial({}))(server({ url, apiKey }));
 
-    expect(apiClient['serverInfo'].baseUrl).toEqual(url); // eslint-disable-line @typescript-eslint/dot-notation
-    expect(apiClient['serverInfo'].apiKey).toEqual(apiKey); // eslint-disable-line @typescript-eslint/dot-notation
+    expect(apiClient['serverInfo'].baseUrl).toEqual(url);
+    expect(apiClient['serverInfo'].apiKey).toEqual(apiKey);
   });
 });

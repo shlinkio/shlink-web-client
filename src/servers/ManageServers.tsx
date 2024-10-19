@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import { Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
@@ -34,26 +34,23 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
     useTimeoutToggle,
     ManageServersRow,
   } = useDependencies(ManageServers);
-  const allServers = Object.values(servers);
-  const [serversList, setServersList] = useState(allServers);
-  const filterServers = (searchTerm: string) => setServersList(
-    allServers.filter(({ name, url }) => `${name} ${url}`.toLowerCase().match(searchTerm.toLowerCase())),
+  const [searchTerm, setSearchTerm] = useState('');
+  const allServers = useMemo(() => Object.values(servers), [servers]);
+  const filteredServers = useMemo(
+    () => allServers.filter(({ name, url }) => `${name} ${url}`.toLowerCase().match(searchTerm.toLowerCase())),
+    [allServers, searchTerm],
   );
-  const hasAutoConnect = serversList.some(({ autoConnect }) => !!autoConnect);
+  const hasAutoConnect = allServers.some(({ autoConnect }) => !!autoConnect);
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
-
-  useEffect(() => {
-    setServersList(Object.values(servers));
-  }, [servers]);
 
   return (
     <NoMenuLayout>
-      <SearchField className="mb-3" onChange={filterServers} />
+      <SearchField className="mb-3" onChange={setSearchTerm} />
 
       <Row className="mb-3">
         <div className="col-md-6 d-flex d-md-block mb-2 mb-md-0">
           <ImportServersBtn className="flex-fill" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
-          {allServers.length > 0 && (
+          {filteredServers.length > 0 && (
             <Button outline className="ms-2 flex-fill" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
             </Button>
@@ -77,8 +74,8 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
             </tr>
           </thead>
           <tbody>
-            {!serversList.length && <tr className="text-center"><td colSpan={4}>No servers found.</td></tr>}
-            {serversList.map((server) => (
+            {!filteredServers.length && <tr className="text-center"><td colSpan={4}>No servers found.</td></tr>}
+            {filteredServers.map((server) => (
               <ManageServersRow key={server.id} server={server} hasAutoConnect={hasAutoConnect} />
             ))}
           </tbody>
