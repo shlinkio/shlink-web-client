@@ -9,19 +9,19 @@ jobs:
     continue-on-error: true
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
       - name: Use node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.7
+          node-version: 22.x
       - name: Build
         run: |
           npm ci && \
           node ./scripts/set-homepage.cjs /shlink-web-client/${GITHUB_HEAD_REF#refs/heads/} && \
-          npm run build
+          node --run build
       - name: Deploy preview
         uses: shlinkio/deploy-preview-action@v1.0.1
         with:
