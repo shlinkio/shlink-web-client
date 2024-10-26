@@ -1,7 +1,8 @@
 services:
   shlink_web_client_node:
     container_name: shlink_web_client_node
-    image: node:22.3-alpine
+    user: 1000:1000 # With this, files created via `indocker` script will belong to the host user
+    image: node:22.10-alpine
     command: /bin/sh -c "cd /home/shlink/www && npm install && npm run start"
     volumes:
       - ./:/home/shlink/www
