@@ -60,7 +60,7 @@
     "@shlinkio/eslint-config-js-coding-standard": "~3.2.1",
     "@shlinkio/stylelint-config-css-coding-standard": "~1.1.1",
     "@stylistic/eslint-plugin": "^2.9.0",
-    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
     "@total-typescript/shoehorn": "^0.1.2",
