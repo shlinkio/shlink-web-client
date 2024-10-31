@@ -9,6 +9,7 @@ import { componentFactory, useDependencies } from '../../container/utils';
 import type { ServerData, ServersMap } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
+import { dedupServers } from './index';
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
@@ -26,9 +27,6 @@ type ImportServersBtnDeps = {
   ServersImporter: ServersImporter
 };
 
-const serversInclude = (servers: ServerData[], { url, apiKey }: ServerData) =>
-  servers.some((server) => server.url === url && server.apiKey === apiKey);
-
 const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBtnDeps> = ({
   createServers,
   servers,
@@ -43,7 +41,9 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
 
-  const serversToCreate = useRef<ServerData[]>([]);
+  const importedServersRef = useRef<ServerData[]>([]);
+  const newServersRef = useRef<ServerData[]>([]);
+
   const create = useCallback((serversData: ServerData[]) => {
     createServers(serversData);
     onImport();
@@ -51,22 +51,21 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const onFile = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) =>
       serversImporter.importServersFromFile(target.files?.[0])
-        .then((newServers) => {
-          serversToCreate.current = newServers;
+        .then((importedServers) => {
+          const { duplicatedServers, newServers } = dedupServers(servers, importedServers);
 
-          const existingServers = Object.values(servers);
-          const dupServers = newServers.filter((server) => serversInclude(existingServers, server));
-          const hasDuplicatedServers = !!dupServers.length;
+          importedServersRef.current = importedServers;
+          newServersRef.current = newServers;
 
-          if (!hasDuplicatedServers) {
-            create(newServers);
+          if (duplicatedServers.length === 0) {
+            create(importedServers);
           } else {
-            setDuplicatedServers(dupServers);
+            setDuplicatedServers(duplicatedServers);
             showModal();
           }
         })
         .then(() => {
-          // Reset input after processing file
+          // Reset file input after processing file
           (target as { value: string | null }).value = null;
         })
         .catch(onImportError),
@@ -74,13 +73,13 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   );
 
   const createAllServers = useCallback(() => {
-    create(serversToCreate.current);
+    create(importedServersRef.current);
     hideModal();
-  }, [create, hideModal, serversToCreate]);
+  }, [create, hideModal]);
   const createNonDuplicatedServers = useCallback(() => {
-    create(serversToCreate.current.filter((server) => !serversInclude(duplicatedServers, server)));
+    create(newServersRef.current);
     hideModal();
-  }, [create, duplicatedServers, hideModal]);
+  }, [create, hideModal]);
 
   return (
     <>
@@ -91,7 +90,15 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
         You can create servers by importing a CSV file with <b>name</b>, <b>apiKey</b> and <b>url</b> columns.
       </UncontrolledTooltip>
 
-      <input type="file" accept=".csv" className="d-none" ref={ref} onChange={onFile} aria-hidden />
+      <input
+        type="file"
+        accept=".csv"
+        className="d-none"
+        aria-hidden
+        ref={ref}
+        onChange={onFile}
+        data-testid="csv-file-input"
+      />
 
       <DuplicatedServersModal
         isOpen={isModalOpen}

@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
@@ -9,6 +9,7 @@ import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<ImportServersBtn />', () => {
+  const csvFile = new File([''], 'servers.csv', { type: 'text/csv' });
   const onImportMock = vi.fn();
   const createServersMock = vi.fn();
   const importServersFromFile = vi.fn().mockResolvedValue([]);
@@ -54,14 +55,13 @@ describe('<ImportServersBtn />', () => {
   });
 
   it('imports servers when file input changes', async () => {
-    const { container } = setUp();
-    const input = container.querySelector('[type=file]');
+    const { user } = setUp();
 
-    if (input) {
-      fireEvent.change(input, { target: { files: [''] } });
-    }
+    const input = screen.getByTestId('csv-file-input');
+    await user.upload(input, csvFile);
+
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
-    await waitFor(() => expect(createServersMock).toHaveBeenCalledTimes(1));
+    expect(createServersMock).toHaveBeenCalledTimes(1);
   });
 
   it.each([
@@ -70,15 +70,14 @@ describe('<ImportServersBtn />', () => {
   ])('creates expected servers depending on selected option in modal', async (btnName, savesDuplicatedServers) => {
     const existingServer = fromPartial<ServerWithId>({ id: 'abc', url: 'existingUrl', apiKey: 'existingApiKey' });
     const newServer = fromPartial<ServerWithId>({ url: 'newUrl', apiKey: 'newApiKey' });
-    const { container, user } = setUp({}, { abc: existingServer });
-    const input = container.querySelector('[type=file]');
+    const { user } = setUp({}, { abc: existingServer });
+    const input = screen.getByTestId('csv-file-input');
+
     importServersFromFile.mockResolvedValue([existingServer, newServer]);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    if (input) {
-      fireEvent.change(input, { target: { files: [''] } });
-    }
-    await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
+    await user.upload(input, csvFile);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: btnName }));
 
     expect(createServersMock).toHaveBeenCalledWith(savesDuplicatedServers ? [existingServer, newServer] : [newServer]);

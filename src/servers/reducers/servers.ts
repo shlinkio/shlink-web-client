@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { randomUUID } from '../../utils/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
+import { serversListToMap, serverWithId } from '../helpers';
 
 interface EditServer {
   serverId: string;
@@ -14,19 +14,6 @@ interface SetAutoConnect {
 }
 
 const initialState: ServersMap = {};
-
-const serverWithId = (server: ServerWithId | ServerData): ServerWithId => {
-  if ('id' in server) {
-    return server;
-  }
-
-  return { ...server, id: randomUUID() };
-};
-
-const serversListToMap = (servers: ServerWithId[]): ServersMap => servers.reduce<ServersMap>(
-  (acc, server) => ({ ...acc, [server.id]: server }),
-  {},
-);
 
 export const { actions, reducer } = createSlice({
   name: 'shlink/servers',
