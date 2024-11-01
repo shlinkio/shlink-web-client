@@ -105,15 +105,6 @@ describe('serversReducer', () => {
 
         expect(payload).toEqual(list);
       });
-
-      it('generates an id for every provided server if they do not have it', () => {
-        const servers = Object.values(list).map(({ name, autoConnect, url, apiKey }) => (
-          { name, autoConnect, url, apiKey }
-        ));
-        const { payload } = createServers(servers);
-
-        expect(Object.values(payload).every(({ id }) => !!id)).toEqual(true);
-      });
     });
 
     describe('setAutoConnect', () => {

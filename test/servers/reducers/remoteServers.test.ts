@@ -9,74 +9,76 @@ describe('remoteServersReducer', () => {
     const httpClient = fromPartial<HttpClient>({ jsonRequest });
 
     it.each([
-      [
-        [
+      {
+        serversArray: [
           {
-            id: '111',
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
             apiKey: '07fb8a96-8059-4094-a24c-80a7d5e7e9b0',
           },
           {
-            id: '222',
             name: 'Local from servers.json',
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         ],
-        {
-          111: {
-            id: '111',
+        expectedNewServers: {
+          'acel.me-from-servers.json-acel.me': {
+            id: 'acel.me-from-servers.json-acel.me',
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
             apiKey: '07fb8a96-8059-4094-a24c-80a7d5e7e9b0',
           },
-          222: {
-            id: '222',
+          'local-from-servers.json-localhost-8000': {
+            id: 'local-from-servers.json-localhost-8000',
             name: 'Local from servers.json',
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         },
-      ],
-      [
-        [
+      },
+      {
+        serversArray: [
           {
-            id: '111',
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
             apiKey: '07fb8a96-8059-4094-a24c-80a7d5e7e9b0',
           },
           {
-            id: '222',
             name: 'Invalid',
           },
           {
-            id: '333',
             name: 'Local from servers.json',
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         ],
-        {
-          111: {
-            id: '111',
+        expectedNewServers: {
+          'acel.me-from-servers.json-acel.me': {
+            id: 'acel.me-from-servers.json-acel.me',
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
             apiKey: '07fb8a96-8059-4094-a24c-80a7d5e7e9b0',
           },
-          333: {
-            id: '333',
+          'local-from-servers.json-localhost-8000': {
+            id: 'local-from-servers.json-localhost-8000',
             name: 'Local from servers.json',
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
+
         },
-      ],
-      ['<html></html>', {}],
-      [{}, {}],
-    ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
-      jsonRequest.mockResolvedValue(mockedValue);
+      },
+      {
+        serversArray: '<html></html>',
+        expectedNewServers: {},
+      },
+      {
+        serversArray: {},
+        expectedNewServers: {},
+      },
+    ])('tries to fetch servers from remote', async ({ serversArray, expectedNewServers }) => {
+      jsonRequest.mockResolvedValue(serversArray);
       const doFetchServers = fetchServers(httpClient);
 
       await doFetchServers()(dispatch, vi.fn(), {});

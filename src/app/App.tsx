@@ -50,8 +50,8 @@ const App: FCWithDeps<AppProps, AppDeps> = (
   const isHome = location.pathname === '/';
 
   useEffect(() => {
-    // Try to fetch the remote servers if the list is empty at first
-    // We use a ref because we don't care if the servers list becomes empty later
+    // Try to fetch the remote servers if the list is empty during first render.
+    // We use a ref because we don't care if the servers list becomes empty later.
     if (Object.keys(initialServers.current).length === 0) {
       fetchServers();
     }

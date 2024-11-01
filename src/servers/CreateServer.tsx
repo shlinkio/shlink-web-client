@@ -8,8 +8,8 @@ import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import { useGoBack } from '../utils/helpers/hooks';
-import { randomUUID } from '../utils/utils';
 import type { ServerData, ServersMap, ServerWithId } from './data';
+import { ensureUniqueIds } from './helpers';
 import { DuplicatedServersModal } from './helpers/DuplicatedServersModal';
 import type { ImportServersBtnProps } from './helpers/ImportServersBtn';
 import { ServerForm } from './helpers/ServerForm';
@@ -44,12 +44,12 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
-  const saveNewServer = useCallback((theServerData: ServerData) => {
-    const id = randomUUID();
+  const saveNewServer = useCallback((newServerData: ServerData) => {
+    const [newServerWithUniqueId] = ensureUniqueIds(servers, [newServerData]);
 
-    createServers([{ ...theServerData, id }]);
-    navigate(`/server/${id}`);
-  }, [createServers, navigate]);
+    createServers([newServerWithUniqueId]);
+    navigate(`/server/${newServerWithUniqueId.id}`);
+  }, [createServers, navigate, servers]);
   const onSubmit = useCallback((newServerData: ServerData) => {
     setServerData(newServerData);
 

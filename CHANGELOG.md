@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* [#1360](https://github.com/shlinkio/shlink-web-client/issues/1360) Added ability for server IDs to be generated based on the server name and URL, instead of generating a random UUID.
+
+    This can improve sharing a predefined set of servers cia servers.json, env vars, or simply export and import your servers in some other device, and then be able to share server URLs which continue working.
+
+    All existing servers will keep their generated IDs in existing devices for backwards compatibility, but newly created servers will use the new approach.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [4.2.2] - 2024-10-19
 ### Added
 * *Nothing*
