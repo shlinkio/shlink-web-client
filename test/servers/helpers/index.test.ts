@@ -39,5 +39,31 @@ describe('index', () => {
         expect.objectContaining({ id: 'baz-s.test' }),
       ]);
     });
+
+    it('includes server paths when not empty', () => {
+      const result = ensureUniqueIds({}, [
+        fromPartial({ name: 'Foo', url: 'https://example.com' }),
+        fromPartial({ name: 'Bar', url: 'https://s.test/some/path' }),
+        fromPartial({ name: 'Baz', url: 'https://s.test/some/other-path-here/123' }),
+      ]);
+
+      expect(result).toEqual([
+        expect.objectContaining({ id: 'foo-example.com' }),
+        expect.objectContaining({ id: 'bar-s.test-some-path' }),
+        expect.objectContaining({ id: 'baz-s.test-some-other-path-here-123' }),
+      ]);
+    });
+
+    it('uses server URL verbatim when it is not a valid URL', () => {
+      const result = ensureUniqueIds({}, [
+        fromPartial({ name: 'Foo', url: 'invalid' }),
+        fromPartial({ name: 'Bar', url: 'this is not a URL' }),
+      ]);
+
+      expect(result).toEqual([
+        expect.objectContaining({ id: 'foo-invalid' }),
+        expect.objectContaining({ id: 'bar-this-is-not-a-url' }),
+      ]);
+    });
   });
 });

@@ -6,9 +6,23 @@ import type { ServerData, ServersMap, ServerWithId } from '../data';
  * in lowercase and replacing invalid URL characters with hyphens.
  */
 function idForServer(server: ServerData): string {
-  // TODO Handle invalid URLs. If not valid url, use the value as is
-  const url = new URL(server.url);
-  return `${server.name} ${url.host}`.toLowerCase().replace(/[^a-zA-Z0-9-_.~]/g, '-');
+  let urlSegment = server.url;
+  try {
+    const { host, pathname } = new URL(urlSegment);
+    urlSegment = host;
+
+    // Remove leading slash from pathname
+    const normalizedPathname = pathname.substring(1);
+
+    // Include pathname in the ID, if not empty
+    if (normalizedPathname.length > 0) {
+      urlSegment = `${urlSegment} ${normalizedPathname}`;
+    }
+  } catch {
+    // If the server URL is not valid, use the value as is
+  }
+
+  return `${server.name} ${urlSegment}`.toLowerCase().replace(/[^a-zA-Z0-9-_.~]/g, '-');
 }
 
 export function serversListToMap(servers: ServerWithId[]): ServersMap {
