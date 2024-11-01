@@ -9,8 +9,8 @@ describe('remoteServersReducer', () => {
     const httpClient = fromPartial<HttpClient>({ jsonRequest });
 
     it.each([
-      [
-        [
+      {
+        serversArray: [
           {
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
@@ -22,7 +22,7 @@ describe('remoteServersReducer', () => {
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         ],
-        {
+        expectedNewServers: {
           'acel.me-from-servers.json-acel.me': {
             id: 'acel.me-from-servers.json-acel.me',
             name: 'acel.me from servers.json',
@@ -36,9 +36,9 @@ describe('remoteServersReducer', () => {
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         },
-      ],
-      [
-        [
+      },
+      {
+        serversArray: [
           {
             name: 'acel.me from servers.json',
             url: 'https://acel.me',
@@ -53,7 +53,7 @@ describe('remoteServersReducer', () => {
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
         ],
-        {
+        expectedNewServers: {
           'acel.me-from-servers.json-acel.me': {
             id: 'acel.me-from-servers.json-acel.me',
             name: 'acel.me from servers.json',
@@ -66,12 +66,19 @@ describe('remoteServersReducer', () => {
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
+
         },
-      ],
-      ['<html></html>', {}],
-      [{}, {}],
-    ])('tries to fetch servers from remote', async (mockedValue, expectedNewServers) => {
-      jsonRequest.mockResolvedValue(mockedValue);
+      },
+      {
+        serversArray: '<html></html>',
+        expectedNewServers: {},
+      },
+      {
+        serversArray: {},
+        expectedNewServers: {},
+      },
+    ])('tries to fetch servers from remote', async ({ serversArray, expectedNewServers }) => {
+      jsonRequest.mockResolvedValue(serversArray);
       const doFetchServers = fetchServers(httpClient);
 
       await doFetchServers()(dispatch, vi.fn(), {});
