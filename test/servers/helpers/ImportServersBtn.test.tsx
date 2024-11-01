@@ -68,11 +68,14 @@ describe('<ImportServersBtn />', () => {
     { btnName: 'Save anyway',savesDuplicatedServers: true },
     { btnName: 'Discard', savesDuplicatedServers: false },
   ])('creates expected servers depending on selected option in modal', async ({ btnName, savesDuplicatedServers }) => {
-    const existingServer: ServerWithId = {
+    const existingServerData: ServerData = {
       name: 'existingServer',
-      id: 'existingserver-s.test',
       url: 'http://s.test/existingUrl',
       apiKey: 'existingApiKey',
+    };
+    const existingServer: ServerWithId = {
+      ...existingServerData,
+      id: 'existingserver-s.test',
     };
     const newServer: ServerData = { name: 'newServer', url: 'http://s.test/newUrl', apiKey: 'newApiKey' };
     const { user } = setUp({}, { [existingServer.id]: existingServer });
@@ -86,7 +89,7 @@ describe('<ImportServersBtn />', () => {
 
     expect(createServersMock).toHaveBeenCalledWith(
       savesDuplicatedServers
-        ? [existingServer, expect.objectContaining(newServer)]
+        ? [expect.objectContaining(existingServerData), expect.objectContaining(newServer)]
         : [expect.objectContaining(newServer)],
     );
     expect(onImportMock).toHaveBeenCalledTimes(1);
