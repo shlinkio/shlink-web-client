@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
-import { serversListToMap, serverWithId } from '../helpers';
+import { serversListToMap } from '../helpers';
 
 interface EditServer {
   serverId: string;
@@ -57,10 +57,7 @@ export const { actions, reducer } = createSlice({
       },
     },
     createServers: {
-      prepare: (servers: ServerData[]) => {
-        const payload = serversListToMap(servers.map(serverWithId));
-        return { payload };
-      },
+      prepare: (servers: ServerWithId[]) => ({ payload: serversListToMap(servers) }),
       reducer: (state, { payload: newServers }: PayloadAction<ServersMap>) => ({ ...state, ...newServers }),
     },
   },

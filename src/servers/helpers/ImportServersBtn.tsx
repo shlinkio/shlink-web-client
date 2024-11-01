@@ -6,10 +6,10 @@ import { useCallback, useRef, useState } from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
-import type { ServerData, ServersMap } from '../data';
+import type { ServerData, ServersMap, ServerWithId } from '../data';
 import type { ServersImporter } from '../services/ServersImporter';
 import { DuplicatedServersModal } from './DuplicatedServersModal';
-import { dedupServers } from './index';
+import { dedupServers, ensureUniqueIds } from './index';
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
@@ -19,7 +19,7 @@ export type ImportServersBtnProps = PropsWithChildren<{
 }>;
 
 type ImportServersBtnConnectProps = ImportServersBtnProps & {
-  createServers: (servers: ServerData[]) => void;
+  createServers: (servers: ServerWithId[]) => void;
   servers: ServersMap;
 };
 
@@ -41,10 +41,10 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
 
-  const importedServersRef = useRef<ServerData[]>([]);
-  const newServersRef = useRef<ServerData[]>([]);
+  const importedServersRef = useRef<ServerWithId[]>([]);
+  const newServersRef = useRef<ServerWithId[]>([]);
 
-  const create = useCallback((serversData: ServerData[]) => {
+  const create = useCallback((serversData: ServerWithId[]) => {
     createServers(serversData);
     onImport();
   }, [createServers, onImport]);
@@ -54,11 +54,11 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
         .then((importedServers) => {
           const { duplicatedServers, newServers } = dedupServers(servers, importedServers);
 
-          importedServersRef.current = importedServers;
-          newServersRef.current = newServers;
+          importedServersRef.current = ensureUniqueIds(servers, importedServers);
+          newServersRef.current = ensureUniqueIds(servers, newServers);
 
           if (duplicatedServers.length === 0) {
-            create(importedServers);
+            create(importedServersRef.current);
           } else {
             setDuplicatedServers(duplicatedServers);
             showModal();

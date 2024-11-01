@@ -6,24 +6,18 @@ import type { ServerData, ServersMap, ServerWithId } from '../data';
  * in lowercase and replacing invalid URL characters with hyphens.
  */
 function idForServer(server: ServerData): string {
+  // TODO Handle invalid URLs. If not valid url, use the value as is
   const url = new URL(server.url);
   return `${server.name} ${url.host}`.toLowerCase().replace(/[^a-zA-Z0-9-_.~]/g, '-');
 }
 
-export function serverWithId(server: ServerWithId | ServerData): ServerWithId {
-  if ('id' in server) {
-    return server;
-  }
-
-  const id = idForServer(server);
-  return { ...server, id };
-}
-
 export function serversListToMap(servers: ServerWithId[]): ServersMap {
-  return servers.reduce<ServersMap>(
-    (acc, server) => ({ ...acc, [server.id]: server }),
-    {},
-  );
+  const serversMap: ServersMap = {};
+  servers.forEach((server) => {
+    serversMap[server.id] = server;
+  });
+
+  return serversMap;
 }
 
 const serversInclude = (serversList: ServerData[], { url, apiKey }: ServerData) =>
@@ -47,4 +41,31 @@ export function dedupServers(servers: ServersMap, serversToAdd: ServerData[]): D
   );
 
   return { duplicatedServers, newServers };
+}
+
+/**
+ * Given a servers map and a list of servers, return the same list of servers but all with an ID, ensuring the ID is
+ * unique both among all those servers and existing ones
+ */
+export function ensureUniqueIds(existingServers: ServersMap, serversList: ServerData[]): ServerWithId[] {
+  const existingIds = new Set(Object.keys(existingServers));
+  const serversWithId: ServerWithId[] = [];
+
+  serversList.forEach((server) => {
+    const baseId = idForServer(server);
+
+    let id = baseId;
+    let iterations = 1;
+    while (existingIds.has(id)) {
+      id = `${baseId}-${iterations}`;
+      iterations++;
+    }
+
+    serversWithId.push({ id, ...server });
+
+    // Add this server's ID to the list, so that it is taken into consideration for the next ones
+    existingIds.add(id);
+  });
+
+  return serversWithId;
 }

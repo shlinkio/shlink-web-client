@@ -1,6 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { ServersMap, ServerWithId } from '../../../src/servers/data';
+import type { ServerData, ServersMap, ServerWithId } from '../../../src/servers/data';
 import type {
   ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
 import { ImportServersBtnFactory } from '../../../src/servers/helpers/ImportServersBtn';
@@ -65,22 +65,30 @@ describe('<ImportServersBtn />', () => {
   });
 
   it.each([
-    ['Save anyway', true],
-    ['Discard', false],
-  ])('creates expected servers depending on selected option in modal', async (btnName, savesDuplicatedServers) => {
-    const existingServer = fromPartial<ServerWithId>({ id: 'abc', url: 'existingUrl', apiKey: 'existingApiKey' });
-    const newServer = fromPartial<ServerWithId>({ url: 'newUrl', apiKey: 'newApiKey' });
-    const { user } = setUp({}, { abc: existingServer });
-    const input = screen.getByTestId('csv-file-input');
+    { btnName: 'Save anyway',savesDuplicatedServers: true },
+    { btnName: 'Discard', savesDuplicatedServers: false },
+  ])('creates expected servers depending on selected option in modal', async ({ btnName, savesDuplicatedServers }) => {
+    const existingServer: ServerWithId = {
+      name: 'existingServer',
+      id: 'existingserver-s.test',
+      url: 'http://s.test/existingUrl',
+      apiKey: 'existingApiKey',
+    };
+    const newServer: ServerData = { name: 'newServer', url: 'http://s.test/newUrl', apiKey: 'newApiKey' };
+    const { user } = setUp({}, { [existingServer.id]: existingServer });
 
     importServersFromFile.mockResolvedValue([existingServer, newServer]);
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    await user.upload(input, csvFile);
+    await user.upload(screen.getByTestId('csv-file-input'), csvFile);
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: btnName }));
 
-    expect(createServersMock).toHaveBeenCalledWith(savesDuplicatedServers ? [existingServer, newServer] : [newServer]);
+    expect(createServersMock).toHaveBeenCalledWith(
+      savesDuplicatedServers
+        ? [existingServer, expect.objectContaining(newServer)]
+        : [expect.objectContaining(newServer)],
+    );
     expect(onImportMock).toHaveBeenCalledTimes(1);
   });
 });
