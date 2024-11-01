@@ -61,7 +61,7 @@ export function ensureUniqueIds(existingServers: ServersMap, serversList: Server
       iterations++;
     }
 
-    serversWithId.push({ id, ...server });
+    serversWithId.push({ ...server, id });
 
     // Add this server's ID to the list, so that it is taken into consideration for the next ones
     existingIds.add(id);
