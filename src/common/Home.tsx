@@ -1,9 +1,10 @@
 import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { clsx } from 'clsx';
 import { useEffect } from 'react';
 import { ExternalLink } from 'react-external-link';
 import { Link, useNavigate } from 'react-router-dom';
-import { Card, Row } from 'reactstrap';
+import { Card } from 'reactstrap';
 import type { ServersMap } from '../servers/data';
 import { ServersListGroup } from '../servers/ServersListGroup';
 import { ShlinkLogo } from './img/ShlinkLogo';
@@ -27,33 +28,36 @@ export const Home = ({ servers }: HomeProps) => {
   }, [serversList, navigate]);
 
   return (
-    <div className="home">
-      <Card className="home__main-card">
-        <Row className="g-0">
-          <div className="col-md-5 d-none d-md-block">
-            <div className="home__logo-wrapper">
-              <div className="home__logo">
-                <ShlinkLogo />
-              </div>
+    <div className="w-100">
+      <Card className="mx-auto" style={{ maxWidth: '720px' }}>
+        <div className="d-flex flex-column flex-md-row">
+          <div className="p-4 d-none d-md-flex align-items-center" style={{ width: '40%' }}>
+            <div className="w-100">
+              <ShlinkLogo />
             </div>
           </div>
-          <div className="col-md-7 home__servers-container">
-            <div className="home__title-wrapper">
-              <h1 className="home__title">Welcome!</h1>
-            </div>
+
+          <div className="home__servers-container flex-grow-1">
+            <h1
+              className={clsx('home__title p-4 text-center m-0', { 'border-bottom': !hasServers })}
+              style={{ borderColor: 'var(--border-color) !important' }}
+            >
+              Welcome!
+            </h1>
             <ServersListGroup embedded servers={serversList}>
               {!hasServers && (
-                <div className="p-4 text-center">
-                  <p className="mb-5">This application will help you manage your Shlink servers.</p>
-                  <p>
+                <div className="p-4 text-center d-flex flex-column gap-5">
+                  <p className="mb-0">This application will help you manage your Shlink servers.</p>
+                  <p className="mb-0">
                     <Link to="/server/create" className="btn btn-outline-primary btn-lg me-2">
-                      <FontAwesomeIcon icon={faPlus} /> <span className="ms-1">Add a server</span>
+                      <FontAwesomeIcon icon={faPlus}/> <span className="ms-1">Add a server</span>
                     </Link>
                   </p>
-                  <p className="mb-0 mt-5">
+                  <p className="mb-0">
                     <ExternalLink href="https://shlink.io/documentation">
                       <small>
-                        <span className="me-1">Learn more about Shlink</span> <FontAwesomeIcon icon={faExternalLinkAlt} />
+                        <span className="me-2">Learn more about Shlink</span>
+                        <FontAwesomeIcon icon={faExternalLinkAlt}/>
                       </small>
                     </ExternalLink>
                   </p>
@@ -61,7 +65,7 @@ export const Home = ({ servers }: HomeProps) => {
               )}
             </ServersListGroup>
           </div>
-        </Row>
+        </div>
       </Card>
     </div>
   );

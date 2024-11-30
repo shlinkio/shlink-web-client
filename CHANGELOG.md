@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.3.0] - 2024-11-30
+### Added
+* [#1360](https://github.com/shlinkio/shlink-web-client/issues/1360) Added ability for server IDs to be generated based on the server name and URL, instead of generating a random UUID.
+
+    This can improve sharing a predefined set of servers cia servers.json, env vars, or simply export and import your servers in some other device, and then be able to share server URLs which continue working.
+
+    All existing servers will keep their generated IDs in existing devices for backwards compatibility, but newly created servers will use the new approach.
+
+* [shlink-web-component#491](https://github.com/shlinkio/shlink-web-component/issues/491) Add support for colors in QR code configurator.
+* [shlink-web-component#515](https://github.com/shlinkio/shlink-web-component/issues/515) Add support for geolocation redirect conditions, when using Shlink 4.3 or newer.
+* [shlink-web-component#514](https://github.com/shlinkio/shlink-web-component/issues/514) Allow filtering short URLs list by domain, when using Shlink 4.3 or newer.
+* [shlink-web-component#520](https://github.com/shlinkio/shlink-web-component/issues/520) Allow navigating from domains list to short URLs list filtered by one domain, when using Shlink 4.3 or newer.
+* [shlink-web-component#517](https://github.com/shlinkio/shlink-web-component/issues/517) Update list of known domains when a short URL is created with a new domain.
+* [shlink-web-component#292](https://github.com/shlinkio/shlink-web-component/issues/292) Add icon in short URLs list indicating if a short URL has redirect rules.
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [shlink-web-component#504](https://github.com/shlinkio/shlink-web-component/issues/504) Fix fallback interval not causing new visits to be loaded.
+
+
 ## [4.2.2] - 2024-10-19
 ### Added
 * *Nothing*

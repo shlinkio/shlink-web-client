@@ -1,0 +1,10 @@
+name: Test docker image build
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile'
+
+jobs:
+  build-docker-image:
+    uses: shlinkio/github-actions/.github/workflows/docker-image-build-ci.yml@main

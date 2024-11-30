@@ -9,7 +9,6 @@ import {
   selectedServerReducerCreator,
   selectServer as selectServerCreator,
 } from '../../../src/servers/reducers/selectedServer';
-import { randomUUID } from '../../../src/utils/utils';
 
 describe('selectedServerReducer', () => {
   const dispatch = vi.fn();
@@ -41,7 +40,7 @@ describe('selectedServerReducer', () => {
       ['latest', MAX_FALLBACK_VERSION, 'latest'],
       ['%invalid_semver%', MIN_FALLBACK_VERSION, '%invalid_semver%'],
     ])('dispatches proper actions', async (serverVersion, expectedVersion, expectedPrintableVersion) => {
-      const id = randomUUID();
+      const id = crypto.randomUUID();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = {
         id,
@@ -60,7 +59,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when health endpoint fails', async () => {
-      const id = randomUUID();
+      const id = crypto.randomUUID();
       const getState = createGetStateMock(id);
       const expectedSelectedServer = fromPartial<NonReachableServer>({ id, serverNotReachable: true });
 
@@ -73,7 +72,7 @@ describe('selectedServerReducer', () => {
     });
 
     it('dispatches error when server is not found', async () => {
-      const id = randomUUID();
+      const id = crypto.randomUUID();
       const getState = vi.fn(() => fromPartial<ShlinkState>({ servers: {} }));
       const expectedSelectedServer: NotFoundServer = { serverNotFound: true };
 

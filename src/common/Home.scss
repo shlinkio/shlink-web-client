@@ -1,50 +1,7 @@
-@import 'node_modules/@shlinkio/shlink-frontend-kit/dist/base';
-@import '../utils/mixins/vertical-align';
-
-$mainCardWidth: 720px;
-$fiveColumnsSize: .4167; // 12 / 5 -> Can't use "/" operator in latest dart-sass
-
-.home {
-  position: relative;
-  padding-top: 15px;
-  width: 100%;
-
-  @media (min-width: $mdMin) {
-    padding-top: 0;
-    height: calc(100vh - #{$headerHeight} - #{($footer-height + $footer-margin)});
-  }
-}
-
-.home__logo-wrapper {
-  padding: 1.5rem !important;
-  height: 100% !important;
-  min-height: 300px;
-}
-
-.home__logo {
-  @include vertical-align();
-
-  width: calc(#{$mainCardWidth * $fiveColumnsSize} - 3rem);
-}
-
-.home__main-card {
-  margin: 0 auto;
-  max-width: $mainCardWidth;
-
-  @media (min-width: $mdMin) {
-    @include vertical-align();
-  }
-}
-
-.home__title-wrapper {
-  padding: 1.5rem !important;
-  border-bottom: 1px solid var(--border-color);
-}
+@import '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
 
 .home__title {
-  text-align: center;
   font-size: 1.75rem;
-  margin: 0;
 
   @media (min-width: $mdMin) {
     font-size: 2.2rem;
