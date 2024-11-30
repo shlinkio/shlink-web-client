@@ -1,8 +1,8 @@
-FROM node:23.3-alpine as node
+FROM node:23.3-alpine AS node
 COPY . /shlink-web-client
 ARG VERSION="latest"
-ENV VERSION ${VERSION}
-RUN cd /shlink-web-client && npm ci && npm run build
+ENV VERSION=${VERSION}
+RUN cd /shlink-web-client && npm ci && node --run build
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 ARG UID=101
