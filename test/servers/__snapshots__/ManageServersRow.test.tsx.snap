@@ -33,6 +33,7 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           data-th="Name"
         >
           <a
+            data-discover="true"
             href="/server/abc"
           >
             My server
@@ -73,6 +74,7 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           data-th="Name"
         >
           <a
+            data-discover="true"
             href="/server/abc"
           >
             My server

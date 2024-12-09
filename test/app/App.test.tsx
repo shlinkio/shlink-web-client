@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { AppFactory } from '../../src/app/App';
 import { checkAccessibility } from '../__helpers__/accessibility';
 

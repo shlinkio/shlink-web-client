@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { ServerErrorFactory } from '../../../src/servers/helpers/ServerError';
 import { checkAccessibility } from '../../__helpers__/accessibility';

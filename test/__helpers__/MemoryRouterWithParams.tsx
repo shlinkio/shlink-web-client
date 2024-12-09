@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from 'react';
 import { useMemo } from 'react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router';
 
 export type MemoryRouterWithParamsProps = PropsWithChildren<{
   params: Record<string, string>;

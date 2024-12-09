@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
 import { useEffect } from 'react';
 import { ExternalLink } from 'react-external-link';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router';
 import { Card } from 'reactstrap';
 import type { ServersMap } from '../servers/data';
 import { ServersListGroup } from '../servers/ServersListGroup';

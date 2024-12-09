@@ -1,6 +1,6 @@
 import { Message } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
