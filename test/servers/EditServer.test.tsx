@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Router } from 'react-router';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { EditServerFactory } from '../../src/servers/EditServer';
 import { checkAccessibility } from '../__helpers__/accessibility';

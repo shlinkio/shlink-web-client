@@ -3,7 +3,7 @@ import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { FCWithDeps } from '../container/utils';
@@ -69,11 +69,15 @@ const App: FCWithDeps<AppProps, AppDeps> = (
         <div className={clsx('shlink-wrapper', { 'd-flex align-items-center pt-3': isHome })}>
           <Routes>
             <Route index element={<Home />} />
-            <Route path="/settings/*" element={<Settings />} />
+            <Route path="/settings">
+              {['', '*'].map((path) => <Route key={path} path={path} element={<Settings />} />)}
+            </Route>
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />
-            <Route path="/server/:serverId/*" element={<ShlinkWebComponentContainer />} />
+            <Route path="/server/:serverId">
+              {['', '*'].map((path) => <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />)}
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

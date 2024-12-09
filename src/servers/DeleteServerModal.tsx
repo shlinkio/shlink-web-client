@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import type { ServerWithId } from './data';
 
