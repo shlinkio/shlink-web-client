@@ -2,12 +2,13 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 import { manifest } from './manifest';
-import pack from './package.json';
+import pack from './package.json' with { type: 'json' };
 
 const homepage = pack.homepage?.trim();
 
 /* eslint-disable-next-line no-restricted-exports */
 export default defineConfig({
+  // @ts-expect-error Error caused by vitest using vite 5 and the root using vite 6. To be fixed in vitest 3.
   plugins: [react(), VitePWA({
     mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
     strategies: 'injectManifest',
