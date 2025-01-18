@@ -67,7 +67,7 @@
     "@types/react-dom": "^18.3.1",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^3.0.2",
     "adm-zip": "^0.5.16",
     "axe-core": "^4.10.2",
     "chalk": "^5.4.1",
@@ -84,7 +84,7 @@
     "typescript-eslint": "^8.19.1",
     "vite": "^6.0.7",
     "vite-plugin-pwa": "^0.21.1",
-    "vitest": "^2.0.2"
+    "vitest": "^3.0.2"
   },
   "browserslist": [
     ">0.2%",
