@@ -95,7 +95,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
         accept=".csv"
         className="d-none"
         aria-hidden
-        ref={ref}
+        ref={ref as any /* TODO Remove After updating to React 19 */}
         onChange={onFile}
         data-testid="csv-file-input"
       />
