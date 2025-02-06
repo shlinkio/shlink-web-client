@@ -1,9 +1,12 @@
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
 import { manifest } from './manifest';
 import pack from './package.json' with { type: 'json' };
 
+const DEFAULT_NODE_VERSION = 'v22.10.0';
+const nodeVersion = process.version ?? DEFAULT_NODE_VERSION;
 const homepage = pack.homepage?.trim();
 
 /* eslint-disable-next-line no-restricted-exports */
@@ -51,5 +54,15 @@ export default defineConfig({
         lines: 95,
       },
     },
+
+    // Workaround for bug in react-router (or vitest module resolution) which causes different react-router versions to
+    // be resolved for the main package and dependencies who have a peer dependency in react-router.
+    // This ensures always the same version is resolved.
+    // See https://github.com/remix-run/react-router/issues/12785 for details
+    alias: nodeVersion > DEFAULT_NODE_VERSION
+      ? {
+        'react-router': resolve(__dirname, 'node_modules/react-router/dist/development/index.mjs'),
+      }
+      : undefined,
   },
 });
