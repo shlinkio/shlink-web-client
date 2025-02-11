@@ -1,26 +1,26 @@
-@import '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
+@use '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
 
 .app-container {
   height: 100%;
 }
 
 .app {
-  padding-top: $headerHeight;
+  padding-top: base.$headerHeight;
   height: 100%;
 }
 
 .shlink-wrapper {
   min-height: 100%;
-  padding-bottom: $footer-height + $footer-margin;
-  margin-bottom: -($footer-height + $footer-margin);
+  padding-bottom: base.$footer-height + base.$footer-margin;
+  margin-bottom: -(base.$footer-height + base.$footer-margin);
 }
 
 .shlink-footer {
-  height: $footer-height;
-  margin-top: $footer-margin;
+  height: base.$footer-height;
+  margin-top: base.$footer-margin;
   padding: 0;
 
-  @media (min-width: $mdMin) {
+  @media (min-width: base.$mdMin) {
     padding: 0 15px;
   }
 }
