@@ -1,3 +1,4 @@
+import type { HttpClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { buildShlinkApiClient } from '../../../src/api/services/ShlinkApiClientBuilder';
 import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
@@ -34,12 +35,19 @@ describe('ShlinkApiClientBuilder', () => {
     expect(secondApiClient === thirdApiClient).toEqual(true);
   });
 
-  it('does not fetch from state when provided param is already selected server', () => {
-    const url = 'url';
-    const apiKey = 'apiKey';
-    const apiClient = buildShlinkApiClient(fromPartial({}))(server({ url, apiKey }));
+  it.only('does not fetch from state when provided param is already selected server', async () => {
+    const url = 'the_url';
+    const apiKey = 'the_api_key';
+    const jsonRequest = vi.fn();
+    const httpClient = fromPartial<HttpClient>({ jsonRequest });
+    const apiClient = buildShlinkApiClient(httpClient)(server({ url, apiKey }));
 
-    expect(apiClient['serverInfo'].baseUrl).toEqual(url);
-    expect(apiClient['serverInfo'].apiKey).toEqual(apiKey);
+    await apiClient.health();
+
+    expect(jsonRequest).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${url}`)), expect.objectContaining({
+      headers: {
+        'X-Api-Key': apiKey,
+      },
+    }));
   });
 });
