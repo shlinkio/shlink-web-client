@@ -1,11 +1,11 @@
-@import '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
-@import '../utils/mixins/horizontal-align';
+@use '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
+@use '../utils/mixins/horizontal-align';
 
 .app-update-banner.app-update-banner {
-  @include horizontal-align();
+  @include horizontal-align.horizontal-align();
 
   position: fixed;
-  top: $headerHeight - 25px;
+  top: base.$headerHeight - 25px;
   padding: 0 4rem 0 0;
   z-index: 1040;
   margin: 0;
