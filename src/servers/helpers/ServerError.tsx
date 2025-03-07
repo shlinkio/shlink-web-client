@@ -45,7 +45,7 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
         {isServerWithId(selectedServer) && (
           <div className="container mt-3 mt-md-5">
             <p className="fs-5 fw-normal lh-sm">
-              Alternatively, if you think you may have miss-configured this server, you
+              Alternatively, if you think you may have misconfigured this server, you
               can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove it</DeleteServerButton> or&nbsp;
               <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
             </p>

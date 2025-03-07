@@ -318,7 +318,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#774](https://github.com/shlinkio/shlink-web-client/issues/774) Dropped support for Shlink older than 2.8.0.
 
 ### Fixed
-* [#715](https://github.com/shlinkio/shlink-web-client/issues/715) Fixed connection still failing on miss-configured servers, after editing their params to set proper values.
+* [#715](https://github.com/shlinkio/shlink-web-client/issues/715) Fixed connection still failing on misconfigured servers, after editing their params to set proper values.
 
 
 ## [3.8.2] - 2022-12-17
