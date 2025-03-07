@@ -1,12 +1,11 @@
 import type { IContainer } from 'bottlejs';
 import type { FC } from 'react';
-import { useRef } from 'react';
+import { useMemo } from 'react';
 
 export type FCWithDeps<Props, Deps> = FC<Props> & Partial<Deps>;
 
 export function useDependencies<Deps>(obj: Deps): Omit<Required<Deps>, keyof FC> {
-  const depsRef = useRef(obj as Omit<Required<Deps>, keyof FC>);
-  return depsRef.current;
+  return useMemo(() => obj as Omit<Required<Deps>, keyof FC>, [obj]);
 }
 
 export function componentFactory<Deps, CompType = Omit<Partial<Deps>, keyof FC>>(

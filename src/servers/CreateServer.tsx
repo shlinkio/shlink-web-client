@@ -40,7 +40,9 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
+  // eslint-disable-next-line react-compiler/react-compiler
   const [serversImported, setServersImported] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
+  // eslint-disable-next-line react-compiler/react-compiler
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData>();

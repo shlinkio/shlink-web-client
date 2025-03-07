@@ -41,6 +41,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
     [allServers, searchTerm],
   );
   const hasAutoConnect = allServers.some(({ autoConnect }) => !!autoConnect);
+  // eslint-disable-next-line react-compiler/react-compiler
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
 
   return (
