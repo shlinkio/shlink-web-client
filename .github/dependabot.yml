@@ -21,9 +21,12 @@ updates:
       shlink:
         patterns:
           - '@shlinkio/*'
-      types:
+      react:
         patterns:
-          - '@types/*'
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
       testing:
         patterns:
           - '@testing-library/*'
