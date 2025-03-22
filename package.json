@@ -74,7 +74,7 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "history": "^5.3.0",
     "jsdom": "^26.0.0",
-    "sass": "^1.85.1",
+    "sass": "^1.86.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1",
     "vite": "^6.2.2",
