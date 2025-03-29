@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint src test config/test",
-    "lint:fix": "node --run lint:js -- --fix",
+    "lint:fix": "node --run lint -- --fix",
     "types": "tsc",
     "start": "vite serve --host=0.0.0.0",
     "preview": "vite preview --host=0.0.0.0",
@@ -52,7 +52,7 @@
     "workbox-strategies": "^7.3.0"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~3.4.0",
+    "@shlinkio/eslint-config-js-coding-standard": "~3.5.0",
     "@stylistic/eslint-plugin": "^4.2.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
@@ -66,9 +66,10 @@
     "axe-core": "^4.10.3",
     "chalk": "^5.4.1",
     "eslint": "^9.23.0",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react": "^7.37.4",
-    "eslint-plugin-react-compiler": "^19.0.0-beta-714736e-20250131",
+    "eslint-plugin-react-compiler": "^19.0.0-beta-aeaed83-20250323",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "history": "^5.3.0",
