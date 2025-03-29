@@ -45,11 +45,8 @@ shlink-web-client
 
 > Note: The `indocker` shell script is a helper used to run commands inside the docker container.
 
-* `./indocker node --run lint`: Checks coding styles are fulfilled, both in JS/TS files and in stylesheets.
-* `./indocker node --run lint:js`: Checks coding styles are fulfilled in JS/TS files.
-* `./indocker node --run lint:css`: Checks coding styles are fulfilled in stylesheets.
-* `./indocker node --run lint:js:fix`: Fixes coding styles in JS/TS files.
-* `./indocker node --run lint:css:fix`: Fixes coding styles in stylesheets.
+* `./indocker node --run lint`: Checks coding styles are fulfilled in JS/TS files.
+* `./indocker node --run lint:fix`: Fixes coding styles in JS/TS files.
 * `./indocker node --run test`: Runs unit tests with Jest.
 
 ## Building the project
