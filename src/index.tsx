@@ -5,6 +5,7 @@ import pack from '../package.json';
 import { container } from './container';
 import { setUpStore } from './container/store';
 import { register as registerServiceWorker } from './serviceWorkerRegistration';
+import './tailwind.css';
 import './index.scss';
 
 const store = setUpStore(container);

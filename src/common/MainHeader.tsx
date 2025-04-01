@@ -30,7 +30,7 @@ const MainHeader: FCWithDeps<unknown, MainHeaderDeps> = () => {
   return (
     <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
       <NavbarBrand tag={Link} to="/">
-        <ShlinkLogo className="main-header__brand-logo" color="white" /> Shlink
+        <ShlinkLogo className="main-header__brand-logo tw:inline" color="white" /> Shlink
       </NavbarBrand>
 
       <NavbarToggler onClick={toggleCollapse}>

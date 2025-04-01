@@ -1,0 +1,3 @@
+@import 'tailwindcss' prefix(tw) important;
+@source '../node_modules/@shlinkio/shlink-frontend-kit';
+@import '@shlinkio/shlink-frontend-kit/tailwind.preset.css';

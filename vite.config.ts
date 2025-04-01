@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -11,7 +12,7 @@ const homepage = pack.homepage?.trim();
 
 /* eslint-disable-next-line no-restricted-exports */
 export default defineConfig({
-  plugins: [react(), VitePWA({
+  plugins: [react(), tailwindcss(), VitePWA({
     mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
     strategies: 'injectManifest',
     srcDir: './src',
