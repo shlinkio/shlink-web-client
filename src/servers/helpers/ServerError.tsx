@@ -1,4 +1,4 @@
-import { Message } from '@shlinkio/shlink-frontend-kit';
+import { Message } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { Link } from 'react-router';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
@@ -25,7 +25,7 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
   return (
     <NoMenuLayout>
       <div className="server-error__container flex-column">
-        <Message className="w-100 mb-3 mb-md-5" type="error" fullWidth>
+        <Message className="w-100 mb-3 mb-md-5" variant="error">
           {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
           {isServerWithId(selectedServer) && (
             <>

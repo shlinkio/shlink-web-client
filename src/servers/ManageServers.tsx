@@ -1,11 +1,9 @@
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
-import { Result, SearchField, SimpleCard } from '@shlinkio/shlink-frontend-kit';
+import { Button, Result, SearchInput, SimpleCard } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
-import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -46,18 +44,18 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
 
   return (
     <NoMenuLayout className="d-flex flex-column gap-3">
-      <SearchField onChange={setSearchTerm} />
+      <SearchInput onChange={setSearchTerm} />
 
       <div className="d-flex flex-column flex-md-row gap-2">
         <div className="d-flex gap-2">
           <ImportServersBtn className="flex-fill" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
           {filteredServers.length > 0 && (
-            <Button outline className="flex-fill" onClick={async () => serversExporter.exportServers()}>
+            <Button variant="secondary" className="flex-fill" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} fixedWidth /> Export servers
             </Button>
           )}
         </div>
-        <Button outline color="primary" className="ms-md-auto" tag={Link} to="/server/create">
+        <Button className="ms-md-auto" to="/server/create">
           <FontAwesomeIcon icon={plusIcon} fixedWidth /> Add a server
         </Button>
       </div>
@@ -83,7 +81,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
 
       {errorImporting && (
         <div>
-          <Result type="error">The servers could not be imported. Make sure the format is correct.</Result>
+          <Result variant="error">The servers could not be imported. Make sure the format is correct.</Result>
         </div>
       )}
     </NoMenuLayout>

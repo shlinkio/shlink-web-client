@@ -1,9 +1,10 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
+import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { ChangeEvent, PropsWithChildren } from 'react';
 import { useCallback, useRef, useState } from 'react';
-import { Button, UncontrolledTooltip } from 'reactstrap';
+import { UncontrolledTooltip } from 'reactstrap';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
@@ -83,7 +84,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
 
   return (
     <>
-      <Button outline id="importBtn" className={className} onClick={() => ref.current?.click()}>
+      <Button variant="secondary" id="importBtn" className={className} onClick={() => ref.current?.click()}>
         <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
