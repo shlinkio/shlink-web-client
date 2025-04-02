@@ -24,12 +24,15 @@ export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, onClose, for
   }
 
   return (
-    <Card className={clsx(
-      'tw:w-[700px] tw:max-w-[calc(100%-30px)]',
-      'tw:fixed tw:top-[35px] tw:left-[50%] tw:translate-x-[-50%] tw:z-[1040]',
-    )}>
+    <Card
+      role="alert"
+      className={clsx(
+        'tw:w-[700px] tw:max-w-[calc(100%-30px)]',
+        'tw:fixed tw:top-[35px] tw:left-[50%] tw:translate-x-[-50%] tw:z-[1040]',
+      )}
+    >
       <Card.Header className="tw:flex tw:items-center tw:justify-between">
-        <b>This app has just been updated!</b>
+        <h5>This app has just been updated!</h5>
         <CloseButton onClick={onClose} />
       </Card.Header>
       <Card.Body className="tw:flex tw:gap-4 tw:items-center tw:justify-between tw:max-md:flex-col">

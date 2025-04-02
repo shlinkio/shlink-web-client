@@ -1,3 +1,4 @@
+import { Table } from '@shlinkio/shlink-frontend-kit/tailwind';
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
@@ -17,11 +18,9 @@ describe('<ManageServersRow />', () => {
   };
   const setUp = (hasAutoConnect = false, autoConnect = false) => render(
     <MemoryRouter>
-      <table>
-        <tbody>
-          <ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />
-        </tbody>
-      </table>
+      <Table header={<Table.Row />}>
+        <ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />
+      </Table>
     </MemoryRouter>,
   );
 
@@ -32,11 +31,7 @@ describe('<ManageServersRow />', () => {
     [false, 3],
   ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
     setUp(hasAutoConnect);
-
-    const td = screen.getAllByRole('cell');
-    const th = screen.getAllByRole('columnheader');
-
-    expect(td.length + th.length).toEqual(expectedCols);
+    expect(screen.getAllByRole('cell')).toHaveLength(expectedCols);
   });
 
   it('renders a dropdown', () => {

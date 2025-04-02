@@ -8,10 +8,12 @@ describe('<ServerForm />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders components', () => {
+  it('renders inputs', () => {
     setUp();
 
-    expect(screen.getAllByRole('textbox')).toHaveLength(3);
+    expect(screen.getByLabelText(/^Name/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^URL/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/^API key/)).toBeInTheDocument();
     expect(screen.getByText('Something')).toBeInTheDocument();
   });
 

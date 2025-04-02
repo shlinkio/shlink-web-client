@@ -4,11 +4,11 @@ import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<AppUpdateBanner />', () => {
-  const toggle = vi.fn();
+  const onClose = vi.fn();
   const forceUpdate = vi.fn();
   const setUp = async () => {
     const result = await act(
-      () => renderWithEvents(<AppUpdateBanner isOpen toggle={toggle} forceUpdate={forceUpdate} />),
+      () => renderWithEvents(<AppUpdateBanner isOpen onClose={onClose} forceUpdate={forceUpdate} />),
     );
     await waitFor(() => screen.getByRole('alert'));
 
@@ -28,9 +28,9 @@ describe('<AppUpdateBanner />', () => {
   it('invokes toggle when alert is closed', async () => {
     const { user } = await setUp();
 
-    expect(toggle).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
     await user.click(screen.getByLabelText('Close'));
-    expect(toggle).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
   });
 
   it('triggers the update when clicking the button', async () => {
