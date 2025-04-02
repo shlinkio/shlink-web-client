@@ -87,7 +87,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
         </div>
       </div>
 
-      <AppUpdateBanner isOpen={appUpdated} toggle={resetAppUpdate} forceUpdate={forceUpdate} />
+      <AppUpdateBanner isOpen={appUpdated} onClose={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>
   );
 };
