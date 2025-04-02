@@ -1,18 +1,17 @@
 import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Card } from '@shlinkio/shlink-frontend-kit/tailwind';
 import { clsx } from 'clsx';
 import { useEffect } from 'react';
 import { ExternalLink } from 'react-external-link';
-import { Link, useNavigate } from 'react-router';
-import { Card } from 'reactstrap';
+import { useNavigate } from 'react-router';
 import type { ServersMap } from '../servers/data';
 import { ServersListGroup } from '../servers/ServersListGroup';
 import { ShlinkLogo } from './img/ShlinkLogo';
-import './Home.scss';
 
-interface HomeProps {
+export type HomeProps = {
   servers: ServersMap;
-}
+};
 
 export const Home = ({ servers }: HomeProps) => {
   const navigate = useNavigate();
@@ -28,35 +27,37 @@ export const Home = ({ servers }: HomeProps) => {
   }, [serversList, navigate]);
 
   return (
-    <div className="w-100">
-      <Card className="mx-auto" style={{ maxWidth: '720px' }}>
-        <div className="d-flex flex-column flex-md-row">
-          <div className="p-4 d-none d-md-flex align-items-center" style={{ width: '40%' }}>
-            <div className="w-100">
+    <div className="tw:w-full">
+      <Card className="tw:mx-auto tw:max-w-[720px] tw:overflow-hidden">
+        <div className="tw:flex tw:flex-col tw:md:flex-row">
+          <div className="tw:p-6 tw:hidden tw:md:flex tw:items-center tw:w-[40%]">
+            <div className="tw:w-full">
               <ShlinkLogo />
             </div>
           </div>
 
-          <div className="home__servers-container flex-grow-1">
+          <div className="tw:md:border-l tw:border-lm-border tw:dark:border-dm-border tw:flex-grow">
             <h1
-              className={clsx('home__title p-4 text-center m-0', { 'border-bottom': !hasServers })}
-              style={{ borderColor: 'var(--border-color) !important' }}
+              className={clsx(
+                'tw:p-4 tw:text-center tw:border-lm-border tw:dark:border-dm-border',
+                { 'tw:border-b': !hasServers },
+              )}
             >
               Welcome!
             </h1>
             <ServersListGroup embedded servers={serversList}>
               {!hasServers && (
-                <div className="p-4 text-center d-flex flex-column gap-5">
-                  <p className="mb-0">This application will help you manage your Shlink servers.</p>
-                  <p className="mb-0">
-                    <Link to="/server/create" className="btn btn-outline-primary btn-lg me-2">
-                      <FontAwesomeIcon icon={faPlus} /> <span className="ms-1">Add a server</span>
-                    </Link>
+                <div className="tw:p-6 tw:text-center tw:flex tw:flex-col tw:gap-12">
+                  <p>This application will help you manage your Shlink servers.</p>
+                  <p>
+                    <Button to="/server/create" size="lg" inline>
+                      <FontAwesomeIcon icon={faPlus} /> Add a server
+                    </Button>
                   </p>
-                  <p className="mb-0">
+                  <p>
                     <ExternalLink href="https://shlink.io/documentation">
                       <small>
-                        <span className="me-2">Learn more about Shlink</span>
+                        <span className="tw:mr-2">Learn more about Shlink</span>
                         <FontAwesomeIcon icon={faExternalLinkAlt} />
                       </small>
                     </ExternalLink>
