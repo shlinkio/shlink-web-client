@@ -1,5 +1,6 @@
 import { faCheck as checkIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Table } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { Link } from 'react-router';
 import { UncontrolledTooltip } from 'reactstrap';
@@ -21,9 +22,9 @@ const ManageServersRow: FCWithDeps<ManageServersRowProps, ManageServersRowDeps> 
   const { ManageServersRowDropdown } = useDependencies(ManageServersRow);
 
   return (
-    <tr className="responsive-table__row">
+    <Table.Row className="tw:relative">
       {hasAutoConnect && (
-        <td className="responsive-table__cell" data-th="Auto-connect">
+        <Table.Cell columnName="Auto-connect">
           {server.autoConnect && (
             <>
               <FontAwesomeIcon icon={checkIcon} className="text-primary" id="autoConnectIcon" />
@@ -32,16 +33,16 @@ const ManageServersRow: FCWithDeps<ManageServersRowProps, ManageServersRowDeps> 
               </UncontrolledTooltip>
             </>
           )}
-        </td>
+        </Table.Cell>
       )}
-      <th className="responsive-table__cell" data-th="Name">
+      <Table.Cell className="tw:font-bold" columnName="Name">
         <Link to={`/server/${server.id}`}>{server.name}</Link>
-      </th>
-      <td className="responsive-table__cell" data-th="Base URL">{server.url}</td>
-      <td className="responsive-table__cell text-end">
+      </Table.Cell>
+      <Table.Cell columnName="Base URL" className="tw:max-lg:border-b-0">{server.url}</Table.Cell>
+      <Table.Cell className="tw:text-right tw:max-lg:absolute tw:right-0 tw:-top-1 tw:mx-lg:pt-0">
         <ManageServersRowDropdown server={server} />
-      </td>
-    </tr>
+      </Table.Cell>
+    </Table.Row>
   );
 };
 

@@ -7,5 +7,5 @@ export type NoMenuLayoutProps = PropsWithChildren & {
 };
 
 export const NoMenuLayout: FC<NoMenuLayoutProps> = ({ children, className }) => (
-  <div className={clsx('no-menu-wrapper container-xl', className)}>{children}</div>
+  <div className={clsx('no-menu-wrapper tw:container tw:mx-auto', className)}>{children}</div>
 );
