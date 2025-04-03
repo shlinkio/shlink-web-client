@@ -8,7 +8,6 @@ import type { SelectedServer, ServersMap } from '../data';
 import { isServerWithId } from '../data';
 import type { DeleteServerButtonProps } from '../DeleteServerButton';
 import { ServersListGroup } from '../ServersListGroup';
-import './ServerError.scss';
 
 type ServerErrorProps = {
   servers: ServersMap;
@@ -24,8 +23,8 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
 
   return (
     <NoMenuLayout>
-      <div className="server-error__container flex-column">
-        <Message className="w-100 mb-3 mb-md-5" variant="error">
+      <div className="tw:flex tw:flex-col tw:items-center tw:gap-y-4 tw:md:gap-y-8">
+        <Message className="tw:w-full tw:lg:w-[80%]" variant="error">
           {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
           {isServerWithId(selectedServer) && (
             <>
@@ -39,19 +38,17 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
           These are the Shlink servers currently configured. Choose one of
           them or <Link to="/server/create">add a new one</Link>.
         </p>
-        <Card className="tw:w-full tw:max-w-100 tw:overflow-hidden tw:mt-4">
+        <Card className="tw:w-full tw:max-w-100 tw:overflow-hidden">
           <ServersListGroup borderless servers={Object.values(servers)} />
         </Card>
 
         {isServerWithId(selectedServer) && (
-          <div className="container mt-3 mt-md-5">
-            <p className="tw:text-xl">
-              Alternatively, if you think you may have misconfigured this server, you
-              can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove
-                it</DeleteServerButton> or&nbsp;
-              <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
-            </p>
-          </div>
+          <p className="tw:text-xl">
+            Alternatively, if you think you may have misconfigured this server, you
+            can <DeleteServerButton server={selectedServer} className="tw:text-danger tw:hover:underline">remove
+              it</DeleteServerButton> or&nbsp;
+            <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
+          </p>
         )}
       </div>
     </NoMenuLayout>

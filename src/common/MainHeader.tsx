@@ -9,7 +9,6 @@ import { Collapse, Nav, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } f
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import { ShlinkLogo } from './img/ShlinkLogo';
-import './MainHeader.scss';
 
 type MainHeaderDeps = {
   ServersDropdown: FC;
@@ -25,20 +24,22 @@ const MainHeader: FCWithDeps<unknown, MainHeaderDeps> = () => {
   useEffect(collapse, [location, collapse]);
 
   const settingsPath = '/settings';
-  const toggleClass = clsx('main-header__toggle-icon', { 'main-header__toggle-icon--opened': isNotCollapsed });
 
   return (
-    <Navbar color="primary" dark fixed="top" className="main-header" expand="md">
+    <Navbar color="primary" dark fixed="top" expand="md" className="tw:text-white tw:bg-lm-brand tw:dark:bg-dm-brand">
       <NavbarBrand tag={Link} to="/">
-        <ShlinkLogo className="main-header__brand-logo tw:inline" color="white" /> Shlink
+        <ShlinkLogo className="tw:inline tw:w-7 tw:mr-1" color="white" /> Shlink
       </NavbarBrand>
 
       <NavbarToggler onClick={toggleCollapse}>
-        <FontAwesomeIcon icon={arrowIcon} className={toggleClass} />
+        <FontAwesomeIcon
+          icon={arrowIcon}
+          className={clsx('tw:transition-transform tw:duration-300', { 'tw:rotate-180': isNotCollapsed })}
+        />
       </NavbarToggler>
 
       <Collapse navbar isOpen={isNotCollapsed}>
-        <Nav navbar className="ms-auto">
+        <Nav navbar className="tw:ml-auto">
           <NavItem>
             <NavLink tag={Link} to={settingsPath} active={pathname.startsWith(settingsPath)}>
               <FontAwesomeIcon icon={cogsIcon} />&nbsp; Settings
