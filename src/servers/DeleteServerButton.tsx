@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import { clsx } from 'clsx';
 import type { FC, PropsWithChildren } from 'react';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import type { ServerWithId } from './data';
@@ -23,6 +25,13 @@ const DeleteServerButton: FCWithDeps<DeleteServerButtonProps, DeleteServerButton
 ) => {
   const { DeleteServerModal } = useDependencies(DeleteServerButton);
   const [isModalOpen, , showModal, hideModal] = useToggle();
+  const navigate = useNavigate();
+  const onClose = useCallback((confirmed: boolean) => {
+    hideModal();
+    if (confirmed) {
+      navigate('/');
+    }
+  }, [hideModal, navigate]);
 
   return (
     <>
@@ -31,7 +40,7 @@ const DeleteServerButton: FCWithDeps<DeleteServerButtonProps, DeleteServerButton
         <span className={textClassName}>{children ?? 'Remove this server'}</span>
       </button>
 
-      <DeleteServerModal server={server} isOpen={isModalOpen} toggle={hideModal} />
+      <DeleteServerModal server={server} open={isModalOpen} onClose={onClose} />
     </>
   );
 };

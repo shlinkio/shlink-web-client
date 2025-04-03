@@ -22,3 +22,12 @@ afterEach(() => {
 HTMLCanvasElement.prototype.getContext = (() => {}) as any;
 (global as any).scrollTo = () => {};
 (global as any).matchMedia = () => ({ matches: false });
+
+HTMLDialogElement.prototype.showModal = function() {
+  this.setAttribute('open', '');
+};
+HTMLDialogElement.prototype.close = function() {
+  this.removeAttribute('open');
+  this.dispatchEvent(new CloseEvent('close'));
+  this.dispatchEvent(new CloseEvent('cancel'));
+};

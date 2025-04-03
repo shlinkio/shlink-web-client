@@ -1,11 +1,10 @@
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
 import { useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { ResultProps } from '@shlinkio/shlink-frontend-kit/tailwind';
-import { Result } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Result } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -29,7 +28,7 @@ type CreateServerDeps = {
 };
 
 const ImportResult = ({ variant }: Pick<ResultProps, 'variant'>) => (
-  <div className="mt-3">
+  <div className="tw:mt-4">
     <Result variant={variant}>
       {variant === 'success' && 'Servers properly imported. You can now select one from the list :)'}
       {variant === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
@@ -74,8 +73,8 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
         {!hasServers && (
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />
         )}
-        {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
-        <Button outline color="primary">Create server</Button>
+        {hasServers && <Button variant="secondary" onClick={goBack}>Cancel</Button>}
+        <Button type="submit">Create server</Button>
       </ServerForm>
 
       {serversImported && <ImportResult variant="success" />}

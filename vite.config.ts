@@ -26,6 +26,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    watch: {
+      // Do not watch test files or generated files, avoiding the dev server to constantly reload when not needed
+      ignored: ['**/.idea/**', '**/.git/**', '**/build/**', '**/coverage/**', '**/test/**'],
+    },
   },
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
 

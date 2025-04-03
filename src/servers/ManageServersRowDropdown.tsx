@@ -48,11 +48,11 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
         <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
       </DropdownItem>
       <DropdownItem divider tag="hr" />
-      <DropdownItem className="dropdown-item--danger" onClick={showModal}>
+      <DropdownItem className="tw:text-danger" onClick={showModal}>
         <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Remove server
       </DropdownItem>
 
-      <DeleteServerModal redirectHome={false} server={server} isOpen={isModalOpen} toggle={hideModal} />
+      <DeleteServerModal server={server} open={isModalOpen} onClose={hideModal} />
     </RowDropdownBtn>
   );
 };
