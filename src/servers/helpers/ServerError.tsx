@@ -1,4 +1,4 @@
-import { Message } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Card, Message } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { Link } from 'react-router';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
@@ -35,18 +35,20 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
           )}
         </Message>
 
-        <ServersListGroup servers={Object.values(servers)}>
-          <p className="mb-md-3">
-            These are the Shlink servers currently configured. Choose one of
-            them or <Link to="/server/create">add a new one</Link>.
-          </p>
-        </ServersListGroup>
+        <p className="tw:text-xl">
+          These are the Shlink servers currently configured. Choose one of
+          them or <Link to="/server/create">add a new one</Link>.
+        </p>
+        <Card className="tw:w-full tw:max-w-100 tw:overflow-hidden tw:mt-4">
+          <ServersListGroup borderless servers={Object.values(servers)} />
+        </Card>
 
         {isServerWithId(selectedServer) && (
           <div className="container mt-3 mt-md-5">
-            <p className="fs-5 fw-normal lh-sm">
+            <p className="tw:text-xl">
               Alternatively, if you think you may have misconfigured this server, you
-              can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove it</DeleteServerButton> or&nbsp;
+              can <DeleteServerButton server={selectedServer} className="server-error__delete-btn">remove
+                it</DeleteServerButton> or&nbsp;
               <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
             </p>
           </div>

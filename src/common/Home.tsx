@@ -45,7 +45,7 @@ export const Home = ({ servers }: HomeProps) => {
             >
               Welcome!
             </h1>
-            <ServersListGroup embedded servers={serversList}>
+            <ServersListGroup servers={serversList}>
               {!hasServers && (
                 <div className="tw:p-6 tw:text-center tw:flex tw:flex-col tw:gap-12">
                   <p>This application will help you manage your Shlink servers.</p>

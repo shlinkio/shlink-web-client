@@ -1,3 +1,16 @@
 @import 'tailwindcss' prefix(tw) important;
 @source '../node_modules/@shlinkio/shlink-frontend-kit';
 @import '@shlinkio/shlink-frontend-kit/tailwind.preset.css';
+
+@utility scroll-thin {
+    /* Standard. New browsers */
+    scrollbar-width: thin;
+
+    /* Fallback */
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb {
+        border-radius: .5rem;
+    }
+}
