@@ -18,6 +18,9 @@
 @layer base {
     :root {
         --header-height: 56px;
+        --footer-height: 2.3rem;
+        --footer-margin: .8rem;
+
         /* Width of ShlinkWebComponent's side menu when not collapsed */
         --aside-menu-width: 260px;
     }
