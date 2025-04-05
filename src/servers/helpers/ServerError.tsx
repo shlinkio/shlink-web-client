@@ -45,7 +45,7 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
         {isServerWithId(selectedServer) && (
           <p className="tw:text-xl">
             Alternatively, if you think you may have misconfigured this server, you
-            can <DeleteServerButton server={selectedServer} className="tw:text-danger tw:hover:underline">remove
+            can <DeleteServerButton server={selectedServer}>remove
               it</DeleteServerButton> or&nbsp;
             <Link to={`/server/${selectedServer.id}/edit?reconnect=true`}>edit it</Link>.
           </p>

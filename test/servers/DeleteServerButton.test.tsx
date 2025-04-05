@@ -13,11 +13,11 @@ describe('<DeleteServerButton />', () => {
   const DeleteServerButton = DeleteServerButtonFactory(fromPartial({
     DeleteServerModal: (props: DeleteServerModalProps) => <DeleteServerModal {...props} deleteServer={vi.fn()} />,
   }));
-  const setUp = (children?: ReactNode) => {
+  const setUp = (children: ReactNode = 'Remove this server') => {
     const history = createMemoryHistory({ initialEntries: ['/foo'] });
     const result = renderWithEvents(
       <Router location={history.location} navigator={history}>
-        <DeleteServerButton server={fromPartial({})} textClassName="button">{children}</DeleteServerButton>
+        <DeleteServerButton server={fromPartial({})}>{children}</DeleteServerButton>
       </Router>,
     );
 
@@ -30,7 +30,6 @@ describe('<DeleteServerButton />', () => {
     ['Foo bar'],
     ['baz'],
     ['something'],
-    [undefined],
   ])('renders expected content', (children) => {
     const { container } = setUp(children);
     expect(container.firstChild).toBeTruthy();
