@@ -66,6 +66,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
 
       <div className="tw:h-full tw:pt-(--header-height)">
         <div
+          data-testid="shlink-wrapper"
           className={clsx(
             'tw:min-h-full tw:pb-[calc(var(--footer-height)+var(--footer-margin))] tw:-mb-[calc(var(--footer-height)+var(--footer-margin))]',
             { 'tw:flex tw:items-center tw:pt-4': isHome },

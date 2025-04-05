@@ -38,7 +38,7 @@ export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, onClose, for
       <Card.Body className="tw:flex tw:gap-4 tw:items-center tw:justify-between tw:max-md:flex-col">
         Restart it to enjoy the new features.
         <Button disabled={isUpdating} variant="secondary" solid onClick={update}>
-          {!isUpdating && <>Restart now <FontAwesomeIcon icon={reloadIcon} className="ms-1" /></>}
+          {!isUpdating && <>Restart now <FontAwesomeIcon icon={reloadIcon} /></>}
           {isUpdating && <>Restarting...</>}
         </Button>
       </Card.Body>
