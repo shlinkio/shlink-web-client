@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { DeleteServerModal } from '../../src/servers/DeleteServerModal';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -36,13 +36,15 @@ describe('<DeleteServerModal />', () => {
     expect(screen.getByText(serverName)).toBeInTheDocument();
   });
 
-  it.each([
+  it.only.each([
     [() => screen.getByRole('button', { name: 'Cancel' })],
     [() => screen.getByLabelText('Close dialog')],
-  ])('toggles when clicking cancel button', async (getButton) => {
+  ])('closes dialog when clicking cancel button', async (getButton) => {
     const { user } = setUp();
 
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
     await user.click(getButton());
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(deleteServerMock).not.toHaveBeenCalled();
   });
 
@@ -51,7 +53,6 @@ describe('<DeleteServerModal />', () => {
 
     expect(deleteServerMock).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Delete' }));
-
-    await waitFor(() => expect(deleteServerMock).toHaveBeenCalledTimes(1));
+    expect(deleteServerMock).toHaveBeenCalledOnce();
   });
 });

@@ -60,6 +60,9 @@ export default defineConfig({
       },
     },
 
+    // Silent warnings triggered by reactstrap components, as it's getting removed
+    onConsoleLog: (log) => !log.includes('`transition.timeout` is marked as required'),
+
     // Workaround for bug in react-router (or vitest module resolution) which causes different react-router versions to
     // be resolved for the main package and dependencies who have a peer dependency in react-router.
     // This ensures always the same version is resolved.

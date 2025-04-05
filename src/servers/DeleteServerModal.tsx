@@ -1,3 +1,4 @@
+import type { ExitAction } from '@shlinkio/shlink-frontend-kit/tailwind';
 import { CardModal } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { useCallback } from 'react';
@@ -14,10 +15,11 @@ type DeleteServerModalConnectProps = DeleteServerModalProps & {
 };
 
 export const DeleteServerModal: FC<DeleteServerModalConnectProps> = ({ server, onClose, open, deleteServer }) => {
-  const onConfirm = useCallback(() => {
-    deleteServer(server);
-    onClose(true);
-  }, [deleteServer, onClose, server]);
+  const onClosed = useCallback((exitAction: ExitAction) => {
+    if (exitAction === 'confirm') {
+      deleteServer(server);
+    }
+  }, [deleteServer, server]);
 
   return (
     <CardModal
@@ -25,16 +27,19 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = ({ server, o
       title="Remove server"
       variant="danger"
       onClose={() => onClose(false)}
-      onConfirm={onConfirm}
+      onConfirm={() => onClose(true)}
+      onClosed={onClosed}
       confirmText="Delete"
     >
-      <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
-      <p>
-        <i>
-          No data will be deleted, only the access to this server will be removed from this device.
-          You can create it again at any moment.
-        </i>
-      </p>
+      <div className="tw:flex tw:flex-col tw:gap-y-4">
+        <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
+        <p>
+          <i>
+            No data will be deleted, only the access to this server will be removed from this device.
+            You can create it again at any moment.
+          </i>
+        </p>
+      </div>
     </CardModal>
   );
 };

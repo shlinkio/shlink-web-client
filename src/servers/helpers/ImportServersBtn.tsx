@@ -47,8 +47,9 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
 
   const create = useCallback((serversData: ServerWithId[]) => {
     createServers(serversData);
+    hideModal();
     onImport();
-  }, [createServers, onImport]);
+  }, [createServers, hideModal, onImport]);
   const onFile = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) =>
       serversImporter.importServersFromFile(target.files?.[0])
@@ -73,14 +74,8 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
     [create, onImportError, servers, serversImporter, showModal],
   );
 
-  const createAllServers = useCallback(() => {
-    create(importedServersRef.current);
-    hideModal();
-  }, [create, hideModal]);
-  const createNonDuplicatedServers = useCallback(() => {
-    create(newServersRef.current);
-    hideModal();
-  }, [create, hideModal]);
+  const createAllServers = useCallback(() => create(importedServersRef.current), [create]);
+  const createNonDuplicatedServers = useCallback(() => create(newServersRef.current), [create]);
 
   return (
     <>
