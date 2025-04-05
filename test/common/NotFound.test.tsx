@@ -30,6 +30,5 @@ describe('<NotFound />', () => {
 
     expect(link).toHaveAttribute('href', expectedLink);
     expect(link).toHaveTextContent(expectedText);
-    expect(link).toHaveAttribute('class', 'btn btn-outline-primary btn-lg');
   });
 });

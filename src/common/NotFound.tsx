@@ -1,19 +1,16 @@
-import { SimpleCard } from '@shlinkio/shlink-frontend-kit';
+import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC, PropsWithChildren } from 'react';
-import { Link } from 'react-router';
+import { ErrorLayout } from './ErrorLayout';
 
 type NotFoundProps = PropsWithChildren<{ to?: string }>;
 
 export const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => (
-  <div className="home">
-    <SimpleCard className="p-4">
-      <h2>Oops! We could not find requested route.</h2>
-      <p>
-        Use your browser&apos;s back button to navigate to the page you have previously come from, or just press this
-        button.
-      </p>
-      <br />
-      <Link to={to} className="btn btn-outline-primary btn-lg">{children}</Link>
-    </SimpleCard>
-  </div>
+  <ErrorLayout title="Oops! We could not find requested route.">
+    <p>
+      Use your browser&apos;s back button to navigate to the page you have previously come from, or just press this
+      button.
+    </p>
+    <br />
+    <Button inline to={to} size="lg">{children}</Button>
+  </ErrorLayout>
 );

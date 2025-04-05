@@ -16,11 +16,16 @@ describe('<ShlinkVersionsContainer />', () => {
   ])('passes a11y checks', (selectedServer) => checkAccessibility(setUp(selectedServer)));
 
   it.each([
-    [null, 'text-center'],
-    [fromPartial<SelectedServer>({}), 'text-center'],
-    [fromPartial<ReachableServer>({ version: '1.0.0' }), 'text-center shlink-versions-container--with-sidebar'],
-  ])('renders proper col classes based on sidebar status', (selectedServer, expectedClasses) => {
+    [null, false],
+    [fromPartial<SelectedServer>({}), false],
+    [fromPartial<ReachableServer>({ version: '1.0.0' }), true],
+  ])('renders proper col classes based on sidebar status', (selectedServer, shouldAddMargin) => {
     const { container } = setUp(selectedServer);
-    expect(container.firstChild).toHaveAttribute('class', `${expectedClasses}`);
+
+    if (shouldAddMargin) {
+      expect(container.firstChild).toHaveClass('tw:md:ml-(--aside-menu-width)');
+    } else {
+      expect(container.firstChild).not.toHaveClass('tw:md:ml-(--aside-menu-width)');
+    }
   });
 });

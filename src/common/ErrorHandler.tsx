@@ -1,7 +1,7 @@
-import { SimpleCard } from '@shlinkio/shlink-frontend-kit';
+import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { Component } from 'react';
-import { Button } from 'reactstrap';
+import { ErrorLayout } from './ErrorLayout';
 
 type ErrorHandlerProps = PropsWithChildren<{
   location?: typeof window.location;
@@ -33,14 +33,11 @@ export class ErrorHandler extends Component<ErrorHandlerProps, ErrorHandlerState
 
     if (hasError) {
       return (
-        <div className="home">
-          <SimpleCard className="p-4">
-            <h1>Oops! This is awkward :S</h1>
-            <p>It seems that something went wrong. Try refreshing the page or just click this button.</p>
-            <br />
-            <Button outline color="primary" onClick={() => location.reload()}>Take me back</Button>
-          </SimpleCard>
-        </div>
+        <ErrorLayout title="Oops! This is awkward :S">
+          <p>It seems that something went wrong. Try refreshing the page or just click this button.</p>
+          <br />
+          <Button size="lg" onClick={() => location.reload()}>Take me back</Button>
+        </ErrorLayout>
       );
     }
 

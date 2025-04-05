@@ -9,8 +9,8 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServersRowDropdown />', () => {
   const ManageServersRowDropdown = ManageServersRowDropdownFactory(fromPartial({
-    DeleteServerModal: ({ isOpen }: { isOpen: boolean }) => (
-      <span>DeleteServerModal {isOpen ? '[OPEN]' : '[CLOSED]'}</span>
+    DeleteServerModal: ({ open }: { open: boolean }) => (
+      <span>DeleteServerModal {open ? '[OPEN]' : '[CLOSED]'}</span>
     ),
   }));
   const setAutoConnect = vi.fn();

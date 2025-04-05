@@ -1,6 +1,6 @@
 import { useParsedQuery } from '@shlinkio/shlink-frontend-kit';
+import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
-import { Button } from 'reactstrap';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory } from '../container/utils';
@@ -40,12 +40,12 @@ const EditServer: FCWithDeps<EditServerProps, EditServerDeps> = withSelectedServ
   return (
     <NoMenuLayout>
       <ServerForm
-        title={<h5 className="mb-0">Edit &quot;{selectedServer.name}&quot;</h5>}
+        title={<>Edit &quot;{selectedServer.name}&quot;</>}
         initialValues={selectedServer}
         onSubmit={handleSubmit}
       >
-        <Button outline className="me-2" onClick={goBack}>Cancel</Button>
-        <Button outline color="primary">Save</Button>
+        <Button type="button" variant="secondary" onClick={goBack}>Cancel</Button>
+        <Button>Save</Button>
       </ServerForm>
     </NoMenuLayout>
   );

@@ -6,10 +6,10 @@ import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
 
 describe('<DuplicatedServersModal />', () => {
-  const onDiscard = vi.fn();
-  const onSave = vi.fn();
+  const onClose = vi.fn();
+  const onConfirm = vi.fn();
   const setUp = (duplicatedServers: ServerData[] = []) => act(() => renderWithEvents(
-    <DuplicatedServersModal isOpen duplicatedServers={duplicatedServers} onDiscard={onDiscard} onSave={onSave} />,
+    <DuplicatedServersModal open duplicatedServers={duplicatedServers} onClose={onClose} onConfirm={onConfirm} />,
   ));
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
 
@@ -32,8 +32,9 @@ describe('<DuplicatedServersModal />', () => {
       {
         header: 'Duplicated server',
         firstParagraph: 'There is already a server with:',
-        lastParagraph: 'Do you want to save this server anyway?',
+        lastParagraph: 'Do you want to save this server?',
         discardBtn: 'Discard',
+        confirmButton: 'Save duplicate',
       },
     ],
     [
@@ -41,8 +42,9 @@ describe('<DuplicatedServersModal />', () => {
       {
         header: 'Duplicated servers',
         firstParagraph: 'The next servers already exist:',
-        lastParagraph: 'Do you want to ignore duplicated servers?',
+        lastParagraph: 'Do you want to save duplicated servers?',
         discardBtn: 'Ignore duplicates',
+        confirmButton: 'Save duplicates',
       },
     ],
   ])('renders expected texts based on amount of servers', async (duplicatedServers, assertions) => {
@@ -52,6 +54,7 @@ describe('<DuplicatedServersModal />', () => {
     expect(screen.getByText(assertions.firstParagraph)).toBeInTheDocument();
     expect(screen.getByText(assertions.lastParagraph)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: assertions.discardBtn })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: assertions.confirmButton })).toBeInTheDocument();
   });
 
   it.each([
@@ -80,19 +83,19 @@ describe('<DuplicatedServersModal />', () => {
     }
   });
 
-  it('invokes onDiscard when appropriate button is clicked', async () => {
+  it('invokes onClose when appropriate button is clicked', async () => {
     const { user } = await setUp();
 
-    expect(onDiscard).not.toHaveBeenCalled();
+    expect(onClose).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Discard' }));
-    expect(onDiscard).toHaveBeenCalled();
+    expect(onClose).toHaveBeenCalled();
   });
 
-  it('invokes onSave when appropriate button is clicked', async () => {
+  it('invokes onConfirm when appropriate button is clicked', async () => {
     const { user } = await setUp();
 
-    expect(onSave).not.toHaveBeenCalled();
-    await user.click(screen.getByRole('button', { name: 'Save anyway' }));
-    expect(onSave).toHaveBeenCalled();
+    expect(onConfirm).not.toHaveBeenCalled();
+    await user.click(screen.getByRole('button', { name: 'Save duplicate' }));
+    expect(onConfirm).toHaveBeenCalled();
   });
 });

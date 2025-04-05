@@ -1,9 +1,0 @@
-@use '../../node_modules/@shlinkio/shlink-frontend-kit/dist/base';
-
-.no-menu-wrapper {
-  padding: 15px 0 0;
-
-  @media (min-width: base.$mdMin) {
-    padding: 30px 20px 20px;
-  }
-}

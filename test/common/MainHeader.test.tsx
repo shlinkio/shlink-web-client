@@ -51,14 +51,12 @@ describe('<MainHeader />', () => {
     const toggle = screen.getByLabelText('Toggle navigation');
     const icon = toggle.firstChild;
 
-    expect(icon).toHaveAttribute('class', expect.stringMatching(/main-header__toggle-icon$/));
+    expect(icon).not.toHaveClass('tw:rotate-180');
     await user.click(toggle);
-    expect(icon).toHaveAttribute(
-      'class',
-      expect.stringMatching(/main-header__toggle-icon main-header__toggle-icon--opened$/),
-    );
+
+    expect(icon).toHaveClass('tw:rotate-180');
     await user.click(toggle);
-    expect(icon).toHaveAttribute('class', expect.stringMatching(/main-header__toggle-icon$/));
+    expect(icon).not.toHaveClass('tw:rotate-180');
   });
 
   it('opens Collapse when clicking toggle', async () => {

@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -11,7 +12,7 @@ const homepage = pack.homepage?.trim();
 
 /* eslint-disable-next-line no-restricted-exports */
 export default defineConfig({
-  plugins: [react(), VitePWA({
+  plugins: [react(), tailwindcss(), VitePWA({
     mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
     strategies: 'injectManifest',
     srcDir: './src',
@@ -25,6 +26,10 @@ export default defineConfig({
   },
   server: {
     port: 3000,
+    watch: {
+      // Do not watch test files or generated files, avoiding the dev server to constantly reload when not needed
+      ignored: ['**/.idea/**', '**/.git/**', '**/build/**', '**/coverage/**', '**/test/**'],
+    },
   },
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
 
@@ -54,6 +59,9 @@ export default defineConfig({
         lines: 95,
       },
     },
+
+    // Silent warnings triggered by reactstrap components, as it's getting removed
+    onConsoleLog: (log) => !log.includes('`transition.timeout` is marked as required'),
 
     // Workaround for bug in react-router (or vitest module resolution) which causes different react-router versions to
     // be resolved for the main package and dependencies who have a peer dependency in react-router.

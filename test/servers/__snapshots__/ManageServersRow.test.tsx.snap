@@ -2,18 +2,29 @@
 
 exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 1`] = `
 <div>
-  <table>
-    <tbody>
+  <table
+    class="tw:w-full"
+  >
+    <thead
+      class="tw:hidden tw:lg:table-header-group"
+    >
       <tr
-        class="responsive-table__row"
+        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border"
+      />
+    </thead>
+    <tbody
+      class="tw:lg:table-row-group tw:flex tw:flex-col tw:gap-y-3"
+    >
+      <tr
+        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border tw:hover:bg-lm-primary tw:dark:hover:bg-dm-primary tw:group-[&]/card:hover:bg-lm-secondary tw:dark:group-[&]/card:hover:bg-dm-secondary tw:relative"
       >
         <td
-          class="responsive-table__cell"
-          data-th="Auto-connect"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1"
+          data-column="Auto-connect"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-check text-primary"
+            class="svg-inline--fa fa-check tw:text-brand"
             data-icon="check"
             data-prefix="fas"
             focusable="false"
@@ -28,9 +39,9 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
             />
           </svg>
         </td>
-        <th
-          class="responsive-table__cell"
-          data-th="Name"
+        <td
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:font-bold"
+          data-column="Name"
         >
           <a
             data-discover="true"
@@ -38,15 +49,15 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           >
             My server
           </a>
-        </th>
+        </td>
         <td
-          class="responsive-table__cell"
-          data-th="Base URL"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:max-lg:border-b-0"
+          data-column="Base URL"
         >
           https://example.com
         </td>
         <td
-          class="responsive-table__cell text-end"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:text-right tw:max-lg:absolute tw:right-0 tw:-top-1 tw:mx-lg:pt-0"
         >
           <span>
             ManageServersRowDropdown
@@ -60,18 +71,29 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
 
 exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 2`] = `
 <div>
-  <table>
-    <tbody>
+  <table
+    class="tw:w-full"
+  >
+    <thead
+      class="tw:hidden tw:lg:table-header-group"
+    >
       <tr
-        class="responsive-table__row"
+        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border"
+      />
+    </thead>
+    <tbody
+      class="tw:lg:table-row-group tw:flex tw:flex-col tw:gap-y-3"
+    >
+      <tr
+        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border tw:hover:bg-lm-primary tw:dark:hover:bg-dm-primary tw:group-[&]/card:hover:bg-lm-secondary tw:dark:group-[&]/card:hover:bg-dm-secondary tw:relative"
       >
         <td
-          class="responsive-table__cell"
-          data-th="Auto-connect"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1"
+          data-column="Auto-connect"
         />
-        <th
-          class="responsive-table__cell"
-          data-th="Name"
+        <td
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:font-bold"
+          data-column="Name"
         >
           <a
             data-discover="true"
@@ -79,15 +101,15 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           >
             My server
           </a>
-        </th>
+        </td>
         <td
-          class="responsive-table__cell"
-          data-th="Base URL"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:max-lg:border-b-0"
+          data-column="Base URL"
         >
           https://example.com
         </td>
         <td
-          class="responsive-table__cell text-end"
+          class="tw:p-2 tw:border-lm-border tw:dark:border-dm-border tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:text-right tw:max-lg:absolute tw:right-0 tw:-top-1 tw:mx-lg:pt-0"
         >
           <span>
             ManageServersRowDropdown
