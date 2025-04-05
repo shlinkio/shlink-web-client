@@ -10,29 +10,17 @@ describe('<ServersListGroup />', () => {
     fromPartial({ name: 'foo', id: '123' }),
     fromPartial({ name: 'bar', id: '456' }),
   ];
-  const setUp = (params: { servers?: ServerWithId[]; withChildren?: boolean; borderless?: boolean } = {}) => {
-    const { servers = [], withChildren = true, borderless } = params;
+  const setUp = (params: { servers?: ServerWithId[]; borderless?: boolean } = {}) => {
+    const { servers = [], borderless } = params;
 
     return render(
       <MemoryRouter>
-        <ServersListGroup servers={servers} borderless={borderless}>
-          {withChildren ? 'The list of servers' : undefined}
-        </ServersListGroup>
+        <ServersListGroup servers={servers} borderless={borderless} />
       </MemoryRouter>,
     );
   };
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
-
-  it('renders title', () => {
-    setUp({});
-    expect(screen.getByTestId('title')).toHaveTextContent('The list of servers');
-  });
-
-  it('does not render title when children is not provided', () => {
-    setUp({ withChildren: false });
-    expect(screen.queryByTestId('title')).not.toBeInTheDocument();
-  });
 
   it.each([
     [servers],

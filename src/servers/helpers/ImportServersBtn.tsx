@@ -100,7 +100,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
       <input
         type="file"
         accept=".csv"
-        className="d-none"
+        className="tw:hidden"
         aria-hidden
         ref={ref as any /* TODO Remove After updating to React 19 */}
         onChange={onFile}

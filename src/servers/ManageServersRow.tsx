@@ -27,7 +27,7 @@ const ManageServersRow: FCWithDeps<ManageServersRowProps, ManageServersRowDeps> 
         <Table.Cell columnName="Auto-connect">
           {server.autoConnect && (
             <>
-              <FontAwesomeIcon icon={checkIcon} className="text-primary" id="autoConnectIcon" />
+              <FontAwesomeIcon icon={checkIcon} className="tw:text-brand" id="autoConnectIcon" />
               <UncontrolledTooltip target="autoConnectIcon" placement="right">
                 Auto-connect to this server
               </UncontrolledTooltip>

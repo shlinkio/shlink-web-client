@@ -45,26 +45,24 @@ export const Home = ({ servers }: HomeProps) => {
             >
               Welcome!
             </h1>
-            <ServersListGroup servers={serversList}>
-              {!hasServers && (
-                <div className="tw:p-6 tw:text-center tw:flex tw:flex-col tw:gap-12">
-                  <p>This application will help you manage your Shlink servers.</p>
-                  <p>
-                    <Button to="/server/create" size="lg" inline>
-                      <FontAwesomeIcon icon={faPlus} /> Add a server
-                    </Button>
-                  </p>
-                  <p>
-                    <ExternalLink href="https://shlink.io/documentation">
-                      <small>
-                        <span className="tw:mr-2">Learn more about Shlink</span>
-                        <FontAwesomeIcon icon={faExternalLinkAlt} />
-                      </small>
-                    </ExternalLink>
-                  </p>
-                </div>
-              )}
-            </ServersListGroup>
+            {hasServers ? <ServersListGroup servers={serversList} /> : (
+              <div className="tw:p-6 tw:text-center tw:flex tw:flex-col tw:gap-12 tw:text-xl">
+                <p>This application will help you manage your Shlink servers.</p>
+                <p>
+                  <Button to="/server/create" size="lg" inline>
+                    <FontAwesomeIcon icon={faPlus} /> Add a server
+                  </Button>
+                </p>
+                <p>
+                  <ExternalLink href="https://shlink.io/documentation">
+                    <small>
+                      <span className="tw:mr-2">Learn more about Shlink</span>
+                      <FontAwesomeIcon icon={faExternalLinkAlt} />
+                    </small>
+                  </ExternalLink>
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </Card>

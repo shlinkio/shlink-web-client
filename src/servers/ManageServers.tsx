@@ -63,13 +63,17 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
       <SimpleCard className="card">
         <Table header={(
           <Table.Row>
-            {hasAutoConnect && <Table.Cell style={{ width: '50px' }}><span className="sr-only">Auto-connect</span></Table.Cell>}
+            {hasAutoConnect && (
+              <Table.Cell className="tw:w-[35px]"><span className="tw:sr-only">Auto-connect</span></Table.Cell>
+            )}
             <Table.Cell>Name</Table.Cell>
             <Table.Cell>Base URL</Table.Cell>
             <Table.Cell><span className="sr-only">Options</span></Table.Cell>
           </Table.Row>
         )}>
-          {!filteredServers.length && <Table.Row className="text-center"><Table.Cell colSpan={4}>No servers found.</Table.Cell></Table.Row>}
+          {!filteredServers.length && (
+            <Table.Row className="tw:text-center"><Table.Cell colSpan={4}>No servers found.</Table.Cell></Table.Row>
+          )}
           {filteredServers.map((server) => (
             <ManageServersRow key={server.id} server={server} hasAutoConnect={hasAutoConnect} />
           ))}

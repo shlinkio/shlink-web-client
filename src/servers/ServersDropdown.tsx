@@ -17,7 +17,7 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
     if (serversList.length === 0) {
       return (
         <DropdownItem tag={Link} to="/server/create">
-          <FontAwesomeIcon icon={plusIcon} /> <span className="ms-1">Add a server</span>
+          <FontAwesomeIcon icon={plusIcon} /> <span className="tw:ml-1">Add a server</span>
         </DropdownItem>
       );
     }
@@ -31,7 +31,7 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
         ))}
         <DropdownItem divider tag="hr" />
         <DropdownItem tag={Link} to="/manage-servers">
-          <FontAwesomeIcon icon={serverIcon} /> <span className="ms-1">Manage servers</span>
+          <FontAwesomeIcon icon={serverIcon} /> <span className="tw:ml-1">Manage servers</span>
         </DropdownItem>
       </>
     );
@@ -40,9 +40,9 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
   return (
     <UncontrolledDropdown nav inNavbar>
       <DropdownToggle nav caret>
-        <FontAwesomeIcon icon={serverIcon} /> <span className="ms-1">Servers</span>
+        <FontAwesomeIcon icon={serverIcon} /> <span className="tw:ml-1">Servers</span>
       </DropdownToggle>
-      <DropdownMenu end style={{ right: 0 }}>{renderServers()}</DropdownMenu>
+      <DropdownMenu end classNam="tw:right-0">{renderServers()}</DropdownMenu>
     </UncontrolledDropdown>
   );
 };

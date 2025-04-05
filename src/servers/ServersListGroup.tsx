@@ -1,14 +1,14 @@
 import { faChevronRight as chevronIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { clsx } from 'clsx';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC } from 'react';
 import { Link } from 'react-router';
 import type { ServerWithId } from './data';
 
-type ServersListGroupProps = PropsWithChildren<{
+type ServersListGroupProps = {
   servers: ServerWithId[];
   borderless?: boolean;
-}>;
+};
 
 const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   <Link
@@ -25,9 +25,8 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   </Link>
 );
 
-export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, children, borderless }) => (
+export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, borderless }) => (
   <>
-    {children && <div data-testid="title" className="fs-5 fw-normal lh-sm">{children}</div>}
     {servers.length > 0 && (
       <div
         data-testid="list"
