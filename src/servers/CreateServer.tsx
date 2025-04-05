@@ -73,7 +73,7 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
         {!hasServers && (
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onError={setErrorImporting} />
         )}
-        {hasServers && <Button variant="secondary" onClick={goBack}>Cancel</Button>}
+        {hasServers && <Button type="button" variant="secondary" onClick={goBack}>Cancel</Button>}
         <Button type="submit">Create server</Button>
       </ServerForm>
 

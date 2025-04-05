@@ -44,7 +44,7 @@ const EditServer: FCWithDeps<EditServerProps, EditServerDeps> = withSelectedServ
         initialValues={selectedServer}
         onSubmit={handleSubmit}
       >
-        <Button variant="secondary" onClick={goBack}>Cancel</Button>
+        <Button type="button" variant="secondary" onClick={goBack}>Cancel</Button>
         <Button>Save</Button>
       </ServerForm>
     </NoMenuLayout>
