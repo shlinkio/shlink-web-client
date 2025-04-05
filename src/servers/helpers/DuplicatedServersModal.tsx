@@ -1,41 +1,42 @@
+import { CardModal } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { Fragment } from 'react';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import type { ServerData } from '../data';
 
-interface DuplicatedServersModalProps {
+export type DuplicatedServersModalProps = {
   duplicatedServers: ServerData[];
-  isOpen: boolean;
-  onDiscard: () => void;
-  onSave: () => void;
-}
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+};
 
 export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
-  { isOpen, duplicatedServers, onDiscard, onSave },
+  { open, duplicatedServers, onClose, onConfirm },
 ) => {
   const hasMultipleServers = duplicatedServers.length > 1;
 
   return (
-    <Modal centered isOpen={isOpen}>
-      <ModalHeader>Duplicated server{hasMultipleServers && 's'}</ModalHeader>
-      <ModalBody>
-        <p>{hasMultipleServers ? 'The next servers already exist:' : 'There is already a server with:'}</p>
-        <ul>
-          {duplicatedServers.map(({ url, apiKey }, index) => (!hasMultipleServers ? (
-            <Fragment key={index}>
-              <li>URL: <b>{url}</b></li>
-              <li>API key: <b>{apiKey}</b></li>
-            </Fragment>
-          ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>))}
-        </ul>
-        <span>
-          {hasMultipleServers ? 'Do you want to ignore duplicated servers' : 'Do you want to save this server anyway'}?
-        </span>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="link" onClick={onDiscard}>{hasMultipleServers ? 'Ignore duplicates' : 'Discard'}</Button>
-        <Button color="primary" onClick={onSave}>Save anyway</Button>
-      </ModalFooter>
-    </Modal>
+    <CardModal
+      size="lg"
+      title={`Duplicated server${hasMultipleServers ? 's' : ''}`}
+      open={open}
+      onClose={onClose}
+      onConfirm={onConfirm}
+      confirmText={`Save duplicate${hasMultipleServers ? 's' : ''}`}
+      cancelText={hasMultipleServers ? 'Ignore duplicates' : 'Discard'}
+    >
+      <p>{hasMultipleServers ? 'The next servers already exist:' : 'There is already a server with:'}</p>
+      <ul className="tw:list-disc tw:mt-4">
+        {duplicatedServers.map(({ url, apiKey }, index) => (!hasMultipleServers ? (
+          <Fragment key={index}>
+            <li>URL: <b>{url}</b></li>
+            <li>API key: <b>{apiKey}</b></li>
+          </Fragment>
+        ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>))}
+      </ul>
+      <span>
+        {hasMultipleServers ? 'Do you want to save duplicated servers' : 'Do you want to save this server'}?
+      </span>
+    </CardModal>
   );
 };

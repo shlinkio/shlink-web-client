@@ -48,7 +48,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
 
       <div className="tw:flex tw:flex-col tw:md:flex-row tw:gap-2">
         <div className="tw:flex tw:gap-2">
-          <ImportServersBtn className="tw:flex-grow" onImportError={setErrorImporting}>Import servers</ImportServersBtn>
+          <ImportServersBtn className="tw:flex-grow" onError={setErrorImporting}>Import servers</ImportServersBtn>
           {filteredServers.length > 0 && (
             <Button variant="secondary" className="tw:flex-grow" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} /> Export servers

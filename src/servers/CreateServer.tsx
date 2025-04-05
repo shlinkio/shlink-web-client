@@ -71,7 +71,7 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
     <NoMenuLayout>
       <ServerForm title="Add new server" onSubmit={onSubmit}>
         {!hasServers && (
-          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />
+          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onError={setErrorImporting} />
         )}
         {hasServers && <Button variant="secondary" onClick={goBack}>Cancel</Button>}
         <Button type="submit">Create server</Button>
@@ -81,10 +81,10 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
       {errorImporting && <ImportResult variant="error" />}
 
       <DuplicatedServersModal
-        isOpen={isConfirmModalOpen}
+        open={isConfirmModalOpen}
         duplicatedServers={serverData ? [serverData] : []}
-        onDiscard={goBack}
-        onSave={() => serverData && saveNewServer(serverData)}
+        onClose={goBack}
+        onConfirm={() => serverData && saveNewServer(serverData)}
       />
     </NoMenuLayout>
   );

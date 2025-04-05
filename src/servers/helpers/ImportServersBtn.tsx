@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
 import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { ChangeEvent, PropsWithChildren } from 'react';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef , useState } from 'react';
 import { UncontrolledTooltip } from 'reactstrap';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
@@ -14,7 +14,7 @@ import { dedupServers, ensureUniqueIds } from './index';
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
-  onImportError?: (error: Error) => void;
+  onError?: (error: Error) => void;
   tooltipPlacement?: 'top' | 'bottom';
   className?: string;
 }>;
@@ -32,8 +32,8 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   createServers,
   servers,
   children,
-  onImport = () => {},
-  onImportError = () => {},
+  onImport,
+  onError = () => {},
   tooltipPlacement = 'bottom',
   className = '',
 }) => {
@@ -41,41 +41,46 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const ref = useElementRef<HTMLInputElement>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
+  const newServersCreatedRef = useRef(false);
 
-  const importedServersRef = useRef<ServerWithId[]>([]);
-  const newServersRef = useRef<ServerWithId[]>([]);
-
-  const create = useCallback((serversData: ServerWithId[]) => {
-    createServers(serversData);
-    hideModal();
-    onImport();
-  }, [createServers, hideModal, onImport]);
   const onFile = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) =>
       serversImporter.importServersFromFile(target.files?.[0])
         .then((importedServers) => {
           const { duplicatedServers, newServers } = dedupServers(servers, importedServers);
 
-          importedServersRef.current = ensureUniqueIds(servers, importedServers);
-          newServersRef.current = ensureUniqueIds(servers, newServers);
+          // Immediately create new servers
+          newServersCreatedRef.current = newServers.length > 0;
+          createServers(ensureUniqueIds(servers, newServers));
 
-          if (duplicatedServers.length === 0) {
-            create(importedServersRef.current);
-          } else {
+          // For duplicated servers, ask for confirmation
+          if (duplicatedServers.length > 0) {
             setDuplicatedServers(duplicatedServers);
             showModal();
+          } else {
+            onImport?.();
           }
         })
         .then(() => {
           // Reset file input after processing file
           (target as { value: string | null }).value = null;
         })
-        .catch(onImportError),
-    [create, onImportError, servers, serversImporter, showModal],
+        .catch(onError),
+    [createServers, onError, onImport, servers, serversImporter, showModal],
   );
 
-  const createAllServers = useCallback(() => create(importedServersRef.current), [create]);
-  const createNonDuplicatedServers = useCallback(() => create(newServersRef.current), [create]);
+  const createDuplicatedServers = useCallback(() => {
+    createServers(ensureUniqueIds(servers, duplicatedServers));
+    hideModal();
+    onImport?.();
+  }, [createServers, duplicatedServers, hideModal, onImport, servers]);
+  const discardDuplicatedServers = useCallback(() => {
+    hideModal();
+    // If duplicated servers were discarded but some non-duplicated servers were created, call onImport
+    if (newServersCreatedRef.current) {
+      onImport?.();
+    }
+  }, [hideModal, onImport]);
 
   return (
     <>
@@ -97,10 +102,10 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
       />
 
       <DuplicatedServersModal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         duplicatedServers={duplicatedServers}
-        onDiscard={createNonDuplicatedServers}
-        onSave={createAllServers}
+        onClose={discardDuplicatedServers}
+        onConfirm={createDuplicatedServers}
       />
     </>
   );
