@@ -84,13 +84,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
 
   return (
     <>
-      <Button
-        type="button"
-        variant="secondary"
-        id="importBtn"
-        className={className}
-        onClick={() => ref.current?.click()}
-      >
+      <Button variant="secondary" id="importBtn" className={className} onClick={() => ref.current?.click()}>
         <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
