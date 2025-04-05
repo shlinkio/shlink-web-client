@@ -1,4 +1,8 @@
-import { LabelledInput, SimpleCard } from '@shlinkio/shlink-frontend-kit/tailwind';
+import {
+  LabelledInput,
+  LabelledRevealablePasswordInput,
+  SimpleCard,
+} from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 import { useState } from 'react';
 import { handleEventPreventingDefault } from '../../utils/utils';
@@ -21,9 +25,8 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
       <SimpleCard className="tw:mb-4" bodyClassName="tw:flex tw:flex-col tw:gap-y-3" title={title}>
         <LabelledInput label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
         <LabelledInput label="URL" type="url" value={url} onChange={(e) => setUrl(e.target.value)} required />
-        <LabelledInput
+        <LabelledRevealablePasswordInput
           label="API key"
-          type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           required
