@@ -20,7 +20,13 @@ describe('<ServersDropdown />', () => {
     </MemoryRouter>,
   );
 
-  it('passes a11y checks', () => checkAccessibility(setUp()));
+  it('passes a11y checks', async () => {
+    const { user, ...rest } = setUp();
+    // Open menu
+    await user.click(screen.getByText('Servers'));
+
+    return checkAccessibility(rest);
+  });
 
   it('contains the list of servers and the "mange servers" button', async () => {
     const { user } = setUp();

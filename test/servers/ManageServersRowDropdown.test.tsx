@@ -24,15 +24,13 @@ describe('<ManageServersRowDropdown />', () => {
   };
   const toggleDropdown = (user: UserEvent) => user.click(screen.getByRole('button'));
 
-  it.each([
-    [setUp],
-    [async () => {
-      const { user, container } = setUp();
-      await toggleDropdown(user);
+  it('passes a11y checks', async () => {
+    const { user, container } = setUp();
+    // Open menu
+    await toggleDropdown(user);
 
-      return { container };
-    }],
-  ])('passes a11y checks', (setUp) => checkAccessibility(setUp()));
+    return checkAccessibility({ container });
+  });
 
   it('renders expected amount of dropdown items', async () => {
     const { user } = setUp();
