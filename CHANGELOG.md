@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Update to `@shlinkio/shlink-web-component` 0.13.0
 * Update to `@shlinkio/shlink-js-sdk` 2.0.0
 * Add `eslint-plugin-react-compiler`
+* Run unit tests in a headless browser using vitest browser mode and playwright.
 
 ### Deprecated
 * *Nothing*

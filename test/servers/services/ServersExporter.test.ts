@@ -24,17 +24,13 @@ describe('ServersExporter', () => {
   const createCsvjsonMock = (throwError = false) => (throwError ? erroneousToCsv : vi.fn(() => ''));
 
   describe('exportServers', () => {
-    let originalConsole: Console;
     const error = vi.fn();
 
     beforeEach(() => {
-      originalConsole = global.console;
-      global.console = fromPartial<Console>({ error });
-      (global as any).Blob = class Blob {};
-      (global as any).URL = { createObjectURL: () => '' };
+      vi.stubGlobal('console', fromPartial<Console>({ error }));
     });
     afterEach(() => {
-      global.console = originalConsole;
+      vi.unstubAllGlobals();
     });
 
     it('logs an error if something fails', () => {

@@ -35,9 +35,16 @@ export default defineConfig({
 
   // Vitest config
   test: {
+    // Run tests in an actual browser
+    browser: {
+      provider: 'playwright',
+      enabled: true,
+      headless: true,
+      screenshotFailures: false,
+      instances: [{ browser: 'chromium' }],
+    },
     globals: true,
     allowOnly: true,
-    environment: 'jsdom',
     setupFiles: './config/test/setupTests.ts',
     coverage: {
       provider: 'v8',
