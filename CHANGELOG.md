@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * Update to `@shlinkio/shlink-js-sdk` 2.0.0
 * Add `eslint-plugin-react-compiler`
 * Run unit tests in a headless browser using vitest browser mode and playwright.
+* Existing HTTP credentials (cookies, TLS certs, authentication headers) are now automatically forwarded to the API server if appropriate [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials) are set
 
 ### Deprecated
 * *Nothing*
