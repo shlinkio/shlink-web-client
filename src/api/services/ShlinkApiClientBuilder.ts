@@ -23,7 +23,11 @@ export const buildShlinkApiClient = (httpClient: HttpClient) => (getStateOrSelec
     : getStateOrSelectedServer;
   const serverKey = `${apiKey}_${baseUrl}`;
 
-  const apiClient = apiClients[serverKey] ?? new ShlinkApiClient(httpClient, { apiKey, baseUrl });
+  const apiClient = apiClients[serverKey] ?? new ShlinkApiClient(
+    httpClient,
+    { apiKey, baseUrl },
+    { requestCredentials: 'include' },
+  );
   apiClients[serverKey] = apiClient;
 
   return apiClient;
