@@ -26,7 +26,8 @@ export const buildShlinkApiClient = (httpClient: HttpClient) => (getStateOrSelec
   const apiClient = apiClients[serverKey] ?? new ShlinkApiClient(
     httpClient,
     { apiKey, baseUrl },
-    { requestCredentials: 'include' },
+    // FIXME Disabling this as it's breaking existing Shlink servers as configured out of the box
+    // { requestCredentials: 'include' },
   );
   apiClients[serverKey] = apiClient;
 
