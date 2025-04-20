@@ -54,3 +54,22 @@ export const serializeServer = ({ name, url, apiKey, forwardCredentials }: Serve
   apiKey,
   forwardCredentials: forwardCredentials ? 'true' : 'false',
 });
+
+const validateServerData = (server: any): server is ServerData =>
+  typeof server.url === 'string' && typeof server.apiKey === 'string' && typeof server.name === 'string';
+
+/**
+ * Provided a record, it picks the right properties to build a ServerData object.
+ * @throws Error If any of the required ServerData properties is missing.
+ */
+export const deserializeServer = (potentialServer: Record<string, unknown>): ServerData => {
+  const { forwardCredentials, ...serverData } = potentialServer;
+  if (!validateServerData(serverData)) {
+    throw new Error('Server is missing required "url", "apiKey" and/or "name" properties');
+  }
+
+  return {
+    ...serverData,
+    forwardCredentials: forwardCredentials === 'true',
+  };
+};
