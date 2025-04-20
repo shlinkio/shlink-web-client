@@ -4,6 +4,7 @@ export interface ServerData {
   name: string;
   url: string;
   apiKey: string;
+  forwardCredentials?: boolean;
 }
 
 export interface ServerWithId extends ServerData {
