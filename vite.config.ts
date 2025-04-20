@@ -44,7 +44,6 @@ export default defineConfig({
       instances: [{ browser: 'chromium' }],
     },
     globals: true,
-    allowOnly: true,
     setupFiles: './config/test/setupTests.ts',
     coverage: {
       provider: 'v8',
@@ -61,8 +60,8 @@ export default defineConfig({
       // Required code coverage. Lower than this will make the check fail
       thresholds: {
         statements: 95,
-        branches: 90,
-        functions: 90,
+        branches: 95,
+        functions: 95,
         lines: 95,
       },
     },

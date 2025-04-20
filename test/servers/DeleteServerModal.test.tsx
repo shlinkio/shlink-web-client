@@ -36,7 +36,7 @@ describe('<DeleteServerModal />', () => {
     expect(screen.getByText(serverName)).toBeInTheDocument();
   });
 
-  it.only.each([
+  it.each([
     [() => screen.getByRole('button', { name: 'Cancel' })],
     [() => screen.getByLabelText('Close dialog')],
   ])('closes dialog when clicking cancel button', async (getButton) => {

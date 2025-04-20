@@ -35,7 +35,7 @@ describe('ShlinkApiClientBuilder', () => {
     expect(secondApiClient === thirdApiClient).toEqual(true);
   });
 
-  it.only('does not fetch from state when provided param is already selected server', async () => {
+  it('does not fetch from state when provided param is already selected server', async () => {
     const url = 'the_url';
     const apiKey = 'the_api_key';
     const jsonRequest = vi.fn();
