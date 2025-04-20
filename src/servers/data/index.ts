@@ -45,4 +45,12 @@ export const isNotFoundServer = (server: SelectedServer): server is NotFoundServ
 
 export const getServerId = (server: SelectedServer) => (isServerWithId(server) ? server.id : '');
 
-export const serverWithIdToServerData = ({ name, url, apiKey }: ServerWithId): ServerData => ({ name, url, apiKey });
+/**
+ * Expose values that represent provided server, in a way that can be serialized in JSON or CSV strings.
+ */
+export const serializeServer = ({ name, url, apiKey, forwardCredentials }: ServerData): Record<string, string> => ({
+  name,
+  url,
+  apiKey,
+  forwardCredentials: forwardCredentials ? 'true' : 'false',
+});
