@@ -4,12 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.4.0] - 2025-04-20
 ### Added
+* [#1510](https://github.com/shlinkio/shlink-web-client/issues/1510) Existing HTTP credentials (cookies, TLS certs, authentication headers) can now be forwarded to the API server if appropriate [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials) are set
 * [shlink-web-component#637](https://github.com/shlinkio/shlink-web-component/pull/637) QR codes are now generated client-side, without hitting Shlink.
 * [shlink-web-component#641](https://github.com/shlinkio/shlink-web-component/issues/641) It is now possible to provide any logo to be used with QR codes.
 * [shlink-web-component#640](https://github.com/shlinkio/shlink-web-component/issues/640) Allow default QR code settings to be handled via app settings.
-* [#1510](https://github.com/shlinkio/shlink-web-client/issues/1510) Existing HTTP credentials (cookies, TLS certs, authentication headers) are now automatically forwarded to the API server if appropriate [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials) are set
 
 ### Changed
 * Update to `react-router` 7.0
