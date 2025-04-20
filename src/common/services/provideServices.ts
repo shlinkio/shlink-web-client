@@ -1,4 +1,4 @@
-import { FetchHttpClient } from '@shlinkio/shlink-js-sdk/browser';
+import { FetchHttpClient } from '@shlinkio/shlink-js-sdk/fetch';
 import { ShlinkWebComponent } from '@shlinkio/shlink-web-component';
 import type Bottle from 'bottlejs';
 import type { ConnectDecorator } from '../../container/types';

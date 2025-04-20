@@ -7,14 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Use node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22.x
+          node-version: 22.10
       - name: Generate release assets
         run: npm ci && VERSION=${GITHUB_REF#refs/tags/v} npm run build:dist
       - name: Publish release with assets

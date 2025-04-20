@@ -65,9 +65,9 @@ describe('<ImportServersBtn />', () => {
   });
 
   it.each([
-    { btnName: 'Save anyway',savesDuplicatedServers: true },
+    { btnName: 'Save duplicate', savesDuplicatedServers: true },
     { btnName: 'Discard', savesDuplicatedServers: false },
-  ])('creates expected servers depending on selected option in modal', async ({ btnName, savesDuplicatedServers }) => {
+  ])('creates duplicated servers depending on selected option in modal', async ({ btnName, savesDuplicatedServers }) => {
     const existingServerData: ServerData = {
       name: 'existingServer',
       url: 'http://s.test/existingUrl',
@@ -84,14 +84,20 @@ describe('<ImportServersBtn />', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     await user.upload(screen.getByTestId('csv-file-input'), csvFile);
+
+    // Once the file is uploaded, non-duplicated servers are immediately created
+    expect(createServersMock).toHaveBeenCalledExactlyOnceWith([expect.objectContaining(newServer)]);
+
     expect(screen.getByRole('dialog')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: btnName }));
 
-    expect(createServersMock).toHaveBeenCalledWith(
-      savesDuplicatedServers
-        ? [expect.objectContaining(existingServerData), expect.objectContaining(newServer)]
-        : [expect.objectContaining(newServer)],
-    );
-    expect(onImportMock).toHaveBeenCalledTimes(1);
+    // If duplicated servers are saved, there's one extra call
+    if (savesDuplicatedServers) {
+      expect(createServersMock).toHaveBeenLastCalledWith([expect.objectContaining(existingServerData)]);
+    }
+
+    // On import is called only once, no matter what
+    expect(onImportMock).toHaveBeenCalledOnce();
+    expect(createServersMock).toHaveBeenCalledTimes(savesDuplicatedServers ? 2 : 1);
   });
 });

@@ -3,14 +3,13 @@ import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
 import { useEffect, useRef } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router';
 import { AppUpdateBanner } from '../common/AppUpdateBanner';
 import { NotFound } from '../common/NotFound';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import type { ServersMap } from '../servers/data';
 import { forceUpdate } from '../utils/helpers/sw';
-import './App.scss';
 
 type AppProps = {
   fetchServers: () => void;
@@ -62,28 +61,38 @@ const App: FCWithDeps<AppProps, AppDeps> = (
   }, [settings.ui?.theme]);
 
   return (
-    <div className="container-fluid app-container">
+    <div className="tw:px-3 tw:h-full">
       <MainHeader />
 
-      <div className="app">
-        <div className={clsx('shlink-wrapper', { 'd-flex align-items-center pt-3': isHome })}>
+      <div className="tw:h-full tw:pt-(--header-height)">
+        <div
+          data-testid="shlink-wrapper"
+          className={clsx(
+            'tw:min-h-full tw:pb-[calc(var(--footer-height)+var(--footer-margin))] tw:-mb-[calc(var(--footer-height)+var(--footer-margin))]',
+            { 'tw:flex tw:items-center tw:pt-4': isHome },
+          )}
+        >
           <Routes>
             <Route index element={<Home />} />
-            <Route path="/settings/*" element={<Settings />} />
+            <Route path="/settings">
+              {['', '*'].map((path) => <Route key={path} path={path} element={<Settings />} />)}
+            </Route>
             <Route path="/manage-servers" element={<ManageServers />} />
             <Route path="/server/create" element={<CreateServer />} />
             <Route path="/server/:serverId/edit" element={<EditServer />} />
-            <Route path="/server/:serverId/*" element={<ShlinkWebComponentContainer />} />
+            <Route path="/server/:serverId">
+              {['', '*'].map((path) => <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />)}
+            </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
 
-        <div className="shlink-footer">
+        <div className="tw:h-(--footer-height) tw:mt-(--footer-margin) tw:md:px-4">
           <ShlinkVersionsContainer />
         </div>
       </div>
 
-      <AppUpdateBanner isOpen={appUpdated} toggle={resetAppUpdate} forceUpdate={forceUpdate} />
+      <AppUpdateBanner isOpen={appUpdated} onClose={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>
   );
 };

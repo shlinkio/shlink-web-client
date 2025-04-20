@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { ServerErrorFactory } from '../../../src/servers/helpers/ServerError';
 import { checkAccessibility } from '../../__helpers__/accessibility';
@@ -26,7 +26,7 @@ describe('<ServerError />', () => {
         notFound: [
           'Oops! Could not connect to this Shlink server.',
           'Make sure you have internet connection, and the server is properly configured and on-line.',
-          /^Alternatively, if you think you may have miss-configured this server/,
+          /^Alternatively, if you think you may have misconfigured this server/,
         ],
       },
     ],
@@ -36,7 +36,7 @@ describe('<ServerError />', () => {
         found: [
           'Oops! Could not connect to this Shlink server.',
           'Make sure you have internet connection, and the server is properly configured and on-line.',
-          /^Alternatively, if you think you may have miss-configured this server/,
+          /^Alternatively, if you think you may have misconfigured this server/,
         ],
         notFound: ['Could not find this Shlink server.'],
       },

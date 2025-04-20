@@ -1,9 +1,10 @@
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
-import { Result, useToggle } from '@shlinkio/shlink-frontend-kit';
+import { useToggle } from '@shlinkio/shlink-frontend-kit';
+import type { ResultProps } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Result } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { useNavigate } from 'react-router';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -26,11 +27,11 @@ type CreateServerDeps = {
   useTimeoutToggle: TimeoutToggle;
 };
 
-const ImportResult = ({ type }: { type: 'error' | 'success' }) => (
-  <div className="mt-3">
-    <Result type={type}>
-      {type === 'success' && 'Servers properly imported. You can now select one from the list :)'}
-      {type === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
+const ImportResult = ({ variant }: Pick<ResultProps, 'variant'>) => (
+  <div className="tw:mt-4">
+    <Result variant={variant}>
+      {variant === 'success' && 'Servers properly imported. You can now select one from the list :)'}
+      {variant === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
     </Result>
   </div>
 );
@@ -40,7 +41,9 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const navigate = useNavigate();
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
+  // eslint-disable-next-line react-compiler/react-compiler
   const [serversImported, setServersImported] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
+  // eslint-disable-next-line react-compiler/react-compiler
   const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
   const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
@@ -66,22 +69,22 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
 
   return (
     <NoMenuLayout>
-      <ServerForm title={<h5 className="mb-0">Add new server</h5>} onSubmit={onSubmit}>
+      <ServerForm title="Add new server" onSubmit={onSubmit}>
         {!hasServers && (
-          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onImportError={setErrorImporting} />
+          <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onError={setErrorImporting} />
         )}
-        {hasServers && <Button outline onClick={goBack}>Cancel</Button>}
-        <Button outline color="primary" className="ms-2">Create server</Button>
+        {hasServers && <Button variant="secondary" onClick={goBack}>Cancel</Button>}
+        <Button type="submit">Create server</Button>
       </ServerForm>
 
-      {serversImported && <ImportResult type="success" />}
-      {errorImporting && <ImportResult type="error" />}
+      {serversImported && <ImportResult variant="success" />}
+      {errorImporting && <ImportResult variant="error" />}
 
       <DuplicatedServersModal
-        isOpen={isConfirmModalOpen}
+        open={isConfirmModalOpen}
         duplicatedServers={serverData ? [serverData] : []}
-        onDiscard={goBack}
-        onSave={() => serverData && saveNewServer(serverData)}
+        onClose={goBack}
+        onConfirm={() => serverData && saveNewServer(serverData)}
       />
     </NoMenuLayout>
   );

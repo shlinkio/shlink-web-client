@@ -1,44 +1,37 @@
+import type { ExitAction } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { CardModal } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
-import { useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { useCallback } from 'react';
 import type { ServerWithId } from './data';
 
-export interface DeleteServerModalProps {
+export type DeleteServerModalProps = {
   server: ServerWithId;
-  toggle: () => void;
-  isOpen: boolean;
-  redirectHome?: boolean;
-}
+  onClose: (confirmed: boolean) => void;
+  open: boolean;
+};
 
-interface DeleteServerModalConnectProps extends DeleteServerModalProps {
+type DeleteServerModalConnectProps = DeleteServerModalProps & {
   deleteServer: (server: ServerWithId) => void;
-}
+};
 
-export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
-  { server, toggle, isOpen, deleteServer, redirectHome = true },
-) => {
-  const navigate = useNavigate();
-  const doDelete = useRef<boolean>(false);
-  const toggleAndDelete = () => {
-    doDelete.current = true;
-    toggle();
-  };
-  const onClosed = () => {
-    if (!doDelete.current) {
-      return;
+export const DeleteServerModal: FC<DeleteServerModalConnectProps> = ({ server, onClose, open, deleteServer }) => {
+  const onClosed = useCallback((exitAction: ExitAction) => {
+    if (exitAction === 'confirm') {
+      deleteServer(server);
     }
-
-    deleteServer(server);
-    if (redirectHome) {
-      navigate('/');
-    }
-  };
+  }, [deleteServer, server]);
 
   return (
-    <Modal isOpen={isOpen} toggle={toggle} centered onClosed={onClosed}>
-      <ModalHeader toggle={toggle} className="text-danger">Remove server</ModalHeader>
-      <ModalBody>
+    <CardModal
+      open={open}
+      title="Remove server"
+      variant="danger"
+      onClose={() => onClose(false)}
+      onConfirm={() => onClose(true)}
+      onClosed={onClosed}
+      confirmText="Delete"
+    >
+      <div className="tw:flex tw:flex-col tw:gap-y-4">
         <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
         <p>
           <i>
@@ -46,11 +39,7 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = (
             You can create it again at any moment.
           </i>
         </p>
-      </ModalBody>
-      <ModalFooter>
-        <Button color="link" onClick={toggle}>Cancel</Button>
-        <Button color="danger" onClick={toggleAndDelete}>Delete</Button>
-      </ModalFooter>
-    </Modal>
+      </div>
+    </CardModal>
   );
 };

@@ -1,7 +1,7 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Router } from 'react-router';
 import { CreateServerFactory } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';

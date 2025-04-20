@@ -1,3 +1,4 @@
+import type { HttpClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { buildShlinkApiClient } from '../../../src/api/services/ShlinkApiClientBuilder';
 import type { ReachableServer, SelectedServer } from '../../../src/servers/data';
@@ -5,8 +6,8 @@ import type { ReachableServer, SelectedServer } from '../../../src/servers/data'
 describe('ShlinkApiClientBuilder', () => {
   const server = fromPartial<ReachableServer>;
 
-  const createBuilder = () => {
-    const builder = buildShlinkApiClient(fromPartial({}));
+  const createBuilder = (httpClient: HttpClient = fromPartial({})) => {
+    const builder = buildShlinkApiClient(httpClient);
     return (selectedServer: SelectedServer) => builder(() => fromPartial({ selectedServer }));
   };
 
@@ -16,9 +17,9 @@ describe('ShlinkApiClientBuilder', () => {
     const secondApiClient = builder(server({ url: 'bar', apiKey: 'bar' }));
     const thirdApiClient = builder(server({ url: 'bar', apiKey: 'foo' }));
 
-    expect(firstApiClient === secondApiClient).toEqual(false);
-    expect(firstApiClient === thirdApiClient).toEqual(false);
-    expect(secondApiClient === thirdApiClient).toEqual(false);
+    expect(firstApiClient).not.toBe(secondApiClient);
+    expect(firstApiClient).not.toBe(thirdApiClient);
+    expect(secondApiClient).not.toBe(thirdApiClient);
   });
 
   it('returns existing instances when provided params are the same', () => {
@@ -29,17 +30,42 @@ describe('ShlinkApiClientBuilder', () => {
     const secondApiClient = builder(selectedServer);
     const thirdApiClient = builder(selectedServer);
 
-    expect(firstApiClient === secondApiClient).toEqual(true);
-    expect(firstApiClient === thirdApiClient).toEqual(true);
-    expect(secondApiClient === thirdApiClient).toEqual(true);
+    expect(firstApiClient).toBe(secondApiClient);
+    expect(firstApiClient).toBe(thirdApiClient);
+    expect(secondApiClient).toBe(thirdApiClient);
   });
 
-  it('does not fetch from state when provided param is already selected server', () => {
-    const url = 'url';
-    const apiKey = 'apiKey';
-    const apiClient = buildShlinkApiClient(fromPartial({}))(server({ url, apiKey }));
+  it('does not fetch from state when provided param is already a server', async () => {
+    const url = 'the_url';
+    const apiKey = 'the_api_key';
+    const jsonRequest = vi.fn();
+    const httpClient = fromPartial<HttpClient>({ jsonRequest });
+    const apiClient = createBuilder(httpClient)(server({ url, apiKey }));
 
-    expect(apiClient['serverInfo'].baseUrl).toEqual(url);
-    expect(apiClient['serverInfo'].apiKey).toEqual(apiKey);
+    await apiClient.health();
+
+    expect(jsonRequest).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${url}`)), expect.objectContaining({
+      credentials: undefined,
+      headers: {
+        'X-Api-Key': apiKey,
+      },
+    }));
+  });
+
+  it('includes credentials when forwarding is enabled', async () => {
+    const url = 'the_url';
+    const apiKey = 'the_api_key';
+    const jsonRequest = vi.fn();
+    const httpClient = fromPartial<HttpClient>({ jsonRequest });
+    const apiClient = createBuilder(httpClient)(server({ url, apiKey, forwardCredentials: true }));
+
+    await apiClient.health();
+
+    expect(jsonRequest).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${url}`)), expect.objectContaining({
+      credentials: 'include',
+      headers: {
+        'X-Api-Key': apiKey,
+      },
+    }));
   });
 });

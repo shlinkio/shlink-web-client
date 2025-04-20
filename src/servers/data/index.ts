@@ -4,6 +4,7 @@ export interface ServerData {
   name: string;
   url: string;
   apiKey: string;
+  forwardCredentials?: boolean;
 }
 
 export interface ServerWithId extends ServerData {
@@ -44,4 +45,31 @@ export const isNotFoundServer = (server: SelectedServer): server is NotFoundServ
 
 export const getServerId = (server: SelectedServer) => (isServerWithId(server) ? server.id : '');
 
-export const serverWithIdToServerData = ({ name, url, apiKey }: ServerWithId): ServerData => ({ name, url, apiKey });
+/**
+ * Expose values that represent provided server, in a way that can be serialized in JSON or CSV strings.
+ */
+export const serializeServer = ({ name, url, apiKey, forwardCredentials }: ServerData): Record<string, string> => ({
+  name,
+  url,
+  apiKey,
+  forwardCredentials: forwardCredentials ? 'true' : 'false',
+});
+
+const validateServerData = (server: any): server is ServerData =>
+  typeof server.url === 'string' && typeof server.apiKey === 'string' && typeof server.name === 'string';
+
+/**
+ * Provided a record, it picks the right properties to build a ServerData object.
+ * @throws Error If any of the required ServerData properties is missing.
+ */
+export const deserializeServer = (potentialServer: Record<string, unknown>): ServerData => {
+  const { forwardCredentials, ...serverData } = potentialServer;
+  if (!validateServerData(serverData)) {
+    throw new Error('Server is missing required "url", "apiKey" and/or "name" properties');
+  }
+
+  return {
+    ...serverData,
+    forwardCredentials: forwardCredentials === 'true',
+  };
+};

@@ -1,9 +1,10 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
+import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { ChangeEvent, PropsWithChildren } from 'react';
-import { useCallback, useRef, useState } from 'react';
-import { Button, UncontrolledTooltip } from 'reactstrap';
+import { useCallback, useRef , useState } from 'react';
+import { UncontrolledTooltip } from 'reactstrap';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
@@ -13,7 +14,7 @@ import { dedupServers, ensureUniqueIds } from './index';
 
 export type ImportServersBtnProps = PropsWithChildren<{
   onImport?: () => void;
-  onImportError?: (error: Error) => void;
+  onError?: (error: Error) => void;
   tooltipPlacement?: 'top' | 'bottom';
   className?: string;
 }>;
@@ -31,8 +32,8 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   createServers,
   servers,
   children,
-  onImport = () => {},
-  onImportError = () => {},
+  onImport,
+  onError = () => {},
   tooltipPlacement = 'bottom',
   className = '',
 }) => {
@@ -40,50 +41,50 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const ref = useElementRef<HTMLInputElement>();
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
   const [isModalOpen,, showModal, hideModal] = useToggle();
+  const newServersCreatedRef = useRef(false);
 
-  const importedServersRef = useRef<ServerWithId[]>([]);
-  const newServersRef = useRef<ServerWithId[]>([]);
-
-  const create = useCallback((serversData: ServerWithId[]) => {
-    createServers(serversData);
-    onImport();
-  }, [createServers, onImport]);
   const onFile = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) =>
       serversImporter.importServersFromFile(target.files?.[0])
         .then((importedServers) => {
           const { duplicatedServers, newServers } = dedupServers(servers, importedServers);
 
-          importedServersRef.current = ensureUniqueIds(servers, importedServers);
-          newServersRef.current = ensureUniqueIds(servers, newServers);
+          // Immediately create new servers
+          newServersCreatedRef.current = newServers.length > 0;
+          createServers(ensureUniqueIds(servers, newServers));
 
-          if (duplicatedServers.length === 0) {
-            create(importedServersRef.current);
-          } else {
+          // For duplicated servers, ask for confirmation
+          if (duplicatedServers.length > 0) {
             setDuplicatedServers(duplicatedServers);
             showModal();
+          } else {
+            onImport?.();
           }
         })
         .then(() => {
           // Reset file input after processing file
           (target as { value: string | null }).value = null;
         })
-        .catch(onImportError),
-    [create, onImportError, servers, serversImporter, showModal],
+        .catch(onError),
+    [createServers, onError, onImport, servers, serversImporter, showModal],
   );
 
-  const createAllServers = useCallback(() => {
-    create(importedServersRef.current);
+  const createDuplicatedServers = useCallback(() => {
+    createServers(ensureUniqueIds(servers, duplicatedServers));
     hideModal();
-  }, [create, hideModal]);
-  const createNonDuplicatedServers = useCallback(() => {
-    create(newServersRef.current);
+    onImport?.();
+  }, [createServers, duplicatedServers, hideModal, onImport, servers]);
+  const discardDuplicatedServers = useCallback(() => {
     hideModal();
-  }, [create, hideModal]);
+    // If duplicated servers were discarded but some non-duplicated servers were created, call onImport
+    if (newServersCreatedRef.current) {
+      onImport?.();
+    }
+  }, [hideModal, onImport]);
 
   return (
     <>
-      <Button outline id="importBtn" className={className} onClick={() => ref.current?.click()}>
+      <Button variant="secondary" id="importBtn" className={className} onClick={() => ref.current?.click()}>
         <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
       <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
@@ -93,18 +94,19 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
       <input
         type="file"
         accept=".csv"
-        className="d-none"
+        className="tw:hidden"
         aria-hidden
-        ref={ref}
+        tabIndex={-1}
+        ref={ref as any /* TODO Remove After updating to React 19 */}
         onChange={onFile}
         data-testid="csv-file-input"
       />
 
       <DuplicatedServersModal
-        isOpen={isModalOpen}
+        open={isModalOpen}
         duplicatedServers={duplicatedServers}
-        onDiscard={createNonDuplicatedServers}
-        onSave={createAllServers}
+        onClose={discardDuplicatedServers}
+        onConfirm={createDuplicatedServers}
       />
     </>
   );

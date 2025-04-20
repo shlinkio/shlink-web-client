@@ -1,5 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import type { RegularServer } from '../../../src/servers/data';
+import type { RegularServer, ServerData } from '../../../src/servers/data';
 import { ServersImporter } from '../../../src/servers/services/ServersImporter';
 
 describe('ServersImporter', () => {
@@ -25,20 +25,24 @@ describe('ServersImporter', () => {
     });
 
     it.each([
-      [{}],
-      [undefined],
-      [[{ foo: 'bar' }]],
-      [
-        [
+      { parsedObject: {}, expectedError: 'Provided file does not have the right format.' },
+      { parsedObject: undefined, expectedError: 'Provided file does not have the right format.' },
+      {
+        parsedObject: [{ foo: 'bar' }],
+        expectedError: 'Server is missing required "url", "apiKey" and/or "name" properties',
+      },
+      {
+        parsedObject: [
           {
             url: 1,
             apiKey: 1,
             name: 1,
           },
         ],
-      ],
-      [
-        [
+        expectedError: 'Server is missing required "url", "apiKey" and/or "name" properties',
+      },
+      {
+        parsedObject: [
           {
             url: 'foo',
             apiKey: 'foo',
@@ -46,26 +50,29 @@ describe('ServersImporter', () => {
           },
           { bar: 'foo' },
         ],
-      ],
-    ])('rejects with error if provided file does not parse to valid list of servers', async (parsedObject) => {
+        expectedError: 'Server is missing required "url", "apiKey" and/or "name" properties',
+      },
+    ])('rejects with error if provided file does not parse to valid list of servers', async ({
+      parsedObject,
+      expectedError,
+    }) => {
       csvjsonMock.mockResolvedValue(parsedObject);
-
-      await expect(importer.importServersFromFile(fileMock())).rejects.toEqual(
-        new Error('Provided file does not have the right format.'),
-      );
+      await expect(importer.importServersFromFile(fileMock())).rejects.toEqual(new Error(expectedError));
     });
 
     it('reads file when a CSV containing valid servers is provided', async () => {
-      const expectedServers = [
+      const expectedServers: Required<ServerData>[] = [
         {
           url: 'foo',
           apiKey: 'foo',
           name: 'foo',
+          forwardCredentials: false,
         },
         {
           url: 'bar',
           apiKey: 'bar',
           name: 'bar',
+          forwardCredentials: false,
         },
       ];
 

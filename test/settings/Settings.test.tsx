@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import { Settings } from '../../src/settings/Settings';
 import { checkAccessibility } from '../__helpers__/accessibility';
 

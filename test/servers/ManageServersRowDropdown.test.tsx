@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
 import type { UserEvent } from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdownFactory } from '../../src/servers/ManageServersRowDropdown';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -9,8 +9,8 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<ManageServersRowDropdown />', () => {
   const ManageServersRowDropdown = ManageServersRowDropdownFactory(fromPartial({
-    DeleteServerModal: ({ isOpen }: { isOpen: boolean }) => (
-      <span>DeleteServerModal {isOpen ? '[OPEN]' : '[CLOSED]'}</span>
+    DeleteServerModal: ({ open }: { open: boolean }) => (
+      <span>DeleteServerModal {open ? '[OPEN]' : '[CLOSED]'}</span>
     ),
   }));
   const setAutoConnect = vi.fn();
@@ -24,15 +24,13 @@ describe('<ManageServersRowDropdown />', () => {
   };
   const toggleDropdown = (user: UserEvent) => user.click(screen.getByRole('button'));
 
-  it.each([
-    [setUp],
-    [async () => {
-      const { user, container } = setUp();
-      await toggleDropdown(user);
+  it('passes a11y checks', async () => {
+    const { user, container } = setUp();
+    // Open menu
+    await toggleDropdown(user);
 
-      return { container };
-    }],
-  ])('passes a11y checks', (setUp) => checkAccessibility(setUp()));
+    return checkAccessibility({ container });
+  });
 
   it('renders expected amount of dropdown items', async () => {
     const { user } = setUp();

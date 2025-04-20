@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.4.0] - 2025-04-20
+### Added
+* [#1510](https://github.com/shlinkio/shlink-web-client/issues/1510) Existing HTTP credentials (cookies, TLS certs, authentication headers) can now be forwarded to the API server if appropriate [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials) are set
+* [shlink-web-component#637](https://github.com/shlinkio/shlink-web-component/pull/637) QR codes are now generated client-side, without hitting Shlink.
+* [shlink-web-component#641](https://github.com/shlinkio/shlink-web-component/issues/641) It is now possible to provide any logo to be used with QR codes.
+* [shlink-web-component#640](https://github.com/shlinkio/shlink-web-component/issues/640) Allow default QR code settings to be handled via app settings.
+
+### Changed
+* Update to `react-router` 7.0
+* Update to `@shlinkio/shlink-frontend-kit` 0.8.x
+* Update to `@shlinkio/shlink-web-component` 0.13.x
+* Update to `@shlinkio/shlink-js-sdk` 2.0.0
+* Add `eslint-plugin-react-compiler`
+* Run unit tests in a headless browser using vitest browser mode and playwright.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [4.3.0] - 2024-11-30
 ### Added
 * [#1360](https://github.com/shlinkio/shlink-web-client/issues/1360) Added ability for server IDs to be generated based on the server name and URL, instead of generating a random UUID.
@@ -298,7 +323,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * [#774](https://github.com/shlinkio/shlink-web-client/issues/774) Dropped support for Shlink older than 2.8.0.
 
 ### Fixed
-* [#715](https://github.com/shlinkio/shlink-web-client/issues/715) Fixed connection still failing on miss-configured servers, after editing their params to set proper values.
+* [#715](https://github.com/shlinkio/shlink-web-client/issues/715) Fixed connection still failing on misconfigured servers, after editing their params to set proper values.
 
 
 ## [3.8.2] - 2022-12-17

@@ -8,7 +8,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { RowDropdownBtn, useToggle } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { DropdownItem } from 'reactstrap';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -37,23 +37,25 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;
 
   return (
-    <RowDropdownBtn minWidth={isAutoConnect ? 210 : 170}>
-      <DropdownItem tag={Link} to={serverUrl}>
-        <FontAwesomeIcon icon={connectIcon} fixedWidth /> Connect
-      </DropdownItem>
-      <DropdownItem tag={Link} to={`${serverUrl}/edit`}>
-        <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
-      </DropdownItem>
-      <DropdownItem onClick={() => setAutoConnect(server, !isAutoConnect)}>
-        <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
-      </DropdownItem>
-      <DropdownItem divider tag="hr" />
-      <DropdownItem className="dropdown-item--danger" onClick={showModal}>
-        <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Remove server
-      </DropdownItem>
+    <>
+      <RowDropdownBtn minWidth={isAutoConnect ? 210 : 170}>
+        <DropdownItem tag={Link} to={serverUrl}>
+          <FontAwesomeIcon icon={connectIcon} fixedWidth /> Connect
+        </DropdownItem>
+        <DropdownItem tag={Link} to={`${serverUrl}/edit`}>
+          <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
+        </DropdownItem>
+        <DropdownItem onClick={() => setAutoConnect(server, !isAutoConnect)}>
+          <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
+        </DropdownItem>
+        <DropdownItem divider tag="hr" />
+        <DropdownItem className="tw:text-danger" onClick={showModal}>
+          <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Remove server
+        </DropdownItem>
+      </RowDropdownBtn>
 
-      <DeleteServerModal redirectHome={false} server={server} isOpen={isModalOpen} toggle={hideModal} />
-    </RowDropdownBtn>
+      <DeleteServerModal server={server} open={isModalOpen} onClose={hideModal} />
+    </>
   );
 };
 

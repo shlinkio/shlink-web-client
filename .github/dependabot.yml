@@ -21,9 +21,12 @@ updates:
       shlink:
         patterns:
           - '@shlinkio/*'
-      types:
+      react:
         patterns:
-          - '@types/*'
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
       testing:
         patterns:
           - '@testing-library/*'
@@ -38,6 +41,10 @@ updates:
       workbox:
         patterns:
           - 'workbox*'
+      tailwindcss:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
     ignore:
       # Bootstrap can introduce visual breaking changes on styles
       # Ignore it, since the plan is to remove it anyway
