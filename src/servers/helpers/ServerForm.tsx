@@ -40,11 +40,15 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
           required
         />
         <Details summary="Advanced options">
-          <div className="tw:flex tw:flex-col tw:gap-1">
+          <div className="tw:flex tw:flex-col tw:gap-0.5">
             <Label className="tw:flex tw:items-center tw:gap-x-1.5 tw:cursor-pointer">
               <Checkbox onChange={toggleForwardCredentials} checked={forwardCredentials} />
-              Forward credentials (like cookies) to this server on every request.
+              Forward credentials to this server on every request.
             </Label>
+            <small className="tw:pl-5.5 tw:text-gray-600 tw:dark:text-gray-400 tw:mt-0.5">
+              {'"'}Credentials{'"'} here means cookies, TLS client certificates, or authentication headers containing a username
+              and password.
+            </small>
             <small className="tw:pl-5.5 tw:text-gray-600 tw:dark:text-gray-400">
               <b>Important!</b> If you are not sure what this means, leave it unchecked. Enabling this option will
               make all requests fail for Shlink older than v4.5.0, as it requires the server to set a more strict

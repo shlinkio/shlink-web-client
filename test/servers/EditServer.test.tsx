@@ -79,7 +79,7 @@ describe('<EditServer />', () => {
     const { user } = setUp({ ...defaultSelectedServer, ...serverPartial });
 
     await user.click(screen.getByText('Advanced options'));
-    await user.click(screen.getByLabelText('Forward credentials (like cookies) to this server on every request.'));
+    await user.click(screen.getByLabelText('Forward credentials to this server on every request.'));
 
     fireEvent.submit(screen.getByRole('form'));
 

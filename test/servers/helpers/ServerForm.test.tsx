@@ -29,7 +29,7 @@ describe('<ServerForm />', () => {
 
   it('shows advanced options', async () => {
     const { user } = setUp();
-    const forwardCredentialsLabel = 'Forward credentials (like cookies) to this server on every request.';
+    const forwardCredentialsLabel = 'Forward credentials to this server on every request.';
 
     expect(screen.queryByLabelText(forwardCredentialsLabel)).not.toBeInTheDocument();
     await user.click(screen.getByText('Advanced options'));
