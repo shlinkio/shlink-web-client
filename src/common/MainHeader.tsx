@@ -26,7 +26,7 @@ const MainHeader: FCWithDeps<unknown, MainHeaderDeps> = () => {
   const settingsPath = '/settings';
 
   return (
-    <Navbar color="primary" dark fixed="top" expand="md" className="tw:text-white tw:bg-lm-brand tw:dark:bg-dm-brand">
+    <Navbar color="primary" dark fixed="top" expand="md" className="tw:text-white tw:bg-lm-main tw:dark:bg-dm-main">
       <NavbarBrand tag={Link} to="/">
         <ShlinkLogo className="tw:inline tw:w-7 tw:mr-1" color="white" /> Shlink
       </NavbarBrand>
