@@ -21,9 +21,20 @@ export default defineConfig({
     manifestFilename: 'manifest.json',
     manifest,
   })],
+
   build: {
     outDir: 'build',
   },
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // Silence annoying sass deprecation warnings until we get rid of bootstrap
+        silenceDeprecations: ['mixed-decls', 'abs-percent', 'color-functions', 'global-builtin', 'import'],
+      },
+    },
+  },
+
   server: {
     port: 3000,
     watch: {
@@ -31,6 +42,7 @@ export default defineConfig({
       ignored: ['**/.idea/**', '**/.git/**', '**/build/**', '**/coverage/**', '**/test/**'],
     },
   },
+
   base: !homepage ? undefined : homepage, // Not using just homepage because empty string should be discarded
 
   // Vitest config

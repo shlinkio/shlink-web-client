@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* Update to `@shlinkio/shlink-frontend-kit` 0.9 and `@shlinkio/shlink-web-component` 0.14 to add initial support to the new light theme brand color.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* *Nothing*
+
+
 ## [4.4.0] - 2025-04-20
 ### Added
 * [#1510](https://github.com/shlinkio/shlink-web-client/issues/1510) Existing HTTP credentials (cookies, TLS certs, authentication headers) can now be forwarded to the API server if appropriate [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Credentials) are set
