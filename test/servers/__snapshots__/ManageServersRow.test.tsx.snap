@@ -24,7 +24,7 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-check tw:text-brand"
+            class="svg-inline--fa fa-check tw:text-lm-brand tw:dark:text-dm-brand"
             data-icon="check"
             data-prefix="fas"
             focusable="false"
