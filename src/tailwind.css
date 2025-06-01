@@ -1,15 +1,12 @@
 @import 'tailwindcss' prefix(tw) important;
 @import '@shlinkio/shlink-frontend-kit/tailwind.preset.css';
+@import '@shlinkio/shlink-web-component/tailwind.preset.css';
 @source '../node_modules/@shlinkio/shlink-frontend-kit';
 @source '../node_modules/@shlinkio/shlink-web-component';
 
 @layer base {
     :root {
-        --header-height: 56px;
         --footer-height: 2.3rem;
         --footer-margin: .8rem;
-
-        /* Width of ShlinkWebComponent's side menu when not collapsed */
-        --aside-menu-width: 260px;
     }
 }
