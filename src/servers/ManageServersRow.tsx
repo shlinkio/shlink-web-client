@@ -1,9 +1,8 @@
 import { faCheck as checkIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Table } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Table, Tooltip, useTooltip } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { FC } from 'react';
 import { Link } from 'react-router';
-import { UncontrolledTooltip } from 'reactstrap';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
 import type { ServerWithId } from './data';
@@ -20,6 +19,7 @@ type ManageServersRowDeps = {
 
 const ManageServersRow: FCWithDeps<ManageServersRowProps, ManageServersRowDeps> = ({ server, hasAutoConnect }) => {
   const { ManageServersRowDropdown } = useDependencies(ManageServersRow);
+  const { anchor, tooltip } = useTooltip();
 
   return (
     <Table.Row className="tw:relative">
@@ -30,11 +30,9 @@ const ManageServersRow: FCWithDeps<ManageServersRowProps, ManageServersRowDeps> 
               <FontAwesomeIcon
                 icon={checkIcon}
                 className="tw:text-lm-brand tw:dark:text-dm-brand"
-                id="autoConnectIcon"
+                {...anchor}
               />
-              <UncontrolledTooltip target="autoConnectIcon" placement="right">
-                Auto-connect to this server
-              </UncontrolledTooltip>
+              <Tooltip {...tooltip}>Auto-connect to this server</Tooltip>
             </>
           )}
         </Table.Cell>
