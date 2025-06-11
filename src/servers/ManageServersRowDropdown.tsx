@@ -30,7 +30,7 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
   { server, setAutoConnect },
 ) => {
   const { DeleteServerModal } = useDependencies(ManageServersRowDropdown);
-  const [isModalOpen,, showModal, hideModal] = useToggle();
+  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle(false, true);
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;

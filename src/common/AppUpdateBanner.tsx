@@ -13,7 +13,7 @@ interface AppUpdateBannerProps {
 }
 
 export const AppUpdateBanner: FC<AppUpdateBannerProps> = ({ isOpen, onClose, forceUpdate }) => {
-  const [isUpdating,, setUpdating] = useToggle();
+  const { flag: isUpdating, setToTrue: setUpdating } = useToggle(false, true);
   const update = useCallback(() => {
     setUpdating();
     forceUpdate();
