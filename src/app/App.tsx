@@ -61,7 +61,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
   }, [settings.ui?.theme]);
 
   return (
-    <div className="tw:px-3 tw:h-full">
+    <div className="tw:h-full">
       <MainHeader />
 
       <div className="tw:h-full tw:pt-(--header-height)">

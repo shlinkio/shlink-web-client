@@ -3,18 +3,19 @@
 exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
 <div>
   <div
-    class="dropdown"
+    class="tw:relative tw:inline-block"
   >
     <button
+      aria-controls="«r9»"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Options"
-      class="dropdown-btn__toggle btn btn-primary btn-sm"
+      class="tw:flex tw:items-center tw:rounded-md tw:focus-ring tw:cursor-pointer tw:border tw:border-lm-border tw:dark:border-dm-border tw:bg-lm-primary tw:dark:bg-dm-primary tw:group-[&]/card:bg-lm-input tw:group-[&]/card:dark:bg-dm-input tw:px-3 tw:py-1.5 tw:gap-x-2"
       type="button"
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-ellipsis-vertical px-1"
+        class="svg-inline--fa fa-ellipsis-vertical "
         data-icon="ellipsis-vertical"
         data-prefix="fas"
         focusable="false"
@@ -28,14 +29,6 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
         />
       </svg>
     </button>
-    <div
-      aria-hidden="true"
-      class="w-100 dropdown-menu dropdown-menu-end"
-      data-bs-popper="static"
-      role="menu"
-      style="min-width: 210px;"
-      tabindex="-1"
-    />
   </div>
   <span>
     DeleteServerModal 
@@ -47,18 +40,19 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
 exports[`<ManageServersRowDropdown /> > renders expected size and icon 2`] = `
 <div>
   <div
-    class="dropdown"
+    class="tw:relative tw:inline-block"
   >
     <button
+      aria-controls="«rb»"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Options"
-      class="dropdown-btn__toggle btn btn-primary btn-sm"
+      class="tw:flex tw:items-center tw:rounded-md tw:focus-ring tw:cursor-pointer tw:border tw:border-lm-border tw:dark:border-dm-border tw:bg-lm-primary tw:dark:bg-dm-primary tw:group-[&]/card:bg-lm-input tw:group-[&]/card:dark:bg-dm-input tw:px-3 tw:py-1.5 tw:gap-x-2"
       type="button"
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-ellipsis-vertical px-1"
+        class="svg-inline--fa fa-ellipsis-vertical "
         data-icon="ellipsis-vertical"
         data-prefix="fas"
         focusable="false"
@@ -72,14 +66,6 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 2`] = `
         />
       </svg>
     </button>
-    <div
-      aria-hidden="true"
-      class="w-100 dropdown-menu dropdown-menu-end"
-      data-bs-popper="static"
-      role="menu"
-      style="min-width: 170px;"
-      tabindex="-1"
-    />
   </div>
   <span>
     DeleteServerModal 

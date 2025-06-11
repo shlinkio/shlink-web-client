@@ -27,7 +27,7 @@ export const Home = ({ servers }: HomeProps) => {
   }, [serversList, navigate]);
 
   return (
-    <div className="tw:w-full">
+    <div className="tw:px-3 tw:w-full">
       <Card className="tw:mx-auto tw:max-w-[720px] tw:overflow-hidden">
         <div className="tw:flex tw:flex-col tw:md:flex-row">
           <div className="tw:p-6 tw:hidden tw:md:flex tw:items-center tw:w-[40%]">
