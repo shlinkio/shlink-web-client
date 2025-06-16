@@ -64,7 +64,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
     <div className="tw:h-full">
       <MainHeader />
 
-      <div className="tw:h-full tw:pt-(--header-height)">
+      <div className="tw:h-full tw:pt-(--tw-header-height)">
         <div
           data-testid="shlink-wrapper"
           className={clsx(

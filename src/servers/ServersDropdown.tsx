@@ -1,7 +1,6 @@
 import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router';
-import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap';
+import { Dropdown, NavBar } from '@shlinkio/shlink-frontend-kit/tailwind';
 import type { SelectedServer, ServersMap } from './data';
 import { getServerId } from './data';
 
@@ -14,29 +13,28 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
   const serversList = Object.values(servers);
 
   return (
-    <UncontrolledDropdown nav inNavbar>
-      <DropdownToggle nav caret>
-        <FontAwesomeIcon icon={serverIcon} /> <span className="tw:ml-1">Servers</span>
-      </DropdownToggle>
-      <DropdownMenu end className="tw:right-0">
-        {serversList.length === 0 ? (
-          <DropdownItem tag={Link} to="/server/create">
-            <FontAwesomeIcon icon={plusIcon} /> <span className="tw:ml-1">Add a server</span>
-          </DropdownItem>
-        ) : (
-          <>
-            {serversList.map(({ name, id }) => (
-              <DropdownItem key={id} tag={Link} to={`/server/${id}`} active={getServerId(selectedServer) === id}>
-                {name}
-              </DropdownItem>
-            ))}
-            <DropdownItem divider tag="hr" />
-            <DropdownItem tag={Link} to="/manage-servers">
-              <FontAwesomeIcon icon={serverIcon} /> <span className="tw:ml-1">Manage servers</span>
-            </DropdownItem>
-          </>
-        )}
-      </DropdownMenu>
-    </UncontrolledDropdown>
+    <NavBar.Dropdown buttonContent={(
+      <span className="tw:flex tw:items-center tw:gap-1.5">
+        <FontAwesomeIcon icon={serverIcon} fixedWidth /> Servers
+      </span>
+    )}>
+      {serversList.length === 0 ? (
+        <Dropdown.Item to="/server/create">
+          <FontAwesomeIcon icon={plusIcon} /> Add a server
+        </Dropdown.Item>
+      ) : (
+        <>
+          {serversList.map(({ name, id }) => (
+            <Dropdown.Item key={id} to={`/server/${id}`} selected={getServerId(selectedServer) === id}>
+              {name}
+            </Dropdown.Item>
+          ))}
+          <Dropdown.Separator />
+          <Dropdown.Item to="/manage-servers">
+            <FontAwesomeIcon icon={serverIcon} /> Manage servers
+          </Dropdown.Item>
+        </>
+      )}
+    </NavBar.Dropdown>
   );
 };
