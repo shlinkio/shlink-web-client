@@ -14,7 +14,7 @@ describe('<ServersDropdown />', () => {
   };
   const setUp = (servers: ServersMap = fallbackServers) => renderWithEvents(
     <MemoryRouter>
-      <ul>
+      <ul role="menu">
         <ServersDropdown servers={servers} selectedServer={null} />
       </ul>
     </MemoryRouter>,
@@ -33,16 +33,18 @@ describe('<ServersDropdown />', () => {
 
     await user.click(screen.getByText('Servers'));
     const items = screen.getAllByRole('menuitem');
-    expect(items).toHaveLength(Object.values(fallbackServers).length + 1);
-    expect(items[0]).toHaveTextContent('foo');
-    expect(items[1]).toHaveTextContent('bar');
-    expect(items[2]).toHaveTextContent('baz');
-    expect(items[3]).toHaveTextContent('Manage servers');
+
+    // We have to add two for the "Manage servers" and the "Settings" menu items
+    expect(items).toHaveLength(Object.values(fallbackServers).length + 2);
+    expect(items[1]).toHaveTextContent('foo');
+    expect(items[2]).toHaveTextContent('bar');
+    expect(items[3]).toHaveTextContent('baz');
+    expect(items[4]).toHaveTextContent('Manage servers');
   });
 
   it('contains a toggle with proper text', () => {
     setUp();
-    expect(screen.getByRole('link')).toHaveTextContent('Servers');
+    expect(screen.getByRole('button')).toHaveTextContent('Servers');
   });
 
   it('contains a button to manage servers', async () => {
@@ -56,6 +58,6 @@ describe('<ServersDropdown />', () => {
     const { user } = setUp({});
 
     await user.click(screen.getByText('Servers'));
-    expect(screen.getByRole('menuitem')).toHaveTextContent('Add a server');
+    expect(screen.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();
   });
 });

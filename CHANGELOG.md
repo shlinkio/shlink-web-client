@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 * Update to `@shlinkio/shlink-frontend-kit` 0.9 and `@shlinkio/shlink-web-component` 0.14 to add initial support to the new light theme brand color.
+* Replace reactstrap nav bar with `NavBar` component from `@shlinkio/shlink-frontend-kit`
 
 ### Deprecated
 * *Nothing*

@@ -8,5 +8,7 @@
     :root {
         --footer-height: 2.3rem;
         --footer-margin: .8rem;
+        /* Temp alias fo header-height to tw-header-height, so that shlink-web-component uses the right value  */
+        --header-height: var(--tw-header-height);
     }
 }
