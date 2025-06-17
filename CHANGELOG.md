@@ -9,7 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Changed
-* Update to `@shlinkio/shlink-frontend-kit` 0.9 and `@shlinkio/shlink-web-component` 0.14 to add initial support to the new light theme brand color.
+* [shlink-web-component#661](https://github.com/shlinkio/shlink-web-component/issues/661) and [#1571](https://github.com/shlinkio/shlink-web-client/issues/1571) Fully replace bootstrap with tailwind.
+* Add the new light theme brand color.
+* Update to `@shlinkio/shlink-frontend-kit` 2.0.0 and `@shlinkio/shlink-web-component` 0.15
 * Replace reactstrap nav bar with `NavBar` component from `@shlinkio/shlink-frontend-kit`
 
 ### Deprecated
