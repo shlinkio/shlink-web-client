@@ -45,10 +45,6 @@ updates:
         patterns:
           - 'tailwindcss'
           - '@tailwindcss/*'
-    ignore:
-      # Bootstrap can introduce visual breaking changes on styles
-      # Ignore it, since the plan is to remove it anyway
-      - dependency-name: 'bootstrap'
   - package-ecosystem: docker
     directory: '/'
     schedule:
