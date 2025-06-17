@@ -26,15 +26,6 @@ export default defineConfig({
     outDir: 'build',
   },
 
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // Silence annoying sass deprecation warnings until we get rid of bootstrap
-        silenceDeprecations: ['mixed-decls', 'abs-percent', 'color-functions', 'global-builtin', 'import'],
-      },
-    },
-  },
-
   server: {
     port: 3000,
     watch: {

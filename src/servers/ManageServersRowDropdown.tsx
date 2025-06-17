@@ -6,8 +6,7 @@ import {
   faPlug as connectIcon,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToggle } from '@shlinkio/shlink-frontend-kit';
-import { RowDropdown } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { RowDropdown,useToggle  } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import type { FCWithDeps } from '../container/utils';
 import { componentFactory, useDependencies } from '../container/utils';
@@ -30,7 +29,7 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
   { server, setAutoConnect },
 ) => {
   const { DeleteServerModal } = useDependencies(ManageServersRowDropdown);
-  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle(false, true);
+  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle();
   const serverUrl = `/server/${server.id}`;
   const { autoConnect: isAutoConnect } = server;
   const autoConnectIcon = isAutoConnect ? toggleOffIcon : toggleOnIcon;
@@ -38,17 +37,17 @@ const ManageServersRowDropdown: FCWithDeps<ManageServersRowDropdownConnectProps,
   return (
     <>
       <RowDropdown menuAlignment="right">
-        <RowDropdown.Item to={serverUrl} className="tw:gap-1.5">
+        <RowDropdown.Item to={serverUrl} className="gap-1.5">
           <FontAwesomeIcon icon={connectIcon} fixedWidth /> Connect
         </RowDropdown.Item>
-        <RowDropdown.Item to={`${serverUrl}/edit`} className="tw:gap-1.5">
+        <RowDropdown.Item to={`${serverUrl}/edit`} className="gap-1.5">
           <FontAwesomeIcon icon={editIcon} fixedWidth /> Edit server
         </RowDropdown.Item>
-        <RowDropdown.Item onClick={() => setAutoConnect(server, !isAutoConnect)} className="tw:gap-1.5">
+        <RowDropdown.Item onClick={() => setAutoConnect(server, !isAutoConnect)} className="gap-1.5">
           <FontAwesomeIcon icon={autoConnectIcon} fixedWidth /> {isAutoConnect ? 'Do not a' : 'A'}uto-connect
         </RowDropdown.Item>
         <RowDropdown.Separator />
-        <RowDropdown.Item className="tw:[&]:text-danger tw:gap-1.5" onClick={showModal}>
+        <RowDropdown.Item className="[&]:text-danger gap-1.5" onClick={showModal}>
           <FontAwesomeIcon icon={deleteIcon} fixedWidth /> Remove server
         </RowDropdown.Item>
       </RowDropdown>

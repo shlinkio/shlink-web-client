@@ -41,9 +41,9 @@ describe('<ServersListGroup />', () => {
     const list = screen.getByTestId('list');
 
     if (!borderless) {
-      expect(list).toHaveClass('tw:border-y');
+      expect(list).toHaveClass('border-y');
     } else {
-      expect(list).not.toHaveClass('tw:border-y');
+      expect(list).not.toHaveClass('border-y');
     }
   });
 });

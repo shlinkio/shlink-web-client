@@ -61,15 +61,15 @@ const App: FCWithDeps<AppProps, AppDeps> = (
   }, [settings.ui?.theme]);
 
   return (
-    <div className="tw:h-full">
+    <div className="h-full">
       <MainHeader />
 
-      <div className="tw:h-full tw:pt-(--tw-header-height)">
+      <div className="h-full pt-(--header-height)">
         <div
           data-testid="shlink-wrapper"
           className={clsx(
-            'tw:min-h-full tw:pb-[calc(var(--footer-height)+var(--footer-margin))] tw:-mb-[calc(var(--footer-height)+var(--footer-margin))]',
-            { 'tw:flex tw:items-center tw:pt-4': isHome },
+            'min-h-full pb-[calc(var(--footer-height)+var(--footer-margin))] -mb-[calc(var(--footer-height)+var(--footer-margin))]',
+            { 'flex items-center pt-4': isHome },
           )}
         >
           <Routes>
@@ -87,7 +87,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
           </Routes>
         </div>
 
-        <div className="tw:h-(--footer-height) tw:mt-(--footer-margin) tw:md:px-4">
+        <div className="h-(--footer-height) mt-(--footer-margin) md:px-4">
           <ShlinkVersionsContainer />
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Card } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Card } from '@shlinkio/shlink-frontend-kit';
 import { clsx } from 'clsx';
 import { useEffect } from 'react';
 import { ExternalLink } from 'react-external-link';
@@ -27,26 +27,26 @@ export const Home = ({ servers }: HomeProps) => {
   }, [serversList, navigate]);
 
   return (
-    <div className="tw:px-3 tw:w-full">
-      <Card className="tw:mx-auto tw:max-w-[720px] tw:overflow-hidden">
-        <div className="tw:flex tw:flex-col tw:md:flex-row">
-          <div className="tw:p-6 tw:hidden tw:md:flex tw:items-center tw:w-[40%]">
-            <div className="tw:w-full">
+    <div className="px-3 w-full">
+      <Card className="mx-auto max-w-[720px] overflow-hidden">
+        <div className="flex flex-col md:flex-row">
+          <div className="p-6 hidden md:flex items-center w-[40%]">
+            <div className="w-full">
               <ShlinkLogo />
             </div>
           </div>
 
-          <div className="tw:md:border-l tw:border-lm-border tw:dark:border-dm-border tw:flex-grow">
+          <div className="md:border-l border-lm-border dark:border-dm-border flex-grow">
             <h1
               className={clsx(
-                'tw:p-4 tw:text-center tw:border-lm-border tw:dark:border-dm-border',
-                { 'tw:border-b': !hasServers },
+                'p-4 text-center border-lm-border dark:border-dm-border',
+                { 'border-b': !hasServers },
               )}
             >
               Welcome!
             </h1>
             {hasServers ? <ServersListGroup servers={serversList} /> : (
-              <div className="tw:p-6 tw:text-center tw:flex tw:flex-col tw:gap-12 tw:text-xl">
+              <div className="p-6 text-center flex flex-col gap-12 text-xl">
                 <p>This application will help you manage your Shlink servers.</p>
                 <p>
                   <Button to="/server/create" size="lg" inline>
@@ -56,7 +56,7 @@ export const Home = ({ servers }: HomeProps) => {
                 <p>
                   <ExternalLink href="https://shlink.io/documentation">
                     <small>
-                      <span className="tw:mr-2">Learn more about Shlink</span>
+                      <span className="mr-2">Learn more about Shlink</span>
                       <FontAwesomeIcon icon={faExternalLinkAlt} />
                     </small>
                   </ExternalLink>

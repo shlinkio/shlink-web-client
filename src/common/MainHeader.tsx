@@ -1,6 +1,6 @@
 import { faCogs as cogsIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavBar } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { NavBar } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link, useLocation } from 'react-router';
 import type { FCWithDeps } from '../container/utils';
@@ -19,17 +19,17 @@ const MainHeader: FCWithDeps<unknown, MainHeaderDeps> = () => {
 
   return (
     <NavBar
-      className="tw:[&]:fixed tw:top-0 tw:z-900"
+      className="[&]:fixed top-0 z-900"
       brand={(
-        <Link to="/" className="tw:[&]:text-white tw:no-underline tw:flex tw:items-center tw:gap-2">
-          <ShlinkLogo className="tw:w-7" color="white" /> <small className="tw:font-normal">Shlink</small>
+        <Link to="/" className="[&]:text-white no-underline flex items-center gap-2">
+          <ShlinkLogo className="w-7" color="white" /> <small className="font-normal">Shlink</small>
         </Link>
       )}
     >
       <NavBar.MenuItem
         to={settingsPath}
         active={pathname.startsWith(settingsPath)}
-        className="tw:flex tw:items-center tw:gap-1.5"
+        className="flex items-center gap-1.5"
       >
         <FontAwesomeIcon icon={cogsIcon} /> Settings
       </NavBar.MenuItem>

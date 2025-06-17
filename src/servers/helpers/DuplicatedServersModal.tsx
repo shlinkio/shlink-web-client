@@ -1,4 +1,4 @@
-import { CardModal } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { CardModal } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Fragment } from 'react';
 import type { ServerData } from '../data';
@@ -26,7 +26,7 @@ export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
       cancelText={hasMultipleServers ? 'Ignore duplicates' : 'Discard'}
     >
       <p>{hasMultipleServers ? 'The next servers already exist:' : 'There is already a server with:'}</p>
-      <ul className="tw:list-disc tw:mt-4">
+      <ul className="list-disc mt-4">
         {duplicatedServers.map(({ url, apiKey }, index) => (!hasMultipleServers ? (
           <Fragment key={index}>
             <li>URL: <b>{url}</b></li>

@@ -1,6 +1,6 @@
 import { faPlus as plusIcon, faServer as serverIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Dropdown, NavBar } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Dropdown, NavBar } from '@shlinkio/shlink-frontend-kit';
 import type { SelectedServer, ServersMap } from './data';
 import { getServerId } from './data';
 
@@ -14,7 +14,7 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
 
   return (
     <NavBar.Dropdown buttonContent={(
-      <span className="tw:flex tw:items-center tw:gap-1.5">
+      <span className="flex items-center gap-1.5">
         <FontAwesomeIcon icon={serverIcon} fixedWidth /> Servers
       </span>
     )}>

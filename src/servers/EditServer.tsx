@@ -1,5 +1,4 @@
-import { useParsedQuery } from '@shlinkio/shlink-frontend-kit';
-import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button,useParsedQuery  } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { NoMenuLayout } from '../common/NoMenuLayout';
 import type { FCWithDeps } from '../container/utils';

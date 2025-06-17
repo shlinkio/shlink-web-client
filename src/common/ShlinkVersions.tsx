@@ -12,7 +12,7 @@ export interface ShlinkVersionsProps {
 }
 
 const VersionLink = ({ project, version }: { project: 'shlink' | 'shlink-web-client'; version: string }) => (
-  <ExternalLink href={`https://github.com/shlinkio/${project}/releases/${version}`} className="tw:text-gray-500">
+  <ExternalLink href={`https://github.com/shlinkio/${project}/releases/${version}`} className="text-gray-500">
     <b>{version}</b>
   </ExternalLink>
 );
@@ -21,7 +21,7 @@ export const ShlinkVersions = ({ selectedServer, clientVersion = SHLINK_WEB_CLIE
   const normalizedClientVersion = normalizeVersion(clientVersion);
 
   return (
-    <small className="tw:text-gray-500">
+    <small className="text-gray-500">
       {isReachableServer(selectedServer) && (
         <>Server: <VersionLink project="shlink" version={selectedServer.printableVersion} /> - </>
       )}

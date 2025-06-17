@@ -2,7 +2,7 @@
 
 exports[`<DeleteServerButton /> > renders expected content 1`] = `
 <button
-  class="tw:text-danger tw:hover:underline"
+  class="text-danger hover:underline"
   type="button"
 >
   Foo bar
@@ -11,7 +11,7 @@ exports[`<DeleteServerButton /> > renders expected content 1`] = `
 
 exports[`<DeleteServerButton /> > renders expected content 2`] = `
 <button
-  class="tw:text-danger tw:hover:underline"
+  class="text-danger hover:underline"
   type="button"
 >
   baz
@@ -20,7 +20,7 @@ exports[`<DeleteServerButton /> > renders expected content 2`] = `
 
 exports[`<DeleteServerButton /> > renders expected content 3`] = `
 <button
-  class="tw:text-danger tw:hover:underline"
+  class="text-danger hover:underline"
   type="button"
 >
   something

@@ -15,12 +15,12 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
     to={`/server/${id}`}
     className={clsx(
       'servers-list__server-item',
-      'tw:flex tw:items-center tw:justify-between tw:gap-x-2 tw:px-4 tw:py-3',
-      'tw:rounded-none tw:hover:bg-lm-secondary tw:hover:dark:bg-dm-secondary',
-      'tw:border-b tw:last:border-0 tw:border-lm-border tw:dark:border-dm-border',
+      'flex items-center justify-between gap-x-2 px-4 py-3',
+      'rounded-none hover:bg-lm-secondary hover:dark:bg-dm-secondary',
+      'border-b last:border-0 border-lm-border dark:border-dm-border',
     )}
   >
-    <span className="tw:truncate">{name}</span>
+    <span className="truncate">{name}</span>
     <FontAwesomeIcon icon={chevronIcon} />
   </Link>
 );
@@ -31,9 +31,9 @@ export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, borderles
       <div
         data-testid="list"
         className={clsx(
-          'tw:w-full tw:border-lm-border tw:dark:border-dm-border',
-          'tw:md:max-h-56 tw:md:overflow-y-auto tw:-mb-1 tw:scroll-thin',
-          { 'tw:border-y': !borderless },
+          'w-full border-lm-border dark:border-dm-border',
+          'md:max-h-56 md:overflow-y-auto -mb-1 scroll-thin',
+          { 'border-y': !borderless },
         )}
       >
         {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
