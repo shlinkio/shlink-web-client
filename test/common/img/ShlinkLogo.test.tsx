@@ -1,4 +1,4 @@
-import { MAIN_COLOR } from '@shlinkio/shlink-frontend-kit';
+import { brandColor } from '@shlinkio/shlink-frontend-kit';
 import { render } from '@testing-library/react';
 import type { ShlinkLogoProps } from '../../../src/common/img/ShlinkLogo';
 import { ShlinkLogo } from '../../../src/common/img/ShlinkLogo';
@@ -10,7 +10,7 @@ describe('<ShlinkLogo />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it.each([
-    [undefined, MAIN_COLOR],
+    [undefined, brandColor()],
     ['red', 'red'],
     ['white', 'white'],
   ])('renders expected color', (color, expectedColor) => {

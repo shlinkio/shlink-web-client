@@ -1,7 +1,6 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useToggle } from '@shlinkio/shlink-frontend-kit';
-import { Button, Tooltip, useTooltip } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Tooltip, useToggle , useTooltip } from '@shlinkio/shlink-frontend-kit';
 import type { ChangeEvent, PropsWithChildren } from 'react';
 import { useCallback, useRef, useState } from 'react';
 import type { FCWithDeps } from '../../container/utils';
@@ -40,7 +39,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { anchor, tooltip } = useTooltip({ placement: tooltipPlacement });
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
-  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle(false, true);
+  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle();
   const newServersCreatedRef = useRef(false);
 
   const onFile = useCallback(
@@ -94,7 +93,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
       <input
         type="file"
         accept=".csv"
-        className="tw:hidden"
+        className="hidden"
         aria-hidden
         tabIndex={-1}
         ref={fileInputRef}

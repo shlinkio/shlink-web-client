@@ -1,4 +1,4 @@
-import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button } from '@shlinkio/shlink-frontend-kit';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { Component } from 'react';
 import { ErrorLayout } from './ErrorLayout';

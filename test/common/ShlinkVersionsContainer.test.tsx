@@ -23,9 +23,9 @@ describe('<ShlinkVersionsContainer />', () => {
     const { container } = setUp(selectedServer);
 
     if (shouldAddMargin) {
-      expect(container.firstChild).toHaveClass('tw:md:ml-(--aside-menu-width)');
+      expect(container.firstChild).toHaveClass('md:ml-(--aside-menu-width)');
     } else {
-      expect(container.firstChild).not.toHaveClass('tw:md:ml-(--aside-menu-width)');
+      expect(container.firstChild).not.toHaveClass('md:ml-(--aside-menu-width)');
     }
   });
 });

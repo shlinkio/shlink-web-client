@@ -1,4 +1,4 @@
-@import 'tailwindcss' prefix(tw) important;
+@import 'tailwindcss';
 @import '@shlinkio/shlink-frontend-kit/tailwind.preset.css';
 @import '@shlinkio/shlink-web-component/tailwind.preset.css';
 @source '../node_modules/@shlinkio/shlink-frontend-kit';
@@ -8,7 +8,7 @@
     :root {
         --footer-height: 2.3rem;
         --footer-margin: .8rem;
-        /* Temp alias fo header-height to tw-header-height, so that shlink-web-component uses the right value  */
-        --header-height: var(--tw-header-height);
+        /* FIXME Remove this once updated to shlink-web-component 0.15.1 */
+        --header-height: 52px;
     }
 }

@@ -1,7 +1,5 @@
-import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
-import { useToggle } from '@shlinkio/shlink-frontend-kit';
-import type { ResultProps } from '@shlinkio/shlink-frontend-kit/tailwind';
-import { Button, Result } from '@shlinkio/shlink-frontend-kit/tailwind';
+import type { ResultProps,TimeoutToggle  } from '@shlinkio/shlink-frontend-kit';
+import { Button, Result,useToggle  } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router';
@@ -28,7 +26,7 @@ type CreateServerDeps = {
 };
 
 const ImportResult = ({ variant }: Pick<ResultProps, 'variant'>) => (
-  <div className="tw:mt-4">
+  <div className="mt-4">
     <Result variant={variant}>
       {variant === 'success' && 'Servers properly imported. You can now select one from the list :)'}
       {variant === 'error' && 'The servers could not be imported. Make sure the format is correct.'}
@@ -42,10 +40,10 @@ const CreateServer: FCWithDeps<CreateServerProps, CreateServerDeps> = ({ servers
   const goBack = useGoBack();
   const hasServers = !!Object.keys(servers).length;
   // eslint-disable-next-line react-compiler/react-compiler
-  const [serversImported, setServersImported] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
+  const [serversImported, setServersImported] = useTimeoutToggle({ delay: SHOW_IMPORT_MSG_TIME });
   // eslint-disable-next-line react-compiler/react-compiler
-  const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
-  const [isConfirmModalOpen, toggleConfirmModal] = useToggle();
+  const [errorImporting, setErrorImporting] = useTimeoutToggle({ delay: SHOW_IMPORT_MSG_TIME });
+  const { flag: isConfirmModalOpen, toggle: toggleConfirmModal } = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
   const saveNewServer = useCallback((newServerData: ServerData) => {
     const [newServerWithUniqueId] = ensureUniqueIds(servers, [newServerData]);

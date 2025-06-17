@@ -1,7 +1,7 @@
 import { faFileDownload as exportIcon, faPlus as plusIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { TimeoutToggle } from '@shlinkio/shlink-frontend-kit';
-import { Button, Result, SearchInput, SimpleCard, Table } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Result, SearchInput, SimpleCard, Table } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useMemo, useState } from 'react';
 import { NoMenuLayout } from '../common/NoMenuLayout';
@@ -40,22 +40,22 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
   );
   const hasAutoConnect = allServers.some(({ autoConnect }) => !!autoConnect);
   // eslint-disable-next-line react-compiler/react-compiler
-  const [errorImporting, setErrorImporting] = useTimeoutToggle(false, SHOW_IMPORT_MSG_TIME);
+  const [errorImporting, setErrorImporting] = useTimeoutToggle({ delay: SHOW_IMPORT_MSG_TIME });
 
   return (
-    <NoMenuLayout className="tw:flex tw:flex-col tw:gap-y-4">
+    <NoMenuLayout className="flex flex-col gap-y-4">
       <SearchInput onChange={setSearchTerm} />
 
-      <div className="tw:flex tw:flex-col tw:md:flex-row tw:gap-2">
-        <div className="tw:flex tw:gap-2">
-          <ImportServersBtn className="tw:flex-grow" onError={setErrorImporting}>Import servers</ImportServersBtn>
+      <div className="flex flex-col md:flex-row gap-2">
+        <div className="flex gap-2">
+          <ImportServersBtn className="flex-grow" onError={setErrorImporting}>Import servers</ImportServersBtn>
           {filteredServers.length > 0 && (
-            <Button variant="secondary" className="tw:flex-grow" onClick={async () => serversExporter.exportServers()}>
+            <Button variant="secondary" className="flex-grow" onClick={async () => serversExporter.exportServers()}>
               <FontAwesomeIcon icon={exportIcon} /> Export servers
             </Button>
           )}
         </div>
-        <Button className="tw:md:ml-auto" to="/server/create">
+        <Button className="md:ml-auto" to="/server/create">
           <FontAwesomeIcon icon={plusIcon} /> Add a server
         </Button>
       </div>
@@ -64,7 +64,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
         <Table header={(
           <Table.Row>
             {hasAutoConnect && (
-              <Table.Cell className="tw:w-[35px]"><span className="tw:sr-only">Auto-connect</span></Table.Cell>
+              <Table.Cell className="w-[35px]"><span className="sr-only">Auto-connect</span></Table.Cell>
             )}
             <Table.Cell>Name</Table.Cell>
             <Table.Cell>Base URL</Table.Cell>
@@ -72,7 +72,7 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
           </Table.Row>
         )}>
           {!filteredServers.length && (
-            <Table.Row className="tw:text-center"><Table.Cell colSpan={4}>No servers found.</Table.Cell></Table.Row>
+            <Table.Row className="text-center"><Table.Cell colSpan={4}>No servers found.</Table.Cell></Table.Row>
           )}
           {filteredServers.map((server) => (
             <ManageServersRow key={server.id} server={server} hasAutoConnect={hasAutoConnect} />

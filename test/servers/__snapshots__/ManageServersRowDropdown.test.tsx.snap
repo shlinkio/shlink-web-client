@@ -3,14 +3,14 @@
 exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
 <div>
   <div
-    class="tw:relative tw:inline-block"
+    class="relative inline-block"
   >
     <button
       aria-controls="«r9»"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Options"
-      class="tw:flex tw:items-center tw:rounded-md tw:focus-ring tw:cursor-pointer tw:border tw:border-lm-border tw:dark:border-dm-border tw:bg-lm-primary tw:dark:bg-dm-primary tw:group-[&]/card:bg-lm-input tw:group-[&]/card:dark:bg-dm-input tw:px-3 tw:py-1.5 tw:gap-x-2"
+      class="flex items-center rounded-md focus-ring cursor-pointer border border-lm-border dark:border-dm-border bg-lm-primary dark:bg-dm-primary group-[&]/card:bg-lm-input group-[&]/card:dark:bg-dm-input px-3 py-1.5 gap-x-2"
       type="button"
     >
       <svg
@@ -40,14 +40,14 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
 exports[`<ManageServersRowDropdown /> > renders expected size and icon 2`] = `
 <div>
   <div
-    class="tw:relative tw:inline-block"
+    class="relative inline-block"
   >
     <button
       aria-controls="«rb»"
       aria-expanded="false"
       aria-haspopup="true"
       aria-label="Options"
-      class="tw:flex tw:items-center tw:rounded-md tw:focus-ring tw:cursor-pointer tw:border tw:border-lm-border tw:dark:border-dm-border tw:bg-lm-primary tw:dark:bg-dm-primary tw:group-[&]/card:bg-lm-input tw:group-[&]/card:dark:bg-dm-input tw:px-3 tw:py-1.5 tw:gap-x-2"
+      class="flex items-center rounded-md focus-ring cursor-pointer border border-lm-border dark:border-dm-border bg-lm-primary dark:bg-dm-primary group-[&]/card:bg-lm-input group-[&]/card:dark:bg-dm-input px-3 py-1.5 gap-x-2"
       type="button"
     >
       <svg

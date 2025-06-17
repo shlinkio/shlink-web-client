@@ -3,28 +3,28 @@
 exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 1`] = `
 <div>
   <table
-    class="tw:w-full"
+    class="w-full"
   >
     <thead
-      class="tw:hidden tw:lg:table-header-group"
+      class="hidden lg:table-header-group"
     >
       <tr
-        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border"
+        class="group lg:table-row flex flex-col lg:border-0 border-y-2 border-lm-border dark:border-dm-border"
       />
     </thead>
     <tbody
-      class="tw:lg:table-row-group tw:flex tw:flex-col tw:gap-y-3"
+      class="lg:table-row-group flex flex-col gap-y-3"
     >
       <tr
-        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border tw:hover:bg-lm-primary tw:dark:hover:bg-dm-primary tw:group-[&]/card:hover:bg-lm-secondary tw:dark:group-[&]/card:hover:bg-dm-secondary tw:relative"
+        class="group lg:table-row flex flex-col lg:border-0 border-y-2 border-lm-border dark:border-dm-border hover:bg-lm-primary dark:hover:bg-dm-primary group-[&]/card:hover:bg-lm-secondary dark:group-[&]/card:hover:bg-dm-secondary relative"
       >
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1"
           data-column="Auto-connect"
         >
           <svg
             aria-hidden="true"
-            class="svg-inline--fa fa-check tw:text-lm-brand tw:dark:text-dm-brand"
+            class="svg-inline--fa fa-check text-lm-brand dark:text-dm-brand"
             data-icon="check"
             data-prefix="fas"
             focusable="false"
@@ -39,7 +39,7 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           </svg>
         </td>
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:font-bold"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 font-bold"
           data-column="Name"
         >
           <a
@@ -50,13 +50,13 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           </a>
         </td>
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:max-lg:border-b-0"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 max-lg:border-b-0"
           data-column="Base URL"
         >
           https://example.com
         </td>
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:text-right tw:max-lg:absolute tw:right-0 tw:-top-1 tw:mx-lg:pt-0"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 text-right max-lg:absolute right-0 -top-1 mx-lg:pt-0"
         >
           <span>
             ManageServersRowDropdown
@@ -71,27 +71,27 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
 exports[`<ManageServersRow /> > renders auto-connect icon only if server is autoConnect 2`] = `
 <div>
   <table
-    class="tw:w-full"
+    class="w-full"
   >
     <thead
-      class="tw:hidden tw:lg:table-header-group"
+      class="hidden lg:table-header-group"
     >
       <tr
-        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border"
+        class="group lg:table-row flex flex-col lg:border-0 border-y-2 border-lm-border dark:border-dm-border"
       />
     </thead>
     <tbody
-      class="tw:lg:table-row-group tw:flex tw:flex-col tw:gap-y-3"
+      class="lg:table-row-group flex flex-col gap-y-3"
     >
       <tr
-        class="tw:group tw:lg:table-row tw:flex tw:flex-col tw:lg:border-0 tw:border-y-2 tw:border-lm-border tw:dark:border-dm-border tw:hover:bg-lm-primary tw:dark:hover:bg-dm-primary tw:group-[&]/card:hover:bg-lm-secondary tw:dark:group-[&]/card:hover:bg-dm-secondary tw:relative"
+        class="group lg:table-row flex flex-col lg:border-0 border-y-2 border-lm-border dark:border-dm-border hover:bg-lm-primary dark:hover:bg-dm-primary group-[&]/card:hover:bg-lm-secondary dark:group-[&]/card:hover:bg-dm-secondary relative"
       >
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1"
           data-column="Auto-connect"
         />
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:font-bold"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 font-bold"
           data-column="Name"
         >
           <a
@@ -102,13 +102,13 @@ exports[`<ManageServersRow /> > renders auto-connect icon only if server is auto
           </a>
         </td>
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:max-lg:border-b-0"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 max-lg:border-b-0"
           data-column="Base URL"
         >
           https://example.com
         </td>
         <td
-          class="tw:border-lm-border tw:dark:border-dm-border tw:p-2 tw:block tw:lg:table-cell tw:not-last:border-b-1 tw:lg:border-b-1 tw:before:lg:hidden tw:before:content-[attr(data-column)] tw:before:font-bold tw:before:mr-1 tw:text-right tw:max-lg:absolute tw:right-0 tw:-top-1 tw:mx-lg:pt-0"
+          class="border-lm-border dark:border-dm-border p-2 block lg:table-cell not-last:border-b-1 lg:border-b-1 before:lg:hidden before:content-[attr(data-column)] before:font-bold before:mr-1 text-right max-lg:absolute right-0 -top-1 mx-lg:pt-0"
         >
           <span>
             ManageServersRowDropdown
