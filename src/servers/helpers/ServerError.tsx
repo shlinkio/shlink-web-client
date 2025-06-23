@@ -1,4 +1,4 @@
-import { Card, Message } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Card, Message } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { Link } from 'react-router';
 import { NoMenuLayout } from '../../common/NoMenuLayout';
@@ -23,8 +23,8 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
 
   return (
     <NoMenuLayout>
-      <div className="tw:flex tw:flex-col tw:items-center tw:gap-y-4 tw:md:gap-y-8">
-        <Message className="tw:w-full tw:lg:w-[80%]" variant="error">
+      <div className="flex flex-col items-center gap-y-4 md:gap-y-8">
+        <Message className="w-full lg:w-[80%]" variant="error">
           {!isServerWithId(selectedServer) && 'Could not find this Shlink server.'}
           {isServerWithId(selectedServer) && (
             <>
@@ -34,16 +34,16 @@ const ServerError: FCWithDeps<ServerErrorProps, ServerErrorDeps> = ({ servers, s
           )}
         </Message>
 
-        <p className="tw:text-xl">
+        <p className="text-xl">
           These are the Shlink servers currently configured. Choose one of
           them or <Link to="/server/create">add a new one</Link>.
         </p>
-        <Card className="tw:w-full tw:max-w-100 tw:overflow-hidden">
+        <Card className="w-full max-w-100 overflow-hidden">
           <ServersListGroup borderless servers={Object.values(servers)} />
         </Card>
 
         {isServerWithId(selectedServer) && (
-          <p className="tw:text-xl">
+          <p className="text-xl">
             Alternatively, if you think you may have misconfigured this server, you
             can <DeleteServerButton server={selectedServer}>remove
               it</DeleteServerButton> or&nbsp;

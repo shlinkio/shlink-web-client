@@ -17,7 +17,7 @@ type DeleteServerButtonDeps = {
 
 const DeleteServerButton: FCWithDeps<DeleteServerButtonProps, DeleteServerButtonDeps> = ({ server, children }) => {
   const { DeleteServerModal } = useDependencies(DeleteServerButton);
-  const [isModalOpen, , showModal, hideModal] = useToggle();
+  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle();
   const navigate = useNavigate();
   const onClose = useCallback((confirmed: boolean) => {
     hideModal();
@@ -28,7 +28,7 @@ const DeleteServerButton: FCWithDeps<DeleteServerButtonProps, DeleteServerButton
 
   return (
     <>
-      <button type="button" className="tw:text-danger tw:hover:underline" onClick={showModal}>
+      <button type="button" className="text-danger hover:underline" onClick={showModal}>
         {children}
       </button>
       <DeleteServerModal server={server} open={isModalOpen} onClose={onClose} />

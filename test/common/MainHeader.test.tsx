@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
@@ -8,8 +8,8 @@ import { renderWithEvents } from '../__helpers__/setUpTest';
 
 describe('<MainHeader />', () => {
   const MainHeader = MainHeaderFactory(fromPartial({
-    // Fake this component as a li, as it gets rendered inside a ul
-    ServersDropdown: () => <li>ServersDropdown</li>,
+    // Fake this component as a li[role="menuitem"], as it gets rendered inside a ul[role="menu"]
+    ServersDropdown: () => <li role="menuitem">ServersDropdown</li>,
   }));
   const setUp = (pathname = '') => {
     const history = createMemoryHistory();
@@ -37,35 +37,8 @@ describe('<MainHeader />', () => {
     ['/settings/bar', true],
   ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
     setUp(currentPath);
-
-    if (isActive) {
-      expect(screen.getByText(/Settings$/).getAttribute('class')).toContain('active');
-    } else {
-      expect(screen.getByText(/Settings$/).getAttribute('class')).not.toContain('active');
-    }
-  });
-
-  it('renders expected class based on the nav bar state', async () => {
-    const { user } = setUp();
-
-    const toggle = screen.getByLabelText('Toggle navigation');
-    const icon = toggle.firstChild;
-
-    expect(icon).not.toHaveClass('tw:rotate-180');
-    await user.click(toggle);
-
-    expect(icon).toHaveClass('tw:rotate-180');
-    await user.click(toggle);
-    expect(icon).not.toHaveClass('tw:rotate-180');
-  });
-
-  it('opens Collapse when clicking toggle', async () => {
-    const { container, user } = setUp();
-    const collapse = container.querySelector('.collapse');
-    const toggle = screen.getByLabelText('Toggle navigation');
-
-    expect(collapse).not.toHaveAttribute('class', expect.stringContaining('show'));
-    await user.click(toggle);
-    await waitFor(() => expect(collapse).toHaveAttribute('class', expect.stringContaining('show')));
+    expect(screen.getByRole('menuitem', { name: /Settings$/ })).toHaveAttribute(
+      'data-active', isActive ? 'true' : 'false',
+    );
   });
 });

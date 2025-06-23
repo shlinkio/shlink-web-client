@@ -62,9 +62,9 @@ describe('<App />', () => {
     const shlinkWrapper = screen.getByTestId('shlink-wrapper');
 
     if (isFlex) {
-      expect(shlinkWrapper).toHaveClass('tw:flex');
+      expect(shlinkWrapper).toHaveClass('flex');
     } else {
-      expect(shlinkWrapper).not.toHaveClass('tw:flex');
+      expect(shlinkWrapper).not.toHaveClass('flex');
     }
   });
 });

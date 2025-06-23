@@ -1,5 +1,5 @@
-import type { ExitAction } from '@shlinkio/shlink-frontend-kit/tailwind';
-import { CardModal } from '@shlinkio/shlink-frontend-kit/tailwind';
+import type { ExitAction } from '@shlinkio/shlink-frontend-kit';
+import { CardModal } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useCallback } from 'react';
 import type { ServerWithId } from './data';
@@ -31,7 +31,7 @@ export const DeleteServerModal: FC<DeleteServerModalConnectProps> = ({ server, o
       onClosed={onClosed}
       confirmText="Delete"
     >
-      <div className="tw:flex tw:flex-col tw:gap-y-4">
+      <div className="flex flex-col gap-y-4">
         <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
         <p>
           <i>

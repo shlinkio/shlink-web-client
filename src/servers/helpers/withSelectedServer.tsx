@@ -1,4 +1,4 @@
-import { Message } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Message } from '@shlinkio/shlink-frontend-kit';
 import type { FC } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router';

@@ -9,7 +9,7 @@ export type ShlinkVersionsContainerProps = {
 
 export const ShlinkVersionsContainer = ({ selectedServer }: ShlinkVersionsContainerProps) => (
   <div
-    className={clsx('tw:text-center', { 'tw:md:ml-(--aside-menu-width)': isReachableServer(selectedServer) })}
+    className={clsx('text-center', { 'md:ml-(--aside-menu-width)': isReachableServer(selectedServer) })}
   >
     <ShlinkVersions selectedServer={selectedServer} />
   </div>

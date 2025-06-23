@@ -1,10 +1,8 @@
 import { faFileUpload as importIcon } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useElementRef, useToggle } from '@shlinkio/shlink-frontend-kit';
-import { Button } from '@shlinkio/shlink-frontend-kit/tailwind';
+import { Button, Tooltip, useToggle , useTooltip } from '@shlinkio/shlink-frontend-kit';
 import type { ChangeEvent, PropsWithChildren } from 'react';
-import { useCallback, useRef , useState } from 'react';
-import { UncontrolledTooltip } from 'reactstrap';
+import { useCallback, useRef, useState } from 'react';
 import type { FCWithDeps } from '../../container/utils';
 import { componentFactory, useDependencies } from '../../container/utils';
 import type { ServerData, ServersMap, ServerWithId } from '../data';
@@ -38,9 +36,10 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   className = '',
 }) => {
   const { ServersImporter: serversImporter } = useDependencies(ImportServersBtn);
-  const ref = useElementRef<HTMLInputElement>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { anchor, tooltip } = useTooltip({ placement: tooltipPlacement });
   const [duplicatedServers, setDuplicatedServers] = useState<ServerData[]>([]);
-  const [isModalOpen,, showModal, hideModal] = useToggle();
+  const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle();
   const newServersCreatedRef = useRef(false);
 
   const onFile = useCallback(
@@ -84,20 +83,20 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
 
   return (
     <>
-      <Button variant="secondary" id="importBtn" className={className} onClick={() => ref.current?.click()}>
+      <Button variant="secondary" className={className} onClick={() => fileInputRef.current?.click()} {...anchor}>
         <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
       </Button>
-      <UncontrolledTooltip placement={tooltipPlacement} target="importBtn">
+      <Tooltip {...tooltip}>
         You can create servers by importing a CSV file with <b>name</b>, <b>apiKey</b> and <b>url</b> columns.
-      </UncontrolledTooltip>
+      </Tooltip>
 
       <input
         type="file"
         accept=".csv"
-        className="tw:hidden"
+        className="hidden"
         aria-hidden
         tabIndex={-1}
-        ref={ref as any /* TODO Remove After updating to React 19 */}
+        ref={fileInputRef}
         onChange={onFile}
         data-testid="csv-file-input"
       />
