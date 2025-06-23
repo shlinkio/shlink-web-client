@@ -4,14 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
-## [Unreleased]
+## [4.4.1] - 2025-06-23
 ### Added
 * *Nothing*
 
 ### Changed
 * [shlink-web-component#661](https://github.com/shlinkio/shlink-web-component/issues/661) and [#1571](https://github.com/shlinkio/shlink-web-client/issues/1571) Fully replace bootstrap with tailwind.
 * Add the new light theme brand color.
-* Update to `@shlinkio/shlink-frontend-kit` 2.0.0 and `@shlinkio/shlink-web-component` 0.15
+* Update to `@shlinkio/shlink-frontend-kit` 1.0.0 and `@shlinkio/shlink-web-component` 0.15
 * Replace reactstrap nav bar with `NavBar` component from `@shlinkio/shlink-frontend-kit`
 
 ### Deprecated

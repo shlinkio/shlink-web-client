@@ -2,4 +2,4 @@ blank_issues_enabled: true
 contact_links:
   - name: Question - Support
     about: Do you need help setting up or using shlink-web-client?
-    url: https://github.com/shlinkio/shlink-web-client/discussions/new?category=q-a
+    url: https://github.com/orgs/shlinkio/discussions/new?category=help-wanted
