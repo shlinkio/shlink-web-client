@@ -2,7 +2,14 @@ FROM node:24.2-alpine AS node
 COPY . /shlink-web-client
 ARG VERSION="latest"
 ENV VERSION=${VERSION}
-RUN cd /shlink-web-client && npm ci && node --run build
+
+WORKDIR /shlink-web-client
+
+ARG BASE_PATH
+RUN npm ci
+RUN if [[ -n $BASE_PATH ]]; then node ./scripts/set-homepage.cjs $BASE_PATH ; fi
+RUN cat ./scripts/set-homepage.cjs
+RUN node --run build
 
 FROM nginxinc/nginx-unprivileged:1.27-alpine
 ARG UID=101
