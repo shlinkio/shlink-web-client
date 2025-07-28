@@ -15,7 +15,7 @@ export const ServersDropdown = ({ servers, selectedServer }: ServersDropdownProp
   return (
     <NavBar.Dropdown buttonContent={(
       <span className="flex items-center gap-1.5">
-        <FontAwesomeIcon icon={serverIcon} fixedWidth /> Servers
+        <FontAwesomeIcon icon={serverIcon} /> Servers
       </span>
     )}>
       {serversList.length === 0 ? (
