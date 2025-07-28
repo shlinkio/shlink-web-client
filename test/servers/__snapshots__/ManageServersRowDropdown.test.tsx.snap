@@ -15,16 +15,14 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 1`] = `
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-ellipsis-vertical "
+        class="svg-inline--fa fa-ellipsis-vertical fa-width-auto "
         data-icon="ellipsis-vertical"
         data-prefix="fas"
-        focusable="false"
         role="img"
         viewBox="0 0 128 512"
-        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"
+          d="M64 144a56 56 0 1 1 0-112 56 56 0 1 1 0 112zm0 224c30.9 0 56 25.1 56 56s-25.1 56-56 56-56-25.1-56-56 25.1-56 56-56zm56-112c0 30.9-25.1 56-56 56s-56-25.1-56-56 25.1-56 56-56 56 25.1 56 56z"
           fill="currentColor"
         />
       </svg>
@@ -52,16 +50,14 @@ exports[`<ManageServersRowDropdown /> > renders expected size and icon 2`] = `
     >
       <svg
         aria-hidden="true"
-        class="svg-inline--fa fa-ellipsis-vertical "
+        class="svg-inline--fa fa-ellipsis-vertical fa-width-auto "
         data-icon="ellipsis-vertical"
         data-prefix="fas"
-        focusable="false"
         role="img"
         viewBox="0 0 128 512"
-        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          d="M64 360a56 56 0 1 0 0 112 56 56 0 1 0 0-112zm0-160a56 56 0 1 0 0 112 56 56 0 1 0 0-112zM120 96A56 56 0 1 0 8 96a56 56 0 1 0 112 0z"
+          d="M64 144a56 56 0 1 1 0-112 56 56 0 1 1 0 112zm0 224c30.9 0 56 25.1 56 56s-25.1 56-56 56-56-25.1-56-56 25.1-56 56-56zm56-112c0 30.9-25.1 56-56 56s-56-25.1-56-56 25.1-56 56-56 56 25.1 56 56z"
           fill="currentColor"
         />
       </svg>

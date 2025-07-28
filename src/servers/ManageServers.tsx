@@ -51,12 +51,12 @@ const ManageServers: FCWithDeps<ManageServersProps, ManageServersDeps> = ({ serv
           <ImportServersBtn className="flex-grow" onError={setErrorImporting}>Import servers</ImportServersBtn>
           {filteredServers.length > 0 && (
             <Button variant="secondary" className="flex-grow" onClick={async () => serversExporter.exportServers()}>
-              <FontAwesomeIcon icon={exportIcon} /> Export servers
+              <FontAwesomeIcon icon={exportIcon} widthAuto /> Export servers
             </Button>
           )}
         </div>
         <Button className="md:ml-auto" to="/server/create">
-          <FontAwesomeIcon icon={plusIcon} /> Add a server
+          <FontAwesomeIcon icon={plusIcon} widthAuto /> Add a server
         </Button>
       </div>
 
