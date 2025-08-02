@@ -30,7 +30,7 @@
     "@reduxjs/toolkit": "^2.8.2",
     "@shlinkio/data-manipulation": "^1.0.3",
     "@shlinkio/shlink-frontend-kit": "^1.1.0",
-    "@shlinkio/shlink-js-sdk": "^2.2.0",
+    "@shlinkio/shlink-js-sdk": "^2.2.1",
     "@shlinkio/shlink-web-component": "^0.16.0",
     "bottlejs": "^2.0.1",
     "clsx": "^2.1.1",
