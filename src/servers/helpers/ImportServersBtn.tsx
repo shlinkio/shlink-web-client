@@ -84,7 +84,7 @@ const ImportServersBtn: FCWithDeps<ImportServersBtnConnectProps, ImportServersBt
   return (
     <>
       <Button variant="secondary" className={className} onClick={() => fileInputRef.current?.click()} {...anchor}>
-        <FontAwesomeIcon icon={importIcon} fixedWidth /> {children ?? 'Import from file'}
+        <FontAwesomeIcon icon={importIcon} widthAuto /> {children ?? 'Import from file'}
       </Button>
       <Tooltip {...tooltip}>
         You can create servers by importing a CSV file with <b>name</b>, <b>apiKey</b> and <b>url</b> columns.

@@ -50,7 +50,7 @@ export const Home = ({ servers }: HomeProps) => {
                 <p>This application will help you manage your Shlink servers.</p>
                 <p>
                   <Button to="/server/create" size="lg" inline>
-                    <FontAwesomeIcon icon={faPlus} /> Add a server
+                    <FontAwesomeIcon icon={faPlus} widthAuto /> Add a server
                   </Button>
                 </p>
                 <p>
