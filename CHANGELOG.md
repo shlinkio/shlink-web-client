@@ -6,10 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 ### Added
-* *Nothing*
+* [shlink-web-component#755](https://github.com/shlinkio/shlink-web-component/issues/755) Add support for `any-value-query-param` and `valueless-query-param` redirect conditions when using Shlink >=4.5.0.
+* [shlink-web-component#756](https://github.com/shlinkio/shlink-web-component/issues/756) Add support for desktop device types on device redirect conditions, when using Shlink >=4.5.0.
+* [shlink-web-component#713](https://github.com/shlinkio/shlink-web-component/issues/713) Expose a new `ShlinkSidebarToggleButton` component that can be used to customize the location of the sidebar toggle, rather than making it assume there's a header bar and position it there.
+* [shlink-web-component#657](https://github.com/shlinkio/shlink-web-component/issues/657) Allow visits table columns to be customized via settings, and add a new optional "Region" column.
+
+  As a side effect, the "Show user agent" toggle has been removed from the list, as this can now be globally configured in the settings.
 
 ### Changed
 * Update to FontAwesome 7
+* Update to Recharts 3
+* Update to `@shlinkio/shlink-web-component` 0.16.1
 
 ### Deprecated
 * *Nothing*
@@ -18,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 * *Nothing*
 
 ### Fixed
-* *Nothing*
+* [shlink-web-component#698](https://github.com/shlinkio/shlink-web-component/issues/698) Fix line chart selection triggering after clicking a dot in the chart. It now works only when dragging while the mouse is clicked.
 
 
 ## [4.4.1] - 2025-06-23

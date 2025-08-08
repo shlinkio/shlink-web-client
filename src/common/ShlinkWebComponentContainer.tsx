@@ -1,4 +1,4 @@
-import type { ShlinkWebComponentType, TagColorsStorage } from '@shlinkio/shlink-web-component';
+import type { ShlinkWebComponentProps, TagColorsStorage } from '@shlinkio/shlink-web-component';
 import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import type { FC } from 'react';
 import { memo } from 'react';
@@ -17,7 +17,7 @@ type ShlinkWebComponentContainerProps = WithSelectedServerProps & {
 type ShlinkWebComponentContainerDeps = {
   buildShlinkApiClient: ShlinkApiClientBuilder,
   TagColorsStorage: TagColorsStorage,
-  ShlinkWebComponent: ShlinkWebComponentType,
+  ShlinkWebComponent: FC<ShlinkWebComponentProps>,
   ServerError: FC,
 };
 
@@ -51,6 +51,7 @@ const ShlinkWebComponentContainer: FCWithDeps<
       createNotFound={(nonPrefixedHomePath) => (
         <NotFound to={`${routesPrefix}${nonPrefixedHomePath}`}>List short URLs</NotFound>
       )}
+      autoSidebarToggle={false}
     />
   );
 }));
