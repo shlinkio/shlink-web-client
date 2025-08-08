@@ -1,4 +1,5 @@
 import { changeThemeInMarkup, getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
+import { ShlinkSidebarToggleButton, ShlinkSidebarVisibilityProvider } from '@shlinkio/shlink-web-component';
 import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
@@ -62,35 +63,38 @@ const App: FCWithDeps<AppProps, AppDeps> = (
 
   return (
     <div className="h-full">
-      <MainHeader />
+      <ShlinkSidebarVisibilityProvider>
+        <ShlinkSidebarToggleButton className="fixed top-3.5 left-3 z-901" />
+        <MainHeader />
 
-      <div className="h-full pt-(--header-height)">
-        <div
-          data-testid="shlink-wrapper"
-          className={clsx(
-            'min-h-full pb-[calc(var(--footer-height)+var(--footer-margin))] -mb-[calc(var(--footer-height)+var(--footer-margin))]',
-            { 'flex items-center pt-4': isHome },
-          )}
-        >
-          <Routes>
-            <Route index element={<Home />} />
-            <Route path="/settings">
-              {['', '*'].map((path) => <Route key={path} path={path} element={<Settings />} />)}
-            </Route>
-            <Route path="/manage-servers" element={<ManageServers />} />
-            <Route path="/server/create" element={<CreateServer />} />
-            <Route path="/server/:serverId/edit" element={<EditServer />} />
-            <Route path="/server/:serverId">
-              {['', '*'].map((path) => <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />)}
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <div className="h-full pt-(--header-height)">
+          <div
+            data-testid="shlink-wrapper"
+            className={clsx(
+              'min-h-full pb-[calc(var(--footer-height)+var(--footer-margin))] -mb-[calc(var(--footer-height)+var(--footer-margin))]',
+              { 'flex items-center pt-4': isHome },
+            )}
+          >
+            <Routes>
+              <Route index element={<Home />} />
+              <Route path="/settings">
+                {['', '*'].map((path) => <Route key={path} path={path} element={<Settings />} />)}
+              </Route>
+              <Route path="/manage-servers" element={<ManageServers />} />
+              <Route path="/server/create" element={<CreateServer />} />
+              <Route path="/server/:serverId/edit" element={<EditServer />} />
+              <Route path="/server/:serverId">
+                {['', '*'].map((path) => <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />)}
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </div>
 
-        <div className="h-(--footer-height) mt-(--footer-margin) md:px-4">
-          <ShlinkVersionsContainer />
+          <div className="h-(--footer-height) mt-(--footer-margin) md:px-4">
+            <ShlinkVersionsContainer />
+          </div>
         </div>
-      </div>
+      </ShlinkSidebarVisibilityProvider>
 
       <AppUpdateBanner isOpen={appUpdated} onClose={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>

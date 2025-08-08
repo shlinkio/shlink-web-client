@@ -13,7 +13,7 @@ export const Settings: FC<SettingsProps> = ({ settings, setSettings }) => (
   <NoMenuLayout>
     <ShlinkWebSettings
       settings={settings}
-      updateSettings={setSettings}
+      onUpdateSettings={setSettings}
       defaultShortUrlsListOrdering={DEFAULT_SHORT_URLS_ORDERING}
     />
   </NoMenuLayout>
