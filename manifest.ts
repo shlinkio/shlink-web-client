@@ -6,8 +6,8 @@ export const manifest: Partial<ManifestOptions> = {
   name: 'Shlink Web Client',
   start_url: '/',
   display: 'standalone',
-  theme_color: BRAND_COLOR_LM,
-  background_color: BRAND_COLOR_LM,
+  theme_color: BRAND_COLOR_LM, // Toolbar color
+  background_color: BRAND_COLOR_LM, // Splash screen background color
   icons: [
     {
       src: './icons/icon-16x16.png',
