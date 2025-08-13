@@ -5,11 +5,16 @@ import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../s
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { MemoryRouterWithParams } from '../__helpers__/MemoryRouterWithParams';
 
+vi.mock('@shlinkio/shlink-web-component', () => ({
+  ShlinkSidebarVisibilityProvider: ({ children }: any) => children,
+  ShlinkSidebarToggleButton: ({ children }: any) => children,
+  ShlinkWebComponent: () => <>ShlinkWebComponent</>,
+}));
+
 describe('<ShlinkWebComponentContainer />', () => {
   const ShlinkWebComponentContainer = ShlinkWebComponentContainerFactory(fromPartial({
     buildShlinkApiClient: vi.fn().mockReturnValue(fromPartial({})),
     TagColorsStorage: fromPartial({}),
-    ShlinkWebComponent: () => <>ShlinkWebComponent</>,
     ServerError: () => <>ServerError</>,
   }));
   const setUp = (selectedServer: SelectedServer) => render(
