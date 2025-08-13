@@ -1,5 +1,4 @@
 import { FetchHttpClient } from '@shlinkio/shlink-js-sdk/fetch';
-import { ShlinkWebComponent } from '@shlinkio/shlink-web-component';
 import type Bottle from 'bottlejs';
 import type { ConnectDecorator } from '../../container/types';
 import { withoutSelectedServer } from '../../servers/helpers/withoutSelectedServer';
@@ -26,7 +25,6 @@ export const provideServices = (bottle: Bottle, connect: ConnectDecorator) => {
   bottle.decorator('Home', withoutSelectedServer);
   bottle.decorator('Home', connect(['servers'], ['resetSelectedServer']));
 
-  bottle.serviceFactory('ShlinkWebComponent', () => ShlinkWebComponent);
   bottle.factory('ShlinkWebComponentContainer', ShlinkWebComponentContainerFactory);
   bottle.decorator('ShlinkWebComponentContainer', connect(['selectedServer', 'settings'], ['selectServer']));
 

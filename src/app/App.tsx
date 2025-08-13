@@ -1,5 +1,4 @@
 import { changeThemeInMarkup, getSystemPreferredTheme } from '@shlinkio/shlink-frontend-kit';
-import { ShlinkSidebarToggleButton, ShlinkSidebarVisibilityProvider } from '@shlinkio/shlink-web-component';
 import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import { clsx } from 'clsx';
 import type { FC } from 'react';
@@ -63,8 +62,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
 
   return (
     <div className="h-full">
-      <ShlinkSidebarVisibilityProvider>
-        <ShlinkSidebarToggleButton className="fixed top-3.5 left-3 z-901" />
+      <>
         <MainHeader />
 
         <div className="h-full pt-(--header-height)">
@@ -94,7 +92,7 @@ const App: FCWithDeps<AppProps, AppDeps> = (
             <ShlinkVersionsContainer />
           </div>
         </div>
-      </ShlinkSidebarVisibilityProvider>
+      </>
 
       <AppUpdateBanner isOpen={appUpdated} onClose={resetAppUpdate} forceUpdate={forceUpdate} />
     </div>

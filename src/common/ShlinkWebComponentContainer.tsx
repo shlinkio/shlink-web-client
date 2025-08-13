@@ -1,4 +1,9 @@
-import type { ShlinkWebComponentProps, TagColorsStorage } from '@shlinkio/shlink-web-component';
+import type { TagColorsStorage } from '@shlinkio/shlink-web-component';
+import {
+  ShlinkSidebarToggleButton,
+  ShlinkSidebarVisibilityProvider,
+  ShlinkWebComponent,
+} from '@shlinkio/shlink-web-component';
 import type { Settings } from '@shlinkio/shlink-web-component/settings';
 import type { FC } from 'react';
 import { memo } from 'react';
@@ -17,7 +22,6 @@ type ShlinkWebComponentContainerProps = WithSelectedServerProps & {
 type ShlinkWebComponentContainerDeps = {
   buildShlinkApiClient: ShlinkApiClientBuilder,
   TagColorsStorage: TagColorsStorage,
-  ShlinkWebComponent: FC<ShlinkWebComponentProps>,
   ServerError: FC,
 };
 
@@ -32,7 +36,6 @@ const ShlinkWebComponentContainer: FCWithDeps<
   const {
     buildShlinkApiClient,
     TagColorsStorage: tagColorsStorage,
-    ShlinkWebComponent,
     ServerError,
   } = useDependencies(ShlinkWebComponentContainer);
 
@@ -42,23 +45,25 @@ const ShlinkWebComponentContainer: FCWithDeps<
 
   const routesPrefix = `/server/${selectedServer.id}`;
   return (
-    <ShlinkWebComponent
-      serverVersion={selectedServer.version}
-      apiClient={buildShlinkApiClient(selectedServer)}
-      settings={settings}
-      routesPrefix={routesPrefix}
-      tagColorsStorage={tagColorsStorage}
-      createNotFound={(nonPrefixedHomePath) => (
-        <NotFound to={`${routesPrefix}${nonPrefixedHomePath}`}>List short URLs</NotFound>
-      )}
-      autoSidebarToggle={false}
-    />
+    <ShlinkSidebarVisibilityProvider>
+      <ShlinkSidebarToggleButton className="fixed top-3.5 left-3 z-901" />
+      <ShlinkWebComponent
+        serverVersion={selectedServer.version}
+        apiClient={buildShlinkApiClient(selectedServer)}
+        settings={settings}
+        routesPrefix={routesPrefix}
+        tagColorsStorage={tagColorsStorage}
+        createNotFound={(nonPrefixedHomePath: string) => (
+          <NotFound to={`${routesPrefix}${nonPrefixedHomePath}`}>List short URLs</NotFound>
+        )}
+        autoSidebarToggle={false}
+      />
+    </ShlinkSidebarVisibilityProvider>
   );
 }));
 
 export const ShlinkWebComponentContainerFactory = componentFactory(ShlinkWebComponentContainer, [
   'buildShlinkApiClient',
   'TagColorsStorage',
-  'ShlinkWebComponent',
   'ServerError',
 ]);
