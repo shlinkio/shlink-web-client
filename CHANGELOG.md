@@ -19,6 +19,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 * [#1637](https://github.com/shlinkio/shlink-web-client/issues/1637) Fix brand color used in PWA
+* [#1636](https://github.com/shlinkio/shlink-web-client/issues/1636) Make sure sidebar toggle is rendered only in sections where the sidebar exists.
 
 
 ## [4.5.0] - 2025-08-08
