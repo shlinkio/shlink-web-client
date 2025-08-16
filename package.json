@@ -53,7 +53,7 @@
     "@shlinkio/eslint-config-js-coding-standard": "~3.5.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@tailwindcss/vite": "^4.1.11",
-    "@testing-library/jest-dom": "^6.6.4",
+    "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
     "@total-typescript/shoehorn": "^0.1.2",
