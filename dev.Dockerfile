@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.54.2-noble
+FROM mcr.microsoft.com/playwright:v1.55.0-noble
 
 ENV NODE_VERSION 22.14
 ENV TINI_VERSION v0.19.0
