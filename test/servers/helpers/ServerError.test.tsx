@@ -1,7 +1,6 @@
 import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { ContainerProvider } from '../../../src/container/context';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../../src/servers/data';
 import { ServerError } from '../../../src/servers/helpers/ServerError';
 import { checkAccessibility } from '../../__helpers__/accessibility';
@@ -10,9 +9,7 @@ import { renderWithStore } from '../../__helpers__/setUpTest';
 describe('<ServerError />', () => {
   const setUp = (selectedServer: SelectedServer) => renderWithStore(
     <MemoryRouter>
-      <ContainerProvider value={fromPartial({ buildShlinkApiClient: vi.fn() })}>
-        <ServerError />
-      </ContainerProvider>
+      <ServerError />
     </MemoryRouter>,
     {
       initialState: { selectedServer, servers: {} },
