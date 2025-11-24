@@ -2,7 +2,6 @@ import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import { ShlinkWebComponentContainer } from '../../src/common/ShlinkWebComponentContainer';
-import { ContainerProvider } from '../../src/container/context';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
@@ -16,12 +15,7 @@ vi.mock('@shlinkio/shlink-web-component', () => ({
 describe('<ShlinkWebComponentContainer />', () => {
   const setUp = (selectedServer: SelectedServer) => renderWithStore(
     <MemoryRouter>
-      <ContainerProvider value={fromPartial({
-        buildShlinkApiClient: vi.fn(),
-        TagColorsStorage: fromPartial({}),
-      })}>
-        <ShlinkWebComponentContainer />
-      </ContainerProvider>
+      <ShlinkWebComponentContainer TagColorsStorage={fromPartial({})} />
     </MemoryRouter>,
     {
       initialState: { selectedServer, servers: {}, settings: {} },

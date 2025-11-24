@@ -1,7 +1,6 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { ContainerProvider } from '../../src/container/context';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { ManageServers } from '../../src/servers/ManageServers';
 import type { ServersExporter } from '../../src/servers/services/ServersExporter';
@@ -17,14 +16,7 @@ describe('<ManageServers />', () => {
   );
   const setUp = (servers: ServersMap = {}) => renderWithStore(
     <MemoryRouter>
-      <ContainerProvider value={fromPartial({
-        ServersExporter: serversExporter,
-        ImportServersBtn: () => <span>ImportServersBtn</span>,
-        useTimeoutToggle,
-        buildShlinkApiClient: vi.fn(),
-      })}>
-        <ManageServers />
-      </ContainerProvider>
+      <ManageServers useTimeoutToggle={useTimeoutToggle} ServersExporter={serversExporter} />
     </MemoryRouter>,
     {
       initialState: { servers },
