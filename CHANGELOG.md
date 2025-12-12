@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.6.2] - 2025-11-15
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [shlink-web-component#878](https://github.com/shlinkio/shlink-web-component/issues/878) Fix real-time updates interval setting being ignored.
+
+
 ## [4.6.1] - 2025-11-15
 ### Added
 * *Nothing*
