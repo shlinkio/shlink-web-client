@@ -1,6 +1,5 @@
 import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { ContainerProvider } from '../../../src/container/context';
 import type { ServerData, ServersMap, ServerWithId } from '../../../src/servers/data';
 import type { ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
 import { ImportServersBtn } from '../../../src/servers/helpers/ImportServersBtn';
@@ -14,9 +13,7 @@ describe('<ImportServersBtn />', () => {
   const importServersFromFile = vi.fn().mockResolvedValue([]);
   const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
   const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithStore(
-    <ContainerProvider value={fromPartial({ ServersImporter: serversImporterMock })}>
-      <ImportServersBtn {...props} onImport={onImportMock} />
-    </ContainerProvider>,
+    <ImportServersBtn {...props} onImport={onImportMock} ServersImporter={serversImporterMock} />,
     {
       initialState: { servers },
     },

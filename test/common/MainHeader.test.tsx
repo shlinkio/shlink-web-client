@@ -1,9 +1,7 @@
 import { screen } from '@testing-library/react';
-import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
 import { MainHeader } from '../../src/common/MainHeader';
-import { ContainerProvider } from '../../src/container/context';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
 
@@ -13,10 +11,8 @@ describe('<MainHeader />', () => {
     history.push(pathname);
 
     return renderWithStore(
-      <Router location={history.location} navigator={history}>
-        <ContainerProvider value={fromPartial({ buildShlinkApiClient: vi.fn() })}>
-          <MainHeader />
-        </ContainerProvider>
+      <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+        <MainHeader />
       </Router>,
     );
   };

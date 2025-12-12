@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
-import { ContainerProvider } from '../../src/container/context';
 import { CreateServer } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -30,14 +29,8 @@ describe('<CreateServer />', () => {
     return {
       history,
       ...renderWithStore(
-        <Router location={history.location} navigator={history}>
-          <ContainerProvider value={fromPartial({
-            ImportServersBtn: () => <>ImportServersBtn</>,
-            useTimeoutToggle,
-            buildShlinkApiClient: vi.fn(),
-          })}>
-            <CreateServer />
-          </ContainerProvider>
+        <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+          <CreateServer useTimeoutToggle={useTimeoutToggle} />
         </Router>,
         {
           initialState: { servers },

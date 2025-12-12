@@ -2,7 +2,6 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
-import { ContainerProvider } from '../../src/container/context';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { isServerWithId } from '../../src/servers/data';
 import { EditServer } from '../../src/servers/EditServer';
@@ -21,10 +20,8 @@ describe('<EditServer />', () => {
     return {
       history,
       ...renderWithStore(
-        <Router location={history.location} navigator={history}>
-          <ContainerProvider value={fromPartial({ buildShlinkApiClient: vi.fn() })}>
-            <EditServer />
-          </ContainerProvider>
+        <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+          <EditServer />
         </Router>,
         {
           initialState: {
