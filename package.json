@@ -53,7 +53,7 @@
   "devDependencies": {
     "@shlinkio/eslint-config-js-coding-standard": "~3.7.0",
     "@stylistic/eslint-plugin": "^5.6.1",
-    "@tailwindcss/vite": "^4.1.17",
+    "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
