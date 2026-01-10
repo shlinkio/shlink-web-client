@@ -65,7 +65,7 @@
     "@vitest/browser": "^4.0.3",
     "@vitest/coverage-v8": "^4.0.16",
     "adm-zip": "^0.5.16",
-    "axe-core": "^4.11.0",
+    "axe-core": "^4.11.1",
     "chalk": "^5.6.2",
     "eslint": "^9.39.2",
     "eslint-plugin-import": "^2.32.0",
