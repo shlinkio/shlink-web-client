@@ -55,7 +55,7 @@
     "@stylistic/eslint-plugin": "^5.7.0",
     "@tailwindcss/vite": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^16.3.1",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@total-typescript/shoehorn": "^0.1.2",
     "@types/node": "^25.0.9",
