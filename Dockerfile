@@ -1,4 +1,4 @@
-FROM node:25.2-alpine AS node
+FROM node:25.5-alpine AS node
 COPY . /shlink-web-client
 ARG VERSION="latest"
 ENV VERSION=${VERSION}
