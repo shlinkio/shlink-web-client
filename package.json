@@ -32,7 +32,7 @@
     "@shlinkio/shlink-frontend-kit": "^1.4.0",
     "@shlinkio/shlink-js-sdk": "^3.1.0",
     "@shlinkio/shlink-web-component": "^0.18.0",
-    "@vitest/browser-playwright": "^4.1.4",
+    "@vitest/browser-playwright": "^4.1.5",
     "bottlejs": "^2.0.1",
     "clsx": "^2.1.1",
     "compare-versions": "^6.1.1",
