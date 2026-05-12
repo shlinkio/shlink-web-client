@@ -20,7 +20,7 @@ describe('<EditServer />', () => {
     return {
       history,
       ...renderWithStore(
-        <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+        <Router location={history.location} navigator={history}>
           <EditServer />
         </Router>,
         {
