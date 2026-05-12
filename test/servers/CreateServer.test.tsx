@@ -29,7 +29,7 @@ describe('<CreateServer />', () => {
     return {
       history,
       ...renderWithStore(
-        <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+        <Router location={history.location} navigator={history}>
           <CreateServer useTimeoutToggle={useTimeoutToggle} />
         </Router>,
         {
