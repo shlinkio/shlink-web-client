@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.7.1] - 2026-02-04
+### Added
+* *Nothing*
+
+### Changed
+* Update dependencies
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#1876](https://github.com/shlinkio/shlink-web-client/issues/1876) Upgrade docker image to nginx 1.30.1 to address [CVE-2026-42945](https://www.cve.org/CVERecord?id=CVE-2026-42945).
+
+
 ## [4.7.0] - 2026-02-04
 ### Added
 * [shlink-web-component] Add support for Shlink 5.0.0, by supporting date-based redirect conditions.
