@@ -11,7 +11,7 @@ describe('<MainHeader />', () => {
     history.push(pathname);
 
     return renderWithStore(
-      <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+      <Router location={history.location} navigator={history}>
         <MainHeader />
       </Router>,
     );

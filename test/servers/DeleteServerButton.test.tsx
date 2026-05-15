@@ -11,7 +11,7 @@ describe('<DeleteServerButton />', () => {
   const setUp = (children: ReactNode = 'Remove this server') => {
     const history = createMemoryHistory({ initialEntries: ['/foo'] });
     const result = renderWithStore(
-      <Router location={history.location} navigator={history} unstable_useTransitions={false}>
+      <Router location={history.location} navigator={history}>
         <DeleteServerButton server={fromPartial({})}>{children}</DeleteServerButton>
       </Router>,
     );
