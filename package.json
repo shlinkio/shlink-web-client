@@ -37,7 +37,7 @@
     "clsx": "^2.1.1",
     "compare-versions": "^6.1.1",
     "csvtojson": "^2.0.14",
-    "date-fns": "^4.3.0",
+    "date-fns": "^4.4.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-external-link": "^2.7.0",
