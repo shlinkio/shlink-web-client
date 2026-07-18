@@ -4,7 +4,7 @@ ARG VERSION="latest"
 ENV VERSION=${VERSION}
 RUN cd /shlink-web-client && npm ci && node --run build
 
-FROM nginxinc/nginx-unprivileged:1.31.2-alpine
+FROM nginxinc/nginx-unprivileged:1.31.3-alpine
 ARG UID=101
 LABEL maintainer="Alejandro Celaya <alejandro@alejandrocelaya.com>"
 
