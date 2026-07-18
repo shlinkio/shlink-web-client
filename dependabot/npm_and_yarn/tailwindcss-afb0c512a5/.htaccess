@@ -1,0 +1,16 @@
+RewriteEngine on
+RewriteBase /
+
+# do not do anything for already existing files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule (.*) - [L]
+
+# if request is no valid file NOR directory
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# if static asset do not do anything
+RewriteRule (.*)(css|js|html|png|jpe?g|gif|bmp|ico|json|csv|otf|eot|svg|svgz|ttf|woff|woff2|ijmap|pdf|tif|map) - [NC,L,R=404]
+# everything else should be redirected to /index.html so it can be routed by it
+RewriteRule (.*) /index.html [L]
