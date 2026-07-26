@@ -7,19 +7,20 @@ import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithStore } from '../../__helpers__/setUpTest';
 
 describe('<ServerError />', () => {
-  const setUp = (selectedServer: SelectedServer) => renderWithStore(
-    <MemoryRouter>
-      <ServerError />
-    </MemoryRouter>,
-    {
-      initialState: { selectedServer, servers: {} },
-    },
-  );
+  const setUp = (selectedServer: SelectedServer) =>
+    renderWithStore(
+      <MemoryRouter>
+        <ServerError />
+      </MemoryRouter>,
+      {
+        initialState: { selectedServer, servers: {} },
+      },
+    );
 
-  it.each([
-    [fromPartial<NotFoundServer>({})],
-    [fromPartial<NonReachableServer>({ id: 'abc123' })],
-  ])('passes a11y checks', (selectedServer) => checkAccessibility(setUp(selectedServer)));
+  it.each([[fromPartial<NotFoundServer>({})], [fromPartial<NonReachableServer>({ id: 'abc123' })]])(
+    'passes a11y checks',
+    (selectedServer) => checkAccessibility(setUp(selectedServer)),
+  );
 
   it.each([
     [

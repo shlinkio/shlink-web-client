@@ -5,8 +5,8 @@
 @source '../node_modules/@shlinkio/shlink-web-component';
 
 @layer base {
-    :root {
-        --footer-height: 2.3rem;
-        --footer-margin: .8rem;
-    }
+  :root {
+    --footer-height: 2.3rem;
+    --footer-margin: 0.8rem;
+  }
 }

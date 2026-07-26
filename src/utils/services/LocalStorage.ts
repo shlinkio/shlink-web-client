@@ -6,7 +6,7 @@ export class LocalStorage {
 
   public readonly get = <T>(key: string): T | undefined => {
     const item = this.localStorage.getItem(buildPath(key));
-    return item ? JSON.parse(item) as T : undefined;
+    return item ? (JSON.parse(item) as T) : undefined;
   };
 
   public readonly set = (key: string, value: any) => this.localStorage.setItem(buildPath(key), JSON.stringify(value));

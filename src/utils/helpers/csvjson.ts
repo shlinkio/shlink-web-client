@@ -1,9 +1,10 @@
 import { Parser } from '@json2csv/plainjs';
 import csv from 'csvtojson';
 
-export const csvToJson = <T>(csvContent: string) => new Promise<T[]>((resolve) => {
-  csv().fromString(csvContent).then(resolve);
-});
+export const csvToJson = <T>(csvContent: string) =>
+  new Promise<T[]>((resolve) => {
+    csv().fromString(csvContent).then(resolve);
+  });
 
 export type CsvToJson = typeof csvToJson;
 

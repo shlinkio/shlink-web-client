@@ -7,18 +7,18 @@ import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
 
 describe('<Home />', () => {
-  const setUp = (servers: ServersMap = {}) => renderWithStore(
-    <MemoryRouter>
-      <Home />
-    </MemoryRouter>,
-    {
-      initialState: { servers },
-    },
-  );
+  const setUp = (servers: ServersMap = {}) =>
+    renderWithStore(
+      <MemoryRouter>
+        <Home />
+      </MemoryRouter>,
+      {
+        initialState: { servers },
+      },
+    );
 
-  it('passes a11y checks', () => checkAccessibility(
-    setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) }),
-  ));
+  it('passes a11y checks', () =>
+    checkAccessibility(setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) })));
 
   it('renders title', () => {
     setUp();

@@ -70,12 +70,14 @@ describe('<CreateServer />', () => {
 
     expect(store.getState().servers[expectedServerId]).not.toBeDefined();
     fireEvent.submit(screen.getByRole('form'));
-    expect(store.getState().servers[expectedServerId]).toEqual(expect.objectContaining({
-      id: expectedServerId,
-      name: 'the_name',
-      url: 'https://the_url.com',
-      apiKey: 'the_api_key',
-    }));
+    expect(store.getState().servers[expectedServerId]).toEqual(
+      expect.objectContaining({
+        id: expectedServerId,
+        name: 'the_name',
+        url: 'https://the_url.com',
+        apiKey: 'the_api_key',
+      }),
+    );
 
     expect(history.location.pathname).toEqual(`/server/${expectedServerId}`);
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();

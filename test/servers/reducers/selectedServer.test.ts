@@ -21,17 +21,20 @@ describe('selectedServerReducer', () => {
 
     it('returns selected server when action is SELECT_SERVER', () => {
       const payload = fromPartial<RegularServer>({ id: 'abc123' });
-      expect(reducer(null, selectServer.fulfilled(payload, '', { serverId: '', buildShlinkApiClient }))).toEqual(payload);
+      expect(reducer(null, selectServer.fulfilled(payload, '', { serverId: '', buildShlinkApiClient }))).toEqual(
+        payload,
+      );
     });
   });
 
   describe('selectServer', () => {
     const version = '1.19.0';
-    const createGetStateMock = (id: string) => vi.fn().mockReturnValue({
-      servers: {
-        [id]: { id },
-      },
-    });
+    const createGetStateMock = (id: string) =>
+      vi.fn().mockReturnValue({
+        servers: {
+          [id]: { id },
+        },
+      });
 
     it.each([
       [version, version, `v${version}`],

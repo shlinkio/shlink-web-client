@@ -66,7 +66,6 @@ describe('remoteServersReducer', () => {
             url: 'http://localhost:8000',
             apiKey: '7a531c75-134e-4d5c-86e0-a71b7167b57a',
           },
-
         },
       },
       {

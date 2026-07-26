@@ -7,8 +7,8 @@ describe('<AppUpdateBanner />', () => {
   const onClose = vi.fn();
   const forceUpdate = vi.fn();
   const setUp = async () => {
-    const result = await act(
-      () => renderWithEvents(<AppUpdateBanner isOpen onClose={onClose} forceUpdate={forceUpdate} />),
+    const result = await act(() =>
+      renderWithEvents(<AppUpdateBanner isOpen onClose={onClose} forceUpdate={forceUpdate} />),
     );
     await waitFor(() => screen.getByRole('alert'));
 

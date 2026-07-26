@@ -44,12 +44,15 @@ describe('ShlinkApiClientBuilder', () => {
 
     await apiClient.health();
 
-    expect(jsonRequest).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${url}`)), expect.objectContaining({
-      credentials: undefined,
-      headers: {
-        'X-Api-Key': apiKey,
-      },
-    }));
+    expect(jsonRequest).toHaveBeenCalledWith(
+      expect.stringMatching(new RegExp(`^${url}`)),
+      expect.objectContaining({
+        credentials: undefined,
+        headers: {
+          'X-Api-Key': apiKey,
+        },
+      }),
+    );
   });
 
   it('includes credentials when forwarding is enabled', async () => {
@@ -61,11 +64,14 @@ describe('ShlinkApiClientBuilder', () => {
 
     await apiClient.health();
 
-    expect(jsonRequest).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${url}`)), expect.objectContaining({
-      credentials: 'include',
-      headers: {
-        'X-Api-Key': apiKey,
-      },
-    }));
+    expect(jsonRequest).toHaveBeenCalledWith(
+      expect.stringMatching(new RegExp(`^${url}`)),
+      expect.objectContaining({
+        credentials: 'include',
+        headers: {
+          'X-Api-Key': apiKey,
+        },
+      }),
+    );
   });
 });

@@ -12,12 +12,15 @@ export type DeleteServerButtonProps = PropsWithChildren<{
 export const DeleteServerButton: FC<DeleteServerButtonProps> = ({ server, children }) => {
   const { flag: isModalOpen, setToTrue: showModal, setToFalse: hideModal } = useToggle();
   const navigate = useNavigate();
-  const onClose = useCallback((confirmed: boolean) => {
-    hideModal();
-    if (confirmed) {
-      navigate('/');
-    }
-  }, [hideModal, navigate]);
+  const onClose = useCallback(
+    (confirmed: boolean) => {
+      hideModal();
+      if (confirmed) {
+        navigate('/');
+      }
+    },
+    [hideModal, navigate],
+  );
 
   return (
     <>

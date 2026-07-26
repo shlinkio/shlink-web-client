@@ -27,9 +27,7 @@ export const { actions, reducer: serversReducer } = createSlice({
       }),
       reducer: (state, { payload }: PayloadAction<EditServer>) => {
         const { serverId, serverData } = payload;
-        return (
-          !state[serverId] ? state : { ...state, [serverId]: { ...state[serverId], ...serverData } }
-        );
+        return !state[serverId] ? state : { ...state, [serverId]: { ...state[serverId], ...serverData } };
       },
     },
     deleteServer: (state, { payload }) => {
