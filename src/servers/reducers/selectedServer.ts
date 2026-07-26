@@ -15,17 +15,16 @@ export const MIN_FALLBACK_VERSION = '1.0.0';
 export const MAX_FALLBACK_VERSION = '999.999.999';
 export const LATEST_VERSION_CONSTRAINT = 'latest';
 
-const versionToSemVer = (version: string) => toSemVer(
-  version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version,
-  MIN_FALLBACK_VERSION,
-);
+const versionToSemVer = (version: string) =>
+  toSemVer(version === LATEST_VERSION_CONSTRAINT ? MAX_FALLBACK_VERSION : version, MIN_FALLBACK_VERSION);
 
 const getServerVersion = memoizeWith(
   (server: ServerWithId) => `${server.id}_${server.url}_${server.apiKey}`,
-  async (_server: ServerWithId, health: () => Promise<ShlinkHealth>) => health().then(({ version }) => ({
-    version: versionToSemVer(version),
-    printableVersion: versionToPrintable(version),
-  })),
+  async (_server: ServerWithId, health: () => Promise<ShlinkHealth>) =>
+    health().then(({ version }) => ({
+      version: versionToSemVer(version),
+      printableVersion: versionToPrintable(version),
+    })),
 );
 
 const initialState: SelectedServer = null;

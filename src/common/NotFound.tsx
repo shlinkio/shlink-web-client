@@ -11,6 +11,8 @@ export const NotFound: FC<NotFoundProps> = ({ to = '/', children = 'Home' }) => 
       button.
     </p>
     <br />
-    <Button inline to={to} size="lg">{children}</Button>
+    <Button inline to={to} size="lg">
+      {children}
+    </Button>
   </ErrorLayout>
 );

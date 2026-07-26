@@ -2,8 +2,7 @@ import type { TagColorsStorage as BaseTagColorsStorage } from '@shlinkio/shlink-
 import type { LocalStorage } from './LocalStorage';
 
 export class TagColorsStorage implements BaseTagColorsStorage {
-  constructor(private readonly storage: LocalStorage) {
-  }
+  constructor(private readonly storage: LocalStorage) {}
 
   getTagColors(): Record<string, string> {
     return this.storage.get<Record<string, string>>('colors') ?? {};

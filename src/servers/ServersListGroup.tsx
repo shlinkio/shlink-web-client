@@ -25,7 +25,7 @@ const ServerListItem = ({ id, name }: { id: string; name: string }) => (
   </Link>
 );
 
-export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, borderless }) => (
+export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, borderless }) =>
   servers.length > 0 && (
     <div
       data-testid="list"
@@ -35,7 +35,8 @@ export const ServersListGroup: FC<ServersListGroupProps> = ({ servers, borderles
         { 'border-y': !borderless },
       )}
     >
-      {servers.map(({ id, name }) => <ServerListItem key={id} id={id} name={name} />)}
+      {servers.map(({ id, name }) => (
+        <ServerListItem key={id} id={id} name={name} />
+      ))}
     </div>
-  )
-);
+  );

@@ -13,29 +13,32 @@ vi.mock(import('../../src/common/ShlinkWebComponentContainer'), () => ({
 }));
 
 describe('<App />', () => {
-  const setUp = async (activeRoute = '/') => act(() => renderWithStore(
-    <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
-      <ContainerProvider
-        value={fromPartial({
-          HttpClient: fromPartial<HttpClient>({}),
-          buildShlinkApiClient: vi.fn(),
-          useTimeoutToggle: vi.fn().mockReturnValue([false, vi.fn()]),
-        })}
-      >
-        <App />
-      </ContainerProvider>
-    </MemoryRouter>,
-    {
-      initialState: {
-        servers: {
-          abc123: fromPartial<ServerWithId>({ id: 'abc123', name: 'abc123 server' }),
-          def456: fromPartial<ServerWithId>({ id: 'def456', name: 'def456 server' }),
+  const setUp = async (activeRoute = '/') =>
+    act(() =>
+      renderWithStore(
+        <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
+          <ContainerProvider
+            value={fromPartial({
+              HttpClient: fromPartial<HttpClient>({}),
+              buildShlinkApiClient: vi.fn(),
+              useTimeoutToggle: vi.fn().mockReturnValue([false, vi.fn()]),
+            })}
+          >
+            <App />
+          </ContainerProvider>
+        </MemoryRouter>,
+        {
+          initialState: {
+            servers: {
+              abc123: fromPartial<ServerWithId>({ id: 'abc123', name: 'abc123 server' }),
+              def456: fromPartial<ServerWithId>({ id: 'def456', name: 'def456 server' }),
+            },
+            settings: fromPartial({}),
+            appUpdated: false,
+          },
         },
-        settings: fromPartial({}),
-        appUpdated: false,
-      },
-    },
-  ));
+      ),
+    );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 

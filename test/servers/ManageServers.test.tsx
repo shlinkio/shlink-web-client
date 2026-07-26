@@ -11,23 +11,26 @@ describe('<ManageServers />', () => {
   const exportServers = vi.fn();
   const serversExporter = fromPartial<ServersExporter>({ exportServers });
   const useTimeoutToggle = vi.fn().mockReturnValue([false, vi.fn()]);
-  const createServerMock = (value: string, autoConnect = false) => fromPartial<ServerWithId>(
-    { id: value, name: value, url: value, autoConnect },
-  );
-  const setUp = (servers: ServersMap = {}) => renderWithStore(
-    <MemoryRouter>
-      <ManageServers useTimeoutToggle={useTimeoutToggle} ServersExporter={serversExporter} />
-    </MemoryRouter>,
-    {
-      initialState: { servers },
-    },
-  );
+  const createServerMock = (value: string, autoConnect = false) =>
+    fromPartial<ServerWithId>({ id: value, name: value, url: value, autoConnect });
+  const setUp = (servers: ServersMap = {}) =>
+    renderWithStore(
+      <MemoryRouter>
+        <ManageServers useTimeoutToggle={useTimeoutToggle} ServersExporter={serversExporter} />
+      </MemoryRouter>,
+      {
+        initialState: { servers },
+      },
+    );
 
-  it('passes a11y checks', () => checkAccessibility(setUp({
-    foo: createServerMock('foo'),
-    bar: createServerMock('bar'),
-    baz: createServerMock('baz'),
-  })));
+  it('passes a11y checks', () =>
+    checkAccessibility(
+      setUp({
+        foo: createServerMock('foo'),
+        bar: createServerMock('bar'),
+        baz: createServerMock('baz'),
+      }),
+    ));
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
     const { user } = setUp({

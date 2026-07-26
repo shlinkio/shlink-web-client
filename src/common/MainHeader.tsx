@@ -14,11 +14,11 @@ export const MainHeader: FC = () => {
   return (
     <NavBar
       className="[&]:fixed top-0 z-900"
-      brand={(
+      brand={
         <Link to="/" className="[&]:text-white no-underline flex items-center gap-2">
           <ShlinkLogo className="w-7" color="white" /> <small className="font-normal">Shlink</small>
         </Link>
-      )}
+      }
     >
       <NavBar.MenuItem
         to={settingsPath}

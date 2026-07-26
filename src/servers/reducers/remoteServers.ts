@@ -8,10 +8,7 @@ import { hasServerData } from '../data';
 import { ensureUniqueIds } from '../helpers';
 import { createServers, useServers } from './servers';
 
-const responseToServersList = (data: any) => ensureUniqueIds(
-  {},
-  (Array.isArray(data) ? data.filter(hasServerData) : []),
-);
+const responseToServersList = (data: any) => ensureUniqueIds({}, Array.isArray(data) ? data.filter(hasServerData) : []);
 
 export const fetchServers = createAsyncThunk(
   'shlink/remoteServers/fetchServers',

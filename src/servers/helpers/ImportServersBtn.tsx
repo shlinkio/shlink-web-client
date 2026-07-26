@@ -17,7 +17,7 @@ export type ImportServersBtnProps = PropsWithChildren<{
   className?: string;
 
   // Injected
-  ServersImporter: ServersImporter
+  ServersImporter: ServersImporter;
 }>;
 
 const ImportServersBtnBase: FC<ImportServersBtnProps> = ({
@@ -37,7 +37,8 @@ const ImportServersBtnBase: FC<ImportServersBtnProps> = ({
 
   const onFile = useCallback(
     async ({ target }: ChangeEvent<HTMLInputElement>) =>
-      serversImporter.importServersFromFile(target.files?.[0])
+      serversImporter
+        .importServersFromFile(target.files?.[0])
         .then((importedServers) => {
           const { duplicatedServers, newServers } = dedupServers(servers, importedServers);
 

@@ -13,13 +13,14 @@ describe('<ManageServersRow />', () => {
     apiKey: '123',
     id: 'abc',
   };
-  const setUp = (hasAutoConnect = false, autoConnect = false) => renderWithStore(
-    <MemoryRouter>
-      <Table header={<Table.Row />}>
-        <ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />
-      </Table>
-    </MemoryRouter>,
-  );
+  const setUp = (hasAutoConnect = false, autoConnect = false) =>
+    renderWithStore(
+      <MemoryRouter>
+        <Table header={<Table.Row />}>
+          <ManageServersRow server={{ ...server, autoConnect }} hasAutoConnect={hasAutoConnect} />
+        </Table>
+      </MemoryRouter>,
+    );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
@@ -36,10 +37,7 @@ describe('<ManageServersRow />', () => {
     expect(screen.getByRole('button', { name: 'Options' })).toBeInTheDocument();
   });
 
-  it.each([
-    [true],
-    [false],
-  ])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
+  it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
     const { container } = setUp(true, autoConnect);
     expect(container).toMatchSnapshot();
   });

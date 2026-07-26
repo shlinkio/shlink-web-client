@@ -10,9 +10,12 @@ export type DuplicatedServersModalProps = {
   onConfirm: () => void;
 };
 
-export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
-  { open, duplicatedServers, onClose, onConfirm },
-) => {
+export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = ({
+  open,
+  duplicatedServers,
+  onClose,
+  onConfirm,
+}) => {
   const hasMultipleServers = duplicatedServers.length > 1;
 
   return (
@@ -27,16 +30,24 @@ export const DuplicatedServersModal: FC<DuplicatedServersModalProps> = (
     >
       <p>{hasMultipleServers ? 'The next servers already exist:' : 'There is already a server with:'}</p>
       <ul className="list-disc my-4 pl-5">
-        {duplicatedServers.map(({ url, apiKey }, index) => (!hasMultipleServers ? (
-          <Fragment key={index}>
-            <li>URL: <b>{url}</b></li>
-            <li>API key: <b>{apiKey}</b></li>
-          </Fragment>
-        ) : <li key={index}><b>{url}</b> - <b>{apiKey}</b></li>))}
+        {duplicatedServers.map(({ url, apiKey }, index) =>
+          !hasMultipleServers ? (
+            <Fragment key={index}>
+              <li>
+                URL: <b>{url}</b>
+              </li>
+              <li>
+                API key: <b>{apiKey}</b>
+              </li>
+            </Fragment>
+          ) : (
+            <li key={index}>
+              <b>{url}</b> - <b>{apiKey}</b>
+            </li>
+          ),
+        )}
       </ul>
-      <span>
-        {hasMultipleServers ? 'Do you want to save duplicated servers' : 'Do you want to save this server'}?
-      </span>
+      <span>{hasMultipleServers ? 'Do you want to save duplicated servers' : 'Do you want to save this server'}?</span>
     </CardModal>
   );
 };

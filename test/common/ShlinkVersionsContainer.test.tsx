@@ -5,9 +5,10 @@ import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
 
 describe('<ShlinkVersionsContainer />', () => {
-  const setUp = (selectedServer: SelectedServer = null) => renderWithStore(<ShlinkVersionsContainer />, {
-    initialState: { selectedServer },
-  });
+  const setUp = (selectedServer: SelectedServer = null) =>
+    renderWithStore(<ShlinkVersionsContainer />, {
+      initialState: { selectedServer },
+    });
 
   it.each([
     [null],

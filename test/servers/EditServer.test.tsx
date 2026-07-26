@@ -65,27 +65,33 @@ describe('<EditServer />', () => {
     // await user.click(screen.getByRole('button', { name: 'Save' }));
     fireEvent.submit(screen.getByRole('form'));
 
-    expect(store.getState().servers[defaultSelectedServer.id]).toEqual(expect.objectContaining({
-      name: 'the_name edited',
-      url: 'the_url edited',
-    }));
+    expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
+      expect.objectContaining({
+        name: 'the_name edited',
+        url: 'the_url edited',
+      }),
+    );
 
     // After saving we go back, to the first route from history's initialEntries
     expect(history.location.pathname).toEqual('/foo');
   });
 
-  it.each([
-    { forwardCredentials: true },
-    { forwardCredentials: false },
-  ])('edits advanced options - forward credentials', async ({ forwardCredentials }) => {
-    const { user, store } = setUp({ ...defaultSelectedServer, forwardCredentials });
+  it.each([{ forwardCredentials: true }, { forwardCredentials: false }])(
+    'edits advanced options - forward credentials',
+    async ({ forwardCredentials }) => {
+      const { user, store } = setUp({ ...defaultSelectedServer, forwardCredentials });
 
-    await user.click(screen.getByText('Advanced options'));
-    await user.click(screen.getByLabelText('Forward credentials to this server on every request.'));
-    fireEvent.submit(screen.getByRole('form'));
+      await user.click(screen.getByText('Advanced options'));
+      await user.click(screen.getByLabelText('Forward credentials to this server on every request.'));
+      fireEvent.submit(screen.getByRole('form'));
 
-    await waitFor(() => expect(store.getState().servers[defaultSelectedServer.id]).toEqual(expect.objectContaining({
-      forwardCredentials: !forwardCredentials,
-    })));
-  });
+      await waitFor(() =>
+        expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
+          expect.objectContaining({
+            forwardCredentials: !forwardCredentials,
+          }),
+        ),
+      );
+    },
+  );
 });

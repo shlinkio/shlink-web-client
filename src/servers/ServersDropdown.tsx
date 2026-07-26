@@ -12,11 +12,13 @@ export const ServersDropdown: FC = () => {
   const { selectedServer } = useSelectedServer();
 
   return (
-    <NavBar.Dropdown buttonContent={(
-      <span className="flex items-center gap-1.5">
-        <FontAwesomeIcon icon={serverIcon} /> Servers
-      </span>
-    )}>
+    <NavBar.Dropdown
+      buttonContent={
+        <span className="flex items-center gap-1.5">
+          <FontAwesomeIcon icon={serverIcon} /> Servers
+        </span>
+      }
+    >
       {serversList.length === 0 ? (
         <Dropdown.Item to="/server/create">
           <FontAwesomeIcon icon={plusIcon} /> Add a server

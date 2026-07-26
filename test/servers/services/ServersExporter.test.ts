@@ -54,7 +54,9 @@ describe('ServersExporter', () => {
     it('makes use of download link API', () => {
       const jsonToCsvMock = createJsonToCsvMock();
       const exporter = new ServersExporter(storageMock, windowMock, jsonToCsvMock);
-      const { document: { createElement } } = windowMock;
+      const {
+        document: { createElement },
+      } = windowMock;
 
       exporter.exportServers();
 

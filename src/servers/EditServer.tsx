@@ -34,7 +34,9 @@ export const EditServer: FC = withSelectedServer(() => {
         initialValues={selectedServer}
         onSubmit={handleSubmit}
       >
-        <Button variant="secondary" onClick={goBack}>Cancel</Button>
+        <Button variant="secondary" onClick={goBack}>
+          Cancel
+        </Button>
         <Button type="submit">Save</Button>
       </ServerForm>
     </NoMenuLayout>

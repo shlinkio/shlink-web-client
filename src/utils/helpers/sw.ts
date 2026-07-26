@@ -1,5 +1,5 @@
 export const forceUpdate = async () => {
-  const registrations = await navigator.serviceWorker?.getRegistrations() ?? [];
+  const registrations = (await navigator.serviceWorker?.getRegistrations()) ?? [];
 
   registrations.forEach(({ waiting }) => {
     waiting?.addEventListener('statechange', (event) => {

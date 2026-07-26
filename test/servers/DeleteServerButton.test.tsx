@@ -21,11 +21,7 @@ describe('<DeleteServerButton />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp('Delete me')));
 
-  it.each([
-    ['Foo bar'],
-    ['baz'],
-    ['something'],
-  ])('renders expected content', (children) => {
+  it.each([['Foo bar'], ['baz'], ['something']])('renders expected content', (children) => {
     const { container } = setUp(children);
     expect(container.firstChild).toBeTruthy();
     expect(container.firstChild).toMatchSnapshot();

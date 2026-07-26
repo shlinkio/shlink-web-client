@@ -6,9 +6,7 @@ import { ShlinkVersions } from './ShlinkVersions';
 export const ShlinkVersionsContainer = () => {
   const { selectedServer } = useSelectedServer();
   return (
-    <div
-      className={clsx('text-center', { 'md:ml-(--aside-menu-width)': isReachableServer(selectedServer) })}
-    >
+    <div className={clsx('text-center', { 'md:ml-(--aside-menu-width)': isReachableServer(selectedServer) })}>
       <ShlinkVersions selectedServer={selectedServer} />
     </div>
   );

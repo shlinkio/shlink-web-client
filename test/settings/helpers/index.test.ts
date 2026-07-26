@@ -17,13 +17,15 @@ describe('settings-helpers', () => {
         },
       });
 
-      expect(migrateDeprecatedSettings(state)).toEqual(expect.objectContaining({
-        settings: expect.objectContaining({
-          visits: {
-            defaultInterval: 'last180Days',
-          },
+      expect(migrateDeprecatedSettings(state)).toEqual(
+        expect.objectContaining({
+          settings: expect.objectContaining({
+            visits: {
+              defaultInterval: 'last180Days',
+            },
+          }),
         }),
-      }));
+      );
     });
   });
 });

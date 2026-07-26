@@ -14,3 +14,4 @@ jobs:
       node-version: 24.x
       publish-coverage: true
       install-playwright: true
+      cs-script: true

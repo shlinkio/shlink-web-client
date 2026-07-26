@@ -9,14 +9,18 @@ const apiClients: Map<string, ShlinkApiClient> = new Map();
 const getSelectedServerFromState = (getState: GetState): ServerWithId => {
   const { selectedServer } = getState();
   if (!hasServerData(selectedServer)) {
-    throw new Error('There\'s no selected server or it is not found');
+    throw new Error("There's no selected server or it is not found");
   }
 
   return selectedServer;
 };
 
 export const buildShlinkApiClient = (httpClient: HttpClient) => (getStateOrSelectedServer: GetState | ServerWithId) => {
-  const { url: baseUrl, apiKey, forwardCredentials } = typeof getStateOrSelectedServer === 'function'
+  const {
+    url: baseUrl,
+    apiKey,
+    forwardCredentials,
+  } = typeof getStateOrSelectedServer === 'function'
     ? getSelectedServerFromState(getStateOrSelectedServer)
     : getStateOrSelectedServer;
   const serverKey = `${apiKey}_${baseUrl}_${forwardCredentials ? 'forward' : 'no-forward'}`;

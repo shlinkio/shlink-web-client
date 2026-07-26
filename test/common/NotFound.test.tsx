@@ -4,7 +4,12 @@ import { NotFound } from '../../src/common/NotFound';
 import { checkAccessibility } from '../__helpers__/accessibility';
 
 describe('<NotFound />', () => {
-  const setUp = (props = {}) => render(<MemoryRouter><NotFound {...props} /></MemoryRouter>);
+  const setUp = (props = {}) =>
+    render(
+      <MemoryRouter>
+        <NotFound {...props} />
+      </MemoryRouter>,
+    );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
@@ -15,9 +20,11 @@ describe('<NotFound />', () => {
 
   it('shows expected error message', () => {
     setUp();
-    expect(screen.getByText(
-      'Use your browser\'s back button to navigate to the page you have previously come from, or just press this button.',
-    )).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Use your browser's back button to navigate to the page you have previously come from, or just press this button.",
+      ),
+    ).toBeInTheDocument();
   });
 
   it.each([

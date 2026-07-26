@@ -4,9 +4,5 @@ import type { RootState } from '.';
 
 export const createAsyncThunk = <Returned, ThunkArg>(
   typePrefix: string,
-  payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, { state: RootState, serializedErrorType: any }>,
-) => baseCreateAsyncThunk(
-  typePrefix,
-  payloadCreator,
-  { serializeError: (e) => e },
-);
+  payloadCreator: AsyncThunkPayloadCreator<Returned, ThunkArg, { state: RootState; serializedErrorType: any }>,
+) => baseCreateAsyncThunk(typePrefix, payloadCreator, { serializeError: (e) => e });

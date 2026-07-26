@@ -12,12 +12,10 @@ describe('<ImportServersBtn />', () => {
   const onImportMock = vi.fn();
   const importServersFromFile = vi.fn().mockResolvedValue([]);
   const serversImporterMock = fromPartial<ServersImporter>({ importServersFromFile });
-  const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) => renderWithStore(
-    <ImportServersBtn {...props} onImport={onImportMock} ServersImporter={serversImporterMock} />,
-    {
+  const setUp = (props: Partial<ImportServersBtnProps> = {}, servers: ServersMap = {}) =>
+    renderWithStore(<ImportServersBtn {...props} onImport={onImportMock} ServersImporter={serversImporterMock} />, {
       initialState: { servers },
-    },
-  );
+    });
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
@@ -26,8 +24,8 @@ describe('<ImportServersBtn />', () => {
 
     expect(screen.queryByText(/^You can create servers by importing a CSV file/)).not.toBeInTheDocument();
     await user.hover(screen.getByRole('button'));
-    await waitFor(
-      () => expect(screen.getByText(/^You can create servers by importing a CSV file/)).toBeInTheDocument(),
+    await waitFor(() =>
+      expect(screen.getByText(/^You can create servers by importing a CSV file/)).toBeInTheDocument(),
     );
   });
 
@@ -59,38 +57,41 @@ describe('<ImportServersBtn />', () => {
   it.each([
     { btnName: 'Save duplicate', savesDuplicatedServers: true },
     { btnName: 'Discard', savesDuplicatedServers: false },
-  ])('creates duplicated servers depending on selected option in modal', async ({ btnName, savesDuplicatedServers }) => {
-    const existingServerData: ServerData = {
-      name: 'existingServer',
-      url: 'http://s.test/existingUrl',
-      apiKey: 'existingApiKey',
-    };
-    const existingServer: ServerWithId = {
-      ...existingServerData,
-      id: 'existingserver-s.test',
-    };
-    const newServer: ServerData = { name: 'newServer', url: 'http://s.test/newUrl', apiKey: 'newApiKey' };
-    const { user, store } = setUp({}, { [existingServer.id]: existingServer });
+  ])(
+    'creates duplicated servers depending on selected option in modal',
+    async ({ btnName, savesDuplicatedServers }) => {
+      const existingServerData: ServerData = {
+        name: 'existingServer',
+        url: 'http://s.test/existingUrl',
+        apiKey: 'existingApiKey',
+      };
+      const existingServer: ServerWithId = {
+        ...existingServerData,
+        id: 'existingserver-s.test',
+      };
+      const newServer: ServerData = { name: 'newServer', url: 'http://s.test/newUrl', apiKey: 'newApiKey' };
+      const { user, store } = setUp({}, { [existingServer.id]: existingServer });
 
-    importServersFromFile.mockResolvedValue([existingServerData, newServer]);
+      importServersFromFile.mockResolvedValue([existingServerData, newServer]);
 
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    await user.upload(screen.getByTestId('csv-file-input'), csvFile);
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+      await user.upload(screen.getByTestId('csv-file-input'), csvFile);
 
-    // Once the file is uploaded, non-duplicated servers are immediately created
-    const { servers } = store.getState();
-    expect(Object.keys(servers)).toHaveLength(2);
-
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: btnName }));
-
-    // If duplicated servers are saved, there's one extra server creation
-    if (savesDuplicatedServers) {
+      // Once the file is uploaded, non-duplicated servers are immediately created
       const { servers } = store.getState();
-      expect(Object.keys(servers)).toHaveLength(3);
-    }
+      expect(Object.keys(servers)).toHaveLength(2);
 
-    // On import is called only once, no matter what
-    expect(onImportMock).toHaveBeenCalledOnce();
-  });
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      await user.click(screen.getByRole('button', { name: btnName }));
+
+      // If duplicated servers are saved, there's one extra server creation
+      if (savesDuplicatedServers) {
+        const { servers } = store.getState();
+        expect(Object.keys(servers)).toHaveLength(3);
+      }
+
+      // On import is called only once, no matter what
+      expect(onImportMock).toHaveBeenCalledOnce();
+    },
+  );
 });

@@ -12,12 +12,12 @@ updates:
       fontawesome:
         patterns:
           - '@fortawesome/*'
-      eslint:
+      coding-styles:
         patterns:
           - '@shlinkio/eslint-config-js-coding-standard'
-          - 'typescript-eslint'
-          - '*eslint-plugin*'
-          - 'eslint'
+          - 'oxfmt'
+          - 'oxlint'
+          - 'oxlint-tsgolint'
       shlink:
         patterns:
           - '@shlinkio/*'

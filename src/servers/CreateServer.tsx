@@ -38,25 +38,31 @@ const CreateServerBase: FC<CreateServerProps> = withoutSelectedServer(({ useTime
   const [errorImporting, setErrorImporting] = useTimeoutToggle({ delay: SHOW_IMPORT_MSG_TIME });
   const { flag: isConfirmModalOpen, toggle: toggleConfirmModal } = useToggle();
   const [serverData, setServerData] = useState<ServerData>();
-  const saveNewServer = useCallback((newServerData: ServerData) => {
-    const [newServerWithUniqueId] = ensureUniqueIds(servers, [newServerData]);
+  const saveNewServer = useCallback(
+    (newServerData: ServerData) => {
+      const [newServerWithUniqueId] = ensureUniqueIds(servers, [newServerData]);
 
-    createServers([newServerWithUniqueId]);
-    navigate(`/server/${newServerWithUniqueId.id}`);
-  }, [createServers, navigate, servers]);
-  const onSubmit = useCallback((newServerData: ServerData) => {
-    setServerData(newServerData);
+      createServers([newServerWithUniqueId]);
+      navigate(`/server/${newServerWithUniqueId.id}`);
+    },
+    [createServers, navigate, servers],
+  );
+  const onSubmit = useCallback(
+    (newServerData: ServerData) => {
+      setServerData(newServerData);
 
-    const serverExists = Object.values(servers).some(
-      ({ url, apiKey }) => newServerData.url === url && newServerData.apiKey === apiKey,
-    );
+      const serverExists = Object.values(servers).some(
+        ({ url, apiKey }) => newServerData.url === url && newServerData.apiKey === apiKey,
+      );
 
-    if (serverExists) {
-      toggleConfirmModal();
-    } else {
-      saveNewServer(newServerData);
-    }
-  }, [saveNewServer, servers, toggleConfirmModal]);
+      if (serverExists) {
+        toggleConfirmModal();
+      } else {
+        saveNewServer(newServerData);
+      }
+    },
+    [saveNewServer, servers, toggleConfirmModal],
+  );
 
   return (
     <NoMenuLayout>
@@ -64,7 +70,11 @@ const CreateServerBase: FC<CreateServerProps> = withoutSelectedServer(({ useTime
         {!hasServers && (
           <ImportServersBtn tooltipPlacement="top" onImport={setServersImported} onError={setErrorImporting} />
         )}
-        {hasServers && <Button variant="secondary" onClick={goBack}>Cancel</Button>}
+        {hasServers && (
+          <Button variant="secondary" onClick={goBack}>
+            Cancel
+          </Button>
+        )}
         <Button type="submit">Create server</Button>
       </ServerForm>
 
