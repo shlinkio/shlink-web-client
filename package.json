@@ -76,7 +76,7 @@
     "oxlint-tsgolint": "^7.0.2001",
     "playwright": "^1.62.0",
     "tailwindcss": "^4.1.3",
-    "typescript": "^5.9.3",
+    "typescript": "^7.0.2",
     "vite": "^8.1.5",
     "vite-plugin-pwa": "^1.3.0",
     "vitest": "^4.0.3"
