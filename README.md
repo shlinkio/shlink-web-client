@@ -115,7 +115,7 @@ If you need to host shlink-web-client yourself and serve it from a subpath, foll
     * For classic hosting:
         * Download [node](https://nodejs.org/en/download/package-manager/) 10.15 or later.
         * Install project dependencies by running `npm install`.
-        * Build the project by running `npm run build`.
+        * Build the project by running `node --run build`.
         * Once the command finishes, you will have a `build` folder with all the static assets you need to run shlink-web-client. Just place them wherever you want them to be served from.
     * For docker image:
         * Download [docker](https://docs.docker.com/install/).
