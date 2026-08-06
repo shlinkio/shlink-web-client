@@ -35,7 +35,7 @@
     "@shlinkio/data-manipulation": "^1.1.0",
     "@shlinkio/shlink-frontend-kit": "^1.5.0",
     "@shlinkio/shlink-js-sdk": "^3.2.1",
-    "@shlinkio/shlink-web-component": "^0.19.1",
+    "@shlinkio/shlink-web-component": "^0.19.2",
     "@vitest/browser-playwright": "^4.1.10",
     "bottlejs": "^2.0.1",
     "clsx": "^2.1.1",
