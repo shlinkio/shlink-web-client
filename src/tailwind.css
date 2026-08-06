@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
 @import '@shlinkio/shlink-frontend-kit/tailwind.preset.css';
 @import '@shlinkio/shlink-web-component/tailwind.preset.css';
 @source '../node_modules/@shlinkio/shlink-frontend-kit';
