@@ -13,4 +13,3 @@ jobs:
     with:
       node-version: 26.x
       publish-coverage: true
-      install-playwright: true
