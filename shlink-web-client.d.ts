@@ -4,4 +4,4 @@ declare module '@json2csv/plainjs' {
   }
 }
 
-declare module '*.png'
+declare module '*.png';

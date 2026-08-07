@@ -11,7 +11,7 @@
     "cs:fix": "node --run lint:fix && node --run format",
     "lint": "oxlint src test config/test ./*.config.ts",
     "lint:fix": "node --run lint -- --fix",
-    "format": "oxfmt src test config/test ./*.config.ts",
+    "format": "oxfmt src test config/test ./*.ts",
     "format:check": "node --run format -- --check",
     "types": "tsc",
     "start": "vite serve --host=0.0.0.0",
