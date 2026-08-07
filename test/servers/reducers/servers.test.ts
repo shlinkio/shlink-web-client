@@ -39,14 +39,16 @@ describe('serversReducer', () => {
         ghi789: { id: 'ghi789' },
       }));
 
-    it.each([
-      [true],
-      [false],
-    ])('returns state as it is when trying to set auto-connect on invalid server', (autoConnect) =>
-      expect(serversReducer(list, setAutoConnect(fromPartial<ServerWithId>({ id: 'invalid' }), autoConnect))).toEqual({
-        abc123: { id: 'abc123' },
-        def456: { id: 'def456' },
-      }));
+    it.each([[true], [false]])(
+      'returns state as it is when trying to set auto-connect on invalid server',
+      (autoConnect) =>
+        expect(serversReducer(list, setAutoConnect(fromPartial<ServerWithId>({ id: 'invalid' }), autoConnect))).toEqual(
+          {
+            abc123: { id: 'abc123' },
+            def456: { id: 'def456' },
+          },
+        ),
+    );
 
     it('disables auto-connect on a server which is already set to auto-connect', () => {
       const listWithDisabledAutoConnect = {
@@ -54,10 +56,9 @@ describe('serversReducer', () => {
         abc123: { ...list.abc123, autoConnect: true },
       };
 
-      expect(serversReducer(
-        listWithDisabledAutoConnect,
-        setAutoConnect(fromPartial<ServerWithId>({ id: 'abc123' }), false),
-      )).toEqual({
+      expect(
+        serversReducer(listWithDisabledAutoConnect, setAutoConnect(fromPartial<ServerWithId>({ id: 'abc123' }), false)),
+      ).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456' },
       });
@@ -69,10 +70,9 @@ describe('serversReducer', () => {
         abc123: { ...list.abc123, autoConnect: true },
       };
 
-      expect(serversReducer(
-        listWithEnabledAutoConnect,
-        setAutoConnect(fromPartial<ServerWithId>({ id: 'def456' }), true),
-      )).toEqual({
+      expect(
+        serversReducer(listWithEnabledAutoConnect, setAutoConnect(fromPartial<ServerWithId>({ id: 'def456' }), true)),
+      ).toEqual({
         abc123: { id: 'abc123', autoConnect: false },
         def456: { id: 'def456', autoConnect: true },
       });
@@ -108,10 +108,7 @@ describe('serversReducer', () => {
     });
 
     describe('setAutoConnect', () => {
-      it.each([
-        [true],
-        [false],
-      ])('returns expected action', (autoConnect) => {
+      it.each([[true], [false]])('returns expected action', (autoConnect) => {
         const serverToEdit = fromPartial<RegularServer>({ id: 'abc123' });
         const { payload } = setAutoConnect(serverToEdit, autoConnect);
 

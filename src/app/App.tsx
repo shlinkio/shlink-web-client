@@ -47,13 +47,17 @@ export const App: FC = () => {
             <Routes>
               <Route index element={<Home />} />
               <Route path="/settings">
-                {['', '*'].map((path) => <Route key={path} path={path} element={<Settings />} />)}
+                {['', '*'].map((path) => (
+                  <Route key={path} path={path} element={<Settings />} />
+                ))}
               </Route>
               <Route path="/manage-servers" element={<ManageServers />} />
               <Route path="/server/create" element={<CreateServer />} />
               <Route path="/server/:serverId/edit" element={<EditServer />} />
               <Route path="/server/:serverId">
-                {['', '*'].map((path) => <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />)}
+                {['', '*'].map((path) => (
+                  <Route key={path} path={path} element={<ShlinkWebComponentContainer />} />
+                ))}
               </Route>
               <Route path="*" element={<NotFound />} />
             </Routes>

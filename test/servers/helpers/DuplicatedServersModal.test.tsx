@@ -8,9 +8,12 @@ import { renderWithEvents } from '../../__helpers__/setUpTest';
 describe('<DuplicatedServersModal />', () => {
   const onClose = vi.fn();
   const onConfirm = vi.fn();
-  const setUp = (duplicatedServers: ServerData[] = []) => act(() => renderWithEvents(
-    <DuplicatedServersModal open duplicatedServers={duplicatedServers} onClose={onClose} onConfirm={onConfirm} />,
-  ));
+  const setUp = (duplicatedServers: ServerData[] = []) =>
+    act(() =>
+      renderWithEvents(
+        <DuplicatedServersModal open duplicatedServers={duplicatedServers} onClose={onClose} onConfirm={onConfirm} />,
+      ),
+    );
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
@@ -60,10 +63,7 @@ describe('<DuplicatedServersModal />', () => {
   it.each([
     [[]],
     [[mockServer({ url: 'url', apiKey: 'apiKey' })]],
-    [[
-      mockServer({ url: 'url_1', apiKey: 'apiKey_1' }),
-      mockServer({ url: 'url_2', apiKey: 'apiKey_2' }),
-    ]],
+    [[mockServer({ url: 'url_1', apiKey: 'apiKey_1' }), mockServer({ url: 'url_2', apiKey: 'apiKey_2' })]],
   ])('displays provided server data', async (duplicatedServers) => {
     await setUp(duplicatedServers);
 

@@ -13,11 +13,14 @@ export type DeleteServerModalProps = {
 
 export const DeleteServerModal: FC<DeleteServerModalProps> = ({ server, onClose, open }) => {
   const { deleteServer } = useServers();
-  const onClosed = useCallback((exitAction: ExitAction) => {
-    if (exitAction === 'confirm') {
-      deleteServer(server);
-    }
-  }, [deleteServer, server]);
+  const onClosed = useCallback(
+    (exitAction: ExitAction) => {
+      if (exitAction === 'confirm') {
+        deleteServer(server);
+      }
+    },
+    [deleteServer, server],
+  );
 
   return (
     <CardModal
@@ -30,11 +33,13 @@ export const DeleteServerModal: FC<DeleteServerModalProps> = ({ server, onClose,
       confirmText="Delete"
     >
       <div className="flex flex-col gap-y-4">
-        <p>Are you sure you want to remove <b>{server ? server.name : ''}</b>?</p>
+        <p>
+          Are you sure you want to remove <b>{server ? server.name : ''}</b>?
+        </p>
         <p>
           <i>
-            No data will be deleted, only the access to this server will be removed from this device.
-            You can create it again at any moment.
+            No data will be deleted, only the access to this server will be removed from this device. You can create it
+            again at any moment.
           </i>
         </p>
       </div>

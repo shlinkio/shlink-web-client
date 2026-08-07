@@ -45,13 +45,13 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
               Forward credentials to this server on every request.
             </Label>
             <small className="pl-5.5 text-gray-600 dark:text-gray-400 mt-0.5">
-              {'"'}Credentials{'"'} here means cookies, TLS client certificates, or authentication headers containing a username
-              and password.
+              {'"'}Credentials{'"'} here means cookies, TLS client certificates, or authentication headers containing a
+              username and password.
             </small>
             <small className="pl-5.5 text-gray-600 dark:text-gray-400">
-              <b>Important!</b> If you are not sure what this means, leave it unchecked. Enabling this option will
-              make all requests fail for Shlink older than v4.5.0, as it requires the server to set a more strict
-              value for <code className="whitespace-nowrap">Access-Control-Allow-Origin</code> than <code>*</code>.
+              <b>Important!</b> If you are not sure what this means, leave it unchecked. Enabling this option will make
+              all requests fail for Shlink older than v4.5.0, as it requires the server to set a more strict value for{' '}
+              <code className="whitespace-nowrap">Access-Control-Allow-Origin</code> than <code>*</code>.
             </small>
           </div>
         </Details>

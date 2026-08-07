@@ -34,7 +34,9 @@ export const ManageServersRow: FC<ManageServersRowProps> = ({ server, hasAutoCon
       <Table.Cell className="font-bold" columnName="Name">
         <Link to={`/server/${server.id}`}>{server.name}</Link>
       </Table.Cell>
-      <Table.Cell columnName="Base URL" className="max-lg:border-b-0">{server.url}</Table.Cell>
+      <Table.Cell columnName="Base URL" className="max-lg:border-b-0">
+        {server.url}
+      </Table.Cell>
       <Table.Cell className="text-right max-lg:absolute right-0 -top-1 mx-lg:pt-0">
         <ManageServersRowDropdown server={server} />
       </Table.Cell>

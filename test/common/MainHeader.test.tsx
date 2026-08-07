@@ -33,7 +33,8 @@ describe('<MainHeader />', () => {
   ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
     setUp(currentPath);
     expect(screen.getByRole('menuitem', { name: /Settings$/ })).toHaveAttribute(
-      'data-active', isActive ? 'true' : 'false',
+      'data-active',
+      isActive ? 'true' : 'false',
     );
   });
 });

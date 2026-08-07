@@ -4,9 +4,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [4.8.1] - 2026-08-06
+### Added
+* *Nothing*
+
+### Changed
+* Migrate from ESLint to Oxlint and Oxfmt.
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [shlink-web-component#1024](https://github.com/shlinkio/shlink-web-component/issues/1024) Fix incorrect colSpan calculated in visits table depending on what columns have been enabled.
+* [shlink-web-component#982](https://github.com/shlinkio/shlink-web-component/issues/982) Fix ability to select any domain from the dropdown when creating a short URL, when the list of domains is long.
+* [shlink-web-component#913](https://github.com/shlinkio/shlink-web-component/issues/913) Fix rendering of maps due to missing leaflet stylesheet import.
+
+
 ## [4.8.0] - 2026-06-20
 ### Added
-* [shlink-web-client] Add support for Shlink 5.1.0, by supporting browser redirect conditions.
+* [shlink-web-component] Add support for Shlink 5.1.0, by supporting browser redirect conditions.
 
 ### Changed
 * Update dependencies

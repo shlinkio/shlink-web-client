@@ -13,14 +13,15 @@ vi.mock('@shlinkio/shlink-web-component', () => ({
 }));
 
 describe('<ShlinkWebComponentContainer />', () => {
-  const setUp = (selectedServer: SelectedServer) => renderWithStore(
-    <MemoryRouter>
-      <ShlinkWebComponentContainer TagColorsStorage={fromPartial({})} />
-    </MemoryRouter>,
-    {
-      initialState: { selectedServer, servers: {}, settings: {} },
-    },
-  );
+  const setUp = (selectedServer: SelectedServer) =>
+    renderWithStore(
+      <MemoryRouter>
+        <ShlinkWebComponentContainer TagColorsStorage={fromPartial({})} />
+      </MemoryRouter>,
+      {
+        initialState: { selectedServer, servers: {}, settings: {} },
+      },
+    );
 
   it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 

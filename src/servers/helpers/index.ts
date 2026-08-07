@@ -49,9 +49,9 @@ export type DedupServersResult = {
  */
 export function dedupServers(servers: ServersMap, serversToAdd: ServerData[]): DedupServersResult {
   const serversList = Object.values(servers);
-  const { duplicatedServers = [], newServers = [] } = groupBy(
-    serversToAdd,
-    (server) => serversInclude(serversList, server) ? 'duplicatedServers' : 'newServers',
+  // oxlint-disable-next-line typescript/no-useless-default-assignment - Type definition is wrong
+  const { duplicatedServers = [], newServers = [] } = groupBy(serversToAdd, (server) =>
+    serversInclude(serversList, server) ? 'duplicatedServers' : 'newServers',
   );
 
   return { duplicatedServers, newServers };

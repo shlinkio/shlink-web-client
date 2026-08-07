@@ -12,16 +12,17 @@ describe('<ServersDropdown />', () => {
     '2b': fromPartial({ name: 'bar', id: '2b' }),
     '3c': fromPartial({ name: 'baz', id: '3c' }),
   };
-  const setUp = (servers: ServersMap = fallbackServers) => renderWithStore(
-    <MemoryRouter>
-      <ul role="menu">
-        <ServersDropdown />
-      </ul>
-    </MemoryRouter>,
-    {
-      initialState: { selectedServer: null, servers },
-    },
-  );
+  const setUp = (servers: ServersMap = fallbackServers) =>
+    renderWithStore(
+      <MemoryRouter>
+        <ul role="menu">
+          <ServersDropdown />
+        </ul>
+      </MemoryRouter>,
+      {
+        initialState: { selectedServer: null, servers },
+      },
+    );
 
   it('passes a11y checks', async () => {
     const { user, ...rest } = setUp();

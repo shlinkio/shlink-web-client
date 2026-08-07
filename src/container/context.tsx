@@ -36,10 +36,7 @@ type Optionalize<P, K extends keyof P> = Omit<P, K> & Partial<Pick<P, K>>;
  * Higher Order Component used to inject services into components as props.
  * All dependencies become optional props so that they can still be explicitly set in tests if desired.
  */
-export function withDependencies<
-  Props extends Record<string, unknown>,
-  DependencyName extends string & keyof Props,
->(
+export function withDependencies<Props extends Record<string, unknown>, DependencyName extends string & keyof Props>(
   Component: ComponentType<Props>,
   dependencyNames: DependencyName[],
 ): ComponentType<Optionalize<Props, DependencyName>> {

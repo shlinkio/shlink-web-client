@@ -14,13 +14,14 @@ const localStorageConfig: RLSOptions = {
 const getStateFromLocalStorage = () => migrateDeprecatedSettings(load(localStorageConfig));
 
 const isProduction = process.env.NODE_ENV === 'production';
-export const setUpStore = (preloadedState = getStateFromLocalStorage()) => configureStore({
-  devTools: !isProduction,
-  reducer: initReducers(),
-  preloadedState,
-  middleware: (defaultMiddlewaresIncludingReduxThunk) =>
-    defaultMiddlewaresIncludingReduxThunk().concat(save(localStorageConfig)),
-});
+export const setUpStore = (preloadedState = getStateFromLocalStorage()) =>
+  configureStore({
+    devTools: !isProduction,
+    reducer: initReducers(),
+    preloadedState,
+    middleware: (defaultMiddlewaresIncludingReduxThunk) =>
+      defaultMiddlewaresIncludingReduxThunk().concat(save(localStorageConfig)),
+  });
 
 export type StoreType = ReturnType<typeof setUpStore>;
 export type AppDispatch = StoreType['dispatch'];

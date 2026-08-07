@@ -4,9 +4,10 @@ import { selectedServerReducer } from '../servers/reducers/selectedServer';
 import { serversReducer } from '../servers/reducers/servers';
 import { settingsReducer } from '../settings/reducers/settings';
 
-export const initReducers = () => combineReducers({
-  appUpdated: appUpdatesReducer,
-  servers: serversReducer,
-  selectedServer: selectedServerReducer,
-  settings: settingsReducer,
-});
+export const initReducers = () =>
+  combineReducers({
+    appUpdated: appUpdatesReducer,
+    servers: serversReducer,
+    selectedServer: selectedServerReducer,
+    settings: settingsReducer,
+  });

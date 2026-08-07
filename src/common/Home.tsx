@@ -36,15 +36,12 @@ export const Home: FC = withoutSelectedServer(() => {
           </div>
 
           <div className="md:border-l border-lm-border dark:border-dm-border flex-grow">
-            <h1
-              className={clsx(
-                'p-4 text-center border-lm-border dark:border-dm-border',
-                { 'border-b': !hasServers },
-              )}
-            >
+            <h1 className={clsx('p-4 text-center border-lm-border dark:border-dm-border', { 'border-b': !hasServers })}>
               Welcome!
             </h1>
-            {hasServers ? <ServersListGroup servers={serversList} /> : (
+            {hasServers ? (
+              <ServersListGroup servers={serversList} />
+            ) : (
               <div className="p-6 text-center flex flex-col gap-12 text-xl">
                 <p>This application will help you manage your Shlink servers.</p>
                 <p>

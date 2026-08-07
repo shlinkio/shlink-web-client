@@ -6,9 +6,9 @@ describe('context', () => {
   describe('useDependencies', () => {
     let lastDependencies: unknown[];
 
-    function TestComponent({ name}: { name: string }) {
+    function TestComponent({ name }: { name: string }) {
       // eslint-disable-next-line react-compiler/react-compiler
-      lastDependencies =  useDependencies(name);
+      lastDependencies = useDependencies(name);
       return null;
     }
 
@@ -19,11 +19,13 @@ describe('context', () => {
     });
 
     it('throws when requested dependency is not found in container', () => {
-      expect(() => render(
-        <ContainerProvider value={fromPartial({})}>
-          <TestComponent name="foo" />
-        </ContainerProvider>,
-      )).toThrowError('Dependency with name "foo" not found in container');
+      expect(() =>
+        render(
+          <ContainerProvider value={fromPartial({})}>
+            <TestComponent name="foo" />
+          </ContainerProvider>,
+        ),
+      ).toThrowError('Dependency with name "foo" not found in container');
     });
 
     it('gets dependency from container', () => {
