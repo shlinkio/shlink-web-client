@@ -55,7 +55,7 @@
     "workbox-strategies": "^7.4.0"
   },
   "devDependencies": {
-    "@shlinkio/eslint-config-js-coding-standard": "~4.0.0",
+    "@shlinkio/eslint-config-js-coding-standard": "~4.1.0",
     "@tailwindcss/vite": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
@@ -71,8 +71,8 @@
     "axe-core": "^4.12.1",
     "chalk": "^6.0.0",
     "history": "^5.3.0",
-    "oxfmt": "^0.61.0",
-    "oxlint": "^1.76.0",
+    "oxfmt": "^0.62.0",
+    "oxlint": "^1.77.0",
     "oxlint-tsgolint": "^7.0.2001",
     "playwright": "^1.62.0",
     "tailwindcss": "^4.1.3",
