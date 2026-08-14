@@ -1,7 +1,7 @@
 import { screen } from '@testing-library/react';
-import type { UserEvent } from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import type { UserEvent } from 'vitest/browser';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
 import { checkAccessibility } from '../__helpers__/accessibility';

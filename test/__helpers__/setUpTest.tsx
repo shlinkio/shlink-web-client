@@ -1,10 +1,10 @@
 import type { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
 import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Provider } from 'react-redux';
+import { userEvent } from 'vitest/browser';
 import { ContainerProvider } from '../../src/container/context';
 import type { RootState } from '../../src/store';
 import { setUpStore } from '../../src/store';
