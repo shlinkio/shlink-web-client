@@ -1,8 +1,6 @@
 import type { HttpClient } from '@shlinkio/shlink-js-sdk';
 import { fromPartial } from '@total-typescript/shoehorn';
-import { act } from 'react';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import { App } from '../../src/app/App';
 import { ContainerProvider } from '../../src/container/context';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -13,31 +11,29 @@ vi.mock(import('../../src/common/ShlinkWebComponentContainer'), () => ({
 }));
 
 describe('<App />', () => {
-  const setUp = async (activeRoute = '/') =>
-    act(() =>
-      renderWithStore(
-        <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
-          <ContainerProvider
-            value={fromPartial({
-              HttpClient: fromPartial<HttpClient>({}),
-              buildShlinkApiClient: vi.fn(),
-              useTimeoutToggle: vi.fn().mockReturnValue([false, vi.fn()]),
-            })}
-          >
-            <App />
-          </ContainerProvider>
-        </MemoryRouter>,
-        {
-          initialState: {
-            servers: {
-              abc123: fromPartial({ id: 'abc123', name: 'abc123 server' }),
-              def456: fromPartial({ id: 'def456', name: 'def456 server' }),
-            },
-            settings: fromPartial({}),
-            appUpdated: false,
+  const setUp = (activeRoute = '/') =>
+    renderWithStore(
+      <MemoryRouter initialEntries={[{ pathname: activeRoute }]}>
+        <ContainerProvider
+          value={fromPartial({
+            HttpClient: fromPartial<HttpClient>({}),
+            buildShlinkApiClient: vi.fn(),
+            useTimeoutToggle: vi.fn().mockReturnValue([false, vi.fn()]),
+          })}
+        >
+          <App />
+        </ContainerProvider>
+      </MemoryRouter>,
+      {
+        initialState: {
+          servers: {
+            abc123: fromPartial({ id: 'abc123', name: 'abc123 server' }),
+            def456: fromPartial({ id: 'def456', name: 'def456 server' }),
           },
+          settings: fromPartial({}),
+          appUpdated: false,
         },
-      ),
+      },
     );
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
@@ -53,7 +49,7 @@ describe('<App />', () => {
     ['/server/def456/bar', 'ShlinkWebComponentContainer'],
     ['/other', 'Oops! We could not find requested route.'],
   ])('renders expected route', async (activeRoute, expectedComponent) => {
-    await setUp(activeRoute);
+    const page = await setUp(activeRoute);
     await expect.element(page.getByText(expectedComponent)).toBeInTheDocument();
   });
 
@@ -62,7 +58,7 @@ describe('<App />', () => {
     ['/bar', false],
     ['/', true],
   ])('renders expected classes on shlink-wrapper based on current pathname', async (pathname, isFlex) => {
-    await setUp(pathname);
+    const page = await setUp(pathname);
     const shlinkWrapper = page.getByTestId('shlink-wrapper');
 
     if (isFlex) {

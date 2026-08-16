@@ -1,7 +1,6 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
-import { page } from 'vitest/browser';
 import { CreateServer } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -17,7 +16,11 @@ describe('<CreateServer />', () => {
   const defaultServers: ServersMap = {
     foo: fromPartial({ url: 'https://existing_url.com', apiKey: 'existing_api_key', id: 'foo' }),
   };
-  const setUp = ({ serversImported = false, importFailed = false, servers = defaultServers }: SetUpOptions = {}) => {
+  const setUp = async ({
+    serversImported = false,
+    importFailed = false,
+    servers = defaultServers,
+  }: SetUpOptions = {}) => {
     let callCount = 0;
     const useTimeoutToggle = vi.fn().mockImplementation(() => {
       const result = [callCount % 2 === 0 ? serversImported : importFailed, () => null];
@@ -28,21 +31,21 @@ describe('<CreateServer />', () => {
 
     return {
       history,
-      ...renderWithStore(
+      ...(await renderWithStore(
         <Router location={history.location} navigator={history}>
           <CreateServer useTimeoutToggle={useTimeoutToggle} />
         </Router>,
         {
           initialState: { servers },
         },
-      ),
+      )),
     };
   };
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('shows success message when imported is true', async () => {
-    setUp({ serversImported: true });
+    const page = await setUp({ serversImported: true });
 
     await expect
       .element(page.getByText('Servers properly imported. You can now select one from the list :)'))
@@ -54,7 +57,7 @@ describe('<CreateServer />', () => {
   });
 
   it('shows error message when import failed', async () => {
-    setUp({ importFailed: true });
+    const page = await setUp({ importFailed: true });
 
     await expect
       .element(page.getByText('Servers properly imported. You can now select one from the list :)'))
@@ -65,7 +68,7 @@ describe('<CreateServer />', () => {
   });
 
   it('creates server data when form is submitted', async () => {
-    const { user, history, store } = setUp();
+    const { user, history, store, ...page } = await setUp();
     const expectedServerId = 'the_name-the_url.com';
 
     await user.type(page.getByLabelText(/^Name/), 'the_name');
@@ -88,7 +91,7 @@ describe('<CreateServer />', () => {
   });
 
   it('displays dialog when trying to create a duplicated server', async () => {
-    const { user, history } = setUp();
+    const { user, history, ...page } = await setUp();
 
     await user.type(page.getByLabelText(/^Name/), 'the_name');
     await user.type(page.getByLabelText(/^URL/), 'https://existing_url.com');

@@ -1,6 +1,5 @@
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
-import { page } from 'vitest/browser';
 import { MainHeader } from '../../src/common/MainHeader';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
@@ -20,7 +19,7 @@ describe('<MainHeader />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders ServersDropdown', async () => {
-    setUp();
+    const page = await setUp();
     await expect.element(page.getByRole('button', { name: 'Servers' })).toBeInTheDocument();
   });
 
@@ -31,7 +30,7 @@ describe('<MainHeader />', () => {
     ['/settings/foo', true],
     ['/settings/bar', true],
   ])('sets link to settings as active only when current path is settings', async (currentPath, isActive) => {
-    setUp(currentPath);
+    const page = await setUp(currentPath);
     await expect
       .element(page.getByRole('menuitem', { name: /Settings$/ }))
       .toHaveAttribute('data-active', isActive ? 'true' : 'false');

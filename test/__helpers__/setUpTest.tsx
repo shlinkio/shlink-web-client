@@ -1,10 +1,8 @@
 import type { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
-import type { RenderOptions } from '@testing-library/react';
-import { render as testingLibRender } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Provider } from 'react-redux';
-import type { RenderOptions as VitestRenderOptions } from 'vitest-browser-react';
+import type { RenderOptions } from 'vitest-browser-react';
 import { render as vitestRender } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { ContainerProvider } from '../../src/container/context';
@@ -13,7 +11,7 @@ import { setUpStore } from '../../src/store';
 
 export const render = vitestRender;
 
-export const renderWithEvents = async (element: ReactElement, options?: VitestRenderOptions) => ({
+export const renderWithEvents = async (element: ReactElement, options?: RenderOptions) => ({
   user: userEvent.setup(),
   ...(await render(element, options)),
 });
@@ -36,7 +34,7 @@ export type RenderOptionsWithState = Omit<RenderOptions, 'wrapper'> & {
  * Render provided ReactElement wrapped in a redux `Provider` and a `ContainerProvider` with a single
  * `buildShlinkApiClient` dependency.
  */
-export const renderWithStore = (
+export const renderWithStore = async (
   element: ReactElement,
   { initialState = {}, buildShlinkApiClient = vi.fn(), ...options }: RenderOptionsWithState = {},
 ) => {
@@ -49,7 +47,6 @@ export const renderWithStore = (
 
   return {
     store,
-    user: userEvent.setup(),
-    ...testingLibRender(element, { ...options, wrapper: Wrapper }),
+    ...(await renderWithEvents(element, { ...options, wrapper: Wrapper })),
   };
 };

@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -25,15 +24,15 @@ describe('<ServersDropdown />', () => {
     );
 
   it('passes a11y checks', async () => {
-    const { user, ...rest } = setUp();
+    const { user, container, ...page } = await setUp();
     // Open menu
     await user.click(page.getByText('Servers'));
 
-    return checkAccessibility(rest);
+    return checkAccessibility({ container });
   });
 
   it('contains the list of servers and the "mange servers" button', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     await user.click(page.getByText('Servers'));
     const items = page.getByRole('menuitem').elements();
@@ -47,12 +46,12 @@ describe('<ServersDropdown />', () => {
   });
 
   it('contains a toggle with proper text', async () => {
-    setUp();
+    const page = await setUp();
     await expect.element(page.getByRole('button')).toHaveTextContent('Servers');
   });
 
   it('contains a button to manage servers', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     await user.click(page.getByText('Servers'));
     await expect
@@ -61,7 +60,7 @@ describe('<ServersDropdown />', () => {
   });
 
   it('shows only create link when no servers exist yet', async () => {
-    const { user } = setUp({});
+    const { user, ...page } = await setUp({});
 
     await user.click(page.getByText('Servers'));
     await expect.element(page.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();

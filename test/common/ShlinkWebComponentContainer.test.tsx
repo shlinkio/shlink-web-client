@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import { ShlinkWebComponentContainer } from '../../src/common/ShlinkWebComponentContainer';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -26,7 +25,7 @@ describe('<ShlinkWebComponentContainer />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 
   it('shows loading indicator while loading server', async () => {
-    setUp(null);
+    const page = await setUp(null);
 
     await expect.element(page.getByText('Loading...')).toBeInTheDocument();
     await expect.element(page.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
@@ -39,7 +38,7 @@ describe('<ShlinkWebComponentContainer />', () => {
       /Could not connect to this Shlink server/,
     ],
   ])('shows error for non reachable servers', async (selectedServer, expectedError) => {
-    setUp(selectedServer);
+    const page = await setUp(selectedServer);
 
     await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
     await expect.element(page.getByText(expectedError)).toBeInTheDocument();
@@ -47,7 +46,7 @@ describe('<ShlinkWebComponentContainer />', () => {
   });
 
   it('renders ShlinkWebComponent for reachable servers', async () => {
-    setUp(fromPartial({ version: '3.0.0' }));
+    const page = await setUp(fromPartial({ version: '3.0.0' }));
 
     await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
     await expect.element(page.getByText('ShlinkWebComponent')).toBeInTheDocument();

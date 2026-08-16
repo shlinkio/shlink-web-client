@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { ManageServers } from '../../src/servers/ManageServers';
 import type { ServersExporter } from '../../src/servers/services/ServersExporter';
@@ -33,7 +32,7 @@ describe('<ManageServers />', () => {
     ));
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
-    const { user } = setUp({
+    const { user, ...page } = await setUp({
       foo: createServerMock('foo'),
       bar: createServerMock('bar'),
       baz: createServerMock('baz'),
@@ -64,7 +63,7 @@ describe('<ManageServers />', () => {
   it.each([[createServerMock('foo')], [createServerMock('foo', true)]])(
     'shows different amount of columns if there are at least one auto-connect server',
     async (server) => {
-      setUp({ server });
+      const page = await setUp({ server });
 
       if (server.autoConnect) {
         await expect.element(page.getByTestId('auto-connect')).toBeInTheDocument();
@@ -77,13 +76,13 @@ describe('<ManageServers />', () => {
   it.each([
     [{}, 0],
     [{ foo: createServerMock('foo') }, 1],
-  ])('shows export button if the list of servers is not empty', (servers, expectedButtons) => {
-    setUp(servers);
+  ])('shows export button if the list of servers is not empty', async (servers, expectedButtons) => {
+    const page = await setUp(servers);
     expect(page.getByRole('button', { name: 'Export servers' }).elements()).toHaveLength(expectedButtons);
   });
 
   it('allows exporting servers when clicking on button', async () => {
-    const { user } = setUp({ foo: createServerMock('foo') });
+    const { user, ...page } = await setUp({ foo: createServerMock('foo') });
 
     expect(exportServers).not.toHaveBeenCalled();
     await user.click(page.getByRole('button', { name: 'Export servers' }));
@@ -93,7 +92,7 @@ describe('<ManageServers />', () => {
   it.each([[true], [false]])('shows an error message if an error occurs while importing servers', async (hasError) => {
     useTimeoutToggle.mockReturnValue([hasError, vi.fn()]);
 
-    setUp({ foo: createServerMock('foo') });
+    const page = await setUp({ foo: createServerMock('foo') });
 
     if (hasError) {
       await expect

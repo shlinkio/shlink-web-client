@@ -1,6 +1,5 @@
 import { Table } from '@shlinkio/shlink-frontend-kit';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRow } from '../../src/servers/ManageServersRow';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -27,24 +26,23 @@ describe('<ManageServersRow />', () => {
   it.each([
     [true, 4],
     [false, 3],
-  ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
-    setUp(hasAutoConnect);
+  ])('renders expected amount of columns', async (hasAutoConnect, expectedCols) => {
+    const page = await setUp(hasAutoConnect);
     expect(page.getByRole('cell').elements()).toHaveLength(expectedCols);
   });
 
   it('renders an options dropdown', async () => {
-    setUp();
+    const page = await setUp();
     await expect.element(page.getByRole('button', { name: 'Options' })).toBeInTheDocument();
   });
 
-  it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
-    const { container } = setUp(true, autoConnect);
+  it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', async (autoConnect) => {
+    const { container } = await setUp(true, autoConnect);
     expect(container).toMatchSnapshot();
   });
 
   it('renders server props where appropriate', async () => {
-    setUp();
-
+    const page = await setUp();
     const link = page.getByRole('link');
 
     await expect.element(link).toHaveAttribute('href', `/server/${server.id}`);

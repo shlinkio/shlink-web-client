@@ -1,5 +1,4 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { page } from 'vitest/browser';
 import type { ServerData, ServersMap, ServerWithId } from '../../../src/servers/data';
 import type { ImportServersBtnProps } from '../../../src/servers/helpers/ImportServersBtn';
 import { ImportServersBtn } from '../../../src/servers/helpers/ImportServersBtn';
@@ -20,7 +19,7 @@ describe('<ImportServersBtn />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('shows tooltip on button hover', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     await expect.element(page.getByText('You can create servers by importing a CSV file')).not.toBeInTheDocument();
     await user.hover(page.getByRole('button'));
@@ -32,7 +31,7 @@ describe('<ImportServersBtn />', () => {
     ['foo', 'foo'],
     ['bar', 'bar'],
   ])('allows a class name to be provided', async (providedClassName, expectedClassName) => {
-    setUp({ className: providedClassName });
+    const page = await setUp({ className: providedClassName });
     await expect.element(page.getByRole('button')).toHaveAttribute('class', expect.stringContaining(expectedClassName));
   });
 
@@ -41,12 +40,12 @@ describe('<ImportServersBtn />', () => {
     ['foo', 'foo'],
     ['bar', 'bar'],
   ])('has expected text', async (children, expectedText) => {
-    setUp({ children });
+    const page = await setUp({ children });
     await expect.element(page.getByRole('button')).toHaveTextContent(expectedText);
   });
 
   it('imports servers when file input changes', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     await user.upload(page.getByTestId('csv-file-input'), csvFile);
     expect(importServersFromFile).toHaveBeenCalledTimes(1);
@@ -68,7 +67,7 @@ describe('<ImportServersBtn />', () => {
         id: 'existingserver-s.test',
       };
       const newServer: ServerData = { name: 'newServer', url: 'http://s.test/newUrl', apiKey: 'newApiKey' };
-      const { user, store } = setUp({}, { [existingServer.id]: existingServer });
+      const { user, store, ...page } = await setUp({}, { [existingServer.id]: existingServer });
 
       importServersFromFile.mockResolvedValue([existingServerData, newServer]);
 

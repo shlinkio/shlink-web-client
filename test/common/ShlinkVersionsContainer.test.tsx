@@ -21,7 +21,7 @@ describe('<ShlinkVersionsContainer />', () => {
     [fromPartial<SelectedServer>({}), false],
     [fromPartial<ReachableServer>({ version: '1.0.0' }), true],
   ])('renders proper col classes based on sidebar status', async (selectedServer, shouldAddMargin) => {
-    const { container } = setUp(selectedServer);
+    const { container } = await setUp(selectedServer);
 
     if (shouldAddMargin) {
       await expect.element(container.firstChild as HTMLElement).toHaveClass('md:ml-(--aside-menu-width)');

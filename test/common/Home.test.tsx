@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
-import { page } from 'vitest/browser';
 import { Home } from '../../src/common/Home';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -21,7 +20,7 @@ describe('<Home />', () => {
     checkAccessibility(setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) })));
 
   it('renders title', async () => {
-    setUp();
+    const page = await setUp();
     await expect.element(page.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
   });
 
@@ -36,7 +35,7 @@ describe('<Home />', () => {
     ],
     [{}, 2],
   ])('shows link to create or set-up server only when no servers exist', async (servers, expectedServers) => {
-    setUp(servers);
+    const page = await setUp(servers);
     const links = page.getByRole('link').elements();
 
     expect(links).toHaveLength(expectedServers);

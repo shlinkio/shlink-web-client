@@ -1,4 +1,3 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../../src/servers/data';
@@ -46,9 +45,9 @@ describe('<ServerError />', () => {
       },
     ],
   ])('renders expected information based on provided server type', async (selectedServer, { found, notFound }) => {
-    setUp(selectedServer);
+    const screen = await setUp(selectedServer);
 
     await Promise.all(found.map((text) => expect.element(screen.getByText(text)).toBeInTheDocument()));
-    await Promise.all(notFound.map((text) => expect.element(screen.queryByText(text)).not.toBeInTheDocument()));
+    await Promise.all(notFound.map((text) => expect.element(screen.getByText(text)).not.toBeInTheDocument()));
   });
 });

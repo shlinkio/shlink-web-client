@@ -2,15 +2,14 @@ import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import type { ReactNode } from 'react';
 import { Router } from 'react-router';
-import { page } from 'vitest/browser';
 import { DeleteServerButton } from '../../src/servers/DeleteServerButton';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithStore } from '../__helpers__/setUpTest';
 
 describe('<DeleteServerButton />', () => {
-  const setUp = (children: ReactNode = 'Remove this server') => {
+  const setUp = async (children: ReactNode = 'Remove this server') => {
     const history = createMemoryHistory({ initialEntries: ['/foo'] });
-    const result = renderWithStore(
+    const result = await renderWithStore(
       <Router location={history.location} navigator={history}>
         <DeleteServerButton server={fromPartial({})}>{children}</DeleteServerButton>
       </Router>,
@@ -22,14 +21,14 @@ describe('<DeleteServerButton />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp('Delete me')));
 
   it.each([['Foo bar'], ['baz'], ['something']])('renders expected content', async (children) => {
-    const { container } = setUp(children);
+    const { container } = await setUp(children);
 
     expect(container.firstChild).toBeTruthy();
     expect(container.firstChild).toMatchSnapshot();
   });
 
   it('displays modal when button is clicked', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     await expect.element(page.getByText(/Are you sure you want to remove/)).not.toBeInTheDocument();
     await user.click(page.getByText('Remove this server'));
@@ -37,7 +36,7 @@ describe('<DeleteServerButton />', () => {
   });
 
   it('navigates to home when deletion is confirmed', async () => {
-    const { user, history } = setUp();
+    const { user, history, ...page } = await setUp();
 
     // Open modal
     await user.click(page.getByText('Remove this server'));
