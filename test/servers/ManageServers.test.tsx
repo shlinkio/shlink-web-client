@@ -32,43 +32,44 @@ describe('<ManageServers />', () => {
     ));
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
-    const { user, ...page } = await setUp({
+    const { user, ...screen } = await setUp({
       foo: createServerMock('foo'),
       bar: createServerMock('bar'),
       baz: createServerMock('baz'),
     });
     const search = async (searchTerm: string) => {
-      await user.clear(page.getByPlaceholder('Search...'));
-      await user.type(page.getByPlaceholder('Search...'), searchTerm);
+      await user.clear(screen.getByPlaceholder('Search...'));
+      await user.type(screen.getByPlaceholder('Search...'), searchTerm);
     };
     // Add one for the header row
-    const expectRows = (amount: number) => expect.poll(() => page.getByRole('row').elements()).toHaveLength(amount + 1);
+    const expectRows = (amount: number) =>
+      expect.poll(() => screen.getByRole('row').elements()).toHaveLength(amount + 1);
 
     await expectRows(3);
-    await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('foo');
     await expectRows(1);
-    await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('Ba');
     await expectRows(2);
-    await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('invalid');
     await expectRows(1);
-    await expect.element(page.getByText('No servers found.')).toBeInTheDocument();
+    await expect.element(screen.getByText('No servers found.')).toBeInTheDocument();
   });
 
   it.each([[createServerMock('foo')], [createServerMock('foo', true)]])(
     'shows different amount of columns if there are at least one auto-connect server',
     async (server) => {
-      const page = await setUp({ server });
+      const screen = await setUp({ server });
 
       if (server.autoConnect) {
-        await expect.element(page.getByTestId('auto-connect')).toBeInTheDocument();
+        await expect.element(screen.getByTestId('auto-connect')).toBeInTheDocument();
       } else {
-        await expect.element(page.getByTestId('auto-connect')).not.toBeInTheDocument();
+        await expect.element(screen.getByTestId('auto-connect')).not.toBeInTheDocument();
       }
     },
   );
@@ -77,30 +78,30 @@ describe('<ManageServers />', () => {
     [{}, 0],
     [{ foo: createServerMock('foo') }, 1],
   ])('shows export button if the list of servers is not empty', async (servers, expectedButtons) => {
-    const page = await setUp(servers);
-    expect(page.getByRole('button', { name: 'Export servers' }).elements()).toHaveLength(expectedButtons);
+    const screen = await setUp(servers);
+    expect(screen.getByRole('button', { name: 'Export servers' }).elements()).toHaveLength(expectedButtons);
   });
 
   it('allows exporting servers when clicking on button', async () => {
-    const { user, ...page } = await setUp({ foo: createServerMock('foo') });
+    const { user, ...screen } = await setUp({ foo: createServerMock('foo') });
 
     expect(exportServers).not.toHaveBeenCalled();
-    await user.click(page.getByRole('button', { name: 'Export servers' }));
+    await user.click(screen.getByRole('button', { name: 'Export servers' }));
     expect(exportServers).toHaveBeenCalled();
   });
 
   it.each([[true], [false]])('shows an error message if an error occurs while importing servers', async (hasError) => {
     useTimeoutToggle.mockReturnValue([hasError, vi.fn()]);
 
-    const page = await setUp({ foo: createServerMock('foo') });
+    const screen = await setUp({ foo: createServerMock('foo') });
 
     if (hasError) {
       await expect
-        .element(page.getByText('The servers could not be imported. Make sure the format is correct.'))
+        .element(screen.getByText('The servers could not be imported. Make sure the format is correct.'))
         .toBeInTheDocument();
     } else {
       await expect
-        .element(page.getByText('The servers could not be imported. Make sure the format is correct.'))
+        .element(screen.getByText('The servers could not be imported. Make sure the format is correct.'))
         .not.toBeInTheDocument();
     }
   });

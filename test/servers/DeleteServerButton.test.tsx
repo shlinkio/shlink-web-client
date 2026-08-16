@@ -28,21 +28,21 @@ describe('<DeleteServerButton />', () => {
   });
 
   it('displays modal when button is clicked', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
-    await expect.element(page.getByText(/Are you sure you want to remove/)).not.toBeInTheDocument();
-    await user.click(page.getByText('Remove this server'));
-    await expect.element(page.getByText(/Are you sure you want to remove/)).toBeInTheDocument();
+    await expect.element(screen.getByText(/Are you sure you want to remove/)).not.toBeInTheDocument();
+    await user.click(screen.getByText('Remove this server'));
+    await expect.element(screen.getByText(/Are you sure you want to remove/)).toBeInTheDocument();
   });
 
   it('navigates to home when deletion is confirmed', async () => {
-    const { user, history, ...page } = await setUp();
+    const { user, history, ...screen } = await setUp();
 
     // Open modal
-    await user.click(page.getByText('Remove this server'));
+    await user.click(screen.getByText('Remove this server'));
 
     expect(history.location.pathname).toEqual('/foo');
-    await user.click(page.getByRole('button', { name: 'Delete' }));
+    await user.click(screen.getByRole('button', { name: 'Delete' }));
     expect(history.location.pathname).toEqual('/');
   });
 });

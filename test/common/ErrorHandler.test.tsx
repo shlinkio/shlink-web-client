@@ -26,25 +26,25 @@ describe('<ErrorHandler />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders children when no error has occurred', async () => {
-    const page = await setUp(<span>Foo</span>);
+    const screen = await setUp(<span>Foo</span>);
 
-    await expect.element(page.getByText('Foo')).toBeInTheDocument();
-    await expect.element(page.getByText('Oops! This is awkward :S')).not.toBeInTheDocument();
-    await expect.element(page.getByRole('button')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Foo')).toBeInTheDocument();
+    await expect.element(screen.getByText('Oops! This is awkward :S')).not.toBeInTheDocument();
+    await expect.element(screen.getByRole('button')).not.toBeInTheDocument();
   });
 
   it('renders error page when error has occurred', async () => {
-    const page = await setUp(<ComponentWithError />);
+    const screen = await setUp(<ComponentWithError />);
 
-    await expect.element(page.getByText('Oops! This is awkward :S')).toBeInTheDocument();
-    await expect.element(page.getByRole('button')).toBeInTheDocument();
+    await expect.element(screen.getByText('Oops! This is awkward :S')).toBeInTheDocument();
+    await expect.element(screen.getByRole('button')).toBeInTheDocument();
   });
 
   it('reloads page on button click', async () => {
-    const { user, ...page } = await setUp(<ComponentWithError />);
+    const { user, ...screen } = await setUp(<ComponentWithError />);
 
     expect(reload).not.toHaveBeenCalled();
-    await user.click(page.getByRole('button'));
+    await user.click(screen.getByRole('button'));
     expect(reload).toHaveBeenCalled();
   });
 });

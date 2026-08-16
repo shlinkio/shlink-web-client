@@ -21,50 +21,50 @@ describe('<ManageServersRowDropdown />', () => {
       },
     );
   };
-  const toggleDropdown = (user: UserEvent, page: RenderResult) => user.click(page.getByRole('button'));
+  const toggleDropdown = (user: UserEvent, screen: RenderResult) => user.click(screen.getByRole('button'));
 
   it('passes a11y checks', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
     // Open menu
-    await toggleDropdown(user, page);
+    await toggleDropdown(user, screen);
 
-    return checkAccessibility(page);
+    return checkAccessibility(screen);
   });
 
   it('renders expected amount of dropdown items', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
-    await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
-    await toggleDropdown(user, page);
-    await expect.element(page.getByRole('menu')).toBeInTheDocument();
+    await expect.element(screen.getByRole('menu')).not.toBeInTheDocument();
+    await toggleDropdown(user, screen);
+    await expect.element(screen.getByRole('menu')).toBeInTheDocument();
 
-    expect(page.getByRole('menuitem').elements()).toHaveLength(4);
+    expect(screen.getByRole('menuitem').elements()).toHaveLength(4);
     await expect
-      .element(page.getByRole('menuitem', { name: 'Connect', exact: true }))
+      .element(screen.getByRole('menuitem', { name: 'Connect', exact: true }))
       .toHaveAttribute('href', '/server/abc123');
     await expect
-      .element(page.getByRole('menuitem', { name: 'Edit server' }))
+      .element(screen.getByRole('menuitem', { name: 'Edit server' }))
       .toHaveAttribute('href', '/server/abc123/edit');
   });
 
   it.each([true, false])('allows toggling auto-connect', async (autoConnect) => {
-    const { user, store, ...page } = await setUp(autoConnect);
+    const { user, store, ...screen } = await setUp(autoConnect);
 
-    await toggleDropdown(user, page);
-    await user.click(page.getByRole('menuitem', { name: autoConnect ? 'Do not auto-connect' : 'Auto-connect' }));
+    await toggleDropdown(user, screen);
+    await user.click(screen.getByRole('menuitem', { name: autoConnect ? 'Do not auto-connect' : 'Auto-connect' }));
 
     expect(Object.values(store.getState().servers)[0].autoConnect).toEqual(!autoConnect);
   });
 
   it('renders deletion modal', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
-    expect(page.getByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('dialog')).not.toBeInTheDocument();
 
-    await toggleDropdown(user, page);
-    await user.click(page.getByRole('menuitem', { name: 'Remove server' }));
+    await toggleDropdown(user, screen);
+    await user.click(screen.getByRole('menuitem', { name: 'Remove server' }));
 
-    await expect.element(page.getByRole('dialog')).toBeInTheDocument();
+    await expect.element(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
   it.each([[true], [false]])('renders expected size and icon', async (autoConnect) => {

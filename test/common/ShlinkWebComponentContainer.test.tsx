@@ -25,10 +25,10 @@ describe('<ShlinkWebComponentContainer />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 
   it('shows loading indicator while loading server', async () => {
-    const page = await setUp(null);
+    const screen = await setUp(null);
 
-    await expect.element(page.getByText('Loading...')).toBeInTheDocument();
-    await expect.element(page.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Loading...')).toBeInTheDocument();
+    await expect.element(screen.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -38,17 +38,17 @@ describe('<ShlinkWebComponentContainer />', () => {
       /Could not connect to this Shlink server/,
     ],
   ])('shows error for non reachable servers', async (selectedServer, expectedError) => {
-    const page = await setUp(selectedServer);
+    const screen = await setUp(selectedServer);
 
-    await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
-    await expect.element(page.getByText(expectedError)).toBeInTheDocument();
-    await expect.element(page.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Loading...')).not.toBeInTheDocument();
+    await expect.element(screen.getByText(expectedError)).toBeInTheDocument();
+    await expect.element(screen.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
   });
 
   it('renders ShlinkWebComponent for reachable servers', async () => {
-    const page = await setUp(fromPartial({ version: '3.0.0' }));
+    const screen = await setUp(fromPartial({ version: '3.0.0' }));
 
-    await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
-    await expect.element(page.getByText('ShlinkWebComponent')).toBeInTheDocument();
+    await expect.element(screen.getByText('Loading...')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('ShlinkWebComponent')).toBeInTheDocument();
   });
 });

@@ -49,8 +49,8 @@ describe('<App />', () => {
     ['/server/def456/bar', 'ShlinkWebComponentContainer'],
     ['/other', 'Oops! We could not find requested route.'],
   ])('renders expected route', async (activeRoute, expectedComponent) => {
-    const page = await setUp(activeRoute);
-    await expect.element(page.getByText(expectedComponent)).toBeInTheDocument();
+    const screen = await setUp(activeRoute);
+    await expect.element(screen.getByText(expectedComponent)).toBeInTheDocument();
   });
 
   it.each([
@@ -58,8 +58,8 @@ describe('<App />', () => {
     ['/bar', false],
     ['/', true],
   ])('renders expected classes on shlink-wrapper based on current pathname', async (pathname, isFlex) => {
-    const page = await setUp(pathname);
-    const shlinkWrapper = page.getByTestId('shlink-wrapper');
+    const screen = await setUp(pathname);
+    const shlinkWrapper = screen.getByTestId('shlink-wrapper');
 
     if (isFlex) {
       await expect.element(shlinkWrapper).toHaveClass('flex');

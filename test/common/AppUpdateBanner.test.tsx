@@ -10,28 +10,28 @@ describe('<AppUpdateBanner />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders initial state', async () => {
-    const page = await setUp();
+    const screen = await setUp();
 
-    await expect.element(page.getByRole('heading')).toHaveTextContent('This app has just been updated!');
-    await expect.element(page.getByText('Restarting...')).not.toBeInTheDocument();
-    await expect.element(page.getByText('Restart now')).not.toHaveAttribute('disabled');
+    await expect.element(screen.getByRole('heading')).toHaveTextContent('This app has just been updated!');
+    await expect.element(screen.getByText('Restarting...')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Restart now')).not.toHaveAttribute('disabled');
   });
 
   it('invokes toggle when alert is closed', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
     expect(onClose).not.toHaveBeenCalled();
-    await user.click(page.getByLabelText('Close'));
+    await user.click(screen.getByLabelText('Close'));
     expect(onClose).toHaveBeenCalled();
   });
 
   it('triggers the update when clicking the button', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
     expect(forceUpdate).not.toHaveBeenCalled();
-    await user.click(page.getByText(/^Restart now/));
+    await user.click(screen.getByText(/^Restart now/));
     expect(forceUpdate).toHaveBeenCalled();
-    await expect.element(page.getByText('Restarting...')).toBeInTheDocument();
-    await expect.element(page.getByText(/^Restart now/)).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Restarting...')).toBeInTheDocument();
+    await expect.element(screen.getByText(/^Restart now/)).not.toBeInTheDocument();
   });
 });

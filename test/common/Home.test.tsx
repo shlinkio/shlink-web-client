@@ -20,8 +20,8 @@ describe('<Home />', () => {
     checkAccessibility(setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) })));
 
   it('renders title', async () => {
-    const page = await setUp();
-    await expect.element(page.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
+    const screen = await setUp();
+    await expect.element(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
   });
 
   it.each([
@@ -35,16 +35,16 @@ describe('<Home />', () => {
     ],
     [{}, 2],
   ])('shows link to create or set-up server only when no servers exist', async (servers, expectedServers) => {
-    const page = await setUp(servers);
-    const links = page.getByRole('link').elements();
+    const screen = await setUp(servers);
+    const links = screen.getByRole('link').elements();
 
     expect(links).toHaveLength(expectedServers);
 
     if (Object.keys(servers).length === 0) {
       await expect
-        .element(page.getByText('This application will help you manage your Shlink servers.'))
+        .element(screen.getByText('This application will help you manage your Shlink servers.'))
         .toBeInTheDocument();
-      await expect.element(page.getByText('Learn more about Shlink')).toBeInTheDocument();
+      await expect.element(screen.getByText('Learn more about Shlink')).toBeInTheDocument();
     }
   });
 });

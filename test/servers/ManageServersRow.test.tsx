@@ -27,13 +27,13 @@ describe('<ManageServersRow />', () => {
     [true, 4],
     [false, 3],
   ])('renders expected amount of columns', async (hasAutoConnect, expectedCols) => {
-    const page = await setUp(hasAutoConnect);
-    expect(page.getByRole('cell').elements()).toHaveLength(expectedCols);
+    const screen = await setUp(hasAutoConnect);
+    expect(screen.getByRole('cell').elements()).toHaveLength(expectedCols);
   });
 
   it('renders an options dropdown', async () => {
-    const page = await setUp();
-    await expect.element(page.getByRole('button', { name: 'Options' })).toBeInTheDocument();
+    const screen = await setUp();
+    await expect.element(screen.getByRole('button', { name: 'Options' })).toBeInTheDocument();
   });
 
   it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', async (autoConnect) => {
@@ -42,11 +42,11 @@ describe('<ManageServersRow />', () => {
   });
 
   it('renders server props where appropriate', async () => {
-    const page = await setUp();
-    const link = page.getByRole('link');
+    const screen = await setUp();
+    const link = screen.getByRole('link');
 
     await expect.element(link).toHaveAttribute('href', `/server/${server.id}`);
     await expect.element(link).toHaveTextContent(server.name);
-    await expect.element(page.getByText(server.url)).toBeInTheDocument();
+    await expect.element(screen.getByText(server.url)).toBeInTheDocument();
   });
 });

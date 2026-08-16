@@ -24,18 +24,18 @@ describe('<ServersDropdown />', () => {
     );
 
   it('passes a11y checks', async () => {
-    const { user, container, ...page } = await setUp();
+    const { user, container, ...screen } = await setUp();
     // Open menu
-    await user.click(page.getByText('Servers'));
+    await user.click(screen.getByText('Servers'));
 
     return checkAccessibility({ container });
   });
 
   it('contains the list of servers and the "mange servers" button', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
-    await user.click(page.getByText('Servers'));
-    const items = page.getByRole('menuitem').elements();
+    await user.click(screen.getByText('Servers'));
+    const items = screen.getByRole('menuitem').elements();
 
     // We have to add two for the "Manage servers" and the "Settings" menu items
     expect(items).toHaveLength(Object.values(fallbackServers).length + 2);
@@ -46,23 +46,23 @@ describe('<ServersDropdown />', () => {
   });
 
   it('contains a toggle with proper text', async () => {
-    const page = await setUp();
-    await expect.element(page.getByRole('button')).toHaveTextContent('Servers');
+    const screen = await setUp();
+    await expect.element(screen.getByRole('button')).toHaveTextContent('Servers');
   });
 
   it('contains a button to manage servers', async () => {
-    const { user, ...page } = await setUp();
+    const { user, ...screen } = await setUp();
 
-    await user.click(page.getByText('Servers'));
+    await user.click(screen.getByText('Servers'));
     await expect
-      .element(page.getByRole('menuitem', { name: 'Manage servers' }))
+      .element(screen.getByRole('menuitem', { name: 'Manage servers' }))
       .toHaveAttribute('href', '/manage-servers');
   });
 
   it('shows only create link when no servers exist yet', async () => {
-    const { user, ...page } = await setUp({});
+    const { user, ...screen } = await setUp({});
 
-    await user.click(page.getByText('Servers'));
-    await expect.element(page.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();
+    await user.click(screen.getByText('Servers'));
+    await expect.element(screen.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();
   });
 });

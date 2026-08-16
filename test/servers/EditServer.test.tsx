@@ -35,31 +35,31 @@ describe('<EditServer />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders nothing if selected server is not reachable', async () => {
-    const page = await setUp(fromPartial<SelectedServer>({}));
+    const screen = await setUp(fromPartial<SelectedServer>({}));
 
-    await expect.element(page.getByText('Edit')).not.toBeInTheDocument();
-    await expect.element(page.getByText('Cancel')).not.toBeInTheDocument();
-    await expect.element(page.getByText('Save')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Edit')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Cancel')).not.toBeInTheDocument();
+    await expect.element(screen.getByText('Save')).not.toBeInTheDocument();
   });
 
   it('renders server title', async () => {
-    const page = await setUp();
-    expect(page.getByText(`Edit "${defaultSelectedServer.name}"`)).toBeInTheDocument();
+    const screen = await setUp();
+    expect(screen.getByText(`Edit "${defaultSelectedServer.name}"`)).toBeInTheDocument();
   });
 
   it('display the server info in the form components', async () => {
-    const page = await setUp();
+    const screen = await setUp();
 
-    await expect.element(page.getByLabelText(/^Name/)).toBeInTheDocument();
-    await expect.element(page.getByLabelText(/^URL/)).toBeInTheDocument();
-    await expect.element(page.getByLabelText(/^API key/)).toBeInTheDocument();
+    await expect.element(screen.getByLabelText(/^Name/)).toBeInTheDocument();
+    await expect.element(screen.getByLabelText(/^URL/)).toBeInTheDocument();
+    await expect.element(screen.getByLabelText(/^API key/)).toBeInTheDocument();
   });
 
   it('edits server and redirects to it when form is submitted', async () => {
-    const { user, history, store, ...page } = await setUp();
+    const { user, history, store, ...screen } = await setUp();
 
-    await user.type(page.getByLabelText(/^Name/), ' edited');
-    await user.click(page.getByRole('button', { name: 'Save' }));
+    await user.type(screen.getByLabelText(/^Name/), ' edited');
+    await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
       expect.objectContaining({
@@ -74,11 +74,11 @@ describe('<EditServer />', () => {
   it.each([{ forwardCredentials: true }, { forwardCredentials: false }])(
     'edits advanced options - forward credentials',
     async ({ forwardCredentials }) => {
-      const { user, store, ...page } = await setUp({ ...defaultSelectedServer, forwardCredentials });
+      const { user, store, ...screen } = await setUp({ ...defaultSelectedServer, forwardCredentials });
 
-      await user.click(page.getByText('Advanced options'));
-      await user.click(page.getByLabelText('Forward credentials to this server on every request.'));
-      await user.click(page.getByRole('button', { name: 'Save' }));
+      await user.click(screen.getByText('Advanced options'));
+      await user.click(screen.getByLabelText('Forward credentials to this server on every request.'));
+      await user.click(screen.getByRole('button', { name: 'Save' }));
 
       expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
         expect.objectContaining({
