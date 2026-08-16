@@ -20,13 +20,13 @@ describe('<ShlinkVersionsContainer />', () => {
     [null, false],
     [fromPartial<SelectedServer>({}), false],
     [fromPartial<ReachableServer>({ version: '1.0.0' }), true],
-  ])('renders proper col classes based on sidebar status', (selectedServer, shouldAddMargin) => {
+  ])('renders proper col classes based on sidebar status', async (selectedServer, shouldAddMargin) => {
     const { container } = setUp(selectedServer);
 
     if (shouldAddMargin) {
-      expect(container.firstChild).toHaveClass('md:ml-(--aside-menu-width)');
+      await expect.element(container.firstChild as HTMLElement).toHaveClass('md:ml-(--aside-menu-width)');
     } else {
-      expect(container.firstChild).not.toHaveClass('md:ml-(--aside-menu-width)');
+      await expect.element(container.firstChild as HTMLElement).not.toHaveClass('md:ml-(--aside-menu-width)');
     }
   });
 });

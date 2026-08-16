@@ -45,10 +45,10 @@ describe('<ServerError />', () => {
         notFound: ['Could not find this Shlink server.'],
       },
     ],
-  ])('renders expected information based on provided server type', (selectedServer, { found, notFound }) => {
+  ])('renders expected information based on provided server type', async (selectedServer, { found, notFound }) => {
     setUp(selectedServer);
 
-    found.forEach((text) => expect(screen.getByText(text)).toBeInTheDocument());
-    notFound.forEach((text) => expect(screen.queryByText(text)).not.toBeInTheDocument());
+    await Promise.all(found.map((text) => expect.element(screen.getByText(text)).toBeInTheDocument()));
+    await Promise.all(notFound.map((text) => expect.element(screen.queryByText(text)).not.toBeInTheDocument()));
   });
 });

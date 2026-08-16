@@ -26,14 +26,14 @@ describe('<ServersListGroup />', () => {
     expect(screen.queryAllByRole('link')).toHaveLength(servers.length);
   });
 
-  it.each([[true], [false], [undefined]])('renders proper classes for embedded', (borderless) => {
+  it.each([[true], [false], [undefined]])('renders proper classes for embedded', async (borderless) => {
     setUp({ servers, borderless });
     const list = screen.getByTestId('list');
 
     if (!borderless) {
-      expect(list).toHaveClass('border-y');
+      await expect.element(list).toHaveClass('border-y');
     } else {
-      expect(list).not.toHaveClass('border-y');
+      await expect.element(list).not.toHaveClass('border-y');
     }
   });
 });

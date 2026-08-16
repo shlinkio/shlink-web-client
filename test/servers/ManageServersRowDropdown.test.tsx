@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import type { UserEvent } from 'vitest/browser';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
@@ -21,7 +21,7 @@ describe('<ManageServersRowDropdown />', () => {
       },
     );
   };
-  const toggleDropdown = (user: UserEvent) => user.click(screen.getByRole('button'));
+  const toggleDropdown = (user: UserEvent) => user.click(page.getByRole('button'));
 
   it('passes a11y checks', async () => {
     const { user, container } = setUp();
@@ -34,20 +34,24 @@ describe('<ManageServersRowDropdown />', () => {
   it('renders expected amount of dropdown items', async () => {
     const { user } = setUp();
 
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    await expect.element(page.getByRole('menu')).not.toBeInTheDocument();
     await toggleDropdown(user);
-    expect(screen.getByRole('menu')).toBeInTheDocument();
+    await expect.element(page.getByRole('menu')).toBeInTheDocument();
 
-    expect(screen.getAllByRole('menuitem')).toHaveLength(4);
-    expect(screen.getByRole('menuitem', { name: 'Connect' })).toHaveAttribute('href', '/server/abc123');
-    expect(screen.getByRole('menuitem', { name: 'Edit server' })).toHaveAttribute('href', '/server/abc123/edit');
+    expect(page.getByRole('menuitem').elements()).toHaveLength(4);
+    await expect
+      .element(page.getByRole('menuitem', { name: 'Connect', exact: true }))
+      .toHaveAttribute('href', '/server/abc123');
+    await expect
+      .element(page.getByRole('menuitem', { name: 'Edit server' }))
+      .toHaveAttribute('href', '/server/abc123/edit');
   });
 
   it.each([true, false])('allows toggling auto-connect', async (autoConnect) => {
     const { user, store } = setUp(autoConnect);
 
     await toggleDropdown(user);
-    await user.click(screen.getByRole('menuitem', { name: autoConnect ? 'Do not auto-connect' : 'Auto-connect' }));
+    await user.click(page.getByRole('menuitem', { name: autoConnect ? 'Do not auto-connect' : 'Auto-connect' }));
 
     expect(Object.values(store.getState().servers)[0].autoConnect).toEqual(!autoConnect);
   });
@@ -55,12 +59,12 @@ describe('<ManageServersRowDropdown />', () => {
   it('renders deletion modal', async () => {
     const { user } = setUp();
 
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(page.getByRole('dialog')).not.toBeInTheDocument();
 
     await toggleDropdown(user);
-    await user.click(screen.getByRole('menuitem', { name: 'Remove server' }));
+    await user.click(page.getByRole('menuitem', { name: 'Remove server' }));
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await expect.element(page.getByRole('dialog')).toBeInTheDocument();
   });
 
   it.each([[true], [false]])('renders expected size and icon', (autoConnect) => {

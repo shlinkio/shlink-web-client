@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import { ShlinkWebComponentContainer } from '../../src/common/ShlinkWebComponentContainer';
 import type { NonReachableServer, NotFoundServer, SelectedServer } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -25,11 +25,11 @@ describe('<ShlinkWebComponentContainer />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp(fromPartial({ version: '3.0.0' }))));
 
-  it('shows loading indicator while loading server', () => {
+  it('shows loading indicator while loading server', async () => {
     setUp(null);
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
-    expect(screen.queryByText('ShlinkWebComponent')).not.toBeInTheDocument();
+    await expect.element(page.getByText('Loading...')).toBeInTheDocument();
+    await expect.element(page.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -38,18 +38,18 @@ describe('<ShlinkWebComponentContainer />', () => {
       fromPartial<NonReachableServer>({ id: 'foo', serverNotReachable: true }),
       /Could not connect to this Shlink server/,
     ],
-  ])('shows error for non reachable servers', (selectedServer, expectedError) => {
+  ])('shows error for non reachable servers', async (selectedServer, expectedError) => {
     setUp(selectedServer);
 
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-    expect(screen.getByText(expectedError)).toBeInTheDocument();
-    expect(screen.queryByText('ShlinkWebComponent')).not.toBeInTheDocument();
+    await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
+    await expect.element(page.getByText(expectedError)).toBeInTheDocument();
+    await expect.element(page.getByText('ShlinkWebComponent')).not.toBeInTheDocument();
   });
 
-  it('renders ShlinkWebComponent for reachable servers', () => {
+  it('renders ShlinkWebComponent for reachable servers', async () => {
     setUp(fromPartial({ version: '3.0.0' }));
 
-    expect(screen.queryByText('Loading...')).not.toBeInTheDocument();
-    expect(screen.getByText('ShlinkWebComponent')).toBeInTheDocument();
+    await expect.element(page.getByText('Loading...')).not.toBeInTheDocument();
+    await expect.element(page.getByText('ShlinkWebComponent')).toBeInTheDocument();
   });
 });

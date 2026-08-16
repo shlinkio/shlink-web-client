@@ -13,22 +13,22 @@ describe('<ShlinkLogo />', () => {
     [undefined, brandColor()],
     ['red', 'red'],
     ['white', 'white'],
-  ])('renders expected color', (color, expectedColor) => {
+  ])('renders expected color', async (color, expectedColor) => {
     const { container } = setUp({ color });
-    expect(container.querySelector('g')).toHaveAttribute('fill', expectedColor);
+    await expect.element(container.querySelector('g')).toHaveAttribute('fill', expectedColor);
   });
 
   it.each([
     [undefined, undefined],
     ['foo', 'foo'],
     ['bar', 'bar'],
-  ])('renders expected class', (className, expectedClassName) => {
+  ])('renders expected class', async (className, expectedClassName) => {
     const { container } = setUp({ className });
 
     if (expectedClassName) {
-      expect(container.firstChild).toHaveAttribute('class', expectedClassName);
+      await expect.element(container.firstChild as HTMLElement).toHaveAttribute('class', expectedClassName);
     } else {
-      expect(container.firstChild).not.toHaveAttribute('class');
+      await expect.element(container.firstChild as HTMLElement).not.toHaveAttribute('class');
     }
   });
 });

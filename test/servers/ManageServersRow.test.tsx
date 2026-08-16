@@ -1,6 +1,6 @@
 import { Table } from '@shlinkio/shlink-frontend-kit';
-import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRow } from '../../src/servers/ManageServersRow';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -29,12 +29,12 @@ describe('<ManageServersRow />', () => {
     [false, 3],
   ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
     setUp(hasAutoConnect);
-    expect(screen.getAllByRole('cell')).toHaveLength(expectedCols);
+    expect(page.getByRole('cell').elements()).toHaveLength(expectedCols);
   });
 
-  it('renders an options dropdown', () => {
+  it('renders an options dropdown', async () => {
     setUp();
-    expect(screen.getByRole('button', { name: 'Options' })).toBeInTheDocument();
+    await expect.element(page.getByRole('button', { name: 'Options' })).toBeInTheDocument();
   });
 
   it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
@@ -42,13 +42,13 @@ describe('<ManageServersRow />', () => {
     expect(container).toMatchSnapshot();
   });
 
-  it('renders server props where appropriate', () => {
+  it('renders server props where appropriate', async () => {
     setUp();
 
-    const link = screen.getByRole('link');
+    const link = page.getByRole('link');
 
-    expect(link).toHaveAttribute('href', `/server/${server.id}`);
-    expect(link).toHaveTextContent(server.name);
-    expect(screen.getByText(server.url)).toBeInTheDocument();
+    await expect.element(link).toHaveAttribute('href', `/server/${server.id}`);
+    await expect.element(link).toHaveTextContent(server.name);
+    await expect.element(page.getByText(server.url)).toBeInTheDocument();
   });
 });

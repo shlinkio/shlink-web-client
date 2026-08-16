@@ -39,6 +39,9 @@ export default defineConfig({
 
   // Vitest config
   test: {
+    globals: true,
+    clearMocks: true,
+
     // Run tests in an actual browser
     browser: {
       provider: playwright({
@@ -50,8 +53,6 @@ export default defineConfig({
       screenshotFailures: false,
       instances: [{ browser: 'chromium' }],
     },
-    globals: true,
-    setupFiles: './config/test/setupTests.ts',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'text-summary', 'html', 'clover'],

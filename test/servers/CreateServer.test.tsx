@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
+import { page } from 'vitest/browser';
 import { CreateServer } from '../../src/servers/CreateServer';
 import type { ServersMap } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -41,35 +42,39 @@ describe('<CreateServer />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('shows success message when imported is true', () => {
+  it('shows success message when imported is true', async () => {
     setUp({ serversImported: true });
 
-    expect(screen.getByText('Servers properly imported. You can now select one from the list :)')).toBeInTheDocument();
-    expect(
-      screen.queryByText('The servers could not be imported. Make sure the format is correct.'),
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('ImportServersBtn')).not.toBeInTheDocument();
+    await expect
+      .element(page.getByText('Servers properly imported. You can now select one from the list :)'))
+      .toBeInTheDocument();
+    await expect
+      .element(page.getByText('The servers could not be imported. Make sure the format is correct.'))
+      .not.toBeInTheDocument();
+    await expect.element(page.getByText('ImportServersBtn')).not.toBeInTheDocument();
   });
 
-  it('shows error message when import failed', () => {
+  it('shows error message when import failed', async () => {
     setUp({ importFailed: true });
 
-    expect(
-      screen.queryByText('Servers properly imported. You can now select one from the list :)'),
-    ).not.toBeInTheDocument();
-    expect(screen.getByText('The servers could not be imported. Make sure the format is correct.')).toBeInTheDocument();
+    await expect
+      .element(page.getByText('Servers properly imported. You can now select one from the list :)'))
+      .not.toBeInTheDocument();
+    await expect
+      .element(page.getByText('The servers could not be imported. Make sure the format is correct.'))
+      .toBeInTheDocument();
   });
 
   it('creates server data when form is submitted', async () => {
     const { user, history, store } = setUp();
     const expectedServerId = 'the_name-the_url.com';
 
-    await user.type(screen.getByLabelText(/^Name/), 'the_name');
-    await user.type(screen.getByLabelText(/^URL/), 'https://the_url.com');
-    await user.type(screen.getByLabelText(/^API key/), 'the_api_key');
+    await user.type(page.getByLabelText(/^Name/), 'the_name');
+    await user.type(page.getByLabelText(/^URL/), 'https://the_url.com');
+    await user.type(page.getByLabelText(/^API key/), 'the_api_key');
 
     expect(store.getState().servers[expectedServerId]).not.toBeDefined();
-    fireEvent.submit(screen.getByRole('form'));
+    fireEvent.submit(page.getByTestId('server-form').element());
     expect(store.getState().servers[expectedServerId]).toEqual(
       expect.objectContaining({
         id: expectedServerId,
@@ -80,20 +85,20 @@ describe('<CreateServer />', () => {
     );
 
     expect(history.location.pathname).toEqual(`/server/${expectedServerId}`);
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('displays dialog when trying to create a duplicated server', async () => {
     const { user, history } = setUp();
 
-    await user.type(screen.getByLabelText(/^Name/), 'the_name');
-    await user.type(screen.getByLabelText(/^URL/), 'https://existing_url.com');
-    await user.type(screen.getByLabelText(/^API key/), 'existing_api_key');
+    await user.type(page.getByLabelText(/^Name/), 'the_name');
+    await user.type(page.getByLabelText(/^URL/), 'https://existing_url.com');
+    await user.type(page.getByLabelText(/^API key/), 'existing_api_key');
 
-    fireEvent.submit(screen.getByRole('form'));
+    fireEvent.submit(page.getByTestId('server-form').element());
 
-    await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
-    await user.click(screen.getByRole('button', { name: 'Discard' }));
+    await waitFor(() => expect(page.getByRole('dialog')).toBeInTheDocument());
+    await user.click(page.getByRole('button', { name: 'Discard' }));
 
     expect(history.location.pathname).toEqual('/foo'); // Goes back to first route from history's initialEntries
   });

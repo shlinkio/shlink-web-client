@@ -1,4 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
+import { page } from 'vitest/browser';
 import { ServerForm } from '../../../src/servers/helpers/ServerForm';
 import { checkAccessibility } from '../../__helpers__/accessibility';
 import { renderWithEvents } from '../../__helpers__/setUpTest';
@@ -9,21 +10,21 @@ describe('<ServerForm />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders inputs', () => {
+  it('renders inputs', async () => {
     setUp();
 
-    expect(screen.getByLabelText(/^Name/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^URL/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^API key/)).toBeInTheDocument();
-    expect(screen.getByText('Something')).toBeInTheDocument();
-    expect(screen.getByText('Advanced options')).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^Name/)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^URL/)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^API key/)).toBeInTheDocument();
+    await expect.element(page.getByText('Something')).toBeInTheDocument();
+    await expect.element(page.getByText('Advanced options')).toBeInTheDocument();
   });
 
   it('invokes submit callback when submit event is triggered', async () => {
     setUp();
 
     expect(onSubmit).not.toHaveBeenCalled();
-    fireEvent.submit(screen.getByRole('form'), { preventDefault: vi.fn() });
+    fireEvent.submit(page.getByTestId('server-form').element(), { preventDefault: vi.fn() });
     expect(onSubmit).toHaveBeenCalled();
   });
 
@@ -31,8 +32,8 @@ describe('<ServerForm />', () => {
     const { user } = setUp();
     const forwardCredentialsLabel = 'Forward credentials to this server on every request.';
 
-    expect(screen.queryByLabelText(forwardCredentialsLabel)).not.toBeInTheDocument();
-    await user.click(screen.getByText('Advanced options'));
-    expect(screen.getByLabelText(forwardCredentialsLabel)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(forwardCredentialsLabel)).not.toBeInTheDocument();
+    await user.click(page.getByText('Advanced options'));
+    await expect.element(page.getByLabelText(forwardCredentialsLabel)).toBeInTheDocument();
   });
 });

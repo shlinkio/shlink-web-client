@@ -13,7 +13,7 @@ describe('context', () => {
     }
 
     it('throws when used outside of ContainerProvider', () => {
-      expect(() => render(<TestComponent name="foo" />)).toThrowError(
+      expect(() => render(<TestComponent name="foo" />)).toThrow(
         'You cannot use "useDependencies" outside of a ContainerProvider',
       );
     });
@@ -25,7 +25,7 @@ describe('context', () => {
             <TestComponent name="foo" />
           </ContainerProvider>,
         ),
-      ).toThrowError('Dependency with name "foo" not found in container');
+      ).toThrow('Dependency with name "foo" not found in container');
     });
 
     it('gets dependency from container', () => {

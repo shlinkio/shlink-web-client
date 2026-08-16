@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import type { ServersMap } from '../../src/servers/data';
 import { ServersDropdown } from '../../src/servers/ServersDropdown';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -27,7 +27,7 @@ describe('<ServersDropdown />', () => {
   it('passes a11y checks', async () => {
     const { user, ...rest } = setUp();
     // Open menu
-    await user.click(screen.getByText('Servers'));
+    await user.click(page.getByText('Servers'));
 
     return checkAccessibility(rest);
   });
@@ -35,33 +35,35 @@ describe('<ServersDropdown />', () => {
   it('contains the list of servers and the "mange servers" button', async () => {
     const { user } = setUp();
 
-    await user.click(screen.getByText('Servers'));
-    const items = screen.getAllByRole('menuitem');
+    await user.click(page.getByText('Servers'));
+    const items = page.getByRole('menuitem').elements();
 
     // We have to add two for the "Manage servers" and the "Settings" menu items
     expect(items).toHaveLength(Object.values(fallbackServers).length + 2);
-    expect(items[1]).toHaveTextContent('foo');
-    expect(items[2]).toHaveTextContent('bar');
-    expect(items[3]).toHaveTextContent('baz');
-    expect(items[4]).toHaveTextContent('Manage servers');
+    await expect.element(items[1]).toHaveTextContent('foo');
+    await expect.element(items[2]).toHaveTextContent('bar');
+    await expect.element(items[3]).toHaveTextContent('baz');
+    await expect.element(items[4]).toHaveTextContent('Manage servers');
   });
 
-  it('contains a toggle with proper text', () => {
+  it('contains a toggle with proper text', async () => {
     setUp();
-    expect(screen.getByRole('button')).toHaveTextContent('Servers');
+    await expect.element(page.getByRole('button')).toHaveTextContent('Servers');
   });
 
   it('contains a button to manage servers', async () => {
     const { user } = setUp();
 
-    await user.click(screen.getByText('Servers'));
-    expect(screen.getByRole('menuitem', { name: 'Manage servers' })).toHaveAttribute('href', '/manage-servers');
+    await user.click(page.getByText('Servers'));
+    await expect
+      .element(page.getByRole('menuitem', { name: 'Manage servers' }))
+      .toHaveAttribute('href', '/manage-servers');
   });
 
   it('shows only create link when no servers exist yet', async () => {
     const { user } = setUp({});
 
-    await user.click(screen.getByText('Servers'));
-    expect(screen.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();
+    await user.click(page.getByText('Servers'));
+    await expect.element(page.getByRole('menuitem', { name: 'Add a server' })).toBeInTheDocument();
   });
 });

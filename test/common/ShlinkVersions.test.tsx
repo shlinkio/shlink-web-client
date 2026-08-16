@@ -19,20 +19,18 @@ describe('<ShlinkVersions />', () => {
     ['not-semver', fromPartial<ReachableServer>({ version: '1.0.0', printableVersion: 'some' }), 'latest', 'some'],
   ])(
     'displays expected versions when selected server is reachable',
-    (clientVersion, selectedServer, expectedClientVersion, expectedServerVersion) => {
+    async (clientVersion, selectedServer, expectedClientVersion, expectedServerVersion) => {
       setUp({ clientVersion, selectedServer });
       const [serverLink, clientLink] = screen.getAllByRole('link');
 
-      expect(serverLink).toHaveAttribute(
-        'href',
-        `https://github.com/shlinkio/shlink/releases/${expectedServerVersion}`,
-      );
-      expect(serverLink).toHaveTextContent(expectedServerVersion);
-      expect(clientLink).toHaveAttribute(
-        'href',
-        `https://github.com/shlinkio/shlink-web-client/releases/${expectedClientVersion}`,
-      );
-      expect(clientLink).toHaveTextContent(expectedClientVersion);
+      await expect
+        .element(serverLink)
+        .toHaveAttribute('href', `https://github.com/shlinkio/shlink/releases/${expectedServerVersion}`);
+      await expect.element(serverLink).toHaveTextContent(expectedServerVersion);
+      await expect
+        .element(clientLink)
+        .toHaveAttribute('href', `https://github.com/shlinkio/shlink-web-client/releases/${expectedClientVersion}`);
+      await expect.element(clientLink).toHaveTextContent(expectedClientVersion);
     },
   );
 
@@ -40,11 +38,13 @@ describe('<ShlinkVersions />', () => {
     ['1.2.3', null],
     ['1.2.3', fromPartial<NotFoundServer>({ serverNotFound: true })],
     ['1.2.3', fromPartial<NonReachableServer>({ serverNotReachable: true })],
-  ])('displays only client version when selected server is not reachable', (clientVersion, selectedServer) => {
+  ])('displays only client version when selected server is not reachable', async (clientVersion, selectedServer) => {
     setUp({ clientVersion, selectedServer });
     const links = screen.getAllByRole('link');
 
     expect(links).toHaveLength(1);
-    expect(links[0]).toHaveAttribute('href', 'https://github.com/shlinkio/shlink-web-client/releases/v1.2.3');
+    await expect
+      .element(links[0])
+      .toHaveAttribute('href', 'https://github.com/shlinkio/shlink-web-client/releases/v1.2.3');
   });
 });

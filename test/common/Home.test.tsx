@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import { page } from 'vitest/browser';
 import { Home } from '../../src/common/Home';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
 import { checkAccessibility } from '../__helpers__/accessibility';
@@ -20,9 +20,9 @@ describe('<Home />', () => {
   it('passes a11y checks', () =>
     checkAccessibility(setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) })));
 
-  it('renders title', () => {
+  it('renders title', async () => {
     setUp();
-    expect(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
+    await expect.element(page.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
   });
 
   it.each([
@@ -35,15 +35,17 @@ describe('<Home />', () => {
       3,
     ],
     [{}, 2],
-  ])('shows link to create or set-up server only when no servers exist', (servers, expectedServers) => {
+  ])('shows link to create or set-up server only when no servers exist', async (servers, expectedServers) => {
     setUp(servers);
-    const links = screen.getAllByRole('link');
+    const links = page.getByRole('link').elements();
 
     expect(links).toHaveLength(expectedServers);
 
     if (Object.keys(servers).length === 0) {
-      expect(screen.getByText('This application will help you manage your Shlink servers.')).toBeInTheDocument();
-      expect(screen.getByText('Learn more about Shlink')).toBeInTheDocument();
+      await expect
+        .element(page.getByText('This application will help you manage your Shlink servers.'))
+        .toBeInTheDocument();
+      await expect.element(page.getByText('Learn more about Shlink')).toBeInTheDocument();
     }
   });
 });

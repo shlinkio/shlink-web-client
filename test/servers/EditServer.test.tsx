@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
+import { page } from 'vitest/browser';
 import type { ReachableServer, SelectedServer } from '../../src/servers/data';
 import { isServerWithId } from '../../src/servers/data';
 import { EditServer } from '../../src/servers/EditServer';
@@ -35,35 +36,35 @@ describe('<EditServer />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders nothing if selected server is not reachable', () => {
+  it('renders nothing if selected server is not reachable', async () => {
     setUp(fromPartial<SelectedServer>({}));
 
-    expect(screen.queryByText('Edit')).not.toBeInTheDocument();
-    expect(screen.queryByText('Cancel')).not.toBeInTheDocument();
-    expect(screen.queryByText('Save')).not.toBeInTheDocument();
+    await expect.element(page.getByText('Edit')).not.toBeInTheDocument();
+    await expect.element(page.getByText('Cancel')).not.toBeInTheDocument();
+    await expect.element(page.getByText('Save')).not.toBeInTheDocument();
   });
 
   it('renders server title', () => {
     setUp();
-    expect(screen.getByText(`Edit "${defaultSelectedServer.name}"`)).toBeInTheDocument();
+    expect(page.getByText(`Edit "${defaultSelectedServer.name}"`)).toBeInTheDocument();
   });
 
-  it('display the server info in the form components', () => {
+  it('display the server info in the form components', async () => {
     setUp();
 
-    expect(screen.getByLabelText(/^Name/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^URL/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/^API key/)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^Name/)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^URL/)).toBeInTheDocument();
+    await expect.element(page.getByLabelText(/^API key/)).toBeInTheDocument();
   });
 
   it('edits server and redirects to it when form is submitted', async () => {
     const { user, history, store } = setUp();
 
-    await user.type(screen.getByLabelText(/^Name/), ' edited');
-    await user.type(screen.getByLabelText(/^URL/), ' edited');
+    await user.type(page.getByLabelText(/^Name/), ' edited');
+    await user.type(page.getByLabelText(/^URL/), ' edited');
     // TODO Using fire event because userEvent.click on the Submit button does not submit the form
     // await user.click(screen.getByRole('button', { name: 'Save' }));
-    fireEvent.submit(screen.getByRole('form'));
+    fireEvent.submit(page.getByTestId('server-form').element());
 
     expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
       expect.objectContaining({
@@ -81,9 +82,9 @@ describe('<EditServer />', () => {
     async ({ forwardCredentials }) => {
       const { user, store } = setUp({ ...defaultSelectedServer, forwardCredentials });
 
-      await user.click(screen.getByText('Advanced options'));
-      await user.click(screen.getByLabelText('Forward credentials to this server on every request.'));
-      fireEvent.submit(screen.getByRole('form'));
+      await user.click(page.getByText('Advanced options'));
+      await user.click(page.getByLabelText('Forward credentials to this server on every request.'));
+      fireEvent.submit(page.getByTestId('server-form').element());
 
       await waitFor(() =>
         expect(store.getState().servers[defaultSelectedServer.id]).toEqual(

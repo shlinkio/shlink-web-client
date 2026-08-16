@@ -13,8 +13,8 @@ describe('<ScrollToTop />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it.each([['Foobar'], ['Barfoo'], ['Something']])('just renders children', (children) => {
+  it.each([['Foobar'], ['Barfoo'], ['Something']])('just renders children', async (children) => {
     setUp(children);
-    expect(screen.getByText(children)).toBeInTheDocument();
+    await expect.element(screen.getByText(children)).toBeInTheDocument();
   });
 });
