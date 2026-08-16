@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
@@ -97,7 +97,7 @@ describe('<CreateServer />', () => {
 
     fireEvent.submit(page.getByTestId('server-form').element());
 
-    await waitFor(() => expect(page.getByRole('dialog')).toBeInTheDocument());
+    await expect.element(page.getByRole('dialog')).toBeInTheDocument();
     await user.click(page.getByRole('button', { name: 'Discard' }));
 
     expect(history.location.pathname).toEqual('/foo'); // Goes back to first route from history's initialEntries

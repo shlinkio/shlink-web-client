@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import type { ServerWithId } from '../../src/servers/data';
 import { ServersListGroup } from '../../src/servers/ServersListGroup';
 import { checkAccessibility } from '../__helpers__/accessibility';
+import { render } from '../__helpers__/setUpTest.tsx';
 
 describe('<ServersListGroup />', () => {
   const servers: ServerWithId[] = [fromPartial({ name: 'foo', id: '123' }), fromPartial({ name: 'bar', id: '456' })];
@@ -19,15 +19,15 @@ describe('<ServersListGroup />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it.each([[servers], [[]]])('shows servers list', (servers) => {
-    setUp({ servers });
+  it.each([[servers], [[]]])('shows servers list', async (servers) => {
+    const screen = await setUp({ servers });
 
-    expect(screen.queryAllByTestId('list')).toHaveLength(servers.length ? 1 : 0);
-    expect(screen.queryAllByRole('link')).toHaveLength(servers.length);
+    expect(screen.getByTestId('list').elements()).toHaveLength(servers.length ? 1 : 0);
+    expect(screen.getByRole('link').elements()).toHaveLength(servers.length);
   });
 
   it.each([[true], [false], [undefined]])('renders proper classes for embedded', async (borderless) => {
-    setUp({ servers, borderless });
+    const screen = await setUp({ servers, borderless });
     const list = screen.getByTestId('list');
 
     if (!borderless) {

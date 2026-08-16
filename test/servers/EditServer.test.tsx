@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
@@ -86,12 +86,10 @@ describe('<EditServer />', () => {
       await user.click(page.getByLabelText('Forward credentials to this server on every request.'));
       fireEvent.submit(page.getByTestId('server-form').element());
 
-      await waitFor(() =>
-        expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
-          expect.objectContaining({
-            forwardCredentials: !forwardCredentials,
-          }),
-        ),
+      expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
+        expect.objectContaining({
+          forwardCredentials: !forwardCredentials,
+        }),
       );
     },
   );

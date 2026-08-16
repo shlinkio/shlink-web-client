@@ -1,17 +1,20 @@
 import type { ShlinkApiClient } from '@shlinkio/shlink-js-sdk';
 import type { RenderOptions } from '@testing-library/react';
-import { render } from '@testing-library/react';
+import { render as testingLibRender } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { PropsWithChildren, ReactElement } from 'react';
 import { Provider } from 'react-redux';
+import { render as vitestRender } from 'vitest-browser-react';
 import { userEvent } from 'vitest/browser';
 import { ContainerProvider } from '../../src/container/context';
 import type { RootState } from '../../src/store';
 import { setUpStore } from '../../src/store';
 
+export const render = vitestRender;
+
 export const renderWithEvents = (element: ReactElement, options?: RenderOptions) => ({
   user: userEvent.setup(),
-  ...render(element, options),
+  ...testingLibRender(element, options),
 });
 
 export type RenderOptionsWithState = Omit<RenderOptions, 'wrapper'> & {

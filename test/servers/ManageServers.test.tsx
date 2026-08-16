@@ -1,4 +1,3 @@
-import { waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import { page } from 'vitest/browser';
@@ -44,25 +43,25 @@ describe('<ManageServers />', () => {
       await user.type(page.getByPlaceholder('Search...'), searchTerm);
     };
     // Add one for the header row
-    const expectRows = (amount: number) => expect(page.getByRole('row').elements()).toHaveLength(amount + 1);
+    const expectRows = (amount: number) => expect.poll(() => page.getByRole('row').elements()).toHaveLength(amount + 1);
 
-    expectRows(3);
+    await expectRows(3);
     await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('foo');
-    await waitFor(() => expectRows(1));
+    await expectRows(1);
     await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('Ba');
-    await waitFor(() => expectRows(2));
+    await expectRows(2);
     await expect.element(page.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('invalid');
-    await waitFor(() => expectRows(1));
+    await expectRows(1);
     await expect.element(page.getByText('No servers found.')).toBeInTheDocument();
   });
 
-  it.only.each([[createServerMock('foo')], [createServerMock('foo', true)]])(
+  it.each([[createServerMock('foo')], [createServerMock('foo', true)]])(
     'shows different amount of columns if there are at least one auto-connect server',
     async (server) => {
       setUp({ server });
