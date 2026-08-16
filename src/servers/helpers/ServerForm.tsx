@@ -28,7 +28,7 @@ export const ServerForm: FC<ServerFormProps> = ({ onSubmit, initialValues, child
   const handleSubmit = usePreventDefault(() => onSubmit({ name, url, apiKey, forwardCredentials }));
 
   return (
-    <form name="serverForm" onSubmit={handleSubmit} data-testid="server-form">
+    <form name="serverForm" onSubmit={handleSubmit}>
       <SimpleCard className="mb-4" bodyClassName="flex flex-col gap-y-3" title={title}>
         <LabelledInput label="Name" value={name} onChange={(e) => setName(e.target.value)} required />
         <LabelledInput label="URL" type="url" value={url} onChange={(e) => setUrl(e.target.value)} required />

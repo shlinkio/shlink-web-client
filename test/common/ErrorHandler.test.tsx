@@ -1,6 +1,5 @@
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ReactNode } from 'react';
-import { page } from 'vitest/browser';
 import { ErrorHandler } from '../../src/common/ErrorHandler';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -27,7 +26,7 @@ describe('<ErrorHandler />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders children when no error has occurred', async () => {
-    setUp(<span>Foo</span>);
+    const page = await setUp(<span>Foo</span>);
 
     await expect.element(page.getByText('Foo')).toBeInTheDocument();
     await expect.element(page.getByText('Oops! This is awkward :S')).not.toBeInTheDocument();
@@ -35,14 +34,14 @@ describe('<ErrorHandler />', () => {
   });
 
   it('renders error page when error has occurred', async () => {
-    setUp(<ComponentWithError />);
+    const page = await setUp(<ComponentWithError />);
 
     await expect.element(page.getByText('Oops! This is awkward :S')).toBeInTheDocument();
     await expect.element(page.getByRole('button')).toBeInTheDocument();
   });
 
   it('reloads page on button click', async () => {
-    const { user } = setUp(<ComponentWithError />);
+    const { user, ...page } = await setUp(<ComponentWithError />);
 
     expect(reload).not.toHaveBeenCalled();
     await user.click(page.getByRole('button'));

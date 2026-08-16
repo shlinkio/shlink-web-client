@@ -1,4 +1,3 @@
-import { fireEvent } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
@@ -74,7 +73,7 @@ describe('<CreateServer />', () => {
     await user.type(page.getByLabelText(/^API key/), 'the_api_key');
 
     expect(store.getState().servers[expectedServerId]).not.toBeDefined();
-    fireEvent.submit(page.getByTestId('server-form').element());
+    await user.click(page.getByRole('button', { name: 'Create server' }));
     expect(store.getState().servers[expectedServerId]).toEqual(
       expect.objectContaining({
         id: expectedServerId,
@@ -95,7 +94,7 @@ describe('<CreateServer />', () => {
     await user.type(page.getByLabelText(/^URL/), 'https://existing_url.com');
     await user.type(page.getByLabelText(/^API key/), 'existing_api_key');
 
-    fireEvent.submit(page.getByTestId('server-form').element());
+    await user.click(page.getByRole('button', { name: 'Create server' }));
 
     await expect.element(page.getByRole('dialog')).toBeInTheDocument();
     await user.click(page.getByRole('button', { name: 'Discard' }));

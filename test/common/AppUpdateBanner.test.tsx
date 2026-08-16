@@ -1,4 +1,3 @@
-import { page } from 'vitest/browser';
 import { AppUpdateBanner } from '../../src/common/AppUpdateBanner';
 import { checkAccessibility } from '../__helpers__/accessibility';
 import { renderWithEvents } from '../__helpers__/setUpTest';
@@ -11,7 +10,7 @@ describe('<AppUpdateBanner />', () => {
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
   it('renders initial state', async () => {
-    setUp();
+    const page = await setUp();
 
     await expect.element(page.getByRole('heading')).toHaveTextContent('This app has just been updated!');
     await expect.element(page.getByText('Restarting...')).not.toBeInTheDocument();
@@ -19,7 +18,7 @@ describe('<AppUpdateBanner />', () => {
   });
 
   it('invokes toggle when alert is closed', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     expect(onClose).not.toHaveBeenCalled();
     await user.click(page.getByLabelText('Close'));
@@ -27,7 +26,7 @@ describe('<AppUpdateBanner />', () => {
   });
 
   it('triggers the update when clicking the button', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     expect(forceUpdate).not.toHaveBeenCalled();
     await user.click(page.getByText(/^Restart now/));

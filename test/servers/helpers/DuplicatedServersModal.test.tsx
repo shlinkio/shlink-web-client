@@ -1,5 +1,4 @@
 import { fromPartial } from '@total-typescript/shoehorn';
-import { page } from 'vitest/browser';
 import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
 import { checkAccessibility } from '../../__helpers__/accessibility';
@@ -22,8 +21,8 @@ describe('<DuplicatedServersModal />', () => {
     [[mockServer(), mockServer()], 2],
     [[mockServer(), mockServer(), mockServer()], 3],
     [[mockServer(), mockServer(), mockServer(), mockServer()], 4],
-  ])('renders expected amount of items', (duplicatedServers, expectedItems) => {
-    setUp(duplicatedServers);
+  ])('renders expected amount of items', async (duplicatedServers, expectedItems) => {
+    const page = await setUp(duplicatedServers);
     expect(page.getByRole('listitem')).toHaveLength(expectedItems);
   });
 
@@ -49,7 +48,7 @@ describe('<DuplicatedServersModal />', () => {
       },
     ],
   ])('renders expected texts based on amount of servers', async (duplicatedServers, assertions) => {
-    setUp(duplicatedServers);
+    const page = await setUp(duplicatedServers);
 
     await expect.element(page.getByRole('heading')).toHaveTextContent(assertions.header);
     await expect.element(page.getByText(assertions.firstParagraph)).toBeInTheDocument();
@@ -63,7 +62,7 @@ describe('<DuplicatedServersModal />', () => {
     [[mockServer({ url: 'url', apiKey: 'apiKey' })]],
     [[mockServer({ url: 'url_1', apiKey: 'apiKey_1' }), mockServer({ url: 'url_2', apiKey: 'apiKey_2' })]],
   ])('displays provided server data', async (duplicatedServers) => {
-    setUp(duplicatedServers);
+    const page = await setUp(duplicatedServers);
 
     if (duplicatedServers.length === 0) {
       await expect.element(page.getByRole('listitem')).not.toBeInTheDocument();
@@ -87,7 +86,7 @@ describe('<DuplicatedServersModal />', () => {
   });
 
   it('invokes onClose when appropriate button is clicked', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     expect(onClose).not.toHaveBeenCalled();
     await user.click(page.getByRole('button', { name: 'Discard' }));
@@ -95,7 +94,7 @@ describe('<DuplicatedServersModal />', () => {
   });
 
   it('invokes onConfirm when appropriate button is clicked', async () => {
-    const { user } = setUp();
+    const { user, ...page } = await setUp();
 
     expect(onConfirm).not.toHaveBeenCalled();
     await user.click(page.getByRole('button', { name: 'Save duplicate' }));

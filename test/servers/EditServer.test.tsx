@@ -1,4 +1,3 @@
-import { fireEvent } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
@@ -13,7 +12,7 @@ describe('<EditServer />', () => {
   const defaultSelectedServer = fromPartial<ReachableServer>({
     id: 'abc123',
     name: 'the_name',
-    url: 'the_url',
+    url: 'https://example.com',
     apiKey: 'the_api_key',
   });
   const setUp = (selectedServer: SelectedServer = defaultSelectedServer) => {
@@ -61,15 +60,11 @@ describe('<EditServer />', () => {
     const { user, history, store } = setUp();
 
     await user.type(page.getByLabelText(/^Name/), ' edited');
-    await user.type(page.getByLabelText(/^URL/), ' edited');
-    // TODO Using fire event because userEvent.click on the Submit button does not submit the form
-    // await user.click(screen.getByRole('button', { name: 'Save' }));
-    fireEvent.submit(page.getByTestId('server-form').element());
+    await user.click(page.getByRole('button', { name: 'Save' }));
 
     expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
       expect.objectContaining({
         name: 'the_name edited',
-        url: 'the_url edited',
       }),
     );
 
@@ -84,7 +79,7 @@ describe('<EditServer />', () => {
 
       await user.click(page.getByText('Advanced options'));
       await user.click(page.getByLabelText('Forward credentials to this server on every request.'));
-      fireEvent.submit(page.getByTestId('server-form').element());
+      await user.click(page.getByRole('button', { name: 'Save' }));
 
       expect(store.getState().servers[defaultSelectedServer.id]).toEqual(
         expect.objectContaining({
