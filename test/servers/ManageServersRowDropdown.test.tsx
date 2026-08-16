@@ -1,6 +1,6 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
+import type { RenderResult } from 'vitest-browser-react';
 import type { UserEvent } from 'vitest/browser';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRowDropdown } from '../../src/servers/ManageServersRowDropdown';
@@ -21,50 +21,54 @@ describe('<ManageServersRowDropdown />', () => {
       },
     );
   };
-  const toggleDropdown = (user: UserEvent) => user.click(screen.getByRole('button'));
+  const toggleDropdown = (user: UserEvent, screen: RenderResult) => user.click(screen.getByRole('button'));
 
   it('passes a11y checks', async () => {
-    const { user, container } = setUp();
+    const { user, ...screen } = await setUp();
     // Open menu
-    await toggleDropdown(user);
+    await toggleDropdown(user, screen);
 
-    return checkAccessibility({ container });
+    return checkAccessibility(screen);
   });
 
   it('renders expected amount of dropdown items', async () => {
-    const { user } = setUp();
+    const { user, ...screen } = await setUp();
 
-    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
-    await toggleDropdown(user);
-    expect(screen.getByRole('menu')).toBeInTheDocument();
+    await expect.element(screen.getByRole('menu')).not.toBeInTheDocument();
+    await toggleDropdown(user, screen);
+    await expect.element(screen.getByRole('menu')).toBeInTheDocument();
 
-    expect(screen.getAllByRole('menuitem')).toHaveLength(4);
-    expect(screen.getByRole('menuitem', { name: 'Connect' })).toHaveAttribute('href', '/server/abc123');
-    expect(screen.getByRole('menuitem', { name: 'Edit server' })).toHaveAttribute('href', '/server/abc123/edit');
+    expect(screen.getByRole('menuitem').elements()).toHaveLength(4);
+    await expect
+      .element(screen.getByRole('menuitem', { name: 'Connect', exact: true }))
+      .toHaveAttribute('href', '/server/abc123');
+    await expect
+      .element(screen.getByRole('menuitem', { name: 'Edit server' }))
+      .toHaveAttribute('href', '/server/abc123/edit');
   });
 
   it.each([true, false])('allows toggling auto-connect', async (autoConnect) => {
-    const { user, store } = setUp(autoConnect);
+    const { user, store, ...screen } = await setUp(autoConnect);
 
-    await toggleDropdown(user);
+    await toggleDropdown(user, screen);
     await user.click(screen.getByRole('menuitem', { name: autoConnect ? 'Do not auto-connect' : 'Auto-connect' }));
 
     expect(Object.values(store.getState().servers)[0].autoConnect).toEqual(!autoConnect);
   });
 
   it('renders deletion modal', async () => {
-    const { user } = setUp();
+    const { user, ...screen } = await setUp();
 
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(screen.getByRole('dialog')).not.toBeInTheDocument();
 
-    await toggleDropdown(user);
+    await toggleDropdown(user, screen);
     await user.click(screen.getByRole('menuitem', { name: 'Remove server' }));
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await expect.element(screen.getByRole('dialog')).toBeInTheDocument();
   });
 
-  it.each([[true], [false]])('renders expected size and icon', (autoConnect) => {
-    const { container } = setUp(autoConnect);
+  it.each([[true], [false]])('renders expected size and icon', async (autoConnect) => {
+    const { container } = await setUp(autoConnect);
     expect(container).toMatchSnapshot();
   });
 });

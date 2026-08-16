@@ -1,5 +1,4 @@
 import { Table } from '@shlinkio/shlink-frontend-kit';
-import { screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import type { ServerWithId } from '../../src/servers/data';
 import { ManageServersRow } from '../../src/servers/ManageServersRow';
@@ -27,28 +26,27 @@ describe('<ManageServersRow />', () => {
   it.each([
     [true, 4],
     [false, 3],
-  ])('renders expected amount of columns', (hasAutoConnect, expectedCols) => {
-    setUp(hasAutoConnect);
-    expect(screen.getAllByRole('cell')).toHaveLength(expectedCols);
+  ])('renders expected amount of columns', async (hasAutoConnect, expectedCols) => {
+    const screen = await setUp(hasAutoConnect);
+    expect(screen.getByRole('cell').elements()).toHaveLength(expectedCols);
   });
 
-  it('renders an options dropdown', () => {
-    setUp();
-    expect(screen.getByRole('button', { name: 'Options' })).toBeInTheDocument();
+  it('renders an options dropdown', async () => {
+    const screen = await setUp();
+    await expect.element(screen.getByRole('button', { name: 'Options' })).toBeInTheDocument();
   });
 
-  it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', (autoConnect) => {
-    const { container } = setUp(true, autoConnect);
+  it.each([[true], [false]])('renders auto-connect icon only if server is autoConnect', async (autoConnect) => {
+    const { container } = await setUp(true, autoConnect);
     expect(container).toMatchSnapshot();
   });
 
-  it('renders server props where appropriate', () => {
-    setUp();
-
+  it('renders server props where appropriate', async () => {
+    const screen = await setUp();
     const link = screen.getByRole('link');
 
-    expect(link).toHaveAttribute('href', `/server/${server.id}`);
-    expect(link).toHaveTextContent(server.name);
-    expect(screen.getByText(server.url)).toBeInTheDocument();
+    await expect.element(link).toHaveAttribute('href', `/server/${server.id}`);
+    await expect.element(link).toHaveTextContent(server.name);
+    await expect.element(screen.getByText(server.url)).toBeInTheDocument();
   });
 });

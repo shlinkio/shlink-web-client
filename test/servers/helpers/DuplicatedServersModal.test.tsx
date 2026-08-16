@@ -1,4 +1,3 @@
-import { act, screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import type { ServerData } from '../../../src/servers/data';
 import { DuplicatedServersModal } from '../../../src/servers/helpers/DuplicatedServersModal';
@@ -9,10 +8,8 @@ describe('<DuplicatedServersModal />', () => {
   const onClose = vi.fn();
   const onConfirm = vi.fn();
   const setUp = (duplicatedServers: ServerData[] = []) =>
-    act(() =>
-      renderWithEvents(
-        <DuplicatedServersModal open duplicatedServers={duplicatedServers} onClose={onClose} onConfirm={onConfirm} />,
-      ),
+    renderWithEvents(
+      <DuplicatedServersModal open duplicatedServers={duplicatedServers} onClose={onClose} onConfirm={onConfirm} />,
     );
   const mockServer = (data: Partial<ServerData> = {}) => fromPartial<ServerData>(data);
 
@@ -25,8 +22,8 @@ describe('<DuplicatedServersModal />', () => {
     [[mockServer(), mockServer(), mockServer()], 3],
     [[mockServer(), mockServer(), mockServer(), mockServer()], 4],
   ])('renders expected amount of items', async (duplicatedServers, expectedItems) => {
-    await setUp(duplicatedServers);
-    expect(screen.queryAllByRole('listitem')).toHaveLength(expectedItems);
+    const screen = await setUp(duplicatedServers);
+    expect(screen.getByRole('listitem')).toHaveLength(expectedItems);
   });
 
   it.each([
@@ -51,13 +48,13 @@ describe('<DuplicatedServersModal />', () => {
       },
     ],
   ])('renders expected texts based on amount of servers', async (duplicatedServers, assertions) => {
-    await setUp(duplicatedServers);
+    const screen = await setUp(duplicatedServers);
 
-    expect(screen.getByRole('heading')).toHaveTextContent(assertions.header);
-    expect(screen.getByText(assertions.firstParagraph)).toBeInTheDocument();
-    expect(screen.getByText(assertions.lastParagraph)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: assertions.discardBtn })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: assertions.confirmButton })).toBeInTheDocument();
+    await expect.element(screen.getByRole('heading')).toHaveTextContent(assertions.header);
+    await expect.element(screen.getByText(assertions.firstParagraph)).toBeInTheDocument();
+    await expect.element(screen.getByText(assertions.lastParagraph)).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { name: assertions.discardBtn })).toBeInTheDocument();
+    await expect.element(screen.getByRole('button', { name: assertions.confirmButton })).toBeInTheDocument();
   });
 
   it.each([
@@ -65,26 +62,31 @@ describe('<DuplicatedServersModal />', () => {
     [[mockServer({ url: 'url', apiKey: 'apiKey' })]],
     [[mockServer({ url: 'url_1', apiKey: 'apiKey_1' }), mockServer({ url: 'url_2', apiKey: 'apiKey_2' })]],
   ])('displays provided server data', async (duplicatedServers) => {
-    await setUp(duplicatedServers);
+    const screen = await setUp(duplicatedServers);
 
     if (duplicatedServers.length === 0) {
-      expect(screen.queryByRole('listitem')).not.toBeInTheDocument();
+      await expect.element(screen.getByRole('listitem')).not.toBeInTheDocument();
     } else if (duplicatedServers.length === 1) {
-      const [firstItem, secondItem] = screen.getAllByRole('listitem');
+      const [firstItem, secondItem] = screen.getByRole('listitem').elements();
 
-      expect(firstItem).toHaveTextContent(`URL: ${duplicatedServers[0].url}`);
-      expect(secondItem).toHaveTextContent(`API key: ${duplicatedServers[0].apiKey}`);
+      await expect.element(firstItem).toHaveTextContent(`URL: ${duplicatedServers[0].url}`);
+      await expect.element(secondItem).toHaveTextContent(`API key: ${duplicatedServers[0].apiKey}`);
     } else {
       expect.assertions(duplicatedServers.length);
-      screen.getAllByRole('listitem').forEach((item, index) => {
-        const server = duplicatedServers[index];
-        expect(item).toHaveTextContent(`${server.url} - ${server.apiKey}`);
-      });
+      await Promise.all(
+        screen
+          .getByRole('listitem')
+          .elements()
+          .map((item, index) => {
+            const server = duplicatedServers[index];
+            return expect.element(item).toHaveTextContent(`${server.url} - ${server.apiKey}`);
+          }),
+      );
     }
   });
 
   it('invokes onClose when appropriate button is clicked', async () => {
-    const { user } = await setUp();
+    const { user, ...screen } = await setUp();
 
     expect(onClose).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Discard' }));
@@ -92,7 +94,7 @@ describe('<DuplicatedServersModal />', () => {
   });
 
   it('invokes onConfirm when appropriate button is clicked', async () => {
-    const { user } = await setUp();
+    const { user, ...screen } = await setUp();
 
     expect(onConfirm).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Save duplicate' }));
