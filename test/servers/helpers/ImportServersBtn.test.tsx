@@ -21,9 +21,9 @@ describe('<ImportServersBtn />', () => {
   it('shows tooltip on button hover', async () => {
     const { user, ...screen } = await setUp();
 
-    await expect.element(screen.getByText('You can create servers by importing a CSV file')).not.toBeInTheDocument();
+    await expect.element(screen.getByText(/You can create servers by importing a CSV file/)).not.toBeInTheDocument();
     await user.hover(screen.getByRole('button'));
-    await expect.element(screen.getByText('You can create servers by importing a CSV file')).toBeInTheDocument();
+    await expect.element(screen.getByText(/You can create servers by importing a CSV file/)).toBeInTheDocument();
   });
 
   it.each([
