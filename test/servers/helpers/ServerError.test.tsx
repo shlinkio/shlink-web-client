@@ -28,7 +28,7 @@ describe('<ServerError />', () => {
         found: ['Could not find this Shlink server.'],
         notFound: [
           'Oops! Could not connect to this Shlink server.',
-          'Make sure you have internet connection, and the server is properly configured and on-line.',
+          /Make sure you have internet connection, and the server is properly configured and on-line/,
           /^Alternatively, if you think you may have misconfigured this server/,
         ],
       },
@@ -38,7 +38,7 @@ describe('<ServerError />', () => {
       {
         found: [
           'Oops! Could not connect to this Shlink server.',
-          'Make sure you have internet connection, and the server is properly configured and on-line.',
+          /Make sure you have internet connection, and the server is properly configured and on-line/,
           /^Alternatively, if you think you may have misconfigured this server/,
         ],
         notFound: ['Could not find this Shlink server.'],
