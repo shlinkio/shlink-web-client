@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org).
 
+## [Unreleased]
+### Added
+* *Nothing*
+
+### Changed
+* *Nothing*
+
+### Deprecated
+* *Nothing*
+
+### Removed
+* *Nothing*
+
+### Fixed
+* [#1782](https://github.com/shlinkio/shlink-web-client/issues/1782) Listen on IPv6 in the docker image, unless the kernel has no IPv6.
+
+
 ## [4.8.1] - 2026-08-07
 ### Added
 * *Nothing*
