@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@shlinkio/eslint-config-js-coding-standard": "~4.2.0",
-    "@tailwindcss/vite": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.4",
     "@total-typescript/shoehorn": "^0.1.2",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",
