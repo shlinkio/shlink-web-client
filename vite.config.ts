@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import { playwright } from '@vitest/browser-playwright';
 import { VitePWA } from 'vite-plugin-pwa';
 import { defineConfig } from 'vitest/config';
-import { manifest } from './manifest';
+import { manifest } from './manifest.ts';
 import pack from './package.json' with { type: 'json' };
 
 const homepage = pack.homepage?.trim();
@@ -39,6 +39,9 @@ export default defineConfig({
 
   // Vitest config
   test: {
+    globals: true,
+    clearMocks: true,
+
     // Run tests in an actual browser
     browser: {
       provider: playwright({
@@ -50,8 +53,6 @@ export default defineConfig({
       screenshotFailures: false,
       instances: [{ browser: 'chromium' }],
     },
-    globals: true,
-    setupFiles: './config/test/setupTests.ts',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'text-summary', 'html', 'clover'],

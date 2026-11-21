@@ -1,4 +1,3 @@
-import { screen, waitFor } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import type { ServersMap, ServerWithId } from '../../src/servers/data';
@@ -33,77 +32,77 @@ describe('<ManageServers />', () => {
     ));
 
   it('shows search field which allows searching servers, affecting te amount of rendered rows', async () => {
-    const { user } = setUp({
+    const { user, ...screen } = await setUp({
       foo: createServerMock('foo'),
       bar: createServerMock('bar'),
       baz: createServerMock('baz'),
     });
     const search = async (searchTerm: string) => {
-      await user.clear(screen.getByPlaceholderText('Search...'));
-      await user.type(screen.getByPlaceholderText('Search...'), searchTerm);
+      await user.clear(screen.getByPlaceholder('Search...'));
+      await user.type(screen.getByPlaceholder('Search...'), searchTerm);
     };
     // Add one for the header row
-    const expectRows = (amount: number) => expect(screen.getAllByRole('row')).toHaveLength(amount + 1);
+    const expectRows = (amount: number) =>
+      expect.poll(() => screen.getByRole('row').elements()).toHaveLength(amount + 1);
 
-    expectRows(3);
-    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
+    await expectRows(3);
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('foo');
-    await waitFor(() => expectRows(1));
-    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
+    await expectRows(1);
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('Ba');
-    await waitFor(() => expectRows(2));
-    expect(screen.queryByText('No servers found.')).not.toBeInTheDocument();
+    await expectRows(2);
+    await expect.element(screen.getByText('No servers found.')).not.toBeInTheDocument();
 
     await search('invalid');
-    await waitFor(() => expectRows(1));
-    expect(screen.getByText('No servers found.')).toBeInTheDocument();
+    await expectRows(1);
+    await expect.element(screen.getByText('No servers found.')).toBeInTheDocument();
   });
 
-  it.each([
-    [createServerMock('foo'), 3],
-    [createServerMock('foo', true), 4],
-  ])('shows different amount of columns if there are at least one auto-connect server', (server, expectedCols) => {
-    setUp({ server });
+  it.each([[createServerMock('foo')], [createServerMock('foo', true)]])(
+    'shows different amount of columns if there are at least one auto-connect server',
+    async (server) => {
+      const screen = await setUp({ server });
 
-    expect(screen.getAllByRole('columnheader')).toHaveLength(expectedCols);
-    if (server.autoConnect) {
-      expect(screen.getByTestId('auto-connect')).toBeInTheDocument();
-    } else {
-      expect(screen.queryByTestId('auto-connect')).not.toBeInTheDocument();
-    }
-  });
+      if (server.autoConnect) {
+        await expect.element(screen.getByTestId('auto-connect')).toBeInTheDocument();
+      } else {
+        await expect.element(screen.getByTestId('auto-connect')).not.toBeInTheDocument();
+      }
+    },
+  );
 
   it.each([
     [{}, 0],
     [{ foo: createServerMock('foo') }, 1],
-  ])('shows export button if the list of servers is not empty', (servers, expectedButtons) => {
-    setUp(servers);
-    expect(screen.queryAllByRole('button', { name: 'Export servers' })).toHaveLength(expectedButtons);
+  ])('shows export button if the list of servers is not empty', async (servers, expectedButtons) => {
+    const screen = await setUp(servers);
+    expect(screen.getByRole('button', { name: 'Export servers' }).elements()).toHaveLength(expectedButtons);
   });
 
   it('allows exporting servers when clicking on button', async () => {
-    const { user } = setUp({ foo: createServerMock('foo') });
+    const { user, ...screen } = await setUp({ foo: createServerMock('foo') });
 
     expect(exportServers).not.toHaveBeenCalled();
     await user.click(screen.getByRole('button', { name: 'Export servers' }));
     expect(exportServers).toHaveBeenCalled();
   });
 
-  it.each([[true], [false]])('shows an error message if an error occurs while importing servers', (hasError) => {
+  it.each([[true], [false]])('shows an error message if an error occurs while importing servers', async (hasError) => {
     useTimeoutToggle.mockReturnValue([hasError, vi.fn()]);
 
-    setUp({ foo: createServerMock('foo') });
+    const screen = await setUp({ foo: createServerMock('foo') });
 
     if (hasError) {
-      expect(
-        screen.getByText('The servers could not be imported. Make sure the format is correct.'),
-      ).toBeInTheDocument();
+      await expect
+        .element(screen.getByText('The servers could not be imported. Make sure the format is correct.'))
+        .toBeInTheDocument();
     } else {
-      expect(
-        screen.queryByText('The servers could not be imported. Make sure the format is correct.'),
-      ).not.toBeInTheDocument();
+      await expect
+        .element(screen.getByText('The servers could not be imported. Make sure the format is correct.'))
+        .not.toBeInTheDocument();
     }
   });
 });

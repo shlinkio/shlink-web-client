@@ -1,4 +1,3 @@
-import { screen } from '@testing-library/react';
 import { fromPartial } from '@total-typescript/shoehorn';
 import { MemoryRouter } from 'react-router';
 import { Home } from '../../src/common/Home';
@@ -20,9 +19,9 @@ describe('<Home />', () => {
   it('passes a11y checks', () =>
     checkAccessibility(setUp({ '1a': fromPartial<ServerWithId>({ name: 'foo', id: '1' }) })));
 
-  it('renders title', () => {
-    setUp();
-    expect(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
+  it('renders title', async () => {
+    const screen = await setUp();
+    await expect.element(screen.getByRole('heading', { name: 'Welcome!' })).toBeInTheDocument();
   });
 
   it.each([
@@ -35,15 +34,17 @@ describe('<Home />', () => {
       3,
     ],
     [{}, 2],
-  ])('shows link to create or set-up server only when no servers exist', (servers, expectedServers) => {
-    setUp(servers);
-    const links = screen.getAllByRole('link');
+  ])('shows link to create or set-up server only when no servers exist', async (servers, expectedServers) => {
+    const screen = await setUp(servers);
+    const links = screen.getByRole('link').elements();
 
     expect(links).toHaveLength(expectedServers);
 
     if (Object.keys(servers).length === 0) {
-      expect(screen.getByText('This application will help you manage your Shlink servers.')).toBeInTheDocument();
-      expect(screen.getByText('Learn more about Shlink')).toBeInTheDocument();
+      await expect
+        .element(screen.getByText('This application will help you manage your Shlink servers.'))
+        .toBeInTheDocument();
+      await expect.element(screen.getByText('Learn more about Shlink')).toBeInTheDocument();
     }
   });
 });

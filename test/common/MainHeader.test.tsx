@@ -1,4 +1,3 @@
-import { screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router';
 import { MainHeader } from '../../src/common/MainHeader';
@@ -19,9 +18,9 @@ describe('<MainHeader />', () => {
 
   it('passes a11y checks', () => checkAccessibility(setUp()));
 
-  it('renders ServersDropdown', () => {
-    setUp();
-    expect(screen.getByRole('button', { name: 'Servers' })).toBeInTheDocument();
+  it('renders ServersDropdown', async () => {
+    const screen = await setUp();
+    await expect.element(screen.getByRole('button', { name: 'Servers' })).toBeInTheDocument();
   });
 
   it.each([
@@ -30,11 +29,10 @@ describe('<MainHeader />', () => {
     ['/settings', true],
     ['/settings/foo', true],
     ['/settings/bar', true],
-  ])('sets link to settings as active only when current path is settings', (currentPath, isActive) => {
-    setUp(currentPath);
-    expect(screen.getByRole('menuitem', { name: /Settings$/ })).toHaveAttribute(
-      'data-active',
-      isActive ? 'true' : 'false',
-    );
+  ])('sets link to settings as active only when current path is settings', async (currentPath, isActive) => {
+    const screen = await setUp(currentPath);
+    await expect
+      .element(screen.getByRole('menuitem', { name: /Settings$/ }))
+      .toHaveAttribute('data-active', isActive ? 'true' : 'false');
   });
 });
